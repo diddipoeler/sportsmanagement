@@ -422,4 +422,34 @@
   
     </fieldset>
 
+<fieldset 
+        name="special_fields"
+        label="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS"
+        description="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS_DESC"
+    >
+<field 
+            name="use_jl" 
+            type="extensionradiobutton" 
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+	
+<field 
+            name="use_jsm" 
+            type="extensionradiobutton" 
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>	
+    </fieldset>	
+	
+	
+	
 </form>
