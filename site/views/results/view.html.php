@@ -263,7 +263,7 @@ $this->setLayout('form_bootstrap');
 	{
 	   // Reference global application object
         $app = Factory::getApplication();
-       
+       if ( $team ) {
     if ( !File::exists($team->logo_small) )
     {
     $team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');    
@@ -393,6 +393,9 @@ $use_jquery_modal);
 		}
         
 		return $image;
+	}
+	return false;	
+		
 	}
 	
 
