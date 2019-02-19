@@ -28,7 +28,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
-
+$this->showmap = false;
 $map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'; 
 
 if ( $this->config['use_which_map'] )
@@ -75,7 +75,8 @@ switch ($this->view)
 {
 case 'playground':
 if ( $this->playground->latitude && $this->playground->longitude ) 		
-{				
+{	
+$this->showmap = true;	
 ?>
 <script>
   
@@ -138,7 +139,8 @@ break;
 
 case 'clubinfo':
 if ( $this->club->latitude && $this->club->longitude ) 		
-{		
+{	
+$this->showmap = true;	
 ?>
 <script>
   
@@ -347,10 +349,13 @@ switch ($this->view)
 {
 case 'clubinfo':
 case 'playground':
+if ( $this->showmap )		
+{
 ?>
 <div id="map" style="width:50%;height:600px;float: left;"></div>
 <div id="pano" style="width:50%;height:600px;float: left;"></div>
 <?php
+}		
 break;
 default:
 ?>
