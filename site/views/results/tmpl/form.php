@@ -174,8 +174,24 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 	<?php
 	if ( $this->config['show_edit_match_events'] )
 	{
+	if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+		{
+		?>
+		<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_DARTS'); ?></th>
+		<?php
+		}
+		else
+		{
+		?>
+		<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+		<?php
+		}	
+		
+		
+		
 	?>
-	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+	
+		
 	<?php
 	}
 	if ( $this->config['show_edit_match_statistic'] )
