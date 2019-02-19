@@ -135,6 +135,14 @@ jQuery.get("https://ipinfo.io", function(response) {
 </script>
 <?php
 }
+else
+{
+?>
+<script>
+jQuery("#map").width(50).height(50);
+</script>
+<?php
+}
 break;
 
 case 'clubinfo':
@@ -199,6 +207,14 @@ jQuery.get("https://ipinfo.io", function(response) {
 </script>
 <?php
 }
+else
+{
+?>
+<script>
+jQuery("#map").width(50).height(50);
+</script>
+<?php
+}		
 break;
 case 'ranking':
 case 'resultsranking':
