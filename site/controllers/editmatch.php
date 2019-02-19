@@ -149,6 +149,8 @@ $return = $model->savestats($post);
         $data['preview'] = $post['preview'];
         $data['team1_bonus'] = $post['team1_bonus'];
         $data['team2_bonus'] = $post['team2_bonus'];
+        $data['team1_legs'] = $post['team1_legs'];
+        $data['team2_legs'] = $post['team2_legs'];
         $data['match_result_detail'] = $post['match_result_detail'];
 
         $data['show_report'] = $post['show_report'];
