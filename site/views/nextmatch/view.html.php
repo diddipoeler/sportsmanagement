@@ -94,6 +94,7 @@ $this->statgames = array();
 
         }
 
+        if ( $this->games ) {
 foreach( $this->games as $game )
 {
 if ( $game->team1_id == $this->teams[0]->id )
@@ -107,7 +108,7 @@ if ( $game->team1_id == $this->teams[0]->id )
     $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
     }
 }
-        
+    }        
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
         if (isset($this->teams)) {
