@@ -1095,9 +1095,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                     }
             }
         }
-		if ( $game->team1_leg )
+		if ( $game->team1_legs )
 		{
-		$resultS = '<br>'.$game->team1_leg . '&nbsp;' . $config['seperator'] . '&nbsp;' . $game->team2_leg;
+		$resultS = '<br /><span>'.$game->team1_legs . '&nbsp;' . $config['seperator'] . '&nbsp;' . $game->team2_legs. '</span>';
 		$output .= $resultS;	
 		}
 
