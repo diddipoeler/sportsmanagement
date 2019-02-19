@@ -135,6 +135,11 @@ $return = $model->savestats($post);
         $db = Factory::getDbo();
         
         // Set the values
+        $data['team1_bonus'] = NULL;
+        $data['team2_bonus'] = NULL;
+        $data['team1_legs'] = NULL;
+        $data['team2_legs'] = NULL;
+        
         $data['modified'] = $date->toSql();
         $data['modified_by'] = $user->get('id');
         $data['id'] = $post['matchid'];
@@ -147,10 +152,18 @@ $return = $model->savestats($post);
         $data['alt_decision'] = $post['alt_decision'];
         $data['team_won'] = $post['team_won'];
         $data['preview'] = $post['preview'];
+        if ( $post['team1_bonus'] != '' ) {
         $data['team1_bonus'] = $post['team1_bonus'];
+        }
+            if ( $post['team2_bonus'] != '' ) {
         $data['team2_bonus'] = $post['team2_bonus'];
+            }
+                if ( $post['team1_legs'] != '' ) {
         $data['team1_legs'] = $post['team1_legs'];
+                }
+                    if ( $post['team2_legs'] != '' ) {
         $data['team2_legs'] = $post['team2_legs'];
+                    }
         $data['match_result_detail'] = $post['match_result_detail'];
 
         $data['show_report'] = $post['show_report'];
