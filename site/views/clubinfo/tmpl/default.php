@@ -6,6 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -73,12 +74,15 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         $this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
     }
 
+if ( $this->club->latitude && $this->club->longitude ) 		
+{	
     if ($this->config['show_maps']) {
         if ($this->club->latitude != '0.00000000' && $this->club->longitude != '0.00000000') {
             $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
         }
     }
-
+}
+    
     if ($this->config['show_teams_of_club']) {
         $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'] = 'teams';
     }
