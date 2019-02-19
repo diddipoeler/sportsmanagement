@@ -73,7 +73,9 @@ break;
 <?php
 switch ($this->view)
 {
-case 'playground':	
+case 'playground':
+if ( $this->playground->latitude && $this->playground->longitude ) 		
+{				
 ?>
 <script>
   
@@ -131,8 +133,7 @@ jQuery.get("https://ipinfo.io", function(response) {
               
 </script>
 <?php
-
-
+}
 break;
 
 case 'clubinfo':
