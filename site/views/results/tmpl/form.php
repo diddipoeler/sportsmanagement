@@ -9,7 +9,6 @@
  * @subpackage results
  */
 
-// No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -63,7 +62,7 @@ else
 </script>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresultsform" style="overflow:auto;">
 	<!-- edit results start -->
-	<table class="table table-responsive">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -99,117 +98,114 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
-		<table class="<?php echo $this->config['table_class']; ?>  table-responsive" >
-			<!-- Main START -->
-			<?php
-			if ( count( $this->matches ) > 0 )
-			{
-				$colspan=($this->project->allow_add_time) ? 15 : 14;
-			?>
-			<thead>
-				<tr class="">
-					<th width="20" style="vertical-align: top; ">
-						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
-					</th>
-					<th width="" style="vertical-align: top; "></th>
-                    <th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></th>
-					<?php 
-						if($this->project->project_type=='DIVISIONS_LEAGUE') 
-                        {
-							$colspan++;
-					?>
-					<th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
-					<?php 
-						}
-					?>
+	<table class="<?php echo $this->config['table_class']; ?>" >
+	<!-- Main START -->
+	<?php
+	if ( count( $this->matches ) > 0 )
+	{
+	$colspan=($this->project->allow_add_time) ? 15 : 14;
+	?>
+	<thead>
+	<tr class="">
+	<th width="20" style="vertical-align: top; ">
+	<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
+	</th>
+	<th width="" style="vertical-align: top; "></th>
+        <th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></th>
+	<?php 
+	if($this->project->project_type=='DIVISIONS_LEAGUE') 
+        {
+	$colspan++;
+	?>
+	<th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
+	<?php 
+	}
+	?>
 					
-					<?php
-				if ( $this->config['show_edit_match_number'] )
-				{
-					?>
-					<th width="20" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
-					<?php
-				}
-				if ( $this->config['show_edit_match_date'] )
-				{	
-					?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
-					<?php
-				}
-				if ( $this->config['show_edit_match_time'] )
-				{
-				?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></th>
-					<?php
-				}
-				if ( $this->config['show_edit_match_time_present'] )
-				{
-				?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PRESENT'); ?></th>
-					<?php
-				}
-				?>
-					<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
-					<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
-					<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
-					<?php
-					if ($this->project->allow_add_time)
-					{
-						?>
-						<th style="text-align:center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT_TYPE'); ?></th>
-						<?php
-					}
-					?>
+	<?php
+	if ( $this->config['show_edit_match_number'] )
+	{
+	?>
+	<th width="20" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
+	<?php
+	}
+	if ( $this->config['show_edit_match_date'] )
+	{	
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
+	<?php
+	}
+	if ( $this->config['show_edit_match_time'] )
+	{
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></th>
+	<?php
+	}
+	if ( $this->config['show_edit_match_time_present'] )
+	{
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PRESENT'); ?></th>
+	<?php
+	}
+	?>
+	<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
+	<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
+	<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
+	<?php
+	if ($this->project->allow_add_time)
+	{
+	?>
+	<th style="text-align:center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT_TYPE'); ?></th>
+	<?php
+	}
+	?>
 					
-					<?php
-				if ( $this->config['show_edit_match_events'] )
-				{
-				?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
-				<?php
-				}
-				if ( $this->config['show_edit_match_statistic'] )
-				{
-					?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
-					<?php
-				}
-				if ( $this->config['show_edit_match_referees'] )
-				{
-					?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?></th>
-					<?php
-				}
-					?>
-					<th width="1%" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></th>
-				</tr>
-			</thead>
-			<!-- Start of the matches for the selected round -->
-		<!--	<tbody> -->
-			<?php
-				$k = 0;
-				$i = 0;
-				foreach( $this->matches as $match )
-				{
-
-					if ( isset($match->allowed) && $match->allowed )
-					{
-						$this->game = $match;
-						$this->i = $i;
+	<?php
+	if ( $this->config['show_edit_match_events'] )
+	{
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+	<?php
+	}
+	if ( $this->config['show_edit_match_statistic'] )
+	{
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
+	<?php
+	}
+	if ( $this->config['show_edit_match_referees'] )
+	{
+	?>
+	<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?></th>
+	<?php
+	}
+	?>
+	<th width="1%" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></th>
+	</tr>
+	</thead>
+	<!-- Start of the matches for the selected round -->
+	<?php
+	$k = 0;
+	$i = 0;
+	foreach( $this->matches as $match )
+        {
+	if ( isset($match->allowed) && $match->allowed )
+	{
+	$this->game = $match;
+	$this->i = $i;
 /**
  * eingabe laden
  */                        
-					echo $this->loadTemplate('row');
-					}
-					$k = 1 - $k;
-					$i++;
-				}
-			}
-			?>
-		<!--	</tbody> -->
-		</table>
-		<br/>
-		<input type='hidden' name='option' value='com_sportsmanagement' />
+	echo $this->loadTemplate('row');
+	}
+	$k = 1 - $k;
+	$i++;
+	}
+	}
+	?>
+	</table>
+	<br/>
+	<input type='hidden' name='option' value='com_sportsmanagement' />
         <input type='hidden' name='view' value='results' />
         <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelProject::$cfg_which_database; ?>' />
         <input type='hidden' name='s' value='<?php echo sportsmanagementModelProject::$seasonid; ?>' />
@@ -220,17 +216,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>' />
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveshort' />
-		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
-		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
-		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
-		<input type='hidden' name='save_data' value='1' class='button' />
-		<!--
-		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' onclick="$('checkmycontainers').value=0; " />
-		-->
-		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
-		<?php echo HTMLHelper::_('form.token'); ?>
-		<!-- Main END -->
+	<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
+	<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+	<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
+	<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
+	<input type='hidden' name='save_data' value='1' class='button' />
+	<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
+	<?php echo HTMLHelper::_('form.token'); ?>
+	<!-- Main END -->
 	</form>
 </div>
 <!-- matchdays pageNav -->
@@ -251,10 +244,10 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 <!-- matchdays pageNav END -->
 
 
-<table class="not-playing" width='96%' align='center' cellpadding='0' cellspacing='0'>
-	<tr>
-		<td style='text-align:center; '>
-			<?php echo $this->showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project ); ?>
-		</td>
-	</tr>
+<table class="table not-playing" width='96%' align='center' cellpadding='0' cellspacing='0'>
+<tr>
+<td style='text-align:center; '>
+<?php echo $this->showNotPlayingTeams($this->matches, $this->teams, $this->config, $this->favteams, $this->project ); ?>
+</td>
+</tr>
 </table>
