@@ -150,8 +150,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 	?>
 	<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
 	<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
-	<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
 	<?php
+		if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+		{
+		?>
+		<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT_DART'); ?></th>
+		<?php
+		}
+		else
+		{
+		?>
+		<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
+		<?php
+		}
 	if ($this->project->allow_add_time)
 	{
 	?>
