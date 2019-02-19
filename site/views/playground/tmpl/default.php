@@ -53,12 +53,15 @@ if ( $this->config['show_picture'] )
 { 
 echo $this->loadTemplate('picture');
 }
-		
+
+if ( $this->playground->latitude && $this->playground->longitude ) 		
+{		
 if ( $this->config['show_maps'] )
 { 
 echo $this->loadTemplate('googlemap');
 }
-
+}
+	
 if ( $this->config['show_description'] )
 { 
 echo $this->loadTemplate('description');
