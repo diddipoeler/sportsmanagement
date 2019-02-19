@@ -196,7 +196,7 @@ $return = $model->savestats($post);
  */
         $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
         $link = $_SERVER['HTTP_REFERER'];
-        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED');
+        $msg = sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $post['matchid']);
         $this->setRedirect($link, $msg);
     }
 
