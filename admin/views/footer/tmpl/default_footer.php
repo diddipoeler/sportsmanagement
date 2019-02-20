@@ -15,28 +15,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
+JLoader::import('components.com_sportsmanagement.helpers.html', JPATH_SITE );
+
 HTMLHelper::_('behavior.modal');
 $view = $this->jinput->getVar("view");
 $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');
 $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server', '');
 ?>
-
-<script>
-
-    function openLink(url)
-    {
-        var width = get_windowPopUpWidth();
-        var heigth = get_windowPopUpHeight();
-
-        SqueezeBox.open(url, {
-            handler: 'iframe',
-            size: {x: width, y: heigth}
-        });
-
-    }
-
-</script>		
 
 <div id="j-main-container" class="j-toggle-main span12 center" >      
 
@@ -51,15 +37,26 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
     <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :       
 <?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?> 
     <br />
-
-    Bug-Tracker <a href="javascript:openLink('<?php echo $cfg_bugtracker_server; ?>')">Bug-Tracker</a>
-    <br />
-
-    Online-Help <a href="javascript:openLink('<?php echo $cfg_help_server; ?>')">Online-Help</a>
-    <br />
-
-    <script>
-        bugtrackerlink();
-    </script>
-
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('tracker_content',
+'',
+'Bug-Tracker',
+'20',
+$cfg_bugtracker_server,
+$this->modalwidth,
+$this->modalheight,
+1);   
+?>  
+<br />
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('help_content',
+'',
+'Online-Help',
+'20',
+$cfg_help_server,
+$this->modalwidth,
+$this->modalheight,
+1);   
+?>  
+<br />
 </div>        
