@@ -37,6 +37,14 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 
 	}
     	
+	function set_playground()
+	{
+	$model = $this->getModel();
+       $post = Factory::getApplication()->input->post->getArray(array());	
+	
+	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+	}
+		
   /**
 	 * Method to assign persons or teams
 	 *
