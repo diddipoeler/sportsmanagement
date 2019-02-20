@@ -848,6 +848,7 @@ catch (Exception $e)
           if ( $playground )
 	  {
 		$query->select('plg.name as playground_name');  
+		$query->select('CONCAT_WS( \':\', plg.id, plg.alias ) AS playground_slug');  
 	  }
           // für die anzeige der teams im frontend
           $query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture as team_picture,c.name as club_name,c.address as club_address');
