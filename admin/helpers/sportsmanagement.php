@@ -1079,7 +1079,6 @@ abstract class sportsmanagementHelper {
         if (File::exists($xmlfile)) {
             try {
                 $jRegistry = new Registry;
-                //$jRegistry->loadString($data, $format);
 
                 if ($data) {
                     if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -1088,8 +1087,6 @@ abstract class sportsmanagementHelper {
                         $jRegistry->loadJSON($data);
                     }
                 }
-                //$app->enqueueMessage(Text::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-                //$app->enqueueMessage(Text::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
 
                 $extended = JForm::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
                 $extended->bind($jRegistry);

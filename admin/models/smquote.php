@@ -9,13 +9,10 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
+use Joomla\Registry\Registry; 
  
 
 /**
@@ -58,7 +55,7 @@ $query = $db->getQuery(true);
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}

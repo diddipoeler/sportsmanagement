@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table; 
 use Joomla\CMS\MVC\Model\AdminModel;
- 
+use Joomla\Registry\Registry; 
 
 /**
  * sportsmanagementModelpredictionproject
@@ -185,7 +185,7 @@ class sportsmanagementModelpredictionproject extends AdminModel
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}

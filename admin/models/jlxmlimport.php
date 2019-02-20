@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -3490,7 +3491,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					$t_params = $this->_getDataFromObject($value,'params');
 					$defaultvalues = array();
 					$defaultvalues = explode('\n', $t_params);
-					$parameter = new JRegistry;
+					$parameter = new Registry;
                     
      if(version_compare(JVERSION,'3.0.0','ge')) 
         {

@@ -37,10 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Table\Table; 
- 
+use Joomla\Registry\Registry; 
 
 /**
  * sportsmanagementTablesportsmanagement
@@ -75,7 +74,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
 		if (isset($array['params']) && is_array($array['params'])) 
 		{
 			// Convert the params field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
 			$array['params'] = (string)$parameter;
 		}
@@ -95,7 +94,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
 		if (parent::load($pk, $reset)) 
 		{
 			// Convert the params field to a registry.
-			$params = new JRegistry;
+			$params = new Registry;
 			$params->loadJSON($this->params);
 			$this->params = $params;
 			return true;

@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 switch ($this->fieldset) {
     case 'playground_jquery':
@@ -254,7 +255,7 @@ switch ($this->fieldset) {
 // für google maps    
     case 'maps1':
         $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
-        $paramsPlugin = new JRegistry($plugin->params);
+        $paramsPlugin = new Registry($plugin->params);
 
         $arrPluginParams = array();
 

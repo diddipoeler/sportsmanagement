@@ -163,12 +163,8 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
        if (isset($post['params']) && is_array($post['params'])) 
 		{
 			// Convert the params field to a string.
-			//$parameter = new JRegistry;
-			//$parameter->loadArray($post['params']);
             $paramsString = json_encode( $post['params'] );
-			//$data['params'] = (string)$parameter;
             $data['params'] = $paramsString;
-            
 		}
         
         //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');

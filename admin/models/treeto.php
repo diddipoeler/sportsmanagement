@@ -9,17 +9,9 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-
-//jimport( 'joomla.application.component.model' );
-//require_once ( JPATH_COMPONENT . DS . 'models' . DS . 'item.php' );
-
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
-
-
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelTreeto
@@ -93,7 +85,7 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
 		//$post	= 			Factory::getApplication()->input->get( 'post' );
 		$treeto_id = (int) $this->jsmjinput->post->get('id');
         // Get the form data
-        $formData = new JRegistry($this->jsmjinput->get('jform', '', 'array'));
+        $formData = new Registry($this->jsmjinput->get('jform', '', 'array'));
 		$tree_i = (int) $formData->get('tree_i', 0);;
 		$global_bestof = (int) $this->jsmjinput->post->get('global_bestof');
 		$global_matchday = (int) $this->jsmjinput->post->get('global_matchday');

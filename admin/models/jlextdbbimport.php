@@ -1219,24 +1219,9 @@ if ( $whichfile == 'playerfile' )
 	$csv->encoding('UTF-16', 'UTF-8');
 	// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 	$csv->delimiter = "\t";
-	// switch ($delimiter)
-	// {
-	// 	case ";":
-	// 		$csv->delimiter = ";";
-	// 		break;
-	// 	case ",":
-	// 		$csv->delimiter = ",";
-	// 		break;
-	// 	default:
-	// 		$csv->delimiter = "\t";
-	// 		break;
-	// }
 
-	//$startrow = $jRegistry->get('cfg_dfbnet_player_startrow') - 2;
-	//$csv->parse($file,$startrow);
 	$startline = $startline - 1;
 	$csv->parse($file,$startline);
-	//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 
 	// anfang schleife csv file
 	for($a=0; $a < sizeof($csv->data); $a++  )

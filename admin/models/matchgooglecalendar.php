@@ -9,12 +9,12 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 // import Joomla modelform library
 
@@ -87,7 +87,7 @@ static $_project_id = 0;
     $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid','');
     $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret','');
         
-    $options = new JRegistry();  
+    $options = new Registry();  
     $input = new JInput;  
     
 //$options->set('clientid', $google_client_id.'.apps.googleusercontent.com');

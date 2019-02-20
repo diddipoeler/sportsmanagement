@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\Registry\Registry;
 
 /**
  * SMStatistic
@@ -511,7 +512,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
        
 		$paramsdata = $this->baseparams;
 		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics' . DS . 'base.xml';
-		$params = new JRegistry( $paramsdata, $paramsdefs );
+		$params = new Registry( $paramsdata, $paramsdefs );
   
         return $params;
 	}
@@ -527,7 +528,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 		$currentdir = dirname($rc->getFileName());
 		$paramsdata = $this->params;
 		$paramsdefs = $currentdir. DS . $this->_name .'.xml';
-		$params = new JRegistry( $paramsdata, $paramsdefs );
+		$params = new Registry( $paramsdata, $paramsdefs );
         return $params;
 	}
 	
@@ -556,7 +557,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
         
 		if (empty($this->_params))
 		{
-		  $params = new JRegistry;
+		  $params = new Registry;
           $params = self::getBaseParams();
           // Merge global params with item params
           $classparams = self::getClassParams();

@@ -9,7 +9,6 @@
  * @subpackage libraries
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
@@ -56,13 +55,13 @@ class JSMTable extends Table
         
         if ( key_exists( 'params', $array ) && is_array( $array['params'] ) )
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray( $array['params'] );
 			$array['params'] = $registry->toString();
 		}
 		if ( key_exists( 'comp_params', $array ) && is_array( $array['comp_params'] ) )
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray( $array['comp_params'] );
 			$array['comp_params'] = $registry->toString();
 		}

@@ -2,6 +2,7 @@
 
 
 defined('_JEXEC') or die();
+use Joomla\Registry\Registry;
 
 JLoader::import('joomla.database.table');
 JLoader::import('joomla.utilities.simplecrypt');
@@ -40,7 +41,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			// Convert the params field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
 			$array['params'] = (string)$parameter;
 		}

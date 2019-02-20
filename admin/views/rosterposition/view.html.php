@@ -172,7 +172,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 	$extended = JForm::getInstance('extended', $xmlfile,array('control'=> 'extended'), 
 				false, '/config');
-	$jRegistry = new JRegistry;
+	$jRegistry = new Registry;
 	$jRegistry->loadString('' , 'ini');
 	$extended->bind($jRegistry);
 
