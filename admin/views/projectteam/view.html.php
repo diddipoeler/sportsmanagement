@@ -9,7 +9,6 @@
  * @subpackage projectteam
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -56,6 +55,10 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$project_team = $mdlTeam->getTeam($season_team->team_id,0);
 		$trainingdata = $mdlTeam->getTrainigData(0, $this->item->id);
         
+	if ( !$project_team->standard_playground )
+	{
+	$project_team->standard_playground = $this->model->getProjectTeamPlayground($team_id);	
+	}
 	if ( !$this->item->standard_playground )
 	{
 		$this->form->setValue('standard_playground', null, $project_team->standard_playground);
