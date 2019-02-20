@@ -9,14 +9,12 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 
 
 /**
@@ -28,7 +26,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelPredictionTemplate extends JModelAdmin
+class sportsmanagementModelPredictionTemplate extends AdminModel
 {
 
 

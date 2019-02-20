@@ -16,9 +16,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 
 
 //jimport('joomla.application.component.model');
@@ -35,7 +33,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextindividualsport extends JModelAdmin
+class sportsmanagementModeljlextindividualsport extends AdminModel
 {
 
 	/**

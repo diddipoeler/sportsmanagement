@@ -9,14 +9,12 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
  
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 jimport('joomla.filesystem.folder');
 use Joomla\CMS\Filesystem\File;
  
@@ -30,7 +28,7 @@ use Joomla\CMS\Filesystem\File;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelsmextxmleditor extends JModelAdmin
+class sportsmanagementModelsmextxmleditor extends AdminModel
 {
 
     /**

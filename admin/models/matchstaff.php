@@ -16,7 +16,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelmatchstaff extends JModelAdmin
+class sportsmanagementModelmatchstaff extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.

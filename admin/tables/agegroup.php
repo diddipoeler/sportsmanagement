@@ -9,7 +9,6 @@
  * @subpackage tables
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;

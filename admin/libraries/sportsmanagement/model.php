@@ -9,7 +9,6 @@
  * @subpackage libraries
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -19,6 +18,8 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Input\Input;
 
 /**
  * JSMModelAdmin
@@ -107,13 +108,6 @@ if( $this->jsmapp->isSite() )
        $address_parts = array();
        $person_double = array();
        $parentsave = true;
-       //$view = $this->jsmjinput->getCmd('view');
-       //$view = $this->jsmjinput->get('view', '', 'CMD');
-       
-//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
 $input_options = JFilterInput::getInstance(
         array(
@@ -126,52 +120,25 @@ $input_options = JFilterInput::getInstance(
         )
     );
 
-    $postData = new JInput($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
+    $postData = new Input($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
 		
 if (array_key_exists('notes', $data)) 
 {    
 $html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 $data['notes'] = $html;
-//$html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 }
-		
-		
-		
 		
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
 {
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 }
-
-//if( version_compare(JSM_JVERSION,'4','eq') ) 
-//{
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');    
-//}
-
-    
-///**
-// * differenzierung zwischen den views
-// */       
-//       switch ( $this->jsmview )
-//       {
-//       case 'league': 
-//       $data['sports_type_id'] = $data['request']['sports_type_id'];
-//       $data['agegroup_id'] = $data['request']['agegroup_id'];
-//       break; 
-//       default:
-//       break; 
-//       }
-       
-       //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
-			// Convert the extended field to a string.
+/**
+ * 			 Convert the extended field to a string.
+ */
 			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
@@ -179,13 +146,17 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
         
         if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
 		{
-			// Convert the extended field to a string.
+/**
+ * 			 Convert the extended field to a string.
+ */
 			$parameter = new Registry;
 			$parameter->loadArray($post['extendeduser']);
 			$data['extendeduser'] = (string)$parameter;
 		}
        
-        // Set the values
+/**
+ *         Set the values
+ */
 	   $data['modified'] = $this->jsmdate->toSql();
 	   $data['modified_by'] = $this->jsmuser->get('id');
        $data['checked_out'] = 0;
@@ -505,11 +476,10 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
        
        if (isset($post['params']) && is_array($post['params'])) 
 		{
-			// Convert the params field to a string.
-			//$parameter = new JRegistry;
-			//$parameter->loadArray($post['params']);
+/**
+ * 			 Convert the params field to a string.
+ */
             $paramsString = json_encode( $post['params'] );
-			//$data['params'] = (string)$parameter;
             $data['params'] = $paramsString;
 		}
                
@@ -548,7 +518,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
  			if ($data['name'] == $orig_table->name) 
  			{ 
  				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY'); 
- 				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
+ 				$data['alias'] = OutputFilter::stringURLSafe( $data['name'] ); 
  			} 
  		} 
 
@@ -564,10 +534,7 @@ catch (Exception $e)
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $parentsave = false;
 }
-       
-//       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'parent save '.$parentsave,'');
-//       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'get name '.$this->getName(),'');
-       
+      
        if ( $parentsave )
        {
 	$id = (int) $this->getState($this->getName().'.id');

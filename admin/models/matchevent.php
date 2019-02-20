@@ -3,13 +3,12 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table; 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
  
 /**
  * SportsManagement Model
  */
-class sportsmanagementModelmatchevent extends JModelAdmin
+class sportsmanagementModelmatchevent extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.

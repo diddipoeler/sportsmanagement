@@ -9,12 +9,10 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table; 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Utilities\ArrayHelper; 
 
 /**
@@ -26,7 +24,7 @@ use Joomla\Utilities\ArrayHelper;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelpositionstatistic extends JModelAdmin
+class sportsmanagementModelpositionstatistic extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.

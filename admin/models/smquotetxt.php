@@ -1,17 +1,15 @@
 <?php
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 jimport('joomla.filesystem.folder');
 use Joomla\CMS\Filesystem\File;
  
 
-class sportsmanagementModelsmquotetxt extends JModelAdmin
+class sportsmanagementModelsmquotetxt extends AdminModel
 {
 
     /**

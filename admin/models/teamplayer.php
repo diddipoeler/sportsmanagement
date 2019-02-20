@@ -1,19 +1,17 @@
 <?php
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
  
 /**
  * SportsManagement Model
  */
-class sportsmanagementModelteamplayer extends JModelAdmin
+class sportsmanagementModelteamplayer extends AdminModel
 {
 	
     var $_project_id = 0;
