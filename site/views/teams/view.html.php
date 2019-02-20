@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teams
@@ -32,8 +32,8 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	function init()
 	{
 	
-		$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
-        $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
+	$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
+        $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0),'',$this->config['show_club_playground']);
 
 		// Set page title
 		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
