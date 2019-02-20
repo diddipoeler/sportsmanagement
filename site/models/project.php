@@ -821,7 +821,7 @@ catch (Exception $e)
 	 * @param string $call_function
 	 * @return
 	 */
-	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '')
+	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '',$playground)
 	{
 	   	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -880,7 +880,7 @@ catch (Exception $e)
 	 * @param string $call_function
 	 * @return
 	 */
-	public static function getTeams($division=0,$teamname='name',$cfg_which_database = 0,$call_function = '')
+	public static function getTeams($division=0,$teamname='name',$cfg_which_database = 0,$call_function = '',$playground=0)
 	{
 	   $app = Factory::getApplication();
         
@@ -888,7 +888,7 @@ catch (Exception $e)
 		if ($division != 0)
 		{
 			$divids = self::getDivisionTreeIds($division,$cfg_which_database);
-			foreach ((array)self::_getTeams($teamname,$cfg_which_database,__METHOD__) as $t)
+			foreach ((array)self::_getTeams($teamname,$cfg_which_database,__METHOD__,$playground) as $t)
 			{
 				if (in_array($t->division_id,$divids))
 				{
