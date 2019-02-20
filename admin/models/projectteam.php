@@ -28,6 +28,12 @@ use Joomla\CMS\Table\Table;
 class sportsmanagementModelprojectteam extends JSMModelAdmin
 {
     
+	function set_playground($post)
+	{
+		
+		
+	}
+		
     /**
 	 * Method to update checked project teams
 	 *
