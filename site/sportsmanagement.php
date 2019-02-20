@@ -78,13 +78,11 @@ if (!class_exists('sportsmanagementHelper')) {
  * was wird benöigt ?
  */
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
-
+JLoader::import('components.com_sportsmanagement.helpers.html', JPATH_SITE); 
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE); 
+JLoader::import('components.com_sportsmanagement.helpers.simpleGMapGeocoder', JPATH_SITE); 
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+	
 $view = $input->getVar("view");
 switch ($view)
 {
@@ -94,33 +92,37 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'seasons
 break;
 case 'ranking': 
 case 'curve':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 	
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'clubnames.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');	
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');	  
 break;    
 case 'results':    
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php' );
+JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE); 
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');	
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
 break;	
 case 'editmatch':   
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' ); 
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' ); 
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');  
 break;	  
 case 'matchreport':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
 break;
 case 'resultsranking':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'ranking.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'ranking.php' );
+JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'results.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');
@@ -140,37 +142,41 @@ case 'clubplan':
 case 'eventsranking':
 case 'stats':
 case 'about':  
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 break;	
 case 'editclub':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'clubinfo.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
+JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'JSON.php' );  
 break;
 case 'editperson':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
+JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE); 
 break;
 case 'player':
 case 'staff':  
 case 'referee':  
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'eventtypes.php');  
 break;	
 case 'teaminfo':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );	
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 	
 break;	
 case 'playground':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'teams.php');	
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'team.php');	  
 break;
 case 'nextmatch':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
 break;
@@ -183,8 +189,9 @@ case 'predictionusers':
 case 'predictionuser':
 case 'predictionentry':
 case 'predictionresults':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
+JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH_SITE); 
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php');
 break;
 }
