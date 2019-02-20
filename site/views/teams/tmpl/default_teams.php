@@ -216,6 +216,12 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
         }        
 				?>
 			</td>
+			
+<?php if ($this->config['show_club_playground']) { ?>
+<td ><?php echo $team->playground_name; ?></td>		
+<?php } ?>			
+			
+			
 		</tr>
 		<?php
 		$k = 1 - $k;
