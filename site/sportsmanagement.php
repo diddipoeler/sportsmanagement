@@ -77,11 +77,14 @@ if (!class_exists('sportsmanagementHelper')) {
 /**
  * was wird benöigt ?
  */
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
+
+JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+//require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 $view = $input->getVar("view");
 switch ($view)
 {
