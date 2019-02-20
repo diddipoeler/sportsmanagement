@@ -44,10 +44,18 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
 		
-		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	 
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');	 
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' seasonteam_id<br><pre>'.print_r($seasonteam_id , true).'</pre><br>','Notice');	 		 
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');	 		 		 
+		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);
+	if ( $playground_id ) {	 
+        // Create and populate an object.
+        $object = new stdClass();
+        $object->id = $projectteam_id;
+        $object->standard_playground = $playground_id;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+	 }
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');	 
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' seasonteam_id<br><pre>'.print_r($seasonteam_id , true).'</pre><br>','Notice');	 		 
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');	 		 		 
 		 
 	 }
 	}
