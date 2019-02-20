@@ -9,7 +9,6 @@
  * @subpackage
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -21,13 +20,17 @@ if (! defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 }
  
-// Access check.
+/**
+ *  Access check.
+ */
 if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
 {
 	return JError::raiseWarning(404, Text::_('JERROR_ALERTNOAUTHOR'));
 }
  
-// require helper file
+/**
+ *  require helper file
+ */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
@@ -35,17 +38,18 @@ JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' .
 
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
-// zur unterscheidung von joomla 2.5 und 3
+// zur unterscheidung von joomla 3 und 4
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.controller', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.table', JPATH_ADMINISTRATOR);
  
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'JSON.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.JSON', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
+
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -63,11 +67,7 @@ JLoader::import('components.com_sportsmanagement.libraries.github.package', JPAT
 JLoader::import('components.com_sportsmanagement.libraries.github.package.issues', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package.activity', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package.issues.milestones', JPATH_ADMINISTRATOR);	
-
 JLoader::import('components.com_sportsmanagement.libraries.github.package.activity.starring', JPATH_ADMINISTRATOR);	
-	
-	
-	
 }
 if(version_compare($baseVersion,'3.0','ge')) 
 {
@@ -78,9 +78,6 @@ if(version_compare($baseVersion,'2.5','ge'))
 {
 // Joomla! 2.5 code here
 defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
-//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
-//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
-//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 } 
 elseif(version_compare($baseVersion,'1.7.0','ge')) 
 {
@@ -94,10 +91,6 @@ else
 {
 // Joomla! 1.5 code here
 }
-
-
-// welche joomla version ?
-//sportsmanagementHelper::isJoomlaVersion('2.5');
 
 $jinput = Factory::getApplication()->input;
 $command = $jinput->get('task', 'display');
@@ -173,7 +166,9 @@ $model_pathes[]	= array();
 $view_pathes[]	= array();
 $template_pathes[]	= array();
 
-// Check for array format.
+/**
+ *  Check for array format.
+ */
 $filter = JFilterInput::getInstance();
 
 if (is_array($command))
@@ -185,10 +180,14 @@ else
 	$command = $filter->clean($command, 'cmd');
 }
 
-// Check for a controller.task command.
+/**
+ *  Check for a controller.task command.
+ */
 if (strpos($command, '.') !== false)
 {
-	// Explode the controller.task command.
+/**
+ * 	 Explode the controller.task command.
+ */
 	list ($type, $task) = explode('.', $command);
 }
 
@@ -201,11 +200,15 @@ $extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extens
 if($app->isAdmin()) 
 {
 		$base_path = $extensionpath.DS.'admin';
-		// language file
+/**
+ * 		 language file
+ */
 		$lang->load('com_sportsmanagement_'.$extension, $base_path);
 	}
 
-//set the base_path to the extension controllers directory
+/**
+ * set the base_path to the extension controllers directory
+ */
 	if(is_dir($base_path))
 	{
 		$params = array('base_path'=>$base_path);
@@ -214,11 +217,10 @@ if($app->isAdmin())
 	{
 		$params = array();
 	}
-
-
  
- 
-// own controllers 
+/**
+  *  own controllers
+  */ 
 	if (!file_exists($base_path.DS.'controller.php') )
 	{
 		if($type!=$extension) {
@@ -234,17 +236,16 @@ if($app->isAdmin())
 		$extension = "sportsmanagement";
 	}
 
-// import joomla controller library
+/**
+ *  import joomla controller library
+ */
 jimport('joomla.application.component.controller');
 	try
 	{
-	   //$controller = JController::getInstance(ucfirst($extension), $params);
 	   $controller = BaseController::getInstance(ucfirst($extension), $params);
 	}
 	catch (Exception $exc)
 	{
-		//fallback if no extensions controller has been initialized
-		//$controller	= JController::getInstance('sportsmanagement');
         $controller	= BaseController::getInstance('sportsmanagement');
 	}
    
@@ -257,19 +258,15 @@ jimport('joomla.application.component.controller');
         $template_pathes[] = $base_path.DS.'views'.DS.$extensionname.DS.'tmpl';
 	}
 
-
 }
 
-// import joomla controller library
+/**
+ *  import joomla controller library
+ */
 jimport('joomla.application.component.controller');
 $controller	= BaseController::getInstance('sportsmanagement');
 
-//if(is_null($controller) && !($controller instanceof JController)) {
-//	//fallback if no extensions controller has been initialized
-//	$controller	= JController::getInstance('sportsmanagement');
-//}
 if(is_null($controller) && !($controller instanceof BaseController)) {
-	//fallback if no extensions controller has been initialized
 	$controller	= BaseController::getInstance('sportsmanagement');
 }
 
@@ -278,7 +275,6 @@ foreach ($model_pathes as $path)
 	if(!empty($path))
 	{
 		$controller->addModelPath($path, 'sportsmanagementModel');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' addModelPath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
 
@@ -298,19 +294,22 @@ foreach ($template_pathes as $path)
 {
 	if(!empty($path))
 	{
-	   // get view and set template context 
+/**
+ * 	    get view and set template context
+ */ 
         $view = $controller->getView( $extensionname, "html", "sportsmanagementView"); 
         $view->addTemplatePath($path); 
         
-//	   $view = new JView;
-//		$view->addTemplatePath($path);
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
 }
 
-// Perform the Request task
+/**
+ *  Perform the Request task
+ */
 $controller->execute($task);
  
-// Redirect if set by the controller
+/**
+ *  Redirect if set by the controller
+ */
 $controller->redirect();
