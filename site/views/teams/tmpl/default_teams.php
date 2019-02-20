@@ -218,7 +218,17 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 			</td>
 			
 <?php if ($this->config['show_club_playground']) { ?>
-<td ><?php echo $team->playground_name; ?></td>		
+<td >
+<?php
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pgid'] = $team->playground_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);	
+echo HTMLHelper::link($link, $team->playground_name);						  
+?>
+</td>		
 <?php } ?>			
 			
 			
