@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
 
 /**
  * es wird als erstes die farblegende der divisionen/gruppen gelesen 
@@ -17,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->currentRanking as $division => $cu_rk) {
     if ($division) {
 
-        $jRegistry = new JRegistry;
+        $jRegistry = new Registry;
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $jRegistry->loadString($this->divisions[$division]->rankingparams);
         } else {

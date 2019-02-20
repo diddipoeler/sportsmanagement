@@ -14,6 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Registry\Registry;
+
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
 
@@ -92,7 +94,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
         // diddipoeler
         // menueeintrag vorhanden    
 
-$registry = new JRegistry();
+$registry = new Registry();
 $registry->loadArray($params);
 //$newparams = $registry->toString('ini');
 $newparams = $registry->toArray();

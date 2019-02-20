@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
 
 ?>
 <!-- START of match summary -->
@@ -83,7 +84,7 @@ $comments = '';
     {
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $pluginParams = new JRegistry($plugin->params);
+        $pluginParams = new Registry($plugin->params);
         }
         else
         {
@@ -94,7 +95,7 @@ $comments = '';
     {
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $pluginParams = new JRegistry('');
+        $pluginParams = new Registry('');
         }
         else
         {

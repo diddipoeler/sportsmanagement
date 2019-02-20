@@ -9,11 +9,11 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ItemModel; 
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelsportsmanagement
@@ -91,7 +91,7 @@ class sportsmanagementModelsportsmanagement extends ItemModel
 			else
 			{
 				// Load the JSON string
-				$params = new JRegistry;
+				$params = new Registry;
 				if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $params->loadString($this->item->params);

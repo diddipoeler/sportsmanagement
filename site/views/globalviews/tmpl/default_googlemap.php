@@ -26,6 +26,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
 $this->showmap = false;
@@ -552,7 +553,7 @@ height: 570px;
 else
 {
 $plugin = PluginHelper::getPlugin('system', 'plugin_googlemap3');
-$paramsPlugin = new JRegistry($plugin->params);
+$paramsPlugin = new Registry($plugin->params);
 
 //echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';

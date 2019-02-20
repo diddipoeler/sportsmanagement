@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -17,6 +16,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 jimport( 'joomla.utilities.utility' );
 
@@ -91,7 +91,7 @@ function __construct( )
         }
         
         $item = $menu->getItem($this->menue_itemid);
-        $this->menue_params = new JRegistry();
+        $this->menue_params = new Registry();
         
         if ( $this->menue_params->get('jl_tree_jquery_version') )
         {

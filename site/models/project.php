@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 if (! defined('DS'))
 {
@@ -1216,8 +1217,7 @@ $starttime = microtime();
 			}
 		}
 		
-        $jRegistry = new JRegistry;
-		//$jRegistry->loadString($result, 'ini');
+        $jRegistry = new Registry;
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $jRegistry->loadString($result); 

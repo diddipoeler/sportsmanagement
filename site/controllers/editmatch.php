@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementControllerEditMatch
@@ -174,7 +175,7 @@ $return = $model->savestats($post);
 
         if (isset($post['extended']) && is_array($post['extended'])) {
             // Convert the extended field to a string.
-            $parameter = new JRegistry;
+            $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string) $parameter;
         }
