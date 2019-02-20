@@ -43,10 +43,11 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
-		 
+		
+		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	 
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');	 
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' seasonteam_id<br><pre>'.print_r($seasonteam_id , true).'</pre><br>','Notice');	 		 
-		 
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');	 		 		 
 		 
 	 }
 	}
