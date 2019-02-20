@@ -67,7 +67,7 @@
     
   <field name="cfg_bugtracker_server" 
   type="text" 
-  default="http://mantisbugtracker.fussballineuropa.de/my_view_page.php"
+  default="https://github.com/diddipoeler/sportsmanagement/issues"
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER_DESC">
