@@ -18,6 +18,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
 
 if (! defined('DS'))
 {
@@ -493,7 +494,7 @@ $escape = 'getEscaped';
 			{
 			foreach($row as $output )
 			{
-            $output->href = JRoute::_($output->href);
+            $output->href = Route::_($output->href);
 			if ( $output->country)
 			{
 			$flag = JSMCountries::getCountryFlag($output->country);
