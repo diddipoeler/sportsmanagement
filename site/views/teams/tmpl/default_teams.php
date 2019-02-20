@@ -34,6 +34,10 @@ use Joomla\CMS\Factory;
 		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_NUMBER' ); ?></th>
 		<?php } ?>
 		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS' ); ?></th>
+<?php if ($this->config['show_club_playground']) { ?>
+<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND' ); ?></th>		
+<?php } ?>		
+	
 	</tr>
 	</thead>
 	<?php
