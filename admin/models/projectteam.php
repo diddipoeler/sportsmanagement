@@ -421,7 +421,14 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
 	
 function getProjectTeamPlayground($team_id)	
 {
-	
+$this->jsmquery->clear();
+$this->jsmquery->select('c.standard_playground');
+$this->jsmquery->from('#__sportsmanagement_club AS c');	
+$this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+$this->jsmquery->where('t.id = '. $team_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadResult();	
+return $result;	
 }
 	
     /**
