@@ -37,7 +37,11 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         
         $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
         $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');	
-		
+	 for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+	$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');	 
+	 }
 	}
 		
     /**
