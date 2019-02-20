@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'fullcalendar' => true));
 
@@ -75,7 +76,7 @@ $ids = rtrim($ids,',');
 $calCode = "// <![CDATA[ \n";
 $calCode .= "gcjQuery(document).ready(function(){\n";
 $calCode .= "   gcjQuery('#gcalendar_module_".$module->id."').fullCalendar({\n";
-$calCode .= "		events: '".html_entity_decode(JRoute::_('index.php?option=com_sportsmanagement&view=jsonfeed&compact='.$params->get('compact_events', 1).'&format=raw&gcids='.$ids))."',\n";
+$calCode .= "		events: '".html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&compact='.$params->get('compact_events', 1).'&format=raw&gcids='.$ids))."',\n";
 $calCode .= "       header: {\n";
 $calCode .= "				left: 'prev,next ',\n";
 $calCode .= "				center: 'title',\n";

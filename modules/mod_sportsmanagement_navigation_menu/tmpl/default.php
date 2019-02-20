@@ -37,10 +37,10 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 ?>
 <div id="jl-nav-module">
@@ -85,7 +85,7 @@ use Joomla\CMS\Uri\Uri;
 	
 		<?php for ($i = 1; $i < 17; $i++): ?>
 			<?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))): ?>
-				<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('navpoint_label'.$i)); ?></li>
+				<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpoint_label'.$i)); ?></li>
 			<?php elseif ($params->get('navpoint'.$i) == "separator"): ?>
 				<li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
 			<?php endif; ?>

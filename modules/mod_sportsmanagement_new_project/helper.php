@@ -37,9 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
@@ -163,7 +163,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
               "r" => $row->roundcode );
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
-$link = JRoute::_( 'index.php?' . $query, false );
+$link = Route::_( 'index.php?' . $query, false );
 
 $profile->introtext = '<p><a href="'.$link.'">
 <img src="'.$row->league_picture.'" alt="'.$row->liganame.'" style="float: left;" width="200" height="auto" />

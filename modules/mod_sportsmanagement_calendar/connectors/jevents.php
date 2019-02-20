@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 class JEventsConnector extends JLCalendar{
   var $xparams;
@@ -104,7 +105,7 @@ class JEventsConnector extends JLCalendar{
     $link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
     .$event->_eventdetail_id.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='
     .$event->_dup.'&amp;uid='.$event->_uid;
-    return JRoute::_($link);
+    return Route::_($link);
   }
 } 
 

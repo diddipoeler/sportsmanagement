@@ -37,10 +37,10 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 jimport('joomla.html.pane');
 
@@ -110,7 +110,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
               "r" => $row->roundcode );
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
-$link = JRoute::_( 'index.php?' . $query, false );
+$link = Route::_( 'index.php?' . $query, false );
 echo HTMLHelper::link( $link, Text::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 $zeile++;
@@ -178,7 +178,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
 							"p" => $row->id,
               "r" => $row->roundcode );
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
-$link = JRoute::_( 'index.php?' . $query, false );
+$link = Route::_( 'index.php?' . $query, false );
 echo HTMLHelper::link( $link, Text::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 }

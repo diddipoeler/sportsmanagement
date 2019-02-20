@@ -9,12 +9,12 @@
  * @subpackage mod_sportsmanagement_calendar
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
@@ -95,7 +95,7 @@ class modJSMCalendarHelper
 		//$cal->params = $params;
         $cal::$params = $params;
 		//set the link for the month, this will be the link for the calendar header (ex. December 2007)
-		$cal->monthLink=JRoute::_('index.php?option=com_joomleague_calendar' . '&year=' . $year .
+		$cal->monthLink=Route::_('index.php?option=com_joomleague_calendar' . '&year=' . $year .
 					'&month=' . $month . '&modid=' . $modid);
 		$cal->modid= $modid;
 		$cal->ajax = $ajax;

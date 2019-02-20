@@ -37,11 +37,11 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.tooltip');
 ?>
@@ -343,7 +343,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 	
 		<?php for ($i = 1; $i < 18; $i++): ?>
 			<?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))): ?>
-				<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('navpoint_label'.$i)); ?></li>
+				<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpoint_label'.$i)); ?></li>
 			<?php elseif ($params->get('navpoint'.$i) == "separator"): ?>
 				<li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
 			<?php endif; ?>
@@ -356,7 +356,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
         {
         $link = $helper->getLink('jltournamenttree')
         ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('show_tournament_text') ); ?></li>		
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text') ); ?></li>		
     <?php 
     }
     
@@ -364,7 +364,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
         {
         $link = $helper->getLink('rankingalltime')
         ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('show_alltimetable_text') ); ?></li>		
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_alltimetable_text') ); ?></li>		
     <?php 
     }
     
@@ -375,9 +375,9 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 				"p" => $project_id);
 	
 		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 		    ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), 'neue Saison' ); ?></li>		
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'neue Saison' ); ?></li>		
     <?php 
         }
     
@@ -393,9 +393,9 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 				"p" => $project_id);
 	
 		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 		    ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), 'XML Export' ); ?></li>		
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'XML Export' ); ?></li>		
     <?php 
         }
         
@@ -417,7 +417,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 	
 		<?php for ($i = 17; $i < 23; $i++): ?>
 			<?php if ($params->get('navpointct'.$i) && $link = $helper->getLink($params->get('navpointct'.$i))): ?>
-				<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('navpointct_label'.$i)); ?></li>
+				<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label'.$i)); ?></li>
 			<?php elseif ($params->get('navpointct'.$i) == "separator"): ?>
 				<li class="nav-item separator"><?php echo $params->get('navpointct_label'.$i); ?></li>
 			<?php endif; ?>
