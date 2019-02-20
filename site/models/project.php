@@ -27,7 +27,7 @@ if (! defined('JSM_PATH'))
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 //jimport('joomla.utilities.arrayhelper');
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
@@ -790,14 +790,14 @@ catch (Exception $e)
         $query->select('pt.division_id,pt.picture AS projectteam_picture');
         $query->select('c.logo_small,c.logo_middle,c.logo_big');
         // From 
-		$query->from('#__sportsmanagement_project_team AS pt ');
+	$query->from('#__sportsmanagement_project_team AS pt ');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
         $query->join('INNER','#__sportsmanagement_club AS c ON t.club_id = c.id  ');
         // Where
         $query->where('pt.id = '. (int)$projectteamid );
          
-		$db->setQuery($query);
+	$db->setQuery($query);
        
         $result = $db->loadObject();
         
@@ -821,18 +821,16 @@ catch (Exception $e)
 	 * @param string $call_function
 	 * @return
 	 */
-	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '',$playground)
+	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '',$playground=0)
 	{
-	   	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	$app = Factory::getApplication();
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
 
-		//if (empty(self::$_teams))
-		//{
-		  // Select some fields
+	  // Select some fields
           $query->select('tl.id AS projectteamid,tl.division_id,tl.standard_playground,tl.admin,tl.start_points,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally');
           $query->select('tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally,tl.info,tl.reason,tl.team_id as project_team_team_id,tl.checked_out,tl.checked_out_time,tl.is_in_score,tl.picture AS projectteam_picture');
           $query->select('IF((ISNULL(tl.picture) OR (tl.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_small , t.picture)) , t.picture) as picture,tl.project_id');
@@ -847,7 +845,10 @@ catch (Exception $e)
           $query->select('CONCAT_WS(\':\',tl.id,t.alias) AS projectteam_slug');
           $query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
           $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
-          
+          if ( $playground )
+	  {
+		$query->select('plg.name as playground_name');  
+	  }
           // für die anzeige der teams im frontend
           $query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture as team_picture,c.name as club_name,c.address as club_address');
           $query->select('c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.unique_id,c.country as club_country,c.website AS club_www');
@@ -862,11 +863,11 @@ catch (Exception $e)
           $query->join('LEFT',' #__sportsmanagement_project AS p ON p.id = tl.project_id ');
           $query->where('tl.project_id = '.(int)self::$projectid);
 
-			$db->setQuery($query);
+	$db->setQuery($query);
 
-			self::$_teams = $db->loadObjectList();
+	self::$_teams = $db->loadObjectList();
             
-		return self::$_teams;
+	return self::$_teams;
 	}
 
 	
