@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
@@ -419,6 +418,12 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         return parent::delete($pks);
         
     }
+	
+function getProjectTeamPlayground($team_id)	
+{
+	
+}
+	
     /**
 	 * return 
 	 *
@@ -434,8 +439,8 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         // Select some fields
 		$query->select('t.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+		$query->from('#__sportsmanagement_team t');
+        $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $query->where('st.team_id = '.$team_id);
 
 		$db->setQuery($query);
