@@ -228,7 +228,7 @@ $routeparameter['pgid'] = $team->playground_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);	
 echo HTMLHelper::link($link, $team->playground_name);	
 					
-$this->config['show_playground_picture']) 
+if ( $this->config['show_playground_picture'] ) 
 {					
 ?>
 <br>	
