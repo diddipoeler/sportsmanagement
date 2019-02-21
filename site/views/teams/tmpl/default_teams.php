@@ -52,9 +52,9 @@ $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
 $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 
-		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,Factory::getApplication()->input->getInt('cfg_which_database',0) );
-		$teamTitle		= Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
-		$clubTitle		= Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
+		$clubinfo_link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,Factory::getApplication()->input->getInt('cfg_which_database',0) );
+		$teamTitle = Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
+		$clubTitle = Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
 
 		if ($this->config['show_small_logo']) {
 			$teampic = $this->config['team_picture'];
@@ -217,7 +217,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				?>
 			</td>
 			
-<?php if ($this->config['show_club_playground']) { ?>
+<?php if ( $this->config['show_club_playground'] ) { ?>
 <td >
 <?php
 $routeparameter = array();
@@ -226,7 +226,22 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pgid'] = $team->playground_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);	
-echo HTMLHelper::link($link, $team->playground_name);						  
+echo HTMLHelper::link($link, $team->playground_name);	
+					
+$this->config['show_playground_picture']) 
+{					
+?>
+<br>	
+<?php	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playgroundclubinfo' . $team->team_name,
+            $team->playground_picture,
+            $team->playground_name,
+            $this->config['playground_picture_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);  	
+}					
 ?>
 </td>		
 <?php } ?>			
