@@ -28,15 +28,12 @@ if (! defined('JSM_PATH'))
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-//jimport('joomla.application.component.model');
-//jimport('joomla.utilities.arrayhelper');
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
-//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');	
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
 // sprachdatei aus dem backend laden
 $langtag = Factory::getLanguage();
 $document = Factory::getDocument();
@@ -849,6 +846,7 @@ catch (Exception $e)
           if ( $playground )
 	  {
 		$query->select('plg.name as playground_name');  
+		$query->select('plg.picture as playground_picture');  
 		$query->select('CONCAT_WS( \':\', plg.id, plg.alias ) AS playground_slug');  
 	  }
           // für die anzeige der teams im frontend
