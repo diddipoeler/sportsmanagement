@@ -845,7 +845,6 @@ catch (Exception $e)
           $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
           if ( $playground )
 	  {
-		$query->select('plg.name as playground_name');  
 		$query->select('plg.picture as playground_picture');  
 		$query->select('CONCAT_WS( \':\', plg.id, plg.alias ) AS playground_slug');  
 	  }
@@ -899,7 +898,7 @@ catch (Exception $e)
 		}
 		else
 		{
-			$teams = self::_getTeams($teamname,$cfg_which_database);
+			$teams = self::_getTeams($teamname,$cfg_which_database,__METHOD__,$playground);
 		}
 
 		return $teams;
