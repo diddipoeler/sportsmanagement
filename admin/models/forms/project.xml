@@ -164,8 +164,8 @@ JARCHIVED</option>
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION_DESC">
-			<option value="1">JNO</option>
-			<option value="0">JYES</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		
 		<field
@@ -197,7 +197,18 @@ JARCHIVED</option>
 	label="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR"
 	description="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR_DESC" >
 		 </field>
-     
+
+<field 
+			name="use_approved" 
+			type="extensionradiobutton" 
+			default="0"   
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field
 			name="master_template"
 			type="templatelist"
