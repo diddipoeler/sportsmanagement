@@ -9,15 +9,12 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFielduserlist
@@ -45,7 +42,9 @@ class JFormFielduserlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+/**
+ * 		 Initialize variables.
+ */
 		$options = array();
     
     $db = Factory::getDbo();
@@ -57,7 +56,9 @@ class JFormFielduserlist extends \JFormFieldList
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
-		// Merge any additional options in the XML definition.
+/**
+ * 		 Merge any additional options in the XML definition.
+ */
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;
 	}

@@ -9,13 +9,11 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
@@ -46,7 +44,9 @@ class JFormFieldprojectteamlist extends \JFormFieldList
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
-        // Initialize variables.
+/**
+ *          Initialize variables.
+ */
 		$options = array();
         
     $project_id = $app->getUserState( "$option.pid", '0' );
@@ -56,15 +56,17 @@ class JFormFieldprojectteamlist extends \JFormFieldList
     $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('pt.team_id AS value, t.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+			$query->from('#__sportsmanagement_team AS t');
+            $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 			$query->where('pt.project_id = '.$project_id);
 			$query->order('t.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     }
-		// Merge any additional options in the XML definition.
+/**
+ * 		 Merge any additional options in the XML definition.
+ */
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;
 	}

@@ -9,13 +9,11 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
@@ -46,20 +44,24 @@ class JFormFieldpersonlist extends \JFormFieldList
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        // Initialize variables.
+/**
+ *          Initialize variables.
+ */
 		$options = array();
     
     $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person ');
+			$query->from('#__sportsmanagement_person ');
 			$query->order('lastname');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
     
-		// Merge any additional options in the XML definition.
+/**
+ * 		 Merge any additional options in the XML definition.
+ */
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;
 	}
