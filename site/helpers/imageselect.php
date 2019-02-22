@@ -144,6 +144,8 @@ console.log('0.clear gender : ' + gender );
  }
 }
 
+if (typeof gender != 'undefined' )
+{
 switch(gender) {
   case '1':
 picture = '".sportsmanagementHelper::getDefaultPlaceholder('mensmall')."';
@@ -155,6 +157,8 @@ pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('woma
       break;
 
   } 
+}  
+  
 console.log('picture : ' + picture );
 console.log('pictureprev : ' + pictureprev );
 
