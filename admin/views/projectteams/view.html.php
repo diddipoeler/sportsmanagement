@@ -310,7 +310,8 @@ echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalassignTeams', $modal_p
         ToolbarHelper::publish('projectteams.use_table_points_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_YES', true);
         ToolbarHelper::unpublish('projectteams.use_table_points_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_NO', true);
 ToolbarHelper::unpublish('projectteams.set_playground', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_PLAYGROUND', true);		
-            
+ToolbarHelper::unpublish('projectteams.set_playground_match', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_PLAYGROUND_MATCH', true);		
+		
         parent::addToolbar();  
 
 	}
