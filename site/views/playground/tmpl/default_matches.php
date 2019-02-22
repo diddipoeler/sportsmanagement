@@ -69,7 +69,7 @@ if ( $this->games )
 										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
 										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
-										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml($home_logo[0],1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml($home_logo[0],1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 										$teamA .= '</td>';
 										echo $teamA;
 									}
@@ -83,7 +83,7 @@ if ( $this->games )
 									<?php
 									if ( $this->config['show_logo'] ) {
 										$teamB = '<td align="right" valign="top" class="nowrap">';
-										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml($away_logo[0],1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml($away_logo[0],1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 										$teamB .= '</td>';
 										echo $teamB;
 									}
