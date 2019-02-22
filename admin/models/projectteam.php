@@ -46,6 +46,19 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$seasonteam_id	= $proTeam->team_id; 
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	
 		if ( $playground_id ) {
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('playground_id') . ' = ' . $playground_id
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('projectteam1_id') . ' = '.$projectteam_id
+);
+$this->jsmquery->clear();			
+$this->jsmquery->update($this->jsmdb->quoteName('#__user_profiles'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
 			
 			
 		}
