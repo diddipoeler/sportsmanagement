@@ -9,7 +9,6 @@
  * @subpackage playground
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -87,6 +86,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         
         $result = array();
         $starttime = microtime(); 
+	$d2 = new Datetime("now");
 
         $playground = self::getPlayground($pgid);
         if ( $playground->id > 0 )
@@ -105,11 +105,11 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             $query->where('m.playground_id = '. (int)$playground->id);
 		if ( $played )
 		{
-		$query->where('m.match_date < NOW()');
+		$query->where('m.match_timestamp < '.$d2->format('U'));
 		}
 		else
 		{
-            $query->where('m.match_date > NOW()');
+            $query->where('m.match_timestamp > '.$d2->format('U'));
 		}
             $query->where('m.published = 1');
             $query->where('p.published = 1');
