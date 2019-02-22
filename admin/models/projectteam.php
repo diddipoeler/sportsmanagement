@@ -51,6 +51,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');
+        
 		if ( $playground_id ) {
 // Fields to update.
 $fields = array(
@@ -95,8 +98,9 @@ $result = $this->jsmdb->execute();
 		$proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
-		
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');
 	if ( $playground_id ) {	 
         // Create and populate an object.
         $object = new stdClass();
