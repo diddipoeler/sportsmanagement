@@ -28,6 +28,20 @@ use Joomla\CMS\Table\Table;
 class sportsmanagementModelprojectteam extends JSMModelAdmin
 {
     
+	function set_playground_match($post)
+	{
+	$post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $project_id = $post['pid'];
+        $season_id = $post['season_id'];
+        
+        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
+        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');		
+		
+	}
+	
+	
+	
 	function set_playground($post)
 	{
 	$post = Factory::getApplication()->input->post->getArray(array());
