@@ -37,18 +37,28 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 
 	}
     	
+	/**
+	 * sportsmanagementControllerprojectteams::set_playground_match()
+	 * 
+	 * @return void
+	 */
 	function set_playground_match()
 	{
 	$model = $this->getModel();
-       $post = Factory::getApplication()->input->post->getArray(array());	
+    $post = Factory::getApplication()->input->post->getArray(array());	
 	$msg = $model->set_playground_match($post);
 	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));	
 	}
 	
+	/**
+	 * sportsmanagementControllerprojectteams::set_playground()
+	 * 
+	 * @return void
+	 */
 	function set_playground()
 	{
 	$model = $this->getModel();
-       $post = Factory::getApplication()->input->post->getArray(array());	
+    $post = Factory::getApplication()->input->post->getArray(array());	
 	$msg = $model->set_playground($post);
 	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
 	}

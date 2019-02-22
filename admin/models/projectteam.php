@@ -28,6 +28,12 @@ use Joomla\CMS\Table\Table;
 class sportsmanagementModelprojectteam extends JSMModelAdmin
 {
     
+	/**
+	 * sportsmanagementModelprojectteam::set_playground_match()
+	 * 
+	 * @param mixed $post
+	 * @return void
+	 */
 	function set_playground_match($post)
 	{
 	$post = Factory::getApplication()->input->post->getArray(array());
@@ -68,6 +74,12 @@ $result = $this->jsmdb->execute();
 	
 	
 	
+	/**
+	 * sportsmanagementModelprojectteam::set_playground()
+	 * 
+	 * @param mixed $post
+	 * @return void
+	 */
 	function set_playground($post)
 	{
 	$post = Factory::getApplication()->input->post->getArray(array());
@@ -109,7 +121,7 @@ $result = $this->jsmdb->execute();
 	 */
 	function saveshort()
 	{
-		$app =& Factory::getApplication();
+		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
@@ -126,13 +138,7 @@ $this->jsmquery->where('p.id = '.$project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $associations = $this->jsmdb->loadResult();
 //$app->enqueueMessage('associations <br><pre>'.print_r($associations , true).'</pre><br>','Notice');
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
-        
+       
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -491,7 +497,14 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         
     }
 	
-function getProjectTeamPlayground($team_id)	
+
+/**
+ * sportsmanagementModelprojectteam::getProjectTeamPlayground()
+ * 
+ * @param integer $team_id
+ * @return
+ */
+function getProjectTeamPlayground($team_id=0)	
 {
 $this->jsmquery->clear();
 $this->jsmquery->select('c.standard_playground');
@@ -504,13 +517,14 @@ $result = $this->jsmdb->loadResult();
 return $result;	
 }
 	
-    /**
-	 * return 
-	 *
-	 * @param int team_id
-	 * @return int
+
+	/**
+	 * sportsmanagementModelprojectteam::getProjectTeam()
+	 * 
+	 * @param integer $team_id
+	 * @return
 	 */
-	function getProjectTeam($team_id)
+	function getProjectTeam($team_id=0)
 	{
 	   $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');

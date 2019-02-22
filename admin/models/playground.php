@@ -164,7 +164,7 @@ $db->setQuery($query);
 $result = $db->execute();
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+     
     }
     
     /**
@@ -181,13 +181,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'playground <br><pre>'.print_r(self::$playground,true).'</pre>'; 
-        
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-
         self::updateHits($pgid,$inserthits); 
         
         if ( is_null( self::$playground ) )
@@ -203,12 +196,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
                 $query->from('#__sportsmanagement_playground');
                 $query->where('id = '. $pgid);
                 $db->setQuery( $query );
-                
-                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'query <br><pre>'.print_r($query->dump(),true).'</pre>'; 
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-                }
                 
                 self::$playground = $db->loadObject();
 
