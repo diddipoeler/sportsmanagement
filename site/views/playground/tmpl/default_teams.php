@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
 <!-- Now show teams of this club -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_teams">
 	<?php foreach ((array)$this->teams AS $key => $value): ?>	
 	  <?php $projectname = $value->project; ?> 
 	  <?php foreach ($value->project_team AS $team): 
@@ -29,7 +29,6 @@ $routeparameter['p'] = $team->project_id;
 $routeparameter['tid'] = $team->team_id;
 $routeparameter['ptid'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-			//$link = sportsmanagementHelperRoute :: getTeamInfoRoute($team->project_id, $team->team_id);	
 			?>
 			<h4><?php echo $projectname . " - " . HTMLHelper::link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
 			<div class="clubteaminfo">

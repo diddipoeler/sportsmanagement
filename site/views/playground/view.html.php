@@ -50,7 +50,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	}
 
 if ( $this->config['show_maps'] )
-	  {
+{
 /**
  * leaflet benutzen
  */            
@@ -63,11 +63,13 @@ $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->
  */            
 if ( $this->mapconfig['map_kmlfile'] )
 { 
-        $this->geo = new JSMsimpleGMapGeocoder();
-        $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
+$this->geo = new JSMsimpleGMapGeocoder();
+$this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
 }
-	}
-		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
+}
+
+$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
+
 /**
  * Set page title
  */

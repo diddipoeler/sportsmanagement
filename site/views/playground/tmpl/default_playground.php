@@ -12,7 +12,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_default">
 <table class="table">
 	<tr class="">
 		<th colspan="2">

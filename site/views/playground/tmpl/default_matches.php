@@ -20,7 +20,7 @@ if ( $this->games )
 	?>
 	<!-- Playground next games -->
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEXT_GAMES'); ?></h2>
-		<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_matches">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
 						//sort games by dates
@@ -64,7 +64,6 @@ if ( $this->games )
 									</td>
 									<?php
 									if ( $this->config['show_logo'] ) {
-										//$model = $this->getModel();
 										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
 										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
