@@ -35,8 +35,8 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
-        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
-        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');		
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
+        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');		
 	
 	for ($x=0; $x < count($pks); $x++)
 		{
@@ -56,7 +56,7 @@ $conditions = array(
     $this->jsmdb->quoteName('projectteam1_id') . ' = '.$projectteam_id
 );
 $this->jsmquery->clear();			
-$this->jsmquery->update($this->jsmdb->quoteName('#__user_profiles'))->set($fields)->where($conditions);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->execute();
 			
