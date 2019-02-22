@@ -37,6 +37,19 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         
         $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
         $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');		
+	
+	for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+		$proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
+		$proTeam->load( $projectteam_id );
+		$seasonteam_id	= $proTeam->team_id; 
+		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	
+		if ( $playground_id ) {
+			
+			
+		}
+	}	
 		
 	}
 	
