@@ -9,7 +9,6 @@
  * @subpackage fieldsets
  */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -35,19 +34,6 @@ catch (Exception $e) {
 	return false;
 }
 
-//$options = array(
-//    'onActive' => 'function(title, description){
-//        description.setStyle("display", "block");
-//        title.addClass("open").removeClass("closed");
-//    }',
-//    'onBackground' => 'function(title, description){
-//        description.setStyle("display", "none");
-//        title.addClass("closed").removeClass("open");
-//    }',
-//    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-//    'useCookie' => true, // this must not be a string. Don't use quotes.
-//);
-
 try{
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -71,7 +57,7 @@ if ( $this->tmpl )
 						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('club.save', this.form);">
 						<?php echo Text::_('JSAVE');?></button>
-					<button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+					<button type="button" onclick="Joomla.submitform('club.cancelmodal', this.form);">
 						<?php echo Text::_('JCANCEL');?></button>
 				
                 

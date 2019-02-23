@@ -104,6 +104,12 @@ class JSMControllerForm extends FormController
     }
 
 	
+	/**
+	 * JSMControllerForm::cancelmodal()
+	 * 
+	 * @param mixed $key
+	 * @return void
+	 */
 	function cancelmodal($key = NULL)
 	{
 	$msg = '';

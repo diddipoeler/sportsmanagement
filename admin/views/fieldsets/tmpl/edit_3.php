@@ -51,7 +51,7 @@ if ( $this->tmpl && $this->view == 'club' )
 <?php echo Text::_('JAPPLY');?></button>
 <button type="button" onclick="Joomla.submitform('club.save', this.form);">
 <?php echo Text::_('JSAVE');?></button>
-<button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+<button type="button" onclick="Joomla.submitform('club.cancelmodal', this.form);">
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 </fieldset>
