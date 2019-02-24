@@ -457,6 +457,17 @@ $this->modalheight);
 
 								}
 								?>
+                                <br />
+                                <?PHP
+                                if ( $row->playground_picture )
+                                {
+                                ?>
+<a href="<?php echo Uri::root().$row->playground_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->playground_picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
+</a>
+<?PHP 
+      }
+      ?>                          
 							</td>
 							<td class="center">
 								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"

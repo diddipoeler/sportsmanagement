@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
@@ -189,6 +188,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 
         // Join over the team
 		$this->jsmquery->select('t.name,t.club_id');
+        $this->jsmquery->select('plg.picture as playground_picture');
 		$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
         // Join over the club
 		$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location,c.founded_year,c.unique_id');
@@ -228,15 +228,6 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 't.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
- //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'dump<pre>'.print_r($this->jsmquery->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-
 		return $this->jsmquery;
 	}
 
