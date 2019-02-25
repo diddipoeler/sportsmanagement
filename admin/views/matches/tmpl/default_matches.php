@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -169,7 +168,8 @@ use Joomla\CMS\Uri\Uri;
                         if (version_compare(JSM_JVERSION, '4', 'eq')) {
                             $pcture_link = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
                         } else {
-                            $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
+                        $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
+			$pcture_delete = 'index.php?option=com_media&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;	
                         }
 
                        ?>
@@ -177,6 +177,11 @@ use Joomla\CMS\Uri\Uri;
 
                         <?php
                         echo sportsmanagementHelper::getBootstrapModalImage('matchpicture' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
+		    ?>
+			    <br>
+			    <?php
+		    echo sportsmanagementHelper::getBootstrapModalImage('matchpicturedelete' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/delete.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_delete, $this->modalwidth, $this->modalheight);
+		    
                         // diddipoeler einzelsportart
                         if ($this->projectws->project_art_id == 2) {
 $pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=".$row->id."&team1=".$row->projectteam1_id."&team2=".$row->projectteam2_id."&rid=".$row->round_id;                            
