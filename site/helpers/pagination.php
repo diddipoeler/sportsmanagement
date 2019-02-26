@@ -9,7 +9,6 @@
  * @subpackage helpers
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -42,15 +41,6 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
     {
        $app = Factory::getApplication();
 $option = $app->input->getCmd('option');	    
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $my_text = 'nextink -> '.$this->nextlink.'<br>'; 
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
         return $this->nextlink;
     }
     
@@ -84,7 +74,6 @@ $option = $app->input->getCmd('option');
         {
             $roundid = $project->current_round;
         }
-        
        
 		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
 		$lastRound = sportsmanagementModelRounds::getLastRound($project->id,$cfg_which_database);
@@ -149,7 +138,7 @@ $option = $app->input->getCmd('option');
 			$firstlink = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START') . $spacer4;
 		}
 		
-        if ($lastRound['id'] != $roundid)
+        if ( ($lastRound['id'] != $roundid) && $forward )
 		{
 			$params['r'] = $forward;
             $params['division'] = $division;
@@ -159,8 +148,6 @@ $option = $app->input->getCmd('option');
 			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
-            
-            
             
 			$nextlink = $spacer4;
 			$nextlink .= HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
@@ -198,7 +185,7 @@ $option = $app->input->getCmd('option');
 				}
 				if ($round->id != $roundid)
 				{
-					$params['r']= $round->value;
+					$params['r'] = $round->value;
                     $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
@@ -212,15 +199,6 @@ $option = $app->input->getCmd('option');
 					$pageNav .= $spacer4 . $pagenumber;
 				}
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $my_text = 'firstlink -> '.$firstlink.'<br>' ;
-        $my_text .= 'prevlink -> '.$prevlink.'<br>' ;
-        $my_text .= 'nextlink -> '.$nextlink.'<br>' ;
-        $my_text .= 'lastlink -> '.$lastlink.'<br>' ;
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
         
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
 	}
