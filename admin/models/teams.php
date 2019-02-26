@@ -9,7 +9,6 @@
 * @subpackage models
 */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -227,10 +226,11 @@ class sportsmanagementModelTeams extends JSMModelList {
                 $teams[$row->id]->project_team[] = $row;
                 // Select some fields
                 $this->jsmquery->clear();
-                $this->jsmquery->select('name, short_name, notes');
+                $this->jsmquery->select('t.name, t.short_name, t.notes');
+		$this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');    
                 // From table
-                $this->jsmquery->from('#__sportsmanagement_team');
-                $this->jsmquery->where('id=' . (int) $row->team_id);
+                $this->jsmquery->from('#__sportsmanagement_team as t');
+                $this->jsmquery->where('t.id=' . (int) $row->team_id);
 
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
