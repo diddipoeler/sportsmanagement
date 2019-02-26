@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @subpackage results
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -14,8 +15,6 @@ use Joomla\CMS\Factory;
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultpagination">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
-  
-  
 <input type="hidden" name="limitstart" value="" />
 <input type="hidden" name="view" value="<?php echo Factory::getApplication()->input->getVar('view'); ?>" />
 <input type="hidden" name="option" value="<?php echo Factory::getApplication()->input->getCmd('option'); ?>" />  
