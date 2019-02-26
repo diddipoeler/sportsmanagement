@@ -12,7 +12,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-echo '<pre>'.print_r($this->teams,true).'</pre>';
+
 ?>
 
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
@@ -25,8 +25,8 @@ echo '<pre>'.print_r($this->teams,true).'</pre>';
             $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $team->project_id;
-$routeparameter['tid'] = $team->team_id;
+$routeparameter['p'] = $team->project_slug;
+$routeparameter['tid'] = $teaminfo->team_slug;
 $routeparameter['ptid'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			?>
