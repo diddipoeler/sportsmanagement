@@ -214,10 +214,10 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				</td>
                 <td>
         <?php
-
+if ( $nextlink ) {
         $imgtitle = Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEXT' );
         echo HTMLHelper::link(sportsmanagementModelPagination::$nextlink,HTMLHelper::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
-        //echo sportsmanagementModelPagination::$nextlink;
+		}
 		?>
         </td>
                 </form>
