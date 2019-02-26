@@ -26,7 +26,7 @@ use Joomla\CMS\Factory;
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $team->project_id;
-$routeparameter['tid'] = $team->team_id;
+$routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			?>
