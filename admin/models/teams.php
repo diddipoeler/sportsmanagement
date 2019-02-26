@@ -208,9 +208,11 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->jsmquery->clear();
             // Select some fields
             $this->jsmquery->select('pt.id, st.team_id, pt.project_id');
+	    $this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');  
             // From table
             $this->jsmquery->from('#__sportsmanagement_project_team as pt');
             $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+	    $this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id ');
             $this->jsmquery->where('pt.standard_playground = ' . (int) $playground_id);
 
             $starttime = microtime();
