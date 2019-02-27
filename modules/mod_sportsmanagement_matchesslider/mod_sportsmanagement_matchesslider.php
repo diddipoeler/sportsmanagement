@@ -14,6 +14,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (! defined('DS'))
 {
@@ -34,7 +35,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 
 /**
@@ -49,10 +50,20 @@ else
 $module->picture_server = Uri::root();    
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+/**
+ *  prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('sportsmanagementHelper')) {
+/**
+ * add the classes for handling
+ */
+    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    JLoader::register('sportsmanagementHelper', $classpath);
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+} 
+JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
 
 if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
 if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', Uri::base().'modules/'.$module->module.'/');}
