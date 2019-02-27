@@ -84,27 +84,9 @@ $app = Factory::getApplication();
 $jinput = $app->input;
 $doc = Factory::getDocument();
 $doc->addScript( _JLMATCHLISTSLIDERMODURL.'assets/js/jquery.simplyscroll.js' );
-//$doc->addStyleSheet(_JLMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matchesslider.css');
 $doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL.'assets/css/'.$module->module.'.css');
 
-
 HTMLHelper::_('behavior.tooltip');
-//$doc->addScriptDeclaration('
-//(function($) {
-//	$(function() { //on DOM ready
-//		$("#scroller").simplyScroll({
-//			customClass: \'custom\',
-//			direction: \'backwards\',
-//			pauseOnHover: false,
-//			frameRate: 20,
-//			speed: 2
-//		});
-//	});
-//})(jQuery);
-//  ');
-
-//$mod = new MatchesSliderSportsmanagementConnector($params, $module->id, $match_id);
-//$matches = $mod->getMatches();
 
 $config = array();
 $slidermatches = array();
@@ -113,6 +95,7 @@ $cfg_which_database = $jinput->getInt('cfg_which_database',0);
 $s = $jinput->getInt('s',0);
 $projectid = $jinput->getInt('p',0);
 
+//echo '<pre>'.print_r($projectid,true).'</pre>';
 if ( !$projectid )
 {
 $cfg_which_database = $params->get('cfg_which_database');
@@ -120,27 +103,35 @@ $s = $params->get('s');
     
     foreach( $params->get('p') as $key => $value )
     {
+      
+//echo '<pre>'.print_r($value,true).'</pre>';
+      $projectid = (int)$value;
 	    if ( $params->get('teams') )
 	    {
 	foreach( $params->get('teams') as $keyteam => $valueteam )
     {
-	sportsmanagementModelProject::$projectid = (int)$value;
+	sportsmanagementModelProject::$projectid = $projectid;
         sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database,(int)$valueteam);
-        $slidermatches = array_merge($matches);	
+     // echo 'matches<pre>'.print_r($matches,true).'</pre>';
+        $slidermatches = array_merge($slidermatches,$matches);	
 	}
 	    }
 	    else
 	    {
-        sportsmanagementModelProject::$projectid = (int)$value;
+        sportsmanagementModelProject::$projectid = $projectid;
         sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
-        $slidermatches = array_merge($matches);
+        $slidermatches = array_merge($slidermatches,$matches);
 	    }
+      
+      
+      //echo 'slidermatches<pre>'.print_r($slidermatches,true).'</pre>';
+      
     }
     
 }    
@@ -151,8 +142,12 @@ sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
 sportsmanagementModelResults::$projectid = $projectid;
 sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
 $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
-$slidermatches = array_merge($matches);
+$slidermatches = array_merge($slidermatches,$matches);
 }
+
+usort($slidermatches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
+//echo '<pre>'.print_r($slidermatches,true).'</pre>';
+
 
 foreach( $slidermatches as $match )
 {
