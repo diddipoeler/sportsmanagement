@@ -186,23 +186,11 @@ $this->overallconfig['use_jquery_modal']);
         {
         ?>
                 <tr>
-                <td>
-		</td>
-        <td>
-		</td>
-                    <td class="match_result_detail">
+                    <td colspan="5" class="match_result_detail">
                         <?php echo $this->match->match_result_detail; ?>
                     </td>
-             <td>
-		</td>       
-                    
-                    <td>
-		</td>
                 </tr>
                 <?php    
-            
-            
-            
         }
         ?>
 	
