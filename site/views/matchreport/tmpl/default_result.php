@@ -178,7 +178,32 @@ $this->overallconfig['use_jquery_modal']);
             
             
         }
-        
+
+/**
+ * details anzeigen
+ */
+        if ( $this->match->match_result_detail )
+        {
+        ?>
+                <tr>
+                <td>
+		</td>
+        <td>
+		</td>
+                    <td class="match_result_detail">
+                        <?php echo $this->match->match_result_detail; ?>
+                    </td>
+             <td>
+		</td>       
+                    
+                    <td>
+		</td>
+                </tr>
+                <?php    
+            
+            
+            
+        }
         ?>
 	
 </table>
