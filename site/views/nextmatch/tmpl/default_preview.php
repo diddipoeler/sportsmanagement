@@ -19,7 +19,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 ?>
 <!-- START of match preview -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch-preview">
 <div class="panel-group" id="accordionnextmatch">
 <div class="panel panel-default">
             <div class="panel-heading">

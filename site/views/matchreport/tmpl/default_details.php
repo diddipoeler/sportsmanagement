@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+
 ?>
 <!-- Details-->
 <h2>
@@ -20,21 +21,17 @@ use Joomla\CMS\Factory;
 echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
 ?>
 </h2>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-details">
 <div class="col-md-12">
-
 	<!-- Prev Match-->
 	<?php
 	if ($this->match->old_match_id > 0)
 	{
 		?>
-		
-        
         <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></strong>
 			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->old_match_id ),$this->oldmatchtext); ?>
             </address>
-            
 		<?php
 	}
 	?>
@@ -43,13 +40,10 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 	if ($this->match->new_match_id > 0)
 	{
 		?>
-		
-        
         <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></strong>
 			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->new_match_id ),$this->newmatchtext); ?>
             </address>
-            
 		<?php
 	}
 	?>	

@@ -18,7 +18,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Form\Form;
 
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
+//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
 /**
  * sportsmanagementViewMatchReport
@@ -158,7 +158,6 @@ if ( $this->config['show_pictures'] )
 					$result = $this->match->team2_result_split;
 				}
 				$legresult = explode(";",$result);
-				//$string = " (";
 				if ($legresult)
                 {
                 if ($team == 1)

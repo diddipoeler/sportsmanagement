@@ -15,11 +15,11 @@ use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- START: game result -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-result">
 <table class="table" >
 
     <?php
-    if ($this->config['show_team_logo'] == 1)
+    if ( $this->config['show_team_logo'] )
     {
     ?>
         <tr>
@@ -128,7 +128,7 @@ $this->overallconfig['use_jquery_modal']);
 		</td>
 	</tr>
 	<?php
-        if ($this->config['show_period_result'] == 1)
+        if ( $this->config['show_period_result'] )
         {
             if ( $this->showLegresult() )
             {
@@ -151,6 +151,34 @@ $this->overallconfig['use_jquery_modal']);
                 <?php
             }
         }
+        
+/**
+ * legs anzeigen
+ */        
+        if ( $this->match->team1_legs )
+        {
+        ?>
+                <tr>
+                <td>
+		</td>
+                    <td class="legshome">
+                        <?php echo $this->match->team1_legs; ?>
+                    </td>
+                    <td>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+		</td>
+                    <td class="legsaway">
+                        <?php echo $this->match->team2_legs; ?>
+                    </td>
+                    <td>
+		</td>
+                </tr>
+                <?php    
+            
+            
+            
+        }
+        
         ?>
 	
 </table>
@@ -175,9 +203,8 @@ else
 		
         
 		<?php
-        
 
-        if ($this->config['show_overtime_result'] == 1)
+        if ( $this->config['show_overtime_result'] )
         {
             if ( $this->showOvertimeResult() )
             {
@@ -192,7 +219,7 @@ else
             }
         }
 
-        if ($this->config['show_shotout_result'] == 1)
+        if ( $this->config['show_shotout_result'] )
         {
             if ( $this->showShotoutResult() )
             {
@@ -206,6 +233,7 @@ else
                 <?php
             }
         }
+
 		?>
 	</table>
 	<?php

@@ -101,6 +101,7 @@ case 'matchreport':
 JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
 break;
 case 'resultsranking':
 JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
