@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-/* No direct access to this file */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
