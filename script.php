@@ -65,13 +65,13 @@
  * 
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
 
 if (! defined('DS'))
 {
@@ -407,7 +407,7 @@ $files = array(
             
 foreach ($files as $file)
 		{
-			if (JFile::exists(JPATH_ROOT . $file) && !JFile::delete(JPATH_ROOT . $file))
+			if (File::exists(JPATH_ROOT . $file) && !File::delete(JPATH_ROOT . $file))
 			{
 				echo Text::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
 			}
@@ -682,37 +682,37 @@ echo self::getFxInitJSCode('steps');
         'jl_images',
 		'statistics');
 		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement');
-		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
+		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
 		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
-		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
+		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
 		
         foreach ($folders as $folder) 
         {
 			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
-			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+			File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             
             echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
             
 	switch ( $folder )
 	{
 		case 'persons':
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_small.png');
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
-        JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_small.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
 		break;
 		case 'clubs/small':
         case 'clubs/trikot_home':
         case 'clubs/trikot_away':
         case 'clubs/trikot':
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
 		break;
 		case 'clubs/medium':
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_50.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_50.png');
 		break;
 		case 'clubs/large':
-		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
 		break;
 	}
             //$mainframe->enqueueMessage(Text::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
