@@ -9,7 +9,6 @@
  * @subpackage jlextdfbnetplayerimport
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -34,12 +33,10 @@ if (empty($maxImportMemory))
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
-
-
 jimport('joomla.html.pane');
 
-require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'ical.php' );
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS. 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 
 jimport( 'joomla.utilities.utility' );
 
@@ -181,21 +178,8 @@ function property_value_in_array($array, $property, $value)
 {
     $flag = false;
 
-// echo 'property_value_in_array property -> '.$property.'<br>'; 
-// echo 'property_value_in_array property -> '.$value.'<br>';
-//  echo 'property_value_in_array array<pre>';
-//  print_r($array);
-//  echo '</pre>';
-
     foreach($array[0] as $object) 
     {
-//         if(!is_object($object) || !property_exists($object, $property)) 
-//         {
-//             return false;       
-//         }
-
-// echo 'object->property -> '.$object->$property.'<br>'; 
-// echo 'value -> '.$value.'<br>';
 
         if($object->$property == $value) 
         {
@@ -226,15 +210,6 @@ function getUpdateData()
   $this->_success_text = '';
   $my_text = '';
    
-// echo 'lang <br>';  
-// echo '<pre>';
-// print_r($lang);
-// echo '</pre>'; 
-
-//   echo 'Die aktuelle Sprache lautet: ' . $lang->getName() . '<br>';
-//$teile = explode("-",$lang->getTag());
-//  $country = JSMCountries::convertIso2to3($teile[1]);  
-//   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
   
 	$project = $app->getUserState( "$option.pid", '0' );
@@ -248,13 +223,7 @@ function getUpdateData()
   	
 	$this->getData();
 
-	//$app->enqueueMessage(Text::_('_datas match]<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');
-	
   $updatedata = $this->getProjectUpdateData($this->_datas['match'],$project);
-
-// echo '<pre>';	
-// print_r($updatedata);	
-// echo '</pre><br>';  
   
   foreach ( $updatedata as $row)
   {
@@ -267,7 +236,7 @@ function getUpdateData()
   {
   // sicherheitshalber nachschauen ob die paarung schon da ist
   $query = "SELECT ma.id
-from #__".COM_SPORTSMANAGEMENT_TABLE."_match as ma
+from #__sportsmanagement_match as ma
 where ma.round_id = '$row->round_id'
 and ma.projectteam1_id = '$row->projectteam1_id'
 and ma.projectteam2_id = '$row->projectteam2_id' 
@@ -381,7 +350,7 @@ $tempmatch = new stdClass();
 
 // round_id suchen
 $query = "SELECT r.id
-from #__".COM_SPORTSMANAGEMENT_TABLE."_round as r
+from #__sportsmanagement_round as r
 where r.project_id = '$project'
 and r.roundcode = '$row->round_id'
 ";
@@ -401,8 +370,8 @@ $tempmatch->projectteam2_dfbnet = $row->projectteam2_dfbnet;
 
 // projectteam1_id suchen
 $query = "SELECT pt.id
-from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as pt
-inner join #__".COM_SPORTSMANAGEMENT_TABLE."_team as te
+from #__sportsmanagement_project_team as pt
+inner join #__sportsmanagement_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam1_dfbnet' 
@@ -412,8 +381,8 @@ $tempmatch->projectteam1_id = $this->_db->loadResult();
 
 // projectteam2_id suchen
 $query = "SELECT pt.id
-from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team as pt
-inner join #__".COM_SPORTSMANAGEMENT_TABLE."_team as te
+from #__sportsmanagement_project_team as pt
+inner join #__sportsmanagement_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam2_dfbnet' 
@@ -426,7 +395,7 @@ $tempmatch->team2_result = $row->team2_result;
 $tempmatch->summary = '';
 
 $query = "SELECT ma.id
-from #__".COM_SPORTSMANAGEMENT_TABLE."_match as ma
+from #__sportsmanagement_match as ma
 where ma.round_id = '$tempmatch->round_id'
 and ma.projectteam1_id = '$tempmatch->projectteam1_id'
 and ma.projectteam2_id = '$tempmatch->projectteam2_id' 
@@ -449,40 +418,24 @@ $exportmatch[] = $tempmatch;
  */
 function getData()
 	{
-  //global $app, $option;
   $option = Factory::getApplication()->input->getCmd('option');
   $app = Factory::getApplication();
   $document	= Factory::getDocument();
-
-  //$lang = Factory::getLanguage();
 
 if ( $this->debug_info )
 {
 $this->pane = JPane::getInstance('sliders');
 echo $this->pane->startPane('pane');    
 }
-
   
-// echo 'lang <br>';  
-// echo '<pre>';
-// print_r($lang);
-// echo '</pre>'; 
-
-//   echo 'Die aktuelle Sprache lautet: ' . $lang->getName() . '<br>';
-//  $teile = explode("-",$lang->getTag());
-//  $country = JSMCountries::convertIso2to3($teile[1]);  
-//   echo 'Das aktuelle Land lautet: ' . $country . '<br>';
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
-  //$option='com_joomleague';
   $project = $app->getUserState( "$option.pid", '0' );
 	
-  //$lmoimportuseteams=$app->getUserState($option.'lmoimportuseteams');
   $whichfile=$app->getUserState($option.'whichfile');
   
   $app->enqueueMessage(Text::_('Welches Land? '.$country),'');
   $app->enqueueMessage(Text::_('Welche Art von Datei? '.$whichfile),'');
   
-  //$delimiter=$app->getUserState($option.'delimiter');
   $post = Factory::getApplication()->input->post->getArray(array());
   
   $this->_league_new_country = $country;
@@ -526,11 +479,6 @@ $exportmatchplan = array();
 $temp_match_number = array();
 
 $startline = 0;
-
-// echo 'post <br>';  
-// echo '<pre>';
-// print_r($post[projects]);
-// echo '</pre>';   
 
 if ( isset($post['projects']) )
 {
