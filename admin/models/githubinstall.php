@@ -15,6 +15,7 @@ use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
@@ -92,6 +93,7 @@ $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
 }
 catch (RuntimeException $e)
 {
+Log::add($e->getMessage(), Log::WARNING, 'jsmerror');    
 return false;
 }
 
