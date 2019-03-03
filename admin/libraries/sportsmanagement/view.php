@@ -389,7 +389,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 		);
 			
-	if ( isset($this->search_nation) )
+	if ( isset($this->search_nation) && $this->association )
         {
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
