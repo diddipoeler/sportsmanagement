@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 jimport('joomla.filesystem.archive');
 
 
@@ -41,7 +42,9 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 	{
 		parent::__construct();
 
-		// Register Extra tasks
+/**
+ * 		Register Extra tasks
+ */
 		$this->registerTask('edit','display');
 		$this->registerTask('insert','display');
 		$this->registerTask('selectpage','display');
@@ -57,27 +60,20 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 	public function display($cachable = false, $urlparams = false)
 	{
 	   $app = Factory::getApplication();
-       
-       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-       
+     
 		switch ($this->getTask())
 		{
 			case 'edit':
-				//Factory::getApplication()->input->setVar('hidemainmenu',0);
 				Factory::getApplication()->input->set('layout','form');
 				Factory::getApplication()->input->set('view','jlxmlimports');
 				Factory::getApplication()->input->set('edit',true);
 				break;
-
 			case 'insert':
-				//Factory::getApplication()->input->setVar('hidemainmenu',0);
 				Factory::getApplication()->input->set('layout','info');
 				Factory::getApplication()->input->set('view','jlxmlimports');
 				Factory::getApplication()->input->set('edit',true);
 				break;
-                
            case 'update':
-				//Factory::getApplication()->input->setVar('hidemainmenu',0);
 				Factory::getApplication()->input->set('layout','update');
 				Factory::getApplication()->input->set('view','jlxmlimports');
 				Factory::getApplication()->input->set('edit',true);
@@ -158,7 +154,6 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
         // first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			//$upload=Factory::getApplication()->input->getVar('import_package',null,'files','array');
 			$upload = $app->input->files->get('import_package');
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
@@ -180,7 +175,7 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 					}
 					if (!File::upload($tempFilePath,$dest))
 					{
-						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+					   Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 						return;
 					}
 					else
@@ -190,44 +185,43 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 							$result=JArchive::extract($dest,$extractdir);
 							if ($result === false)
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
+							 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 							File::delete($dest);
-							$src=Folder::files($extractdir,'jlg',false,true);
+							$src = Folder::files($extractdir,'jlg',false,true);
 							if(!count($src))
 							{
-								JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG');
-								//todo: delete every extracted file / directory
+							 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 								return false;
 							}
-							if (strtolower(File::getExt($src[0]))=='jlg')
+							if ( strtolower(File::getExt($src[0])) == 'jlg' )
 							{
 								if (!@ rename($src[0],$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
+								    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
+							 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'), Log::WARNING, 'jsmerror');
 								return;
 							}
 						}
 						else
 						{
-							if (strtolower(File::getExt($dest))=='jlg')
+							if ( strtolower(File::getExt($dest)) == 'jlg' )
 							{
 								if (!@ rename($dest,$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+								    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
+							 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						}
