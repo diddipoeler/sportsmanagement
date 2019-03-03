@@ -21,9 +21,6 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 {
 jimport('joomla.filesystem.archive');	
 }	
-	
-//jimport('joomla.filesystem.file');
-//ini_set("allow_url_fopen", "On");
 
 /**
  * sportsmanagementModelgithubinstall
@@ -59,7 +56,9 @@ if ( $gitinstall )
 }   
 else
 {     
-/* set the target directory */
+/** 
+ * set the target directory 
+ */
 $base_Dir = JPATH_SITE . DS . 'tmp'. DS;
 $file['name'] = basename($link);
 $filename = $file['name'];
@@ -71,22 +70,10 @@ $this->_success_text['Komponente:'] = 'text';
 }
 	
 $my_text = '';
-/*	
-if ( !copy($link,$filepath) )
-{
-$my_text = '<span style="color:'.$this->storeFailedColor.'">';
-$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
-$my_text .= '<br />';
-}
-else
-{
-$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
-$my_text .= '<br />';
-}
-*/
-	
-// Get the handler to download the package
+
+/**
+ * Get the handler to download the package
+ */
 try
 {
 $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
@@ -97,7 +84,9 @@ Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
 return false;
 }
 
-// Download the package
+/**
+ * Download the package
+ */
 try
 {
 $result = $http->get($link);
@@ -121,7 +110,9 @@ return false;
 
 try
 {	
-// Write the file to disk
+/**
+ * Write the file to disk
+ */
 File::write($filepath, $result->body);
 }
 catch (RuntimeException $e)
@@ -152,16 +143,16 @@ $archive = new Archive;
 $result = $archive->extract($dest, $extractdir);
 }	
 	
-/* Get an installer instance */
+/** Get an installer instance */
 
 $installer = JInstaller::getInstance();
 
-/* Get the path to the package to install */
+/** Get the path to the package to install */
 
 $p_dir = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS;
 $p_dir_modules = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'modules'.DS;
 
-/* Detect the package type */
+/** Detect the package type */
 $type = JInstallerHelper::detectType($p_dir);   
 
 
@@ -171,7 +162,7 @@ $package['dir'] = $p_dir;
 $package['type'] = $type;
 
 
-/* Install the package */
+/** Install the package */
 
 if (!$installer->install($package['dir']))
     {
