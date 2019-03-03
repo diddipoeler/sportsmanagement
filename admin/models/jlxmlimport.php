@@ -9,7 +9,6 @@
  * @subpackage jlxmlimport
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -94,7 +93,6 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 			else
 			{
 				Factory::getApplication()->enqueueMessage(Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), 'error');
-                //JError::raiseWarning(500,Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
 			}
             
             }
@@ -102,8 +100,6 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		else
 		{
 			Factory::getApplication()->enqueueMessage(Text::_sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
-//            JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'));
-//			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
     
@@ -205,8 +201,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-        //$post = Factory::getApplication()->input->post->getArray(array());
+        if ( isset($post['filter_season']) )
+        {
         $this->_season_id = $post['filter_season'];
+        }
+        else
+        {
+        $this->_season_id = '';    
+        }
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
@@ -219,17 +221,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		{
 			$errorFound = false;
             Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'), 'error');
-            //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
 			foreach(libxml_get_errors() as $error)
 			{
                 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
-                //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
 				$errorFound = true;
 			}
 			if (!$errorFound)
             {
                 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('), 'error');
-                //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
             }
 		}
         
@@ -265,249 +264,243 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		$ttm=0;
 		$tt=0;
       
-        // ist die xmldatei gelesen machen wir weiter
+        /** ist die xmldatei gelesen machen wir weiter */
 		if ((isset($xmlData->record)) && (is_object($xmlData->record)))
 		{
 			foreach ($xmlData->record as $value)
 			{
-				// collect the project data of a .jlg file of JoomLeague <1.5x
+				/** collect the project data of a .jlg file of JoomLeague <1.5x*/
 				if ($xmlData->record[$i]['object'] == 'JoomLeagueVersion')
 				{
 					$this->_datas['exportversion'] = $xmlData->record[$i];
 				}
 
-				// collect the project data of a .jlg file of JoomLeague <1.5x
+				/** collect the project data of a .jlg file of JoomLeague <1.5x*/
 				if ($xmlData->record[$i]['object'] == 'JoomLeague')
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'OLD';
-                    //$this->import_version='NEW';
                     Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), '');
-					//JError::raiseNotice(0,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
 				}
 
-				// collect the project data of a .jlg file of JoomLeague 1.5x
+				/** collect the project data of a .jlg file of JoomLeague 1.5x*/
 				if ($xmlData->record[$i]['object'] == 'JoomLeague15')
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
                     Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), '');
-					//JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
 				}
 
-				// collect the project data of a .jlg file of JoomLeague 1.5x
+				/** collect the project data of a .jlg file of JoomLeague 1.5x*/
 				if ($xmlData->record[$i]['object'] == 'JoomLeague20')
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
                     Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), '');
-					//JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
 				}
 
-				// collect the division data
+				/** collect the division data*/
 				if ($xmlData->record[$i]['object']=='LeagueDivision')
 				{
 					$this->_datas['division'][$j]=$xmlData->record[$i];
 					$j++;
 				}
 
-				// collect the club data
+				/** collect the club data*/
 				if ($xmlData->record[$i]['object']=='Club')
 				{
 					$this->_datas['club'][$k]=$xmlData->record[$i];
 					$k++;
 				}
 
-				// collect the team data
+				/** collect the team data*/
 				if ($xmlData->record[$i]['object']=='JL_Team')
 				{
 					$this->_datas['team'][$l]=$xmlData->record[$i];
 					$l++;
 				}
 
-				// collect the projectteam data
+				/** collect the projectteam data*/
 				if ($xmlData->record[$i]['object']=='ProjectTeam')
 				{
 					$this->_datas['projectteam'][$m]=$xmlData->record[$i];
 					$m++;
 				}
 
-				// collect the projectteam data of old export file / Here TeamTool instead of projectteam
+				/** collect the projectteam data of old export file / Here TeamTool instead of projectteam*/
 				if ($xmlData->record[$i]['object']=='TeamTool')
 				{
-				    // für jl version 0.93
+				    /**  für jl version 0.93
 					$this->_datas['teamtool'][$m]=$xmlData->record[$i];
-                    //$this->_datas['projectteam'][$m]=$xmlData->record[$i];
 					$m++;
 				}
 
-				// collect the round data
+				/** collect the round data*/
 				if ($xmlData->record[$i]['object']=='Round')
 				{
 					$this->_datas['round'][$n]=$xmlData->record[$i];
 					$n++;
 				}
 
-				// collect the match data
+				/** collect the match data*/
 				if ($xmlData->record[$i]['object']=='Match')
 				{
 					$this->_datas['match'][$o]=$xmlData->record[$i];
 					$o++;
 				}
 
-				// collect the playgrounds data
+				/** collect the playgrounds data*/
 				if ($xmlData->record[$i]['object']=='Playground')
 				{
 					$this->_datas['playground'][$p]=$xmlData->record[$i];
 					$p++;
 				}
 
-				// collect the template data
+				/** collect the template data*/
 				if ($xmlData->record[$i]['object']=='Template')
 				{
 					$this->_datas['template'][$q]=$xmlData->record[$i];
 					$q++;
 				}
 
-				// collect the events data
+				/** collect the events data*/
 				if ($xmlData->record[$i]['object']=='EventType')
 				{
 					$this->_datas['event'][$et]=$xmlData->record[$i];
-//                    $app->enqueueMessage(Text::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
 					$et++;
 				}
 
-				// collect the positions data
+				/** collect the positions data*/
 				if ($xmlData->record[$i]['object']=='Position')
 				{
 					$this->_datas['position'][$t]=$xmlData->record[$i];
 					$t++;
 				}
 
-				// collect the positions data
+				/** collect the positions data*/
 				if ($xmlData->record[$i]['object']=='ParentPosition')
 				{
 					$this->_datas['parentposition'][$z]=$xmlData->record[$i];
 					$z++;
 				}
 
-				// collect the League data
+				/** collect the League data*/
 				if ($xmlData->record[$i]['object']=='League')
 				{
 					$this->_datas['league']=$xmlData->record[$i];
 				}
 
-				// collect the Season data
+				/** collect the Season data*/
 				if ($xmlData->record[$i]['object']=='Season')
 				{
 					$this->_datas['season']=$xmlData->record[$i];
 				}
 
-				// collect the SportsType data
+				/** collect the SportsType data*/
 				if ($xmlData->record[$i]['object']=='SportsType')
 				{
 					$this->_datas['sportstype']=$xmlData->record[$i];
 				}
 
-				// collect the projectreferee data
+				/** collect the projectreferee data*/
 				if ($xmlData->record[$i]['object']=='ProjectReferee')
 				{
 					$this->_datas['projectreferee'][$w]=$xmlData->record[$i];
 					$w++;
 				}
 
-				// collect the projectposition data
+				/** collect the projectposition data*/
 				if ($xmlData->record[$i]['object']=='ProjectPosition')
 				{
 					$this->_datas['projectposition'][$x]=$xmlData->record[$i];
 					$x++;
 				}
 
-				// collect the person data
+				/** collect the person data*/
 				if ($xmlData->record[$i]['object']=='Person')
 				{
 					$this->_datas['person'][$y]=$xmlData->record[$i];
 					$y++;
 				}
 
-				// collect the TeamPlayer data
+				/** collect the TeamPlayer data*/
 				if ($xmlData->record[$i]['object']=='TeamPlayer')
 				{
 					$this->_datas['teamplayer'][$v]=$xmlData->record[$i];
 					$v++;
 				}
 
-				// collect the TeamStaff data
+				/** collect the TeamStaff data*/
 				if ($xmlData->record[$i]['object']=='TeamStaff')
 				{
 					$this->_datas['teamstaff'][$u]=$xmlData->record[$i];
 					$u++;
 				}
 
-				// collect the TeamTraining data
+				/** collect the TeamTraining data*/
 				if ($xmlData->record[$i]['object']=='TeamTraining')
 				{
 					$this->_datas['teamtraining'][$tt]=$xmlData->record[$i];
 					$tt++;
 				}
 
-				// collect the MatchPlayer data
+				/** collect the MatchPlayer data*/
 				if ($xmlData->record[$i]['object']=='MatchPlayer')
 				{
 					$this->_datas['matchplayer'][$mp]=$xmlData->record[$i];
 					$mp++;
 				}
 
-				// collect the MatchStaff data
+				/** collect the MatchStaff data*/
 				if ($xmlData->record[$i]['object']=='MatchStaff')
 				{
 					$this->_datas['matchstaff'][$ms]=$xmlData->record[$i];
 					$ms++;
 				}
 
-				// collect the MatchReferee data
+				/** collect the MatchReferee data*/
 				if ($xmlData->record[$i]['object']=='MatchReferee')
 				{
 					$this->_datas['matchreferee'][$mr]=$xmlData->record[$i];
 					$mr++;
 				}
 
-				// collect the MatchEvent data
+				/** collect the MatchEvent data*/
 				if ($xmlData->record[$i]['object']=='MatchEvent')
 				{
 					$this->_datas['matchevent'][$me]=$xmlData->record[$i];
 					$me++;
 				}
 
-				// collect the PositionEventType data
+				/** collect the PositionEventType data*/
 				if ($xmlData->record[$i]['object']=='PositionEventType')
 				{
 					$this->_datas['positioneventtype'][$pe]=$xmlData->record[$i];
 					$pe++;
 				}
 
-				// collect the Statistic data
+				/** collect the Statistic data*/
 				if ($xmlData->record[$i]['object']=='Statistic')
 				{
 					$this->_datas['statistic'][$s]=$xmlData->record[$i];
 					$s++;
 				}
 
-				// collect the PositionStatistic data
+				/** collect the PositionStatistic data*/
 				if ($xmlData->record[$i]['object']=='PositionStatistic')
 				{
 					$this->_datas['positionstatistic'][$ps]=$xmlData->record[$i];
 					$ps++;
 				}
 
-				// collect the MatchStaffStatistic data
+				/** collect the MatchStaffStatistic data*/
 				if ($xmlData->record[$i]['object']=='MatchStaffStatistic')
 				{
 					$this->_datas['matchstaffstatistic'][$mss]=$xmlData->record[$i];
 					$mss++;
 				}
 
-				// collect the MatchStatistic data
+				/** collect the MatchStatistic data*/
 				if ($xmlData->record[$i]['object']=='MatchStatistic')
 				{
 					$this->_datas['matchstatistic'][$mst]=$xmlData->record[$i];
@@ -545,7 +538,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 			}
 
 // ############################ anpassungen anfang ###########################################################            
-            // bilderpfade anpassen
+            /** bilderpfade anpassen */
             if ( isset($this->_datas['person']) )
             {
             foreach ($this->_datas['person'] as $temppicture)
