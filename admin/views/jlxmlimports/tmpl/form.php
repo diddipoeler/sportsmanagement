@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -133,7 +135,7 @@ if (isset($this->xml) && is_array($this->xml))
 			$xmlImportType='statistics';
 			$xmlImportTitle='Standard XML-Import of JoomLeague Statistics';
 		}
-		JError::raiseNotice(500,Text::_($xmlImportTitle));
+        Log::add(Text::_($xmlImportTitle), Log::NOTICE, 'jsmerror');
 	}
 	else
 	{
