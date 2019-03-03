@@ -17,6 +17,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
 
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Installer\InstallerHelper;
+
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 jimport('joomla.filesystem.archive');	
@@ -145,7 +148,7 @@ $result = $archive->extract($dest, $extractdir);
 	
 /** Get an installer instance */
 
-$installer = JInstaller::getInstance();
+$installer = Installer::getInstance();
 
 /** Get the path to the package to install */
 
@@ -153,7 +156,7 @@ $p_dir = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS;
 $p_dir_modules = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'modules'.DS;
 
 /** Detect the package type */
-$type = JInstallerHelper::detectType($p_dir);   
+$type = InstallerHelper::detectType($p_dir);   
 
 
 $package['packagefile'] = null;
