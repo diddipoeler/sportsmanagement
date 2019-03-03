@@ -690,11 +690,24 @@ echo self::getFxInitJSCode('steps');
         {
 			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
-            
             echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
-            
-	switch ( $folder )
-	{
+		}
+        
+		foreach ($folders as $folder) {
+			$from = Path::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
+			if(Folder::exists($from)) {
+				$to = Path::clean($dest.'/database/'.$folder);
+				if(!Folder::exists($to)) {
+					$ret = Folder::move($from, $to);
+				} else {
+					$ret = Folder::copy($from, $to, '', true);
+				}
+			}
+		}
+        
+        foreach ($folders as $folder) {
+		switch ( $folder )
+	    {
 		case 'persons':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
@@ -714,24 +727,9 @@ echo self::getFxInitJSCode('steps');
 		case 'clubs/large':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
 		break;
-	}
-            //$mainframe->enqueueMessage(Text::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
-            
+	    }
 		}
-        
-		foreach ($folders as $folder) {
-			$from = Path::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
-			if(Folder::exists($from)) {
-				$to = Path::clean($dest.'/database/'.$folder);
-				if(!Folder::exists($to)) {
-					$ret = Folder::move($from, $to);
-				} else {
-					$ret = Folder::copy($from, $to, '', true);
-					//$ret = Folder::delete($from);
-				}
-			}
-		}
-		//echo ' - <span style="color:green">'.Text::_('Success').'</span><br />';
+
 	}
     
     
