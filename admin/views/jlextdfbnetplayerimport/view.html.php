@@ -9,7 +9,6 @@
  * @subpackage jlextdfbnetplayerimport
  */
 
-// Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -53,7 +52,9 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->revisionDate	= $revisionDate ;
-		//build the html select list for seasons
+/**
+ * 		build the html select list for seasons
+ */
 		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
         
@@ -64,7 +65,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
         
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons, $allSeasons);
-        //$this->season = $allSeasons;
 		$lists['seasons'] = HTMLHelper::_( 'select.genericList',
 									$seasons,
 									'filter_season',
@@ -87,7 +87,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	 */
 	function _displayDefault($tpl) 
     {
-		//global $option;
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -95,11 +94,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri = Factory::getURI ();
 		$user = Factory::getUser ();
-		
-		// $model = $this->getModel('project') ;
-		// $projectdata = $this->get('Data');
-		// $this->assignRef( 'name', $projectdata->name);
-		
+	
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
@@ -112,7 +107,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$import_version = 'NEW';
 		$this->import_version	= $import_version;
 		
-		//$this->addToolbar ();
 		parent::display ( $tpl );
 	}
     
@@ -125,7 +119,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	 */
 	function _displayDefaultUpdate($tpl) 
     {
-		// global $app, $option;
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -134,42 +127,33 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$uri = Factory::getURI ();
 		$user = Factory::getUser ();
 		$model = $this->getModel ();
-		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
 		$config = ComponentHelper::getParams ( 'com_media' );
-		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );
 		$whichfile = $app->getUserState ( $option . 'whichfile' );
-		//$delimiter = $app->getUserState ( $option . 'delimiter' );
-		
 		$this->uploadArray	= $uploadArray;
 		$this->importData	= $model->getUpdateData ();
-		
-		// $this->assignRef('xml',$model->getData());
-		
+	
 		parent::display ( $tpl );
 	}
-    
-    
-    
-    
-    
+
+	/**
+	 * sportsmanagementViewjlextdfbnetplayerimport::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar() 
     {
-        // global $app, $option;
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		// Get a refrence of the page instance in joomla
 		$document	= Factory::getDocument();
-        // Set toolbar items for the page
 		$stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 		$document->addCustomTag($stylelink);
         
-        // Set toolbar items for the page
 		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
         ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         ToolbarHelper::divider();
