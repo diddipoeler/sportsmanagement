@@ -1140,7 +1140,7 @@ Array
 */
   
 $teamid = 1;
-$this->fileName = File::read($file);
+//$this->fileName = File::read($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {
