@@ -39,7 +39,8 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	{
     
         $inputappend = '';
-        
+        $this->search_nation = '';
+        $this->association = '';
 	$this->table = Table::getInstance('club', 'sportsmanagementTable');
         
         /** build the html select list for seasons */
