@@ -1347,7 +1347,7 @@ $csv->data[] = $val;
 //$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 	if ( sizeof($csv->data) == 0 )
 	{
-		$app->enqueueMessage(Text::_('Falsches Dateiformat'),'Error');
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'Falsches Dateiformat'),'Error');
 		$importcsv = false;
 	}
 	else
