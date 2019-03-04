@@ -1232,11 +1232,60 @@ $csv = new JSMparseCSV();
 $input = file_get_contents( $file );	
 $encoding = mb_detect_encoding( $input, mb_list_encodings(), TRUE );  
 $app->enqueueMessage(Text::_(__LINE__.' - '.'encoding<br><pre>'.print_r($encoding,true).'</pre>'   ),'');  
-	
+if( $encoding !== "UTF-8" ) {
+    //$input = mb_convert_encoding( $input, "UTF-8", $encoding );
+  
+$csvneu = explode("\n",$input);
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r($csvneu,true).'</pre>'   ),'');  
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r(sizeof($csvneu),true).'</pre>'   ),'');  
+$numcsv = count($csvneu);
+for($a=0; $a <= $numcsv; $a++  )
+{  
+  
+$csvneu[$a] = mb_convert_encoding( $csvneu[$a], "UTF-8", $encoding );
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r($csvneu[$a],true).'</pre>'   ),'');    
+
+$data = explode("\t",$csvneu[$a]);
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'data<br><pre>'.print_r($data,true).'</pre>'   ),'');
+
+$num = count($data);
+for ($c=1; $c < $num; $c++) {
+if ( empty($row) )
+{
+$header[$c] = trim(strip_tags($data[$c]));    
+}  
+else
+{
+
+if ( $header[$c] == 'Spielkennung' )
+{
+$dfbnetspiele[$data[$c]] = '';    
+}
+    
+$csv->data[$row][$header[$c]] = trim(strip_tags($data[$c])); 
+}   
+  
+}  
+$row++;
+}  
+ 
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'header<br><pre>'.print_r($header,true).'</pre>'   ),''); 
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'file<br><pre>'.print_r($file,true).'</pre>'   ),'');  	  
+ 
+}
+else
+{    
+  
+  
+  
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'input<br><pre>'.print_r($input,true).'</pre>'   ),'');  	  
 	
 //$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
 if (($handle = fopen($file, "r")) !== FALSE) {
+
+  
 while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
+  
 $num = count($data);
         //echo "<p> $num Felder in Zeile $row: <br /></p>\n";
         //$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
@@ -1265,7 +1314,11 @@ $row++;
 }
 fclose($handle);
 }	
+}
+  
 
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'csv<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+  
 for($a=1; $a <= sizeof($csv->data); $a++  )
 {
 $temp = array();
@@ -1274,24 +1327,29 @@ $anhaengengast = FALSE;
 $anhaengenheim = FALSE;		
 foreach ($csv->data[$a] as $pos =>  $val)
 {
-//$app->enqueueMessage(Text::_('pos <br><pre>'.print_r($pos ,true).'</pre>'   ),'');	
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'pos <br><pre>'.print_r($pos ,true).'</pre>'   ),'');	
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
+  
 $temp[$pos] = $val;  
 
-switch ($pos)
+switch (trim($pos))
 {
 case 'Heimmannschaft':
+    //$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 if ( $val )
 {
 $anhaengenheim = TRUE;
 }
 break;		
 case 'Gastmannschaft':
+   // $app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 if ( $val )
 {
 $anhaengengast = TRUE;
 }
 break;		
 case 'Spielkennung':
+    //$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 $spielkennung = $val;
 break;
 case 'verlegtSpieldatum':
@@ -1309,6 +1367,13 @@ break;
 }
 
 }
+
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'spielkennung <br><pre>'.print_r($spielkennung ,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'anhaengenheim <br><pre>'.print_r($anhaengenheim ,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'anhaengengast <br><pre>'.print_r($anhaengengast ,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'temp <br><pre>'.print_r($temp ,true).'</pre>'   ),'');
+  
+  
 if ( $spielkennung && $anhaengenheim && $anhaengengast )
 {
 $dfbnetspiele[$spielkennung] = $temp;
@@ -1325,9 +1390,9 @@ foreach ($dfbnetspiele as $pos => $val)
 {
 $csv->data[] = $val;
 }	
-
+//$app->enqueueMessage(Text::_(__LINE__.' - '.'csv<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 //$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r(sizeof($dfbnetspiele) ,true).'</pre>'   ),'');			
-//$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
 	
 	
 	// Spielplan anfang
