@@ -1228,7 +1228,11 @@ $row = 0;
 $header = array();
 $dfbnetspiele = array();
 $csv = new JSMparseCSV();
-$encodings = mb_list_encodings();
+
+$input = file_get_contents( $file );	
+$encoding = mb_detect_encoding( $input, mb_list_encodings(), TRUE );  
+$app->enqueueMessage(Text::_(__LINE__.' - '.'encoding<br><pre>'.print_r($encoding,true).'</pre>'   ),'');  
+	
 	
 //$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
 if (($handle = fopen($file, "r")) !== FALSE) {
