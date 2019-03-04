@@ -74,9 +74,9 @@ $this->_success_text['Komponente:'] = 'text';
 	
 $my_text = '';
 
-/**
- * Get the handler to download the package
- */
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+/** Get the handler to download the package */
 try
 {
 $http = JHttpFactory::getHttp(null, array('curl', 'stream'));
@@ -87,9 +87,7 @@ Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
 return false;
 }
 
-/**
- * Download the package
- */
+/** Download the package */
 try
 {
 $result = $http->get($link);
@@ -113,9 +111,7 @@ return false;
 
 try
 {	
-/**
- * Write the file to disk
- */
+/** Write the file to disk */
 File::write($filepath, $result->body);
 }
 catch (RuntimeException $e)
@@ -123,6 +119,29 @@ catch (RuntimeException $e)
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');	
 return false;
+}
+
+}
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{	
+/** Download the package at the URL given. */
+$p_file = InstallerHelper::downloadPackage($link);
+/** Was the package downloaded? */
+if (!$p_file)
+{
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$p_file."</strong>");
+$my_text .= '<br />';    
+Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+return false;
+}
+else
+{
+$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$p_file."</strong>");
+$my_text .= '<br />';	    
+}
+
 }
 	
 $this->_success_text['Komponente:'] = $my_text;
@@ -142,6 +161,7 @@ try {
 }
 elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 {	
+
 $archive = new Archive;
 $result = $archive->extract($dest, $extractdir);
 }	
