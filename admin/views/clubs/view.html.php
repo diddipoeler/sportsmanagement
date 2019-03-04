@@ -9,7 +9,6 @@
  * @subpackage clubs
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
@@ -43,7 +42,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
         
 	$this->table = Table::getInstance('club', 'sportsmanagementTable');
         
-        //build the html select list for seasons
+        /** build the html select list for seasons */
 	$seasons[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
 	$allSeasons = $mdlSeasons->getSeasons();
@@ -59,7 +58,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 
 		unset($seasons);
        
-        //build the html options for nation
+        /** build the html options for nation */
 	$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 	if ($res = JSMCountries::getCountryOptions())
         {
@@ -78,8 +77,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		if ( $this->state->get('filter.search_nation') )
 		{
 		$mdlassociations = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
-		$allassociations = $mdlassociations->getAssociations();
-		$this->association = $allassociations;
+		$this->association = $mdlassociations->getAssociations();
 		}
 		$this->lists = $lists;
 
@@ -93,7 +91,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-        // Set toolbar items for the page
+        /**  Set toolbar items for the page */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
         ToolbarHelper::apply('clubs.saveshort');
         

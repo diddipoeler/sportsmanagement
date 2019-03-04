@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -162,7 +161,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
         {
         $search_nation	= $this->getState('filter.search_nation');
         }
-        // Create a new query object.
+        /** Create a new query object */
         $this->jsmquery->clear();
         $this->jsmquery->select('id,name,id as value,name as text,country');
         $this->jsmquery->from('#__sportsmanagement_associations');
