@@ -1228,6 +1228,8 @@ $row = 0;
 $header = array();
 $dfbnetspiele = array();
 $csv = new JSMparseCSV();
+$encodings = mb_list_encodings();
+	
 //$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
 if (($handle = fopen($file, "r")) !== FALSE) {
 while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
