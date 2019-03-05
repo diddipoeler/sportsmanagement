@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
  
 /**
  * modSMEventsrankingHelper
@@ -45,10 +45,10 @@ class modSMEventsrankingHelper
 		}
 		
 		$usedp = $params->get('p');
-		$projectstring = (is_array($usedp)) ? implode(",", $usedp)  : (int) $usedp;
+		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval', $usedp) )  : (int) $usedp;
 		
 		$usedteam = $params->get('tid');
-		$teamstring = (is_array($usedteam )) ? implode(",", $usedteam )  : (int) $usedteam ;
+		$teamstring = (is_array($usedteam )) ? implode(",", array_map('intval', $usedteam) )  : (int) $usedteam ;
 		
 		sportsmanagementModelProject::$cfg_which_database = $params->get( 'cfg_which_database' );
 		sportsmanagementModelProject::setProjectId($projectstring,$params->get( 'cfg_which_database' ));
