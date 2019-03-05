@@ -9,7 +9,6 @@
  * @subpackage playground
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri; 
 use Joomla\CMS\Language\Text;
@@ -47,14 +46,13 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		
 		$this->extended	= sportsmanagementHelper::getExtended($this->item->extended, 'playground');
         
-$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-$this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
-
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 	}
 		else
 		{		
+$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');			
 		$this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/playground/tmpl/edit.js');
 		}
 
