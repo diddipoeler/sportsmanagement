@@ -69,7 +69,6 @@
 			</field>
 		
 				<field name="p" 
-				size="5" 
 				task="projects" 
 				type="dependsql"
 				depends="s"
