@@ -9,7 +9,6 @@
  * @subpackage statistic
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
@@ -35,6 +34,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	public function init ()
 	{
 		$app = Factory::getApplication();
+	$this->description = '';
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
