@@ -332,6 +332,7 @@ $query->order('p '.$directionspoint);
         catch (Exception $e)
         {
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$query->dump()), 'error');	
         return false;
         }
 /**
