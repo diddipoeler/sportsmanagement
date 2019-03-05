@@ -299,7 +299,7 @@ $query->select('pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,
 		if ( self::$projectid )
 			{
                 $query->where('pt.project_id IN (' . self::$projectid.')' );
-                $query->where('p.id = ' . self::$projectid );
+                $query->where('p.id IN (' . self::$projectid.')' );
 			}
 			if (self::$divisionid > 0)
 			{
