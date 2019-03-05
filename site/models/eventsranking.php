@@ -325,10 +325,15 @@ $query->group('me.teamplayer_id');
 $query->order('p '.$directionspoint);	
 }
 		
-       
+       try{
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
         $rows = $db->loadObjectList();
-
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        return false;
+        }
 /**
  * 		get ranks
  */
