@@ -296,9 +296,9 @@ $query->select('pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,
         $query->where('me.event_type_id = '.$eventtype_id );
         $query->where('pl.published = 1');
                     
-		if (self::$projectid > 0)
+		if ( self::$projectid )
 			{
-                $query->where('pt.project_id = ' . self::$projectid );
+                $query->where('pt.project_id IN (' . self::$projectid.')' );
                 $query->where('p.id = ' . self::$projectid );
 			}
 			if (self::$divisionid > 0)
