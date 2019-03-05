@@ -914,7 +914,6 @@ $option = $app->input->getCmd('option');
 	// ist es ein array ?   
         if ( is_array($project_id) )
         {
-             
         $ids = implode(",",array_map('intval', $project_id));
         $query->where('d.project_id IN (' . $ids .')' );    
         } 
@@ -1484,8 +1483,18 @@ try{
         $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
                                 
-                // Where
-        $query->where('pt1.project_id = ' . $db->Quote($project_id) );
+        // Where
+	// ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+        $ids = implode(",",array_map('intval', $project_id));
+        $query->where('pt1.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('pt1.project_id = ' . (int)$project_id );
+        }
+        //$query->where('pt1.project_id = ' . $db->Quote($project_id) );
         
         // order
         $query->order('m.match_date, t1.short_name');
