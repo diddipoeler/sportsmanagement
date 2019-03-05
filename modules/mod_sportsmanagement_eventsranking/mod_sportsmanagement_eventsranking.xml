@@ -76,6 +76,8 @@
 				key_field="season_id"
 				value_field="s"
 				required=""
+				       size="10"
+multiple="multiple"
 				label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PROJECT_ID_LABEL" 
 				description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PROJECT_ID_DESCR" />						
 											
