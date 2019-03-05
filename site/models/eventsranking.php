@@ -149,13 +149,13 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
        $query->join('INNER','#__sportsmanagement_match as m ON m.id = me.match_id');
        $query->join('INNER','#__sportsmanagement_round as r ON m.round_id = r.id');
                 
-		if (self::$projectid > 0)
+		if ( self::$projectid )
 		{
-		$query->where('r.project_id = ' . self::$projectid );
+		$query->where('r.project_id IN (' . self::$projectid .')' );
         }
 		if (self::$eventid != 0)
 		{
-            $query->where("me.event_type_id IN (".self::$eventid.")");
+            $query->where("me.event_type_id IN (".self::$eventid.")" );
 		}
 
 		$query->order('et.ordering');
@@ -168,7 +168,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 	}
