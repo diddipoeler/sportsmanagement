@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -912,7 +911,19 @@ $option = $app->input->getCmd('option');
 		$query->from('#__sportsmanagement_division AS d');
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = d.project_id ');
         // Where
-        $query->where('d.project_id = ' . $db->Quote($project_id) );
+	// ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+             
+        $ids = implode(",",array_map('intval', $project_id));
+        $query->where('d.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('d.project_id = ' . (int)$project_id );
+        }
+		
+        //$query->where('d.project_id = ' . $db->Quote($project_id) );
         // group
         //$query->group('d.id');
         // order
