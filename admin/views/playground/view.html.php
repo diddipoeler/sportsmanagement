@@ -33,6 +33,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	public function init ()
 	{
+	$this->lists = array();
         $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');	
         if ( $this->item->latitude == 255 )
         {
