@@ -1486,6 +1486,8 @@ case "projectteams/trikot_away":
             case "logo_big":
             case "clubs_large":
 			case "projects":
+			case "league":
+			case "leagues":
                 return $ph_logo_big;
                 break;
             case "clublogomedium": //club logo medium
