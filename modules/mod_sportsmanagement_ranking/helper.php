@@ -41,7 +41,6 @@ class modJSMRankingHelper
 
 		if (!class_exists('sportsmanagementModelRanking')) 
         {
-			//require_once(JLG_PATH_SITE.DS.'models'.DS.'ranking.php');
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );

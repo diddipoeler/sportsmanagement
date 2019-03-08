@@ -44,7 +44,7 @@ if (!class_exists('sportsmanagementModeldatabasetool'))
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
+JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);  
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );

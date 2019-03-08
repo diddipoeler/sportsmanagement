@@ -588,10 +588,8 @@ class JSMCalendar extends PHPCalendar
 			require_once (dirname(__FILE__).DS.'connectors'.DS.'jevents.php');
 			JEventsConnector::getEntries($caldates, JSMCalendar::$params, $this->matches);
 		}
-		//require_once (dirname(__FILE__).DS.'connectors'.DS.$joomleague.'.php');
         require_once (dirname(__FILE__).DS.'connectors'.DS.'sportsmanagement.php');
 		JSMCalendar::$params->prefix = JSMCalendar::$prefix;
-		//sportsmanagementConnector::getEntries ( $caldates, JSMCalendar::$params, $this->matches );
         sportsmanagementConnector::getEntries ( $caldates, JSMCalendar::$params, JSMCalendar::$matches );
 		if ($livescore != '')
         {
