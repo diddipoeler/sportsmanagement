@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -17,12 +16,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
-
-
-//jimport('joomla.application.component.model');
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
-
-
 
 /**
  * sportsmanagementModeljlextindividualsport

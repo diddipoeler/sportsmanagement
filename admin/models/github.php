@@ -22,14 +22,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  
-// import Joomla  library
-//jimport('joomla.github.issues');
-//jimport('joomla.github.github');
-//jimport('joomla.application.component.model');
-
-//require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'github.php');
-//require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'package' . DS . 'issues.php');
-
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
     

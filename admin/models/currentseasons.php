@@ -9,13 +9,8 @@
  * @subpackage currentseasons
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
-
-//jimport('joomla.application.component.model');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-//jimport('joomla.application.component.modellist');
 
 /**
  * sportsmanagementModelcurrentseasons
@@ -29,8 +24,6 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelcurrentseasons extends JSMModelList
 {
 	var $_identifier = "currentseasons";
-    
-    
     
     /**
      * sportsmanagementModelLeagues::__construct()

@@ -39,10 +39,6 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
-// import File
-jimport('joomla.filesystem.file');
-//jimport( 'joomla.utilities.utility' );
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
 /**
  * sportsmanagementModeljlextlmoimports
