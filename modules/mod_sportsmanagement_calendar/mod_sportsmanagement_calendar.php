@@ -34,7 +34,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',ComponentHelper::getParams('com_s
 
 if (!class_exists('sportsmanagementHelper')) 
 {
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
 }
 if (!class_exists('sportsmanagementHelperRoute')) 
 {

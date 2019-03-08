@@ -40,8 +40,8 @@ class modSMEventsrankingHelper
 
 		if (!class_exists('sportsmanagementModelEventsRanking')) 
         {
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'eventsranking.php' );
+            JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+			JLoader::import('components.com_sportsmanagement.models.eventsranking', JPATH_SITE);
 		}
 		
 		$usedp = $params->get('p');

@@ -120,10 +120,10 @@ if ( $params['debug_modus'] )
 		Factory::getApplication()->input->setVar( 'pt', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelPlayer')) {
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');
+            JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
 		}
         if (!class_exists('sportsmanagementModelPerson')) {
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
+            JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);
 		}
 
 		$person 	= sportsmanagementModelPerson::getPerson();

@@ -62,7 +62,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
 
 // Reference global application object
 $app = Factory::getApplication();

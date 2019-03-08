@@ -38,7 +38,7 @@ class modJSMSportsHelper
     public static function getData(&$params)
     {
         if (!class_exists('sportsmanagementModelSportsTypes')) {
-            require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'models' . DS . 'sportstypes.php');
+			JLoader::import('components.com_sportsmanagement.models.sportstypes', JPATH_ADMINISTRATOR);
         }
         $model = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 

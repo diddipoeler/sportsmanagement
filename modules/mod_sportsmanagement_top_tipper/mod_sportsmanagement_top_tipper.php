@@ -50,9 +50,9 @@ if ( !class_exists('sportsmanagementHelper') )
 }
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'predictionranking.php' );
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php' );
+JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.predictionranking', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
 
 /**
  * get helper

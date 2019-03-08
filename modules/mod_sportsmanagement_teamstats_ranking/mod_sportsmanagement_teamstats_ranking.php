@@ -53,7 +53,7 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 if (!class_exists('sportsmanagementModelProject')) 
 {
-	require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
+	JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 }
 
 /**

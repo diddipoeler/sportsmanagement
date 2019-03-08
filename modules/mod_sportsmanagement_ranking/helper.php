@@ -41,9 +41,9 @@ class modJSMRankingHelper
 
 		if (!class_exists('sportsmanagementModelRanking')) 
         {
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+            JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+            JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
+            JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		}
 		
         //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );

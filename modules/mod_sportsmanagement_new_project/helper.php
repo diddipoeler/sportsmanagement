@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**

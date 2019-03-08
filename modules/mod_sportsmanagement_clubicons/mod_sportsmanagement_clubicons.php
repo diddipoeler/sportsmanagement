@@ -45,9 +45,9 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 }
 
 JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);  
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 
 // welche tabelle soll genutzt werden
 $paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );

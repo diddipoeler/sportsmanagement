@@ -32,7 +32,7 @@ if (!class_exists('JSMModelLegacy'))
 }
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php');
+JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'teamstats.php');
 
 // get helper

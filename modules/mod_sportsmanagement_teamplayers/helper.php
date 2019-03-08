@@ -74,7 +74,7 @@ class modSportsmanagementTeamPlayersHelper
 
 		if (!class_exists('sportsmanagementModelRoster')) 
         {
-			require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'roster.php');
+			JLoader::import('components.com_sportsmanagement.models.roster', JPATH_SITE);
 		}
 		$model = BaseDatabaseModel::getInstance('Roster', 'sportsmanagementModel');
 		sportsmanagementModelProject::$projectid = $p;
