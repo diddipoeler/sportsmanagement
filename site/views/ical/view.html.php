@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'nextmatch.php');
 
 /**

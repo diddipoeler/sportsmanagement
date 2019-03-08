@@ -22,8 +22,6 @@ jimport('joomla.application.component.modelitem');
 // Include dependancy of the dispatcher
 jimport('joomla.event.dispatcher');
 
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'predictionusers.php' );
-
 /**
  * sportsmanagementModelPredictionUser
  * 

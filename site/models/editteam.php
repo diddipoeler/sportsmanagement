@@ -9,16 +9,13 @@
  * @subpackage editperson
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
-
-
+JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
 class sportsmanagementModelEditteam extends AdminModel
 {

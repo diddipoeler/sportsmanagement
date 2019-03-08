@@ -18,10 +18,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 
-
-//require_once( JLG_PATH_SITE . DS . 'extensions' .DS . 'jlallprojectrounds' .DS . 'helpers' . DS . 'jlallprojectrounds.php' );
-//require_once( JLG_PATH_SITE . DS . 'models' . DS .'project.php' );
-
 /**
  * sportsmanagementModelallprojectrounds
  * 

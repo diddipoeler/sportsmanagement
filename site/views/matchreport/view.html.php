@@ -18,8 +18,6 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Form\Form;
 
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
-
 /**
  * sportsmanagementViewMatchReport
  * 
