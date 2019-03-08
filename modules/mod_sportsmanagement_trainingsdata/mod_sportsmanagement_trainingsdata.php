@@ -36,7 +36,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {

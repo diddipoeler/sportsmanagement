@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
  * modJSMActSeasonHelper

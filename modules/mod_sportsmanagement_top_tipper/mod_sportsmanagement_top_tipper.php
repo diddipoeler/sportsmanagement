@@ -49,7 +49,7 @@ if ( !class_exists('sportsmanagementHelper') )
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'predictionranking.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php' );

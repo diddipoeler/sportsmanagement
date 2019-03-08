@@ -38,7 +38,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {
@@ -51,7 +51,7 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 }
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
 
 // welche tabelle soll genutzt werden

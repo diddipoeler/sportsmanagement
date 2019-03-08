@@ -38,7 +38,7 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 }
 if (!class_exists('sportsmanagementHelperRoute')) 
 {
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 }
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))

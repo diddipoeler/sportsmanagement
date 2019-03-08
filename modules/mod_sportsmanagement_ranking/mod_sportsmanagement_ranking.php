@@ -36,7 +36,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {
@@ -61,9 +61,8 @@ if (!class_exists('JSMModelLegacy'))
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
 }
 
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
-
 
 // Reference global application object
 $app = Factory::getApplication();

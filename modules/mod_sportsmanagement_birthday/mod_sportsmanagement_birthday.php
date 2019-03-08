@@ -35,7 +35,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
@@ -51,8 +51,7 @@ if (!class_exists('sportsmanagementHelper')) {
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
   
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
-
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 require_once(dirname(__FILE__) . DS . 'helper.php');
 
 // Reference global application object

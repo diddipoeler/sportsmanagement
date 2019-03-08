@@ -40,7 +40,7 @@ JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 
 // Reference global application object

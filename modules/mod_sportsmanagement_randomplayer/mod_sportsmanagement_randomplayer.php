@@ -36,7 +36,7 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 }
 if (!class_exists('JSMCountries')) 
 {
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {
@@ -49,13 +49,10 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 }
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
 
 $paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$paramscomponent->get( 'cfg_which_database_table' ) );
