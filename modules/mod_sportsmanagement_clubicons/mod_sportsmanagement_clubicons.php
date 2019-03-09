@@ -72,7 +72,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMClubiconsHelper', __DIR__ . '/helper.php');
 
 /**
  * soll die externe datenbank genutzt werden ?
@@ -98,7 +99,7 @@ $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
-// welche joomla version ?
+/** welche joomla version ? */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 HTMLHelper::_('behavior.framework', true);
@@ -109,8 +110,7 @@ HTMLHelper::_('behavior.mootools');
 }
 
 $doc = Factory::getDocument();
-//$doc->addStyleSheet(Uri::base() . 'modules'.DS.$module->module.DS.'css/style.css');
-// Add styles
+/** Add styles */
 $style = '
 .img-zoom {
     width: '.$params->get( 'jcclubiconsglobalmaxwidth','50' ).';
