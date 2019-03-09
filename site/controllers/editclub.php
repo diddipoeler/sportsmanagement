@@ -9,12 +9,12 @@
  * @subpackage editclubs
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerEditClub
@@ -37,7 +37,7 @@ class sportsmanagementControllerEditClub extends FormController {
     function __construct($config = array()) {
         parent::__construct($config);
 
-        // Map the apply task to the save method.
+        /** Map the apply task to the save method. */
         $this->registerTask('apply', 'save');
     }
 
@@ -63,8 +63,7 @@ class sportsmanagementControllerEditClub extends FormController {
         {
             $msg = 'cancel';
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
- 
-                return true;
+                 return true;
         }
  
      
@@ -92,34 +91,7 @@ class sportsmanagementControllerEditClub extends FormController {
      * @return void
      */
     function display($cachable = false, $urlparams = Array() ) {
-        /*
-          switch($this->getTask())
-          {
-          case 'add'     :
-          {
-          Factory::getApplication()->input->setVar('hidemainmenu',0);
-          Factory::getApplication()->input->setVar('layout','form');
-          Factory::getApplication()->input->setVar('view','club');
-          Factory::getApplication()->input->setVar('edit',false);
 
-          // Checkout the club
-          $model=$this->getModel('club');
-          $model->checkout();
-          } break;
-          case 'edit'    :
-          {
-          Factory::getApplication()->input->setVar('hidemainmenu',0);
-          Factory::getApplication()->input->setVar('layout','form');
-          Factory::getApplication()->input->setVar('view','club');
-          Factory::getApplication()->input->setVar('edit',true);
-
-          // Checkout the club
-          $model=$this->getModel('club');
-          $model->checkout();
-          } break;
-          }
-          parent::display();
-         */
     }
 
    
@@ -133,12 +105,10 @@ class sportsmanagementControllerEditClub extends FormController {
     function save($key = NULL, $urlVar = NULL) {
         $app = Factory::getApplication();
         // Check for request forgeries
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         $msg = '';
         $address_parts = array();
         $post = Factory::getApplication()->input->post->getArray(array());
-
-        //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
         $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         $post['id'] = (int) $cid[0];
@@ -161,10 +131,7 @@ class sportsmanagementControllerEditClub extends FormController {
             $address_parts[] = JSMCountries::getShortCountryName($post['country']);
         }
         $address = implode(', ', $address_parts);
-        //$coords = $model->resolveLocation($address);
         $coords = sportsmanagementHelper::resolveLocation($address);
-
-        //$app->enqueueMessage(Text::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
 
         foreach ($coords as $key => $value) {
             $post['extended'][$key] = $value;
@@ -204,10 +171,6 @@ class sportsmanagementControllerEditClub extends FormController {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
             $type = 'error';
         }
-
-        // Check the table in so it can be edited.... we are done with it anyway
-        //$model->checkin();
-
 
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');

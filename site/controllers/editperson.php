@@ -9,7 +9,6 @@
  * @subpackage editperson
  */
 
-// No direct access.
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -36,7 +35,7 @@ class sportsmanagementControllereditperson extends FormController {
     function __construct($config = array()) {
         parent::__construct($config);
 
-        // Map the apply task to the save method.
+        /** Map the apply task to the save method. */
         $this->registerTask('apply', 'save');
     }
 
@@ -72,18 +71,17 @@ class sportsmanagementControllereditperson extends FormController {
      * @return
      */
     public function save($key = NULL, $urlVar = NULL) {
-        // Initialise variables.
+        /** Initialise variables. */
         $app = Factory::getApplication();
         $model = $this->getModel('editperson');
 
-        //$data	= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
         $data = Factory::getApplication()->input->post->getArray(array());
         $id = Factory::getApplication()->input->getInt('id');
 
-        // Now update the loaded data to the database via a function in the model
+        /** Now update the loaded data to the database via a function in the model */
         $upditem = $model->updItem($data);
 
-        // Set the redirect based on the task.
+        /** Set the redirect based on the task. */
         switch ($this->getTask()) {
             case 'apply':
                 $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
@@ -110,8 +108,6 @@ class sportsmanagementControllereditperson extends FormController {
         {
             $msg = 'cancel';
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-
- 
                 return true;
         }
 }

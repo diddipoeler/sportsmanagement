@@ -9,13 +9,14 @@
  * @subpackage editclub
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+
 /**
  * sportsmanagementModelEditClub
  * 
@@ -28,7 +29,7 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementModelEditClub extends AdminModel
 {
 	
-  /* interfaces */
+  /** interfaces */
 	var $latitude	= null;
 	var $longitude	= null;
 	var $projectid = 0;
@@ -44,7 +45,6 @@ class sportsmanagementModelEditClub extends AdminModel
 	{
 	   $app = Factory::getApplication();
 		parent::__construct();
-
 		$this->projectid = Factory::getApplication()->input->getInt( 'p', 0 );
 		$this->clubid = Factory::getApplication()->input->getInt( 'cid', 0 );
         $this->name = 'club';
@@ -80,12 +80,11 @@ function updItem($data)
             $data[$key] = $value;
         }
         
-        // Specify which columns are to be ignored. This can be a string or an array.
-        //$ignore = 'id';
+        /** Specify which columns are to be ignored. This can be a string or an array. */
         $ignore = '';
-        // Get the table object from the model.
+        /** Get the table object from the model. */
         $table = $this->getTable( 'club' );
-        // Bind the array to the table object.
+        /** Bind the array to the table object. */
         $table->bind( $data, $ignore );
  try{       
         $result = $table->store();
@@ -98,6 +97,7 @@ catch (Exception $e)
 }
         return $result;
         }
+        
   /**
    * sportsmanagementModelEditClub::getData()
    * 
@@ -105,7 +105,6 @@ catch (Exception $e)
    */
   function getData()
 	{
-	   //$this->_id = Factory::getApplication()->input->getInt('cid',0);
 		if ( is_null( $this->club  ) )
 		{
 			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
@@ -115,8 +114,13 @@ catch (Exception $e)
 	}  
 
 
-/**
-         * Get the data for a new qualification
+
+        /**
+         * sportsmanagementModelEditClub::getForm()
+         * 
+         * @param mixed $data
+         * @param bool $loadData
+         * @return
          */
         public function getForm($data = array(), $loadData = true)
         {
@@ -126,11 +130,10 @@ catch (Exception $e)
         $show_team_community = ComponentHelper::getParams($option)->get('show_team_community',0);
  
         $app = Factory::getApplication('site');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
  
-        // Get the form.
-        JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
-        JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
+        /** Get the form. */
+        Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
+        Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
@@ -176,7 +179,7 @@ catch (Exception $e)
 	protected function loadFormData()
 	{
 	   $app = Factory::getApplication();
-		// Check the session for previously entered form data.
+		/**  Check the session for previously entered form data. */
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{

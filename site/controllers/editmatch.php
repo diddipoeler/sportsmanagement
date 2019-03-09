@@ -34,9 +34,6 @@ class sportsmanagementControllerEditMatch extends FormController {
      */
     function __construct($config = array()) {
         parent::__construct($config);
-
-        // Map the apply task to the save method.
-        //$this->registerTask('apply', 'save');
     }
 
 /**
@@ -132,10 +129,10 @@ $return = $model->savestats($post);
         $post = Factory::getApplication()->input->post->getArray(array());
         $option = Factory::getApplication()->input->getCmd('option');
         
-        /* Ein Datenbankobjekt beziehen */
+        /** Ein Datenbankobjekt beziehen */
         $db = Factory::getDbo();
         
-        // Set the values
+        /** Set the values */
         $data['team1_bonus'] = NULL;
         $data['team2_bonus'] = NULL;
         $data['team1_legs'] = NULL;
@@ -174,7 +171,7 @@ $return = $model->savestats($post);
         $data['new_match_id'] = $post['new_match_id'];
 
         if (isset($post['extended']) && is_array($post['extended'])) {
-            // Convert the extended field to a string.
+            /** Convert the extended field to a string. */
             $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string) $parameter;

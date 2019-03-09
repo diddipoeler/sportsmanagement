@@ -9,7 +9,6 @@
  * @subpackage editclub
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -25,7 +24,6 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewEditClub extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewEditClub::init()
