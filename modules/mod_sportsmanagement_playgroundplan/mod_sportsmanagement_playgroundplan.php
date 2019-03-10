@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_playgroundplan
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -49,10 +48,8 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
-/**
- * get helper
- */
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modSportsmanagementPlaygroundplanHelper', __DIR__ . '/helper.php');
 
 $list = modSportsmanagementPlaygroundplanHelper::getData($params);
 

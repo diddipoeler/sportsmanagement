@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_randomplayer
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -39,13 +38,8 @@ class modJSMRandomplayerHelper
 		$usedtid = $params->get('teams', '0');
 		$season_id = (int) $params->get('s', '0');
 		$usedp = array_map ('intval', $usedp );
-//$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'projectstring <pre>'.print_r($usedp ,true).'</pre>' ),'Error');		
 		$projectstring = (is_array($usedp)) ? implode(",", $usedp)  : (int) $usedp;
 		$teamstring = (is_array($usedtid)) ? implode(",", $usedtid) : (int) $usedtid;
-
-
-//$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'projectstring <pre>'.print_r($projectstring ,true).'</pre>' ),'Error');
-//$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'teamstring <pre>'.print_r($teamstring ,true).'</pre>' ),'Error');
 
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -96,18 +90,13 @@ class modJSMRandomplayerHelper
         
         $db->setQuery( $query,0,1 );
 	$res = $db->loadRow();
-        
-        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($params,true).'</pre>' ),'Error');
-        
+
         if ( !$res )
         {
         JError::raiseWarning(0, 'Keine Spieler vorhanden');      
-//        $mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
         else
         {
-            //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($res,true).'</pre>' ),'Error');
         }
 
 if ( $params['debug_modus'] )

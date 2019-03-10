@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_ranking
  */
 
-//no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -84,8 +83,8 @@ switch ($option)
     break;
 }
 
-//get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMRankingHelper', __DIR__ . '/helper.php');
 
 /**
  * besonderheit für das inlinehockey update, wenn sich das 

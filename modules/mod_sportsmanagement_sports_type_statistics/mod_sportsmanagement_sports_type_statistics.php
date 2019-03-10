@@ -9,9 +9,7 @@
  * @subpackage mod_sportsmanagement_sports_type_statistics
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
@@ -38,8 +36,9 @@ if (!class_exists('sportsmanagementHelper')) {
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-// get helper
-require_once(dirname(__FILE__) . DS . 'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMSportsHelper', __DIR__ . '/helper.php');
+
 $parameter = $params->get('sportstypes');
 $sportstypes = Text::_($params->get('sportstypes'));
 $data = modJSMSportsHelper::getData($params);

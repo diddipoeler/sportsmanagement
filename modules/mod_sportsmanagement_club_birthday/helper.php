@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_club_birthday
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -84,9 +83,7 @@ public static function getClubs($limit,$season_ids)
 	   $app = Factory::getApplication();
 $birthdaytext = '';
 $database = sportsmanagementHelper::getDBConnection();
-/**
- * get club info, we have to make a function for this
- */
+/** get club info, we have to make a function for this */
 $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
 if ( $season_ids )

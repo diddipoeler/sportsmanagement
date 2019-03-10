@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;

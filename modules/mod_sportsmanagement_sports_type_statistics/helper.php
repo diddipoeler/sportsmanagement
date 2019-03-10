@@ -9,11 +9,9 @@
  * @subpackage mod_sportsmanagement_sports_type_statistics
  */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 
 /**
  * modJSMSportsHelper
@@ -26,7 +24,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class modJSMSportsHelper
 {
-
 
     /**
      * modJSMSportsHelper::getData()

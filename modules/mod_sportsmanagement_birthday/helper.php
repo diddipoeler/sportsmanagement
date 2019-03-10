@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_birthday
  */
  
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;

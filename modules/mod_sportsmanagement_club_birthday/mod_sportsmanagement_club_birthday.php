@@ -65,7 +65,9 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 }
  
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
-require_once(dirname(__FILE__).DS.'helper.php');
+
+/** Include the functions only once */
+JLoader::register('modSportsmanagementClubBirthdayHelper', __DIR__ . '/helper.php');
 
 // Reference global application object
 $app = Factory::getApplication();

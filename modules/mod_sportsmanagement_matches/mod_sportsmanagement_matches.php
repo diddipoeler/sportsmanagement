@@ -48,23 +48,24 @@ JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {    
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if (!defined('_JSMMATCHLISTMODPATH')) 
-{ 
-    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
-}
+//if (!defined('_JSMMATCHLISTMODPATH')) 
+//{ 
+//    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
+//}
 if (!defined('_JSMMATCHLISTMODURL')) 
 { 
     define('_JSMMATCHLISTMODURL', Uri::base().'modules/'.$module->module.'/');
 }
 
-require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
-require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
+/** Include the functions only once */
+JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
+JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
+//require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
 
 /**

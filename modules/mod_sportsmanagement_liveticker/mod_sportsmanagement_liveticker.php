@@ -47,7 +47,8 @@ JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modTurtushoutHelper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 $document->addScript(Uri::base().'modules/'.$module->module.'/js/turtushout.js');

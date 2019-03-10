@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_ranking
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -26,7 +25,6 @@ use Joomla\CMS\Factory;
  */
 class modJSMRankingHelper
 {
-
 	
 	/**
 	 * modJSMRankingHelper::getData()
@@ -37,7 +35,6 @@ class modJSMRankingHelper
 	public static function getData(&$params)
 	{
 		$app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 		if (!class_exists('sportsmanagementModelRanking')) 
         {
@@ -46,10 +43,8 @@ class modJSMRankingHelper
             JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		}
 		
-        //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
         sportsmanagementModelProject::$cfg_which_database = $params->get( 'cfg_which_database' );
 		sportsmanagementModelProject::setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
-        //sportsmanagementModelRanking::$cfg_which_database = $params->get( 'cfg_which_database' );
 
 		$project = sportsmanagementModelProject::getProject($params->get( 'cfg_which_database' ),__METHOD__);
 
@@ -60,9 +55,6 @@ class modJSMRankingHelper
 		$res   = $ranking->getRanking(null, null, $divisionid,$params->get( 'cfg_which_database' ));
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$params->get( 'cfg_which_database' ),__METHOD__);
         
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-
 		$list = array();
 		foreach ($res as $ptid => $t) 
         {
@@ -78,8 +70,6 @@ class modJSMRankingHelper
 		$colors = array();
 		if ($params->get('show_rank_colors', 0)) 
         {
-//			$mdlRanking = JModel::getInstance("Ranking", "sportsmanagementModel");
-//			$mdlRanking->setProjectid($params->get('p'));
 			sportsmanagementModelRanking::$projectid = $params->get('p');
             $config = sportsmanagementModelProject::getTemplateConfig("ranking",$params->get( 'cfg_which_database' ),__METHOD__);
 			$colors = sportsmanagementModelProject::getColors($config["colors"]);
@@ -87,10 +77,7 @@ class modJSMRankingHelper
 		return array('project' => $project, 'ranking' => $list, 'colors' => $colors);
 
 	}
-    
-    
-    
-    
+  
     /**
      * modJSMRankingHelper::getCountGames()
      * 
@@ -116,9 +103,7 @@ class modJSMRankingHelper
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
     $matchestoupdate = $db->loadResult();
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
     return $matchestoupdate;
-            
     }
 
 	/**

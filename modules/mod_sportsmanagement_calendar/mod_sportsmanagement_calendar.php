@@ -52,8 +52,8 @@ $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
         
-// Include the syndicate functions only once
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMCalendarHelper', __DIR__ . '/helper.php');
 
 $ajax= $jinput->getVar('ajaxCalMod',0,'default','POST');
 $ajaxmod= $jinput->getVar('ajaxmodid',0,'default','POST');

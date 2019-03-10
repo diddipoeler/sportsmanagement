@@ -31,8 +31,6 @@ require_once (dirname(__FILE__).DS.'calendarClass.php');
 class modJSMCalendarHelper
 {
 
-
-
 	/**
 	 * modJSMCalendarHelper::showCal()
 	 * 
@@ -88,18 +86,15 @@ class modJSMCalendarHelper
 		//for example, the startday is Monday (1)
 		$cal->lightbox = $params->get('lightbox');
 		$cal->lightbox_on_pageload = $params->get('lightbox_on_pageload');
-		//$cal->prefix = $params->get('custom_prefix');
         $cal::$prefix = $params->get('custom_prefix');
 		$cal->usedteams = $params->get('usedteams');
 		$cal->usedclubs = $params->get('usedclubs');
-		//$cal->params = $params;
         $cal::$params = $params;
 		//set the link for the month, this will be the link for the calendar header (ex. December 2007)
 		$cal->monthLink=Route::_('index.php?option=com_joomleague_calendar' . '&year=' . $year .
 					'&month=' . $month . '&modid=' . $modid);
 		$cal->modid= $modid;
 		$cal->ajax = $ajax;
-		//$cal->getMatches($month,$year);
         $cal::getMatches($month,$year);
 		$counter= Array();
 		jimport('joomla.utilities.date');
@@ -108,33 +103,15 @@ class modJSMCalendarHelper
         {
         $config = Factory::getConfig();
         $offset = $config->get('offset'); 
-        //$timeZone = Factory::getConfig()->getValue('offset');
-        
-//        $dateTimeZone = new DateTimeZone($offset);
-//        $dateTime = new DateTime("now", $dateTimeZone);
-//        $offset = $dateTimeZone->getOffset($dateTime);
-           
         $dateformat = 'Format';    
         }
         else
         {    
 		$config = Factory::getConfig();
         $offset = $config->get('offset'); 
-        
-        //$timeZone = Factory::getConfig()->getValue('offset');
-        
-//        $dateTimeZone = new DateTimeZone($offset);
-//        $dateTime = new DateTime("now", $dateTimeZone);
-//        $offset = $dateTimeZone->getOffset($dateTime);
-        //$offset = 0; //$mainframe->getCfg('offset');
         $dateformat = 'toFormat';
         }
         
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' timeZone<br><pre>'.print_r($timeZone,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
-        
-		//foreach ( $cal->matches as $row )
         foreach ( $cal::$matches as $row )
 		{
 			$created = new JDate($row['date'], $offset);
@@ -168,9 +145,7 @@ class modJSMCalendarHelper
 			if (!isset($counter[$createdDate]['count'])) $counter[$createdDate]['count'] = 1;
 			else $counter[$createdDate]['count'] += 1; //$counter[$date] counts the number of articles in each day, to display it as a title in the link of the day
 		}
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' createdDate<br><pre>'.print_r($createdDate,true).'</pre>'),'Notice');
-        
+       
 		foreach ($counter AS $createdDate => $val) 
         {
 			$title =  $counter[$createdDate]['tiptitle'].' :: ' .$counter[$createdDate]['count'] . ' ';
@@ -181,7 +156,6 @@ class modJSMCalendarHelper
 			$cal::$linklist[$createdDate]['click']=	'jlCalmod_showhide(\'jlCalList-'.$modid.'\', \'jlcal_'
 			.$counter[$createdDate]['createdYear'].'-'.$counter[$createdDate]['createdMonth'].'-'.$counter[$createdDate]['createdDay'].'-'.$modid
 			.'\', \''.str_replace(' :: ', ': ',$title).'\', '.$inject.', '.$modid.');';
-			//$cal->linklist[$createdDate]['click']=	'jlcnewDate('.$counter[$createdDate]['createdMonth'].",". $counter[$createdDate]['createdYear'].",".$modid."," .$day.');';
 			$cal::$linklist[$createdDate]['link']=	'javascript:void(0)';
 			$cal::$linklist[$createdDate]['link'].="\" title=\""; //the calendar class sets the links this way: <a href=" . THE LINK STRING . ">
 			//so, the easiest way to add a title to that link is by setting THE LINK STRING = the link" title="the title
@@ -220,33 +194,18 @@ class modJSMCalendarHelper
         }
         else
         {    
-		$offset = 0; //$mainframe->getCfg('offset');
+		$offset = 0;
         $dateformat = 'toFormat';
         }
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
-        
-		//$offset = 0; // $mainframe->getCfg('offset');
-		//$prefix = $params->get('custom_prefix');
+
         $query->select("match_date");
         $query->from('#__sportsmanagement_matches'); 
         $query->where('match_id=\'' . $id . '\'');
-        
-//		$query=	' SELECT match_date' .
-//			' FROM #__joomleague_matches'.
-//			' WHERE match_id=\'' . $id . '\'';
-		
-        //$query = ($prefix != '') ? str_replace('#__', $prefix, $query) : $query;
-		
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
 		$db->setQuery($query);
 		$row = $db->loadObjectList();
-
-
+        
 		jimport('joomla.utilities.date');
 		$created = new JDate($row[0]->match_date, $offset);
-
 
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -382,10 +341,7 @@ class JSMCalendar extends PHPCalendar
 		$day = '0'.$day;
 
 		$date = $year . $month . $day;
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  'date <br><pre>'.print_r($date,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  'linklist <br><pre>'.print_r(JSMCalendar::$linklist,true).'</pre>'),'Notice');
-        
+       
 		if(isset(JSMCalendar::$linklist[$date]['link']))
         {
 			$link = JSMCalendar::$linklist[$date]['link'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
@@ -453,7 +409,6 @@ class JSMCalendar extends PHPCalendar
 	 */
 	static function jl_utf8_convert ($text, $fromenc='iso-8859-1', $toenc='UTF-8' )
 	{
-		//if (strtolower($fromenc)==strtolower($toenc) || JSMCalendar::$params->get('convert', 0)==0) return $text;
         if (strtolower($fromenc)==strtolower($toenc) || SportsmanagementConnector::$params->get('convert', 0)==0) return $text;
 
 		elseif (function_exists('iconv')) {
@@ -560,22 +515,12 @@ class JSMCalendar extends PHPCalendar
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' year<br><pre>'.print_r($year,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' month<br><pre>'.print_r($month,true).'</pre>'),'Notice');
-        
 		$livescore = JSMCalendar::$params->get('livescore', '');
-		//$joomleague = JSMCalendar::$params->get('sportsmanagement', '');
 		$caldates = array();
-//		$caldates['start'] = date("$year-$month-01 00:00:00");
-//		$caldates['end'] = date("$year-$month-31 23:59:59");
-        
         $caldates['start'] = "$year-$month-01 00:00:00";
 		$caldates['end'] = "$year-$month-31 23:59:59";
-        
         $caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
 		$caldates['endtimestamp'] = sportsmanagementHelper::getTimestamp($caldates['end']);
-        
         $caldates['roundstart'] = "$year-$month-01";
 		$caldates['roundend'] = "$year-$month-31";
         
@@ -598,8 +543,6 @@ class JSMCalendar extends PHPCalendar
 			LivescoreConnector::getMatches ( $caldates, JSMCalendar::$params, $this->matches );
 		}
 		$matches = JSMCalendar::sortArray(JSMCalendar::$matches, 'asc', 'date');
-//		JSMCalendar::$matches = $matches;
-//        $matches = $this->sortArray($this->matches, 'asc', 'date');
 		JSMCalendar::$matches = $matches;
 		return $matches;
 	}
@@ -626,15 +569,12 @@ class JSMCalendar extends PHPCalendar
         }
         else
         {    
-		//$offset = 0; //$mainframe->getCfg('offset');
         $config = Factory::getConfig();
         $offset = $config->get('offset'); 
         $dateformat = 'toFormat';
         $dateoutformat = '%Y-%m-%d';
         }
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
-        
+       
 		$language= Factory::getLanguage(); //get the current language
 		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
 		$article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
@@ -648,16 +588,7 @@ class JSMCalendar extends PHPCalendar
 		$now = new JDate();
         
         $today = $now->$dateformat($dateoutformat);
-        
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        $today = $now->$dateformat('Y-m-d');
-//        }
-//        else
-//        {
-//        $today = $now->$dateformat('%Y-%m-%d');    
-//        } 
- 
+
 		$todaytitle = '';
 		$pm='';
 		//$offset = 0; // $mainframe->getCfg('offset');
@@ -680,10 +611,6 @@ class JSMCalendar extends PHPCalendar
 			$thispm = $row['project_id'].'_'.$row['matchcode'].'_'.$row['type'];
 			
             $da = new JDate($row['date'], $offset);
-            //$da = new DateTime($row['date'], new DateTimeZone($offset));
-            
-            
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' da<br><pre>'.print_r($da,true).'</pre>'),'Notice');
             
 			if ($div !=$da->$dateformat($dateoutformat)) 
             {

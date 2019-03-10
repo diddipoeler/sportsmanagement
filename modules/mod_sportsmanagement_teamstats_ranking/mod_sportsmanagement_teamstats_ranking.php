@@ -9,9 +9,6 @@
  * @subpackage mod_sportsmanagement_teamstats_ranking
  */
 
-/**
- * no direct access
- */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -56,10 +53,8 @@ if (!class_exists('sportsmanagementModelProject'))
 	JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 }
 
-/**
- * get helper
- */
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modSportsmanagementTeamStatHelper', __DIR__ . '/helper.php');
 
 $list = modSportsmanagementTeamStatHelper::getData($params);
 

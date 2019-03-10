@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_trainingsdata
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 

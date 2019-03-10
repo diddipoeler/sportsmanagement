@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_trainingsdata
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -48,10 +47,8 @@ JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-/**
- * get helper
- */
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMTrainingsData', __DIR__ . '/helper.php');
 
 $trainingsdata = modJSMTrainingsData::getData($params);
 

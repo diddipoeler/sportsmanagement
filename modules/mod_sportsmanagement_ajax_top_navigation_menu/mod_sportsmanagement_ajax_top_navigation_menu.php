@@ -12,7 +12,6 @@
  * 
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -61,8 +60,8 @@ $language_tag = $langtag->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-// get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modSportsmanagementAjaxTopNavigationMenuHelper', __DIR__ . '/helper.php');
 
 HTMLHelper::_('behavior.tooltip');
 

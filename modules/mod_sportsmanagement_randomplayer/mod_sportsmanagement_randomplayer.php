@@ -73,13 +73,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 }
 
-
-
-
-// get helper
-require_once (dirname(__FILE__).DS.'helper.php');
-
-
+/** Include the functions only once */
+JLoader::register('modJSMRandomplayerHelper', __DIR__ . '/helper.php');
 
 $list = modJSMRandomplayerHelper::getData($params);
 

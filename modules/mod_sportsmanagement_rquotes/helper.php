@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_rquotes
  */
  
-//no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;

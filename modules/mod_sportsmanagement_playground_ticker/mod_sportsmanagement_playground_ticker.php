@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_playground_ticker
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -46,8 +45,8 @@ JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-// get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMPlaygroundTicker', __DIR__ . '/helper.php');
 
 /**
  * soll die externe datenbank genutzt werden ?

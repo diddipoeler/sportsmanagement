@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_count_rekord
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Factory;
@@ -25,23 +24,17 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-/**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-/**
- * add the classes for handling
- */
+/** add the classes for handling */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-/**
- * get helper
- */
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMStatistikRekordHelper', __DIR__ . '/helper.php');
 
 $document  = Factory::getDocument();
 

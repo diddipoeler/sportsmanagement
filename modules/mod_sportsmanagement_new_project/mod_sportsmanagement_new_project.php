@@ -9,8 +9,6 @@
  * @subpackage mod_sportsmanagement_new_project
  */
 
-
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -42,8 +40,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-// get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMNewProjectHelper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 

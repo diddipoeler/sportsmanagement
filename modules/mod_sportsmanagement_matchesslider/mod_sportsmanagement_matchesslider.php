@@ -65,10 +65,14 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
 
-if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
+//if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
 if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', Uri::base().'modules/'.$module->module.'/');}
-require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
-require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
+
+/** Include the functions only once */
+JLoader::register('modMatchesSliderHelper', __DIR__ . '/helper.php');
+JLoader::register('MatchesSliderSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
+//require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
+//require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 

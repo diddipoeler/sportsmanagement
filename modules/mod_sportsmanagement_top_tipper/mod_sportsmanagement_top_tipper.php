@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_top_tipper
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -54,10 +53,8 @@ JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH
 JLoader::import('components.com_sportsmanagement.models.predictionranking', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
 
-/**
- * get helper
- */
-require_once( dirname(__FILE__) . DS . 'helper.php' );
+/** Include the functions only once */
+JLoader::register('modJSMTopTipper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 $mainframe = Factory::getApplication();

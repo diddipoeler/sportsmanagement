@@ -52,7 +52,8 @@ $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
   
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
-require_once(dirname(__FILE__) . DS . 'helper.php');
+/** Include the functions only once */
+require_once (dirname(__FILE__).DS.'helper.php');
 
 // Reference global application object
 $app = Factory::getApplication();

@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_teamstatistics_counter
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Factory;
@@ -33,10 +32,10 @@ if (!class_exists('JSMModelLegacy'))
 
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'teamstats.php');
+JLoader::import('components.com_sportsmanagement.models.teamstats', JPATH_SITE);
 
-// get helper
-require_once(dirname(__FILE__) . DS . 'helper.php');
+/** Include the functions only once */
+JLoader::register('modJSMTeamStatisticsCounter', __DIR__ . '/helper.php');
 
 $data     = modJSMTeamStatisticsCounter::getData($params);
 $document = Factory::getDocument();
