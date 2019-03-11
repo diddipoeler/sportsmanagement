@@ -377,7 +377,7 @@ catch (Exception $e)
         {
 			return null;
 		}
-        
+        /*
         if ( $startdate && $enddate )
         {
         $query->clear();
@@ -404,9 +404,12 @@ catch (Exception $e)
         $round_ids = implode(',',$rounds);
         }  
         }
-        
-        if ( $round_ids )
-        {
+*/
+$start_timestamp = sportsmanagementHelper::getTimestamp($startdate);      
+$end_timestamp = sportsmanagementHelper::getTimestamp($enddate); 
+		
+        //if ( $round_ids )
+        //{
         $query->clear();
         // Select some fields
 		//$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
@@ -456,12 +459,14 @@ catch (Exception $e)
         
         if ( self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0)
         {
-        $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+        //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  
         }
         
         if ( $startdate && $enddate )
         {
-        $query->where('m.round_id IN ('.$round_ids.')');    
+        //$query->where('m.round_id IN ('.$round_ids.')');    
+	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  	
         }
         
         if( self::$teamartsel > 0 ) 
@@ -512,7 +517,7 @@ catch (Exception $e)
 {
     $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }		
-        }
+        //}
         
         
         if ( !$this->allmatches )
