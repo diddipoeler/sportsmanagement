@@ -405,8 +405,8 @@ catch (Exception $e)
         }  
         }
 */
-$start_timestamp = sportsmanagementHelper::getTimestamp($startdate);      
-$end_timestamp = sportsmanagementHelper::getTimestamp($enddate); 
+$start_timestamp = sportsmanagementHelper::getTimestamp($startdate.' 00:00:00');      
+$end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59'); 
 		
         //if ( $round_ids )
         //{
