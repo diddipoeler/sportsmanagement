@@ -287,10 +287,6 @@ catch (Exception $e)
 			self::$startdate = $project->start_date;
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
-        }
 		return self::$startdate;
 	}
 
@@ -303,11 +299,6 @@ catch (Exception $e)
 	{
 	   $app = Factory::getApplication();
        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
-       }
-       
 		if ( empty(self::$enddate) )
 		{
 			$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
@@ -316,11 +307,6 @@ catch (Exception $e)
 			$nextweek = mktime(0,0,0,date("m"),date("d")+ $dayz,date("y"));
 			self::$enddate = date("Y-m-d",$nextweek);
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
-        }
         
 		return self::$enddate;
 	}
@@ -399,7 +385,8 @@ catch (Exception $e)
         $query->from('#__sportsmanagement_round as r');
         $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
         $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');  
-        $db->setquery($query);
+        $query->group('r.id');
+	$db->setquery($query);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
