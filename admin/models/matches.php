@@ -99,6 +99,163 @@ class sportsmanagementModelMatches extends JSMModelList
 		$this->setState('list.start', $value);
 	}
 
+  
+  function prepareItems($items)
+  {
+  foreach($items as $item)  
+  {
+  $item->homeplayers_count = 0;  
+  $item->homestaff_count = 0;   
+    $item->awayplayers_count = 0;  
+  $item->awaystaff_count = 0; 
+    $item->referees_count = 0; 
+    
+    $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam1_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 1'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    //print_r($this->jsmquery->dump() ).'<br>';
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    //print_r($result).'<br>';
+
+    $players = implode(",",$result);
+    //print_r($players).'<br>';
+    
+        // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+      
+      //print_r($this->jsmquery->dump() ).'<br>';
+    $item->homeplayers_count = $this->jsmdb->loadResult();
+      //print_r($item->homeplayers_count).'<br>';
+  }
+    
+  $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam1_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 2'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    //print_r($this->jsmquery->dump() ).'<br>';
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    //print_r($result).'<br>';
+
+    $players = implode(",",$result);
+    //print_r($players).'<br>';
+    
+        // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+      
+      //print_r($this->jsmquery->dump() ).'<br>';
+    $item->homestaff_count = $this->jsmdb->loadResult();
+      //print_r($item->homeplayers_count).'<br>';
+  }  
+    
+    
+      $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam2_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 1'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    //print_r($this->jsmquery->dump() ).'<br>';
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    //print_r($result).'<br>';
+
+    $players = implode(",",$result);
+    //print_r($players).'<br>';
+    
+        // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+      
+      //print_r($this->jsmquery->dump() ).'<br>';
+    $item->awayplayers_count = $this->jsmdb->loadResult();
+      //print_r($item->homeplayers_count).'<br>';
+  }
+    
+  $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam2_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 2'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    //print_r($this->jsmquery->dump() ).'<br>';
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    //print_r($result).'<br>';
+
+    $players = implode(",",$result);
+    //print_r($players).'<br>';
+    
+        // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+      
+      //print_r($this->jsmquery->dump() ).'<br>';
+    $item->awaystaff_count = $this->jsmdb->loadResult();
+      //print_r($item->homeplayers_count).'<br>';
+  }  
+    
+  $this->jsmquery->clear();  
+   // count match referee
+        $this->jsmquery->select('count(mr.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
+        $this->jsmquery->where('mr.match_id = '.$item->id);  
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->referees_count = $this->jsmdb->loadResult();
+    
+    
+  }  
+    
+    
+    
+    
+  return $items;  
+  }
+  
+  
+  
+  
+  
 	/**
 	 * sportsmanagementModelMatches::getListQuery()
 	 * 
@@ -140,7 +297,55 @@ class sportsmanagementModelMatches extends JSMModelList
         $subQuery3= $db->getQuery(true);
         $subQuery4= $db->getQuery(true);
         $subQuery5= $db->getQuery(true);
+      
+$query->clear();
+$query->select('mc.*');
+// From the match table
+$query->from('#__sportsmanagement_match AS mc');      
+ // Join over the users for the checked out user.
+	$query->select('u.name AS editor');
+	$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.id = mc.projectteam1_id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS ptaway ON ptaway.id = mc.projectteam2_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = pthome.id');
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = ptaway.id');
+        $query->join('LEFT','#__sportsmanagement_round AS r ON r.id = mc.round_id ');
+        $query->select('divaway.id as divawayid');
+        $query->join('LEFT','#__sportsmanagement_division AS divaway ON divaway.id = ptaway.division_id');
+        $query->select('divhome.id as divhomeid'); 
+        $query->join('LEFT','#__sportsmanagement_division AS divhome ON divhome.id = pthome.division_id');
+        
+	if ( $this->_rid )
+	{
+        $query->where(' mc.round_id = ' . $this->_rid);
+	}
+	if ( $this->_projectteam )
+	{
+	$query->where('( mc.projectteam1_id = ' . $this->_projectteam .' OR mc.projectteam2_id = '.$this->_projectteam.' )' );
+	}
+		
+        if ($this->getState('filter.division'))
+		{
+        $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
+        }      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      /*
 	// Select some fields
+      $query->clear();
 	$query->select('mc.*');
 	// From the match table
 	$query->from('#__sportsmanagement_match AS mc');
@@ -183,9 +388,7 @@ class sportsmanagementModelMatches extends JSMModelList
         $subQuery3->from('#__sportsmanagement_match_player AS mp  ');
         $subQuery3->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerAway.')');
         $query->select('('.$subQuery3.') AS awayplayers_count');
-/**
- * join staff away
- */        
+      
         $subQueryStaffAway->select('tp.id');
         $subQueryStaffAway->from('#__sportsmanagement_season_team_person_id AS tp ');
         $subQueryStaffAway->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
@@ -231,11 +434,13 @@ class sportsmanagementModelMatches extends JSMModelList
 		{
         $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
         }
-		
+		*/
         
         $query->order($db->escape($this->getState('list.ordering', 'mc.match_date')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
 
+//echo '<pre>'.print_r($query->dump(),true).'</pre>';
+      
 		return $query;
         
 	}
