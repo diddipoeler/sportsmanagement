@@ -3232,7 +3232,33 @@ if ( $position  )
 {
 $result = array_unique($position );
 $match_ids = implode(",",$result);   
+$query->clear();
+$query->select('pt.*,pt.id AS positiontoolid');
+$query->from('#__sportsmanagement_project_position AS pt');
+$query->select('po.*,po.name AS name');
+$query->join('LEFT','#__sportsmanagement_position po ON pt.position_id = po.id');
+$query->select('pid.name AS parent_name');
+$query->join('LEFT','#__sportsmanagement_position pid ON po.parent_id = pid.id');    
+$query->where('pt.project_id = '.$project->id) );    
+$items = $db->loadObjectList();    
+foreach( $items as $item )
+{    
+$query->clear();
+// Fields to update.
+$fields = array(
+    $db->quoteName('project_position_id') . ' = ' . $item->position_id
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('project_position_id') . ' = '. $item->positiontoolid, 
+    $db->quoteName('match_id') . ' IN (' . $match_ids . ')'
+);    
+
+$query->update($db->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+$db->setQuery($query);
+$resultupdate = $db->execute();    
     
+}    
 }
     
 }    
