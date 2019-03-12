@@ -9,14 +9,9 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.modellist');
-
-
 
 /**
  * sportsmanagementModelProjectpositions
@@ -66,23 +61,12 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         // Initialise variables.
 		$app = Factory::getApplication('administrator');
                 $pid = $this->jsmjinput->get('pid');
-        //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
         $this->setState('filter.pid', $pid );
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
 		// List state information.
 		parent::populateState('po.name', 'asc');
 	}    
@@ -97,8 +81,6 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
-//        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
-        
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -108,23 +90,23 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         // Select some fields
 		$query->select('pt.*,pt.id AS positiontoolid');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pt');
+		$query->from('#__sportsmanagement_project_position AS pt');
         // Select some fields
 		$query->select('po.*,po.name AS name');
 		// From the table
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position po ON pt.position_id = po.id');
+		$query->join('LEFT','#__sportsmanagement_position po ON pt.position_id = po.id');
         // Select some fields
 		$query->select('pid.name AS parent_name');
 		// From the table
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position pid ON po.parent_id = pid.id');
+		$query->join('LEFT','#__sportsmanagement_position pid ON po.parent_id = pid.id');
         // count 
         $subQuery1->select('count(*)');
-        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ');
+        $subQuery1->from('#__sportsmanagement_position_eventtype AS pe ');
         $subQuery1->where('pe.position_id=po.id');
         $query->select('('.$subQuery1.') AS countEvents');
         // count 
         $subQuery2->select('count(*)');
-        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ');
+        $subQuery2->from('#__sportsmanagement_position_statistic AS ps ');
         $subQuery2->where('ps.position_id=po.id');
         $query->select('('.$subQuery2.') AS countStats');
         
@@ -132,18 +114,10 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         
         $query->order($db->escape($this->getState('list.ordering', 'po.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
-                
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        { 
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-}
 
         return $query;
 	}
-    
-    
-    
-   
+
    /**
     * sportsmanagementModelProjectpositions::updateprojectpositions()
     * 
@@ -280,75 +254,9 @@ $result = $this->jsmdb->loadObjectList();
 		return $result;
 	}
 
-	/**
-	 * Method to return the project positions array (id,name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
-	function getProjectPositions()
-	{
-		$app = Factory::getApplication();
-		$project_id=$app->getUserState('com_joomleagueproject');
-		$query='	SELECT	p.id AS value,
-							p.name AS text,
-							p.sports_type_id AS type,
-							p.parent_id AS parentID
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
-					WHERE pp.project_id='.$project_id.'
-					ORDER BY p.parent_id ASC,p.name ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		return $result;
-	}
+	
 
-	/**
-	* Method to assign positions of an existing project to a copied project
-	*
-	* @access  public
-	* @return  array
-	* @since 0.1
-	*/
-	function cpCopyPositions($post)
-	{
-		$old_id=(int)$post['old_id'];
-		$project_id=(int)$post['id'];
-		//copy positions
-		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$old_id;
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadAssocList())
-		{
-			foreach($results as $result)
-			{
-				$p_position =& $this->getTable();
-				$p_position->bind($result);
-				$p_position->set('id',NULL);
-				$p_position->set('project_id',$project_id);
-				if (!$p_position->store())
-				{
-					echo $this->_db->getErrorMsg();
-					return false;
-				}
-				$newid = $this->getDbo()->insertid();
-				$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player " . 
-							"SET project_position_id = " . $newid .
-							" WHERE project_position_id = " . $result['id'];
-				$this->_db->setQuery($query);
-				if(!$this->_db->execute())
-				{
-					$this->setError($this->_db->getErrorMsg());
-					$result=false;
-				}	
-			}
-		}
-		return true;
-	}
+
 	
 	/**
 	 * return count of projectpositions
@@ -358,12 +266,13 @@ $result = $this->jsmdb->loadObjectList();
 	 */
 	function getProjectPositionsCount($project_id)
 	{
-		$query='SELECT count(*) AS count
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp
-		JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pp.project_id
-		WHERE p.id='.$project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+$this->jsmquery->clear();
+$this->jsmquery->select('count(*) AS count');   
+$this->jsmquery->from('#__sportsmanagement_project_position AS pp');   
+$this->jsmquery->join('INNER','#__sportsmanagement_project AS p on p.id = pp.project_id');
+$this->jsmquery->where('p.id = '.$project_id); 
+$this->jsmdb->setQuery($this->jsmquery);
+return $this->jsmdb->loadResult();
 	}
 	
 }

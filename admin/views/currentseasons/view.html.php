@@ -43,7 +43,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 		$item->count_projectdivisions = $mdlProjectDivisions->getProjectDivisionsCount($item->id);
 		
 		$item->count_projectpositions = 0;
-		$mdlProjectPositions = BaseDatabaseModel::getInstance("Projectposition", "sportsmanagementModel");
+		$mdlProjectPositions = BaseDatabaseModel::getInstance("Projectpositions", "sportsmanagementModel");
 		$item->count_projectpositions = $mdlProjectPositions->getProjectPositionsCount($item->id);
 		
 		$item->count_projectreferees = 0;

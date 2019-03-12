@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -83,92 +82,9 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 		}
 		return $result;
 	}
-	
-	/**
-	 * Method to return the project positions array (id,name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
-	function getProjectPositions()
-	{
-		$app = Factory::getApplication();
-		$project_id=$app->getUserState('com_joomleagueproject');
-		$query='	SELECT	p.id AS value,
-							p.name AS text,
-							p.sports_type_id AS type,
-							p.parent_id AS parentID
-					FROM #__joomleague_position AS p
-					LEFT JOIN #__joomleague_project_position AS pp ON pp.position_id=p.id
-					WHERE pp.project_id='.$project_id.'
-					ORDER BY p.parent_id ASC,p.name ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		return $result;
-	}
 
-	/**
-	* Method to assign positions of an existing project to a copied project
-	*
-	* @access  public
-	* @return  array
-	* @since 0.1
-	*/
-	function cpCopyPositions($post)
-	{
-		$old_id=(int)$post['old_id'];
-		$project_id=(int)$post['id'];
-		//copy positions
-		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$old_id;
-		$this->_db->setQuery($query);
-		if ($results=$this->_db->loadAssocList())
-		{
-			foreach($results as $result)
-			{
-				$p_position =& $this->getTable();
-				$p_position->bind($result);
-				$p_position->set('id',NULL);
-				$p_position->set('project_id',$project_id);
-				if (!$p_position->store())
-				{
-					echo $this->_db->getErrorMsg();
-					return false;
-				}
-				$newid = $this->getDbo()->insertid();
-				$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_team_player " . 
-							"SET project_position_id = " . $newid .
-							" WHERE project_position_id = " . $result['id'];
-				$this->_db->setQuery($query);
-				if(!$this->_db->execute())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					$result=false;
-				}	
-			}
-		}
-		return true;
-	}
 	
-	/**
-	 * return count of projectpositions
-	 *
-	 * @param int project_id
-	 * @return int
-	 */
-	function getProjectPositionsCount($project_id)
-	{
-		$query='SELECT count(*) AS count
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp
-		JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pp.project_id
-		WHERE p.id='.$project_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+	
 	
 }
 ?>

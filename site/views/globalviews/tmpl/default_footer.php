@@ -31,10 +31,8 @@ $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width',100)
     width: 80%;
     height: 60%;
   }  
-  
 
 </style>
-
 
 <style>
 .modal-dialog {
@@ -64,9 +62,7 @@ SqueezeBox.open(url, {
 </script>	
 
 <div class="<?php echo $this->divclassrow;?>" style="text-align:center; clear:both">
-
 <br />      
-      
 <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target="_blank" href="http://www.fussballineuropa.de">
 <img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            
 	<br />
@@ -78,7 +74,6 @@ SqueezeBox.open(url, {
 <br />  
 <img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
 <a href="https://www.facebook.com/joomlasportsmanagement/" target="_blank">JSM auf Facebook</a>	
-
 	<br />      
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
@@ -87,14 +82,14 @@ SqueezeBox.open(url, {
 	<br />    
       
 <?PHP
-// welche joomla version ?
+/** welche joomla version ? */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
-// Joomla! 2.5 code here
+/** Joomla! 2.5 code here */
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
@@ -106,11 +101,4 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 
 ?>      
 
-
 </div>
-
-
-            
-<?php
-//}
-?>

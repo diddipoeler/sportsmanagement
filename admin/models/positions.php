@@ -9,7 +9,6 @@
  * @subpackage positions
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -124,19 +123,10 @@ class sportsmanagementModelPositions extends JSMModelList
 		{
         $this->jsmquery->where('po.sports_type_id = '.$this->getState('filter.sports_type') );
         }
-
 	
 		$this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'po.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-                
-  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-  
+    
 		return $this->jsmquery;
 	}
 
@@ -153,18 +143,6 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getParentsPositions()
 	{
-		// Reference global application object
-        //$app = Factory::getApplication();
-        // JInput object
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
-        //$query = Factory::getDbo()->getQuery(true);
-        //$results = array();
-		//$project_id=$app->getUserState($option.'project');
-        
-		//get positions already in project for parents list
-		//support only 2 sublevel, so parent must not have parents themselves
-        
         // Select some fields
 	$this->jsmquery->clear();
         $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
@@ -176,14 +154,9 @@ class sportsmanagementModelPositions extends JSMModelList
 		$this->jsmdb->setQuery($this->jsmquery);
 		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-			//return false;
             return false;
 		}
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+       
 		return $result;
 	}
     
@@ -245,24 +218,16 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
         $query = Factory::getDbo()->getQuery(true);
-        
-		//$project_id=$app->getUserState($option.'project');
-        
+       
         // Select some fields
         $query->select('pp.id AS value,name AS text');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id = p.id');
+		$query->from('#__sportsmanagement_position AS p');
+        $query->join('LEFT', '#__sportsmanagement_project_position AS pp ON pp.position_id = p.id');
         $query->where('pp.project_id = '.$project_id);  
         $query->order('p.ordering');  
         
-		//$query='SELECT	pp.id AS value,
-//				name AS text
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS p
-//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
-//				WHERE pp.project_id='.$project_id.'
-//						ORDER BY ordering ';
-		Factory::getDbo()->setQuery($query);
+    	Factory::getDbo()->setQuery($query);
 		if (!$result=Factory::getDbo()->loadObjectList())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
@@ -271,7 +236,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 		else
 		{
 			foreach ($result as $position) {
-				$position->text=Text::_($position->text);
+				$position->text = Text::_($position->text);
 			}
 			return $result;
 		}
@@ -300,7 +265,6 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 		$this->jsmdb->setQuery($this->jsmquery);
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -327,12 +291,9 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
         // Select some fields
         $query->select('id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
+		$query->from('#__sportsmanagement_position');
         $query->order('name');
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
+       
 		Factory::getDbo()->setQuery($query);
 		$result = Factory::getDbo()->loadObjectList();
 		foreach ($result as $position)
