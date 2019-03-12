@@ -3228,8 +3228,12 @@ $query->where('r.project_id = '.$project->id);
 $query->where('mp.project_position_id != 0');
 $db->setQuery($query);
 $position = $db->loadColumn();    
-
+if ( $position  )
+{
+$result = array_unique($position );
+$match_ids = implode(",",$result);   
     
+}
     
 }    
     
