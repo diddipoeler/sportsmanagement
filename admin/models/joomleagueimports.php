@@ -3210,6 +3210,31 @@ $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
 self::$_success['Update Bilderpfade:'] = $my_text;
+    
+$my_text = '';
+$query->clear();
+$query->select('p.id');
+$query->from('#__sportsmanagement_project as p');
+$db->setQuery($query);
+$resultp = $db->loadObjectList();    
+foreach ($resultp as $project)
+{
+$query->clear();
+$query->select('mp.match_id');
+$query->from('#__sportsmanagement_match_player as mp');
+$query->join('INNER','#__sportsmanagement_match as m ON m.id = mp.match_id');
+$query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
+$query->where('r.project_id = '.$project->id);
+$query->where('mp.project_position_id != 0');
+$db->setQuery($query);
+$position = $db->loadColumn();    
+
+    
+    
+}    
+    
+    
+    
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step','ENDE');
 Factory::getDocument()->addScriptOptions('success', self::$_success );
