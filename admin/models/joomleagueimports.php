@@ -3239,7 +3239,7 @@ $query->select('po.*,po.name AS name');
 $query->join('LEFT','#__sportsmanagement_position po ON pt.position_id = po.id');
 $query->select('pid.name AS parent_name');
 $query->join('LEFT','#__sportsmanagement_position pid ON po.parent_id = pid.id');    
-$query->where('pt.project_id = '.$project->id) );    
+$query->where('pt.project_id = '.$project->id );    
 $items = $db->loadObjectList();    
 foreach( $items as $item )
 {    
