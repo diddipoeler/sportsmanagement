@@ -9,7 +9,6 @@
  * @subpackage matches
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -196,7 +195,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->lists = $lists;
         $this->selectlist = $selectlist;
         $this->option = $option;
-        $this->matches = $this->items;
+        $this->matches = $this->model->prepareItems($this->items);
         $this->ress = $ress;
         $this->projectws = $projectws;
         $this->roundws = $roundws;
