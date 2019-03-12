@@ -9,7 +9,6 @@
  * @subpackage teampersons
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -58,7 +57,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $project = $mdlProject->getProject($this->project_id);
 
         $this->season_id = $project->season_id;
-
+$items = $this->model->PersonProjectPosition($this->project_id,$this->_persontype);
         if (!$items) {
             // fehlen im projekt die positionen ?
             // wenn ja, dann fehlende positionen hinzufügen
@@ -130,12 +129,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        //$app = Factory::getApplication();
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
-        // store the variable that we would like to keep for next time
-        // function syntax is setUserState( $key, $value );
-	    $this->app->setUserState("$this->option.pid",$this->project_id);
+        $this->app->setUserState("$this->option.pid",$this->project_id);
         $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
         $this->app->setUserState("$this->option.team_id", $this->team_id);
         $this->app->setUserState("$this->option.persontype", $this->_persontype);
