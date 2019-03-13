@@ -332,8 +332,8 @@ function getTotal() {
     return false;
 }
         }
-        
-        $allowed = self::isAllowed(self::$cfg_which_database,0);
+        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database,__METHOD__);
+        $allowed = self::isAllowed(self::$cfg_which_database,$project->editorgroup);
 		$user = Factory::getUser();
 
 		if ( count($this->_data) > 0 )
