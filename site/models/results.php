@@ -338,6 +338,7 @@ function getTotal() {
 
 		if ( count($this->_data) > 0 )
 		{
+			$this->_data[$k]->allowed = false;
 			foreach ( $this->_data as $k => $match )
 			{
 				if ( ( $match->checked_out == 0 ) || ( $match->checked_out == $user->id ) )
