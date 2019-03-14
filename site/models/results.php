@@ -668,7 +668,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
           $query->where('(pt1.admin = '.(int)$userid.' OR pt2.admin = '.(int)$userid.')');
 
         $db->setQuery($query);
+		try{
         $result = $db->loadResult();
+	}
+            catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.print_r($query->dump(),true)), 'error');	    
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	    
+    return false;
+}	
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 	}
