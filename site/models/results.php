@@ -353,8 +353,16 @@ function getTotal() {
                 $this->jsmquery->from('#__content as c');
                 $this->jsmquery->where('xreference = '. $match->id );
                 $this->jsmquery->where('catid = '. $cat_id );
+				try{
                 $this->jsmdb->setQuery($this->jsmquery); 
                 $this->_data[$k]->content_id = $this->jsmdb->loadResult();
+		 }
+            catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.print_r($this->jsmquery->dump(),true)), 'error');	    
+    $this->_data[$k]->content_id = 0;
+}		
                 
 			}
 		}
