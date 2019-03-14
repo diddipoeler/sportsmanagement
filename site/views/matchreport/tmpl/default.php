@@ -97,6 +97,10 @@ if ( $this->config['show_details'] )
 {
 $output['COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'] = 'details';
 }
+if ( $this->config['show_youtube'] )
+{
+$output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'youtube';
+}		
 if ( $this->config['show_extended'] && $this->extended )
 {
 $output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
