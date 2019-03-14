@@ -39,8 +39,17 @@ function getYoutubeEmbedHtml($url){
 </div>  
 <div id="countall" class="panel-collapse collapse">
 <div class="panel-body">
+<div id="videobereich">	
+<iframe class="videoextern" width="640" height="360"
+ src="<?php echo $this->youtube;?>"
+ frameborder="0" allowfullscreen></iframe>
+</div>
 
   
+<?php
+echo $this->youtube;  
+echo getYoutubeEmbedHtml($this->youtube);   
+?>  
 </div>
 </div>
 </div>
