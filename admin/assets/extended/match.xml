@@ -2,7 +2,7 @@
 <config>
 	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
 	
-	<field name="COM_SPORTSMANAGEMENT_EXT_MATCH_YOUTUBE" type="text"
+	<field name="youtube" type="text"
       label="COM_SPORTSMANAGEMENT_EXT_MATCH_YOUTUBE" description="COM_SPORTSMANAGEMENT_EXT_MATCH_YOUTUBE_DESC">
     </field>
 	
