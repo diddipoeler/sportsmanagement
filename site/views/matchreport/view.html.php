@@ -93,7 +93,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
     $this->extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
     $this->formation1 = $this->extended2->getValue('formation1');
     $this->formation2 = $this->extended2->getValue('formation2');
-    
+    $this->youtube = $this->extended2->getValue('youtube');
     if ( !$this->formation1 )
     {
         $this->formation1 = '4231';
