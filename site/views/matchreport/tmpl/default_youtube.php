@@ -7,6 +7,8 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
+ *
+ * https://www.html-seminar.de/responsive-webdesign-externe-videos-einbinden.htm
  */
 
 defined('_JEXEC') or die('Restricted access');
