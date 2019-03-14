@@ -99,7 +99,7 @@ $output['COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'] = 'details';
 }
 if ( $this->config['show_youtube'] )
 {
-$output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'youtube';
+$output['COM_SPORTSMANAGEMENT_TABS_YOUTUBE'] = 'youtube';
 }		
 if ( $this->config['show_extended'] && $this->extended )
 {
