@@ -17,8 +17,8 @@ var yourQuery;
 	
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
-dpjQuery("#jform_geocomplete").trigger("geocode");
-getlatlonopenstreet(1); 
+//dpjQuery("#jform_geocomplete").trigger("geocode");
+//getlatlonopenstreet(1); 
 	
 if ( dpjQuery("#jform_latitude").val() )
 {
