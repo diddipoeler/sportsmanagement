@@ -75,6 +75,32 @@ $google_api_key = ComponentHelper::getParams($option)->get('google_api_developer
 $google_api_redirecturi = ComponentHelper::getParams($option)->get('google_api_redirecturi','');
 $google_mail_account = ComponentHelper::getParams($option)->get('google_mail_account','');
 
+      
+$session = JFactory::getSession(array(
+				'expire' => 30
+		));    
+// If we are on the callback from google don't save
+		if (! $app->input->get('code'))
+		{
+			$params = $app->input->get('params', array(
+					'client-id' => null,
+					'client-secret' => null
+			), 'array');
+			$session->set('client-id', $params['client-id'], $this->_name);
+			$session->set('client-secret', $params['client-secret'], $this->_name);
+		}
+		$clientId = $session->get('client-id', null, $this->_name);
+		$clientSecret = $session->get('client-secret', null, $this->_name);      
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientId<br><pre>'.print_r($clientId,true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientSecret<br><pre>'.print_r($clientSecret,true).'</pre>'),'Notice');      
+if ($app->input->get('code'))
+		{
+			$session->set('client-id', null, $this->_name);
+			$session->set('client-secret', null, $this->_name);
+		}      
+      
+      
+      
 //$client = new Google_Client();
 $client = new Google_Client(
 				array(
@@ -101,11 +127,11 @@ $uri = JFactory::getURI();
 						'port',
 						'path'
 				)) . '?option='.$option.'&task=jsmgcalendarimport.import');
-
+$client->setApprovalPrompt('force');
 
 
 //$client->setRedirectUri(Uri::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
 
 //$uri = $client->createAuthUrl();
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
@@ -127,7 +153,10 @@ $calList = $cal->calendarList->listCalendarList();
     $code = $e->getCode(); // Returns '500';
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
+
+$tok = json_decode($token, true);
+
        
 /*
 foreach ( $calList->getItems() as $calendarListEntry ) 
@@ -147,7 +176,15 @@ while(true)
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' backgroundColor<br><pre>'.print_r($calendarListEntry->backgroundColor,true).'</pre>'),'Notice');
 
-
+$params = new JRegistry();
+$params->set('refreshToken', $tok['refresh_token']);
+$params->set('client-id', $clientId);
+$params->set('client-secret', $clientSecret);
+$params->set('calendarId', $calendarListEntry->getID());
+$params->set('action-create', true);
+$params->set('action-edit', true);
+$params->set('action-delete', true);
+                    
 $this->jsmquery->clear();
 $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_gcalendar');
