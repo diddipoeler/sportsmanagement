@@ -244,7 +244,7 @@ $this->jsmdb->setQuery($this->jsmquery);
 $calendar_result = $this->jsmdb->loadObjectList();
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_result<br><pre>' . print_r($calendar_result, true) . '</pre><br>', 'Notice');
 $calendar = new stdClass();
-$calendar->params = new Registry(json_decode($calendar_result->params));
+$calendar->params = new Registry(json_decode($calendar_result[0]->params));
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar<br><pre>' . print_r($calendar, true) . '</pre><br>', 'Notice');
 
 
