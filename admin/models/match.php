@@ -232,8 +232,10 @@ class sportsmanagementModelMatch extends JSMModelAdmin
     {
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre><br>', 'Notice');
-        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
+//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre><br>', 'Notice');
+//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
+        
+        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_id<br><pre>' . print_r($post['calendar_id'], true) . '</pre><br>', 'Notice');
 
 
 
