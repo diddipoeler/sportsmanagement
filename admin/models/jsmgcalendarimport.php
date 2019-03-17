@@ -15,12 +15,11 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Filter\OutputFilter;
 
 //require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
-//JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Client', JPATH_ADMINISTRATOR);
-//JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Service.Calendar', JPATH_ADMINISTRATOR);
-
 
 /**
  * sportsmanagementModeljsmgcalendarImport
@@ -115,7 +114,7 @@ $client->setScopes(array(
 		));
 $client->setAccessType("offline");
 
-$uri = JFactory::getURI();
+$uri = Factory::getURI();
 		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
 		{
 			$uri->setHost('localhost');
@@ -181,7 +180,7 @@ while(true)
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' backgroundColor<br><pre>'.print_r($calendarListEntry->backgroundColor,true).'</pre>'),'Notice');
 
-$params = new JRegistry();
+$params = new Registry();
 $params->set('refreshToken', $tok['refresh_token']);
 $params->set('client-id', $clientId);
 $params->set('client-secret', $clientSecret);
@@ -205,10 +204,33 @@ $newcalendar->calendar_id = $calendarListEntry->getID();
 $newcalendar->name = $calendarListEntry->getSummary();
 $newcalendar->color = $calendarListEntry->backgroundColor;
 $newcalendar->username = $google_mail_account;
+$newcalendar->params = $params->toString();
+$newcalendar->title = $calendarListEntry->getSummary();
+$newcalendar->alias = OutputFilter::stringURLSafe( $newcalendar->name );
+$newcalendar->created = Factory::getDate();
+$newcalendar->created_by = Factory::getUser();
+$newcalendar->modified = Factory::getDate();
+$newcalendar->modified_by = Factory::getUser();
 // Insert the object
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_gcalendar', $newcalendar);
 }
+else
+{
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $result_sel;
+$object->params = $params->toString();
+$object->title = $calendarListEntry->getSummary();
+$object->alias = OutputFilter::stringURLSafe( $newcalendar->name );
 
+$object->modified = Factory::getDate();
+$object->modified_by = Factory::getUser();
+// Update their details in the table using id as the primary key.
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $object, 'id');     
+    
+    
+}
 	 
 //    echo $calendarListEntry->getSummary();
   }
