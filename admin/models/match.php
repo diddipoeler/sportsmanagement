@@ -236,6 +236,18 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 //        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
         
         $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_id<br><pre>' . print_r($post['calendar_id'], true) . '</pre><br>', 'Notice');
+$this->jsmquery->clear();
+$this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_gcalendar');
+$this->jsmquery->where('id = ' . $post['calendar_id']);
+$this->jsmdb->setQuery($this->jsmquery);
+$calendar_result = $this->jsmdb->loadObjectList();
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_result<br><pre>' . print_r($calendar_result, true) . '</pre><br>', 'Notice');
+
+
+
+
+
 
 
 
