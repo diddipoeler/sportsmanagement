@@ -153,11 +153,16 @@ $calList = $cal->calendarList->listCalendarList();
     $code = $e->getCode(); // Returns '500';
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
 
 $tok = json_decode($token, true);
 
-       
+foreach ($calList['items'] as $cal)
+{
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($cal['id'],true).'</pre>'),'Notice');				    
+                    
+                    
+}                    
 /*
 foreach ( $calList->getItems() as $calendarListEntry ) 
 {
