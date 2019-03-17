@@ -81,12 +81,12 @@ $session = JFactory::getSession(array(
 // If we are on the callback from google don't save
 		if (! $app->input->get('code'))
 		{
-			$params = $app->input->get('params', array(
-					'client-id' => null,
-					'client-secret' => null
-			), 'array');
-			$session->set('client-id', $params['client-id'], $this->_name);
-			$session->set('client-secret', $params['client-secret'], $this->_name);
+//			$params = $app->input->get('params', array(
+//					'client-id' => null,
+//					'client-secret' => null
+//			), 'array');
+			$session->set('client-id', $google_client_id, $this->_name);
+			$session->set('client-secret', $google_client_secret, $this->_name);
 		}
 		$clientId = $session->get('client-id', null, $this->_name);
 		$clientSecret = $session->get('client-secret', null, $this->_name);      
