@@ -207,10 +207,10 @@ $newcalendar->username = $google_mail_account;
 $newcalendar->params = $params->toString();
 $newcalendar->title = $calendarListEntry->getSummary();
 $newcalendar->alias = OutputFilter::stringURLSafe( $newcalendar->name );
-$newcalendar->created = Factory::getDate();
-$newcalendar->created_by = Factory::getUser();
-$newcalendar->modified = Factory::getDate();
-$newcalendar->modified_by = Factory::getUser();
+$newcalendar->created = Factory::getDate()->toSql();
+$newcalendar->created_by = Factory::getUser()->get('id');
+$newcalendar->modified = Factory::getDate()->toSql();
+$newcalendar->modified_by = Factory::getUser()->get('id');
 // Insert the object
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_gcalendar', $newcalendar);
 }
@@ -222,10 +222,10 @@ $object = new stdClass();
 $object->id = $result_sel;
 $object->params = $params->toString();
 $object->title = $calendarListEntry->getSummary();
-$object->alias = OutputFilter::stringURLSafe( $newcalendar->name );
+$object->alias = OutputFilter::stringURLSafe( $object->title );
 
-$object->modified = Factory::getDate();
-$object->modified_by = Factory::getUser();
+$object->modified = Factory::getDate()->toSql();
+$object->modified_by = Factory::getUser()->get('id');
 // Update their details in the table using id as the primary key.
 $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $object, 'id');     
     
