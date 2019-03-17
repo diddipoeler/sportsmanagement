@@ -16,8 +16,8 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 
-require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
-//JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
+//require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
+JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 //JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Client', JPATH_ADMINISTRATOR);
 //JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Service.Calendar', JPATH_ADMINISTRATOR);
 
@@ -80,17 +80,34 @@ $client = new Google_Client(
 				array(
 						'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
 				));
-$client->setApprovalPrompt('force');
+$client->setApplicationName("JSMCalendar");                
+//$client->setApprovalPrompt('force');
 $client->setClientId($google_client_id);
 $client->setClientSecret($google_client_secret);
-$client->setAccessType("offline");
 $client->setScopes(array(
 				'https://www.googleapis.com/auth/calendar'
 		));
-$client->setRedirectUri(Uri::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
+$client->setAccessType("offline");
+
+$uri = JFactory::getURI();
+		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
+		{
+			$uri->setHost('localhost');
+		}
+		$client->setRedirectUri(
+				$uri->toString(array(
+						'scheme',
+						'host',
+						'port',
+						'path'
+				)) . '?option='.$option.'&task=jsmgcalendarimport.import');
+
+
+
+//$client->setRedirectUri(Uri::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
 
-$uri = $client->createAuthUrl();
+//$uri = $client->createAuthUrl();
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
 
 if (! $app->input->get('code'))
