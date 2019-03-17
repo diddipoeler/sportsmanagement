@@ -156,7 +156,7 @@ $calList = $cal->calendarList->listCalendarList();
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
 
 $tok = json_decode($token, true);
-
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tok<br><pre>'.print_r($tok,true).'</pre>'),'Notice');
 foreach ($calList['items'] as $cal)
 {
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($cal['id'],true).'</pre>'),'Notice');				    
