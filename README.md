@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   17-03-2019: **1.0.71** Start Google Kalender
 *   22-02-2019: **1.0.70** Codebereinigungen
 *   02-02-2019: **1.0.69** Drag & Drop Bilderupload
 *   26-12-2018: **1.0.68** Leaflet Route bei der Ansicht Sportplätze
