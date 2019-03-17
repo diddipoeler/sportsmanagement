@@ -610,6 +610,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
 
         <input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
         <input type='hidden' name='use_legs' value='<?php echo $this->projectws->use_legs; ?>'/>
+        <input type='hidden' name='calendar_id' value='<?php echo $this->projectws->gcalendar_id; ?>'/>
         <input type='hidden' name='boxchecked' value='0'/>
         <input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
         <input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
