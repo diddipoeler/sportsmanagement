@@ -350,13 +350,13 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' 
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
 	
 $start->setDateTime($date.'T'.$anstoss.'-00:00'); 	
-//$start->setTimeZone($row->timezone);
-$start->setTimeZone('UTC');      
+$start->setTimeZone($row->timezone);
+//$start->setTimeZone('UTC');      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
 $end->setDateTime($date.'T'.$abpfiff.':00-00:00'); 	
-//$end->setTimeZone($row->timezone);      
-$end->setTimeZone('UTC');
+$end->setTimeZone($row->timezone);      
+//$end->setTimeZone('UTC');
 $event->setEnd($end);      
 
 if ( $row->gcal_event_id )
