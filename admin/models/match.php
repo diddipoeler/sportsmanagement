@@ -340,11 +340,11 @@ $event->setSummary($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.'
 $event->setDescription($row->roundname);      
 $event->setLocation($row->playground_name);      
 $start = new Google_Service_Calendar_EventDateTime();      
-$start->setDate('2019-03-18');
+$start->setDate($row->match_date);
 $start->setTimeZone('UTC');      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
-$end->setDate('2019-03-18');
+$end->setDate($row->match_date));
 $end->setTimeZone('UTC');      
 $event->setEnd($end);      
 
