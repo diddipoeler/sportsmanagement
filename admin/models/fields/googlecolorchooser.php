@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormField;
 
-class JFormFieldGoogleColorChooser extends \FormFieldText
+class JFormFieldGoogleColorChooser extends \JFormFieldText
 {
 	protected $type = 'GoogleColorChooser';
 
