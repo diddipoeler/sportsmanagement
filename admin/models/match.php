@@ -351,7 +351,7 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' 
 	
 //$start->setDate($date);
 //$start->setDateTime = "{$date}T{$anstoss}:00.000-00:00";
-$start->setDateTime($date.'T'.$anstoss.':00-00:00'); 	
+$start->setDateTime($date.'T'.$anstoss.'-00:00'); 	
 //$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
 //$start->setDateTime($time);
 //$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
