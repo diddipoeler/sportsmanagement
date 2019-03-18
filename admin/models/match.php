@@ -26,9 +26,9 @@ JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.aut
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
-JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
 /*
@@ -272,6 +272,7 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><p
      */
     function insertgooglecalendarold()
     {
+	    /*
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -464,7 +465,7 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><p
         } else {
             return false;
         }
-
+*/
     }
 
 
