@@ -331,13 +331,13 @@ $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList();	    
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
 	    
-	    
+foreach ($result as $row) {	    
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
 $event = new Google_Service_Calendar_Event();
 
-$event->setSummary('title');
-$event->setDescription('description');      
-$event->setLocation('location');      
+$event->setSummary($row->roundname);
+$event->setDescription($row->hometeam.' - '$row->awayteam);      
+$event->setLocation($row->playground_name);      
 $start = new Google_Service_Calendar_EventDateTime();      
 $start->setDate('2019-03-18');
 $start->setTimeZone('UTC');      
@@ -351,7 +351,7 @@ $event = $cal->events->insert($calendar->params->get('calendarId'), $event);
 $id = $event->getId();      
       
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($id, true) . '</pre><br>', 'Notice');    
-
+}
 
     }
 
