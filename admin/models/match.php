@@ -250,7 +250,31 @@ $calendar->params = new Registry(json_decode($calendar_result[0]->params));
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar<br><pre>' . print_r($calendar, true) . '</pre><br>', 'Notice');
 
 $params = array();
-$client = $this->getClient($calendar->params->get('client-id'), $calendar->params->get('client-secret'));
+$client = new Google_Client(
+				array(
+						'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
+				));
+$client->setApplicationName("JSMCalendar");                
+//$client->setApprovalPrompt('force');
+$client->setClientId($calendar->params->get('client-id'));
+$client->setClientSecret($calendar->params->get('client-secret'));
+$client->setScopes(array(
+				'https://www.googleapis.com/auth/calendar'
+		));
+$client->setAccessType("offline");
+$uri = Factory::getURI();
+		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
+		{
+			$uri->setHost('localhost');
+		}
+		$client->setRedirectUri(
+				$uri->toString(array(
+						'scheme',
+						'host',
+						'port',
+						'path'
+				)) . '?option='.$option.'&task=jsmgcalendarimport.import');
+$client->setApprovalPrompt('force');
 $client->refreshToken($calendar->params->get('refreshToken'));
 
 $cal = new Google_Service_Calendar($client);
