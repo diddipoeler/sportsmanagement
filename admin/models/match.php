@@ -9,7 +9,6 @@
  * @subpackage match
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
@@ -283,7 +282,24 @@ $obj = $cal->events->listEvents($calendar->params->get('calendarId'), $params);
 $googleEvents = $obj->items;
 
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
+$event = new Google_Service_Calendar_Event();
 
+$event->setSummary('title');
+$event->setDescription('description');      
+$event->setLocation('location');      
+$start = new Google_Service_Calendar_EventDateTime();      
+$start->setDate('2019-03-18');
+$start->setTimeZone('UTC');      
+$event->setStart($start);      
+$end = new Google_Service_Calendar_EventDateTime();      
+$end->setDate('2019-03-18');
+$end->setTimeZone('UTC');      
+$event->setEnd($end);      
+
+$event = $cal->events->insert($calendar->params->get('calendarId'), $event);      
+$id = $event->getId();      
+      
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($id, true) . '</pre><br>', 'Notice');    
 
 
     }
