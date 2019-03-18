@@ -336,7 +336,7 @@ foreach ($result as $row) {
 $event = new Google_Service_Calendar_Event();
 
 $event->setSummary($row->roundname);
-$event->setDescription($row->hometeam.' - '$row->awayteam);      
+$event->setDescription($row->hometeam.' - '.$row->awayteam);      
 $event->setLocation($row->playground_name);      
 $start = new Google_Service_Calendar_EventDateTime();      
 $start->setDate('2019-03-18');
