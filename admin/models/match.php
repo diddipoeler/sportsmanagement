@@ -371,7 +371,7 @@ $id = $event->getId();
 $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $row->id;
-$object->gcal_event_id = $row->gcal_event_id;
+$object->gcal_event_id = $id;
 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 }
       
