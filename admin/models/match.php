@@ -344,7 +344,7 @@ $start->setDate($row->match_date);
 $start->setTimeZone('UTC');      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
-$end->setDate($row->match_date));
+$end->setDate($row->match_date);
 $end->setTimeZone('UTC');      
 $event->setEnd($end);      
 
