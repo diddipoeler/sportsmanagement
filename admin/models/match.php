@@ -342,8 +342,10 @@ $event->setLocation($row->playground_name);
 $start = new Google_Service_Calendar_EventDateTime();  
 // Setze das Datum und verwende das RFC 3339 Format.
 list($date, $time) = explode(" ", $row->match_date);
-$time = strftime("%H:%M", strtotime($time));
-$endtime = date('H:i', strtotime('+' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . ' minutes', strtotime($time)));	
+$anstoss = date('H:i', $time);	
+$abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
+//$time = strftime("%H:%M", strtotime($time));
+//$endtime = date('H:i', strtotime('+' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . ' minutes', strtotime($time)));	
 $start->setDate($date);
 //$start->setDateTime($time);
 //$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
