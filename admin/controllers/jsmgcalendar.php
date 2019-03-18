@@ -14,7 +14,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 
 /**
- * sportsmanagementControllerjsmGCalendar
+ * sportsmanagementControllerjsmgcalendar
  * 
  * @package 
  * @author diddi
@@ -22,7 +22,7 @@ use Joomla\CMS\MVC\Controller\FormController;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmGCalendar extends FormController
+class sportsmanagementControllerjsmgcalendar extends FormController
 {
     
     /**
