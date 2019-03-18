@@ -342,7 +342,8 @@ $event->setLocation($row->playground_name);
 $start = new Google_Service_Calendar_EventDateTime();  
 // Setze das Datum und verwende das RFC 3339 Format.
 list($date, $time) = explode(" ", $row->match_date);
-$anstoss = date('H:i', $row->match_date);	
+//$anstoss = date('H:i', $row->match_date);	
+$anstoss = $time;	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
 	
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
