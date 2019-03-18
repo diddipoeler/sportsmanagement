@@ -345,7 +345,7 @@ list($date, $time) = explode(" ", $row->match_date);
 $time = strftime("%H:%M", strtotime($time));
 $endtime = date('H:i', strtotime('+' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . ' minutes', strtotime($time)));	
 $start->setDate($date);
-$start->setDateTime($time);
+//$start->setDateTime($time);
 //$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
 //$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
 	
@@ -353,7 +353,7 @@ $start->setTimeZone('UTC');
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
 $end->setDate($date);
-$end->setDateTime($endtime);	
+//$end->setDateTime($endtime);	
 $end->setTimeZone('UTC');      
 $event->setEnd($end);      
 
