@@ -349,27 +349,23 @@ $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $g
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
 	
-//$start->setDate($date);
-//$start->setDateTime = "{$date}T{$anstoss}:00.000-00:00";
 $start->setDateTime($date.'T'.$anstoss.'-00:00'); 	
-//$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
-//$start->setDateTime($time);
-//$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
-//$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
-	
-$start->setTimeZone($row->timezone);      
+//$start->setTimeZone($row->timezone);
+$start->setTimeZone('UTC');      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
-//$end->setDate($date);
-//$end->setDateTime = "{$date}T{$abpfiff}:00.000-00:00";	
 $end->setDateTime($date.'T'.$abpfiff.':00-00:00'); 	
-$end->setTimeZone($row->timezone);      
+//$end->setTimeZone($row->timezone);      
+$end->setTimeZone('UTC');
 $event->setEnd($end);      
 
 $event = $cal->events->insert($calendar->params->get('calendarId'), $event);      
 $id = $event->getId();      
       
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($id, true) . '</pre><br>', 'Notice');    
+
+
+
 }
 
     }
