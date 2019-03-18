@@ -12,6 +12,8 @@
  
 defined('_JEXEC') or die;
 
+private static $apiUrl = 'https://www.transifex.com/jsm/sportsmanagement/';
+private static $languages = array();
 
 
 
