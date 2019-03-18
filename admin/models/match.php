@@ -231,6 +231,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
     {
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
+	    $project_id = $post['project_id'];
+	    $match_ids = implode(",", $pks);
 //        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre><br>', 'Notice');
 //        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
         
@@ -281,6 +283,55 @@ $cal = new Google_Service_Calendar($client);
 $obj = $cal->events->listEvents($calendar->params->get('calendarId'), $params);
 $googleEvents = $obj->items;
 
+// Select some fields
+$this->jsmquery->clear();	    
+$this->jsmquery->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
+$this->jsmquery->from('#__sportsmanagement_project as p');
+$this->jsmquery->join('INNER', '#__sportsmanagement_gcalendar AS gc ON gc.id = p.gcalendar_id');
+$this->jsmquery->where('p.id = ' . $project_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$gcalendar_id = $this->jsmdb->loadObject();
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');	    
+// jetzt die spiele
+$this->jsmquery->clear();
+// select some fields
+$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+$this->jsmquery->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
+$this->jsmquery->select('pt1.project_id');
+$this->jsmquery->select('t1.name as hometeam,t2.name as awayteam');
+$this->jsmquery->select('r.name as roundname');
+$this->jsmquery->select('d1.name as divhome');
+$this->jsmquery->select('d2.name as divaway');
+$this->jsmquery->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+// from
+$this->jsmquery->from('#__sportsmanagement_match AS m');
+// join
+$this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d1 ON pt1.division_id = d1.id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d2 ON pt2.division_id = d2.id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
+// where
+$this->jsmquery->where('m.published = 1');
+$this->jsmquery->where('m.id IN (' . $match_ids . ' )');
+$this->jsmquery->where('r.project_id = ' . (int)$project_id);
+if ($gcalendar_id->gcalendar_use_fav_teams) {
+$this->jsmquery->where('( t1.id IN (' . $gcalendar_id->fav_team . ' ) OR t2.id IN (' . $gcalendar_id->fav_team . ' )  )');
+}
+// group
+$this->jsmquery->group('m.id ');
+// order
+$this->jsmquery->order('m.match_date ASC,m.match_number');
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadObjectList();	    
+$this->jsmapp-->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
+	    
+	    
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
 $event = new Google_Service_Calendar_Event();
 
