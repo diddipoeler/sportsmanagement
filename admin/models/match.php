@@ -359,10 +359,23 @@ $end->setDateTime($date.'T'.$abpfiff.':00-00:00');
 $end->setTimeZone('UTC');
 $event->setEnd($end);      
 
+if ( $row->gcal_event_id )
+{
+$event = $cal->events->update($calendar->params->get('calendarId'), $row->gcal_event_id, $event);    
+}
+else
+{
 $event = $cal->events->insert($calendar->params->get('calendarId'), $event);      
 $id = $event->getId();      
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $row->id;
+$object->gcal_event_id = $row->gcal_event_id;
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+}
       
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($id, true) . '</pre><br>', 'Notice');    
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($row->gcal_event_id, true) . '</pre><br>', 'Notice');    
 
 
 
