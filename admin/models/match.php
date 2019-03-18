@@ -344,9 +344,10 @@ $start = new Google_Service_Calendar_EventDateTime();
 list($date, $time) = explode(" ", $row->match_date);
 $anstoss = date('H:i', $time);	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
-//$time = strftime("%H:%M", strtotime($time));
-//$endtime = date('H:i', strtotime('+' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . ' minutes', strtotime($time)));	
-$start->setDate($date);
+
+//$start->setDate($date);
+$start->setDateTime = "{$date}T{$anstoss}:00.000-00:00";
+//$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
 //$start->setDateTime($time);
 //$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
 //$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
@@ -354,8 +355,8 @@ $start->setDate($date);
 $start->setTimeZone('UTC');      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
-$end->setDate($date);
-//$end->setDateTime($endtime);	
+//$end->setDate($date);
+$end->setDateTime = "{$date}T{$abpfiff}:00.000-00:00";	
 $end->setTimeZone('UTC');      
 $event->setEnd($end);      
 
