@@ -335,7 +335,7 @@ foreach ($result as $row) {
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
 $event = new Google_Service_Calendar_Event();
 
-$event->setSummary($row->hometeam.' - '.$row->awayteam.' ('$row->team1_result.':'.$row->team2_result.')' );
+$event->setSummary($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.':'.$row->team2_result.')' );
 $event->setDescription($row->roundname);      
 $event->setLocation($row->playground_name);      
 $start = new Google_Service_Calendar_EventDateTime();      
