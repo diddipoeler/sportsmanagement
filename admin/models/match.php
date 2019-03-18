@@ -348,7 +348,13 @@ $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $g
 	
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
-	
+
+$timezone = new DateTimeZone($row->timezone);
+$offset   = $timezone->getOffset(new DateTime)/3600;
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' offset<br><pre>' . print_r($offset, true) . '</pre><br>', 'Notice');
+        
+        	
 $start->setDateTime($date.'T'.$anstoss.'-00:00'); 	
 $start->setTimeZone($row->timezone);
 //$start->setTimeZone('UTC');      
