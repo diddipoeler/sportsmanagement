@@ -12,6 +12,10 @@
  
 defined('_JEXEC') or die;
 
+class sportsmanagementHelperTransifex
+{
+
+	
 private static $apiUrl = 'https://www.transifex.com/jsm/sportsmanagement/';
 private static $languages = array();
 
@@ -53,7 +57,7 @@ private static function getLangmap ()
 		return self::$languages;
 	}
 
-
+}
 
 
 ?>
