@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
+//require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
 
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
@@ -40,7 +40,7 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
  * @param mixed $tpl
  * @return void
  */
-function init( $tpl = null )
+function init( )
 	{
 		$app = Factory::getApplication();
 		$jinput = $app->input;
@@ -50,7 +50,7 @@ function init( $tpl = null )
 		$user = Factory::getUser();
 		$model = $this->getModel();
         $starttime = microtime(); 
-        
+        /*
 $client = new Google_Client(); 
 $client->setApprovalPrompt('force');
 $client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
@@ -68,7 +68,7 @@ if (! $app->input->get('code'))
 $app->redirect($client->createAuthUrl());
 $app->close();
 }
-
+*/
 /*	
 $client = new Google_Client();
 $client->setAccessType('online'); // default: offline
@@ -89,11 +89,12 @@ $auth_url = $client->createAuthUrl();
 header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 		}
 */	
+	/*
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($_GET['code'] ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' scriptUri <br><pre>'.print_r($scriptUri ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' googleclient <br><pre>'.print_r($client ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_r($service ,true).'</pre>'),'');
-
+*/
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
