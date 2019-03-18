@@ -286,7 +286,7 @@ $googleEvents = $obj->items;
 
 // Select some fields
 $this->jsmquery->clear();	    
-$this->jsmquery->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
+$this->jsmquery->select('p.timezone,p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
 $this->jsmquery->from('#__sportsmanagement_project as p');
 $this->jsmquery->join('INNER', '#__sportsmanagement_gcalendar AS gc ON gc.id = p.gcalendar_id');
 $this->jsmquery->where('p.id = ' . $project_id);
@@ -344,7 +344,10 @@ $start = new Google_Service_Calendar_EventDateTime();
 list($date, $time) = explode(" ", $row->match_date);
 $anstoss = date('H:i', $time);	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
-
+	
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
+	
 //$start->setDate($date);
 //$start->setDateTime = "{$date}T{$anstoss}:00.000-00:00";
 $start->setDateTime($date.'T'.$anstoss.':00-00:00'); 	
@@ -353,13 +356,13 @@ $start->setDateTime($date.'T'.$anstoss.':00-00:00');
 //$when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
 //$when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
 	
-$start->setTimeZone('UTC');      
+$start->setTimeZone($row->timezone);      
 $event->setStart($start);      
 $end = new Google_Service_Calendar_EventDateTime();      
 //$end->setDate($date);
 //$end->setDateTime = "{$date}T{$abpfiff}:00.000-00:00";	
 $end->setDateTime($date.'T'.$abpfiff.':00-00:00'); 	
-$end->setTimeZone('UTC');      
+$end->setTimeZone($row->timezone);      
 $event->setEnd($end);      
 
 $event = $cal->events->insert($calendar->params->get('calendarId'), $event);      
