@@ -40,8 +40,9 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
  * @param mixed $tpl
  * @return void
  */
-function init( )
+public function init ()
 	{
+	/*
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -50,6 +51,7 @@ function init( )
 		$user = Factory::getUser();
 		$model = $this->getModel();
         $starttime = microtime(); 
+	*/
         /*
 $client = new Google_Client(); 
 $client->setApprovalPrompt('force');
@@ -95,6 +97,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' scriptUri <br><pre>'.prin
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' googleclient <br><pre>'.print_r($client ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_r($service ,true).'</pre>'),'');
 */
+	/*
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -102,9 +105,9 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_
         // Assign the Data
 		$this->form = $form;
 		$this->gcalendar = $item;
-        
+        */
         // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
-        if ($this->gcalendar->id < 1) 
+        if ($this->item->id < 1) 
         {
             $this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
             $this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
