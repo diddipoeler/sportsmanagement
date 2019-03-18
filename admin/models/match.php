@@ -282,7 +282,7 @@ $cal = new Google_Service_Calendar($client);
 $obj = $cal->events->listEvents($calendar->params->get('calendarId'), $params);
 $googleEvents = $obj->items;
 
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
 
 
 
