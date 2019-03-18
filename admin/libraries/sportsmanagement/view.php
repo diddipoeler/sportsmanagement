@@ -173,7 +173,7 @@ switch ( $this->view )
             {
             case 'match';
             case 'predictionproject';
-	case 'jsmgcalendar':
+	//case 'jsmgcalendar':
             break;
             default:
 $this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
