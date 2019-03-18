@@ -125,7 +125,8 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_
 	*/
     protected function addToolbar() 
     {
-        $app = Factory::getApplication();
+        /*
+	    $app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
@@ -172,7 +173,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_
         ToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		ToolbarHelper::preferences($option);
-
+*/
 		parent::addToolbar();
 	}
 
