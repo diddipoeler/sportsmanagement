@@ -16,7 +16,7 @@ class sportsmanagementHelperTransifex
 {
 
 	
-private static $apiUrl = 'https://www.transifex.com/api/2/project/joomla-sports-management-translation';
+private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement';
 private static $languages = array();
 
 public static function getData ()
