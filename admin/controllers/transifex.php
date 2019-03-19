@@ -42,7 +42,7 @@ function gettransifexinfo()
 $result = sportsmanagementHelperTransifex::getData();
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 	
-$transifexLanguages = json_decode($result['data']);	
+$transifexLanguages = sportsmanagementHelperTransifex::getData('languages');	
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexLanguages<br><pre>'.print_r($transifexLanguages,true).'</pre>'),'');	
 	
 }
