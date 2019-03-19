@@ -85,7 +85,8 @@ private static function getLangmap ()
 			foreach ($langMap as $map)
 			{
 				$langCodes = explode(':', $map);
-				$languages[trim($langCodes[0])] = trim($langCodes[1]);
+				//$languages[trim($langCodes[0])] = trim($langCodes[1]);
+				$languages[trim($langCodes[1])] = trim($langCodes[0]);
 			}
 
 			self::$languages = $languages;
