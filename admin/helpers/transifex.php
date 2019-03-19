@@ -62,7 +62,7 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<
 public static function getLangCode ($lang, $inverse = false)
 	{
 		$languages = self::getLangmap();
-
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' languages<br><pre>'.print_r($languages,true).'</pre>'),'Notice');
 		if ($inverse)
 		{
 			return array_search($lang, $languages);
