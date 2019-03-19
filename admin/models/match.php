@@ -414,7 +414,7 @@ $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $o
 
 
 }
-
+return true;
     }
 
 
