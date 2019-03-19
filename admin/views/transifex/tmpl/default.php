@@ -22,7 +22,7 @@ HTMLHelper::_('behavior.modal');
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	
 <?PHP
-echo $this->loadTemplate('joomla_version');
+echo $this->loadTemplate('data');
 ?>	
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
