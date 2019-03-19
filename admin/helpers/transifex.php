@@ -14,24 +14,32 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
+/**
+ * sportsmanagementHelperTransifex
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementHelperTransifex
 {
-
 	
 private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement';
-//private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement/resources';
-  
-  
-  
-  
-  
 private static $languages = array();
 
+/**
+ * sportsmanagementHelperTransifex::getData()
+ * 
+ * @param mixed $path
+ * @return
+ */
 public static function getData ($path)
 	{
 		$url = self::$apiUrl. '/' . $path;
 	
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url,true).'</pre>'),'Notice');
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url,true).'</pre>'),'Notice');
 	
 		$ch = curl_init();
 		$info = '';
@@ -59,10 +67,17 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<
 	}
 
 
+/**
+ * sportsmanagementHelperTransifex::getLangCode()
+ * 
+ * @param mixed $lang
+ * @param bool $inverse
+ * @return
+ */
 public static function getLangCode ($lang, $inverse = false)
 	{
 		$languages = self::getLangmap();
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' languages<br><pre>'.print_r($languages,true).'</pre>'),'Notice');
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' languages<br><pre>'.print_r($languages,true).'</pre>'),'Notice');
 		if ($inverse)
 		{
 			return array_search($lang, $languages);
@@ -75,6 +90,11 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' lang
 		return false;
 	}
 
+/**
+ * sportsmanagementHelperTransifex::getLangmap()
+ * 
+ * @return
+ */
 private static function getLangmap ()
 	{
 		if (! count(self::$languages))

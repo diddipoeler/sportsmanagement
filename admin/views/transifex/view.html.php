@@ -66,9 +66,17 @@ $resourceData = sportsmanagementHelperTransifex::getData('resource/' . $value->s
 $temparray = json_decode($resourceData['data']);
 $object = new stdClass();
 $object->file = $value->name;
-$object->completed = $temparray[$code]->completed;
+//$object->completed = $temparray[$code]->completed;
+foreach ((array) json_decode($resourceData['data']) as $langCode => $lang)
+{
+if ( $langCode == $code )  
+{
+$object->completed = $lang->completed;  
+}  
+  
+}  
 $translatefiles[] = $object;  
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temparray<br><pre>'.print_r($temparray  ,true).'</pre>'),'');    
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temparray<br><pre>'.print_r($temparray  ,true).'</pre>'),'');    
   
 }
 
