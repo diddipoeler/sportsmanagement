@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMINISTRATOR);
 
 /**
