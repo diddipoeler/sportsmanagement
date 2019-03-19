@@ -66,13 +66,14 @@ $resourceData = sportsmanagementHelperTransifex::getData('resource/' . $value->s
 $temparray = json_decode($resourceData['data']);
 $object = new stdClass();
 $object->file = $value->name;
+$object->language = $code;  
 //$object->completed = $temparray[$code]->completed;
 foreach ((array) json_decode($resourceData['data']) as $langCode => $lang)
 {
 if ( $langCode == $code )  
 {
 $object->completed = $lang->completed;
-$object->language = $code;  
+
 }  
   
 }  
