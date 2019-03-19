@@ -222,7 +222,7 @@ jimport('joomla.html.html.bootstrap');
                                 }
                                 ?>
 
-<a class="btn" href="index.php?option=com_sportsmanagement&task=transifex.info">
+<a class="btn" href="index.php?option=com_sportsmanagement&task=transifex.gettransifexinfo">
 <img src="components/com_sportsmanagement/assets/icons/saisons.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_TRANSIFEX') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_TRANSIFEX') ?></span>
 </a>                               
