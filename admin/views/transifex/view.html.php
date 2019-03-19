@@ -71,7 +71,8 @@ foreach ((array) json_decode($resourceData['data']) as $langCode => $lang)
 {
 if ( $langCode == $code )  
 {
-$object->completed = $lang->completed;  
+$object->completed = $lang->completed;
+$object->language = $code;  
 }  
   
 }  
