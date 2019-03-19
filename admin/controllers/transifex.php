@@ -41,13 +41,20 @@ function gettransifexinfo()
 
 $result = sportsmanagementHelperTransifex::getData('');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+$json_decode = json_decode($result['data']);
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
 	
 $transifexlanguages = sportsmanagementHelperTransifex::getData('languages');	
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexlanguages<br><pre>'.print_r($transifexlanguages,true).'</pre>'),'');	
-
+$json_decode = json_decode($transifexlanguages['data']);
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
 	
 $transifexresources = sportsmanagementHelperTransifex::getData('resources');	
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($transifexresources,true).'</pre>'),'');		
+$json_decode = json_decode($transifexresources['data']);
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
+	
+	
 	
 }
 	
