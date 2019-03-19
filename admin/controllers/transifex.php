@@ -8,8 +8,9 @@
  * @package   sportsmanagement
  * @subpackage controllers
  */
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
+JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementControllertransifex
@@ -20,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllertransifex extends JSMControllerForm
+class sportsmanagementControllertransifex extends JSMControllerAdmin
 {
     /**
 	 * Class Constructor
@@ -32,5 +33,15 @@ class sportsmanagementControllertransifex extends JSMControllerForm
 	function __construct($config = array())
 	{
 		parent::__construct($config);
-    }    
+    }  
+	
+function gettransifexinfo()	
+{
+
+$result = sportsmanagementHelperTransifex::getData();
+	
+}
+	
+	
+	
 }
