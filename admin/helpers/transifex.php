@@ -17,11 +17,17 @@ class sportsmanagementHelperTransifex
 
 	
 private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement';
+//private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement/resources';
+  
+  
+  
+  
+  
 private static $languages = array();
 
-public static function getData ()
+public static function getData ($path)
 	{
-		$url = self::$apiUrl;
+		$url = self::$apiUrl. '/' . $path;
 		$ch = curl_init();
 		$info = '';
 		$timeout = 120;
