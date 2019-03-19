@@ -296,7 +296,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print
 // jetzt die spiele
 $this->jsmquery->clear();
 // select some fields
-$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present,m.match_timestamp');
 $this->jsmquery->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
 $this->jsmquery->select('pt1.project_id');
 $this->jsmquery->select('t1.name as hometeam,t2.name as awayteam');
@@ -333,34 +333,62 @@ $result = $this->jsmdb->loadObjectList();
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
 	    
 foreach ($result as $row) {	    
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' googleEvents<br><pre>' . print_r($googleEvents, true) . '</pre><br>', 'Notice');
+  
+  
+//https://www.w3resource.com/php/function-reference/gmdate.php  
+//$test = gmdate('p', $row->match_timestamp);  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' test<br><pre>' . print_r(gmdate("p, H:i"), true) . '</pre><br>', 'Notice');
+  
+/*  
+$date = new JDate($row->match_date); // A.M. time, in GMT timezone  
+//$timezone = new DateTimeZone( $row->timezone );
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');  
+  
+  
+$date->setTimezone($row->timezone);
+//$date->setTimezone('UTC');  
+//echo $date->toISO8601(false);  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date, true) . '</pre><br>', 'Notice');    
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date->toISO8601(true), true) . '</pre><br>', 'Notice');  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r(date("P", strtotime($row->match_date)), true) . '</pre><br>', 'Notice');  
+*/
+  
 $event = new Google_Service_Calendar_Event();
 
 $event->setSummary($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.':'.$row->team2_result.')' );
 $event->setDescription($row->roundname);      
-$event->setLocation($row->playground_name);      
+$event->setLocation($row->playground_name. ',' . $row->playground_city . ',' . $row->playground_address);      
 $start = new Google_Service_Calendar_EventDateTime();  
 // Setze das Datum und verwende das RFC 3339 Format.
-list($date, $time) = explode(" ", $row->match_date);
+list($date2, $time) = explode(" ", $row->match_date);
 //$anstoss = date('H:i', $row->match_date);	
 $anstoss = $time;	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
 	
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
-
-$timezone = new DateTimeZone(Factory::getConfig()->get('offset'));
+/*
+$timezone = new DateTimeZone(JFactory::getConfig()->get('offset'));
 $offset   = $timezone->getOffset(new DateTime)/3600;
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');
 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' offset<br><pre>' . print_r($offset, true) . '</pre><br>', 'Notice');
-        
+*/        
         	
-$start->setDateTime($date.'T'.$anstoss.'-00:00'); 	
+$start->setDateTime($date2.'T'.$anstoss.date("P", strtotime($row->match_date)) ); 	
+//$start->setDateTime($date->toISO8601(true)); 	  
 $start->setTimeZone($row->timezone);
 //$start->setTimeZone('UTC');      
 $event->setStart($start);      
+  
+//$date = new JDate($date2.' '.$abpfiff.':00' ); // A.M. time, in GMT timezone  
+//$timezone = new DateTimeZone( JFactory::getUser()->getParam('timezone') );
+//$date->setTimezone($row->timezone);  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date->toISO8601(true), true) . '</pre><br>', 'Notice');  
+  
+  
 $end = new Google_Service_Calendar_EventDateTime();      
-$end->setDateTime($date.'T'.$abpfiff.':00-00:00'); 	
+$end->setDateTime($date2.'T'.$abpfiff.':00'.date("P", strtotime($date2.' '.$abpfiff.':00'))     ); 	
+//$end->setDateTime($date->toISO8601(true)); 	  
 $end->setTimeZone($row->timezone);      
 //$end->setTimeZone('UTC');
 $event->setEnd($end);      
