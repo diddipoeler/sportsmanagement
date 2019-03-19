@@ -42,8 +42,12 @@ function gettransifexinfo()
 $result = sportsmanagementHelperTransifex::getData('');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 	
-$transifexLanguages = sportsmanagementHelperTransifex::getData('languages');	
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexLanguages<br><pre>'.print_r($transifexLanguages,true).'</pre>'),'');	
+$transifexlanguages = sportsmanagementHelperTransifex::getData('languages');	
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexlanguages<br><pre>'.print_r($transifexlanguages,true).'</pre>'),'');	
+
+	
+$transifexresources = sportsmanagementHelperTransifex::getData('resources');	
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($transifexresources,true).'</pre>'),'');		
 	
 }
 	
