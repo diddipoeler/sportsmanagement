@@ -237,19 +237,19 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 //        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre><br>', 'Notice');
 //        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
         
-        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_id<br><pre>' . print_r($post['calendar_id'], true) . '</pre><br>', 'Notice');
+//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_id<br><pre>' . print_r($post['calendar_id'], true) . '</pre><br>', 'Notice');
 $this->jsmquery->clear();
 $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_gcalendar');
 $this->jsmquery->where('id = ' . $post['calendar_id']);
 $this->jsmdb->setQuery($this->jsmquery);
 $calendar_result = $this->jsmdb->loadObjectList();
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_result<br><pre>' . print_r($calendar_result, true) . '</pre><br>', 'Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_result<br><pre>' . print_r($calendar_result, true) . '</pre><br>', 'Notice');
 
 $calendar = new stdClass();
 $calendar->calendarId = new Registry(json_decode($calendar_result[0]->calendar_id));
 $calendar->params = new Registry(json_decode($calendar_result[0]->params));
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar<br><pre>' . print_r($calendar, true) . '</pre><br>', 'Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar<br><pre>' . print_r($calendar, true) . '</pre><br>', 'Notice');
 
 $params = array();
 $client = new Google_Client(
@@ -292,7 +292,7 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_gcalendar AS gc ON gc.id = p
 $this->jsmquery->where('p.id = ' . $project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $gcalendar_id = $this->jsmdb->loadObject();
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');	    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');	    
 // jetzt die spiele
 $this->jsmquery->clear();
 // select some fields
@@ -330,7 +330,7 @@ $this->jsmquery->group('m.id ');
 $this->jsmquery->order('m.match_date ASC,m.match_number');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList();	    
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
 	    
 foreach ($result as $row) {	    
   
@@ -365,8 +365,8 @@ list($date2, $time) = explode(" ", $row->match_date);
 $anstoss = $time;	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
 	
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
 /*
 $timezone = new DateTimeZone(JFactory::getConfig()->get('offset'));
 $offset   = $timezone->getOffset(new DateTime)/3600;
@@ -409,7 +409,7 @@ $object->gcal_event_id = $id;
 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 }
       
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($row->gcal_event_id, true) . '</pre><br>', 'Notice');    
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($row->gcal_event_id, true) . '</pre><br>', 'Notice');    
 
 
 
