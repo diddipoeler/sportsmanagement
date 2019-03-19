@@ -62,7 +62,7 @@ $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<
 
 foreach ( $this->transifexresources as $key => $value )
 {
-$resourceData = $transifexlanguages::getData('resource/' . $value->slug . '/stats');    
+$resourceData = sportsmanagementHelperTransifex::getData('resource/' . $value->slug . '/stats');    
 $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resource data<br><pre>'.print_r(json_decode($resourceData['data'])  ,true).'</pre>'),'');    
   
 }
