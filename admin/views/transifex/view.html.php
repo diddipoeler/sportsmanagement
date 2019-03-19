@@ -40,34 +40,39 @@ class sportsmanagementViewtransifex extends sportsmanagementView
 
 $lang = Factory::getLanguage();
 $langtag = $lang->getTag();	
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
 $code = sportsmanagementHelperTransifex::getLangCode($langtag);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
 	
 $result = sportsmanagementHelperTransifex::getData('');
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 $json_decode = json_decode($result['data']);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
 	
 $transifexlanguages = sportsmanagementHelperTransifex::getData('languages');	
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexlanguages<br><pre>'.print_r($transifexlanguages,true).'</pre>'),'');	
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexlanguages<br><pre>'.print_r($transifexlanguages,true).'</pre>'),'');	
 $json_decode = json_decode($transifexlanguages['data']);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');
 	
 $transifexresources = sportsmanagementHelperTransifex::getData('resources');	
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($transifexresources,true).'</pre>'),'');		
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($transifexresources,true).'</pre>'),'');		
 $this->transifexresources = json_decode($transifexresources['data']);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($this->transifexresources,true).'</pre>'),'');        
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($this->transifexresources,true).'</pre>'),'');        
 
-
+$translatefiles = array();
 foreach ( $this->transifexresources as $key => $value )
 {
-$resourceData = sportsmanagementHelperTransifex::getData('resource/' . $value->slug . '/stats');    
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resource data<br><pre>'.print_r(json_decode($resourceData['data'])  ,true).'</pre>'),'');    
+$resourceData = sportsmanagementHelperTransifex::getData('resource/' . $value->slug . '/stats'); 
+$temparray = json_decode($resourceData['data']);
+$object = new stdClass();
+$object->file = $value->name;
+$object->completed = $temparray[$code]->completed;
+$translatefiles[] = $object;  
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temparray<br><pre>'.print_r($temparray  ,true).'</pre>'),'');    
   
 }
 
-        
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' translatefiles<br><pre>'.print_r($translatefiles  ,true).'</pre>'),'');        
 
 	}
     
