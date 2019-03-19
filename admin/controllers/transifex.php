@@ -42,6 +42,8 @@ function gettransifexinfo()
 $lang = Factory::getLanguage();
 $langtag = $lang->getTag();	
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
+$code = sportsmanagementHelperTransifex::getLangCode($langtag);
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r(v,true).'</pre>'),'');		
 	
 $result = sportsmanagementHelperTransifex::getData('');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
