@@ -11,6 +11,8 @@
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+
 
 class sportsmanagementHelperTransifex
 {
@@ -28,6 +30,9 @@ private static $languages = array();
 public static function getData ($path)
 	{
 		$url = self::$apiUrl. '/' . $path;
+	
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url,true).'</pre>'),'Notice');
+	
 		$ch = curl_init();
 		$info = '';
 		$timeout = 120;
