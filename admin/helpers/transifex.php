@@ -16,10 +16,36 @@ class sportsmanagementHelperTransifex
 {
 
 	
-private static $apiUrl = 'https://www.transifex.com/jsm/sportsmanagement/';
+private static $apiUrl = 'https://www.transifex.com/api/2/project/joomla-sports-management-translation';
 private static $languages = array();
 
+public static function getData ()
+	{
+		$url = self::$apiUrl;
+		$ch = curl_init();
+		$info = '';
+		$timeout = 120;
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_USERPWD, "diddipoeler:dp190460");
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 400);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
+		// Get the data
+		$data = curl_exec($ch);
+
+		// Get info about the request
+		$info = curl_getinfo($ch);
+
+		// Close the request
+		curl_close($ch);
+
+		return array(
+				'data' => $data,
+				'info' => $info
+		);
+	}
 
 
 public static function getLangCode ($lang, $inverse = false)
