@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMINISTRATOR);
 
 /**
@@ -38,7 +39,10 @@ class sportsmanagementControllertransifex extends JSMControllerAdmin
 	
 function gettransifexinfo()	
 {
-
+$lang = Factory::getLanguage();
+$langtag = $lang->getTag();	
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
+	
 $result = sportsmanagementHelperTransifex::getData('');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 $json_decode = json_decode($result['data']);
