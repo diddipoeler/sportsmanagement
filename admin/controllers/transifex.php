@@ -39,7 +39,7 @@ class sportsmanagementControllertransifex extends JSMControllerAdmin
 function gettransifexinfo()	
 {
 
-$result = sportsmanagementHelperTransifex::getData();
+$result = sportsmanagementHelperTransifex::getData('');
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 	
 $transifexLanguages = sportsmanagementHelperTransifex::getData('languages');	
