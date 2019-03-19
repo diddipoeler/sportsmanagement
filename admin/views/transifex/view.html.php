@@ -56,8 +56,16 @@ $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre
 	
 $transifexresources = sportsmanagementHelperTransifex::getData('resources');	
 $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($transifexresources,true).'</pre>'),'');		
-$json_decode = json_decode($transifexresources['data']);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' json_decode<br><pre>'.print_r($json_decode,true).'</pre>'),'');        
+$this->transifexresources = json_decode($transifexresources['data']);
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' transifexresources<br><pre>'.print_r($this->transifexresources,true).'</pre>'),'');        
+
+
+foreach ( $this->transifexresources as $key => $value )
+{
+$resourceData = $transifexlanguages::getData('resource/' . $value->slug . '/stats');    
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resource data<br><pre>'.print_r(json_decode($resourceData['data'])  ,true).'</pre>'),'');    
+  
+}
 
         
 
