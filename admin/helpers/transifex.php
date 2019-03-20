@@ -32,7 +32,7 @@ private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanageme
 private static $languages = array();
 
 	
-public static function updatelanguage ($data)
+public static function updatelanguage ($data=null,$folder='de-DE')
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 	
