@@ -29,7 +29,7 @@ HTMLHelper::_('behavior.modal');
 <?php echo JHtml::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
 </th>	
 <th class="title nowrap hidden-phone hidden-tablet">
-<?php echo JHtml::_('searchtools.sort', 'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
+<?php echo JHtml::_('searchtools.sort', 'COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL', 'a.title_native', $listDirn, $listOrder); ?>
 </th>
 
 <th width="8%" class="nowrap hidden-phone">
