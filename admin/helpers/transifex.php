@@ -63,21 +63,23 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 foreach ( $data as $key => $value )
 {
 $value->images = 'error.png';	
-$path = '';	
+$path = '';
+	
 if (strpos($value->file, 'admin-com_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
 $path = $adminpath;
 $path .= '/'.$folder.'.'.$mod;
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
-}	
+}
+	
 if (strpos( $value->file , 'site-com_') !== false)
 {
 $mod = str_replace('site-', '', $value->file);	
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
 	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
@@ -92,15 +94,14 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .'
 $value->images = 'error.png';			
 }	
 	
-	
-	
 }	
+	
 if (strpos($value->file, 'mod_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
 }	
 }
