@@ -36,17 +36,33 @@ public static function updatelanguage ($data=null,$folder='de-DE')
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 
-$path = JPATH_ADMINISTRATOR. '/language/'.$folder ;	
+$adminpath = JPATH_ADMINISTRATOR. '/language/'.$folder ;	
 // verzeichnis prüfen	
-if ( Folder::exists($path) )	
+if ( Folder::exists($adminpath) )	
 {
-Factory::getApplication()->enqueueMessage(Text::_('Verzeichnis '.$folder.' ist vorhanden!'),'Notice');		
+Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'),'Notice');		
 }
 else
 {
-Folder::create($path);
-Factory::getApplication()->enqueueMessage(Text::_('Verzeichnis '.$folder.' wurde angelegt!'),'Notice');			
+Folder::create($adminpath);
+Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' wurde angelegt!'),'Notice');			
 }
+
+$sitepath = JPATH_ROOT. '/language/'.$folder ;	
+// verzeichnis prüfen	
+if ( Folder::exists($sitepath) )	
+{
+Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' ist vorhanden!'),'Notice');		
+}
+else
+{
+Folder::create($sitepath);
+Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' wurde angelegt!'),'Notice');			
+}	
+	
+	
+	
+	
 	
 }
 	
