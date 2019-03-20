@@ -42,9 +42,9 @@ class sportsmanagementViewtransifex extends sportsmanagementView
 //$lang = Factory::getLanguage();
 //$langtag = $lang->getTag();	
 $langtag = ComponentHelper::getParams('com_languages')->get('site');		
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
 $code = sportsmanagementHelperTransifex::getLangCode($langtag,false,true);
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
 	
 $result = sportsmanagementHelperTransifex::getData('');
 //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
@@ -87,10 +87,10 @@ $translatefiles[] = $object;
   
 }
 
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' translatefiles<br><pre>'.print_r($translatefiles  ,true).'</pre>'),'');        
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' translatefiles<br><pre>'.print_r($translatefiles  ,true).'</pre>'),'');        
 
 $this->language = sportsmanagementHelperTransifex::updatelanguage($translatefiles,$langtag);		
-		
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' language<br><pre>'.print_r($this->language  ,true).'</pre>'),'');        		
 		
 	}
     
