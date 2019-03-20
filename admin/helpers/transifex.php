@@ -97,7 +97,7 @@ public static function getLangCode ($lang, $inverse = false)
  * 
  * @return
  */
-private static function getLangmap ()
+private static function getLangmap ($joomla=true)
 	{
 		if (! count(self::$languages))
 		{
@@ -107,8 +107,14 @@ private static function getLangmap ()
 			foreach ($langMap as $map)
 			{
 				$langCodes = explode(':', $map);
-				//$languages[trim($langCodes[0])] = trim($langCodes[1]);
+				if ( $joomla )
+				{
 				$languages[trim($langCodes[1])] = trim($langCodes[0]);
+				}
+				else
+				{
+				$languages[trim($langCodes[0])] = trim($langCodes[1]);
+				}
 			}
 
 			self::$languages = $languages;
