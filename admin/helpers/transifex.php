@@ -76,9 +76,9 @@ public static function getData ($path)
  * @param bool $inverse
  * @return
  */
-public static function getLangCode ($lang, $inverse = false)
+public static function getLangCode ($lang, $inverse = false,$joomla=true)
 	{
-		$languages = self::getLangmap();
+		$languages = self::getLangmap($joomla);
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' languages<br><pre>'.print_r($languages,true).'</pre>'),'Notice');
 		if ($inverse)
 		{
