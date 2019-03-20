@@ -90,7 +90,7 @@ $translatefiles[] = $object;
 //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' translatefiles<br><pre>'.print_r($translatefiles  ,true).'</pre>'),'');        
 
 $this->language = sportsmanagementHelperTransifex::updatelanguage($translatefiles,$langtag);		
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' language<br><pre>'.print_r($this->language  ,true).'</pre>'),'');        		
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' language<br><pre>'.print_r($this->language  ,true).'</pre>'),'');        		
 		
 	}
     
