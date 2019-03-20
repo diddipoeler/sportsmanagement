@@ -54,7 +54,9 @@ foreach ($this->language as $i => $item) :
 <td class="hidden-phone hidden-tablet">
 <?php echo $item->completed; ?>
 </td>	
-	
+<td class="hidden-phone hidden-tablet">
+<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$item->image, '', 'title= "' . '' . '"'); ?>
+</td>	
 	
 	
 	
