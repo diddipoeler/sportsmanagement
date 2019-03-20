@@ -71,6 +71,14 @@ $path .= '/'.$folder.'.'.$mod;
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $data->folder = $path;	
 }	
+if (strpos($value->file, 'site-com_') !== false)
+{
+$mod = str_replace('site-', '', $value->file);	
+$path = $sitepath;
+$path .= '/'.$folder.'.'.$mod;
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
+$data->folder = $path;	
+}	
 if (strpos($value->file, 'mod_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
