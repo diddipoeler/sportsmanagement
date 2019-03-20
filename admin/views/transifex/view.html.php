@@ -104,6 +104,7 @@ $this->language = sportsmanagementHelperTransifex::updatelanguage($translatefile
         $this->jinput->set('hidemainmenu', true);
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TRANSIFEX');
         $this->icon = 'transifex';
+	ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement');
         parent::addToolbar();
 	}
     
