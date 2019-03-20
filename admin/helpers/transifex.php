@@ -31,6 +31,14 @@ class sportsmanagementHelperTransifex
 private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement';
 private static $languages = array();
 
+	
+public static function updatelanguage ($data)
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+	
+	
+}
+	
 /**
  * sportsmanagementHelperTransifex::getData()
  * 
