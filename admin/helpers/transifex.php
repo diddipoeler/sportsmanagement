@@ -67,7 +67,7 @@ if (strpos($value->file, 'admin-com_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
 $path = $adminpath;
-$path .= '/'.$folder.$mod;
+$path .= '/'.$folder.'.'.$mod;
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 }	
 	
