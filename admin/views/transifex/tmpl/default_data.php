@@ -23,17 +23,17 @@ HTMLHelper::_('behavior.modal');
 <tr>
 						
 <th class="title nowrap">
-<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+<?php echo Text::_('JGLOBAL_TITLE'); ?>
 </th>
 <th width="1%" class="nowrap">
-<?php echo JHtml::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
+<?php echo Text::_('JFIELD_LANGUAGE_LABEL'); ?>
 </th>	
 <th class="title nowrap hidden-phone hidden-tablet">
-<?php echo JHtml::_('searchtools.sort', 'COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL', 'a.title_native', $listDirn, $listOrder); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL'); ?>
 </th>
 
 <th width="8%" class="nowrap hidden-phone">
-<?php echo JHtml::_('searchtools.sort', 'JLIB_FORM_MEDIA_PREVIEW_ALT', 'a.image', $listDirn, $listOrder); ?>
+<?php echo Text::_('JLIB_FORM_MEDIA_PREVIEW_ALT');?>
 </th>
 
 
@@ -55,7 +55,7 @@ foreach ($this->language as $i => $item) :
 <?php echo $item->completed; ?>
 </td>	
 <td class="hidden-phone hidden-tablet">
-<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$item->image, '', 'title= "' . '' . '"'); ?>
+<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$item->images, '', 'title= "' . '' . '"'); ?>
 </td>	
 	
 	
