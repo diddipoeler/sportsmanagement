@@ -72,6 +72,18 @@ $path = $adminpath;
 $path .= '/'.$folder.'.'.$mod;
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
+$content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
+try{	
+File::write($path, $content['data']);
+$value->images = 'ok.png';		
+}
+catch (Exception $e)
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+$value->images = 'error.png';			
+}	
+	
 }
 	
 if (strpos( $value->file , 'site-com_') !== false)
@@ -103,6 +115,19 @@ $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
+	
+$content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
+try{	
+File::write($path, $content['data']);
+$value->images = 'ok.png';		
+}
+catch (Exception $e)
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+$value->images = 'error.png';			
+}
+	
 }	
 }
 	
