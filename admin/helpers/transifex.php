@@ -62,7 +62,7 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 	
 foreach ( $data as $key => $value )
 {
-$data->images = 'error.png';	
+$value->images = 'error.png';	
 $path = '';	
 if (strpos($value->file, 'admin-com_') !== false)
 {
@@ -70,7 +70,7 @@ $mod = str_replace('admin-', '', $value->file);
 $path = $adminpath;
 $path .= '/'.$folder.'.'.$mod;
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
-$data->folder = $path;	
+$value->folder = $path;	
 }	
 if (strpos( $value->file , 'site-com_') !== false)
 {
@@ -78,18 +78,18 @@ $mod = str_replace('site-', '', $value->file);
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
-$data->folder = $path;	
+$value->folder = $path;	
 	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
 File::write($path, $content['data']);
-$data->images = 'ok.png';		
+$value->images = 'ok.png';		
 }
 catch (Exception $e)
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
-$data->images = 'error.png';			
+$value->images = 'error.png';			
 }	
 	
 	
@@ -101,7 +101,7 @@ $mod = str_replace('admin-', '', $value->file);
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
-$data->folder = $path;	
+$value->folder = $path;	
 }	
 }
 	
