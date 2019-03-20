@@ -34,7 +34,7 @@ private static $languages = array();
 	
 public static function updatelanguage ($data=null,$folder='de-DE')
 {
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 
 $adminpath = JPATH_ADMINISTRATOR. '/language/'.$folder ;	
 // verzeichnis prüfen	
