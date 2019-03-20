@@ -221,6 +221,7 @@ $this->document->addStyleSheet(Uri::root() .'administrator/components/com_sports
             case 'jlxmlexports';
             case 'treeto';
             case 'jlextdfbkeyimport';
+	case 'transifex';
             break;
             default:
             $this->items = $this->get('Items');
@@ -691,6 +692,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 	case 'templates':
             case 'predictiongroups':
             case 'jlextdfbkeyimport':
+	case 'transifex';
             break;    
             default:    
 /**
