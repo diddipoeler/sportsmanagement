@@ -32,9 +32,23 @@ private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanageme
 private static $languages = array();
 
 	
+/**
+ * sportsmanagementHelperTransifex::updatelanguage()
+ * 
+ * @param mixed $data
+ * @param string $folder
+ * @return
+ */
 public static function updatelanguage ($data=null,$folder='de-DE')
 {
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+
+if ( $folder == 'de-DE' || $folder == 'en-GB' )
+{
+Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'),'Notice');
+return $data;    
+}
+
 
 $adminpath = JPATH_ADMINISTRATOR. '/language/'.$folder ;	
 // verzeichnis prüfen	
