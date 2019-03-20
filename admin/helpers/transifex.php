@@ -82,11 +82,13 @@ $data->folder = $path;
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
-File::write($path, $content['data']);	
+File::write($path, $content['data']);
+$data->image = 'ok.png';		
 }
 catch (Exception $e)
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+$data->image = 'error.png';			
 }	
 	
 	
