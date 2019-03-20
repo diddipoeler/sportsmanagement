@@ -62,6 +62,7 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 	
 foreach ( $data as $key => $value )
 {
+$data->image = 'error.png';	
 $path = '';	
 if (strpos($value->file, 'admin-com_') !== false)
 {
