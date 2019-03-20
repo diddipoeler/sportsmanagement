@@ -15,6 +15,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMINISTRATOR);
 
 /**
@@ -38,11 +39,12 @@ class sportsmanagementViewtransifex extends sportsmanagementView
 	public function init ()
 	{
 
-$lang = Factory::getLanguage();
-$langtag = $lang->getTag();	
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
+//$lang = Factory::getLanguage();
+//$langtag = $lang->getTag();	
+$langtag = ComponentHelper::getParams('com_languages')->get('site');		
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
 $code = sportsmanagementHelperTransifex::getLangCode($langtag,false,true);
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
 	
 $result = sportsmanagementHelperTransifex::getData('');
 //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
