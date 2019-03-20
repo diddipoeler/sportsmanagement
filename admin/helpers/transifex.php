@@ -80,7 +80,16 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path
 $data->folder = $path;	
 	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
+try{	
+File::write($path, $content['data']);	
+}
+catch (Exception $e)
+{
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+}	
+	
+	
 	
 }	
 if (strpos($value->file, 'mod_') !== false)
