@@ -62,7 +62,7 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 	
 foreach ( $data as $key => $value )
 {
-$data->image = 'error.png';	
+$data->images = 'error.png';	
 $path = '';	
 if (strpos($value->file, 'admin-com_') !== false)
 {
@@ -84,12 +84,12 @@ $content = self::getData('resource/' . $value->slug . '/translation/' . $value->
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
 File::write($path, $content['data']);
-$data->image = 'ok.png';		
+$data->images = 'ok.png';		
 }
 catch (Exception $e)
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
-$data->image = 'error.png';			
+$data->images = 'error.png';			
 }	
 	
 	
