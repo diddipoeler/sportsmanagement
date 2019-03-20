@@ -25,14 +25,15 @@ HTMLHelper::_('behavior.modal');
 <th class="title nowrap">
 <?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 </th>
+<th width="1%" class="nowrap">
+<?php echo JHtml::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
+</th>	
 <th class="title nowrap hidden-phone hidden-tablet">
 <?php echo JHtml::_('searchtools.sort', 'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
 </th>
-<th width="1%" class="nowrap">
-<?php echo JHtml::_('searchtools.sort', 'COM_LANGUAGES_HEADING_LANG_TAG', 'a.lang_code', $listDirn, $listOrder); ?>
-</th>
+
 <th width="8%" class="nowrap hidden-phone">
-<?php echo JHtml::_('searchtools.sort', 'COM_LANGUAGES_HEADING_LANG_IMAGE', 'a.image', $listDirn, $listOrder); ?>
+<?php echo JHtml::_('searchtools.sort', 'JLIB_FORM_MEDIA_PREVIEW_ALT', 'a.image', $listDirn, $listOrder); ?>
 </th>
 
 
