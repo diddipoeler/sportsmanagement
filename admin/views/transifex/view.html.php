@@ -71,7 +71,7 @@ $object->file = $value->name;
 $object->slug = $value->slug;	
 $object->languagetag = $langtag;
 $object->language = $code;  
-$object->image = '';  	
+$object->images = '';  	
 //$object->completed = $temparray[$code]->completed;
 foreach ((array) json_decode($resourceData['data']) as $langCode => $lang)
 {
