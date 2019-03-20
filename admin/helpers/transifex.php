@@ -35,7 +35,18 @@ private static $languages = array();
 public static function updatelanguage ($data=null,$folder='de-DE')
 {
 Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-	
+
+$path = JPATH_ADMINISTRATOR. '/language/'.$folder ;	
+// verzeichnis prüfen	
+if ( Folder::exists($path) )	
+{
+Factory::getApplication()->enqueueMessage(Text::_('Verzeichnis '.$folder.' ist vorhanden!'),'Notice');		
+}
+else
+{
+Folder::create($path);
+Factory::getApplication()->enqueueMessage(Text::_('Verzeichnis '.$folder.' wurde angelegt!'),'Notice');			
+}
 	
 }
 	
