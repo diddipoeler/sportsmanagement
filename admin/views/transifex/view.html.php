@@ -46,7 +46,7 @@ $langtag = ComponentHelper::getParams('com_languages')->get('site');
 //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
 $code = sportsmanagementHelperTransifex::getLangCode($langtag,false,true);
 //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
-if ( $folder == 'de-DE' || $folder == 'en-GB' )
+if ( $langtag == 'de-DE' || $langtag == 'en-GB' )
 {
 $this->app->enqueueMessage(Text::_('Admin Verzeichnis '.$langtag.' ist vorhanden!'),'Notice');
 $this->language = array();   
