@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+usort($this->teams, function($a, $b) { return $b->club_name < $a->club_name; });
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="teams">
 <table class="<?php echo $this->config['table_class']; ?> ">
