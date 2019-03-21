@@ -685,8 +685,12 @@ echo self::getFxInitJSCode('steps');
 		'statistics');
 		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement'))
 		{
+			try{
 		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
+		} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
 		}
 		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'))
 		{
@@ -698,9 +702,13 @@ echo self::getFxInitJSCode('steps');
         {
 		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'.$folder))
 		{	
+	try{
 			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
+			} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
 		}
 		else
 		{
@@ -721,6 +729,7 @@ echo self::getFxInitJSCode('steps');
 		}
         
         foreach ($folders as $folder) {
+			try{
 		switch ( $folder )
 	    {
 		case 'persons':
@@ -743,6 +752,9 @@ echo self::getFxInitJSCode('steps');
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
 		break;
 	    }
+		} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
 		}
 
 	}
