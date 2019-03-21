@@ -102,13 +102,7 @@ $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->vi
     } 
   
 	
-	function assignplayersclubcountry()
-	{
-	$post = Factory::getApplication()->input->post->getArray(array());	
-	$model = $this->getModel();
-	$model->assignplayersclubcountry(1,$post['project_team_id'],$post['team_id'],$post['pid'],$post['season_id']);	
-	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));		
-	}
+	
 	/**
 	 * sportsmanagementControllerteampersons::assignplayerscountry()
 	 * 
