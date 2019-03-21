@@ -683,16 +683,29 @@ echo self::getFxInitJSCode('steps');
 		'venues',
         'jl_images',
 		'statistics');
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement'))
+		{
 		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
+		}
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'))
+		{
 		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
 		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
+		}
 		
         foreach ($folders as $folder) 
         {
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'.$folder))
+		{	
 			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
+		}
+		else
+		{
+		echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' vorhanden!</p>';	
+		}
 		}
         
 		foreach ($folders as $folder) {
