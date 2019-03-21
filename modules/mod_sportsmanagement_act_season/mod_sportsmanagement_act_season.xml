@@ -26,11 +26,7 @@
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.sys.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_act_season.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_act_season.sys.ini</language>
-		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_act_season.ini</language>
-		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_act_season.sys.ini</language>
-		
+	
 	</languages>
 <config>
 		<fields name="params">
