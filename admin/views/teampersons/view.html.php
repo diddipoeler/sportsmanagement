@@ -147,7 +147,6 @@ $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontyp
 
         sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
 	ToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
-	ToolbarHelper::apply('teampersons.assignplayersclubcountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB_COUNTRY'));    
         ToolbarHelper::divider();
 
         ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option='.$this->option.'&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
