@@ -33,6 +33,13 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
     var $_project_team_id = 0;
     static $db_num_rows = 0;
 
+	
+function assignplayersclubcountry($persontype=1,$project_team_id=0,$team_id=0,$pid=0,$season_id=0)
+{
+	
+return true;	
+}
+	
 /**
  * sportsmanagementModelteamperson::assignplayerscountry()
  * 
@@ -78,7 +85,7 @@ $rowInsert->country = $this->country;
 $result = Factory::getDbo()->updateObject('#__sportsmanagement_person', $rowInsert, 'id'); 	
 }
 	
-	
+return true;	
 }
 	
 	
