@@ -9,12 +9,12 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route; 
+
 /**
  * sportsmanagementControllerteampersons
  * 
@@ -102,6 +102,13 @@ $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->vi
     } 
   
 	
+	function assignplayersclubcountry()
+	{
+	$post = Factory::getApplication()->input->post->getArray(array());	
+	$model = $this->getModel();
+		
+	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));		
+	}
 	/**
 	 * sportsmanagementControllerteampersons::assignplayerscountry()
 	 * 
