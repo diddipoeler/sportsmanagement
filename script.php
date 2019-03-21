@@ -102,7 +102,7 @@ class com_sportsmanagementInstallerScript
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
     private $release = '1.0.71';
-    
+    $language_update = '';
     
     /**
 	 * Constructor
