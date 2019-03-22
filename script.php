@@ -514,9 +514,9 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
 		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-    /*
+    
 		self::createImagesFolder();
-		*/
+		
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
 //    self::sendInfoMail();
@@ -531,9 +531,9 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
 		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-		/*
+		
     self::createImagesFolder();
-		*/
+		
 //    self::migratePicturePath();
       self::setParams($newparams);
 //    self::deleteInstallFolders();
