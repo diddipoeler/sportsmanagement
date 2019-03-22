@@ -61,9 +61,6 @@
 	<languages folder="site">
 		<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
-		<language tag="es-ES">language/es-ES/es-ES.com_sportsmanagement.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
 	</languages>
 
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
@@ -155,13 +152,6 @@
 			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.sys.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
-			<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.ini</language>
-			<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.sys.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.sys.ini</language>
-			<language tag="es-ES">language/es-ES/es-ES.com_sportsmanagement.ini</language>
-			<language tag="es-ES">language/es-ES/es-ES.com_sportsmanagement.sys.ini</language>
-			
 			</languages>
 		
 	</administration>
