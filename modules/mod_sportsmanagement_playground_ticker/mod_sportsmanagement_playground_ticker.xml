@@ -23,8 +23,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_playground_ticker.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playground_ticker.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playground_ticker.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_playground_ticker.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_playground_ticker.sys.ini</language>
 	</languages>
 	
 	<config>

@@ -30,12 +30,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_liveticker.sys.ini</language>
 		</languages>
 
 	<config>
