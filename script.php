@@ -456,7 +456,8 @@ foreach($form->getFieldset() as $field)
 
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
-    self::installJoomlaExtensions($adapter);
+    /** führt zu fehlern */
+    //self::installJoomlaExtensions($adapter);
     echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
     self::setParams($newparams);    
@@ -472,6 +473,7 @@ foreach($form->getFieldset() as $field)
 
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
+    /** führt zu fehlern */
     //self::installJoomlaExtensions($adapter);
     echo HTMLHelper::_('bootstrap.'.$this->endPanel);
     
