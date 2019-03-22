@@ -472,7 +472,7 @@ foreach($form->getFieldset() as $field)
 
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
-    self::installJoomlaExtensions($adapter);
+    //self::installJoomlaExtensions($adapter);
     echo HTMLHelper::_('bootstrap.'.$this->endPanel);
     
     self::setParams($newparams);
@@ -555,40 +555,40 @@ echo self::getFxInitJSCode('steps');
     
     
     
-    /**
-     * com_sportsmanagementInstallerScript::deleteFolders()
-     * 
-     * @param mixed $adapter
-     * @return void
-     */
-    public function deleteFolders( $adapter)
-    {
-    $mainframe = Factory::getApplication();
-    $excludeExtension = array();
-    $excludeExtension[] = 'extensions';    
-    $excludeExtension[] = 'sisdata';
-    $folderAdmin  = Folder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
-													'.', false, false, $excludeExtension);
-    
-    foreach ($folderAdmin as $key => $value )
-    {
-        if( Folder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
-        {
-        //echo 'Der Ordner wurde gelöscht';
-        }
-    }
-    $folderSite  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
-													'.', false, false, $excludeExtension);
-   
-    foreach ($folderSite as $key => $value )
-    {
-        if( Folder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
-        {
-        //echo 'Der Ordner wurde gelöscht';
-        }
-    }
-    
-    }
+//    /**
+//     * com_sportsmanagementInstallerScript::deleteFolders()
+//     * 
+//     * @param mixed $adapter
+//     * @return void
+//     */
+//    public function deleteFolders( $adapter)
+//    {
+//    $mainframe = Factory::getApplication();
+//    $excludeExtension = array();
+//    $excludeExtension[] = 'extensions';    
+//    $excludeExtension[] = 'sisdata';
+//    $folderAdmin  = Folder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
+//													'.', false, false, $excludeExtension);
+//    
+//    foreach ($folderAdmin as $key => $value )
+//    {
+//        if( Folder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+//        {
+//        //echo 'Der Ordner wurde gelöscht';
+//        }
+//    }
+//    $folderSite  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
+//													'.', false, false, $excludeExtension);
+//   
+//    foreach ($folderSite as $key => $value )
+//    {
+//        if( Folder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+//        {
+//        //echo 'Der Ordner wurde gelöscht';
+//        }
+//    }
+//    
+//    }
     
     /**
      * com_sportsmanagementInstallerScript::getFxInitJSCode()
