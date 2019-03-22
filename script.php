@@ -73,6 +73,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 if (! defined('DS'))
 {
@@ -426,7 +427,7 @@ foreach ($files as $file)
 
 $params = ComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
-$jRegistry = new JRegistry;
+$jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 $newparams = array();
@@ -491,7 +492,7 @@ foreach($form->getFieldset() as $field)
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
-$jRegistry = new JRegistry;
+$jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
