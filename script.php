@@ -72,6 +72,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -423,7 +424,7 @@ foreach ($files as $file)
 
             echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$params = ComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
 $jRegistry = new JRegistry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
