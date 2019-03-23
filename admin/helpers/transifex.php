@@ -76,6 +76,13 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 	
 foreach ( $data as $key => $value )
 {
+    
+if ( $value->completed != '100%')
+{
+    
+}   
+else
+{ 
 $value->images = 'error.png';	
 $path = '';
 	
@@ -142,7 +149,10 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .'
 $value->images = 'error.png';			
 }
 	
-}	
+}
+
+}
+	
 }
 	
 	
