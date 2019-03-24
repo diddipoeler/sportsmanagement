@@ -17,7 +17,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');  
+JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementModelEditMatch

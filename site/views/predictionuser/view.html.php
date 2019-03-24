@@ -17,8 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
-
-require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
+JLoader::import('components.com_sportsmanagement.models.predictionusers', JPATH_SITE);
 
 /**
  * sportsmanagementViewPredictionUser

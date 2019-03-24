@@ -9,7 +9,6 @@
  * @subpackage prediction
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -24,8 +23,7 @@ jimport('joomla.utilities.arrayhelper') ;
 jimport('joomla.utilities.utility' );
 jimport('joomla.user.authorization' );
 jimport('joomla.access.access' );
-
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
+JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementModelPrediction

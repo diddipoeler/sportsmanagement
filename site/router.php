@@ -8,11 +8,12 @@
  * @package   sportsmanagement
  * @subpackage
  */
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
@@ -31,8 +32,12 @@ if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
 }
 
 if (!class_exists('sportsmanagementHelper')) {
-    require_once (JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS .
-            'sportsmanagement.php');
+/**
+ * add the classes for handling
+ */
+    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    JLoader::register('sportsmanagementHelper', $classpath);
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 // Get the base version

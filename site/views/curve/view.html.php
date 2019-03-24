@@ -20,7 +20,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
+JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 /**
  * sportsmanagementViewCurve
