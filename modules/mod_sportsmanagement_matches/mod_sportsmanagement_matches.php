@@ -65,8 +65,6 @@ if (!defined('_JSMMATCHLISTMODURL'))
 /** Include the functions only once */
 JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
-//require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
-
 
 /**
  * besonderheit für das inlinehockey update, wenn sich das 
@@ -77,7 +75,7 @@ if ($params->get('ishd_update'))
 {
 $app = Factory::getApplication();    
 $projectid = $params->get('p');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+JLoader::import('components.com_sportsmanagement.extensions.jsminlinehockey.admin.models.jsminlinehockey', JPATH_SITE);
 $actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
 for($a=0; $a < sizeof($projectid); $a++ )
 {
