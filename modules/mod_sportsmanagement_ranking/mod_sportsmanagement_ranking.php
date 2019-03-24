@@ -94,7 +94,7 @@ JLoader::register('modJSMRankingHelper', __DIR__ . '/helper.php');
 if ($params->get('ishd_update'))
 {
 $projectid = (int)$params->get('p');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+JLoader::import('components.com_sportsmanagement.extensions.jsminlinehockey.admin.models.jsminlinehockey', JPATH_SITE);
 $actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel');   
 
 $count_games = modJSMRankingHelper::getCountGames($projectid,(int)$params->get('ishd_update_hour',4)); 
