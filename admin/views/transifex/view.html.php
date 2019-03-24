@@ -80,13 +80,15 @@ $object->languagetag = $langtag;
 $object->language = $code;  
 $object->images = '';  	
 //$object->completed = $temparray[$code]->completed;
-foreach ((array) json_decode($resourceData['data']) as $langCode => $lang)
+foreach ((array) json_decode($resourceData['data']) as $langCode => $lang) if ( $langCode == $code )  
 {
-if ( $langCode == $code )  
-{
-$object->completed = $lang->completed;
 
-}  
+$object->completed = $lang->completed;
+$object->untranslated_words = $lang->untranslated_words;
+$object->untranslated_entities = $lang->untranslated_entities;
+
+$object->translated_words = $lang->translated_words;
+$object->translated_entities = $lang->translated_entities;
   
 }  
 $translatefiles[] = $object;  
