@@ -278,7 +278,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 	 */
 	function _setPointsChartdata($config)
 	{
-		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
@@ -339,7 +339,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 	 */
 	function _setRankingChartdata($config)
 	{
-		require_once( JPATH_COMPONENT_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 		//$data = $this->get('RankChartData');		
 		//some example data....fixme!!!
