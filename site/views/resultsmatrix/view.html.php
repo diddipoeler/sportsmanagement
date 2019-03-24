@@ -17,9 +17,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results'.DS.'view.html.php');
 
 jimport('joomla.filesystem.file');
