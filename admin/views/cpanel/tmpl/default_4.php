@@ -168,6 +168,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?PHP
             }
             ?>
+            
+                <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=transifex">
+                    <img src="components/com_sportsmanagement/assets/icons/transifex.png" width="48" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?>" /><br />
+                    <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?></span>
+                </a> 
         </div>
 
         <hr> 
