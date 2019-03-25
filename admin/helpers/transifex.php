@@ -85,7 +85,7 @@ else
 { 
 $value->images = 'error.png';	
 $path = '';
-	
+/** adminsprache */	
 if (strpos($value->file, 'admin-com_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
@@ -106,7 +106,7 @@ $value->images = 'error.png';
 }	
 	
 }
-	
+/** frontend */		
 if (strpos( $value->file , 'site-com_') !== false)
 {
 $mod = str_replace('site-', '', $value->file);	
@@ -128,7 +128,7 @@ $value->images = 'error.png';
 }	
 	
 }	
-	
+/** module */		
 if (strpos($value->file, 'mod_') !== false)
 {
 $mod = str_replace('admin-', '', $value->file);	
