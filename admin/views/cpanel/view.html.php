@@ -150,13 +150,13 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         if ($checkcountry) {
             $my_text = '<span style="color:' . $model->existingInDbColor . '"><strong>';
             $my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS') . '</strong></span><br />';
-            $model->_success_text[( Text::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') . ':' )] = $my_text;
+            $model->_success_text['Länder:'] = $my_text;
         } else {
             $my_text = '<span style="color:' . $model->storeFailedColor . '"><strong>';
             $my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR') . '</strong></span><br />';
-            $model->_success_text[( Text::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') . ':' )] = $my_text;
+            $model->_success_text['Länder:'] = $my_text;
             $insert_countries = $databasetool->insertCountries();
-            $model->_success_text[( Text::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') . ':' )] .= $insert_countries;
+            $model->_success_text['Länder:'] .= $insert_countries;
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
