@@ -157,7 +157,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
     {
         $search_nation = '';
         
-        if ( $this->jsmapp->isAdmin() )
+        if ( $this->jsmapp->isClient('administrator') )
         {
         $search_nation	= $this->getState('filter.search_nation');
         }

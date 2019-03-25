@@ -83,13 +83,13 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 /**
  * abfrage nach backend und frontend  
  */ 
-if ( $this->jsmapp->isAdmin() )
+if ( $this->jsmapp->isClient('administrator') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
 }  
-if( $this->jsmapp->isSite() )
+if( $this->jsmapp->isClient('site') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
 }    
@@ -1491,11 +1491,11 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 /**
  * abfrage nach backend und frontend  
  */ 
-if ( $this->jsmapp->isAdmin() )
+if ( $this->jsmapp->isClient('administrator') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
 }  
-if( $this->jsmapp->isSite() )
+if( $this->jsmapp->isClient('site') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
 }    
@@ -1549,11 +1549,11 @@ public function __construct($config = array())
 /**
  * abfrage nach backend und frontend  
  */        
-        if ( $this->jsmapp->isAdmin() )
+        if ( $this->jsmapp->isClient('administrator') )
         {
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
         }  
-        if( $this->jsmapp->isSite() )
+        if( $this->jsmapp->isClient('site') )
         {
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
         } 
