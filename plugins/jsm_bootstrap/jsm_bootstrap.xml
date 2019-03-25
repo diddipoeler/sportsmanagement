@@ -22,8 +22,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_jsm_bootstrap.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_bootstrap.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_bootstrap.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_system_jsm_bootstrap.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_system_jsm_bootstrap.sys.ini</language>
 	</languages> 
 
 	<config>

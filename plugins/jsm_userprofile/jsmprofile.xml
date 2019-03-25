@@ -17,8 +17,8 @@
    <languages>
 		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_user_jsmprofile.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_user_jsmprofile.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.sys.ini</language>
 		
 	</languages> 
 	
