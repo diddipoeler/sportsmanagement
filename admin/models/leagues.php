@@ -184,7 +184,7 @@ class sportsmanagementModelLeagues extends JSMModelList
         
 
         
-        if ( $this->jsmapp->isAdmin() )
+        if ( $this->jsmapp->isClient('administrator') )
         {
         $search_nation	= $this->getState('filter.search_nation');
         //$search_nation	= self::getState('filter.search_nation');

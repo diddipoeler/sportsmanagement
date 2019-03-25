@@ -797,7 +797,7 @@ $option = Factory::getApplication()->input->getCmd('option');
 $app = Factory::getApplication();
 $post = Factory::getApplication()->input->post->getArray(array());
 
-if ( $app->isAdmin() )
+if ( $app->isClient('administrator') )
 { 
 $view = Factory::getApplication()->input->getVar('view');
 }

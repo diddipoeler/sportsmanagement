@@ -42,7 +42,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
         $this->message = '';
         $this->milestone = 0;
         
-        if( $this->app->isAdmin() )
+        if( $this->app->isClient('administrator') )
         {
          $this->issuetitle = 'Backend-View: '.$this->jinput->getCmd('issueview').' Layout: '.$this->jinput->getCmd('issuelayout');
          $this->milestone = 1;
