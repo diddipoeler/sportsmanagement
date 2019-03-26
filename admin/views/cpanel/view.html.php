@@ -199,7 +199,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
 
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
-        if ($this->app->isAdmin()) {
+        if ($this->app->isClient('administrator')) {
             if ($task == '' && $this->option == 'com_sportsmanagement') {
 
             }
