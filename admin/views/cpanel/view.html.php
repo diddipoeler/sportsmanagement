@@ -38,7 +38,6 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
      */
     public function init() {
         $document = Factory::getDocument();
-
         $project_id = $this->app->getUserState("$this->option.pid", '0');
         $model = $this->getModel();
         $my_text = '';
@@ -81,45 +80,112 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         if ($sm_quotes) {
             // zitate
             $result = $databasetool->checkQuotes($sm_quotes);
-            $model->_success_text['Zitate:'] = $result;
+            $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_QUOTES_SUCCESS_TEXT')] = $result;
         }
 
         if ($sporttypes) {
             foreach ($sporttypes as $key => $type) {
                 $checksporttype = $model->checksporttype($type);
-
                 $checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
+                switch ($type)
+{
+case 'soccer':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SOCCER');
+break;
+case 'basketball':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_BASKETBALL');
+break;
+case 'handball':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HANDBALL');
+break;
+case 'futsal':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_FUTSAL');
+break;
+case 'volleyball':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
+break;
+case 'american_football':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL');
+break;
+case 'hockey':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HOCKEY');
+break;
+case 'skater_hockey':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY');
+break;
+case 'icehockey':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ICEHOCKEY');
+break;
+case 'esport_cs':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CS');
+break;
+case 'esport_css':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSS');
+break;
+case 'esport_csgo':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSGO');
+break;
+case 'esport_dodc':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODC');
+break;
+case 'esport_dods':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODS');
+break;
+case 'generic':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_GENERIC');
+break;
+case 'korfball':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_KORFBALL');
+break;
+case 'tennis':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TENNIS');
+break;
+case 'tabletennis':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TABLETENNIS');
+break;
+case 'australien_rules_football':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL');
+break;
+case 'dart':
+$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_DART');
+break;
 
+default:
+break;
+}
+                
                 if ($checksporttype) {
                     $my_text .= '<span style="color:' . $model->existingInDbColor . '"><strong>';
-                    $my_text .= Text::_('Installierte Sportarten') . '</strong></span><br />';
-                    $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS', strtoupper($type)) . '<br />';
+                    $my_text .=  Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED'). '</strong></span><br />';
+                    
+                    $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS', strtoupper($type_sport_type)) . '<br />';
 
-                    $model->_success_text['Sportarten:'] = $my_text;
+                    $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
                     // es können aber auch neue positionen oder ereignisse dazu kommen
                     $insert_sport_type = $databasetool->insertSportType($type);
+                    
 
                     if ($country) {
                         foreach ($country as $keyc => $typec) {
                             $insert_agegroup = $databasetool->insertAgegroup($typec, $insert_sport_type);
-                            if (!isset($model->_success_text['Altersgruppen:'])) {
-                                $model->_success_text['Altersgruppen:'] = '';
+                            if (!isset($model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')])) {
+                                $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')] = '';
                             }
-                            $model->_success_text['Altersgruppen:'] = $model->_success_text['Altersgruppen:'] . $insert_agegroup;
+                            $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')] = $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')] . $insert_agegroup;
                         }
                     }
                 } else {
                     $my_text .= '<span style="color:' . $model->storeFailedColor . '"><strong>';
-                    $my_text .= Text::_('Fehlende Sportarten') . '</strong></span><br />';
+                    $my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_MISSING') . '</strong></span><br />';
                     $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR', strtoupper($type)) . '<br />';
 
-                    $model->_success_text['Sportarten:'] = $my_text;
+                    $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
                     // es können aber auch neue positionen oder ereignisse dazu kommen
                     $insert_sport_type = $databasetool->insertSportType($type);
-                    if (isset($model->_success_text['Sportart (' . $type . ')  :'])) {
-                        $model->_success_text['Sportart (' . $type . ')  :'] .= $databasetool->my_text;
+                    if (isset($model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')])) {
+                        $model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')] .= $databasetool->my_text;
                     }
 
                     /**
@@ -129,8 +195,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
                         if ($country) {
                             foreach ($country as $keyc => $typec) {
                                 $insert_agegroup = $databasetool->insertAgegroup($typec, $insert_sport_type);
-                                if (isset($model->_success_text['Altersgruppen:'])) {
-                                    $model->_success_text['Altersgruppen:'] .= $insert_agegroup;
+                                if (isset($model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')])) {
+                                    $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUPS_SUCCESS_TEXT')] .= $insert_agegroup;
                                 }
                             }
                         }
@@ -150,13 +216,13 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         if ($checkcountry) {
             $my_text = '<span style="color:' . $model->existingInDbColor . '"><strong>';
             $my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS') . '</strong></span><br />';
-            $model->_success_text['Länder:'] = $my_text;
+            $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_SUCCESS_TEXT')] = $my_text;
         } else {
             $my_text = '<span style="color:' . $model->storeFailedColor . '"><strong>';
             $my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR') . '</strong></span><br />';
-            $model->_success_text['Länder:'] = $my_text;
+            $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_SUCCESS_TEXT')] = $my_text;
             $insert_countries = $databasetool->insertCountries();
-            $model->_success_text['Länder:'] .= $insert_countries;
+            $model->_success_text[Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_SUCCESS_TEXT')] .= $insert_countries;
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
