@@ -91,8 +91,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $sportstype = $this->config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
 
         $this->teamPlayer = $teamPlayer;
-        $this->historyPlayer = $model->getPlayerHistory($sportstype, 'ASC', 1, $model::$cfg_which_database);
-        $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, 'ASC', 2, $model::$cfg_which_database);
+        $this->historyPlayer = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 1, $model::$cfg_which_database);
+        $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 2, $model::$cfg_which_database);
         $this->AllEvents = $model->getAllEvents($sportstype);
         $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
         $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
