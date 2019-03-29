@@ -624,7 +624,13 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-		
+		<field name="historyorder" type="extensionradiobutton" default="DESC"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_HYSTORY_ORDER" 
+		       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_HYSTORY_ORDER_STYLE">
+			<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+			<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+		</field>
 		<field 	name="player_table_class" type="list" default="table" 
 		class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CAREER_TABLE_STYLE" 
