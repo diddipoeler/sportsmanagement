@@ -68,7 +68,8 @@
 	</field>
 		
 	<field name="projects"
-    size="5" 
+    size="10"
+	multiple="multiple" 
 	task="projects" 
     type="dependsql"
     depends="s"
