@@ -26,9 +26,7 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-/**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if (!class_exists('JSMModelLegacy')) 
 {
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -39,7 +37,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-//add the classes for handling
+/** add the classes for handling */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -63,15 +61,13 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
 
-// Reference global application object
+/** Reference global application object */
 $app = Factory::getApplication();
-// JInput object
+/** JInput object */
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 
-/**
- * die übersetzungen laden
- */
+/** die übersetzungen laden */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
@@ -108,7 +104,7 @@ $actionsModel->getmatches($projectid);
 $list = modJSMRankingHelper::getData($params);
 
 $document = Factory::getDocument();
-//add css file
+/** add css file */
 $document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 ?>
