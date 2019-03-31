@@ -50,8 +50,9 @@ class modJSMRankingHelper
 
 		$ranking = JSMRanking::getInstance($project,$params->get( 'cfg_which_database' ));
 		$ranking->setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
-		$divisionid = explode(':', $params->get('division_id', 0));
-		$divisionid = $divisionid[0];
+//		$divisionid = explode(':', $params->get('division_id', 0));
+//		$divisionid = $divisionid[0];
+        $divisionid = (int) $params->get('division_id', 0);
 		$res   = $ranking->getRanking(null, null, $divisionid,$params->get( 'cfg_which_database' ));
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$params->get( 'cfg_which_database' ),__METHOD__);
         
