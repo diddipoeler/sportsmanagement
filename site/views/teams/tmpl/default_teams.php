@@ -77,8 +77,8 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
             
 			if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 			{
-				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
-				$image = HTMLHelper::image( $picture, $teamTitle, array( 'title' => $teamTitle, ' border' => 0) );
+				$picture = sportsmanagementHelper::getDefaultPlaceholder("team_picture");
+				$image = HTMLHelper::image( $picture, $teamTitle, array( 'title' => $teamTitle, ' border' => 0,' width' => $this->config['team_picture_width']) );
 			} else {
 				$image = sportsmanagementHelper::getPictureThumb($picture,
 					$team->team_name,
