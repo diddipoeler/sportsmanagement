@@ -14,6 +14,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 usort($this->teams, function($a, $b) { return $b->club_name < $a->club_name; });
+
+//echo '<pre>'.print_r($this->teams,true).'</pre>';
+
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="teams">
 <table class="<?php echo $this->config['table_class']; ?> ">
@@ -98,9 +101,9 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 		?>
 		<tr >
 			<?php if ( $this->config['show_small_logo'] ) { ?>
-			<td ><?php echo $smallTeamLogoLink; ?></td>
+			<td name="show_small_logo"><?php echo $smallTeamLogoLink; ?></td>
 			<?php } ?>
-			<td >
+			<td name="which_link1">
 				<?php
 				if ( $this->config['which_link1'] == 0 )
 				{
@@ -119,7 +122,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				}
 				?>
 			</td>
-			<td >
+			<td name="which_link2">
 				<?php
 				if ( $this->config['which_link2'] == 0 )
 				{
@@ -139,7 +142,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				?>
 			</td>
 			<?php if ( $this->config['show_medium_logo'] ) { ?>
-			<td ><?php echo $mediumClubLogoLink; ?></td>
+			<td name="show_medium_logo"><?php echo $mediumClubLogoLink; ?></td>
 			<?php } ?>
       
       <?php 
