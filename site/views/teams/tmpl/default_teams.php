@@ -90,12 +90,12 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 		}
 
 		if ($this->config['show_medium_logo']) {
-			$picture = $team->logo_middle;
+			$picture = $team->logo_big;
 			if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
 			}
-			$image = HTMLHelper::image( $picture, $clubTitle, array( 'title' => $clubTitle, ' border' => 0  ) );
+			$image = HTMLHelper::image( $picture, $clubTitle, array( 'title' => $clubTitle, ' border' => 0,' width' => $this->config['team_logo_width']  ) );
 			$mediumClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 		}
 		?>
