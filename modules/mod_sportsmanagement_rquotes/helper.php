@@ -408,31 +408,41 @@ $xx= count($category);
 	$date_modified= $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("j");
-
 	
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
-			$db->setQuery($query3);
-			$row=$db->query();
+				// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 1;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
-	$db->setQuery($query3);
-	$row=$db->query();
+	// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 1;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -479,23 +489,35 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='2' ";
-			$db->setQuery($query3);
-			$row=$db->query();
+				// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 2;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='2'";
-	$db->setQuery($query3);
-	$row=$db->query();
+	// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 2;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -535,31 +557,41 @@ $xx= count($category);
 	$date_modified= $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("n");
-
 	
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
-			$db->setQuery($query3);
-			$row=$db->query();
+			// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 3;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
-	$db->setQuery($query3);
-	$row=$db->query();
+		// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 3;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -588,7 +620,6 @@ $xx= count($category);
 	$db->setQuery($query,0);
 	$no_of_quotes = $db->loadResult();
     
-    
 	$query->clear();
     $query->select('*');
     $query->from('#__rquote_meta');
@@ -597,35 +628,45 @@ $xx= count($category);
 	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
-	$date_modified= $row[2];
+	$date_modified = $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("Y");
-
 
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='4'";
-			$db->setQuery($query3);
-			$row=$db->query();
+            // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 4;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
 		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='4'";
-	$db->setQuery($query3);
-	$row=$db->query();
+		// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 4;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+    $query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -640,23 +681,30 @@ $xx= count($category);
  */
 function getTodayRquote($category,$x, &$params)
 {
-
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	$catid =	$category[0];
+    $query = $db->getQuery(true);
+	$catid = $category[0];
 	$day_today = date("z");
-
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$day_today' ";
-	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
+    
+    $query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$day_today);
+	$db->setQuery($query,0);
+	$row = $db->loadObjectList();
 	
 	if(!$row)
 	{
-		$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
-		
 		$i = rand(0, count($rows) - 1 );
-
 		$row = array( $rows[$i] );
 	}
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
