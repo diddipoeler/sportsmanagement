@@ -384,24 +384,25 @@ function getDailyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
+
 $xx= count($category);
 	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta WHERE id='1'";
+	$no_of_quotes = $db->loadResult();
+    
+    $query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 1');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -415,7 +416,6 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -447,26 +447,25 @@ $xx= count($category);
  */
 function getWeeklyRquote($category,$x, &$params)
 	{
-	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='2'";
+	$no_of_quotes = $db->loadResult();
+
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 2');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -480,7 +479,6 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='2' ";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -514,22 +512,22 @@ function getMonthlyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='3'";
+	$no_of_quotes = $db->loadResult();
+    
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 3');
 	$db->setQuery($query,0);
 	$row = $db->loadRow();
 	
@@ -545,7 +543,6 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
 			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
 			$db->setQuery($query3);
 			$row=$db->query();
@@ -579,24 +576,25 @@ function getYearlyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='4'";
+	$no_of_quotes = $db->loadResult();
+    
+    
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 4');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
