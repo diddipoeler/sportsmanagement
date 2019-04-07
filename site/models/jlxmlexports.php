@@ -1375,8 +1375,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getPositionStatistic()
 	{
 		$position_ids = $this->_getIdFromData('id', $this->_position);
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $query = $this->_db->getQuery(true);
 
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
@@ -1384,11 +1383,11 @@ $xmlfile = $xmlfile.$output;
             $query->select('*');
             $query->from('#__sportsmanagement_position_statistic');
             $query->where('id IN (' . $ids .')');
-			$db->setQuery($query);
-			$db->query();
-			if ($db->getNumRows() > 0)
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'PositionStatistic';
 				$this->_positionstatistic = $result;
 				return $result;
@@ -1407,8 +1406,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getMatchStatistic()
 	{
 		$match_ids = $this->_getIdFromData('id', $this->_match);
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $query = $this->_db->getQuery(true);
 
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
@@ -1416,11 +1414,11 @@ $xmlfile = $xmlfile.$output;
             $query->select('*');
             $query->from('#__sportsmanagement_match_statistic');
             $query->where('id IN (' . $ids .')');
-			$db->setQuery($query);
-			$db->query();
-			if ($db->getNumRows() > 0)
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 				return $result;
@@ -1439,19 +1437,18 @@ $xmlfile = $xmlfile.$output;
 	private function _getMatchStaffStatistic()
 	{
 		$match_ids = $this->_getIdFromData('id', $this->_match);
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $query = $this->_db->getQuery(true);
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
         $query->select('*');
             $query->from('#__sportsmanagement_match_staff_statistic');
             $query->where('id IN (' . $ids .')');
-			$db->setQuery($query);
-			$db->query();
-			if ($db->getNumRows() > 0)
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 				return $result;
@@ -1470,8 +1467,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getStatistic()
 	{
 		$sIDs = array();
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $query = $this->_db->getQuery(true);
 
 		$matchstatistic_ids = $this->_getIdFromData('statistic_id',$this->_matchstatistic);	// Get all ids of match statistics assigned to the actual project
 		if (is_array($matchstatistic_ids)){$sIDs=array_merge($sIDs,$matchstatistic_ids);}
@@ -1488,11 +1484,11 @@ $xmlfile = $xmlfile.$output;
             $query->select('*');
             $query->from('#__sportsmanagement_statistic');
             $query->where('id IN (' . $ids .')');
-			$db->setQuery($query);
-			$db->query();
-			if ($db->getNumRows() > 0)
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			if ($this->_db->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
 				return $result;
