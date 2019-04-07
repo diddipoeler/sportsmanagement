@@ -509,7 +509,6 @@ class JSMCalendar extends PHPCalendar
 	 * @return
 	 */
 	static function getMatches($month, $year) 
-    //function getMatches($month, $year)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -630,7 +629,6 @@ class JSMCalendar extends PHPCalendar
 			$counter++;
 			
             if (isset($matches[$x+1])) $nd= new JDate($matches[$x+1]['date'], $offset);
-            //if (isset($matches[$x+1])) $nd= new JDate($matches[$x+1]['date']);
 			else $nd = false;
 			if (!$nd || $nd->$dateformat($dateoutformat) != $da->$dateformat($dateoutformat)) {
 

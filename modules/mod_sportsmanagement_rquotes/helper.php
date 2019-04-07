@@ -237,18 +237,6 @@ static function getSequentialRquote($category, &$params)
 	   $x = 0;
        $row = NULL;
        $catid = 0;
-       
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
-
-
-	// by PD, not yet implemented
-
-	// make use of cookie to store last displayed rquote
-
-	// if cookies not enabled then fetch randomly
-//$query = "SELECT * from	#__rquotes WHERE published='1' and catid = $category";
- 
  
 	if ( $params->get('cfg_which_database') )
         {
@@ -273,7 +261,6 @@ static function getSequentialRquote($category, &$params)
 		{ 
 		  echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
           }
-//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
 $query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.*,p.picture as person_picture');

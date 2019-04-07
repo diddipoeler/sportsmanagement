@@ -91,27 +91,7 @@ $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
 $helper = new modJSMCalendarHelper;
 $doc = Factory::getDocument();
 $lightbox = $params->get('lightbox', 1);
-
-
-//if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
-//{
-//	$doc->addScriptDeclaration(";
-//      window.addEvent('domready', function() {
-//          $$('a.jlcmodal".$module->id."').each(function(el) {
-//            el.addEvent('click', function(e) {
-//              new Event(e).stop();
-//              SqueezeBox.fromElement(el);
-//            });
-//          });
-//      });
-//      ");
-//}
-
 $inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'sportsmanagement'):'';
-//$doc->addScriptDeclaration(';
-//    jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\';
-//    jlcmodal['.$module->id.'] = \''.$lightbox.'\';
-//      ');
 
 if (!defined('JLC_MODULESCRIPTLOADED')) 
 {
@@ -128,9 +108,6 @@ else
     $doc->addScript( Uri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'_2.js' );
 }    
 
-//	$doc->addScriptDeclaration(';
-//    var calendar_baseurl=\''. Uri::base() . '\';
-//      ');
 	$doc->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
