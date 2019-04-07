@@ -1,217 +1,62 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      jlxmlexports.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage jlxmlexports
+ */
 
-
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filter\OutputFilter;
+
 jimport('joomla.filesystem.file');
 jimport( 'joomla.utilities.array' );
 jimport( 'joomla.utilities.arrayhelper' ) ;
 
 
+/**
+ * sportsmanagementModelJLXMLExports
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 {
-	/**
-	 * @var int
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
+
 	private $_project_id = 0;
-    
-    /**
-	 * @var int
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_update = 0;
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_project = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_projectteam = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5253
-	 */
 	private $_projectreferee = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5253
-	 */
 	private $_projectposition = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_team = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_teamplayer = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_teamstaff = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_teamtrainingdata = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_match = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_club = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_playground = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_matchplayer = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_matchstaff = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_matchreferee = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_person = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_matchevent = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_eventtype = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 */
 	private $_position = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5262
-	 */
 	private $_parentposition = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 */
 	private $_matchstaffstatistic = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 */
 	private $_matchstatistic = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 */
 	private $_positionstatistic = array();
-
-	/**
-	 * @var array
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 */
 	private $_statistic = array();
 
 	/**
@@ -236,10 +81,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		$user = Factory::getUser();
 
-		//$this->_project_id = $app->getUserState($option.'project');
         $this->_project_id = Factory::getApplication()->input->getInt('p');
         $this->_update = Factory::getApplication()->input->getInt('update');
-		//$this->_project_id = $app->getUserState('project');
+
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
 			JError::raiseWarning('ERROR_CODE',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
@@ -252,7 +96,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		
 		if(empty($filename)) 
     {
-			//$this->_project_id = $app->getUserState($option.'project');
             $this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
@@ -266,9 +109,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 				$filename[0] = $filename[0]."-".$table;
 			}
 		}			
-    $l98filename = JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His");
-    //$file = JPATH_SITE.DS.'tmp'.DS.$l98filename.'.jlg';
-    $file = JPATH_SITE.DS.'tmp'.DS.$user->username.DS.JFilterOutput::stringURLSafe($filename[0]).'.jlg';   
+    $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
+    $file = JPATH_SITE.DS.'tmp'.DS.$user->username.DS.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
     
     $userpath = JPATH_SITE.DS.'tmp'.DS.$user->username;
     if ( Folder::exists($userpath) )
@@ -280,12 +122,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
     }  
       
       $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-      
-      
 			// open the project
 			$output .= "<project>\n";
-			
-
 			if ( $this->_update )
             {
             // get the matches data
@@ -295,55 +133,38 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             {
             // get the version of JoomLeague
 			$output .= $this->_addToXml($this->_getJoomLeagueVersion());
-
 			// get the project datas
 			$output .= $this->_addToXml($this->_getProjectData());
-
 			// get sportstype data of project
 			$output .= $this->_addToXml($this->_getSportsTypeData());
-
 			// get league data of project
 			$output .= $this->_addToXml($this->_getLeagueData());
-
 			// get season data of project
 			$output .= $this->_addToXml($this->_getSeasonData());
-
 			// get the template data
 			$output .= $this->_addToXml($this->_getTemplateData());
-
 			// get divisions data
 			$output .= $this->_addToXml($this->_getDivisionData());
-
 			// get the projectteams data
 			$output .= $this->_addToXml($this->_getProjectTeamData());
-
 			// get referee data of project
 			$output .= $this->_addToXml($this->_getProjectRefereeData());
-
 			// get position data of project
 			$output .= $this->_addToXml($this->_getProjectPositionData());
-
 			// get the teams data
 			$output .= $this->_addToXml($this->_getTeamData());
-
 			// get the clubs data
 			$output .= $this->_addToXml($this->_getClubData());
-
 			// get the rounds data
 			$output .= $this->_addToXml($this->_getRoundData());
-
 			// get the matches data
 			$output .= $this->_addToXml($this->_getMatchData());
-
 			// get the playground data
 			$output .= $this->_addToXml($this->_getPlaygroundData());
-
 			// get the team player data
 			$output .= $this->_addToXml($this->_getTeamPlayerData());
-
 			// get the team staff data
 			$output .= $this->_addToXml($this->_getTeamStaffData());
-
 			// get the team training data
 			$output .= $this->_addToXml($this->_getTeamTrainingData());
 
@@ -364,44 +185,32 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 			// get the positions data
 			$output .= $this->_addToXml($this->_getPositionData());
-
 			// get the positions parent data
 			$output .= $this->_addToXml($this->_getParentPositionData());
-
 			// get ALL persons data for Export
 			$output .= $this->_addToXml($this->_getPersonData());
-
 			// get the match events data
 			$output .= $this->_addToXml($this->_getMatchEvent());
-
 			// get the event types data
 			$output .= $this->_addToXml($this->_getEventType());
-
 			// get the position eventtypes data
 			$output .= $this->_addToXml($this->_getPositionEventType());
-
 			// get the match_statistic data
 			$output .= $this->_addToXml($this->_getMatchStatistic());
-
 			// get the match_staff_statistic data
 			$output .= $this->_addToXml($this->_getMatchStaffStatistic());
-
 			// get the position_statistic data
 			$output .= $this->_addToXml($this->_getPositionStatistic());
-
 			// get the statistic data
 			$output .= $this->_addToXml($this->_getStatistic());
             }
-
 			// close the project
 			$output .= '</project>';
 
 // mal als test
 $xmlfile = $xmlfile.$output;
-   
 			// download the generated xml
 			$this->downloadXml($output,"");
-
 			// close the application
 			$app =& Factory::getApplication();
 			$app->close();
@@ -429,7 +238,6 @@ $xmlfile = $xmlfile.$output;
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
         
-		jimport('joomla.filter.output');
 		$filename = $this->_getIdFromData('name', $this->_project);
 		if(empty($filename)) {
 			$this->_project_id = $app->getUserState($option.'project');
@@ -446,7 +254,7 @@ $xmlfile = $xmlfile.$output;
 		}
 		/**/
 		header('Content-type: "text/xml"; charset="utf-8"');
-		header("Content-Disposition: attachment; filename=\"" . JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
+		header("Content-Disposition: attachment; filename=\"" . OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
 		header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 2, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-cache, must-revalidate");
