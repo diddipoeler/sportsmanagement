@@ -575,13 +575,8 @@ $xmlfile = $xmlfile.$output;
         $query = $db->getQuery(true);
         
 		$exportRoutine = '2010-09-23 15:00:00';
-//		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
-//		$this->_db->setQuery($query);
-//		$this->_db->query();
-        
-        // Select some fields
+
         $query->select('manifest_cache');
-		// From the table
 		$query->from('#__extensions');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
         Factory::getDbo()->setQuery( $query );
@@ -623,8 +618,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_project');
         $query->where('id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -670,9 +663,7 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_template_config');
         $query->where('project_id = ' . $master_template_id );
-
-		//$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
-		$db->setQuery($query);
+    	$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
 		{
@@ -707,8 +698,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_league');
         $query->where('id = ' . $this->_project[0]['league_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -744,8 +733,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_sports_type');
         $query->where('id = ' . $this->_project[0]['sports_type_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
 		$db->setQuery($query);
 		$db->query();
 		if ($this->_db->getNumRows() > 0)
@@ -781,8 +768,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_season');
         $query->where('id = ' . $this->_project[0]['season_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -818,8 +803,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_division');
         $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -877,32 +860,11 @@ $xmlfile = $xmlfile.$output;
         $query->from('#__sportsmanagement_project_team as pt');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
         $query->where('pt.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
-/*
-            foreach( $result as $row ) 
-            { 
-
-      
-      $query->clear();
-      $query->select('team_id'); 
-      $query->from('#__sportsmanagement_season_team_id');
-      $query->where('id = ' . (int)$row['team_id'] );
-      $db->setQuery($query);
-	  $db->query();
-      $teamresult = $db->loadResult();
-      if( $teamresult )
-      {
-      $row['team_id'] = $teamresult;  
-      }
-       
- }
-*/  
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -933,8 +895,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_project_position');
         $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -970,8 +930,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_project_referee');
         $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -1017,8 +975,6 @@ $xmlfile = $xmlfile.$output;
             $query->where('st.id IN (' . $ids .')' );
             $query->where('pt.project_id = ' . $this->_project_id );
             $query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
 			$db->setQuery($query);
 			$db->query();
 			if ($db->getNumRows() > 0)
@@ -1058,19 +1014,13 @@ $xmlfile = $xmlfile.$output;
 		$teamClub_ids = $this->_getIdFromData('club_id', $this->_team);
 		if (is_array($teamClub_ids)){$cIDs=array_merge($cIDs,$teamClub_ids);}
 
-		//$playgroundClub_ids = $this->_getIdFromData('club_id',$this->_teamstaff);
-		//if (is_array($playgroundClub_ids)){$cIDs=array_merge($cIDs,$playgroundClub_ids);}
-
 		if (is_array($cIDs) && count($cIDs) > 0)
 		{
 			$ids = implode(",", array_unique($cIDs));
-            
             $query->select('*');
             $query->from('#__sportsmanagement_club');
             $query->where('id IN (' . $ids .')' );
             $query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
 			$db->setQuery($query);
 			$db->query();
 			if ($db->getNumRows() > 0)
@@ -1108,8 +1058,6 @@ $xmlfile = $xmlfile.$output;
         $query->select('*');
         $query->from('#__sportsmanagement_round');
         $query->where('project_id = ' . $this->_project_id );
-            
-		//$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -1146,8 +1094,6 @@ $xmlfile = $xmlfile.$output;
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
         $query->where('r.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
 		$db->setQuery($query);
 		$db->query();
 		if ($db->getNumRows() > 0)
@@ -1193,12 +1139,9 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-            
             $query->select('*');
             $query->from('#__sportsmanagement_playground');
             $query->where('id IN (' . $ids .')' );
-            
-			//$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
 			$db->setQuery($query);
 			$db->query();
 			if ($db->getNumRows() > 0)
@@ -1230,7 +1173,6 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($teamplayer_ids) && count($teamplayer_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamplayer_ids));
-
 			$query = "SELECT * FROM #__sportsmanagement_team_player WHERE projectteam_id IN ($ids)";
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -1264,7 +1206,6 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($teamtraining_ids) && count($teamtraining_ids) > 0)
 		{
 			$ids = implode(',',array_unique($teamtraining_ids));
-
 			$query = "SELECT * FROM #__sportsmanagement_team_trainingdata WHERE project_team_id IN ($ids)";
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -1297,7 +1238,6 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($teamstaff_ids) && count($teamstaff_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamstaff_ids));
-
 			$query = "SELECT * FROM #__sportsmanagement_team_staff WHERE projectteam_id IN ($ids)";
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -1331,9 +1271,7 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
-
 			$query = "SELECT * FROM #__sportsmanagement_match_player WHERE match_id IN ($ids)";
-
 			$this->_db->setQuery($query);
 			$this->_db->query();
 			if ($this->_db->getNumRows() > 0)
@@ -1341,7 +1279,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'MatchPlayer';
 				$this->_matchplayer = $result;
-
 				return $result;
 			}
 			return false;
@@ -1366,7 +1303,6 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
-
 			$query = "SELECT * FROM #__sportsmanagement_match_staff WHERE match_id IN ($ids)";
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -1375,7 +1311,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'MatchStaff';
 				$this->_matchstaff = $result;
-
 				return $result;
 			}
 			return false;
@@ -1409,7 +1344,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'MatchReferee';
 				$this->_matchreferee = $result;
-
 				return $result;
 			}
 			return false;
@@ -1443,7 +1377,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'Position';
 				$this->_position = $result;
-
 				return $result;
 			}
 			return false;
@@ -1477,7 +1410,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'ParentPosition';
 				$this->_parentposition = $result;
-
 				return $result;
 			}
 			return false;
@@ -1519,7 +1451,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'Person';
 				$this->_person = $result;
-
 				return $result;
 			}
 			return false;
@@ -1760,7 +1691,6 @@ $xmlfile = $xmlfile.$output;
 				$result = $this->_db->loadAssocList();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
-
 				return $result;
 			}
 			return false;
