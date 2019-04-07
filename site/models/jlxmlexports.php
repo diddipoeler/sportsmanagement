@@ -1366,30 +1366,29 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+
 	/**
-	 * _getPositionStatistic
-	 *
-	 * Get the statisctics data from the joomleague_position_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getPositionStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getPositionStatistic()
 	{
 		$position_ids = $this->_getIdFromData('id', $this->_position);
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
 
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_position_statistic WHERE position_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+            $query->select('*');
+            $query->from('#__sportsmanagement_position_statistic');
+            $query->where('id IN (' . $ids .')');
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'PositionStatistic';
 				$this->_positionstatistic = $result;
 				return $result;
@@ -1399,30 +1398,29 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStatistic
-	 *
-	 * Get the statisctics data from the joomleague_match_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getMatchStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStatistic()
 	{
 		$match_ids = $this->_getIdFromData('id', $this->_match);
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
 
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_match_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+            $query->select('*');
+            $query->from('#__sportsmanagement_match_statistic');
+            $query->where('id IN (' . $ids .')');
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 				return $result;
@@ -1432,30 +1430,28 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStaffStatistic
-	 *
-	 * Get the statisctics data from the joomleague_match_staff_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getMatchStaffStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStaffStatistic()
 	{
 		$match_ids = $this->_getIdFromData('id', $this->_match);
-
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_match_staff_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+        $query->select('*');
+            $query->from('#__sportsmanagement_match_staff_statistic');
+            $query->where('id IN (' . $ids .')');
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 				return $result;
@@ -1465,19 +1461,17 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getStatistic
-	 *
-	 * Get the statistic data from the joomleague_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getStatistic()
 	{
-		$sIDs=array();
+		$sIDs = array();
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
 
 		$matchstatistic_ids = $this->_getIdFromData('statistic_id',$this->_matchstatistic);	// Get all ids of match statistics assigned to the actual project
 		if (is_array($matchstatistic_ids)){$sIDs=array_merge($sIDs,$matchstatistic_ids);}
@@ -1491,12 +1485,14 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($sIDs) && count($sIDs) > 0)
 		{
 			$ids = implode(",",array_unique($sIDs));
-			$query = "SELECT * FROM #__sportsmanagement_statistic WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+            $query->select('*');
+            $query->from('#__sportsmanagement_statistic');
+            $query->where('id IN (' . $ids .')');
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
 				return $result;
