@@ -69,10 +69,15 @@ class sportsmanagementViewProjects extends sportsmanagementView
 						$this->state->get('filter.userfields'));
 		unset($userfields);
         
-		foreach ( $this->items as $row )
-		{
-			$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
-		}
+foreach ( $this->items as $row )
+{
+$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
+$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/projectimages/' . $row->id;
+if (Folder::exists($dest)) {
+} else {
+$result = Folder::create($dest);
+}	
+}
         
         //build the html select list for leagues
 		$leagues[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'), 'id', 'name');
