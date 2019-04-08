@@ -31,32 +31,39 @@ if ( !empty($this->mapconfig) )
 {
 if ( $this->mapconfig['map_kmlfile'] && $this->project )
 {    
-  $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
-  $this->kmlfile = $this->project->id.'-ranking.kml';
+$this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlfile = $this->project->id.'-ranking.kml';
 }
 }
-  if( version_compare(JSM_JVERSION,'4','eq') )
-  {
-  echo $this->loadTemplate('joomla_vier');
-  }
-  else
-  {
+if( version_compare(JSM_JVERSION,'4','eq') )
+{
+echo $this->loadTemplate('joomla_vier');
+}
+else
+{
+ 
+?>
+<script>
+
+</script>
+
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultranking">
+<?php
+
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}
+
+echo $this->loadTemplate('projectheading');
+if ( array_key_exists('show_pictures', $this->config) )
+{
+if ($this->config['show_pictures'])
+{
+echo $this->loadTemplate('projectimages');
+}
+}
   
-  ?>
-  <script>
-
-  </script>
-
-  <div class="<?php echo $this->divclasscontainer;?>" id="defaultranking">
-  <?php
-
-  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-  {
-  echo $this->loadTemplate('debug');
-  }
-
-  echo $this->loadTemplate('projectheading');
-
 if ( array_key_exists('show_sectionheader', $this->config) )
 {
   if ($this->config['show_sectionheader'])
