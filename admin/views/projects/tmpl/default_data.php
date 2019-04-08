@@ -170,6 +170,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 </br>	
 <?php
 endif;
+$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/projectimages/' . $row->id;					
 echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);					
 ?>
 </td>
