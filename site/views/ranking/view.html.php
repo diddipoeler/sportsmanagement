@@ -35,6 +35,20 @@ class sportsmanagementViewRanking extends sportsmanagementView {
      */
     function init() {
 
+if ( $this->config['show_pictures'] )
+{
+/**
+ * die bilder zum spiel
+ */
+$dest = JPATH_ROOT.'/images/com_sportsmanagement/database/projectimages/'.$this->project->id;
+$folder = 'projectimages/'.$this->project->id;
+$images = $this->model->getMatchPictures($folder);
+if ( $images )
+{
+$this->matchimages = $images;
+}
+ } 
+        
       $rounds = array();
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
