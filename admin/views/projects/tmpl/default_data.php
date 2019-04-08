@@ -23,110 +23,106 @@ HTMLHelper::_('behavior.modal');
 
 ?>
 <div class="table-responsive">
-		<table class="<?php echo $this->table_data_class; ?>">
-			<thead>
-				<tr>
-					<th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-					<th width="40" class="">
-						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
-					</th>
-					
-					<th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-					<th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-                    <th width="">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-					<th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-					<th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-                    
-                    <th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-                    
-					<th class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
-					</th>
-					<th width="" class="title">
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
-						?>
-					</th>
-                    <th class="title">
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
-						?>
-					</th>
-                    <th width="" class="title">
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
-						?>
-					</th>
-                    <th width="" class="title">
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
-						?>
-					</th>
-                    <th width="" class="title">
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USER_FIELD');
-						?>
-					</th>
-                    
-                    
-					<th width="" class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-					<th width="" class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->sortDirection,$this->sortColumn);
-						echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
-						?>
-					</th>
-					<th width="" class="title">
-						<?php
-						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
-                    
-                    <th width="" class="title">
-						<?php
-						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
-						?>
-					</th>
-                    <th width="" class="title">
-						<?php
-						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
-						?>
-					</th>
-                    
-				</tr>
-			</thead>
+<table class="<?php echo $this->table_data_class; ?>">
+<thead>
+<tr>
+<th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+<th width="40" class="">
+<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th width="">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th>
+<?php 
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); 
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
+?>
+</th>
+<th class="title">
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USER_FIELD');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo HTMLHelper::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th width="" class="title">
+<?php
+echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->sortDirection,$this->sortColumn);
+echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+?>
+</th>
+<th width="" class="title">
+<?php
+echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+?>
+</th>
+</tr>
+</thead>
 			<tfoot>
             <tr>
             <td colspan='15'><?php echo $this->pagination->getListFooter(); ?>
