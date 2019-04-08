@@ -40,14 +40,15 @@ if ( $this->config['show_pictures'] )
 /**
  * die bilder zum spiel
  */
+$mdlMatchReport = BaseDatabaseModel::getInstance("MatchReport", "sportsmanagementModel");    
 $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/projectimages/'.$this->project->id;
 $folder = 'projectimages/'.$this->project->id;
-$images = $this->model->getMatchPictures($folder);
+$images = $mdlMatchReport->getMatchPictures($folder);
 if ( $images )
 {
 $this->matchimages = $images;
 }
- } 
+} 
         
       $rounds = array();
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
