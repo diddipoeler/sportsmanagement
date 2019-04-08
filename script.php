@@ -674,6 +674,7 @@ echo self::getFxInitJSCode('steps');
 		'predictionusers',
 		'playgrounds',
 		'projects',
+		'projectimages',
 		'projectreferees',
 		'projectteams',
 		'projectteams/trikot_home',
