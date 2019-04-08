@@ -154,29 +154,24 @@ echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td width="40" class=""><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
-						<?php
-                        						
-							$inputappend = '';
-							?>
-							
-                            <?php
-                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
-										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
-									<?php else: ?>
-								<a href="<?php echo $link; ?>">
-                                <?php
-									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
-									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-									?>
-                                
-									
-								</a>
-							<?php
-						endif;
-						?>
-                            </td>
+<td width="40" class=""><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
+<?php
+$inputappend = '';
+if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
+<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
+<?php else: ?>
+<a href="<?php echo $link; ?>">
+<?php
+$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+		$imageTitle,'title= "'.$imageTitle.'"');
+?>
+</a>
+</br>	
+<?php
+endif;
+?>
+</td>
 							
 						<td>
 							<?php
