@@ -188,38 +188,46 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
       <?php 
       }
       ?>
-			<td >
-				<?php
-				echo JSMCountries::convertAddressString($team->club_name,
-				$team->club_address,
-				$team->club_state,
-				$team->club_zipcode,
-				$team->club_location,
-				$team->club_country,
-				'COM_SPORTSMANAGEMENT_TEAMS_ADDRESS_FORM' );
-                if ( $this->config['show_club_phone'] ) 
-      { 
-        ?>
-        <br />
-        <?php
-        echo $team->club_phone;
-        }
-        if ( $this->config['show_club_fax'] ) 
-      { 
-        ?>
-        <br />
-        <?php
-        echo $team->club_fax;
-        }
-        if ( $this->config['show_club_email'] ) 
-      { 
-        ?>
-        <br />
-        <?php
-        echo $team->club_email;
-        }        
-				?>
-			</td>
+
+<td >
+<?php
+echo JSMCountries::convertAddressString($team->club_name,
+$team->club_address,
+$team->club_state,
+$team->club_zipcode,
+$team->club_location,
+$team->club_country,
+'COM_SPORTSMANAGEMENT_TEAMS_ADDRESS_FORM' );
+if ( $this->config['show_club_phone'] ) 
+{ 
+?>
+<br />
+<?php
+echo $team->club_phone;
+}
+if ( $this->config['show_club_fax'] ) 
+{ 
+?>
+<br />
+<?php
+echo $team->club_fax;
+}
+if ( $this->config['show_club_email'] ) 
+{ 
+?>
+<br />
+<?php
+echo $team->club_email;
+}    
+if ( $this->config['show_googlemap_link'] ) 
+{		
+?>
+<br />
+Google	
+<?php
+} 
+?> 
+</td>
 			
 <?php if ( $this->config['show_club_playground'] ) { ?>
 <td >
