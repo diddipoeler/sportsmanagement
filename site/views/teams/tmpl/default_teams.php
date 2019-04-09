@@ -220,7 +220,10 @@ if ( $this->config['show_club_email'] )
 echo $team->club_email;
 }    
 if ( $this->config['show_googlemap_link'] ) 
-{		
+{
+$googlelink = '';	
+echo HTMLHelper::link($googlelink,
+HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif',$team->club_name, 'title= "' . $team->club_name . '"' ));	
 ?>
 <br />
 Google	
