@@ -223,7 +223,7 @@ if ( $this->config['show_googlemap_link'] )
 {
 $googlelink = 'http://maps.google.com/maps?f=q&hl=de&geocode=&q='.$team->club_address.', '.$team->club_zipcode.' '.$team->club_location;	
 echo HTMLHelper::link($googlelink,
-HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif',$team->club_name, array('target' => '_blank' ,'title' => $team->club_name ) ));	
+HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif',$team->club_name), array('target' => '_blank' ,'title' => $team->club_name ) );	
 ?>
 	
 <?php
