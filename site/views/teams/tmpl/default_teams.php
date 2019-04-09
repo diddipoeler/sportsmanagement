@@ -221,12 +221,11 @@ echo $team->club_email;
 }    
 if ( $this->config['show_googlemap_link'] ) 
 {
-$googlelink = '';	
+$googlelink = 'http://maps.google.com/maps?f=q&hl=de&geocode=&q='.$team->club_address.', '.$team->club_zipcode.' '.$team->club_location;	
 echo HTMLHelper::link($googlelink,
 HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif',$team->club_name, 'title= "' . $team->club_name . '"' ));	
 ?>
-<br />
-Google	
+	
 <?php
 } 
 ?> 
