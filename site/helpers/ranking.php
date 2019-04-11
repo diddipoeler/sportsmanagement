@@ -962,10 +962,6 @@ $option = $app->input->getCmd('option');
             $query->where('project_id = ' . $db->Quote($this->_projectid) );
             $query->where('parent_id = ' . $db->Quote($this->_division) );
             
-//			$query = ' SELECT id from #__'.COM_SPORTSMANAGEMENT_TABLE.'_division '
-//			. ' WHERE project_id = '. $db->Quote($this->_projectid)
-//			. '   AND parent_id = '. $db->Quote($this->_division)
-//			;
 			$db->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

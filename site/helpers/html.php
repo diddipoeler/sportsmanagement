@@ -296,7 +296,7 @@ $modaltext .= '</a>';
         $query->select('*');
         $query->select('CONCAT_WS( \':\', id, alias ) AS project_slug');
         // from table
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project');
+        $query->from('#__sportsmanagement_project');
         // where
         $query->where('id = ' . $projectid);
         $db->setQuery($query);
@@ -312,7 +312,7 @@ $modaltext .= '</a>';
             $query->select('*');
             $query->select('CONCAT_WS( \':\', id, alias ) AS round_slug');
             // from table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_round');
+            $query->from('#__sportsmanagement_round');
             // where
             $query->where('id = ' . (int) $current_round);
             $db->setQuery($query);
