@@ -55,7 +55,7 @@ class JFormFieldprojectlist extends \JFormFieldList
 			$query->select('l.id AS value, l.name AS text');
             if ( defined(COM_SPORTSMANAGEMENT_TABLE) )
             {
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as l');    
+            $query->from('#__sportsmanagement_project as l');    
             }
             else
             {

@@ -107,7 +107,7 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 	 */
 	function getVersions()
 	{
-		$query='SELECT id, version, DATE_FORMAT(date,"%Y-%m-%d %H:%i") date FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_version';
+		$query='SELECT id, version, DATE_FORMAT(date,"%Y-%m-%d %H:%i") date FROM #__sportsmanagement_version';
 		$this->_db->setQuery($query);
 		if (!$result=$this->_db->loadObjectList())
 		{
@@ -164,7 +164,7 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
    */
   function getVersionHistory()
   {
-  $query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_version_history order by date DESC';
+  $query='SELECT * FROM #__sportsmanagement_version_history order by date DESC';
 		$this->_db->setQuery($query);		
 		$result = $this->_db->loadObjectList();
   return $result;

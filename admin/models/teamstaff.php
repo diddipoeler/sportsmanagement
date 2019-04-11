@@ -65,7 +65,7 @@ class sportsmanagementModelteamstaff extends AdminModel
 		}
         
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teamstaffs');
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamstaffs');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
 		return $form;

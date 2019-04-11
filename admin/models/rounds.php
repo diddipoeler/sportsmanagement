@@ -303,7 +303,7 @@ $option = $app->input->getCmd('option');
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('roundcode');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);  
         $query->order('id ASC');  
         
@@ -344,7 +344,7 @@ $option = $app->input->getCmd('option');
        $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('roundcode');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);  
         $query->order('id ASC');  
         

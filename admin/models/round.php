@@ -278,7 +278,7 @@ catch (Exception $e)
             // matches
             $query->clear();
             $query->select('m.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+            $query->from('#__sportsmanagement_match as m');
             $query->where('m.round_id IN ('.implode(",",$pks).')');
             Factory::getDBO()->setQuery($query);
             $matches = Factory::getDbo()->loadColumn();

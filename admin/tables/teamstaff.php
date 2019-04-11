@@ -66,13 +66,13 @@ class sportsmanagementTableTeamStaff extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'id', $db );
+		parent::__construct( '#__sportsmanagement_team_staff', 'id', $db );
 	}
 
 	function canDelete($id, $joins = NULL)
 	{
 		// the staff cannot be deleted if assigned to games
-		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff '
+		$query = ' SELECT COUNT(id) FROM #__sportsmanagement_match_staff '
 		       . ' WHERE team_staff_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY team_staff_id ';
 		$this->getDbo()->setQuery($query, 0, 1);
@@ -84,7 +84,7 @@ class sportsmanagementTableTeamStaff extends JTable
 		}
 		
 		// the staff cannot be deleted if has stats
-		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic '
+		$query = ' SELECT COUNT(id) FROM #__sportsmanagement_match_staff_statistic '
 		       . ' WHERE team_staff_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY team_staff_id ';
 		$this->getDbo()->setQuery($query, 0, 1);

@@ -66,7 +66,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'id', $db );
+		parent::__construct( '#__sportsmanagement_team_player', 'id', $db );
 	}
 
 	/**
@@ -102,7 +102,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 	function canDelete($id, $joins = NULL)
 	{
 		// cannot be deleted if assigned to games
-		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player '
+		$query = ' SELECT COUNT(id) FROM #__sportsmanagement_match_player '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);
@@ -114,7 +114,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		}
 		
 		// cannot be deleted if has events
-		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '
+		$query = ' SELECT COUNT(id) FROM #__sportsmanagement_match_event '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);
@@ -126,7 +126,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		}
 		
 		// cannot be deleted if has stats
-		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
+		$query = ' SELECT COUNT(id) FROM #__sportsmanagement_match_statistic '
 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
 		       . ' GROUP BY teamplayer_id ';
 		$this->getDbo()->setQuery($query, 0, 1);

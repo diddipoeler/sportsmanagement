@@ -134,7 +134,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         // select some fields
 		$query->select('use_tie_break,game_parts,sports_type_id');
 		// from table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+		$query->from('#__sportsmanagement_project');
         // where
         $query->where('id = '.(int) $post['project_id']);
         $db->setQuery($query);
@@ -154,7 +154,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         // select some fields
 		$query->select('name,id');
 		// from table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype');
+		$query->from('#__sportsmanagement_eventtype');
         // where
         $query->where('sports_type_id = '.(int) $use_tie_break->sports_type_id);
         $db->setQuery($query);
@@ -410,7 +410,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         // Select some fields
 		$query->select('mc.*');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+		$query->from('#__sportsmanagement_match_single AS mc');
         $query->where('mc.match_id = '.$match_id);
         $db->setQuery($query);
         

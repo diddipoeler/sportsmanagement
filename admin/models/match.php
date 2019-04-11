@@ -1427,22 +1427,13 @@ if ( $data['id'] )
         $query->from('#__sportsmanagement_match_player AS mp');
         $query->join('INNER', ' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
         $query->join('INNER', ' #__sportsmanagement_person AS pl ON pl.id = sp.person_id ');
-
-        //$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = pl.id');
-        // $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = pl.id and ppp.persontype = sp.persontype');
-
         $query->join('LEFT', ' #__sportsmanagement_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
         $query->join('LEFT', ' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
-        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
-
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
         $query->join('LEFT', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
 
         $query->where('mp.match_id = ' . $match_id);
-
         $query->where('ppos.project_id = ' . self::$_project_id);
-
-        //$query->where('tpl.projectteam_id = '.$team_id);
         $query->where('mp.came_in = ' . self::MATCH_ROSTER_STARTER);
         $query->where('pl.published = 1');
 

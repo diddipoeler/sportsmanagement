@@ -1286,8 +1286,6 @@ abstract class sportsmanagementHelper {
         $query->select('extension');
         $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project');
         $query->where('id =' . $db->Quote((int) $project_id));
-
-//		$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
         $db->setQuery($query);
         $res = $db->loadResult();
 
@@ -1324,35 +1322,6 @@ abstract class sportsmanagementHelper {
 
         return $arrExtensions;
     }
-
-//	public static function getExtensions($project_id)
-//	{
-//		$option='com_sportsmanagement';
-//		$arrExtensions = array();
-//		$excludeExtension = array();
-//		if ($project_id) {
-//			$db= sportsmanagementHelper::getDBConnection();
-//			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
-//
-//			$db->setQuery($query);
-//			$res=$db->loadObject();
-//			if(!empty($res)) {
-//				$excludeExtension = explode(",", $res->extension);
-//			}
-//		}
-//		if(Folder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
-//			$folderExtensions  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
-//													'.', false, false, $excludeExtension);
-//			if($folderExtensions !== false) {
-//				foreach ($folderExtensions as $ext)
-//				{
-//					$arrExtensions[] = $ext;
-//				}
-//			}
-//		}
-//
-//		return $arrExtensions;
-//	}
 
     /**
      * sportsmanagementHelper::getExtensionsOverlay()

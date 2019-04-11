@@ -52,7 +52,7 @@ class JFormFieldleaguelist extends \JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('l.id AS value, l.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
+			$query->from('#__sportsmanagement_league as l');
 			$query->order('l.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();

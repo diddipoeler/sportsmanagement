@@ -68,10 +68,10 @@ class JFormFieldseasonteamperson extends FormField
     $query = Factory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('stp.season_id,stp.team_id, t.name as teamname, s.name as seasonname, c.logo_big as clublogo');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable.' as stp');
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = stp.team_id');
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = stp.season_id');
+			$query->from('#__sportsmanagement_'.$targettable.' as stp');
+            $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = stp.team_id');
+            $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+            $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = stp.season_id');
             
 			$query->where($targetid.'='.$select_id);
             $query->order('s.name');

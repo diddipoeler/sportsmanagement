@@ -317,7 +317,7 @@ class sportsmanagementModelsmimageimports extends ListModel {
           $temp->folder = $folder;
           $temp->published = 0;
           // Insert the object
-          $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $temp);
+          $result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
 
 
 

@@ -852,7 +852,6 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
        $query->where('master_template = 0');  
        $query->order('name ASC');
        
-		//$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE master_template=0 ORDER BY name ASC';
 		Factory::getDbo()->setQuery($query);
 		return Factory::getDbo()->loadObjectList();
 	}
@@ -2618,7 +2617,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
           // Select some fields
         $query->select('id,name,country');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+		$query->from('#__sportsmanagement_club');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_club->name)).''));
         $query->where('country LIKE '.Factory::getDbo()->Quote(''.$p_club->country.''));
 			Factory::getDbo()->setQuery($query);
@@ -3417,7 +3416,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
           // Select some fields
         $query->select('id,master_template');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+		$query->from('#__sportsmanagement_project');
         $query->where('id = '.$this->_template_id);
         
 			Factory::getDbo()->setQuery($query);
@@ -3435,7 +3434,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
           // Select some fields
         $query->select('id,master_template');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+		$query->from('#__sportsmanagement_template_config');
         $query->where('project_id = '.$this->_master_template);
         
 			Factory::getDbo()->setQuery($query);
@@ -3603,7 +3602,7 @@ $t_params = json_encode( $ini );
         $object->id = $this->_project_id;
         $object->master_template = $this->_master_template;
         // Update their details in the table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
         
 //		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
 //        Factory::getDbo()->setQuery($query);
@@ -4110,7 +4109,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$project_position_id = $p_teamplayer->project_position_id;
 				if($project_position_id>0) {
 					$query ='SELECT *
-								FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position
+								FROM #__sportsmanagement_project_position
 								WHERE	id='.$project_position_id;
 					Factory::getDbo()->setQuery($query);
 					sportsmanagementModeldatabasetool::runJoomlaQuery();
@@ -4227,7 +4226,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$project_position_id = $p_teamstaff->project_position_id;
 				if($project_position_id>0) 
                 {
-					$query ='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position WHERE id='.$project_position_id;
+					$query ='SELECT * FROM #__sportsmanagement_project_position WHERE id='.$project_position_id;
 					Factory::getDbo()->setQuery($query);
 					sportsmanagementModeldatabasetool::runJoomlaQuery();
 					$object=Factory::getDbo()->loadObject();
@@ -5191,7 +5190,7 @@ $query->clear();
 			// Select some fields
         $query->select('id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic');
+		$query->from('#__sportsmanagement_position_statistic');
         $query->where('position_id = '.(int)$p_positionstatistic->position_id);
         $query->where('statistic_id = '.(int)$p_positionstatistic->statistic_id);
 
@@ -6456,7 +6455,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $db->quoteName('person_id') . '=' . $protref->person_id,
                 $db->quoteName('project_id') . '=' . $this->_project_id
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__sportsmanagement_project_referee'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();  
                 if (!$result)
@@ -6469,7 +6468,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
         }
         
         // die teams verarbeiten
-        $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team where project_id = '.$this->_project_id ;
+        $query = 'SELECT * FROM #__sportsmanagement_project_team where project_id = '.$this->_project_id ;
 		Factory::getDbo()->setQuery($query);
 		$result_pt = Factory::getDbo()->loadObjectList();
         
@@ -6484,7 +6483,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
             $query = $db->getQuery(true);
 		    /*
             $query->select('id');		
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->from('#__sportsmanagement_season_team_id AS t');
 		    $query->where('t.team_id = '.$proteam->team_id);
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
@@ -6525,7 +6524,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
             $values = array($proteam->team_id,$this->_season_id,'\''.$proteam->picture.'\'');
             // Prepare the insert query.
             $insertquery
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
             // Set the query using our newly populated query object and execute it.
@@ -6583,7 +6582,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
             $query->from('#__sportsmanagement_team_player AS tp');
             $query->join('INNER','#__sportsmanagement_person as p ON p.id = tp.person_id ');
             $query->where('tp.projectteam_id = '.$proteam->id);
-            //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
+            //$query = 'SELECT * FROM #__sportsmanagement_team_player where projectteam_id = '.$proteam->id ;
             Factory::getDbo()->setQuery($query);
 		    $result_tp = Factory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
@@ -6812,7 +6811,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
             $query->from('#__sportsmanagement_team_staff AS tp');
             $query->join('INNER','#__sportsmanagement_person as p ON p.id = tp.person_id ');
             $query->where('tp.projectteam_id = '.$proteam->id);
-            //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
+            //$query = 'SELECT * FROM #__sportsmanagement_team_staff where projectteam_id = '.$proteam->id ;
             Factory::getDbo()->setQuery($query);
             
             //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -7012,8 +7011,8 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
         // zum schluss den inhalt der alten tabellen löschen
         // wegen speicherplatz
         $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
-        $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
-        $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
+        $successTable = $databasetool->setSportsManagementTableQuery('#__sportsmanagement_team_staff', 'truncate');
+        $successTable = $databasetool->setSportsManagementTableQuery('#__sportsmanagement_team_player', 'truncate');
         
          $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         
@@ -7082,7 +7081,7 @@ $object->round_date_first = $von;
 $object->round_date_last = $bis;
  
 // Update their details in the users table using id as the primary key.
-$result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round', $object, 'id');                
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');                
 
 if (!$result)
 		{
@@ -7098,7 +7097,7 @@ if (!$result)
 // Create a new query object.
         $query = Factory::getDbo()->getQuery(true);
         $query->select(array('id'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')
+        ->from('#__sportsmanagement_match')
         ->where('team1_result IS NULL ')
         ->where('round_id = '.$rounddate->round_id);    
         Factory::getDbo()->setQuery($query);
@@ -7133,7 +7132,7 @@ $object->id = $this->_project_id;
 $object->current_round = $current_round;
  
 // Update their details in the users table using id as the primary key.
-$result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', $object, 'id');                
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');                
 
 if (!$result)
 		{

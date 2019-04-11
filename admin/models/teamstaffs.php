@@ -67,8 +67,8 @@ class sportsmanagementModelTeamStaffs extends ListModel
                             'ppl.away',
 							'ts.*',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS ts on ts.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_season_team_person_id AS ts on ts.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
         }
         else
@@ -78,8 +78,8 @@ class sportsmanagementModelTeamStaffs extends ListModel
 							'ppl.nickname',
 							'ts.*',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_team_staff AS ts on ts.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
         }
         

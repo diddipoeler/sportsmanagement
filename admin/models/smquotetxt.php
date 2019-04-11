@@ -34,7 +34,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 		}
         /*        
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/agegroups');
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         */
 		return $form;

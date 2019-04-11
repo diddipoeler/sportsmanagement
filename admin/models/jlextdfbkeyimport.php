@@ -280,18 +280,11 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
    */
   function getMatchdays($project_id = 0)
 	{
-	//$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication ();
-	
     $this->jsmquery->clear();
     $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_round');
 $this->jsmquery->where('project_id = ' . (int)$project_id);
 
-//	$query = 'select *
-//  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-//  where project_id = ' . (int) $projectid . '';
-	
     try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
@@ -326,19 +319,11 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
 	 */
 	function getMatches($project_id = 0, $division_id = 0)
 	{
-//	   $option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication ();
-//    $db = sportsmanagementHelper::getDBConnection();
-
 $this->jsmquery->clear();
 $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_round');
 $this->jsmquery->where('project_id = ' . (int)$project_id);
     
-// $query = 'select *
-//  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-//  where project_id = ' . (int) $projectid . '';
-
 try{	
 	$this->jsmdb->setQuery( $this->jsmquery );
   
@@ -377,7 +362,7 @@ return $count;
 /*	
 	$rounds = implode(",",$result);
 	$query = 'select count(*)
-  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_match
+  from #__sportsmanagement_match
   where round_id in (' . $rounds . ')';
 	
 	$this->_db->setQuery( $query );
@@ -433,8 +418,8 @@ $this->jsmquery->where('pt.division_id = ' . $division_id);
 }
 /*
 $query = 'select team.name
-  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as team
-  inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pteam
+  from #__sportsmanagement_team as team
+  inner join #__sportsmanagement_project_team as pteam
   on team.id = pteam.team_id
   where pteam.id = ' . (int) $element . ' ';
 */
@@ -475,8 +460,8 @@ $this->jsmquery->where('jr.project_id = ' . (int)$project_id);
 $this->jsmquery->order('dfb.spielnummer');
 /*
 $query = 'select dfb.*,jr.id, jr.round_date_first
-  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_dfbkey as dfb
-  inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as jr
+  from #__sportsmanagement_dfbkey as dfb
+  inner join #__sportsmanagement_round as jr
   on dfb.spieltag = jr.roundcode
   where dfb.schluessel = ' . (int) $number . 
   ' and jr.project_id = '. $projectid .' order by dfb.spielnummer ';

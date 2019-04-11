@@ -210,7 +210,7 @@ else
 		ArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 
-		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin WHERE prediction_id = ' . $data['id'];
+		$query = 'DELETE FROM #__sportsmanagement_prediction_admin WHERE prediction_id = ' . $data['id'];
 		if ( count( $peid ) ) { $query .= ' AND user_id NOT IN (' . $peids . ')'; }
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
@@ -318,7 +318,7 @@ catch (Exception $e)
 		{
 			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin')->where('prediction_id IN ('.$cids.')' );
+            $query->delete()->from('#__sportsmanagement_prediction_admin')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
 			if ( !$db->execute() )
 			{
@@ -349,7 +349,7 @@ catch (Exception $e)
 		{
 			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project')->where('prediction_id IN ('.$cids.')' );
+            $query->delete()->from('#__sportsmanagement_prediction_project')->where('prediction_id IN ('.$cids.')' );
 
 			$db->setQuery( $query );
 			if ( !$db->execute() )
@@ -381,7 +381,7 @@ catch (Exception $e)
 		{
 			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member')->where('prediction_id IN ('.$cids.')' );
+            $query->delete()->from('#__sportsmanagement_prediction_member')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
 			if ( !$db->execute() )
 			{
@@ -412,7 +412,7 @@ catch (Exception $e)
 		{
 			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result')->where('prediction_id IN ('.$cids.')' );
+            $query->delete()->from('#__sportsmanagement_prediction_result')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
 			if ( !$db->execute() )
 			{
@@ -505,7 +505,7 @@ catch (Exception $e)
                                         
         
         // Update their details in the table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_project', $object, 'id');
         
 		//$this->_db->setQuery( $query );
 		if ( !$result )
@@ -540,7 +540,7 @@ catch (Exception $e)
 		  // Select some fields
         $query->clear();  
         $query->select('pp.id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pp ');
+        $query->from('#__sportsmanagement_prediction_project AS pp ');
         $query->where('pp.prediction_id = ' . (int) $predictonID);
 
 			$db->setQuery($query);
@@ -562,7 +562,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 				    // Select some fields
         $query->clear();  
         $query->select('pp.*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pp ');
+        $query->from('#__sportsmanagement_prediction_project AS pp ');
         $query->where('pp.id = ' . (int) $predictionProjectID);
 
 					$db->setQuery($query);
@@ -571,8 +571,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                     $query->clear();  
         $query->select('pr.*');
         $query->select('m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr ');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = pr.match_id');
+        $query->from('#__sportsmanagement_prediction_result AS pr ');
+        $query->join('LEFT', '#__sportsmanagement_match AS m ON m.id = pr.match_id');
         $query->where('pr.prediction_id = ' . (int) $predictonID);
         $query->where('pr.project_id = ' . (int) $predictionProject->project_id);
 					
@@ -728,7 +728,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$object->diff = $diff;
 		$object->tend = $tend;
                         // Update their details in the table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $object, 'id');
         
 						//echo "<br />$query<br />";
 						//$this->_db->setQuery($query);

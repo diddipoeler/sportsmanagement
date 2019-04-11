@@ -87,7 +87,7 @@ class sportsmanagementModelrosterpositions extends ListModel
 		// Select some fields
 		$query->select('obj.*');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rosterposition as obj');
+		$query->from('#__sportsmanagement_rosterposition as obj');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');

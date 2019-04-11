@@ -60,7 +60,7 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
         // Select some fields
 		$query->select('mc.*');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+		$query->from('#__sportsmanagement_match_single AS mc');
         $query->where('mc.match_id = '.$match_id);
 
 $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
@@ -89,7 +89,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         // Select some fields
 		$query->select('COUNT(mc.id)');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+		$query->from('#__sportsmanagement_match_single AS mc');
         $query->where('mc.match_id = '.$match_id);
         $query->where('mc.match_type = "SINGLE" ');
         $db->setQuery($query);
@@ -114,7 +114,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
               $temp->match_type = 'SINGLE';
               $temp->published = 1;
               // Insert the object
-              $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+              $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_single', $temp);
 		    }  
         }
         
@@ -124,7 +124,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         // Select some fields
 		$query->select('COUNT(mc.id)');
 		// From the hello table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS mc');
+		$query->from('#__sportsmanagement_match_single AS mc');
         $query->where('mc.match_id = '.$match_id);
         $query->where('mc.match_type = "DOUBLE" ');
         $db->setQuery($query);
@@ -149,7 +149,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
               $temp->match_type = 'DOUBLE';
               $temp->published = 1;
               // Insert the object
-              $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+              $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_single', $temp);
 		    } 
             
         }
@@ -181,9 +181,9 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 // Select some fields
 		$query->select('pt.id AS value');
         $query->select('t.name AS text,t.short_name AS short_name,t.notes');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');  
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->from('#__sportsmanagement_team AS t');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');  
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->where('pt.project_id = ' . $project_id);
         //$query->where('pl.published = 1');
         $query->order('text ASC');
@@ -194,8 +194,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 							t.short_name AS short_name,
 							t.notes
 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
+					FROM #__sportsmanagement_team AS t
+					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id
 					WHERE pt.project_id = ' . $project_id . '
 					ORDER BY text ASC ';
 */
@@ -227,8 +227,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
-		. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t '
-		. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id '
+		. ' FROM #__sportsmanagement_team AS t '
+		. ' LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id '
 		. ' WHERE pt.project_id = ' . $project_id;
 		if($iDivisionId>0)  {
 			$query .=' AND pt.division_id = ' .$iDivisionId;
@@ -250,7 +250,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 	function getMatchesByRound($roundId)
 	{
-		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single WHERE round_id='.$roundId;
+		$query = 'SELECT * FROM #__sportsmanagement_match_single WHERE round_id='.$roundId;
 		$this->_db->setQuery($query);
 		//echo($this->_db->getQuery());
 		$result = $this->_db->loadObjectList();
@@ -275,10 +275,10 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 // Select some fields
 		$query->select('tp.id AS value');
         $query->select('concat(pl.firstname," - ",pl.nickname," - ",pl.lastname) as text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pl.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');  
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->from('#__sportsmanagement_person AS pl');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pl.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');  
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->where('pt.id ='. $db->Quote($teamid));
         $query->where('pt.project_id ='. $project_id);
         
@@ -305,7 +305,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   $option = Factory::getApplication()->input->getCmd('option');
 	$app	=& Factory::getApplication();
   $query='SELECT name
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
+					FROM #__sportsmanagement_sports_type
 					WHERE id='. $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		$sporttype = $this->_db->loadResult();
@@ -331,7 +331,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	
 	$match_id		= $app->getUserState( $option . 'match_id' );
 	$query='SELECT match_number
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match
+					FROM #__sportsmanagement_match
 					WHERE id='. $this->_db->Quote($match_id);
 		$this->_db->setQuery($query);
 		$match_number = $this->_db->loadResult();

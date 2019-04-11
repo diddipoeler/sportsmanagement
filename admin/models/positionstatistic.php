@@ -144,7 +144,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 		ArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 		
-		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic '
+		$query = ' DELETE	FROM #__sportsmanagement_position_statistic '
 		       . ' WHERE position_id = ' . $position_id
 		       ;
 		if (count($peid)) {

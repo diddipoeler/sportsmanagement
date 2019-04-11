@@ -77,8 +77,8 @@ class sportsmanagementModelTeamPlayers extends ListModel
 							'tp.*',
                             'tp.id as tpid',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
         }
         else
@@ -93,8 +93,8 @@ class sportsmanagementModelTeamPlayers extends ListModel
 							'tp.*',
                             'tp.id as tpid',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_team_player AS tp on tp.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
         }
 
@@ -202,9 +202,9 @@ class sportsmanagementModelTeamPlayers extends ListModel
         // Select some fields
 		$query->select('pl.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as tpl on tpl.person_id = pl.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt on pt.id = tpl.projectteam_id');
+		$query->from('#__sportsmanagement_person as pl');
+        $query->join('INNER', '#__sportsmanagement_team_player as tpl on tpl.person_id = pl.id');
+        $query->join('INNER', '#__sportsmanagement_project_team as pt on pt.id = tpl.projectteam_id');
         $query->where('pt.team_id = '.$project_team_id);
         $db->setQuery($query);
         //$db->query();

@@ -170,11 +170,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$query->from('#__sportsmanagement_prediction_game ');
         $query->where('id = ' . $prediction_id );
         
-        
-//		$query = 'SELECT master_template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game 
-//					WHERE id = ' . (int) $prediction_id;
-
 		$db->setQuery($query);
 		$params = $db->loadObject();
 
@@ -191,11 +186,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		// From table
 		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
-        
-        
-//		$query = 'SELECT template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
-//					WHERE prediction_id = ' . (int) $prediction_id;
 
 		$db->setQuery($query);
 		if(version_compare(JVERSION,'3.0.0','ge')) 

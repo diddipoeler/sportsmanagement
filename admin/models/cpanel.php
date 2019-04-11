@@ -125,23 +125,13 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     function checkcountry() {
-        //$app = Factory::getApplication();
-//        $option = Factory::getApplication()->input->getCmd('option');
         $starttime = microtime();
-        // Create a new query object.		
-//		$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
-        //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
-//        $query='SELECT count(*) AS count
-//		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 
         $this->jsmquery->clear();
         // Select some fields
         $this->jsmquery->select('count(*) AS count');
         // From the table
         $this->jsmquery->from('#__sportsmanagement_countries');
-
         $this->jsmdb->setQuery($this->jsmquery);
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {

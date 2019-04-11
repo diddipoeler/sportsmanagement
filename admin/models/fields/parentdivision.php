@@ -55,7 +55,7 @@ class JFormFieldparentdivision extends \JFormFieldList
 		$query = $db->getQuery(true);
                             
         $query->select('dv.id AS value, dv.name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv');
+        $query->from('#__sportsmanagement_division AS dv');
         $query->where('dv.project_id = '.$project_id .' AND dv.parent_id=0 ');
 			$query->order('dv.ordering ASC');
 			$db->setQuery($query);

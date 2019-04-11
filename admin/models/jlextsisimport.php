@@ -159,7 +159,7 @@ $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('id'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type')
+        ->from('#__sportsmanagement_sports_type')
         ->where('name LIKE '."'COM_SPORTSMANAGEMENT_ST_HANDBALL'");    
         $db->setQuery($query);
 		$sp_id = $db->loadResult();
@@ -168,7 +168,7 @@ $db = sportsmanagementHelper::getDBConnection();
 
 $query = $db->getQuery(true);
         $query->select(array('id,name'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup')
+        ->from('#__sportsmanagement_agegroup')
         ->where('info LIKE '."'".$teamart."'")
         ->where('country LIKE '."'".$country."'");    
         $db->setQuery($query);

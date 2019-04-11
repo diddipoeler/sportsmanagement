@@ -52,7 +52,7 @@ class JFormFieldtemplatelist extends \JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+			$query->from('#__sportsmanagement_project');
             $query->where('master_template=0 ');
 			$query->order('name');
 			$db->setQuery($query);
