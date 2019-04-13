@@ -32,7 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
-*   31-04-2019: **1.0.73** Link zu Google-Map in der Übersicht der Teams zum Projekt
+*   30-04-2019: **1.0.73** Link zu Google-Map in der Übersicht der Teams zum Projekt
 *   24-03-2019: **1.0.72** Transifex Implementierung
 *   17-03-2019: **1.0.71** Start Google Kalender
 *   22-02-2019: **1.0.70** Codebereinigungen
