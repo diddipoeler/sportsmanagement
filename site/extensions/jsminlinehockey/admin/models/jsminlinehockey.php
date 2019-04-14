@@ -69,7 +69,7 @@ function __construct()
 	{
 		$mainframe = Factory::getApplication();
         
-        if($mainframe->isAdmin()) 
+        if( $mainframe->isClient('administrator') ) 
 {
 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'PHPExcel'.DS.'PHPExcel.php');
@@ -215,12 +215,6 @@ if ( !$matchlink )
 {
     $matchlink = $this->getMatchLink($projectid);
 }
-
-//if($app->isAdmin()) 
-//{
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
-//}
 
 $teams = array();
 
@@ -819,12 +813,6 @@ $query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
 $db->setQuery( $query );
 $derlink  = $db->loadResult();
     
-//if($app ->isAdmin()) 
-//{
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
-//}    
-
 return $derlink;
 }
 
