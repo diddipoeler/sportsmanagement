@@ -2525,7 +2525,7 @@ $bar->popupButton('preview')
         $db = self::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
 
-        if ($app->isAdmin()) {
+        if ( $app->isClient('administrator') ) {
             $query->select('id AS value');
         } else {
             $query->select('CONCAT_WS( \':\', id, alias ) AS value');
