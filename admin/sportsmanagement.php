@@ -197,7 +197,7 @@ $extension = $arrExtensions[$e];
 $extensionname = $arrExtensions[$e];
 $extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
 
-if($app->isAdmin()) 
+if( $app->isClient('administrator') ) 
 {
 		$base_path = $extensionpath.DS.'admin';
 /**

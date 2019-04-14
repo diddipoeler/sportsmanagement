@@ -434,7 +434,7 @@ abstract class sportsmanagementHelper {
 
         if ($match->match_date > 0) {
             $app = Factory::getApplication();
-            if ($app->isAdmin()) {
+            if ( $app->isClient('administrator') ) {
                 // In case we are editing match(es) always use the project timezone
                 $timezone = $match->timezone;
             } else {
