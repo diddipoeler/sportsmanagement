@@ -79,12 +79,13 @@ $this->matchimages = $images;
          */
         if ($this->config['show_club_short_names'] || $this->config['show_replace_club_short_names']) {
             $mdlClubnames = BaseDatabaseModel::getInstance("clubnames", "sportsmanagementModel");
+            $this->clubnames = $mdlClubnames->getClubNames($this->project->country);
         }
     }
   
       if ( !empty($this->overallconfig) )
       {
-        if (($this->overallconfig['show_project_rss_feed']) == 1) {
+        if ( $this->overallconfig['show_project_rss_feed'] ) {
             $mod_name = "mod_jw_srfr";
             $rssfeeditems = '';
             $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
