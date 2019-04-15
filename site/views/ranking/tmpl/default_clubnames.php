@@ -25,10 +25,10 @@ foreach ( $this->clubnames as $key => $value )
 ?>
 <tr>
 <td>
-<?php echo $this->clubnames->name; ?>    
+<?php echo $value->name; ?>    
 </td>    
 <td>
-<?php echo $this->clubnames->name_long; ?>    
+<?php echo $value->name_long; ?>    
 </td>    
 </tr>    
 <?php    
