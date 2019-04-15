@@ -66,30 +66,30 @@ echo $this->loadTemplate('projectimages');
   
 if ( array_key_exists('show_sectionheader', $this->config) )
 {
-  if ($this->config['show_sectionheader'])
-  {
-  echo $this->loadTemplate('sectionheader');
-  }
-  }
+if ($this->config['show_sectionheader'])
+{
+echo $this->loadTemplate('sectionheader');
+}
+}
 
 if ( array_key_exists('show_rankingnav', $this->config) )
 {    
-  if ( $this->config['show_rankingnav'] )
-  {
-  echo $this->loadTemplate('rankingnav');
-  }
-  }
+if ( $this->config['show_rankingnav'] )
+{
+echo $this->loadTemplate('rankingnav');
+}
+}
 
-    if ( array_key_exists('show_result_tabs', $this->config) && array_key_exists('show_ranking', $this->config) )
+if ( array_key_exists('show_result_tabs', $this->config) && array_key_exists('show_ranking', $this->config) )
 { 
-    if ( $this->config['show_result_tabs'] == 'show_tabs' )
-    {
-    echo $this->loadTemplate('tabs');  
-    }
-    else
-    {
-  if ( $this->config['show_ranking'] )
-  {
+if ( $this->config['show_result_tabs'] == 'show_tabs' )
+{
+echo $this->loadTemplate('tabs');  
+}
+else
+{
+if ( $this->config['show_ranking'] )
+{
 ?>
 <div class="<?php echo $this->divclassrow;?>" id="ranking">
 <?php    
@@ -129,14 +129,10 @@ echo $this->loadTemplate('ranking_second');
 echo HTMLHelper::_('bootstrap.endTab');   
 }       
 echo HTMLHelper::_('bootstrap.endTabSet'); //end tab set     
-    
-    
-    
-    ?>
+?>
 </div>    
-
-                    <?PHP
-                } else {
+<?PHP
+} else {
 echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'ranking' )); //start tab set  					
 echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'ranking', Text::_('COM_SPORTSMANAGEMENT_XML_RANKING_LAYOUT_TITLE'));					
 echo $this->loadTemplate('ranking');
@@ -170,6 +166,15 @@ if ( array_key_exists('show_projectinfo', $this->config) )
                     echo $this->loadTemplate('projectinfo');
                 }
     }
+ 
+if ( array_key_exists('show_club_short_names', $this->config) )
+{  
+if ( $this->config['show_club_short_names'] )
+{
+echo $this->loadTemplate('clubnames'); 
+}
+}
+ 
 if ( array_key_exists('show_notes', $this->config) )
 { 
                 if ($this->config['show_notes']) {
