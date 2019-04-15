@@ -17,7 +17,16 @@ use Joomla\CMS\Language\Text;
 </h4>
 <?php
 if ($this->clubnames) {
-  
+?>
+<table class="<?PHP echo $this->config['table_class']; ?>">    
+<?php    
+foreach ( $this->clubnames as $key => $value )
+{
+    
+}   
+?>    
+</table>    
+<?php    
 } else {
 ?>
 <div class="alert alert-warning" role="alert">
@@ -28,25 +37,4 @@ echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_CLUBNAMES');
 <?PHP  
 }  
 ?>  
-<table class="<?PHP echo $this->config['table_class']; ?>">
-    <tr>
-        <td align="left">
-            <span class="<?PHP echo $this->config['label_class_teams']; ?>">
-                <?php
-                if ($this->projectinfo) {
-                    echo $this->projectinfo;
-                } else {
-                    ?>
-                    <div class="alert alert-warning" role="alert">
-                    <?PHP
-                    echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO');
-                    ?>
-                    </div>
-                    <?PHP
-                    }
-                    ?>
-            </span>
-        </td>
-    </tr>
-</table>
 </div>
