@@ -22,7 +22,16 @@ if ($this->clubnames) {
 <?php    
 foreach ( $this->clubnames as $key => $value )
 {
-    
+?>
+<tr>
+<td>
+<?php echo $this->clubnames->name; ?>    
+</td>    
+<td>
+<?php echo $this->clubnames->name_long; ?>    
+</td>    
+</tr>    
+<?php    
 }   
 ?>    
 </table>    
