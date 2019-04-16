@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'imageselect.php');
+JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
 /**
  * sportsmanagementControllerImagehandler
