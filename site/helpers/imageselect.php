@@ -97,21 +97,10 @@ var els=document.getElementsByName(field);
 for (var i=0;i<els.length;i++) {
 els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;}
 
-			//$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
-//			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
-			//$('a_' + field + '_name').fireEvent('change');
-      		//if($(fieldid)) {
-        		//$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
-//      		}
-	//		$('a_' + field + '_name').fireEvent('change');
 		}
         
 		function reset_" . $funcname . "()
 		{
-			//jQuery('#a_" . $fieldname . "').attr('value', '" . $default . "');
-			//jQuery('#a_" . $fieldname . "_name').attr('value', '" . $default . "');
-			//jQuery('#a_" . $fieldname . "_name').change();
-			
 			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
 			console.log('1.reset fieldpreview_name : ' + imgSource );
 			document.getElementById('" . $fieldid . "').value = '" . $default . "';
@@ -124,10 +113,6 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
 
 		function clear_" . $funcname . "()
 		{
-			//alert('hallo');
-			//jQuery('#a_" . $fieldname . "').attr('value', '');
-			//select = document.getElementById('a_" . $fieldname . "_name').value;
-
 var radios = document.getElementsByName('jform[gender]');
 picture = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
@@ -166,16 +151,9 @@ console.log('pictureprev : ' + pictureprev );
 			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
 			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
-//			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
-//			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
 
 document.getElementById('" . $fieldid . "').value = picture;
 document.getElementById('" . $fieldid . "_preview').src = pictureprev;
-
-
-//jQuery('#a_" . $fieldname . "_name').val('');
-			//jQuery('#" . $fieldpreview_name . "').attr('src', '');
-//			jQuery('#a_" . $fieldname . "_name').change();
 		}
 
 
@@ -195,21 +173,6 @@ document.getElementById('" . $fieldid . "_preview').src = pictureprev;
 		console.log('document.ready type: ' + '" . $type . "' );
 		console.log('document.ready preview name: ' + '" . $fieldpreview_name . "' );
 		
-//			jQuery('#a_" . $fieldname . "_name').change( function()
-//			{
-//			alert('hallo');
-//				if (jQuery('#a_" . $fieldname . "_name').val() != '') {
-//					jQuery('#" . $fieldpreview_name . "').src='" . $baseFolder . "' + jQuery('#a_" . $fieldname . "_name').val();
-//				}
-//				else
-//				{
-//					jQuery('#" . $fieldpreview_name . "').src='../images/blank.png';
-//				}
-//				if(jQuery('" . $fieldid . "')) {
-//					jQuery('" . $fieldid . "').val(jQuery('#a_" . $fieldname . "_name').val()) ;
-//				}
-//			});
-//			jQuery('#a_" . $fieldname . "_name').change();
 		});
 		";
       
@@ -226,13 +189,7 @@ var $img = jQuery("#" + id + "_preview");
 
 console.log("jInsertFieldValue img : " + $img);	
 
-//if (select) {
 			$img.attr("src", "' . Uri::root(). '" + select);
-//			jQuery("#' . $fieldpreview_name . '").hide();
-//			jQuery("#' . $fieldpreview_name . '").show()
-//		}
-//document.getElementById("' . $fieldpreview_name . '").src = "' . Uri::root(). '" + select  ;
-
 }      
 ';
 
@@ -240,26 +197,6 @@ $imageselect = '';
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
 $layoutdrag = 'uploaddraganddrop';
-
-//$imageselect .= '<button id="drag'.$fieldid.'" class="btn btn-primary">Open dialog</button>';	
-//$imageselect .= '<div id="outputdrag'.$fieldid.'"></div>';	
-//$imageselect .= '
-// <script type="text/javascript">
-//        jQuery("#drag'.$fieldid.'").click(function() {
-//            jQuery.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
-//                var files = ev.files;
-//                var text = "";
-//                files.forEach(function(f) {
-//                    text += f.name + "<br/>";
-//                });
-//                jQuery("#outputdrag'.$fieldid.'").html(text);
-//            }).on("cancel.bs.filedialog", function(ev) {
-//                jQuery("#outputdrag'.$fieldid.'").html("Cancelled!");
-//            });
-//        });
-//        </script>';	
-	
-	
 }
 else
 {
@@ -275,15 +212,6 @@ $layoutdrag = 'upload';
        $link2 = 'index.php?option=com_media&amp;view=images' .
 		'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder( $typefolder ) . '&author=&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
         
-        
-/*		
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-$link2 = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/'.$type;
-} else {
-$link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/'.$type;
-}   		
-*/		
-		
 		$document->addScriptDeclaration( $js );
 
 		HTMLHelper::_( 'behavior.modal', 'a.modal' );
@@ -293,82 +221,21 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,'',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
-/*
-$imageselect .=	 '	
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("dt").click(function(){ 
-		$("dd").slideUp("fast");
-		$("dt > a").removeClass("open").addClass("closed");
-		$(this).next("dd").slideDown("fast"); 
-		$(this).children("a").removeClass("closed").addClass("open");
-	});
-});
-</script>
-
-<style type="text/css">
-body {background:#ffffff;}
-dd { display:none; }
-.closed { background:red; }
-.open { background:green; }
-</style>	
-<dl>
-  <dt><a href="#" class="closed">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a></dt>
-  <dd>
-  upload
-  </dd>
-  
-</dl>
-
-
-';	
-*/		
 		
-/*		
-$imageselect .=	HTMLHelper::_('bootstrap.startAccordion', 'drag'.$funcname);
-$imageselect .=	HTMLHelper::_('bootstrap.addSlide', 'drag'.$funcname, Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ), 'drag'.$funcname);		
-$imageselect .=	HTMLHelper::_('bootstrap.endSlide');		
-$imageselect .=	HTMLHelper::_('bootstrap.endAccordion');
-*/
-
-/*		
-$imageselect .=	 '		
-<div class="panel-group" id="drag'.$funcname.'">		
 		
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a data-toggle="collapse" data-parent="#drag'.$funcname.'" href="#drag'.$funcname.'">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a>
-</h4>
 
-</div>
-<div id="drag'.$funcname.'" class="panel-collapse collapse">            
-<div class="panel-body"> 
-hochladen
-</div>	
-</div>	
-</div>
-</div>';
-*/		
-		/*
-		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "</a></div></div>\n";
-		*/
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
+
+		
+		
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcname ,'',Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),'20',Uri::base().$link2,$modalwidth,$modalheight);   		
-		$imageselect .=	 "</div></div>\n";
-		/*
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
-		*/
+$imageselect .=	 "</div></div>\n";
 		
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
-		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
+Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
 		
-        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
-		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
+Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
         
         $imageselect .=	"</td></tr>\n";
 		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
