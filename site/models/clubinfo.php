@@ -467,7 +467,15 @@ if ( empty(self::$projectid) )
                     $subquery1->from('#__sportsmanagement_project AS p');
                     $subquery1->where('p.id = ' . $team->pid);
                     $db->setQuery($subquery1);
+                    $result = $db->loadResult();
+                  if ( $result )
+                  {
                     $team->pid = $db->loadResult();
+                  }
+                  else
+                  {
+                    $team->pid = 0;
+                  }
                 }
                
             } catch (Exception $e) {
