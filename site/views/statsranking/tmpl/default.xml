@@ -52,16 +52,6 @@
 					required="false">
 			</field>
 
-<!--
-			<field	name="tid" 
-      type="dependsql" 
-      depends="p" 
-      task="projectteamsbydivisionoptions"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
-					required="false">
-			</field>
--->
 						<field	name="tid" 
       type="dependsql" 
       depends="p" 
