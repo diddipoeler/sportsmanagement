@@ -89,8 +89,8 @@
       default="desc"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_DESC">
-				<option value="asc">Ascending</option>
-				<option value="desc">Descending</option>
+				<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+				<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
 			</field>
 
 		</fieldset>
