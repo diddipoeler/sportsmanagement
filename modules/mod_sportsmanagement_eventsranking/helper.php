@@ -68,11 +68,11 @@ class modSMEventsrankingHelper
 		$eventtypes = sportsmanagementModelEventsRanking::getEventTypes();
         if ( $project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 		{
-		$events = sportsmanagementModelEventsRanking::_getEventsRanking( $params->get('evid'), "desc", 20, 0, TRUE );  
+		$events = sportsmanagementModelEventsRanking::_getEventsRanking( $params->get('evid'), $params->get('ranking_order'), 20, 0, TRUE );  
         }
         else
         {
-		$events = sportsmanagementModelEventsRanking::_getEventsRanking( $params->get('evid'), "desc", 20, 0, FALSE );
+		$events = sportsmanagementModelEventsRanking::_getEventsRanking( $params->get('evid'), $params->get('ranking_order'), 20, 0, FALSE );
         }
 		$teams = sportsmanagementModelProject::getTeamsIndexedById();
 
