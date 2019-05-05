@@ -81,7 +81,7 @@ $nbcols = 0;
 		if ($this->config['show_match_number'])
 		{
 			?>
-		<th><?php echo '&nbsp;'.Text::_('NUM').'&nbsp;'; ?></th>
+		<th><?php echo '&nbsp;'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER').'&nbsp;'; ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -423,7 +423,7 @@ $nbcols = 0;
 		if ($this->config['show_matchday'])
 		{
 		?>
-			<td width='5%'>
+			<td width='5%' id="teamplan-spieltag">
 			<?php
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
@@ -447,7 +447,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if ($this->config['show_match_number'])
 		{
 		?>
-		    <td>
+		    <td id="teamplan-spielnummer">
 			<?php if (empty($match->match_number)){$match->match_number='-';} echo $match->match_number; ?>
 		    </td>
 		<?php
@@ -463,7 +463,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if (($this->config['show_playground'] || $this->config['show_playground_alert']))
 		{
 		?>
-		    <td>
+		    <td id="teamplan-spielort">
 			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
 		    </td>
 		<?php
@@ -475,9 +475,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if ($this->config['show_date'])
 		{
 			?>
-			<td width="10%"><?php
-			
-            
+			<td width="10%" id="teamplan-spieldatum">
+            <?php
         if ( $this->config['show_date_image'] )
         {
 $jdate = Factory::getDate($match->match_date);
@@ -516,7 +515,7 @@ $temp3 = $jdate->format('D');
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime($match,
+		<td width="10%"id="teamplan-spieluhrzeit" ><?php echo sportsmanagementHelperHtml::showMatchTime($match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>
@@ -578,7 +577,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
 		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
-		$teamA .= '<td class="'.$class1.'">'.$home.'</td>';
+		$teamA .= '<td class="'.$class1.'" id="teamplan-spielheim">'.$home.'</td>';
 
 /**
  * Check if the user wants to show the club logo or country flag
