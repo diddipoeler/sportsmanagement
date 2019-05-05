@@ -8,10 +8,12 @@
  * @package   sportsmanagement
  * @subpackage fieldsets
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+//echo '<pre>'.print_r($this->extended,true).'</pre>';
 
 switch ($this->fieldset) {
     /**
@@ -40,9 +42,7 @@ switch ($this->fieldset) {
         $schemahome = $this->bildpositionen[$this->item->name];
         $testlauf = 1;
         foreach ($schemahome as $key => $value) {
-//<div id="draggable">
             ?>  
-
             <div id="draggable_<?PHP echo $testlauf; ?>" style="position:absolute; width:103px; left:<?PHP echo $value['heim']['links']; ?>px; top:<?PHP echo $value['heim']['oben']; ?>px; text-align:center;">
                 <img class="bild_s" style="width:60px;" id="img_<?PHP echo $testlauf; ?>" src="<?PHP echo $picture; ?>" alt="" /><br />
             </div>

@@ -9,7 +9,6 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
@@ -17,12 +16,12 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.filesystem.folder');
+//jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
-jimport('joomla.form.formfield');
+//jimport('joomla.form.formfield');
 // Get the pane and slider class
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 
 /**
  * FormFieldjsmcolorsranking
@@ -101,13 +100,13 @@ class JFormFieldjsmcolorsranking extends FormField
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
                     
-                if ( !isset($this->value[$a]) )
-                {
-                $this->value[$a]['von'] = '';
-		$this->value[$a]['bis'] = '';
-		$this->value[$a]['text'] = '';
-		$this->value[$a]['color'] = '';
-                }
+//                if ( !isset($this->value[$a]) )
+//                {
+//                $this->value[$a]['von'] = '';
+//		$this->value[$a]['bis'] = '';
+//		$this->value[$a]['text'] = '';
+//		$this->value[$a]['color'] = '';
+//                }
  
                $html[] = '<tr>';
                 $html[] = '<td>';    
