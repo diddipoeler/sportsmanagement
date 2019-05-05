@@ -9,7 +9,6 @@
  * @subpackage helpers
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -190,6 +189,10 @@ $modaltext .= '</a>';
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') {
         $app = Factory::getApplication();
 
+//echo '<pre>'.print_r($hometeam->division_id,true).'</pre>';      
+//echo '<pre>'.print_r($guestteam->division_id,true).'</pre>';      
+//echo '<pre>'.print_r($division_id,true).'</pre>';       
+      
         $output = '';
         if ($config['switch_home_guest']) {
             $tmpteam = & $hometeam;
@@ -200,7 +203,18 @@ $modaltext .= '</a>';
         /**
          * die gruppen aus der spielpaarung setzen
          */
-        if (empty($hometeam->division_id)) {
+$hometeam->division_id = $division_id;
+$division = Table::getInstance('division', 'sportsmanagementTable');
+            $division->load((int) $division_id);
+            $hometeam->division_slug = $division->id . ':' . $division->alias;
+            $hometeam->division_name = $division->name;
+            $hometeam->division_shortname = $division->shortname;      
+$guestteam->division_id = $division_id;     
+      $guestteam->division_slug = $division->id . ':' . $division->alias;
+            $guestteam->division_name = $division->name;
+            $guestteam->division_shortname = $division->shortname;
+      /*
+      if (empty($hometeam->division_id)) {
             $hometeam->division_id = $division_id;
             $division = Table::getInstance('division', 'sportsmanagementTable');
             $division->load((int) $division_id);
@@ -216,7 +230,11 @@ $modaltext .= '</a>';
             $guestteam->division_name = $division->name;
             $guestteam->division_shortname = $division->shortname;
         }
-
+*/
+      
+//echo '<pre>'.print_r($hometeam->division_id,true).'</pre>';      
+//echo '<pre>'.print_r($guestteam->division_id,true).'</pre>';
+      
         if ((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0)) {
             //TO BE FIXED: Where is spacer defined???
             if (!isset($config['spacer'])) {
