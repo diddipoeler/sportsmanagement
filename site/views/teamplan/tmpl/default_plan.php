@@ -455,7 +455,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if (($this->project->project_type=='DIVISIONS_LEAGUE') && ($this->config['show_division']))
 		{
 		?>
-		    <td>
+		    <td id="teamplan-spielgruppe">
 			<?php echo sportsmanagementHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config,$match->division_slug); ?>
 		    </td>
 		<?php
