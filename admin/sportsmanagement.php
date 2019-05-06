@@ -43,7 +43,8 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.controller', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.table', JPATH_ADMINISTRATOR);
- 
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.formbehavior2', JPATH_ADMINISTRATOR);
+
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.JSON', JPATH_SITE);
