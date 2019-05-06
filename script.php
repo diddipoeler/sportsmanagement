@@ -820,22 +820,22 @@ else
 
     
     
-    /**
-     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
-     * 
-     * @param mixed $adapter
-     * @return void
-     */
-    public function installJoomlaExtensions( $adapter)
-	{
-  $mainframe = Factory::getApplication();
-  $src = $adapter->getParent()->getPath('source');
-  $manifest = $adapter->getParent()->manifest;
-  $db = Factory::getDBO();
-  
-  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
-  
-  }
+//    /**
+//     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
+//     * 
+//     * @param mixed $adapter
+//     * @return void
+//     */
+//    public function installJoomlaExtensions( $adapter)
+//	{
+//  $mainframe = Factory::getApplication();
+//  $src = $adapter->getParent()->getPath('source');
+//  $manifest = $adapter->getParent()->manifest;
+//  $db = Factory::getDBO();
+//  
+//  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
+//  
+//  }
   
   
 	
