@@ -9,7 +9,6 @@
  * @subpackage modelss
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -160,6 +159,10 @@ switch ( $this->getState('filter.unique_id') )
         $this->jsmsubquery2->where('ef.template_backend LIKE '.$this->jsmdb->Quote(''.'project'.''));
         $this->jsmsubquery2->where('ev.fieldvalue != '.$this->jsmdb->Quote(''.''));
         
+        $this->jsmsubquery3->select('count(co.id)');
+        $this->jsmsubquery3->from('#__sportsmanagement_confidential AS co');
+        $this->jsmsubquery3->where('co.project = p.id');
+        $this->jsmsubquery3->where('co.team_id = 0');
 
         $this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id ');
         $this->jsmquery->select('p.league_id');
@@ -172,6 +175,7 @@ switch ( $this->getState('filter.unique_id') )
         $this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('ag.name AS agegroup');
         $this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS proteams');
+        $this->jsmquery->select('(' . $this->jsmsubquery3 . ') AS notassign');
         
     $this->jsmquery->from('#__sportsmanagement_project AS p');
     $this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');
@@ -183,7 +187,7 @@ switch ( $this->getState('filter.unique_id') )
   
         if ($this->getState('filter.userfields'))
 		{
-			$this->jsmquery->select('ev.fieldvalue as user_fieldvalue,ev.id as user_field_id');  
+		$this->jsmquery->select('ev.fieldvalue as user_fieldvalue,ev.id as user_field_id');  
 		$this->jsmquery->join('INNER','#__sportsmanagement_user_extra_fields_values as ev ON ev.jl_id = p.id');  
 		$this->jsmquery->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');  
         $this->jsmquery->where('ef.id = ' . $this->getState('filter.userfields') );
@@ -236,18 +240,10 @@ switch ( $this->getState('filter.unique_id') )
      
      $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'p.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-                
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
-                
+               
 		return $this->jsmquery;
         
 	}
-	
 	
 }
 ?>

@@ -123,37 +123,37 @@ echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 </th>
 </tr>
 </thead>
-			<tfoot>
-            <tr>
-            <td colspan='15'><?php echo $this->pagination->getListFooter(); ?>
-            </td>
-            <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
-            </td>
-            </tr>
-            </tfoot>
-			<tbody>
-				<?php
-				$k=0;
-				for ($i=0,$n=count($this->items); $i < $n; $i++)
-				{
-					$row =& $this->items[$i];
+<tfoot>
+<tr>
+<td colspan='15'><?php echo $this->pagination->getListFooter(); ?>
+</td>
+<td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
+</td>
+</tr>
+</tfoot>
+<tbody>
+<?php
+$k=0;
+for ($i=0,$n=count($this->items); $i < $n; $i++)
+{
+$row =& $this->items[$i];
 
-					$link = Route::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
-					$link2 = Route::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
-					$link2panel = Route::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
-                    $link2teams = Route::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
+$link = Route::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
+$link2 = Route::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
+$link2panel = Route::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
+$link2teams = Route::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
                     
-                    $link2rounds = Route::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
-                    $link2divisions = Route::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
+$link2rounds = Route::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
+$link2divisions = Route::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
                     
-                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+$canEdit = $this->user->authorise('core.edit','com_sportsmanagement');
+$canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 
-					$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
-					$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.project.' . $row->id) && $canCheckin;
-					?>
-					<tr class="<?php echo "row$k"; ?>">
-						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
+$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
+$canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.project.' . $row->id) && $canCheckin;
+?>
+<tr class="<?php echo "row$k"; ?>">
+<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 <td width="40" class=""><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
 <?php
 $inputappend = '';
@@ -186,11 +186,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, 
 						</td>
 						<td>
 							<?php 
-							//echo $row->league; 
 if ( $this->state->get('filter.search_nation') ) 
 {
-//echo $this->state->get('filter.search_nation').'<br>';	
-//echo $this->league.'<br>'; 
 $append = ' style="background-color:#bbffff"';
 echo HTMLHelper::_(	'select.genericlist',
 		$this->league,
@@ -257,8 +254,6 @@ echo $row->league.'<br>';
 								}
 								else
 								{
-									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>                                    
 <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
 <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
@@ -277,6 +272,8 @@ echo $row->league.'<br>';
 						</td>
 						<td class="center">
                         <a href="<?php echo $link2teams; ?>"><?php echo $row->proteams; ?></a>
+                        <br />
+                        <?php echo $row->notassign; ?>
                         </td>
                         
                         <td class="center">
