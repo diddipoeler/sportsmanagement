@@ -865,7 +865,7 @@ catch (Exception $e)
 	$db->setQuery($query);
 
 	self::$_teams = $db->loadObjectList();
-            
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
 	return self::$_teams;
 	}
 
@@ -997,7 +997,7 @@ catch (Exception $e)
 	public static function getEventTypes($evid='',$cfg_which_database = 0)
 	{
 	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1015,7 +1015,9 @@ $query->where("me.event_type_id IN (".$evid.")");
 		}
 
 		$db->setQuery($query);
-		return $db->loadObjectList('etid');
+		$result = $db->loadObjectList('etid');
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 
@@ -1045,7 +1047,7 @@ $query->where("me.event_type_id IN (".$evid.")");
         $query->where('project_id = '.(int)self::$projectid);
 		$db->setQuery($query);
 		$result = $db->loadResult();
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -1059,7 +1061,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	function getPlaygrounds($cfg_which_database = 0)
 	{
 	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1068,15 +1070,9 @@ $query->where("me.event_type_id IN (".$evid.")");
         $query->order('text ASC');
 
 		$db->setQuery($query);
-		if (!$result = $db->loadObjectList())
-		{
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
+		$result = $db->loadObjectList();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
     
     
@@ -1089,7 +1085,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	function getProjectGameRegularTime($project_id,$cfg_which_database = 0)
 	{
 	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1097,9 +1093,9 @@ $query->where("me.event_type_id IN (".$evid.")");
         $query->select('game_regular_time');
         $query->from('#__sportsmanagement_project');
         $query->where('id = '.(int)$project_id);
-
-		$db->setQuery($query);
-		$result = $db->loadObject();
+	$db->setQuery($query);
+	$result = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		
         $gameprojecttime += $result->game_regular_time;
         if ( $result->allow_add_time )
@@ -1118,7 +1114,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	function getReferees($cfg_which_database = 0)
 	{
 	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1146,6 +1142,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 				$ref->text = $ref->lastname.",".$ref->firstname;
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $refs;
 	}
 
@@ -1157,8 +1154,8 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	public static function getTemplateConfig($template,$cfg_which_database = 0,$call_function = '')
 	{
-        $app	= Factory::getApplication();
-		$option = $app->input->getCmd('option');
+        $app = Factory::getApplication();
+	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1228,7 +1225,7 @@ $starttime = microtime();
 
 		//merge and overwrite standard settings with individual view settings
 		$settings = array_merge($arrStandardSettings,$configvalues);
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $settings;
 		
 	}
@@ -1275,6 +1272,7 @@ $app = Factory::getApplication();
 
 		  $db->setQuery( $query );
 		  $this->country = $db->loadResult();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		  return $this->country;
   	} 
         
