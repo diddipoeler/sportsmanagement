@@ -92,7 +92,8 @@ class sportsmanagementView extends HtmlView {
         
 /**
  * alle fehlermeldungen online ausgeben
- * mit der kategorie: jsmerror       
+ * mit der kategorie: jsmerror    
+ * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL   
  */ 
 Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
 /**

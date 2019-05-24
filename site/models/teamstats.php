@@ -466,7 +466,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         
         if ( !self::$totalrounds )
         {
-            JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), JLog::ERROR, 'jsmerror');	 
+            JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), JLog::INFO, 'jsmerror');	 
         }
         
         return self::$totalrounds;
