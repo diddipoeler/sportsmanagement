@@ -448,7 +448,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
     public static function getTotalRounds( )
     {
         $option = Factory::getApplication()->input->getCmd('option');
-	    $app = Factory::getApplication();
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -459,27 +459,14 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
             $query->select('COUNT(id)');
            $query->from('#__sportsmanagement_round ');
            $query->where('project_id = '.self::$projectid);
-                    
             $db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
             self::$totalrounds = $db->loadResult();
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
         }
         
         if ( !self::$totalrounds )
         {
-            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
         return self::$totalrounds;
