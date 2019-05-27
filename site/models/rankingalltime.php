@@ -132,13 +132,8 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
 }  
 
    }
-		
-
         
 }        
-
-
-
         
         parent::__construct();
 
@@ -723,10 +718,6 @@ JLog::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), JLog::INFO, 'j
 		$query->from('#__sportsmanagement_project');
         $query->where('id = ' . $projekt);
         $query->order('name ');
-        
-//            $query = 'select league_id 
-//  from #__sportsmanagement_project
-//  where id = ' . $projekt . ' order by name ';
             $db->setQuery($query);
             $league = $db->loadResult();
 
@@ -739,14 +730,7 @@ $query->clear();
 		$query->from('#__sportsmanagement_project');
         $query->where('league_id = ' . $league);
         $query->order('name ');
-        
-//        $query = 'select id 
-//  from #__sportsmanagement_project
-//  where league_id = ' . $league . ' order by name ';
-  
         $db->setQuery($query);
-        //$result = $this->_db->loadObjectList();
-        //$result = $db->loadResultArray();
         
          if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -763,7 +747,7 @@ $query->clear();
         $this->project_ids_array = $result;
        
         $count_project = count($result);
-    $app->enqueueMessage(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
+JLog::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), JLog::INFO, 'jsmerror');	    
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 
@@ -902,9 +886,6 @@ $query->clear();
 
         } else //     if ( !$order_dir)
         {
-            //     $order_dir = 'DESC';
-            //     }
-            
             switch ($order) {
                 case 'played':
                     //uasort($ranking, array(self::$classname, "playedCmp"));
