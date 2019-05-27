@@ -158,7 +158,8 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
         
         
         $count_teams = count($result);
-    $app->enqueueMessage(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
+JLog::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), JLog::INFO, 'jsmerror');	    
+    //$app->enqueueMessage(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
 
         if (count($result)) {
             foreach ($result as $r) {
