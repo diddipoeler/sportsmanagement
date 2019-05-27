@@ -159,7 +159,6 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
         
         $count_teams = count($result);
 JLog::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), JLog::INFO, 'jsmerror');	    
-    //$app->enqueueMessage(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
 
         if (count($result)) {
             foreach ($result as $r) {
@@ -308,13 +307,13 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.Text::_('COM_SPORTSMANAGEMEN
     
     if ( !$res )
         {
-	    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_RANKINGALL_MATCHES'),'Error');
+	    JLog::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), JLog::ERROR, 'jsmerror');
         }
               
     $this->_matches = $res;
     
     $count_matches = count($res);
-    $app->enqueueMessage(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'),'');
+JLog::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), JLog::INFO, 'jsmerror');	    
     }
     else
     {
