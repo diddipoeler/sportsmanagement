@@ -175,7 +175,7 @@ switch ( $this->getState('filter.unique_id') )
         $this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('ag.name AS agegroup');
         $this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS proteams');
-        //$this->jsmquery->select('(' . $this->jsmsubquery3 . ') AS notassign');
+        $this->jsmquery->select('(' . $this->jsmsubquery3 . ') AS notassign');
         
     $this->jsmquery->from('#__sportsmanagement_project AS p');
     $this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');
