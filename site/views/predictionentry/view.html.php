@@ -101,7 +101,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 		}
 		else
 		{
-			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), JLog::INFO, 'jsmerror');
 		}
 	}
 	

@@ -247,7 +247,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 		}
 		else
 		{
-			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), JLog::INFO, 'jsmerror');
 		}
 
 
