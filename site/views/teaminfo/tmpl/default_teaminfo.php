@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 ?>
 <?PHP
 if (!isset($this->team)) {
-    JError::raiseWarning('ERROR_CODE', Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'));
+	JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), JLog::WARNING, 'jsmerror');
 } else {
     ?>
 	<!-- anfang default_teaminfo -->

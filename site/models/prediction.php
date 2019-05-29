@@ -611,7 +611,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				if ( !$result = $db->loadResult() )
 				{
 					JError::raiseNotice(500,Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE',$template,$predictionGame->master_template));
-					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'));
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), JLog::WARNING, 'jsmerror');
 					echo '<br /><br />';
 					return false;
 				}
@@ -619,7 +619,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			else
 			{
 				JError::raiseNotice(500,Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_TEMPLATE',$template,self::$predictionGameID));
-				JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'));
+				JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), JLog::WARNING, 'jsmerror');
 				echo '<br /><br />';
 				return false;
 			}

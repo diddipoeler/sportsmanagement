@@ -255,12 +255,12 @@ return $db->loadObjectList();
 		{
 			if (!self::$teamid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', Text::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_ERROR' ) );
+				JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), JLog::WARNING, 'jsmerror');
 				return false;
 			}
 			if (!self::$projectid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', Text::_( 'COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED' ) );
+				JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), JLog::WARNING, 'jsmerror');
 				return false;
 			}
             

@@ -1204,9 +1204,7 @@ $starttime = microtime();
 			}
 			else
 			{
-				//JError::raiseNotice(500,'project ' . $this->projectid . '  setting not found');
 				//there are no saved settings found, use the standard xml file default values
-                               
 				return $arrStandardSettings;
 			}
 		}
@@ -1658,8 +1656,6 @@ catch (Exception $e) {
     // catch any database errors.
 	$inout->pposid2 = 0;
 	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
 }
 		
 	$query->clear();

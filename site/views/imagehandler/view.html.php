@@ -76,7 +76,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             parent::display($tpl);
         } else {
             //no images in the folder, redirect to uploadscreen and raise notice
-            JError::raiseNotice('SOME_ERROR_CODE', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), JLog::INFO, 'jsmerror');
             $this->setLayout('upload');
             $this->form = $this->get('form');
             $this->_displayupload($tpl);

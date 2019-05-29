@@ -403,16 +403,9 @@ Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br>
 			for ($y=0; $y < count($cids[$pids[$x]]); $y++)
 			{
 $tippmode = $ptippmode[$pids[$x]];				
-				//echo 'PredictionGameID:~'.$predictionGameID.'~ ';
-
 				$dProjectID = $pids[$x];
-				//echo 'PredictionProjectID:~'.$dProjectID.'~ ';
-
 				$dMatchID = $cids[$pids[$x]][$y];
-				//echo 'MatchID:~'.$dMatchID.'~ ';
-
 				$dprID = $prids[$pids[$x]][$dMatchID];
-				//echo 'prID:~'.$dprID.'~ ';
 
 				$dHome = $homes[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dHome = $dHome;
 				if ((!isset($homes[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dHome=='')))
@@ -423,8 +416,6 @@ $tippmode = $ptippmode[$pids[$x]];
                     {
                         $dHome = $dHome;
                         }
-				//echo 'Home:~'.$dHome.'~ ';
-
 				$dAway = $aways[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dAway = $dAway;
 				if ((!isset($aways[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dAway=='')))
                 {
@@ -434,17 +425,8 @@ $tippmode = $ptippmode[$pids[$x]];
                     {
                         $dAway = $dAway;
                         }
-				//echo 'Away:~'.$dAway.'~ ';
 
-				/*
-				$dJoker = (	isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]]) &&
-							!empty($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "'1'" : 'NULL';
-				*/
-				//$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "1" : 'NULL';
-				//Änderung wegen Joomla4, ansonsten wird NICHT gespeichert!
 				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? '1' : '0';
-				//echo 'Joker:~'.$dJoker.'~ ';
-
 				$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; 
                 $tmp_dTipp = $dTipp;
 				if ((!isset($tipps[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dTipp=='')))
@@ -455,9 +437,6 @@ $tippmode = $ptippmode[$pids[$x]];
                     {
                         $dTipp = $dTipp;
                         }
-				//echo 'Tipp:~'.$dTipp.'~ ';
-				//echo '<br />';
-
 				if 	(
 						(
 							(isset($homes[$pids[$x]][$cids[$pids[$x]][$y]])) &&
@@ -511,25 +490,11 @@ $temp->modified_by = $joomlaUserID;
                         $resultquery = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
                         }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-}
+    // catch any database errors.
 
-                        
-//                        $query	= $db->getQuery(true);
-//                        $query->clear();
-//		                $query->update('#__sportsmanagement_prediction_result');
-//		                $query->set(' tipp_home = '.$dHome );
-//                        $query->set(' tipp_away = '.$dAway );
-//                        $query->set(' tipp = '.$dTipp );
-//                        $query->set(' joker = '.$dJoker );
-//		                $query->where(' id = ' . (int) $dprID );
-//                		$db->setQuery($query);
-                        
+}
                         
                         if( !$resultquery )
-                        //if( !$db->query() )
 					{
 						$result = false;
 					}
@@ -554,9 +519,8 @@ try{
                         $resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
                         }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
+    // catch any database errors.
+
 }
 
 
@@ -585,13 +549,7 @@ catch (Exception $e) {
                     $query->where('match_id = ' . $cids[$pids[$x]][$y]);
 
 					$db->setQuery( $query );
-                    
-                    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+                            
 					if( !$db->execute() )
 					{
 
