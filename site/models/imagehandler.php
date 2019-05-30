@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
-
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
@@ -152,14 +152,14 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 					if ( $search == '') {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DS.$file);
 
 						$images[] = $tmp;
 
 					} elseif(stristr( $file, $search)) {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DS.$file);
 
 						$images[] = $tmp;
 

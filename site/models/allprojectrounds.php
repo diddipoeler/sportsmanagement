@@ -140,7 +140,7 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
 		$db->setQuery($query);
     if (!$result = $db->loadObjectList()) 
     {
-			JError::raiseWarning(0, $db->getErrorMsg());
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), JLog::INFO, 'jsmerror');
 		}
 
 		$this->result = $result;

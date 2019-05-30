@@ -249,7 +249,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 }
 else
 {
-JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::WARNING, 'jsmerror');
 			return false;    
 }
 
@@ -312,7 +312,7 @@ JLog::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), JLog::INFO, 'j
     }
     else
     {
-    JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::WARNING, 'jsmerror');
 			return false;    
     }  
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
@@ -1044,7 +1044,7 @@ $app = Factory::getApplication();
                 if (method_exists($this, '_cmp' . $v)) {
                     $crit[] = '_cmp' . $v;
                 } else {
-                    JError::raiseWarning(0, Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v);
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, JLog::WARNING, 'jsmerror');
                 }
             }
             // set a default criteria if empty

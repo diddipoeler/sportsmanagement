@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Path;
 
 /**
  * sportsmanagementModelMatchReport
@@ -220,7 +221,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DS.$file);
 
 						$images[] = $tmp;
 
@@ -228,7 +229,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DS.$file);
 
 						$images[] = $tmp;
 

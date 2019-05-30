@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Client\ClientHelper;
 
 jimport('joomla.application.component.view');
 
@@ -116,7 +117,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $task = Factory::getApplication()->input->getVar('task');
 
         jimport('joomla.client.helper');
-        $ftp = JClientHelper::setCredentialsFromRequest('ftp');
+        $ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
         //assign data to template
         $this->params = $params;

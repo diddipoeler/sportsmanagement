@@ -8,12 +8,15 @@
  * @package   sportsmanagement
  * @subpackage 
  */
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Client\ClientHelper;
 
 require_once (JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imageselect.php');
 
@@ -51,8 +54,8 @@ class sportsmanagementControllerImagehandler extends BaseController {
         $linkaddress = Factory::getApplication()->input->getVar('linkaddress');
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
-        JClientHelper::setCredentialsFromRequest('ftp');
-        //$ftp = JClientHelper::getCredentials( 'ftp' );
+        ClientHelper::setCredentialsFromRequest('ftp');
+
         //set the target directory
         $base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS;
 
@@ -125,7 +128,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
-        JClientHelper::setCredentialsFromRequest('ftp');
+        ClientHelper::setCredentialsFromRequest('ftp');
 
         // Get some data from the request
         $images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
@@ -135,13 +138,13 @@ class sportsmanagementControllerImagehandler extends BaseController {
 
         if (count($images)) {
             foreach ($images as $image) {
-                if ($image !== JFilterInput::clean($image, 'path')) {
-                    JError::raiseWarning(100, Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+                if ($image !== FilterInput::clean($image, 'path')) {
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
                     continue;
                 }
 
-                $fullPath = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . $image);
-                $fullPaththumb = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . 'small' . DS . $image);
+                $fullPath = Path::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . $image);
+                $fullPaththumb = Path::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . 'small' . DS . $image);
                 if (is_file($fullPath)) {
                     File::delete($fullPath);
                     if (File::exists($fullPaththumb)) {

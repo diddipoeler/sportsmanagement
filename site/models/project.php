@@ -1195,10 +1195,9 @@ $starttime = microtime();
 
 				if (! $result = $db->loadResult())
 				{
-					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
-					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
-					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
-                                                            
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template, JLog::WARNING, 'jsmerror');
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template, JLog::WARNING, 'jsmerror');
+					JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'), JLog::WARNING, 'jsmerror');
 					return $arrStandardSettings;
 				}
 			}

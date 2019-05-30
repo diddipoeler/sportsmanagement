@@ -260,30 +260,20 @@ $app = Factory::getApplication();
 
 		$sizelimit = $params->get( 'image_max_size', 120 )*1024; //size limit in kb
 		$imagesize = $file['size'];
-/*
-		//check if the upload is an image...getimagesize will return false if not
-		if ( !getimagesize( $file['tmp_name'] ) )
-		{
-			JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_UPLOAD_FAILED' ) . ': ' . htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8' ) );
-			return false;
-		}
-*/
 		//check if the imagefiletype is valid
 		$fileext = File::getExt($file['name']);
-
-
 
 		$allowable	= array ('gif','jpg','jpeg','png','bmp','svg', 'GIF','JPG','JPEG','PNG','BMP','SVG');
 		if ( !in_array( $fileext, $allowable ) )
 		{
-			JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
 			return false;
 		}
 
 		//Check filesize
 		if ( $imagesize > $sizelimit )
 		{
-			JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
 			return false;
 		}
 
@@ -304,7 +294,7 @@ $app = Factory::getApplication();
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if ( stristr( $xss_check, '<' . $tag . ' ') || stristr( $xss_check, '<' . $tag . '>' ) )
 			{
-				JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN' ) );
+				JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN'), JLog::WARNING, 'jsmerror');
 				return false;
 			}
 		}

@@ -53,44 +53,18 @@ class sportsmanagementModelEditPerson extends AdminModel
         // Specify which columns are to be ignored. This can be a string or an array.
         //$ignore = 'id';
         $ignore = '';
+		try{
         // Get the table object from the model.
         $table = $this->getTable( 'person' );
         // Bind the array to the table object.
         $table->bind( $data, $ignore );
-        
-        if ( !$table->store() )
-        {
-            JError::raiseError(500, $db->getErrorMsg());
+        $table->store();
         }
-        else
+        catch (Exception $e)
         {
-            
+        JLog::add(Text::_($e->getCode()), JLog::ERROR, 'jsmerror');    
+		JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');    
         }
-        
-/*
-        // set the data into a query to update the record
-        $db = $this->getDbo();
-        $query  = $db->getQuery(true);
-        $query->clear();
-        $query->update(' #__sportsmanagement_person ');
-        
-        foreach( $data as $key => $value)
-        {
-            switch ($key)
-            {
-                case 'id':
-                $id	= $value;
-                break;
-                default:
-                $query->set($key.' = '.$db->Quote($value) );
-                break;
-            }
-        }
-        
-        $query->where(' id = ' . (int) $id );
-        $db->setQuery((string)$query);
-*/        
-        
         
     }
     

@@ -38,18 +38,17 @@ class sportsmanagementModelEditteam extends AdminModel
         // Specify which columns are to be ignored. This can be a string or an array.
         //$ignore = 'id';
         $ignore = '';
+		try{
         // Get the table object from the model.
         $table = $this->getTable( 'team' );
         // Bind the array to the table object.
         $table->bind( $data, $ignore );
-        
-        if ( !$table->store() )
-        {
-            JError::raiseError(500, $db->getErrorMsg());
+        $table->store();
         }
-        else
+        catch (Exception $e)
         {
-            
+        JLog::add(Text::_($e->getCode()), JLog::ERROR, 'jsmerror');    
+		JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');    
         }
 
     }
