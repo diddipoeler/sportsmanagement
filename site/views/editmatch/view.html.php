@@ -135,7 +135,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         if (!$not_assigned && !$starters_id) {
             $this->playersoptionsout = $playersoptionsout;
             $this->playersoptionsin = $playersoptionsin;
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH') . '<br /><br />');
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'), JLog::WARNING, 'jsmerror');
             return;
         }
 
@@ -144,7 +144,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         if (!$projectpositions) {
             $this->playersoptionsout = $playersoptionsout;
             $this->playersoptionsin = $playersoptionsin;
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS') . '<br /><br />');
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'), JLog::WARNING, 'jsmerror');
             return;
         }
 
@@ -276,7 +276,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         // events
         $events = sportsmanagementModelMatch::getEventsOptions($this->project_id, 0);
         if (!$events) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />');
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), JLog::WARNING, 'jsmerror');
             return;
         }
         $eventlist = array();
@@ -388,7 +388,7 @@ $document->addScriptDeclaration( $javascript );
         // stats
         $stats = sportsmanagementModelMatch::getInputStats($this->project_id);
         if (!$stats) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS') . '<br /><br />');
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS'), JLog::WARNING, 'jsmerror');
         }
         $playerstats = sportsmanagementModelMatch::getMatchStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
         $staffstats = sportsmanagementModelMatch::getMatchStaffStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
@@ -498,7 +498,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
         $squad = array();
         if (!$projectpositions) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />');
+			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS'), JLog::WARNING, 'jsmerror');
             return;
         }
 
