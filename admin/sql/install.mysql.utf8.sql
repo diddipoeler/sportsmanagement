@@ -148,7 +148,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
 --
 -- Tabellenstruktur f�r Tabelle `#__sportsmanagement_countries`
 --
-
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(75) NOT NULL DEFAULT '',
@@ -1469,6 +1468,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_user_extra_fields_values` (
   `modified_by` INT NULL ,
   `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY (`id`),
+  KEY `jl_id` (`jl_id`),
   UNIQUE KEY `fields` (`field_id`,`jl_id`) 
   )
 ENGINE = MyISAM
@@ -1949,6 +1949,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
  `clubnummer` VARCHAR( 100 ) NULL DEFAULT NULL,
  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
 PRIMARY KEY (  `id` ),
+KEY `project_id` (`project`),
   UNIQUE KEY `schluessel` (`name`(150),`link`(150),`country`),
   UNIQUE KEY `schluessel2` (`name`(150),`nummer`(50)) 
 ) ENGINE = MYISAM DEFAULT CHARSET = utf8;
