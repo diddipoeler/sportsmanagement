@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewallprojectrounds
@@ -24,7 +23,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallprojectrounds extends JViewLegacy {
+class sportsmanagementViewallprojectrounds extends sportsmanagementView {
 
     /**
      * sportsmanagementViewallprojectrounds::display()
@@ -32,7 +31,7 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
      * @param mixed $tpl
      * @return
      */
-    function display($tpl = null) {
+    function init() {
 
         // Reference global application object
         $app = Factory::getApplication();
@@ -55,26 +54,15 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
         $project = sportsmanagementModelProject::getProject();
 
         $this->project = $project;
-
         $this->projectid = $this->project->id;
         $this->projectmatches = $model->getProjectMatches();
         $this->rounds = sportsmanagementModelProject::getRounds();
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         $this->config = array_merge($this->overallconfig, $model->_params);
-
-//     echo '<br />getRounds<pre>~'.print_r($this->rounds,true).'~</pre><br />';
-
         $this->favteams = sportsmanagementModelProject::getFavTeams($this->projectid);
-//     echo '<br />getFavTeams<pre>~'.print_r($this->favteams,true).'~</pre><br />';
-
         $this->projectteamid = $model->getProjectTeamID($this->favteams);
-
         $this->content = $model->getRoundsColumn($this->rounds, $this->config);
-
-        
-
         $this->headertitle = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
-        parent::display($tpl);
     }
 
 }
