@@ -173,8 +173,8 @@ $db->setQuery( $query );
 $this->ProjectTeams[$value] = $db->loadResult();
    }
 catch (Exception $e){
-	JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');
-    //echo $e->getMessage();
+	//JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');
+	JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_FAVTEAM'), JLog::INFO, 'jsmerror');
 }
 	  
   }
