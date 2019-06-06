@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      allprojectrounds.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage allprojectrounds
@@ -168,10 +168,15 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
     $query->from('#__sportsmanagement_project_team ');
     $query->where('project_id ='. $this->projectid);
     $query->where('team_id ='. $value);
-
+try{
 $db->setQuery( $query );
 $this->ProjectTeams[$value] = $db->loadResult();
-  
+   }
+catch (Exception $e){
+	JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');
+    //echo $e->getMessage();
+}
+	  
   }
   
   return $this->ProjectTeams;
