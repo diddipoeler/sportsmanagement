@@ -9,7 +9,7 @@
 <clubnames><clubname country="DEU" name="ATS" >Allgemeine Turnerschaft </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BC" >Ball Club/Ballspielclub </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BSC/BSK" >Ballspielc(k)lub</clubname></clubnames>
-<clubnames><clubname country="DEU" name="BSG " >Betriebsportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="BSG" >Betriebsportgemeinschaft</clubname></clubnames>
 <clubnames><clubname country="DEU" name="BSV" >Ballsportverein</clubname></clubnames>
 <clubnames><clubname country="DEU" name="BuEV" >Ballspiel- und Eislauf-Verein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BV" >Ball-Verein</clubname></clubnames>
@@ -134,5 +134,8 @@
 <clubnames><clubname country="ESP" name="CDC" >Club Deportivo y Cultural</clubname></clubnames> 
   
 <clubnames><clubname country="FRA" name="USVO" >Unité Sportive Village Olympique</clubname></clubnames>  
+
+
+<clubnames><clubname country="ROU" name="CP" >Clubul Sportiv</clubname></clubnames> 
   
 </structur> 
