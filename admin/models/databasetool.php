@@ -7,7 +7,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  */
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -15,8 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 use Joomla\CMS\Filesystem\File;
 
@@ -59,12 +57,20 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //$this->app->enqueueMessage(Text::_('Ihre PHP Version = '.PHP_VERSION .''),'Notice');
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
+            try {
             $result = $db->execute();
+            } catch (Exception $e) {
+                            //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+                        }
             if (!empty($setModelVar)) {
                 $setModelVar::$db_num_rows = $db->getAffectedRows();
             }
         } else {
+            try {
             $result = $db->query();
+            } catch (Exception $e) {
+                            //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+                        }
             if (!empty($setModelVar)) {
                 $setModelVar::$db_num_rows = $db->getAffectedRows();
             }
@@ -963,21 +969,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                         } catch (Exception $e) {
                             $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
                         }
-                        /*
-                          if (!self::runJoomlaQuery())
-                          {
-
-                          //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
-                          $result = false;
-                          }
-                          else
-                          {
-                          //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
-                          $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-                          $this->my_text .= Text::_('Installierte Altersgruppen').'</strong></span><br />';
-                          $this->my_text .= Text::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
-                          }
-                         */
+                        
                     }
                 }
                 // schleife altersgruppen ende    
