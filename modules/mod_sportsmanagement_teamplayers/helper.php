@@ -78,6 +78,7 @@ class modSportsmanagementTeamPlayersHelper
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;
         $model::$seasonid = $season_id;
+        $model::$projectid = $p;
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
