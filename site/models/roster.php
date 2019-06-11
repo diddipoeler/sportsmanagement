@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-require_once('player.php');
 
 /**
  * sportsmanagementModelRoster
@@ -31,7 +30,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
     static $seasonid = 0;
 	static $projectteam = null;
 	static $team = null;
-    //var $seasonid = 0;
 
 	/**
 	 * caching for team in out stats
@@ -98,12 +96,12 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			{
 				if (!self::$teamid)
 				{
-					$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'));
+                    JLog::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'), JLog::WARNING, 'jsmerror');
 					return false;
 				}
 				if (!self::$projectid)
 				{
-					$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'));
+                    JLog::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'), JLog::WARNING, 'jsmerror');
 					return false;
 				}
                 

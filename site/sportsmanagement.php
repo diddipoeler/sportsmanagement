@@ -118,10 +118,12 @@ JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE
 JLoader::import('components.com_sportsmanagement.models.matrix', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
 break;  
+case 'roster':
+JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
+break;
 case 'teams':
 case 'teamstats':
 case 'teamplan':
-case 'roster':
 case 'teamstree':    
 case 'matrix':
 case 'rankingalltime':
