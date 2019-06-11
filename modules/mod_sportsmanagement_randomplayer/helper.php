@@ -122,7 +122,7 @@ if ( $params['debug_modus'] )
         sportsmanagementModelPlayer::$projectid = $res[1];
         sportsmanagementModelPlayer::$personid = $res[0];
 
-		$person 	= sportsmanagementModelPerson::getPerson();
+		$person 	= sportsmanagementModelPerson::getPerson($res[0]);
 		$project	= sportsmanagementModelProject::getProject();
 		$info		= sportsmanagementModelPlayer::getTeamPlayer($res[1],$res[0],$res[2]);
 		$infoteam	= sportsmanagementModelProject::getTeaminfo($projectteamid);
