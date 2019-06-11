@@ -163,17 +163,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             $query->select('CONCAT_WS(\':\',t.id,t.alias) AS slug');
 	           $query->from('#__sportsmanagement_team AS t'); 
                 $query->where('t.id = '.(int)self::$teamid);
-                
-            
-    
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 			self::$team = $db->loadObject();
 		}
 		return self::$team;
@@ -196,9 +187,6 @@ class sportsmanagementModelRoster extends JSMModelLegacy
         $starttime = microtime(); 
         
 		$projectteam = self::getprojectteam();
-		//if (empty($this->_players))
-		//{
-			
         // Select some fields
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
         $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
@@ -244,8 +232,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             self::$_players = $db->loadObjectList();
             }
 catch (Exception $e){
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'),'Error');	
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');	
+JLog::add(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'), JLog::ERROR, 'jsmerror');
+JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'), JLog::ERROR, 'jsmerror');     
 }
             
             
