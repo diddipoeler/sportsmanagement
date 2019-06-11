@@ -26,11 +26,11 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelPerson extends BaseDatabaseModel
 {
 
-	static $projectid		= 0;
-	static $personid		  = 0;
-	var $teamplayerid	= 0;
-	static $person			  = null;
-	var $teamplayer		= null;
+	static $projectid = 0;
+	static $personid = 0;
+	var $teamplayerid = 0;
+	static $person = null;
+	var $teamplayer	= null;
     
 
 	/**
