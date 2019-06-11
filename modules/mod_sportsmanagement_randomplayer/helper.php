@@ -126,13 +126,19 @@ if ( $params['debug_modus'] )
 		$project	= sportsmanagementModelProject::getProject();
 		$info		= sportsmanagementModelPlayer::getTeamPlayer($res[1],$res[0],$res[2]);
 		$infoteam	= sportsmanagementModelProject::getTeaminfo($projectteamid);
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		return array('project' => $project,
+$playerresult = array('project' => $project,
 			'player' => $person, 
 			'inprojectinfo'	=> is_array($info) && count($info) ? $info[0] : $info,
 			'infoteam' => $infoteam);
+    if ( $params['debug_modus'] )
+	{		
+        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($playerresult,true).'</pre>'),'');
+	}
+		return $playerresult;
       
-      $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+//      $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
       
 	}
 }
