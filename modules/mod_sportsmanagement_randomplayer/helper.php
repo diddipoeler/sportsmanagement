@@ -117,7 +117,9 @@ if ( $params['debug_modus'] )
         
         sportsmanagementModelProject::$projectid = $res[1];
         sportsmanagementModelPerson::$projectid = $res[1];
+        sportsmanagementModelPerson::$personid = $res[0];
         sportsmanagementModelPlayer::$projectid = $res[1];
+        sportsmanagementModelPlayer::$personid = $res[0];
 
 		$person 	= sportsmanagementModelPerson::getPerson();
 		$project	= sportsmanagementModelProject::getProject();
