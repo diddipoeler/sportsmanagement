@@ -104,9 +104,9 @@ if ( $params['debug_modus'] )
         $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	}
 		
-		Factory::getApplication()->input->setVar( 'p', $res[1] );
-		Factory::getApplication()->input->setVar( 'pid', $res[0]);
-		Factory::getApplication()->input->setVar( 'pt', $projectteamid);
+//		Factory::getApplication()->input->setVar( 'p', $res[1] );
+//		Factory::getApplication()->input->setVar( 'pid', $res[0]);
+//		Factory::getApplication()->input->setVar( 'pt', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelPlayer')) {
             JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
@@ -114,6 +114,10 @@ if ( $params['debug_modus'] )
         if (!class_exists('sportsmanagementModelPerson')) {
             JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);
 		}
+        
+        sportsmanagementModelProject::$projectid = $res[1];
+        sportsmanagementModelPerson::$projectid = $res[1];
+        sportsmanagementModelPlayer::$projectid = $res[1];
 
 		$person 	= sportsmanagementModelPerson::getPerson();
 		$project	= sportsmanagementModelProject::getProject();
