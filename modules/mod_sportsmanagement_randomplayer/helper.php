@@ -102,6 +102,7 @@ class modJSMRandomplayerHelper
 if ( $params['debug_modus'] )
 	{		
         $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($res,true).'</pre>'),'');
 	}
 		
 //		Factory::getApplication()->input->setVar( 'p', $res[1] );
