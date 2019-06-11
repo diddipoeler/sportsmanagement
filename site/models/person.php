@@ -107,7 +107,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
+        if ( $personid )
+        {
+        self::$personid	= $personid;    
+        }
+        else
+        {
+        if ( !self::$personid )
+        {
         self::$personid	= Factory::getApplication()->input->getInt( 'pid', 0 );
+        }
+        }
         $starttime = microtime(); 
         
         self::updateHits(self::$personid,$inserthits); 
