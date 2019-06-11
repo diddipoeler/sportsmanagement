@@ -67,7 +67,7 @@ class modSportsmanagementTeamPlayersHelper
 
 //		Factory::getApplication()->input->setVar( 'p', $p );
 //		Factory::getApplication()->input->setVar( 'tid', $t);
-//		Factory::getApplication()->input->setVar( 'ttid', $projectteamid);
+//		Factory::getApplication()->input->setVar( 'ptid', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelRoster')) 
         {
