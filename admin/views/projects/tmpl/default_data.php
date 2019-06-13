@@ -229,18 +229,28 @@ echo $row->league.'<br>';
 													'value','text',$row->agegroup_id);
                         ?>
                         </td>
-						<td class="center">
-                        <?php 
-                        $inputappend = '';
-                        $append = ' style="background-color:#bbffff"';
-									echo HTMLHelper::_(	'select.genericlist',
-													$this->lists['project_type'],
-													'project_type'.$row->id,
-													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-													$i.'\').checked=true"'.$append,
-													'value','text',$row->project_type);
-                        ?>
-                        </td>
+	
+<td class="center">
+<?php 
+$inputappend = '';
+$append = ' style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist',
+		$this->lists['project_type'],
+		'project_type'.$row->id,
+		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+		$i.'\').checked=true"'.$append,
+		'value','text',$row->project_type);
+?>
+<br>
+<?php 	
+echo HTMLHelper::_('select.genericlist',
+		$this->lists['mastertemplates'],
+		'master_template'.$row->id,
+		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+		$i.'\').checked=true"'.$append,
+		'value','text',$row->master_template);
+?>	
+</td>
 						
                         <td class="center">
 								<?php
