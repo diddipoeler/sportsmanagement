@@ -165,7 +165,7 @@ switch ( $this->getState('filter.unique_id') )
         $this->jsmsubquery3->where('co.project = p.id');
         $this->jsmsubquery3->where('co.team_id = 0');
 
-        $this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id ');
+        $this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id,p.master_template ');
         $this->jsmquery->select('p.league_id');
         $this->jsmquery->select('p.modified,p.modified_by');
         $this->jsmquery->select('u1.username');
