@@ -9,7 +9,6 @@
  * @subpackage projects
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -171,6 +170,13 @@ $myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'JNO' ) );
 $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );        
 $this->unique_id = $myoptions;        
 unset($myoptions);
+
+		
+$myoptions[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES'));
+$mdltemplates = BaseDatabaseModel::getInstance('Templates', 'sportsmanagementModel');
+$res = $mdltemplates->getMasterTemplates();
+$myoptions = array_merge($myoptions,$res);
+$lists['mastertemplates'] = $myoptions;
 		
 		$myoptions[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
