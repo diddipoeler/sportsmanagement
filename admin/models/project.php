@@ -409,14 +409,7 @@ catch (Exception $e)
 }
 		
 		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
+       
         
         //$result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -425,6 +418,7 @@ catch (Exception $e)
 			$tblProject->id = $pks[$x];
             $tblProject->project_type	= $post['project_type'.$pks[$x]];
             $tblProject->agegroup_id	= $post['agegroup'.$pks[$x]];
+	$tblProject->master_template	= $post['master_template'.$pks[$x]];		
             
             if ( $post['league'.$pks[$x]] )
             {
