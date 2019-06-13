@@ -41,6 +41,7 @@ class sportsmanagementModelProjects extends JSMModelList
                         's.name',
                         'st.name',
                         'p.project_type',
+			'p.master_template',
                         'p.published',
                         'p.id',
                         'p.ordering',
