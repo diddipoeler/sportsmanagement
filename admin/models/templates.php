@@ -291,6 +291,18 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_template_config
         
 	}
 
+	
+function getMasterTemplates()
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('id AS value, name AS text');
+$this->jsmquery->from('#__sportsmanagement_project');
+$this->jsmquery->where('master_template=0 ');
+$this->jsmquery->order('name');
+$this->jsmdb->setQuery($this->jsmquery);
+$options = $this->jsmdb->loadObjectList();	
+return $options;	
+}	
 	/**
 	 * sportsmanagementModelTemplates::getMasterTemplatesList()
 	 * 
