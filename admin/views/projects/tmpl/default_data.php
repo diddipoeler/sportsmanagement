@@ -64,6 +64,10 @@ echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','a
 <?php
 echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
 ?>
+<br>
+<?php 
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES'); 
+?>	
 </th>
 <th>
 <?php 
