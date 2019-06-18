@@ -77,7 +77,7 @@ Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' 
 foreach ( $data as $key => $value )
 {
     
-if ( $value->completed != '100%')
+if ( $value->completed <= '70%')
 {
     
 }   
