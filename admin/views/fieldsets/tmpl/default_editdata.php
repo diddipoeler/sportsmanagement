@@ -24,7 +24,7 @@ $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Cont
  */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-// Include the component HTML helpers.
+/**  Include the component HTML helpers. */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');    
@@ -34,7 +34,7 @@ HTMLHelper::_('jquery.framework');
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try{
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e) {
