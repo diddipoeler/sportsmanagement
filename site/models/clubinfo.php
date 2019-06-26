@@ -657,73 +657,14 @@ Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
-        $query->select('c.id, c.name, c.new_club_id,c.logo_big');
+        $query->select('c.id, c.name, c.new_club_id,c.logo_big,c.founded_year');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         $query->from('#__sportsmanagement_club AS c');
         $query->where('c.new_club_id = ' . $clubid);
-        
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
         try {
             $db->setQuery($query);
             $result = $db->loadObjectList();
-           /*
-            if ( $result )
-            {
-            $subquery->clear();
-            $subquery->select('max(p.id) as maxpid');
-            $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
-            $subquery->from('#__sportsmanagement_project AS p');
-            $subquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.project_id = p.id');
-            $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
-            $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
-            $subquery->where('t.club_id = '. $clubid);
-            $subquery->where('p.published = 1');    
-            $db->setQuery($subquery);
-            $result2 = $db->loadObject();
-            $result->pid = $result2->pid;
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result2<br><pre>'.print_r($result2,true).'</pre>'),'');
-            }
-            else
-            {
-//            $query->clear();
-//            $query->select('c.id, c.name, c.new_club_id,c.logo_big');
-//            $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-//            $query->from('#__sportsmanagement_club AS c');
-//            $query->where('c.id = ' . $clubid);
-////            try {
-//            $db->setQuery($query);
-//            $result = $db->loadObjectList();
-//            if ( $result )
-//            {
-            $subquery->clear();
-            $subquery->select('max(p.id) as maxpid');
-            $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
-            $subquery->from('#__sportsmanagement_project AS p');
-            $subquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.project_id = p.id');
-            $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
-            $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
-            $subquery->where('t.club_id = '. $clubid);
-            $subquery->where('p.published = 1');    
-            $db->setQuery($subquery);
-            $result3 = $db->loadObject();
-            $result->pid = $result3->pid;
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result3<br><pre>'.print_r($result3,true).'</pre>'),'');
-//            }
-            
-            
-//            } catch (Exception $e) {
-//            $msg = $e->getMessage(); // Returns "Normally you would have other code...
-//            $code = $e->getCode(); // Returns
-//            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-//            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-//            }
-                
-                
-            }
-            */
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');            
-            
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -766,16 +707,13 @@ else
 $color = '';
 }		
             self::$arrPCat[$pt][] = Array('id' => $row->id,
-                'name' => $row->name,
+                'name' => $row->name.' ('.$row->founded_year.')',
                 'pid' => $row->pid,
                 'slug' => $row->slug,
 		'color' => $color, 
                 'logo_big' => $row->logo_big,
                 'clublink' => sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug)
             );
-
-            //$temp = '<ul><li>'.$row->name.'</li>';
-            //$this->treedepthold = $this->treedepth;
 
             if (self::$treedepthold === self::$treedepth) {
                 $temp = '<li>';
@@ -826,15 +764,13 @@ $color = '';
 
         if (self::$new_club_id != 0) {
             $icon = 'to_club.png';
-//  $querywhere = ' WHERE c.id = '. $this->new_club_id	;
             $query->where('c.id = ' . self::$new_club_id);
         } else {
             $icon = 'from_club.png';
-            //$querywhere = ' WHERE c.new_club_id = '. $clubid	;
             $query->where('c.new_club_id = ' . $clubid);
         }
 
-        $query->select('c.id, c.name, c.new_club_id');
+        $query->select('c.id, c.name, c.new_club_id,c.founded_year');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         $subquery->select('max(pt.project_id)');
         $subquery->from('#__sportsmanagement_project_team AS pt');
@@ -847,7 +783,6 @@ $color = '';
         $query->from('#__sportsmanagement_club AS c');
         try {
             $db->setQuery($query);
-
             $result = $db->loadObjectList();
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         } catch (Exception $e) {
@@ -901,23 +836,20 @@ $color = '';
         $script .= "d" . $root_catid . ".add(" . "0" . ", " . "-1" . ", ";
         $script .= "'" . $cat_name . "', ";
         $script .= "'" . $cat_link . "', ";
-        //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
         $script .= "'" . 'true' . "');" . "\n";
 
         foreach ($jgcat_rows_sorted as $key => $value) {
             foreach ($value as $row) {
                 if ($root_catid == $row->new_club_id) {
                     $script .= "d" . $root_catid . ".add(" . $row->id . ", " . "0" . ", ";
-                    $script .= "'" . $row->name . "', ";
+                    $script .= "'" . $row->name.' ('.$row->founded_year.')' . "', ";
                     $script .= "'" . $row->link . "', ";
-                    //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name.' ('.$row->founded_year.')' . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 } else {
                     $script .= "d" . $root_catid . ".add(" . $row->id . ", " . $row->new_club_id . ", ";
-                    $script .= "'" . $row->name . "', ";
+                    $script .= "'" . $row->name.' ('.$row->founded_year.')' . "', ";
                     $script .= "'" . $row->link . "', ";
-                    //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name.' ('.$row->founded_year.')' . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 }
             }
         }
