@@ -24,16 +24,6 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 HTMLHelper::_('jquery.framework');
 }
 
-//$params = $this->form->getFieldsets('params');
-
-
-//echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents item->id<br><pre>'.print_r($this->item->id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditReferees lists<br><pre>'.print_r($this->lists,true).'</pre>';
-
-#echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
-
 ?>
 <script type="text/javascript">
 
@@ -131,7 +121,6 @@ if($close == 1) {
 						<th>
 							<?php
 							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME');
-							#echo Text::_('Hrs') . ' ' . Text::_('Mins') . ' ' . Text::_('Secs');
 							?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
@@ -273,6 +262,7 @@ if($close == 1) {
 </div>
 <div style="clear: both"></div>
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="useeventtime" value="<?php $this->projectws->useeventtime; ?>" />
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />

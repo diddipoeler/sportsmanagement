@@ -9,7 +9,6 @@
  * @subpackage match
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -449,13 +448,8 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $javascript .= '  });' . "\n";
         $javascript .= "\n";
 
-
-        //$app->enqueueMessage(Text::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
-
         // mannschaften der paarung
         $teams = $model->getMatchTeams($this->item->id);
-
-        //$app->enqueueMessage(Text::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
 
         $teamlist = array();
         $teamlist[] = HTMLHelper::_('select.option', $teams->projectteam1_id, $teams->team1);
@@ -472,15 +466,11 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
         $lists['events'] = HTMLHelper::_('select.genericlist', $eventlist, 'event_type_id', 'class="inputbox select-event"');
 
-        //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-        //$homeRoster = $model->getMatchPlayers($teams->projectteam1_id,0,$this->item->id);
         $homeRoster = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'player');
         if (count($homeRoster) == 0) {
             //$homeRoster=$model->getGhostPlayer();
         }
 
-        //$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
-        //$awayRoster = $model->getMatchPlayers($teams->projectteam2_id,0,$this->item->id);
         $awayRoster = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'player');
         if (count($awayRoster) == 0) {
             //$awayRoster=$model->getGhostPlayer();
