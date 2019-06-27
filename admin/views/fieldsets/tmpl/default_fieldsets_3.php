@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-//echo '<pre>'.print_r($this->extended,true).'</pre>';
 
 switch ($this->fieldset) {
     /**
@@ -404,63 +403,8 @@ case 'teamperson':
             <?PHP
             if ($this->fieldset === 'request') {
                 ?>
+<!-- vielleicht für die zukunft-->                
                 <script type="text/javascript">
-                // var start;
-                    /*calculate center points*/
-
-                //var start= new google.maps.LatLng(<?php echo $this->item->latitude ?>,<?php echo $this->item->longitude ?>);
-                //var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
-
-                //jQuery(function(){ // document.ready
-
-                //jQuery("#map").gmap3({
-                //  map:{
-                //    options: {
-                //      center: start,
-                //      zoom: 9,
-                //      maxZoom: 16 ,
-                //      mapTypeId: google.maps.MapTypeId.SATELLITE,
-                //      mapTypeId: google.maps.MapTypeId.HYBRID,
-                //      navigationControl: true,
-                //      mapTypeControlOptions: {
-                //       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-                //     },
-                //     //scrollwheel: true,
-                //      streetViewControl: true
-                //    }
-                //  }
-                //  ,
-                //  marker:{
-                //    latLng: start,
-                //    //position: start,
-                //    options: {
-                //     icon: new google.maps.MarkerImage(
-                //       "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
-                //       new google.maps.Size(32, 37, "px", "px")
-                //     )
-                //    }
-                    //}
-                //  
-                //  }
-                //  ,
-                //"autofit" )
-                //                
-                //});
-
-
-
-                //setTimeout(function(){
-                //  jQuery('#map')
-                //    .width("100%")
-                //    .height("350px") 
-                //    .gmap3({trigger:"resize"})
-                //    ;
-                //}, 4000);
-
-
-
-
-
                 </script>            
 
             </div>
@@ -471,19 +415,8 @@ case 'teamperson':
         </tr>
         </table>
 
-
-        <script>
-        //      jQuery(function(){
-        //        var center = new google.maps.LatLng(51.165691,10.451526);
-        //        jQuery("#geocomplete").geocomplete({
-        //          map: ".map_canvas",
-        //          types: ['establishment'],
-        //          country: 'de'
-        //        });
-        //        var map =  jQuery("#geocomplete").geocomplete("map")
-        //        map.setCenter(center);
-        //        map.setZoom(6);
-        //      });
+<!-- vielleicht für die zukunft-->
+        <script type="text/javascript">
         </script>
 
 
