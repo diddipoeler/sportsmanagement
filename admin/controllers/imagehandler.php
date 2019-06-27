@@ -72,7 +72,7 @@ $msg = '';
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
 		//$ftp = JClientHelper::getCredentials( 'ftp' );
 
-		$base_Dir = JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS;
+		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR  . 'images' . DIRECTORY_SEPARATOR  . $this->jsmoption . DIRECTORY_SEPARATOR  .'database'.DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR ;
         
     //do we have an imagelink?
     if ( !empty( $linkaddress ) )
