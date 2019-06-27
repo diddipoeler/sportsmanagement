@@ -23,7 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  */            
 if ( $this->mapconfig['map_kmlfile'] )
 { 
-$this->kmlpath = Uri::root().'tmp'.DS.$this->playground->id.'-playground.kml';
+$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->playground->id.'-playground.kml';
 $this->kmlfile = $this->playground->id.'-playground.kml';
 }
 ?>

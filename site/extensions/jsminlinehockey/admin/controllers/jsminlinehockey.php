@@ -60,9 +60,9 @@ $this->setRedirect ( $link, $msg );
         {
 			$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
             $tempFilePath = $upload ['tmp_name'];
-            $dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
-			$extractdir = JPATH_SITE . DS . 'tmp';
-			$importFile = JPATH_SITE . DS . 'tmp' . DS . 'ish_bw_import.xls';
+            $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
+			$extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
+			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'ish_bw_import.xls';
             
             $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' upload<br><pre>'.print_r($upload,true).'</pre>'),'');
             

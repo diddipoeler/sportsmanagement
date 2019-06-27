@@ -10,7 +10,7 @@ if ( $this->show_debug_info )
 echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
 }
 
-$kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.kml';
 
 ?>
 <div style="width: 100%; float: left">

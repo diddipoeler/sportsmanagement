@@ -682,7 +682,7 @@ catch (Exception $e)
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
 if ( isset($stat->_showinsinglematchreports) ) {
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
+require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'statistics' .DIRECTORY_SEPARATOR.$stat->_name. '.php');	
 $mdlstats = BaseDatabaseModel::getInstance($stat->_name, "SMStatistic");   
 $mdlstats->id = $stat->id;    
 $stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);

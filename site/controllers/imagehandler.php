@@ -18,7 +18,7 @@ use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Client\ClientHelper;
 
-require_once (JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imageselect.php');
+require_once (JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php');
 
 class sportsmanagementControllerImagehandler extends BaseController {
 
@@ -57,7 +57,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         ClientHelper::setCredentialsFromRequest('ftp');
 
         //set the target directory
-        $base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS;
+        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder . DS;
 
         $app->enqueueMessage(Text::_($type), '');
         $app->enqueueMessage(Text::_($folder), '');
@@ -143,8 +143,8 @@ class sportsmanagementControllerImagehandler extends BaseController {
                     continue;
                 }
 
-                $fullPath = Path::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . $image);
-                $fullPaththumb = Path::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . 'small' . DS . $image);
+                $fullPath = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. $image);
+                $fullPaththumb = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. 'small' .DIRECTORY_SEPARATOR. $image);
                 if (is_file($fullPath)) {
                     File::delete($fullPath);
                     if (File::exists($fullPaththumb)) {

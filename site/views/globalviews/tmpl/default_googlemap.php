@@ -558,7 +558,7 @@ $paramsPlugin = new Registry($plugin->params);
 //echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
 
-$params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
+$params  = "{mosmap kml[0]='".'tmp'.DIRECTORY_SEPARATOR.$this->kmlfile."'}";
 echo HTMLHelper::_('content.prepare', $params);
   
 }

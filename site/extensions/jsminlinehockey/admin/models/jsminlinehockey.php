@@ -72,7 +72,7 @@ function __construct()
         if( $mainframe->isClient('administrator') ) 
 {
 
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'PHPExcel'.DS.'PHPExcel.php');
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'PHPExcel'.DIRECTORY_SEPARATOR.'PHPExcel.php');
 }
         parent::__construct();
         }
@@ -196,7 +196,7 @@ $option = $jinput->getCmd('option');
 $db = Factory::getDbo();
 $query = $db->getQuery(true);
 //set the target directory
-$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. 'clubs/large' . DS;
+$base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. 'clubs/large' . DS;
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
 $matchlink = '';
@@ -1330,11 +1330,11 @@ function getdata()
 		$msg = '';
         $post = $jinput->post->getArray(array());
         
-        	if (File::exists(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls'))
+        	if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ish_bw_import.xls'))
 		{
 		  echo date('H:i:s') , " Load workbook from Excel5 file" , EOL;
 $callStartTime = microtime(true);
-		  $objPHPExcel = PHPExcel_IOFactory::load(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls');
+		  $objPHPExcel = PHPExcel_IOFactory::load(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ish_bw_import.xls');
           
           
 /**

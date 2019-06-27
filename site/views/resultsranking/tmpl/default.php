@@ -25,7 +25,7 @@ if ( !empty($this->mapconfig) )
 {
 if ( $this->mapconfig['map_kmlfile'] && $this->project )
 {
-$this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 }
 }

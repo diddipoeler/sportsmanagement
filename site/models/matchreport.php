@@ -195,8 +195,8 @@ catch (Exception $e)
    */
   function getMatchPictures($folder)
   {
-  $basePath = JPATH_SITE.DS.'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
-  $sitePath = 'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
+  $basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
+  $sitePath = 'images'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
   $images 	= array ();
   
   
@@ -209,7 +209,7 @@ catch (Exception $e)
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.DS.$file) && substr($file, 0, 1) != '.'
+				if (is_file($basePath.DIRECTORY_SEPARATOR.$file) && substr($file, 0, 1) != '.'
 					&& strtolower($file) !== 'index.html'
 					&& strtolower($file) !== 'thumbs.db'
 					&& strtolower($file) !== 'readme.txt'
@@ -221,7 +221,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = Path::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
@@ -229,7 +229,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = Path::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
@@ -755,7 +755,7 @@ catch (Exception $e)
 }
 	if ( $res )
     {
-    	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+    	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'rosterposition.xml';
 		$jRegistry = new Registry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {

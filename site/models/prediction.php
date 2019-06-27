@@ -1657,7 +1657,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r(
           //echo '<br /><pre>~'.print_r($mailer,true).'~</pre><br />';
 
 					// Optional file attached
-					//$mailer->addAttachment(PATH_COMPONENT.DS.'assets'.DS.'document.pdf');
+					//$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
 
 					//Sending the mail
 					$send = $mailer->Send();

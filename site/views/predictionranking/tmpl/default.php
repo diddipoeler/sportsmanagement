@@ -20,7 +20,7 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$this->kmlpath = Uri::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
 $this->kmlfile = $this->predictionGame->id.'-prediction.kml';
 
 ?>

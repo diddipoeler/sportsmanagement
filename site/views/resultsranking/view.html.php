@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 
-require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php' );
+require_once(JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'results' .DIRECTORY_SEPARATOR. 'view.html.php' );
 
 jimport('joomla.filesystem.file');
 

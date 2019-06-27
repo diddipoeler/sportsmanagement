@@ -23,7 +23,7 @@ if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php');
+require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php');
 
 $maxImportTime = 480;
 if ((int) ini_get('max_execution_time') < $maxImportTime) {

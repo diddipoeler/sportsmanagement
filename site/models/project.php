@@ -1164,7 +1164,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$paramsdata = "";
 		$arrStandardSettings = array();
         
-        $xmlfile = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default'.DS.$template.'.xml';
+        $xmlfile = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$template.'.xml';
 
 		if( self::$projectid == 0) return $arrStandardSettings;
 
@@ -1327,7 +1327,7 @@ catch (Exception $e)
         
 		if (empty(self::$_stats))
 		{
-			require_once (JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'statistics'.DS.'base.php');
+			require_once (JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'statistics'.DIRECTORY_SEPARATOR.'base.php');
 			$project = self::getProject($cfg_which_database,__METHOD__);
 			$project_id = $project->id;
             $query->select('ppos.id as pposid,ppos.position_id AS position_id');

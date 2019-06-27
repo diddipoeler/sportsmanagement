@@ -110,9 +110,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 			}
 		}			
     $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
-    $file = JPATH_SITE.DS.'tmp'.DS.$user->username.DS.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
+    $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
     
-    $userpath = JPATH_SITE.DS.'tmp'.DS.$user->username;
+    $userpath = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$user->username;
     if ( Folder::exists($userpath) )
     {
     }

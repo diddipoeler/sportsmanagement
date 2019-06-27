@@ -36,10 +36,10 @@ $row = 'row'.(floor($j / $rssitems_colums) % $rssitems_colums) ;
 <tr class="<?php echo $row; ?>">
 <?php endif; ?>
 <td class="item" style="width:<?php echo floor(99/$rssitems_colums)."%";?>">
-<a href="<?php echo $images->sitepath.DS.$images->name;?>" alt="<?php echo $images->name;?>" title="<?php echo $images->name;?>" class="highslide" onclick="return hs.expand(this)">
+<a href="<?php echo $images->sitepath.DIRECTORY_SEPARATOR.$images->name;?>" alt="<?php echo $images->name;?>" title="<?php echo $images->name;?>" class="highslide" onclick="return hs.expand(this)">
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage($images->name,
-$images->sitepath.DS.$images->name,
+$images->sitepath.DIRECTORY_SEPARATOR.$images->name,
 $images->name,
 $pictures_width,
 '',

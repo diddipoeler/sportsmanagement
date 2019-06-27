@@ -82,7 +82,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->playerstats = $this->model->getMatchStats();
 		$this->staffstats = $this->model->getMatchStaffStats();
         
-        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'match.xml';
 		$jRegistry = new Registry;
 		$jRegistry->loadString($match->extended, 'ini');
 		$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
@@ -568,7 +568,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
-                        if ( !File::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -583,7 +583,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					)
 					{
 						$picture = $me->picture1;
-                        if ( !File::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -630,7 +630,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
-                        if ( !File::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -645,7 +645,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					)
 					{
 						$picture = $me->picture1;
-                        if ( !File::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) )
 				        {
                         $picture = $placeholder;
                         }

@@ -74,7 +74,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
         $jinput = $app->input;
         $this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
         
-        $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
+        $file = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ranking.php';
         require_once($file);
         
         $menu = JMenu::getInstance('site');
@@ -106,8 +106,8 @@ foreach ($newparams['data'] as $key => $value ) {
         }
         else
         {
-//$strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'settings'.DS.'default'.DS.'rankingalltime.xml';    
-        $strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'views'.DS.'rankingalltime'.DS.'tmpl'.DS.'default.xml';
+//$strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';    
+        $strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'rankingalltime'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'default.xml';
         //$xml = simplexml_load_file($strXmlFile);
         
         $xml=Factory::getXML($strXmlFile);

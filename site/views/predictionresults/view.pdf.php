@@ -19,7 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
+require_once(JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'pagination.php');
 
 /**
  * Joomleague Component prediction View

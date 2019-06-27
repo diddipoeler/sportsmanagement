@@ -79,7 +79,7 @@ use Joomla\CMS\Filesystem\File;
                         echo $item->name;
                     }
 
-                    if (!File::exists(JPATH_SITE . DS . $item->logo_big)) {
+                    if (!File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $item->logo_big)) {
                         $item->logo_big = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
                     }
                     ?>

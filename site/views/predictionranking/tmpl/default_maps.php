@@ -19,7 +19,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
 }
 
-$kmlpath = Uri::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
 
 //echo $kmlpath.'<br>';
 

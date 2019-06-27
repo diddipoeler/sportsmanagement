@@ -64,7 +64,7 @@ else
 echo $item->name;    
 }
 
-if ( !File::exists(JPATH_SITE.DS.$item->picture) )
+if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) )
 {
 $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }

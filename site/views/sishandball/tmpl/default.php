@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('behavior.modal'); 
-require_once('components'.DS.'com_sportsmanagement'.DS.'lib'.DS.'xshv2.lib.core.php');
+require_once('components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'xshv2.lib.core.php');
 $modal_popup_width = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
 $modal_popup_height = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
 
@@ -230,7 +230,7 @@ if ($this->spielplan) {
 					echo ($this->params->get( 'sis_link1') && $this->params->get( 'sis_link2')) ? ' | ' : '';
 					echo ($this->params->get( 'sis_link2')) ? '<a href="'.$this->params->get( 'sis_link2').'" target="_top">'.$this->params->get( 'sis_link2name').'</a>' : '';
 					echo ($this->params->get( 'sis_link2') && $this->params->get( 'sis_linkhilfeics') || $this->params->get( 'sis_link1') && $this->params->get( 'sis_linkhilfeics')) ? ' | ' : '';
-					echo ($this->params->get( 'sis_ics_dir') && $this->params->get( 'sis_ics_vereinsnameshort') &&$this->params->get( 'sis_ics')) ? '<a href="'.$SERVER['SERVER_NAME'].DS.$this->params->get( 'sis_ics_dir').'/'.$this->params->get( 'sis_ics_vereinsnameshort').'-spiele_'.$this->params->get( 'sis_ics').'.ics" title="Bitte den Link kopieren, und in iCal oder Outlook f&uuml;r Kalender abonnieren verwenden" target="_blank">Spielplan abonnieren</a>' : '';
+					echo ($this->params->get( 'sis_ics_dir') && $this->params->get( 'sis_ics_vereinsnameshort') &&$this->params->get( 'sis_ics')) ? '<a href="'.$SERVER['SERVER_NAME'].DIRECTORY_SEPARATOR.$this->params->get( 'sis_ics_dir').'/'.$this->params->get( 'sis_ics_vereinsnameshort').'-spiele_'.$this->params->get( 'sis_ics').'.ics" title="Bitte den Link kopieren, und in iCal oder Outlook f&uuml;r Kalender abonnieren verwenden" target="_blank">Spielplan abonnieren</a>' : '';
 					echo ($this->params->get( 'sis_linkhilfeics')) ? ' (<a href="'.$this->params->get( 'sis_linkhilfeics').'" target="_top">Hilfe</a>)' : '';
 					echo '</span><span class="article_seperator">&nbsp;</span><br><br>';
 				}

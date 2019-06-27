@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'player.php');
 
 jimport('joomla.application.component.view');
 

@@ -24,7 +24,7 @@ if (!class_exists('sportsmanagementHelperHtml')) {
     /**
      * add the classes for handling
      */
-    $classpath = JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php';
+    $classpath = JPATH_SITE .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'html.php';
     JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
 

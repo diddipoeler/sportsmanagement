@@ -9,7 +9,7 @@ use Joomla\CMS\Factory;
 jimport('joomla.application.component.view');
 use Joomla\CMS\Filesystem\File;
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
+require_once(JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'pagination.php');
 
 class sportsmanagementViewResults extends JViewLegacy
 {

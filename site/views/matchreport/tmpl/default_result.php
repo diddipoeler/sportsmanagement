@@ -28,7 +28,7 @@ use Joomla\CMS\Filesystem\File;
                 //dynamic object property string
                 $pic = $this->config['show_picture'];
                 
-                if ( !File::exists(JPATH_SITE.DS.$this->team1->$pic) )
+                if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team1->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
@@ -60,7 +60,7 @@ $this->overallconfig['use_jquery_modal']);
 		</td>
 		<td class="teamlogo">
 			<?php 
-            if ( !File::exists(JPATH_SITE.DS.$this->team2->$pic) )
+            if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team2->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }

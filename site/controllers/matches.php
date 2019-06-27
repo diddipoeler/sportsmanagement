@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php'); 
+require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'match.php'); 
 
 /**
  * sportsmanagementControllermatches

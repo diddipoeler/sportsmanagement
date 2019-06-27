@@ -50,7 +50,7 @@ HTMLHelper::_('behavior.framework', true);
 else
 {
 HTMLHelper::_( 'behavior.mootools' );   
-require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
+require ( JPATH_SITE .DIRECTORY_SEPARATOR. 'libraries' .DIRECTORY_SEPARATOR. 'joomla' .DIRECTORY_SEPARATOR. 'html' .DIRECTORY_SEPARATOR. 'editor.php' );  
 }
 */
 

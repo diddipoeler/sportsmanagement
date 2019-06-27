@@ -111,7 +111,7 @@ class JSMRanking
 				$classname = 'JSMRanking'. ucfirst($type);
 				if (!class_exists($classname))
 				{
-					$file = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$type.DS.'ranking.php';
+					$file = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'ranking.php';
 					if (file_exists($file))
 					{
 						require_once($file);

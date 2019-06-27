@@ -176,7 +176,7 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$id.'-'.$type.'.kml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$id.'-'.$type.'.kml';
 File::write($file, $xmlfile);
 
 
@@ -510,7 +510,7 @@ $kml[] = ' <IconStyle id="' . $row->user_id . 'Icon">';
 $kml[] = ' <Icon>';
 
 
-$picturepath = JPATH_SITE.DS.$row->avatar;
+$picturepath = JPATH_SITE.DIRECTORY_SEPARATOR.$row->avatar;
 
 /*
 echo 'writekml3prediction picturepath<br><pre>';
@@ -569,7 +569,7 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$project_id.'-'.$type.'.kml';
 File::write($file, $xmlfile);
 
 }
@@ -645,7 +645,7 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$project_id.'-'.$type.'.kml';
 File::write($file, $xmlfile);
 
 }
