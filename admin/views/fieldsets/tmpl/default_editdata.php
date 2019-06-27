@@ -429,7 +429,7 @@ switch ($view)
     echo $this->loadTemplate('position_statistics');
     echo HTMLHelper::_('bootstrap.endTab');  
 */	
-	    <?pphp
+	    <?php
     break;
     
 } 
