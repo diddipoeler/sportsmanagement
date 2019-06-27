@@ -177,6 +177,12 @@ echo HTMLHelper::_('bootstrap.renderModal',
 </div>
     <?PHP
     break;
+		case 'events':
+		echo $this->loadTemplate('position_events'); 
+	break;	
+case 'statistics':
+		echo $this->loadTemplate('position_statistics');
+	break;	
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets_4');
@@ -193,7 +199,7 @@ echo HTMLHelper::_('bootstrap.endTab');
  * bei den positionen müssen noch zusätzliche templates 
  * eingebunden werden
  */
-
+/*
 switch ($view)
 {
     case 'position':
@@ -204,9 +210,8 @@ switch ($view)
     echo $this->loadTemplate('position_statistics');
     echo HTMLHelper::_('bootstrap.endTab');  
     break;
-    
 } 
-
+*/
 echo HTMLHelper::_('bootstrap.endTabSet'); 
 ?>
 </div>
