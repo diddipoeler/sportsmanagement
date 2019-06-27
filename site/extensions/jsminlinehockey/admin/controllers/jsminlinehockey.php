@@ -1,5 +1,14 @@
 <?PHP
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsminlinehockey.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage extension jsminlinehockey controllers
+ */
+ 
 defined('_JEXEC') or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -7,17 +16,33 @@ use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 
+/**
+ * sportsmanagementControllerjsminlinehockey
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerjsminlinehockey extends AdminController
 {
 
-
+/**
+ * sportsmanagementControllerjsminlinehockey::__construct()
+ * 
+ * @return void
+ */
 function __construct()
     {
         parent::__construct();
-
-        
     }
     
+    /**
+     * sportsmanagementControllerjsminlinehockey::getmatches()
+     * 
+     * @return void
+     */
     function getmatches()
     {
     $model = $this->getModel ( 'jsminlinehockey' );
@@ -25,11 +50,13 @@ function __construct()
     $msg = 'Spiele importiert';
     $link = 'index.php?option=com_sportsmanagement&view=projects'; 
 $this->setRedirect ( $link, $msg ); 
-
-    
     }
 
-
+    /**
+     * sportsmanagementControllerjsminlinehockey::getclubs()
+     * 
+     * @return void
+     */
     function getclubs()
     {
     $model = $this->getModel ( 'jsminlinehockey' );
@@ -40,20 +67,20 @@ $this->setRedirect ( $link, $msg );
 
     }
 
+    /**
+     * sportsmanagementControllerjsminlinehockey::save()
+     * 
+     * @return
+     */
     function save() {
-	   //$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication ();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 		$document = Factory::getDocument ();
-		// Check for request forgeries
-		//Factory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 
 		$model = $this->getModel ( 'jsminlinehockey' );
         $post = $jinput->post->getArray(array());
-        
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         // first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) 
@@ -63,8 +90,6 @@ $this->setRedirect ( $link, $msg );
             $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
 			$extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
 			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'ish_bw_import.xls';
-            
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' upload<br><pre>'.print_r($upload,true).'</pre>'),'');
             
             if (File::exists ( $importFile )) 
             {
@@ -119,14 +144,7 @@ $this->setRedirect ( $link, $msg );
         
         $xml_file = $model->getData ();
         
-        
         }
-        
-    
-    
-
-    
-    
 
 }
 
