@@ -166,7 +166,14 @@ if($close == 1) {
 						<td id="cell-player">&nbsp;</td>
 						<td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
+                        <?php
+                        if ( $this->useeventtime )
+                        {
+                        ?>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
+                        <?php
+                        }
+                        ?>
 						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
 						<td style='text-align:center; ' >
 							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo Text::_('JTOOLBAR_APPLY'); ?>" />
@@ -186,7 +193,6 @@ if($close == 1) {
 					<th>
 						<?php
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						#echo Text::_( 'Hrs' ) . ' ' . Text::_( 'Mins' ) . ' ' . Text::_( 'Secs' );
 						?>
 					</th>
 					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
