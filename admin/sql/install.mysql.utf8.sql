@@ -1134,6 +1134,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_sports_type` (
   `modified_by` INT NULL ,
   `sportsart` TINYINT(1) NOT NULL DEFAULT '0' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `eventtime` TINYINT(1) NOT NULL DEFAULT '1' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
