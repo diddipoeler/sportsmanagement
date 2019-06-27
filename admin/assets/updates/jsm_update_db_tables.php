@@ -1,15 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      jsm_update_db_tables.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage updates
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -198,9 +197,6 @@ $slide_id = 1;
 				echo '</th></tr>';
 				$keys = $db->getTableKeys($tableName);
                 
-                //echo 'table <pre>'.print_r($tableName,true).'</pre>';
-                //echo 'keys <pre>'.print_r($keys,true).'</pre>';
-                //exit;
                 if ( sizeof($keys) != 0 )
                         {
 				foreach ($newIndexes AS $index)
@@ -230,23 +226,12 @@ $slide_id = 1;
 						}
 						$skip = false;
                         
-                        //echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre><br>';    
-                        
+                       
                         if ( sizeof($keys) != 0 )
                         {
 						foreach($keys as $key) 
                         {
-                            //if ( $key->Table == 'jos_sportsmanagement_person_project_position' )
-//                            {
-//                                exit;
-//                            }
 							preg_match('/`(.*?)`/', $keyName, $reg);
-                            
-//                            if ( $tableName === '#__sportsmanagement_person_project_position' )
-//                        {
-//                            echo 'reg <pre>'.print_r($reg,true).'</pre><br>';
-//                            }
-                            
 							if(strcasecmp($key->Key_name, $reg[1])!==0) 
                             {
 								echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
