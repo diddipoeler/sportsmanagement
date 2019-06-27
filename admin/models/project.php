@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -40,10 +39,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-    
+   
 	}	   
     
     /**
@@ -89,9 +85,16 @@ class sportsmanagementModelProject extends JSMModelAdmin
         $query->select('*');
         $query->from('#__sportsmanagement_project');
         $query->where('id = ' . $project_id);
-		
         $db->setQuery($query);
-		return $db->loadObject();
+        $result = $db->loadObject();
+        $query->clear();
+        $query->select('eventtime*');
+        $query->from('#__sportsmanagement_sports_type');
+        $query->where('id = ' . $result->sports_type_id);
+        $db->setQuery($query);
+        $result->useeventtime = $db->loadResult();
+        //sports_type_id
+		return $result;
 	}
    
     
@@ -106,13 +109,10 @@ class sportsmanagementModelProject extends JSMModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$db	= $this->getDbo();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
-        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
-        
-		//$project_id = $app->getUserState($option . 'project');
-        
+        $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
+       
         if ( $this->project_art_id == 3 )
         {
             // Select some fields
