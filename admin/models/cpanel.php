@@ -17,13 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
 /**
  * sportsmanagementModelcpanel
  * 

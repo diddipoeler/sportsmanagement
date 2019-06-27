@@ -24,7 +24,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //$ordering = ( $this->sortColumn == 'ppl.ordering' );
 $ordering = ( $this->sortColumn == 'ppl.ordering' );
 
-//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
+//$this->addTemplatePath( JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. 'adminmenu' );
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 

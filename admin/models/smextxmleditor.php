@@ -100,7 +100,7 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         jimport('joomla.filesystem.file');
         //$app->enqueueMessage(Text::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
-        $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
+        $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$data['filename'];
         //$return = File::write($filePath, $data['source']);
         if ( !File::write($filePath, $data['source']) )
         {
@@ -128,7 +128,7 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         $item = new stdClass;
         
         $config = new stdClass;
-        $configPath = JPATH_SITE.DS.'configuration.php';
+        $configPath = JPATH_SITE.DIRECTORY_SEPARATOR.'configuration.php';
         $config->source	= File::read($configPath);
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
@@ -141,7 +141,7 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
 			$file_name	= Factory::getApplication()->input->getVar('file_name');
 			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
 			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
-            $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$file_name;
+            $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file_name;
 
 			if (file_exists($filePath)) {
 				jimport('joomla.filesystem.file');

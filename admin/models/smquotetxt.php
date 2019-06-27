@@ -85,7 +85,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
         
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
-        $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$data['filename'];
+        $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$data['filename'];
         //$return = File::write($filePath, $data['source']);
         
         if ( !File::write($filePath, $data['source']) )
@@ -117,7 +117,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 			$file_name	= Factory::getApplication()->input->getVar('file_name');
 			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
 			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
-            $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$file_name;
+            $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$file_name;
 
 			if (file_exists($filePath)) {
 				jimport('joomla.filesystem.file');

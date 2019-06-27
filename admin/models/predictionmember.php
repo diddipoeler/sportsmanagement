@@ -20,8 +20,8 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
+require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'prediction.php');
+require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'predictionentry.php');
 
 
 /**
@@ -680,7 +680,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
 
 					// Optional file attached
-					//$mailer->addAttachment(PATH_COMPONENT.DS.'assets'.DS.'document.pdf');
+					//$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
 					//echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
 
 					//Sending the mail

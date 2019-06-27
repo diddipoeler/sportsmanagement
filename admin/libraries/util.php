@@ -32,10 +32,6 @@ use Joomla\CMS\Version;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory\Response\JsonResponse;
 
-if (!defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 //JLoader::import('joomla.environment.browser');
@@ -129,7 +125,7 @@ class jsmGCalendarUtil
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
 
-		Factory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement');
+		Factory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement');
 
 		$lastHeading = '';
 

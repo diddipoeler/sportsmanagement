@@ -17,11 +17,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
 if ( !defined('JSM_PATH') )
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
@@ -31,7 +26,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }

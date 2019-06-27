@@ -176,7 +176,7 @@ switch ( $this->view )
 	//case 'jsmgcalendar':
             break;
             default:
-$this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
+$this->addTemplatePath( JPATH_ROOT .DIRECTORY_SEPARATOR. 'administrator' .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. $this->option .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. 'fieldsets' .DIRECTORY_SEPARATOR. 'tmpl' );        
 		// get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');

@@ -124,7 +124,7 @@ $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'tm
 	 */
 	function checklist($project_id)
 	{
-		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
+		$defaultpath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
         // Get the views for this component.
         $path = JPATH_SITE.'/components/'.$this->jsmoption.'/views';
 		$predictionTemplatePrefix = 'prediction';
@@ -174,14 +174,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
          }
 		
 		// add default folder
-		$xmldirs[] = $defaultpath.DS.'default';
+		$xmldirs[] = $defaultpath.DIRECTORY_SEPARATOR.'default';
 		
 		$extensions = sportsmanagementHelper::getExtensions($this->_project_id);
 		foreach ($extensions as $e => $extension) {
-			$extensiontpath =  JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension;
-			if (is_dir($extensiontpath.DS.'settings'.DS.'default'))
+			$extensiontpath =  JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'extensions' .DIRECTORY_SEPARATOR. $extension;
+			if (is_dir($extensiontpath.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'))
 			{
-				$xmldirs[] = $extensiontpath.DS.'settings'.DS.'default';
+				$xmldirs[] = $extensiontpath.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default';
 			}
 		}
 
@@ -221,7 +221,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
-							$xmlfile = $xmldir.DS.$file;
+							$xmlfile = $xmldir.DIRECTORY_SEPARATOR.$file;
 							$arrStandardSettings = array();
 							if(file_exists($xmlfile)) {
 								$strXmlFile = $xmlfile;

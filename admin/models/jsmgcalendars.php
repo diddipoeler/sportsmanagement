@@ -21,12 +21,12 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 if (!class_exists('sportsmanagementHelper')) 
 {
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php');  
 }
 
 
 
-Table::addIncludePath(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'tables');
+Table::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'tables');
 
 class sportsmanagementModeljsmGCalendars extends ListModel 
 {

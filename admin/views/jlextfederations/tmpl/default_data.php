@@ -130,7 +130,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
-if (empty($row->assocflag) || !File::exists(JPATH_SITE.DS.$row->assocflag))
+if (empty($row->assocflag) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->assocflag))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -152,7 +152,7 @@ else
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
-if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
+if (empty($row->picture) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',

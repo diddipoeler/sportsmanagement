@@ -17,8 +17,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 
 jimport('joomla.html.parameter.element.timezones');
 
-require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
-require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
+require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'sportstypes.php');
+require_once(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'leagues.php');
 
 /**
  * sportsmanagementViewProject

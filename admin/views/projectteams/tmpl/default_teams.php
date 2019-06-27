@@ -284,7 +284,7 @@ $this->modalheight);
                                                 
 							} else {
                                 
-                                if ( File::exists(JPATH_SITE.DS.$row->club_logo) ) {
+                                if ( File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->club_logo) ) {
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
@@ -419,7 +419,7 @@ $this->modalheight);
 							?>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
+								if (empty($row->picture) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -440,7 +440,7 @@ $this->modalheight);
                                 }
 								else
 								{
-								    if (File::exists(JPATH_SITE.DS.$row->picture)) {
+								    if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture)) {
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');

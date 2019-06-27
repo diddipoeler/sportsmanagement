@@ -167,7 +167,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							</td>
                             <td>
                             <?php
-								if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
+								if (empty($row->picture) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture))
 								{
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',

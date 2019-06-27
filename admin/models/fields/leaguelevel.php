@@ -17,12 +17,6 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 

@@ -150,7 +150,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$search = $this->getState('search');
 
 		// Initialize variables
-		$basePath = JPATH_SITE.DS.'images'.DS.$option.DS.'database'.DS.$folder;
+		$basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
 		$images 	= array ();
         
@@ -161,7 +161,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.DS.$file) && substr($file, 0, 1) != '.'
+				if (is_file($basePath.DIRECTORY_SEPARATOR.$file) && substr($file, 0, 1) != '.'
 					&& strtolower($file) !== 'index.html'
 					&& strtolower($file) !== 'thumbs.db'
 					&& strtolower($file) !== 'readme.txt'
@@ -172,14 +172,14 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 					if ( $search == '') {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = JPath::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
 					} elseif(stristr( $file, $search)) {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = JPath::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 

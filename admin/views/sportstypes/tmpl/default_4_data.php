@@ -118,7 +118,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                     <td class="text-center">
                         <?php
-                        $picture = JPATH_SITE . DS . $row->icon;
+                        $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $row->icon;
                         $desc = Text::_($row->name);
                         //echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
                         if (file_exists(Uri::root() . $row->icon)) {

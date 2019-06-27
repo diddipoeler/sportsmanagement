@@ -353,22 +353,22 @@ class JInstallationHelper
 	 */
 	function fsPermissionsCheck()
 	{
-		if(!is_writable(JPATH_ROOT.DS.'tmp')) {
+		if(!is_writable(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp')) {
 			return false;
 		}
-		if(!mkdir(JPATH_ROOT.DS.'tmp'.DS.'test', 0755)) {
+		if(!mkdir(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test', 0755)) {
 			return false;
 		}
-		if(!copy(JPATH_ROOT.DS.'tmp'.DS.'index.html', JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html')) {
+		if(!copy(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'index.html', JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html')) {
 			return false;
 		}
-		if(!chmod(JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html', 0777)) {
+		if(!chmod(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html', 0777)) {
 			return false;
 		}
-		if(!unlink(JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html')) {
+		if(!unlink(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html')) {
 			return false;
 		}
-		if(!rmdir(JPATH_ROOT.DS.'tmp'.DS.'test')) {
+		if(!rmdir(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test')) {
 			return false;
 		}
 		return true;
@@ -431,7 +431,7 @@ class JInstallationHelper
 		}
 
 		// Check all possible paths for the real Joomla! installation
-		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'version.php');
 		foreach ($ftpPaths as $tmpPath)
 		{
 			$filePath = rtrim($tmpPath, '/').'/libraries/joomla/version.php';
@@ -520,7 +520,7 @@ class JInstallationHelper
 		}
 
 		// Verify valid root path, part two
-		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'version.php');
 		if ($buffer !== $checkValue) {
 			return JError::raiseWarning('31', 'INVALIDROOT');
 		}
@@ -570,7 +570,7 @@ class JInstallationHelper
 		/*
 		 * First we need to determine if the path is chmodable
 		 */
-		if (!JPath::canChmod(JPath::clean(JPATH_SITE.DS.$dir)))
+		if (!JPath::canChmod(JPath::clean(JPATH_SITE.DIRECTORY_SEPARATOR.$dir)))
 		{
 			$ftpFlag = true;
 		}
@@ -605,7 +605,7 @@ class JInstallationHelper
 		else
 		{
 
-			$path = JPath::clean(JPATH_SITE.DS.$dir);
+			$path = JPath::clean(JPATH_SITE.DIRECTORY_SEPARATOR.$dir);
 
 			if (!@ chmod($path, octdec('0755')))
 			{
@@ -687,20 +687,20 @@ class JInstallationHelper
 		 * Move uploaded file
 		 */
 		// Set permissions for tmp dir
-		JInstallationHelper::_chmod(JPATH_SITE.DS.'tmp', 0777);
+		JInstallationHelper::_chmod(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp', 0777);
 		jimport('joomla.filesystem.file');
-		$uploaded = File::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
+		$uploaded = File::upload($sqlFile['tmp_name'], JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name']);
 		if(!$uploaded) {
 			return Text::_('WARNUPLOADFAILURE');
 		}
 
 		if( !preg_match('#\.sql$#i', $sqlFile['name']) )
 		{
-			$archive = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
+			$archive = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name'];
 		}
 		else
 		{
-			$script = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
+			$script = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name'];
 		}
 
 		// unpack archived sql files
@@ -711,7 +711,7 @@ class JInstallationHelper
 			{
 				return Text::_('WARNUNPACK');
 			}
-			$script = $package['folder'].DS.$package['script'];
+			$script = $package['folder'].DIRECTORY_SEPARATOR.$package['script'];
 		}
 
 		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
@@ -814,7 +814,7 @@ class JInstallationHelper
 
 
 		// Clean the paths to use for archive extraction
-		$extractdir = JPath::clean(dirname($p_filename).DS.$tmpdir);
+		$extractdir = JPath::clean(dirname($p_filename).DIRECTORY_SEPARATOR.$tmpdir);
 		$archivename = JPath::clean($archivename);
 		jimport('joomla.filesystem.archive');
 		$result = JArchive::extract( $archivename, $extractdir);
@@ -912,7 +912,7 @@ class JInstallationHelper
 		$oldPrefix = rtrim( $oldPrefix, '_' ) . '_';
 		$srcEncoding = $args['srcEncoding'];
 		if(!is_file($scriptName)) return false; // not a file?
-		$newFile = dirname( $scriptName ).DS.'converted.sql';
+		$newFile = dirname( $scriptName ).DIRECTORY_SEPARATOR.'converted.sql';
 		$tfilesize = filesize($scriptName);
 		if($maxread > 0 && $tfilesize > 0 && $maxread < $tfilesize)
 		{
@@ -940,7 +940,7 @@ class JInstallationHelper
 			/*
 			 * write to file
 			 */
-			//$newFile = dirname( $scriptName ).DS.'converted.sql';
+			//$newFile = dirname( $scriptName ).DIRECTORY_SEPARATOR.'converted.sql';
 			$ret = file_put_contents( $newFile, $buffer );
 			unset($buffer); // Release the memory used by the buffer
 			jimport('joomla.filesystem.file');
@@ -1314,7 +1314,7 @@ class JInstallationHelper
 			$db->setQuery( $qry );
 			if ( $row = $db->loadObject() ) {
 				if($row->module == '') { $row->module = 'mod_custom'; }
-				if(Folder::exists(JPATH_SITE.DS.'modules'.DS.$row->module)) {
+				if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$row->module)) {
 					$nextId++;
 					$oldid = $row->id;
 					$row->id = $nextId;

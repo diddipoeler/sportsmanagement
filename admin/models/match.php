@@ -1732,7 +1732,7 @@ if ( $data['id'] )
 
         $query = Factory::getDbo()->getQuery(true);
 
-        require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'statistics' . DS . 'base.php');
+        require_once(JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'statistics' .DIRECTORY_SEPARATOR. 'base.php');
 
         $query->select('stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,ppos.position_id AS posid');
         $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_statistic AS stat ');
@@ -2843,13 +2843,13 @@ if ( $data['id'] )
         $match_id = Factory::getApplication()->input->getVar('match_id');
         $this->_id = $match_id;
         //$app->enqueueMessage(Text::_('getPressebericht match_id<br><pre>'.print_r($match_id,true).'</pre>'   ),'');
-        $file = JPATH_SITE . DS . 'media' . DS . 'com_sportsmanagement' . DS . 'pressebericht' . DS . $match_id . '.jlg';
-        //$file = JPATH_SITE.DS.'tmp'.DS.'pressebericht.jlg';
+        $file = JPATH_SITE .DIRECTORY_SEPARATOR. 'media' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'pressebericht' .DIRECTORY_SEPARATOR. $match_id . '.jlg';
+        //$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'pressebericht.jlg';
         $app->enqueueMessage(Text::_('datei = ' . $file), '');
         // Where the cache will be stored
         $dcsv['file'] = $file;
 //$dcsv['cachefile']	= dirname(__FILE__).'/tmp/'.md5($dcsv['file']);
-        $dcsv['cachefile'] = JPATH_SITE . DS . '/tmp/' . md5($dcsv['file']);
+        $dcsv['cachefile'] = JPATH_SITE .DIRECTORY_SEPARATOR. '/tmp/' . md5($dcsv['file']);
 
 // If there is no chache saved or is older than the cache time create a new cache
         // open the cache file for writing

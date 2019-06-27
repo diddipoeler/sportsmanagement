@@ -62,7 +62,7 @@ else
 /** 
  * set the target directory 
  */
-$base_Dir = JPATH_SITE . DS . 'tmp'. DS;
+$base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp'. DS;
 $file['name'] = basename($link);
 $filename = $file['name'];
 $filepath = $base_Dir . $filename;
@@ -147,8 +147,8 @@ $my_text .= '<br />';
 $this->_success_text['Komponente:'] = $my_text;
 
 
-$extractdir = JPATH_SITE.DS.'tmp';
-$dest = JPATH_SITE.DS.'tmp'.DS.$file['name'];
+$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
+$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
@@ -172,8 +172,8 @@ $installer = Installer::getInstance();
 
 /** Get the path to the package to install */
 
-$p_dir = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS;
-$p_dir_modules = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'modules'.DS;
+$p_dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DS;
+$p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR.'modules'.DS;
 
 /** Detect the package type */
 $type = InstallerHelper::detectType($p_dir);   

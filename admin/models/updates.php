@@ -179,13 +179,13 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
-		//$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
-		$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');
+		//$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DS,'.php$',false,true,array('',''));
+		$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DS,'.php$');
 		// installer for extensions
-		$extensions=Folder::folders(JPATH_COMPONENT_SITE.DS.'extensions');
+		$extensions=Folder::folders(JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions');
 		foreach ($extensions as $ext)
 		{
-			$path=JPATH_COMPONENT_SITE.DS.'extensions'.DS.$ext.DS.'admin'.DS.'install';
+			$path=JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$ext.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'install';
 			if (Folder::exists($path))
 			{
 				foreach (Folder::files($path,'.php$') as $file)
@@ -201,11 +201,11 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 			$path=explode('/',$updateFile);
 			if (count($path) > 1)
 			{
-				$filepath=JPATH_COMPONENT_SITE.DS.'extensions'.DS.$path[0].DS.'admin'.DS.'install'.DS.$path[1];
+				$filepath=JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$path[0].DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.$path[1];
 			}
 			else
 			{
-				$filepath=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
+				$filepath=JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DIRECTORY_SEPARATOR.$path[0];
 			}
 			if ($fileContent=File::read($filepath))
 			{

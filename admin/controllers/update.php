@@ -71,11 +71,11 @@ class sportsmanagementControllerUpdate extends BaseController
 		$path = explode('/',$file_name);
 		if (count($path) > 1)
 		{
-			$filepath = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$path[0].DS.'admin'.DS.'install'.DS.$path[1];
+			$filepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$path[0].DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.$path[1];
 		}
 		else
 		{
-			$filepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
+			$filepath = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'updates'.DIRECTORY_SEPARATOR.$path[0];
 		}
 		$model = $this->getModel('updates');
 		echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.$filepath.'</b>');

@@ -91,7 +91,7 @@ function checkStartExtension()
 $option = Factory::getApplication()->input->getCmd('option');
 $app	=& Factory::getApplication();
 $user = Factory::getUser();
-$fileextension = JPATH_SITE.DS.'tmp'.DS.'lmoimport-2-0.txt';
+$fileextension = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'lmoimport-2-0.txt';
 $xmlfile = '';
 
 if( !File::exists($fileextension) )
@@ -138,11 +138,11 @@ function parse_ini_file_ersatz($f)
 
  function _getXml()
 	{
-		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
@@ -330,7 +330,7 @@ $app->enqueueMessage(Text::_('sportstype '.$temp->name.''),'');
 	$lmoimportuseteams=$app->getUserState($option.'lmoimportuseteams');
   
   $teamid = 1;
-  $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98';
+  $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98';
 
 $exportplayer = array();
 $exportclubs = array();
@@ -920,7 +920,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 File::write($file, $xmlfile);
 
 
@@ -1069,8 +1069,8 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 	private function _checklist()
 	{
 		$project_id=$this->_project_id;
-		$defaultpath=JPATH_COMPONENT_SITE.DS.'settings';
-		$extensiontpath=JPATH_COMPONENT_SITE.DS.'extensions'.DS;
+		$defaultpath=JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+		$extensiontpath=JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DS;
 		$predictionTemplatePrefix='prediction';
 
 		if (!$project_id){return;}
@@ -1095,14 +1095,14 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 		// first check extension template folder if template is not default
 		if ((isset($params->extension)) && ($params->extension!=''))
 		{
-			if (is_dir($extensiontpath.$params->extension.DS.'settings'))
+			if (is_dir($extensiontpath.$params->extension.DIRECTORY_SEPARATOR.'settings'))
 			{
-				$xmldirs[]=$extensiontpath.$params->extension.DS.'settings';
+				$xmldirs[]=$extensiontpath.$params->extension.DIRECTORY_SEPARATOR.'settings';
 			}
 		}
 
 		// add default folder
-		$xmldirs[]=$defaultpath.DS.'default';
+		$xmldirs[]=$defaultpath.DIRECTORY_SEPARATOR.'default';
 
 		// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
@@ -1126,7 +1126,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
 							//template not present,create a row with default values
-							$params=new JLParameter(null,$xmldir.DS.$file);
+							$params=new JLParameter(null,$xmldir.DIRECTORY_SEPARATOR.$file);
 
 							//get the values
 							$defaultvalues=array();

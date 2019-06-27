@@ -43,8 +43,8 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
         
-		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
-		$xmlfile = $templatepath.DS.'default'.DS.$this->item->template.'.xml';
+		$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+		$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$this->item->template.'.xml';
        
 		$form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
 		$form->bind($this->item->params);

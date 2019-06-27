@@ -44,7 +44,7 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 		$query = $db->getQuery(true);    
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $base_Dir = JPATH_SITE . DS . 'tmp' . DS ;
+        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DS ;
         $cfg_plz_server = ComponentHelper::getParams($option)->get('cfg_plz_server','');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');

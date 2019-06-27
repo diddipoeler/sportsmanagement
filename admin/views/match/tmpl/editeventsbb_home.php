@@ -31,7 +31,7 @@ use Joomla\CMS\Filesystem\File;
 					?>
 					<th style="text-align: center;">
 					<?php
-					if ( File::exists( JPATH_SITE.DS.$ev->icon ) )
+					if ( File::exists( JPATH_SITE.DIRECTORY_SEPARATOR.$ev->icon ) )
 					{
 						$imageTitle = Text::sprintf( '%1$s', Text::_( $ev->text ) );
 						$iconFileName = $ev->icon;

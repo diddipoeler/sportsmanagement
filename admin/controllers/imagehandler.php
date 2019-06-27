@@ -182,8 +182,8 @@ $app->enqueueMessage(Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLO
 					continue;
 				}
 */
-				$fullPath = JPath::clean( JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS . $image );
-				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS . 'small' . DS . $image );
+				$fullPath = JPath::clean( JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $this->jsmoption .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. $image );
+				$fullPaththumb = JPath::clean( JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $this->jsmoption .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. 'small' .DIRECTORY_SEPARATOR. $image );
 				if ( is_file( $fullPath ) )
 				{
 					File::delete( $fullPath );

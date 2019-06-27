@@ -23,7 +23,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('joomla.application.component.model');
-BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models', 'sportsmanagementModel');
+BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'models', 'sportsmanagementModel');
 
 class jsmGCalendarDBUtil
 {

@@ -521,7 +521,7 @@ $this->savedfb = $result ;
   {
   //$app = Factory::getApplication();
     //$option = Factory::getApplication()->input->getCmd('option');
-    require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
+    require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' .DIRECTORY_SEPARATOR. 'jinstallationhelper.php' );    
     //$db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/dfbkeys.sql';
 

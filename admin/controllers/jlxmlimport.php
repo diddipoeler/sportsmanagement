@@ -135,7 +135,7 @@ class sportsmanagementControllerJLXMLImport extends BaseController
         
         $app->enqueueMessage(Text::_('hole daten von -> '.$europalink.''),'Notice');
         //set the target directory
-		$base_Dir = JPATH_SITE . DS . 'tmp' . DS;
+		$base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DS;
         $filepath = $base_Dir . 'joomleague_import.jlg';
         if ( !copy($europalink,$filepath) )
 {
@@ -159,9 +159,9 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
 			$msg = '';
-			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
-			$extractdir = JPATH_SITE.DS.'tmp';
-			$importFile = JPATH_SITE.DS.'tmp'. DS.'joomleague_import.jlg';
+			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
+			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
+			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'joomleague_import.jlg';
            
 			if (File::exists($importFile))
 			{

@@ -13,12 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'ajax.php');
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'ajax.php');
 JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
 
 jimport('joomla.form.helper');

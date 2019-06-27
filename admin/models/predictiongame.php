@@ -18,7 +18,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'predictiongames.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'predictiongames.php');
 
 /**
  * sportsmanagementModelPredictionGame

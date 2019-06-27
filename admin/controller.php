@@ -13,11 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );

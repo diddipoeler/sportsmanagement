@@ -149,9 +149,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$query = $db->getQuery(true);
         
 		//$prediction_id	= $this->_prediction_id;
-		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DS.'settings';
-		$defaultpath	= JPATH_COMPONENT_SITE.DS.'settings';
-    //$extensionspath	= JPATH_COMPONENT_SITE . DS . 'extensions' . DS;
+		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DIRECTORY_SEPARATOR.'settings';
+		$defaultpath	= JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+    //$extensionspath	= JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'extensions' . DS;
     // Get the views for this component.
 	$path = JPATH_SITE.'/components/'.$option.'/views';
         
@@ -204,7 +204,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
     
 		// add default folder
-		$xmldirs[] = $defaultpath . DS . 'default';
+		$xmldirs[] = $defaultpath .DIRECTORY_SEPARATOR. 'default';
 
 		// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
@@ -249,7 +249,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                         if ((empty($records)) || (!in_array($template,$records)))
 						{
 						  $jRegistry = new Registry();
-							$form = JForm::getInstance($file, $xmldir.DS.$file);
+							$form = JForm::getInstance($file, $xmldir.DIRECTORY_SEPARATOR.$file);
 							$fieldsets = $form->getFieldsets();
 						
 							$defaultvalues = array();

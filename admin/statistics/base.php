@@ -444,7 +444,7 @@ class SMStatistic extends JObject
 
 		if (!class_exists($classname))
 		{
-			$file = JPATH_SITE .'/administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
+			$file = JPATH_SITE .'/administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'statistics'.DIRECTORY_SEPARATOR.$class.'.php';
 			if (!File::exists($file)) {
 				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
@@ -511,7 +511,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
  }
        
 		$paramsdata = $this->baseparams;
-		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics' . DS . 'base.xml';
+		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'statistics' .DIRECTORY_SEPARATOR. 'base.xml';
 		$params = new Registry( $paramsdata, $paramsdefs );
   
         return $params;
@@ -527,7 +527,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 		$rc = new ReflectionClass(get_class($this));
 		$currentdir = dirname($rc->getFileName());
 		$paramsdata = $this->params;
-		$paramsdefs = $currentdir. DS . $this->_name .'.xml';
+		$paramsdefs = $currentdir.DIRECTORY_SEPARATOR. $this->_name .'.xml';
 		$params = new Registry( $paramsdata, $paramsdefs );
         return $params;
 	}
@@ -541,7 +541,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 		// cannot use __FILE__ because extensions can have their own stats
 		$rc = new ReflectionClass(get_class($this));
 		$currentdir = dirname($rc->getFileName());
-		return $currentdir. DS . $this->_name .'.xml';
+		return $currentdir.DIRECTORY_SEPARATOR. $this->_name .'.xml';
 	}
 	
 	/**

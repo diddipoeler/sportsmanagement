@@ -169,7 +169,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$object->short_name = $addposition;
 	$object->country = 'DEU';
 	$object->picture = 'spielfeld_578x1050.png';
-	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'rosterposition.xml';
 	$extended = JForm::getInstance('extended', $xmlfile,array('control'=> 'extended'), 
 				false, '/config');
 	$jRegistry = new Registry;

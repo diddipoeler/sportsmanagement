@@ -38,8 +38,8 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
         $item = $this->get('Item');
 		$this->item = $item;
         
-		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
-		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
+		$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+		$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$item->template.'.xml';
        
 		$form = Form::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		$form->bind($item->params);

@@ -336,7 +336,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$this->_db->setQuery($query);
 		$match_number = $this->_db->loadResult();
 	
-	$dir = JPATH_SITE.DS.'tmp'.DS.'ringerdateien';
+	$dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ringerdateien';
   $files = Folder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
   
   $app->enqueueMessage(Text::_('_getSinglefile: '.print_r($files,true) ),'');

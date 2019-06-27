@@ -124,7 +124,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
        if ( empty($data['id']) )
        {
         // xml file erstellen
-        $file = JPATH_SITE.DS.'tmp'.DS.'createcal.xml'; 
+        $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'createcal.xml'; 
 $output  = "<entry xmlns='http://www.w3.org/2005/Atom'". "\n";
 $output .= "xmlns:gd='http://schemas.google.com/g/2005'". "\n";
 $output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>". "\n";

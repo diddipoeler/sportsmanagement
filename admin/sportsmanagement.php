@@ -15,11 +15,6 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
- 
 /**
  *  Access check.
  */
@@ -33,7 +28,7 @@ if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
  */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
+JLoader::register('SportsManagementHelper', dirname(__FILE__) .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php');
 }
 
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
@@ -148,7 +143,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );
 }    
 }
 
-DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
+DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'edit_fieldsets.php' );
 
 if ( $params->get( 'cfg_which_database_table' ) == 'sportsmanagement' )		
 {
@@ -196,11 +191,11 @@ for ($e = 0; $e < count($arrExtensions); $e++)
 {
 $extension = $arrExtensions[$e];
 $extensionname = $arrExtensions[$e];
-$extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
+$extensionpath = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$extension;    
 
 if( $app->isClient('administrator') ) 
 {
-		$base_path = $extensionpath.DS.'admin';
+		$base_path = $extensionpath.DIRECTORY_SEPARATOR.'admin';
 /**
  * 		 language file
  */
@@ -222,14 +217,14 @@ if( $app->isClient('administrator') )
 /**
   *  own controllers
   */ 
-	if (!file_exists($base_path.DS.'controller.php') )
+	if (!file_exists($base_path.DIRECTORY_SEPARATOR.'controller.php') )
 	{
 		if($type!=$extension) {
 			$params = array();
 		}
 		$extension = "sportsmanagement";
 	}
-	elseif (!file_exists($base_path.DS.$extension.'.php'))
+	elseif (!file_exists($base_path.DIRECTORY_SEPARATOR.$extension.'.php'))
 	{
 		if($type!=$extension) {
 			$params = array();
@@ -250,13 +245,13 @@ jimport('joomla.application.component.controller');
         $controller	= BaseController::getInstance('sportsmanagement');
 	}
    
-	if (is_dir($base_path.DS.'models')) {
-		$model_pathes[] = $base_path.DS.'models';
+	if (is_dir($base_path.DIRECTORY_SEPARATOR.'models')) {
+		$model_pathes[] = $base_path.DIRECTORY_SEPARATOR.'models';
 	}
 
-	if (is_dir($base_path.DS.'views')) {
-		$view_pathes[] = $base_path.DS.'views';
-        $template_pathes[] = $base_path.DS.'views'.DS.$extensionname.DS.'tmpl';
+	if (is_dir($base_path.DIRECTORY_SEPARATOR.'views')) {
+		$view_pathes[] = $base_path.DIRECTORY_SEPARATOR.'views';
+        $template_pathes[] = $base_path.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$extensionname.DIRECTORY_SEPARATOR.'tmpl';
 	}
 
 }

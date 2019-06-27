@@ -366,7 +366,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $record_jl = $this->jsmdb->loadObjectList();
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
 
-        $defaultpath = JPATH_COMPONENT_SITE . DS . 'settings' . DS . 'default';
+        $defaultpath = JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'settings' .DIRECTORY_SEPARATOR. 'default';
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
 
         foreach ($record_jl as $row) {
@@ -386,7 +386,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
              * beim import kann es vorkommen, das wir in der neuen komponente
              * zusätzliche felder haben, die mit abgespeichert werden müssen
              */
-            $xmlfile = $defaultpath . DS . $row->template . '.xml';
+            $xmlfile = $defaultpath .DIRECTORY_SEPARATOR. $row->template . '.xml';
 
             if (file_exists($xmlfile)) {
                 $newparams = array();
@@ -1278,7 +1278,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
     function insertCountries() {
         $app = Factory::getApplication();
         //$this->option = Factory::getApplication()->input->getCmd('option');
-        require_once( JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/' . 'helpers' . DS . 'jinstallationhelper.php' );
+        require_once( JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/' . 'helpers' .DIRECTORY_SEPARATOR. 'jinstallationhelper.php' );
         $db = sportsmanagementHelper::getDBConnection();
         $db_table = JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/sql/countries.sql';
 // echo '<br>'.$db_table.'<br>';

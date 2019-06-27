@@ -37,8 +37,8 @@ class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 		$arrExtensions = array();
 		$excludeExtension = array();
 		
-		if(Folder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
-			$folderExtensions  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
+		if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions')) {
+			$folderExtensions  = Folder::folders(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions',
 													'.', false, false, $excludeExtension);
 			if($folderExtensions !== false) {
 				foreach ($folderExtensions as $ext)

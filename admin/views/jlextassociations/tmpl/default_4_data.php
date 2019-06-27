@@ -127,7 +127,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     //$attributes='';
                     //$html .= 'title="'.$row->name.'" '.$attributes.' />';
                     //echo $html;
-                        if (empty($row->assocflag) || !File::exists(JPATH_SITE . DS . $row->assocflag)) {
+                        if (empty($row->assocflag) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->assocflag)) {
                             echo '<i class="fa fa-flag text-danger"></i>';
                         } else {
                             ?>                                    
@@ -144,7 +144,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     //$attributes='';
                     //$html .= 'title="'.$row->name.'" '.$attributes.' />';
                     //echo $html;
-                        if (empty($row->picture) || !File::exists(JPATH_SITE . DS . $row->picture)) {
+                        if (empty($row->picture) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->picture)) {
                             echo '<i class="fa fa-picture-o text-danger"></i>';
                         } else {
                             ?>                                    

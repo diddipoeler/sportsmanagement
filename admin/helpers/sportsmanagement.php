@@ -1052,9 +1052,9 @@ abstract class sportsmanagementHelper {
      */
     static function getExtendedStatistic($data = '', $file, $format = 'ini') {
         $app = Factory::getApplication();
-        //$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
-        $templatepath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'statistics';
-        $xmlfile = $templatepath . DS . $file . '.xml';
+        //$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file.'.xml';
+        $templatepath = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'statistics';
+        $xmlfile = $templatepath .DIRECTORY_SEPARATOR. $file . '.xml';
 
         //$app->enqueueMessage(Text::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$app->enqueueMessage(Text::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
@@ -1072,7 +1072,7 @@ abstract class sportsmanagementHelper {
      */
     static function getExtended($data = '', $file, $format = 'ini') {
         $app = Factory::getApplication();
-        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DS . 'assets' . DS . 'extended' . DS . $file . '.xml';
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'assets' .DIRECTORY_SEPARATOR. 'extended' .DIRECTORY_SEPARATOR. $file . '.xml';
         /**
          * extended data
          */
@@ -1112,7 +1112,7 @@ abstract class sportsmanagementHelper {
      */
     static function getExtendedUser($data = '', $file, $format = 'ini') {
         $app = Factory::getApplication();
-        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DS . 'assets' . DS . 'extendeduser' . DS . $file . '.xml';
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'assets' .DIRECTORY_SEPARATOR. 'extendeduser' .DIRECTORY_SEPARATOR. $file . '.xml';
         /*
          * extended data
          */
@@ -1307,8 +1307,8 @@ abstract class sportsmanagementHelper {
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
-        if (Folder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions')) {
-            $folderExtensions = Folder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions')) {
+            $folderExtensions = Folder::folders(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
                     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
@@ -1343,8 +1343,8 @@ abstract class sportsmanagementHelper {
                 $excludeExtension = explode(",", $res->extension);
             }
         }
-        if (Folder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay')) {
-            $folderExtensions = Folder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions-overlay')) {
+            $folderExtensions = Folder::folders(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions-overlay', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
                     $arrExtensions[] = $ext;
@@ -1497,7 +1497,7 @@ case "projectteams/trikot_away":
      */
     public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0) {
         $ret = "";
-        $picturepath = JPath::clean(JPATH_SITE . DS . str_replace(JPATH_SITE . DS, '', $picture));
+        $picturepath = JPath::clean(JPATH_SITE .DIRECTORY_SEPARATOR. str_replace(JPATH_SITE . DS, '', $picture));
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
@@ -1510,22 +1510,22 @@ case "projectteams/trikot_away":
             //setup the different placeholders
             switch ($type) {
                 case 0: //player
-                    $picture = JPATH_SITE . DS . $ph_player;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_player;
                     break;
                 case 1: //club logo big
-                    $picture = JPATH_SITE . DS . $ph_logo_big;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_big;
                     break;
                 case 2: //club logo medium
-                    $picture = JPATH_SITE . DS . $ph_logo_medium;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_medium;
                     break;
                 case 3: //club logo small
-                    $picture = JPATH_SITE . DS . $ph_logo_small;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_small;
                     break;
                 case 4: //icon
-                    $picture = JPATH_SITE . DS . $ph_icon;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_icon;
                     break;
                 case 5: //team picture
-                    $picture = JPATH_SITE . DS . $ph_team;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_team;
                     break;
                 default:
                     $picture = null;
@@ -1627,11 +1627,11 @@ case "projectteams/trikot_away":
         $jinput = Factory::getApplication()->input;
         $extensions = sportsmanagementHelper::getExtensions($jinput->getInt('p'));
         foreach ($templatesToLoad as $template) {
-            $view->addTemplatePath(JPATH_COMPONENT . DS . 'views' . DS . $template . DS . 'tmpl');
+            $view->addTemplatePath(JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. $template .DIRECTORY_SEPARATOR. 'tmpl');
             if (is_array($extensions) && count($extensions) > 0) {
                 foreach ($extensions as $e => $extension) {
-                    $extension_views = JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension . DS . 'views';
-                    $tmpl_path = $extension_views . DS . $template . DS . 'tmpl';
+                    $extension_views = JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'extensions' .DIRECTORY_SEPARATOR. $extension .DIRECTORY_SEPARATOR. 'views';
+                    $tmpl_path = $extension_views .DIRECTORY_SEPARATOR. $template .DIRECTORY_SEPARATOR. 'tmpl';
                     if (Folder::exists($tmpl_path)) {
                         $view->addTemplatePath($tmpl_path);
                     }
@@ -3014,7 +3014,7 @@ try{
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (File::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $picture)) {
             // alles ok
         } else {
             $picture = ComponentHelper::getParams($option)->get('ph_logo_big', '');
@@ -3040,7 +3040,7 @@ try{
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (File::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $picture)) {
             // alles ok
         } else {
             $picture = ComponentHelper::getParams($option)->get('ph_team', '');
@@ -3222,15 +3222,15 @@ try{
             //$doc = DOMDocument::loadXML($content);
             $doc = new DOMDocument();
             $doc->loadXML($content, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
-            $doc->save(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
+            $doc->save(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
             //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            $xml = simplexml_load_file(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
-//        $xml = Factory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
+            $xml = simplexml_load_file(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
+//        $xml = Factory::getXML(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement.xml');   
         } else {
-            $xml = Factory::getXML(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
+            $xml = Factory::getXML(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
         }
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');

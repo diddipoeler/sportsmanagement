@@ -18,7 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\OutputFilter;
 
-//require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
+//require_once('administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php'.DIRECTORY_SEPARATOR.'google-api-php-client'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 
 /**

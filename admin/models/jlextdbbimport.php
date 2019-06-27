@@ -36,9 +36,9 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 jimport('joomla.html.pane');
 
-require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'csvhelper.php' );
-require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'ical.php' );
-require_once(JPATH_ROOT.DS.'components'.DS.$option.DS. 'helpers' . DS . 'countries.php');
+require_once( JPATH_ADMINISTRATOR . DS. 'components'.DIRECTORY_SEPARATOR.$option. DS. 'helpers' .DIRECTORY_SEPARATOR. 'csvhelper.php' );
+require_once( JPATH_ADMINISTRATOR . DS. 'components'.DIRECTORY_SEPARATOR.$option. DS. 'helpers' .DIRECTORY_SEPARATOR. 'ical.php' );
+require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'countries.php');
 
 use Joomla\Utilities\ArrayHelper;
 // import ArrayHelper
@@ -543,7 +543,7 @@ if ( isset($post['projects']) )
 $this->_project_id = $post['projects'];  
 }
 
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.csv';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.csv';
 $app->enqueueMessage(Text::_('Datei? '.$file),'');
     
 if ( $whichfile == 'playerfile' )
@@ -1113,7 +1113,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 File::write($file, $xmlfile);
 
 
@@ -2201,7 +2201,7 @@ if ( $whichfile == 'playerfile' )
 	$output .= '</project>';
 // mal als test
 	$xmlfile = $output;
-	$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+	$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 	File::write($file, $xmlfile);
 	$this->import_version='NEW';
 }
@@ -2325,7 +2325,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 File::write($file, $xmlfile);
 }
 

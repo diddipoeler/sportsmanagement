@@ -17,7 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR . DS . 'components/com_sportsmanagement' . DS . 'helpers' . DS . 'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 }
 

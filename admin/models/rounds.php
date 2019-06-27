@@ -439,7 +439,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 	$db = sportsmanagementHelper::getDBConnection();
 	$date = Factory::getDate();
         $user = Factory::getUser();
-	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'class.roundrobin.php');	
+	require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'class.roundrobin.php');	
 	if (!strtotime($start)) {
 			$start = strftime('%Y-%m-%d');
 		}
@@ -502,7 +502,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 		
 		if ($scheduling < 2)
 		{
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'RRobin.class.php');
+			require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'RRobin.class.php');
 			$helper = new RRobin();
 			$helper->create($teams);
 			$schedule = $helper->getSchedule($scheduling+1);			

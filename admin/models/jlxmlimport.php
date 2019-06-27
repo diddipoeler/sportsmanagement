@@ -33,7 +33,7 @@ if (empty($maxImportMemory))
 	$maxImportMemory = '150M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'databasetool.php');
 
 /**
  * sportsmanagementModelJLXMLImport
@@ -71,7 +71,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
     
-		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg'))
 		{
 			
             if(version_compare(JVERSION,'3.0.0','ge'))
@@ -79,7 +79,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             
             if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
              
             }
@@ -88,7 +88,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             
             if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
@@ -942,7 +942,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	 */
 	private function _deleteImportFile()
 	{
-		$importFileName = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+		$importFileName = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 		if (File::exists($importFileName))
         {
             File::delete($importFileName);
@@ -3280,8 +3280,8 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 	private function _checklist()
 	{
 		$project_id = $this->_project_id;
-		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
-		$extensiontpath = JPATH_COMPONENT_SITE.DS.'extensions'.DS;
+		$defaultpath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+		$extensiontpath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DS;
 		$predictionTemplatePrefix = 'prediction';
         $my_text = '';
 
@@ -3324,14 +3324,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		// first check extension template folder if template is not default
 		if ((isset($params->extension)) && ($params->extension!=''))
 		{
-			if (is_dir($extensiontpath.$params->extension.DS.'settings'))
+			if (is_dir($extensiontpath.$params->extension.DIRECTORY_SEPARATOR.'settings'))
 			{
-				$xmldirs[] = $extensiontpath.$params->extension.DS.'settings';
+				$xmldirs[] = $extensiontpath.$params->extension.DIRECTORY_SEPARATOR.'settings';
 			}
 		}
 
 		// add default folder
-		$xmldirs[] = $defaultpath.DS.'default';
+		$xmldirs[] = $defaultpath.DIRECTORY_SEPARATOR.'default';
 
 		// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
@@ -3354,7 +3354,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 
 						if ((empty($records)) || (!in_array($template,$records)))
 						{
-							$xmlfile = $xmldir.DS.$file;
+							$xmlfile = $xmldir.DIRECTORY_SEPARATOR.$file;
 							$arrStandardSettings = array();
 							if(file_exists($xmlfile)) {
 								$strXmlFile = $xmlfile;
@@ -3407,7 +3407,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-       $defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
+       $defaultpath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default';
        
 		$my_text='';
 		if ($this->_template_id > 0) // Uses a master template
@@ -3505,7 +3505,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
 			// beim import kann es vorkommen, das wir in der neuen komponente
                     // zusätzliche felder haben, die mit abgespeichert werden müssen
-                    $xmlfile = $defaultpath.DS.$template.'.xml';
+                    $xmlfile = $defaultpath.DIRECTORY_SEPARATOR.$template.'.xml';
 
                             //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xmlfile -> '.'<pre>'.print_r($xmlfile,true).'</pre>'),'');
 							

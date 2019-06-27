@@ -36,7 +36,7 @@ function getTXTFiles()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $path = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes';
+        $path = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes';
         // Get a list of files in the search path with the given filter.
        $files = Folder::files($path, '.txt$|.php$');
         

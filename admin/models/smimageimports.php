@@ -15,10 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Model\ListModel;
 
@@ -211,7 +207,7 @@ class sportsmanagementModelsmimageimports extends ListModel {
 
         if ($content) {
             //--Löschen einer einzelnen Datei
-            if (File::delete(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml')) {
+            if (File::delete(JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml')) {
                 //echo 'Die Datei wurde gelöscht.';
             }
 
@@ -222,7 +218,7 @@ class sportsmanagementModelsmimageimports extends ListModel {
 
             //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
 
-            $doc->save(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml');
+            $doc->save(JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml');
         }
     }
 
@@ -236,7 +232,7 @@ class sportsmanagementModelsmimageimports extends ListModel {
         $option = Factory::getApplication()->input->getCmd('option');
         $query = Factory::getDbo()->getQuery(true);
         $files = array();
-        $path = JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml';
+        $path = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml';
 //        $xml = Factory::getXMLParser( 'Simple' );
 //       $xml->loadFile($path); 
 

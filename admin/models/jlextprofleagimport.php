@@ -31,11 +31,11 @@ if (empty($maxImportMemory))
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'XMLParser.class.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'crXml.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'SofeeXmlParser.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'xml_parser.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'parser_php5.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'XMLParser.class.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'crXml.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'SofeeXmlParser.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'xml_parser.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'parser_php5.php' );
 
 
 jimport('joomla.html.pane');
@@ -44,7 +44,7 @@ jimport('joomla.utilities.arrayhelper') ;
 // import JFile
 use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
+//require_once (JPATH_COMPONENT.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'item.php');
 
 
 /**
@@ -124,11 +124,11 @@ private function dump_header($text)
   */
  function _getXml()
 	{
-		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
@@ -281,7 +281,7 @@ $option = Factory::getApplication()->input->getCmd('option');
   $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
   $this->_datas['sportstype'] = $temp;
 
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml';
 
     
 
@@ -1554,7 +1554,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
 File::write($file, $xmlfile);
 
 

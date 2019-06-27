@@ -446,14 +446,14 @@ return false;
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
 			$msg = '';
-			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
-			$extractdir = JPATH_SITE.DS.'tmp';
-			//$importFile = JPATH_SITE.DS.'tmp'. DS.'pressebericht.jlg';
-if(!Folder::exists(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'))
+			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
+			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
+			//$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'pressebericht.jlg';
+if(!Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'pressebericht'))
 {
-Folder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht');
+Folder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'pressebericht');
 }			
-            $importFile = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';
+            $importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'pressebericht'.DIRECTORY_SEPARATOR.$match_id.'.jlg';
             
 			if (File::exists($importFile))
 			{

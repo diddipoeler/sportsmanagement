@@ -131,7 +131,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
             $servercopy = $server . $folder . '/' . $file;
 
             //set the target directory
-            $base_Dir = JPATH_SITE . DS . 'tmp' . DS;
+            $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DS;
             //$file['name'] = basename($servercopy);
             //$filename = $file['name'];
             //$filepath = $base_Dir . $filename;
@@ -144,8 +144,8 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
             } else {
                 //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
 
-                $extractdir = JPATH_SITE . DS . 'images' . DS . 'com_sportsmanagement' . DS . 'database' . DS . $directory;
-                $dest = JPATH_SITE . DS . 'tmp' . DS . $filename;
+                $extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $directory;
+                $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $filename;
 
                 //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
 

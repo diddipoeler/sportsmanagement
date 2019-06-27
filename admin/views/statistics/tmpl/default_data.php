@@ -112,7 +112,7 @@ HTMLHelper::_('behavior.modal');
 						<td><?php echo $row->short; ?></td>
 						<td class="center">
 							<?php
-							$picture=JPATH_SITE.DS.$row->icon;
+							$picture=JPATH_SITE.DIRECTORY_SEPARATOR.$row->icon;
 							$desc=Text::_($row->name);
 							echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 							?>

@@ -16,7 +16,7 @@ use Joomla\CMS\Table\Table;
 
 jimport('joomla.application.component.model');
 
-require_once ( JPATH_COMPONENT . DS . 'models' . DS . 'list.php' );
+require_once ( JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'list.php' );
 
 /**
  * Joomleague Component person search Model

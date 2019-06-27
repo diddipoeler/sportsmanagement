@@ -42,7 +42,7 @@ function getXMLFiles()
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $path = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended';
+        $path = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
         // Get a list of files in the search path with the given filter.
        $files = Folder::files($path, '.xml$|.php$');
        

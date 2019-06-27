@@ -22,13 +22,8 @@ if ( !ComponentHelper::isEnabled( 'com_sportsmanagement', true) )
 	return;
 }
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
 //require_once __DIR__ . '/helper.php';
-require_once (dirname(__FILE__).DS.'helper.php'); 
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php'); 
 $position = ModSportsmanagementQuickIconHelper::getModPosition(); 
 
 

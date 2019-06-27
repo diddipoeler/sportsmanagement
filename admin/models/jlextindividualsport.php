@@ -643,10 +643,10 @@ switch(strtolower($sporttype))
 {
 case 'kegeln':
 
-$xmldir = JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions'.DS.'jlextindividualsport'.DS.'admin'.DS.'assets'.DS.'extended';
+$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomleague'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
 $file = 'kegelnresults.xml';
 $defaultconfig=array ();
-$out=simplexml_load_file($xmldir.DS.$file,'SimpleXMLElement',LIBXML_NOCDATA);
+$out=simplexml_load_file($xmldir.DIRECTORY_SEPARATOR.$file,'SimpleXMLElement',LIBXML_NOCDATA);
 $temp='';
 $arr = $this->obj2Array($out);
 $outName=Text::_($out->name[0]);
@@ -720,10 +720,10 @@ $app->enqueueMessage(Text::_('save_array - defaultconfig: '.print_r($this->_db->
 break;
 
 case 'tennis':
-$xmldir = JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'extensions'.DS.'jlextindividualsport'.DS.'admin'.DS.'assets'.DS.'extended';
+$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomleague'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
 $file = 'tennisresults.xml';
 $defaultconfig=array ();
-$out=simplexml_load_file($xmldir.DS.$file,'SimpleXMLElement',LIBXML_NOCDATA);
+$out=simplexml_load_file($xmldir.DIRECTORY_SEPARATOR.$file,'SimpleXMLElement',LIBXML_NOCDATA);
 $temp='';
 $arr = $this->obj2Array($out);
 $outName=Text::_($out->name[0]);
