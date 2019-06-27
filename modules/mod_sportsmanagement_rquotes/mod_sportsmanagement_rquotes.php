@@ -17,7 +17,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 if(!defined('DS'))
 {
 define('DS',DIRECTORY_SEPARATOR);
-error_reporting(0);
 }
 
 if ( !defined('JSM_PATH') )
