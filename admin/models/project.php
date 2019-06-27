@@ -88,11 +88,12 @@ class sportsmanagementModelProject extends JSMModelAdmin
         $db->setQuery($query);
         $result = $db->loadObject();
         $query->clear();
-        $query->select('eventtime*');
+        $query->select('eventtime');
         $query->from('#__sportsmanagement_sports_type');
         $query->where('id = ' . $result->sports_type_id);
         $db->setQuery($query);
-        $result->useeventtime = $db->loadResult();
+        $useeventtime = $db->loadResult();
+        $result->useeventtime = $useeventtime;
         //sports_type_id
 		return $result;
 	}
