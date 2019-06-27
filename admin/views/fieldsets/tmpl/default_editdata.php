@@ -411,12 +411,25 @@ echo HTMLHelper::_('bootstrap.endTab');
 switch ($view)
 {
     case 'position':
+	?>	
+	    
+<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'position_events', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS')); ?> 
+<?php echo $this->loadTemplate('position_events');  ?>
+<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'position_statistics', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS')); ?> 
+<?php echo $this->loadTemplate('position_statistics');  ?>
+<?php echo HTMLHelper::_('bootstrap.endTab'); ?>	    
+	    
+	    
+/*		
     echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
     echo $this->loadTemplate('position_events');
     echo HTMLHelper::_('bootstrap.endTab');
     echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
     echo $this->loadTemplate('position_statistics');
     echo HTMLHelper::_('bootstrap.endTab');  
+*/	
+	    <?pphp
     break;
     
 } 
