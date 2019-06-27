@@ -65,18 +65,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
         // JInput object
         $jinput = $app->input;
         $post = $jinput->post->getArray(array());
-        
-//		$pID	= Factory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
-//		$uID	= Factory::getApplication()->input->getVar('uid',			null,	'post',	'int');
-//		if (empty($post ['uid']))
-//        {
-//            $post ['uid'] = null;
-//            }
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($post['prediction_id'],$post['uid'],$post['task'],$post['pj'],$post['pggroup'],$post['r']);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link <br><pre>'.print_r($link,true).'</pre>'),'Notice');		
-		
-		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
 
@@ -97,7 +86,6 @@ JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$link	= '';
 
 		$post	= Factory::getApplication()->input->post->getArray(array());
-		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
 		$predictionGameID	= Factory::getApplication()->input->getVar('prediction_id',	'','post','int');
 		$joomlaUserID		= Factory::getApplication()->input->getVar('user_id',		'','post','int');
 

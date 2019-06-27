@@ -82,7 +82,6 @@ class sportsmanagementControllerPredictionUsers extends FormController
 		$link	= '';
 
 		$post	= Factory::getApplication()->input->post->getArray(array());
-		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
 		$predictionGameID	= Factory::getApplication()->input->getVar('prediction_id',	'','post','int');
 		$joomlaUserID		= Factory::getApplication()->input->getVar('user_id',		'','post','int');
 
