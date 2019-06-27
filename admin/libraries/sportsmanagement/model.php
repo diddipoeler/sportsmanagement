@@ -1491,6 +1491,7 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 /**
  * abfrage nach backend und frontend  
  */ 
+	/*
 if ( $this->jsmapp->isClient('administrator') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isClient('administrator'),true).'</pre>'),'');    
@@ -1498,7 +1499,8 @@ if ( $this->jsmapp->isClient('administrator') )
 if( $this->jsmapp->isClient('site') )
 {
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isClient('site'),true).'</pre>'),'');    
-}    
+}   
+	*/
         }    
     
 }
@@ -1549,6 +1551,7 @@ public function __construct($config = array())
 /**
  * abfrage nach backend und frontend  
  */        
+	/*
         if ( $this->jsmapp->isClient('administrator') )
         {
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isClient('administrator'),true).'</pre>'),'');    
@@ -1557,6 +1560,7 @@ public function __construct($config = array())
         {
         //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isClient('site'),true).'</pre>'),'');    
         } 
+	*/
         
         }    
     
