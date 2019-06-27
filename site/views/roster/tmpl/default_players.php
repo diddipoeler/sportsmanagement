@@ -202,7 +202,7 @@ if (!empty($this->rows))
 
 					foreach ($this->positioneventtypes[$row->position_id] AS $eventtype)
 					{
-						if ( empty($eventtype->icon) || !$this->config['show_event_icons'] )
+						if ( empty($eventtype->icon) || empty($this->config['show_event_icons']) )
 						{
 							$eventtype_header = Text::_($eventtype->name);
 						}
