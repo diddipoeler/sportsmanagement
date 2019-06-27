@@ -143,7 +143,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
         
         // diddipoeler
         $data['projecttime']			= Factory::getApplication()->input->getVar('projecttime','');
-        
+        $data['useeventtime']			= Factory::getApplication()->input->getVar('useeventtime', '');
         $model = $this->getModel();
 		if (!$result = $model->saveevent($data)) {
 			$result = "0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();

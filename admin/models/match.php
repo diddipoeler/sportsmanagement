@@ -2608,9 +2608,12 @@ if ( $data['id'] )
     {
         $date = Factory::getDate();
         $user = Factory::getUser();
+        if ( $data['useeventtime'] )
+        {
         if (empty($data['event_time'])) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
             return false;
+        }
         }
 
         if (empty($data['event_sum'])) {
@@ -2618,9 +2621,12 @@ if ( $data['id'] )
             return false;
         }
 
+        if ( $data['useeventtime'] )
+        {
         if ((int)$data['event_time'] > (int)$data['projecttime']) {
             $this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']));
             return false;
+        }
         }
 
         // Get a db connection.
