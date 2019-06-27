@@ -7,7 +7,7 @@
   <creationDate>Sep 2014</creationDate>
   <version>1.0.0</version>
   <description>PLG_USER_JSMPROFILE_XML_DESCRIPTION</description>
- 
+ <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <files>
     <filename plugin="jsmprofile">jsmprofile.php</filename>
     <filename>index.html</filename>
