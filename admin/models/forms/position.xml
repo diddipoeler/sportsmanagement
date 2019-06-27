@@ -103,5 +103,14 @@ description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" >
 			class="inputbox"/>
       		
 	</fieldset>
-  			
+ <fieldset name="events"
+  label="COM_SPORTSMANAGEMENT_TABS_EVENTS"
+  description="COM_SPORTSMANAGEMENT_TABS_EVENTS">
+</fieldset>	 
+ <fieldset name="statistics"
+  label="COM_SPORTSMANAGEMENT_TABS_STATISTICS"
+  description="COM_SPORTSMANAGEMENT_TABS_STATISTICS">
+</fieldset>	 
+	 
+	 
 </form>
