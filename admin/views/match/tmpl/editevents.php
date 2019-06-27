@@ -181,6 +181,12 @@ if($close == 1) {
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
                         <?php
                         }
+                        else
+                        {
+                        ?>
+						<td style='text-align:center; ' ><input type="text" size="3" value="0" id="event_time" name="event_time" class="inputbox" /></td>
+                        <?php    
+                        }
                         ?>
 						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
 						<td style='text-align:center; ' >
