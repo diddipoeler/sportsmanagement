@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   27-06-2019: **1.0.74** Neues Feld bei der Sportart (Zeiteingabe bei den Ereignissen)
 *   02-06-2019: **1.0.73** Link zu Google-Map in der Übersicht der Teams zum Projekt, Anzeige Vereinskürzel in Tabelle
 *   24-03-2019: **1.0.72** Transifex Implementierung
 *   17-03-2019: **1.0.71** Start Google Kalender
