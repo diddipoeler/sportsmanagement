@@ -120,7 +120,10 @@ if($close == 1) {
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM'); ?></th>
 						<th>
 							<?php
+                            if ( $this->useeventtime )
+                            {
 							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME');
+                            }
 							?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
