@@ -43,7 +43,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -124,7 +124,7 @@ $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_2.js'
 } 
 
 
-$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DS.$module->module.'.css');
+$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DIRECTORY_SEPARATOR.$module->module.'.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
 : _JSMMATCHLISTMODURL.'assets/images/';
 $doc->addStyleDeclaration('
@@ -168,7 +168,7 @@ if (count($matches) > 0){
 			if (!empty($match['heading'])) $show_pheading = true;
 			$pheading .= $match['heading'];
 		}
-		include(ModuleHelper::getLayoutPath($module->module, $template.DS.'match'));
+		include(ModuleHelper::getLayoutPath($module->module, $template.DIRECTORY_SEPARATOR.'match'));
 		$lastheading = $heading;
 		$oldprojectid = $match['project_id'];
 		$oldround_id = $match['round_id'];

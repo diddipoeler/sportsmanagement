@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-require_once (dirname(__FILE__).DS.'calendarClass.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'calendarClass.php');
 
 
 /**
@@ -529,15 +529,15 @@ class JSMCalendar extends PHPCalendar
 		if ( $usejevents == 1 ) 
         {
 			$day = 0;
-			require_once (dirname(__FILE__).DS.'connectors'.DS.'jevents.php');
+			require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'connectors'.DIRECTORY_SEPARATOR.'jevents.php');
 			JEventsConnector::getEntries($caldates, JSMCalendar::$params, $this->matches);
 		}
-        require_once (dirname(__FILE__).DS.'connectors'.DS.'sportsmanagement.php');
+        require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'connectors'.DIRECTORY_SEPARATOR.'sportsmanagement.php');
 		JSMCalendar::$params->prefix = JSMCalendar::$prefix;
         sportsmanagementConnector::getEntries ( $caldates, JSMCalendar::$params, JSMCalendar::$matches );
 		if ($livescore != '')
         {
-			require_once (dirname(__FILE__).DS.'connectors'.DS.'livescore.php');
+			require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'connectors'.DIRECTORY_SEPARATOR.'livescore.php');
 			JSMCalendar::$params->prefix = JSMCalendar::$params->get('prefix_livescore', '');
 			LivescoreConnector::getMatches ( $caldates, JSMCalendar::$params, $this->matches );
 		}

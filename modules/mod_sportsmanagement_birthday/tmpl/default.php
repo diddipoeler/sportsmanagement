@@ -45,10 +45,10 @@ switch ($mode) {
 
                         if ($params->get('show_picture')) {
 
-                            if (curl_init($module->picture_server . DS . $person['picture']) && $person['picture'] != '') {
-                                $thispic = $module->picture_server . DS . $person['picture'];
-                            } elseif (curl_init($module->picture_server . DS . $person['default_picture']) && $person['default_picture'] != '') {
-                                $thispic = $module->picture_server . DS . $person['default_picture'];
+                            if (curl_init($module->picture_server .DIRECTORY_SEPARATOR. $person['picture']) && $person['picture'] != '') {
+                                $thispic = $module->picture_server .DIRECTORY_SEPARATOR. $person['picture'];
+                            } elseif (curl_init($module->picture_server .DIRECTORY_SEPARATOR. $person['default_picture']) && $person['default_picture'] != '') {
+                                $thispic = $module->picture_server .DIRECTORY_SEPARATOR. $person['default_picture'];
                             }
                         }
 

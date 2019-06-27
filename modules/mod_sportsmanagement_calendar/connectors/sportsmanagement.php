@@ -232,7 +232,7 @@ class SportsmanagementConnector extends JSMCalendar
 			$newrows[$key]['headingtitle'] = SportsmanagementConnector::$xparams->get('birthday_text', 'Birthday');
 			$newrows[$key]['name'] = '';
 
-			if ($row->picture != '' AND file_exists(JPATH_BASE.DS.$row->picture))
+			if ($row->picture != '' AND file_exists(JPATH_BASE.DIRECTORY_SEPARATOR.$row->picture))
 			{
 				$linkit = 1;
 				$newrows[$key]['name'] = '<img src="'.Uri::root(true).'/'.$row->picture.'" alt="Picture" style="height:40px; vertical-align:middle;margin:0 5px;" />';

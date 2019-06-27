@@ -101,14 +101,14 @@ if(version_compare(JVERSION,'3.0.0','ge'))
     $doc->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
     $doc->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
     $doc->addScript( Uri::root().'/media/system/js/modal-uncompressed.js');
-	$doc->addScript( Uri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
+	$doc->addScript( Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'assets/js'.DIRECTORY_SEPARATOR.$module->module.'.js' );
 }
 else
 {
-    $doc->addScript( Uri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'_2.js' );
+    $doc->addScript( Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'assets/js'.DIRECTORY_SEPARATOR.$module->module.'_2.js' );
 }    
 
-	$doc->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
+	$doc->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'assets/css'.DIRECTORY_SEPARATOR.$module->module.'.css');
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);

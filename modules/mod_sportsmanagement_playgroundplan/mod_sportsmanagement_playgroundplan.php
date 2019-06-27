@@ -41,7 +41,7 @@ if ( !class_exists('sportsmanagementHelper') )
 /**
  * add the classes for handling
  */
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -58,15 +58,15 @@ $document = Factory::getDocument();
 /**
  * add css file
  */
-$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
 
 $mode = $params->def("mode");
 
 switch ($mode)
 	{
 	case 0:
-		$document->addScript(Uri::base().'modules'.DS.$module->module.DS.'js/qscroller.js');
-		require_once(dirname(__FILE__).DS.'js'.DS.'ticker.js');
+		$document->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js/qscroller.js');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'ticker.js');
 		break;
 	case 1:
 		break;

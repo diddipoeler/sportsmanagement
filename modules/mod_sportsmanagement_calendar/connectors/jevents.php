@@ -74,13 +74,13 @@ class JEventsConnector extends JLCalendar{
   }
   private function _checkJEvents() {
 
-    if (file_exists(JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'mod.defines.php')
+    if (file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php')
         AND 
-        file_exists(JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'libraries'.DS.'datamodel.php')
+        file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php')
         )
     {
-      require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'mod.defines.php';
-      require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'libraries'.DS.'datamodel.php';
+      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php';
+      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php';
     }
     else { 
       JEventsConnector::_raiseError('Required files not found! This connector needs JEvents 1.5.2 to be installed');
@@ -101,7 +101,7 @@ class JEventsConnector extends JLCalendar{
     return true;
   }
   function buildLink (&$event, $year, $month) {
-    require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'router.php';
+    require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'router.php';
     $link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
     .$event->_eventdetail_id.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='
     .$event->_dup.'&amp;uid='.$event->_uid;

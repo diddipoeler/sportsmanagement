@@ -39,7 +39,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 }
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'databasetool.php');
 }
 
 JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);  
@@ -126,7 +126,7 @@ $doc->addStyleDeclaration($style);
 if ( $cnt )
 {
 $script =  'script';
-$doc->addScript( Uri::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
+$doc->addScript( Uri::base() . 'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js/'.$script.'.js');
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

@@ -25,13 +25,13 @@ if (!defined('JSM_PATH')) {
 }
 if (!class_exists('JSMModelList')) {
     // muss momentan eingebunden werden, ansonsten 500er seit update von model sportstypes
-    $classpath = JPATH_ADMINISTRATOR . DS . 'components/com_sportsmanagement' . DS . 'libraries' . DS . 'sportsmanagement' . DS . 'model.php';
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'libraries' .DIRECTORY_SEPARATOR. 'sportsmanagement' .DIRECTORY_SEPARATOR. 'model.php';
     JLoader::register('JSMModelList', $classpath);
 }
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
-    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }

@@ -59,7 +59,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -152,7 +152,7 @@ $scrollpause = $params->def("scrollpause");
 			break;
         case 'T':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-			include(dirname(__FILE__).DS.'js'.DS.'ticker.js');
+			include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'ticker.js');
             $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
 		case 'V':
@@ -229,7 +229,7 @@ $html_li = '';
         //$wowslider_style = "fade";
         $wowslider_style = $params->def("wowsliderstyle");
         
-			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
+			//include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'qscrollerv.js');
             //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
 			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
             //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/jquery.simplyscroll.js');
@@ -241,7 +241,7 @@ $html_li = '';
 			break;
 		case 'L':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
+			//include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'qscrollerh.js');
             //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
 			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
             //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');

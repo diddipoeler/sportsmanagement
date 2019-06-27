@@ -68,11 +68,11 @@ $active = ($a==0) ? 'active' : '';
 $playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
 //if ($params->get('show_picture')==1) 
 //{
-if (curl_init($module->picture_server.DS.$playground->picture) && $playground->picture != '' ) 
+if (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->picture) && $playground->picture != '' ) 
 {
 $thispic = $playground->picture;
 }
-elseif (curl_init($module->picture_server.DS.$playground->default_picture) && $playground->default_picture != '' ) 
+elseif (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->default_picture) && $playground->default_picture != '' ) 
 {
 $thispic = $playground->default_picture;
 }

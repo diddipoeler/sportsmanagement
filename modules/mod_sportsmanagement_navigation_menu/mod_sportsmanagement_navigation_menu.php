@@ -28,7 +28,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 // get helper
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php');
 
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
@@ -38,8 +38,8 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',ComponentHelper::getParams( 'com_sportsmana
 HTMLHelper::_('behavior.framework');
 $document = Factory::getDocument();
 //add css file
-$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
-$document->addScript(Uri::base().'modules'.DS.$module->module.DS.'js'.DS.$module->module.'.js');
+$document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
+$document->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.$module->module.'.js');
 
 $helper = new modsportsmanagementNavigationMenuHelper($params);
 

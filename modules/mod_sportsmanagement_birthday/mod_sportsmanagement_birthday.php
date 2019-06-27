@@ -39,7 +39,7 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 }
 if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
-    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -53,7 +53,7 @@ $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
   
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 /** Include the functions only once */
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php');
 
 // Reference global application object
 $app = Factory::getApplication();
@@ -75,14 +75,14 @@ switch ($mode) {
     if ( $mode == 'L' && $params->get('show_player_card') )
     {
     $attribs['layout'] = 'default_player_card';    
-    $document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
+    $document->addStyleSheet(Uri::base() . 'modules' .DIRECTORY_SEPARATOR. $module->module .DIRECTORY_SEPARATOR. 'css' .DIRECTORY_SEPARATOR. 'player_card.css');
     $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     else
     {
 //add css file
-    $document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+    $document->addStyleSheet(Uri::base() . 'modules' .DIRECTORY_SEPARATOR. $module->module .DIRECTORY_SEPARATOR. 'css' .DIRECTORY_SEPARATOR. $module->module . '.css');
     $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }

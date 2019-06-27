@@ -43,7 +43,7 @@ if ( !class_exists('sportsmanagementHelper') )
 /**
  * add the classes for handling
  */
-    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -74,7 +74,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 /**
  * add css file
  */
-$document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+$document->addStyleSheet(Uri::base() . 'modules' .DIRECTORY_SEPARATOR. $module->module .DIRECTORY_SEPARATOR. 'css' .DIRECTORY_SEPARATOR. $module->module . '.css');
 
 $pg_id = $params->get('pg');
 
