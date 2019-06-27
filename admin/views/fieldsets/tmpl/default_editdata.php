@@ -421,14 +421,7 @@ switch ($view)
 <?php echo HTMLHelper::_('bootstrap.endTab'); ?>	    
 	    
 	    
-/*		
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
-    echo $this->loadTemplate('position_events');
-    echo HTMLHelper::_('bootstrap.endTab');
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
-    echo $this->loadTemplate('position_statistics');
-    echo HTMLHelper::_('bootstrap.endTab');  
-*/	
+	
 	    <?php
     break;
     
