@@ -1,4 +1,14 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      xml_parser.php
+ * @author    
+ * @copyright 
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
+ 
 /*
  * xml_parser.php
  *

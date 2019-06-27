@@ -1,4 +1,13 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      class.roundrobin.php
+ * @author    Felix Stiehler 
+ * @copyright Copyright (c) <2009> <Felix Stiehler> 
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
 //////////////////////////////////////////////////////////////////////////////////// 
 // +-------------------------------------------------------------------------------+
 // | class.roundrobin.php                                                          |
