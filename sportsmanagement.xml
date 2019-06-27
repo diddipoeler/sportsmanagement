@@ -7,7 +7,7 @@
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<copyright>Copyright Info</copyright>
-	<license>License Info</license>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
 	<version>1.0.73</version>
 	<!-- The description is optional and defaults to the name -->
