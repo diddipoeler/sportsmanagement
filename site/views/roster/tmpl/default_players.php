@@ -53,8 +53,7 @@ if (!empty($this->rows))
 	$totalcolspan = 0;
     if ($this->config['show_player_market_value'])
 	{
-//      $positionHeaderSpan++;
-//		$totalcolspan++;
+
 	}
 	if ($this->config['show_player_numbers'])
 	{
@@ -93,18 +92,14 @@ if (!empty($this->rows))
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultplayers">    
 <table class="<?php echo $this->config['table_class'];?>">
 	<?php
-    // jetzt kommt die schleife über die positionen
+    /** jetzt kommt die schleife über die positionen */
 	foreach ($this->rows as $position_id => $players)
 	{
 		$meanage = 0;
     $countplayer = 0;
     $age = 0;
-    // position header
+    /** position header */
 		$row = current($players);
-        
-//        echo ' player <br><pre>'.print_r( $row, true).'</pre>';
-        
-        
 		$position = $row->position;
 		$k=0;
 		?>
@@ -143,9 +138,7 @@ if (!empty($this->rows))
 		}
 		elseif ( $this->config['show_birthday_staff'] )
 		{
-/**
- * 			Put empty column to keep vertical alignment with the staff table
- */
+/** Put empty column to keep vertical alignment with the staff table */
 			?>
 		<th class="td_c">&nbsp;</th><?php
 		}
@@ -197,9 +190,7 @@ if (!empty($this->rows))
 			<?php
 			}
 		}
-		
-//echo '<pre>'.print_r($this->positioneventtypes,true).'</pre>';
-		
+	
 		if ($this->config['show_events_stats'])
 		{
 			if ($this->positioneventtypes)
@@ -211,7 +202,7 @@ if (!empty($this->rows))
 
 					foreach ($this->positioneventtypes[$row->position_id] AS $eventtype)
 					{
-						if (empty($eventtype->icon))
+						if ( empty($eventtype->icon) || !$this->config['show_event_icons'] )
 						{
 							$eventtype_header = Text::_($eventtype->name);
 						}
