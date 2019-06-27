@@ -25,7 +25,6 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 $maxImportTime = 480;
-error_reporting(0);
 if ((int)ini_get('max_execution_time') < $maxImportTime) {
     @set_time_limit($maxImportTime);
 }
