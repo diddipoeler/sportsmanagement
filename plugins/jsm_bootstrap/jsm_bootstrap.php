@@ -83,8 +83,8 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
         /*
         //add the classes for handling
-        $classpath = JPATH_ADMINISTRATOR . DS . 'components' . DS .
-        'com_sportsmanagement' . DS . 'libraries' . DS . 'cbootstrap.php';
+        $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR.
+        'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'libraries' .DIRECTORY_SEPARATOR. 'cbootstrap.php';
         if (file_exists($classpath)) {
         JLoader::register('CBootstrap', $classpath);
         }
@@ -226,8 +226,8 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'plugins' . DS . $this->config['type'] . DS . $this->
-                            config['name'] . DS . 'css/customk2.css';
+                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this->
+                            config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }
@@ -269,8 +269,8 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
                 if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'plugins' . DS . $this->config['type'] . DS . $this->
-                            config['name'] . DS . 'css/customk2.css';
+                        $css = JUri::base() . 'plugins' .DIRECTORY_SEPARATOR. $this->config['type'] .DIRECTORY_SEPARATOR. $this->
+                            config['name'] .DIRECTORY_SEPARATOR. 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }

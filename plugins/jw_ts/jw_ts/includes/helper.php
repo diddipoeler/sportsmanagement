@@ -19,17 +19,17 @@ class JWTSHelper {
 		$p = new JObject;
 		$pluginGroup = 'content';
 
-		if(file_exists(JPATH_SITE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.$pluginName.DS.str_replace('/',DS,$folder))){
-			$p->folder = JPATH_SITE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.$pluginName.DS.$folder;
+		if(file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$app->getTemplate().DIRECTORY_SEPARATOR.'html'.DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.str_replace('/',DS,$folder))){
+			$p->folder = JPATH_SITE.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$app->getTemplate().DIRECTORY_SEPARATOR.'html'.DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.$folder;
 			$p->http = JURI::root(true).'/templates/'.$app->getTemplate().'/html/'.$pluginName.'/'.$folder;
 		} else {
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				// Joomla! 1.6+
-				$p->folder = JPATH_SITE.DS.'plugins'.DS.$pluginGroup.DS.$pluginName.DS.$pluginName.DS.'tmpl'.DS.$folder;
+				$p->folder = JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$pluginGroup.DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.$folder;
 				$p->http = JURI::root(true).'/plugins/'.$pluginGroup.'/'.$pluginName.'/'.$pluginName.'/tmpl/'.$folder;
 			} else {
 				// Joomla! 1.5
-				$p->folder = JPATH_SITE.DS.'plugins'.DS.$pluginGroup.DS.$pluginName.DS.'tmpl'.DS.$folder;
+				$p->folder = JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$pluginGroup.DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.$folder;
 				$p->http = JURI::root(true).'/plugins/'.$pluginGroup.'/'.$pluginName.'/tmpl/'.$folder;
 			}
 		}

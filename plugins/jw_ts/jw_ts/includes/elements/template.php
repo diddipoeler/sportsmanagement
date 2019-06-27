@@ -36,9 +36,9 @@ class JElementTemplate extends JElement {
 		$fieldName = (version_compare( JVERSION, '1.6.0', 'ge' )) ? $name : $control_name.'['.$name.']';
 
 		if(version_compare(JVERSION,'1.6.0','ge')) {
-			$pluginTemplatesPath = JPATH_SITE.DS.'plugins'.DS.'content'.DS.'jw_ts'.DS.'jw_ts'.DS.'tmpl';
+			$pluginTemplatesPath = JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'jw_ts'.DIRECTORY_SEPARATOR.'jw_ts'.DIRECTORY_SEPARATOR.'tmpl';
 		} else {
-			$pluginTemplatesPath = JPATH_SITE.DS.'plugins'.DS.'content'.DS.'jw_ts'.DS.'tmpl';
+			$pluginTemplatesPath = JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'jw_ts'.DIRECTORY_SEPARATOR.'tmpl';
 		}
 		$pluginTemplatesFolders = JFolder::folders($pluginTemplatesPath);
 		
@@ -51,7 +51,7 @@ class JElementTemplate extends JElement {
 		
 		$db->setQuery($query);
 		$template = $db->loadResult();
-		$templatePath = JPATH_SITE.DS.'templates'.DS.$template.DS.'html'.DS.'jw_ts';
+		$templatePath = JPATH_SITE.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR.'html'.DIRECTORY_SEPARATOR.'jw_ts';
 		
 		if (JFolder::exists($templatePath)){
 			$templateFolders = JFolder::folders($templatePath);

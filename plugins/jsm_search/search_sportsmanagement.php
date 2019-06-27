@@ -32,13 +32,13 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 // Import library dependencies
 jimport( 'joomla.plugin.plugin' );
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php' );
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'countries.php' );
 
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -294,7 +294,7 @@ $escape = 'getEscaped';
 		      foreach ($list as $row)
                 {
                 //$row->title = JSMCountries::getCountryFlag($row->country).' '.$row->title;    
-                $row->text = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture.'" alt="..." class="img-rounded" width="50">'.JSMCountries::getCountryFlag($row->country).' '.$row->text;
+                $row->text = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DIRECTORY_SEPARATOR.$row->picture.'" alt="..." class="img-rounded" width="50">'.JSMCountries::getCountryFlag($row->country).' '.$row->text;
                 }
 			     $rows[] = $list;
 		 }

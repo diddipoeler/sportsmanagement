@@ -61,7 +61,7 @@ if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jsminlinehockey'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'jsminlinehockey.php');
 
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
@@ -114,7 +114,7 @@ static $linkresult = '';
     
     if (!class_exists(self::$classname))
         {
-        $file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+        $file = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
         if (file_exists($file))
         {
         require_once($file);

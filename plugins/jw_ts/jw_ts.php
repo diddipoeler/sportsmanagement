@@ -63,7 +63,7 @@ class plgContentJw_ts extends JPlugin {
 		JPlugin::loadLanguage('plg_content_'.$this->plg_name, JPATH_ADMINISTRATOR);
 
 		// Includes
-		require_once(dirname(__FILE__).DS.$this->plg_name.DS.'includes'.DS.'helper.php');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.$this->plg_name.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'helper.php');
 
 
 
@@ -171,7 +171,7 @@ class plgContentJw_ts extends JPlugin {
 
 		// Fetch the template
 		ob_start();
-		include($pluginTemplateFolderSystem.DS.'sliders.php');
+		include($pluginTemplateFolderSystem.DIRECTORY_SEPARATOR.'sliders.php');
 		$getSlidersTemplate = $this->plg_copyrights_start.ob_get_contents().$this->plg_copyrights_end;
 		ob_end_clean();
 
