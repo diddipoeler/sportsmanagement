@@ -425,6 +425,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        $this->useeventtime = $jinput->get('useeventtime');
         $document = Factory::getDocument();
         $model = $this->getModel();
         $params = ComponentHelper::getParams($option);
@@ -439,6 +440,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $javascript = "\n";
         $javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
         $javascript .= "var matchid = " . $this->item->id . ";" . "\n";
+        $javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
         $javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
         $javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
 
@@ -480,8 +482,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $matchCommentary = $model->getMatchCommentary($this->item->id);
         $matchevents = $model->getMatchEvents($this->item->id);
         $document->addScriptDeclaration($javascript);
-
-        $this->useeventtime = $jinput->get('useeventtime');
+        
         $this->matchevents = $matchevents;
         $this->matchcommentary = $matchCommentary;
         $this->teams = $teams;

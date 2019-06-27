@@ -51,6 +51,7 @@ var querystring = 'teamplayer_id=' + player +
 	'&event_type_id=' + event + 
 	'&event_time=' + time + 
 	'&match_id=' + matchid +
+	'&useeventtime=' + useeventtime +
     '&projecttime=' + projecttime + 
 	'&event_sum=' + event_sum +
 	'&notice=' + notice;
