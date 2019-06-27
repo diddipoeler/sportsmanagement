@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage fieldsets
+ * https://www.joomlashack.com/blog/tutorials/tabs-bootstrap/
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -395,6 +396,13 @@ L.control.layers(null, overlay).addTo(map);
             </div>
     <?PHP
     break;
+case 'events':
+		echo $this->loadTemplate('position_events'); 
+	break;	
+case 'statistics':
+		echo $this->loadTemplate('position_statistics');
+	break;			
+		
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets_3');
@@ -411,18 +419,7 @@ echo HTMLHelper::_('bootstrap.endTab');
 switch ($view)
 {
     case 'position':
-	?>	
-	    
-<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'position_events', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS')); ?> 
-<?php echo $this->loadTemplate('position_events');  ?>
-<?php echo HTMLHelper::_('bootstrap.endTab'); ?>
-<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'position_statistics', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS')); ?> 
-<?php echo $this->loadTemplate('position_statistics');  ?>
-<?php echo HTMLHelper::_('bootstrap.endTab'); ?>	    
-	    
-	    
 	
-	    <?php
     break;
     
 } 
