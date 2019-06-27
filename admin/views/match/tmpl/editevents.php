@@ -262,7 +262,7 @@ if($close == 1) {
 </div>
 <div style="clear: both"></div>
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="useeventtime" value="<?php $this->projectws->useeventtime; ?>" />
+<input type="hidden" name="useeventtime" value="<?php $this->useeventtime; ?>" />
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />

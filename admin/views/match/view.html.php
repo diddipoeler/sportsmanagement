@@ -481,6 +481,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $matchevents = $model->getMatchEvents($this->item->id);
         $document->addScriptDeclaration($javascript);
 
+        $this->useeventtime = $jinput->get('useeventtime');
         $this->matchevents = $matchevents;
         $this->matchcommentary = $matchCommentary;
         $this->teams = $teams;
