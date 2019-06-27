@@ -33,6 +33,15 @@
 			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM</option>	
 			<option value="1">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE</option>	
 			</field>
+			
+			<field name="eventtime" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_USE_EVENTTIME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_USE_EVENTTIME_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+</field>
+			
+			
 	</fieldset>			
 
 	<fieldset name="picture"
