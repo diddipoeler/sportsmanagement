@@ -157,9 +157,6 @@ $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
         $this->model = $this->getModel();    
             break;    
             }  
-        
-
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
 
 /**
  * bei der einzelverarbeitung

@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -18,6 +17,7 @@ use Joomla\CMS\Utility\Utility;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -58,6 +58,11 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
     var $import_version = '';
     var $debug_info = false;
 
+/**
+ * sportsmanagementModeljlextlmoimports::__construct()
+ * 
+ * @return void
+ */
 function __construct( )
 	{
 	   $option = Factory::getApplication()->input->getCmd('option');
@@ -75,6 +80,12 @@ function __construct( )
 	
 	}
 
+/**
+ * sportsmanagementModeljlextlmoimports::dump_header()
+ * 
+ * @param mixed $text
+ * @return void
+ */
 private function dump_header($text)
 	{
 		echo "<h1>$text</h1>";
@@ -86,10 +97,15 @@ private function dump_header($text)
 	}
     
 
+/**
+ * sportsmanagementModeljlextlmoimports::checkStartExtension()
+ * 
+ * @return void
+ */
 function checkStartExtension()
 {
 $option = Factory::getApplication()->input->getCmd('option');
-$app	=& Factory::getApplication();
+$app = Factory::getApplication();
 $user = Factory::getUser();
 $fileextension = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'lmoimport-2-0.txt';
 $xmlfile = '';
@@ -109,6 +125,12 @@ File::write($fileextension, $xmlfile);
 }
 
 	
+/**
+ * sportsmanagementModeljlextlmoimports::parse_ini_file_ersatz()
+ * 
+ * @param mixed $f
+ * @return
+ */
 function parse_ini_file_ersatz($f)
 {
  $r = null;
@@ -136,22 +158,27 @@ function parse_ini_file_ersatz($f)
 }
 
 
+ /**
+  * sportsmanagementModeljlextlmoimports::_getXml()
+  * 
+  * @return
+  */
  function _getXml()
 	{
-		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
-				JError::raiseWarning(500,Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
+                Log::add(Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), Log::WARNING, 'jsmerror');
 			}
 		}
 		else
 		{
-			JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'), Log::WARNING, 'jsmerror');
 			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
@@ -185,7 +212,7 @@ function parse_ini_file_ersatz($f)
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
@@ -193,6 +220,11 @@ function parse_ini_file_ersatz($f)
 		return $data;
 	}
         	
+/**
+ * sportsmanagementModeljlextlmoimports::getData()
+ * 
+ * @return
+ */
 function getData()
 	{
 	
@@ -330,7 +362,7 @@ $app->enqueueMessage(Text::_('sportstype '.$temp->name.''),'');
 	$lmoimportuseteams=$app->getUserState($option.'lmoimportuseteams');
   
   $teamid = 1;
-  $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.l98';
+  $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98';
 
 $exportplayer = array();
 $exportclubs = array();
@@ -920,7 +952,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
 
 

@@ -18,6 +18,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Log\Log;
 jimport('joomla.filesystem.archive');
 
 /**
@@ -47,84 +48,83 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
 		$app = Factory::getApplication();
 		$post = Factory::getApplication()->input->post->getArray(array());
-    $model = $this->getModel('jlextlmoimports');
+        $model = $this->getModel('jlextlmoimports');
     
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			//$upload=Factory::getApplication()->input->getVar('import_package',null,'files','array');
-$upload = $app->input->files->get('import_package');
+        $upload = $app->input->files->get('import_package');
 
 			$lmoimportuseteams = Factory::getApplication()->input->getVar('lmoimportuseteams',null);
 			$app->setUserState($option.'lmoimportuseteams',$lmoimportuseteams);
 			
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState($option.'uploadArray',$upload);
-			$filename='';
-			$msg='';
-			$dest=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
-			$extractdir=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-			$importFile=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'joomleague_import.l98';
-			if (File::exists($importFile))
+			$filename = '';
+			$msg = '';
+			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
+			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
+			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'sportsmanagement_import.l98';
+			if ( File::exists($importFile) )
 			{
 				File::delete($importFile);
 			}
-			if (File::exists($tempFilePath))
+			if ( File::exists($tempFilePath) )
 			{
-					if (File::exists($dest))
+					if ( File::exists($dest) )
 					{
 						File::delete($dest);
 					}
-					if (!File::upload($tempFilePath,$dest))
+					if ( !File::upload($tempFilePath,$dest) )
 					{
-						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'));
+                        Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'), Log::NOTICE, 'jsmerror');
 						return;
 					}
 					else
 					{
-						if (strtolower(File::getExt($dest))=='zip')
+						if ( strtolower(File::getExt($dest)) == 'zip' )
 						{
-							$result=JArchive::extract($dest,$extractdir);
+							$result = JArchive::extract($dest,$extractdir);
 							if ($result === false)
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 							File::delete($dest);
-							$src=Folder::files($extractdir,'l98',false,true);
+							$src = Folder::files($extractdir,'l98',false,true);
 							if(!count($src))
 							{
-								JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_NOJLG');
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_NOJLG'), Log::NOTICE, 'jsmerror');
 								//todo: delete every extracted file / directory
 								return false;
 							}
-							if (strtolower(File::getExt($src[0]))=='l98')
+							if ( strtolower(File::getExt($src[0])) == 'l98' )
 							{
 								if (!@ rename($src[0],$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_ERROR_RENAME'));
+                                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_ERROR_RENAME'), Log::NOTICE, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_TMP_DELETED'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_TMP_DELETED'), Log::NOTICE, 'jsmerror');
 								return;
 							}
 						}
 						else
 						{
-							if (strtolower(File::getExt($dest))=='l98')
+							if ( strtolower(File::getExt($dest)) == 'l98' )
 							{
 								if (!@ rename($dest,$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_RENAME_FAILED'));
+                                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_RENAME_FAILED'), Log::NOTICE, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_WRONG_EXTENSION'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_WRONG_EXTENSION'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 						}
@@ -132,10 +132,7 @@ $upload = $app->input->files->get('import_package');
 			}
 		}
     $model->getData();
-		//$link='index.php?option='.$option.'&task=jlextlmoimports.edit';
         $link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
-		#echo '<br />Message: '.$msg.'<br />';
-		#echo '<br />Redirect-Link: '.$link.'<br />';
 		$this->setRedirect($link,$msg);
 	}
 

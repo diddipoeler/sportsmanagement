@@ -65,7 +65,7 @@ $upload = $app->input->files->get('import_package');
 			$msg='';
 			$dest=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
 			$extractdir=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-			$importFile=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'joomleague_import.xml';
+			$importFile=JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'sportsmanagement_import.xml';
 			if (File::exists($importFile))
 			{
 				File::delete($importFile);

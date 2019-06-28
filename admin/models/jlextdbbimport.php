@@ -543,7 +543,7 @@ if ( isset($post['projects']) )
 $this->_project_id = $post['projects'];  
 }
 
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.csv';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.csv';
 $app->enqueueMessage(Text::_('Datei? '.$file),'');
     
 if ( $whichfile == 'playerfile' )
@@ -1113,7 +1113,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
 
 
@@ -2201,7 +2201,7 @@ if ( $whichfile == 'playerfile' )
 	$output .= '</project>';
 // mal als test
 	$xmlfile = $output;
-	$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+	$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 	File::write($file, $xmlfile);
 	$this->import_version='NEW';
 }
@@ -2325,7 +2325,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
 }
 

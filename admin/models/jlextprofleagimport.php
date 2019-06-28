@@ -124,11 +124,11 @@ private function dump_header($text)
   */
  function _getXml()
 	{
-		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
@@ -281,7 +281,7 @@ $option = Factory::getApplication()->input->getCmd('option');
   $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
   $this->_datas['sportstype'] = $temp;
 
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.xml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml';
 
     
 
@@ -1554,7 +1554,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
 
 

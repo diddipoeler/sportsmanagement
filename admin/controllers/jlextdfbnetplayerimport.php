@@ -81,7 +81,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 			$msg = '';
 			$dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
 			$extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
-			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'joomleague_import.csv';
+			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement_import.csv';
 			if (File::exists ( $importFile )) {
 				File::delete ( $importFile );
 			}

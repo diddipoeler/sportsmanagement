@@ -71,7 +71,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
     
-		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg'))
 		{
 			
             if(version_compare(JVERSION,'3.0.0','ge'))
@@ -79,7 +79,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             
             if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
              
             }
@@ -88,7 +88,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             
             if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
@@ -942,7 +942,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	 */
 	private function _deleteImportFile()
 	{
-		$importFileName = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+		$importFileName = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 		if (File::exists($importFileName))
         {
             File::delete($importFileName);

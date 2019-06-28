@@ -751,7 +751,7 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 
 $xmlfile = $output;
-$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'joomleague_import.jlg';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
 
 
