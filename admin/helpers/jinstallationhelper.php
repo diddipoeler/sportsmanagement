@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @version		$Id: helper.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla

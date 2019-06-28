@@ -23,19 +23,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
 
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
-
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
-//JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
-//JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
-//JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
-
-/*
-//use Joomla google;
-JLoader::import('libraries.joomla.google.google', JPATH_ADMINISTRATOR);
-JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
-*/
 
 /**
  * sportsmanagementModelMatch

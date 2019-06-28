@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -67,10 +68,7 @@ class JFormFieldeventtypelist extends \JFormFieldList
 			$options = $db->loadObjectList();
             }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-
+Log::add(Text::_($e->getMessage()), Log::NOTICE, 'jsmerror');
 }
             
             foreach ( $options as $row )
