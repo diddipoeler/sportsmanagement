@@ -448,7 +448,6 @@ return false;
 			$msg = '';
 			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
 			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-			//$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'pressebericht.jlg';
 if(!Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'pressebericht'))
 {
 Folder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'pressebericht');

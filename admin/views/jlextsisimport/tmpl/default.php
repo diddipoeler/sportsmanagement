@@ -20,9 +20,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
 HTMLHelper::_( 'behavior.modal' );
 
-//$url = JPATH_ADMINISTRATOR . DS. 'components'.DIRECTORY_SEPARATOR.$option. DS.'assets'.DIRECTORY_SEPARATOR.'icons'.DIRECTORY_SEPARATOR.'dfbnet-logo.gif';
 $url = 'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option. DS.'assets'.DIRECTORY_SEPARATOR.'icons'.DIRECTORY_SEPARATOR.'sislogo.png';
-//$url16 = 'components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif';
 $alt = 'DFBNet';
 
 $attribs['width'] = '170px';
