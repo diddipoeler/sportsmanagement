@@ -20,13 +20,13 @@ http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=spo
 
 */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerjlextdbbimport
@@ -59,12 +59,11 @@ class sportsmanagementControllerjlextdbbimport extends BaseController
 		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
 	
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
+		  Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE' ) );
-			
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE' ) );
+                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
 			}
 		}
 		
@@ -93,39 +92,39 @@ class sportsmanagementControllerjlextdbbimport extends BaseController
 					File::delete ( $dest );
 				}
 				if (! File::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD'), Log::NOTICE, 'jsmerror');
 					return;
 				} else {
 					if (strtolower ( File::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
 							return false;
 						}
 						File::delete ( $dest );
 						$src = Folder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
-							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG' );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG'), Log::NOTICE, 'jsmerror');
 							// todo: delete every extracted file / directory
 							return false;
 						}
 						if (strtolower ( File::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED'), Log::NOTICE, 'jsmerror');
 							return;
 						}
 					} else {
 						if (strtolower ( File::getExt ( $dest ) ) == 'csv' || strtolower ( File::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION'), Log::NOTICE, 'jsmerror');
 							return false;
 						}
 					}

@@ -14,6 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Client\ClientHelper;
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
 /**
@@ -68,9 +70,7 @@ $msg = '';
         $fieldid = $this->jsmjinput->getVar( 'fieldid' );
 		$linkaddress = $this->jsmjinput->getVar( 'linkaddress' );
 		// Set FTP credentials, if given
-		jimport( 'joomla.client.helper' );
-		JClientHelper::setCredentialsFromRequest( 'ftp' );
-		//$ftp = JClientHelper::getCredentials( 'ftp' );
+		ClientHelper::setCredentialsFromRequest( 'ftp' );
 
 		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR  . 'images' . DIRECTORY_SEPARATOR  . $this->jsmoption . DIRECTORY_SEPARATOR  .'database'.DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR ;
         
@@ -158,12 +158,7 @@ $app->enqueueMessage(Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLO
 	{
 		// Reference global application object
         $app = Factory::getApplication();
-        // JInput object
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
-		// Set FTP credentials, if given
-		jimport( 'joomla.client.helper' );
-		JClientHelper::setCredentialsFromRequest( 'ftp' );
+		ClientHelper::setCredentialsFromRequest( 'ftp' );
 
 		// Get some data from the request
 		$images	= $this->jsmjinput->getVar( 'rm', array(), '', 'array' );
@@ -175,13 +170,6 @@ $app->enqueueMessage(Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLO
 		{
 			foreach ( $images as $image )
 			{
-				/*
-				if ( $image !== InputFilter::clean( $image, 'path' ) )
-				{
-					JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE' ) . ' ' . htmlspecialchars( $image, ENT_COMPAT, 'UTF-8' ) );
-					continue;
-				}
-*/
 				$fullPath = JPath::clean( JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $this->jsmoption .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. $image );
 				$fullPaththumb = JPath::clean( JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $this->jsmoption .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. 'small' .DIRECTORY_SEPARATOR. $image );
 				if ( is_file( $fullPath ) )
