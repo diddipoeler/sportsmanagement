@@ -141,8 +141,8 @@ $this->setRedirect ( $link, $msg );
 			}
             
             }
-        
-        $xml_file = $model->getData ();
+        /** es wird keine excel verarbeitung mehr angeboten */
+       // $xml_file = $model->getData ();
         
         }
 

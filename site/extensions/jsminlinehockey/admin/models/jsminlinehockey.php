@@ -9,17 +9,12 @@
  * @subpackage jsminlinehockey
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
-
-define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
-jimport( 'joomla.application.component.model' );
-
 
 $maxImportTime = 480;
 
@@ -71,8 +66,8 @@ function __construct()
         
         if( $mainframe->isClient('administrator') ) 
 {
-
-require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'PHPExcel'.DIRECTORY_SEPARATOR.'PHPExcel.php');
+/** es wird keine excel verarbeitung mehr angeboten */
+//require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'PHPExcel'.DIRECTORY_SEPARATOR.'PHPExcel.php');
 }
         parent::__construct();
         }
@@ -1320,139 +1315,14 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$p
 }
 
 
+/**
+ * sportsmanagementModeljsminlinehockey::getdata()
+ * 
+ * @return void
+ */
 function getdata()
 {
-    	$app = Factory::getApplication ();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$document = Factory::getDocument ();
-		// Check for request forgeries
-		$msg = '';
-        $post = $jinput->post->getArray(array());
-        
-        	if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ish_bw_import.xls'))
-		{
-		  echo date('H:i:s') , " Load workbook from Excel5 file" , EOL;
-$callStartTime = microtime(true);
-		  $objPHPExcel = PHPExcel_IOFactory::load(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ish_bw_import.xls');
-          
-          
-/**
-* heimmannschaft auslesen
-*/          
-          for($a=5;$a <= 22;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('H'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue();
-		$temp->pass = $objPHPExcel->getActiveSheet()->getCell('N'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-         
-         $this->_datas['homeplayer'] = array_merge($export);
-          
-          unset($export);
-
-/**
-* gastmannschaft auslesen
-*/
-          
-          for($a=34;$a <= 51;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('H'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue();
-		$temp->pass = $objPHPExcel->getActiveSheet()->getCell('N'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['awayplayer'] = array_merge($export);
-          
-/**
-* schiedsrichter auslesen
-*/          
-          
-          unset($export);
-//          for($a=22;$a <= 31;$a + 3)
-//          {
-            $a=22;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-            $a=25;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-        
-        $a=28;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-        
-        $a=31;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-//         }
-         
-         $this->_datas['referees'] = array_merge($export);
-          
-         unset($export);
-          for($a=5;$a <= 25;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->time = $objPHPExcel->getActiveSheet()->getCell('O'.$a)->getValue();
-		$temp->g_nummer = $objPHPExcel->getActiveSheet()->getCell('P'.$a)->getValue();
-		$temp->a_nummer = $objPHPExcel->getActiveSheet()->getCell('Q'.$a)->getValue();
-        $temp->t_nummer = $objPHPExcel->getActiveSheet()->getCell('R'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['homegoals'] = array_merge($export);
-          
-           unset($export);
-          for($a=34;$a <= 51;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->time = $objPHPExcel->getActiveSheet()->getCell('O'.$a)->getValue();
-		$temp->g_nummer = $objPHPExcel->getActiveSheet()->getCell('P'.$a)->getValue();
-		$temp->a_nummer = $objPHPExcel->getActiveSheet()->getCell('Q'.$a)->getValue();
-        $temp->t_nummer = $objPHPExcel->getActiveSheet()->getCell('R'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['awaygoals'] = array_merge($export);
-          
-          $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _datas<br><pre>'.print_r($this->_datas,true).'</pre>'),'');
-          
-          echo date('H:i:s') , ' Current memory usage: ' , (memory_get_usage(true) / 1024 / 1024) , " MB" , EOL;
-
-
-// Echo memory peak usage
-echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 1024 / 1024) , " MB" , EOL;
-
-// Echo done
-echo date('H:i:s') , " Done reading file" , EOL;
-          
-          }
+/** es wird keine excel verarbeitung mehr angeboten */
     
 }
 
