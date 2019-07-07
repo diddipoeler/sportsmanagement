@@ -39,17 +39,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-		<!--
-    <field	name="show_logo_small" type="extensionradiobutton" default="1"
-				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_LABEL_SHOW_LOGO_SMALL"
-				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONENTRY_PARAM_DESCR_SHOW_LOGO_SMALL">
-			<option value="0">JNO</option>
-			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
-			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
-		</field>
-    -->
-    
+  
     <field name="show_logo_small" type="list" default="logo_big"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
