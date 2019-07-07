@@ -600,8 +600,6 @@ if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 <table>
 <tr>
 <?php
-//echo '<pre>'.print_r($this->playereventstats,true).'</pre>';
-//echo $row->position_id.'<br>';
 foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
 {
 

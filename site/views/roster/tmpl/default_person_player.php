@@ -205,18 +205,18 @@ $routeparameter['pid'] = $this->row->person_slug;
 					<div>
 						<span class="jl_roster_persondetails_label">
 							<?php echo Text::_( "COM_SPORTSMANAGEMENT_PERSON_NATIONALITY" );?>
-						</span><!-- /.jl_roster_persondetails_label -->
+						</span><!-- /.jsm_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
 		echo JSMCountries::getCountryFlag( $this->row->country );
 ?>
-						</span><!-- /.jl_roster_persondetails_data -->
+						</span><!-- /.jsm_roster_persondetails_data -->
 					</div>
 <?php
 	}// if ($this->config['show_country_flag']) ends
 ?>
-				</div><!-- /.jl_roster_persondetails -->
-			</div><!-- /.jl_rosterperson_detail_column -->
+				</div><!-- /.jsm_roster_persondetails -->
+			</div><!-- /.jsm_rosterperson_detail_column -->
 <?php
 	if ( $this->overallconfig['use_jl_substitution'] || $this->config['show_events_stats'] )
 	{
@@ -225,13 +225,10 @@ $routeparameter['pid'] = $this->row->person_slug;
 <?php
 		if ( $this->overallconfig['use_jl_substitution'] )
 		{
-			// Events of substitutions are shown
+			/** Events of substitutions are shown **/
             $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->projectteam_id,$this->row->season_team_person_id,$this->project->game_regular_time);
             
-            //echo ' project_id<br><pre>'.print_r($this->row->project_id,true).'</pre>';
-            //echo ' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>';
-            
-			$cnt=0;
+			$cnt = 0;
 				if ( $this->config['show_games_played'] && isset( $this->InOutStat->played ) )
 				{
 					$cnt++;
@@ -290,8 +287,8 @@ $routeparameter['pid'] = $this->row->person_slug;
 						';
 				}
 ?>
-		</div><!-- /.jl_rosterstats -->
+		</div><!-- /.jsmrosterstats -->
 <?php
 	}//if ($this->overallconfig['use_jl_substitution'] OR $this->config['show_events_stats']) ends
 ?>
-		</div><!-- /.jl_rp<?php echo $this->k;?> -->
+		</div><!-- /.jsm_rp<?php echo $this->k;?> -->
