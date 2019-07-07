@@ -9,13 +9,12 @@
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerjlextdfbkeyimport
@@ -52,52 +51,6 @@ function __construct()
  */
 function display($cachable = false, $urlparams = false)  
 {
-
-
-//global $app,$option;
-
-//$document	=& Factory::getDocument();
-//		$app	=& Factory::getApplication();
-//    $model = $this->getModel('jlextdfbkeyimport');
-//    $post = Factory::getApplication()->input->get( 'post' );
-    
-    /*
-    echo '<pre>';
-    print_r($post);
-    echo '</pre>';
-    */
-    
-    /*
-    echo '<pre>';
-    print_r($this->getTask());
-    echo '</pre>';
-    */
-/*    
-    // Checkout the project
-				//$model = $this->getModel('dfbkeys');
-        $model	=& $this->getModel();
-    
-    $projectid = $model->getProject();
-    echo '_loadData projekt -> '.$projektid.'<br>';
-    $msg = Text::sprintf( 'DESCBEINGEDITTED', Text::_( 'The division' ), $projectid );
-		$this->setRedirect( 'index.php?option=' . $option., $msg );
-*/
-/*    
-    switch( $this->getTask() )
-		{
-    
-    case 'apply'	 :
-			{
-				//Factory::getApplication()->input->setVar( 'hidemainmenu', 1 );
-				Factory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
-				Factory::getApplication()->input->setVar( 'view', 'jlextdfbkeyimport' );
-				//Factory::getApplication()->input->setVar( 'edit', false );
-				
-				
-			} break;
-    
-    }
-    */
         
     parent::display();
     
@@ -125,9 +78,7 @@ function display($cachable = false, $urlparams = false)
   function apply()
 	{
 	   $option = Factory::getApplication()->input->getCmd('option');
-       //$post = Factory::getApplication()->input->get( 'post' );
        $post = Factory::getApplication()->input->post->getArray(array());
-       //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 
 // store the variable that we would like to keep for next time
 // function syntax is setUserState( $key, $value );
@@ -149,16 +100,7 @@ Factory::getApplication()->setUserState( "$option.first_post", $post );
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication ();
-        //$post = Factory::getApplication()->input->get( 'post' );
 	$post = Factory::getApplication()->input->post->getArray(array());
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');	
-    /*
-    echo '<pre>';
-    print_r($post);
-    echo '</pre>';
-		*/
-		//echo 'einträge -> '.count($post[roundcode]).'<br>';
-		
     	
 		for ($i=0; $i < count($post[roundcode])  ; $i++)
 		{
@@ -190,31 +132,17 @@ Factory::getApplication()->setUserState( "$option.first_post", $post );
     $row->round_date_first = $post[round_date_first][$i];
     $row->round_date_last = $post[round_date_last][$i];
     
-    if ( !$row->store() )
-		{
-		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
-        //$this->setError( $this->_db->getErrorMsg() );
-		//return false;
-		}
-		
-    /*
-    if ( $model->store( $post ) )
-		{
-			$msg = Text::_( 'Matchday added' );
-		}
-		else
-		{
-			$msg = Text::_( 'Error adding Matchday' ) . $model->getError();
-		}
-		*/
-    
+    try{ 
+        $row->store();
+        }
+        catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+}
+       
     }
-		/*
-		echo '<pre>';
-    print_r($model);
-    echo '</pre>';
-    */
-    //Factory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
+		
     $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect( $link, $msg );
@@ -230,16 +158,8 @@ Factory::getApplication()->setUserState( "$option.first_post", $post );
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication ();
-//        $post = Factory::getApplication()->input->get( 'post' );
 $post = Factory::getApplication()->input->post->getArray(array());
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
-	  
-    /*    
-    echo '<pre>';
-    print_r($post);
-    echo '</pre>';
-    */
-    
+   
     for ($i=0; $i < count($post[roundcode])  ; $i++)
 		{
         $mdl = BaseDatabaseModel::getInstance("match", "sportsmanagementModel");
@@ -263,20 +183,16 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		
 		$row->match_date = $post[match_date][$i];
 		
-		if ( !$row->store() )
-		{
-		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
-        //$this->setError( $this->_db->getErrorMsg() );
-		//return false;
-		//echo 'nicht eingefügt <br>';
-		}
-		else
-		{
-    //echo 'eingefügt <br>';
-    }
+		    try{ 
+        $row->store();
+        }
+        catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+}
 		
 		}
-    
     
     $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_1' );
     $link = 'index.php?option='.$option.'&view=rounds';

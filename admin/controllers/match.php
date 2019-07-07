@@ -43,7 +43,7 @@ class sportsmanagementControllermatch extends FormController
 	{
 		parent::__construct($config);
 
-		// Map the apply task to the save method.
+		/** Map the apply task to the save method. **/
 		$this->registerTask('apply', 'save');
 		$this->jsmuser = Factory::getUser(); 
         $this->jsmdate = Factory::getDate();
@@ -82,18 +82,8 @@ class sportsmanagementControllermatch extends FormController
 		$post['round_id'] = $round_id;
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($post['project_id']);
-        
-        
-		//$project_tz = new DateTimeZone($projectws->timezone);
-		//$timezone = $projectws->timezone;
-        //if ( empty($timezone) )
-        //{
-//            $timezone = 'Europe/Berlin';
-//        }
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-        
-		// Add matches (type=1)
+       
+		/** Add matches (type=1) **/
 		if ( $post['addtype'] == 1 )
 		{
 			if ($add_match_count > 0) // Only MassAdd a number of new and empty matches
@@ -108,12 +98,8 @@ class sportsmanagementControllermatch extends FormController
 				
 				if ($projectRounds = $model->getProjectRoundCodes($post['project_id']))
 				{
-					// convert date and time to utc
-					//$uiDate = $post['match_date'];
-					//$uiTime = $post['startTime'];
-					//$post['match_date'] = $this->convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone);
+					/** convert date and time to utc **/
                     $post['match_date'] = sportsmanagementHelper::convertDate($post['match_date'],0).' '.$post['startTime'];
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match_date<br><pre>'.print_r($post['match_date'],true).'</pre>'),'');
 			
 					foreach ($projectRounds AS $projectRound)
 					{
@@ -132,22 +118,14 @@ class sportsmanagementControllermatch extends FormController
 									$post['match_number'] = $matchNumber;
 								}
                                 
-                                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' x -> '.$x.'' ),'Error');
-                                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' add_match_count -> '.$add_match_count.'' ),'Error');
-
-								//if ($model->store($post))
                                 $model = $this->getModel('match');
                                 if ($model->save($post))
 								{
-									//$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
-                                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 									$matchNumber++;
 								}
 								else
 								{
 									$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH');
-                                    //$msg = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.print_r($db->getErrorMsg(),true).'</b>');
-                                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 									break;
 								}
 							}
@@ -166,9 +144,6 @@ class sportsmanagementControllermatch extends FormController
 			if ( $matches = $model->getRoundMatches($round_id))
 			{
 				// convert date and time to utc
-				//$uiDate = $post['date'];
-				//$uiTime = $post['startTime'];
-				//$post['match_date'] = $this->convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone);
                 $post['match_date'] = sportsmanagementHelper::convertDate($post['date'],0).' '.$post['startTime'];
 
 if ( $post['create_new'] )

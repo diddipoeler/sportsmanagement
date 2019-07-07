@@ -9,7 +9,6 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Session\Session; 
 use Joomla\Utilities\ArrayHelper; 
@@ -54,6 +53,11 @@ public function __construct($config = array())
 		return $model;
 	}
     
+/**
+ * sportsmanagementControllertreetos::genNode()
+ * 
+ * @return void
+ */
 public function genNode()
 	{
 		$id = $this->jsmjinput->get->get('id');
@@ -69,17 +73,11 @@ public function save()
 	{
 		// Check for token
 		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		
-		//$app = Factory::getApplication();
-		//$jinput = $app->input;
 		$cid = $this->jsmjinput->get('cid',array(),'array');
 		ArrayHelper::toInteger($cid);
 		
 		$post = $this->jsmjinput->post->getArray();
 		$data['project_id'] = $post['project_id'];
-
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post, true).'</pre><br>',''); 
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data, true).'</pre><br>',''); 
 		
         $model = $this->getModel('treeto');
         $row = $model->getTable();
@@ -92,11 +90,7 @@ public function save()
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
 		}
-        
-        
-		// Check the table in so it can be edited.... we are done with it anyway
-		// $model->checkin();
-		
+	
 		$task = $this->getTask();
 		
 		if($task == 'save')
