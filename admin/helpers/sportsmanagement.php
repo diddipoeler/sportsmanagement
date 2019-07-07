@@ -2652,11 +2652,6 @@ try{
                     
                 }
 
-//if (!$db->query())
-//		{
-//			
-//            $app->enqueueMessage(Text::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		}
 // Create a new query object.
                 $query = $db->getQuery(true);
                 // Insert columns.
@@ -2668,9 +2663,6 @@ try{
                         ->insert($db->quoteName('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields_values'))
                         ->columns($db->quoteName($columns))
                         ->values(implode(',', $values));
-                // Set the query using our newly populated query object and execute it.
-                //$db->setQuery($query);
-
                 try {
                     $db->setQuery($query);
                     $result = $db->execute();
@@ -2678,11 +2670,6 @@ try{
                     
                 }
 
-//if (!$db->query())
-//		{
-//			
-//            $app->enqueueMessage(Text::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		}
             }
         }
     }
@@ -2693,20 +2680,14 @@ try{
      */
     public static function getAddressData($address) {
         $app = Factory::getApplication();
-
         $url = 'http://maps.google.com/maps/api/geocode/json?' . 'address=' . urlencode($address) . '&sensor=false&language=de';
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
-
         $content = self::getContent($url);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');   		
 
         $status = null;
         if (!empty($content)) {
             $json = new JSMServices_JSON();
             $status = $json->decode($content);
         }
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($status,true).'</pre>'),'');   
 
         return $status;
     }
@@ -2720,26 +2701,12 @@ try{
     public function getOSMGeoCoords($address) {
         $app = Factory::getApplication();
         $coords = array();
-
-        //$address = utf8_encode($address);
         // call OSM geoencoding api
         // limit to one result (limit=1) without address details (addressdetails=0)
         // output in JSON
         $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=" . urlencode($address);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
-
         $result = json_decode(file_get_contents($geoCodeURL), true);
 
-
-
-
-        /*
-          [COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME] => D�rpum
-          [COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME] => Bordelum
-          [COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME] => Schleswig-Holstein
-          [COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME] => SH
-         */
         if (isset($result[0])) {
             $coords['latitude'] = $result[0]["lat"];
             $coords['longitude'] = $result[0]["lon"];
@@ -2749,8 +2716,6 @@ try{
             $coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $result[0]["address"]["residential"];
             $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
         }
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
         return $coords;
     }
@@ -2765,10 +2730,6 @@ try{
         $app = Factory::getApplication();
         $coords = array();
         $data = self::getAddressData($address);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
-//$osm = self::getOSMGeoCoords($address);  
 
         if ($data) {
             if ($data->status == 'OK') {
@@ -2942,7 +2903,6 @@ try{
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // $db = sportsmanagementHelper::getDBConnection();
         // wenn der user die k2 komponente
         // in der konfiguration ausgewählt hat,
         // kommt es zu einem fehler, wenn wir darüber selektieren
@@ -2954,7 +2914,6 @@ try{
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'), 'Error');
                 return false;
             }
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' k2<br><pre>'.print_r($k2,true).'</pre>'),'');
         }
 
         // Create a new query object.
@@ -3041,7 +3000,6 @@ try{
                     $elements[] = $key . ': ' . json_encode((string) $v);
                 }
             } else {
-                //$elements[] = $key . ': ' . static::getJSObject(is_object($v) ? get_object_vars($v) : $v);
                 $elements[] = $key . ': ' . self::getJSObject(is_object($v) ? get_object_vars($v) : $v);
             }
         }
@@ -3055,15 +3013,10 @@ try{
      * @return
      */
     public static function checkUpdateVersion() {
-        //$app = Factory::getApplication(); 
-//        $option = Factory::getApplication()->input->getCmd('option');  
-        //$xml = Factory::getXMLParser( 'Simple' );
         $return = 0;
         $version = self::getVersion();
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
 
         $temp = explode(".", $version);
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
         //Laden
         $datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
         if (function_exists('curl_version')) {
@@ -3081,45 +3034,27 @@ try{
 
             if (curl_errno($curl)) {
                 // moving to display page to display curl errors
-                //echo curl_errno($curl) ;
-                //echo curl_error($curl);
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
             } else {
                 $content = curl_exec($curl);
-                //print_r($content);
                 curl_close($curl);
             }
 
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen')) {
             $content = file_get_contents($datei);
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
         } else {
-            //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
         }
-        //$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
-        //Parsen
-
         if ($content) {
-            //$doc = DOMDocument::loadXML($content);
             $doc = new DOMDocument();
             $doc->loadXML($content, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
             $doc->save(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $xml = simplexml_load_file(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
-//        $xml = Factory::getXML(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement.xml');   
         } else {
             $xml = Factory::getXML(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
         }
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
 
         $github_version = (string) $xml->version;
 

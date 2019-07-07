@@ -129,14 +129,11 @@ class JSMControllerForm extends FormController
         Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Initialise variables.
-        //$app = Factory::::getApplication();
-        //$db = sportsmanagementHelper::getDBConnection();
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getVar('tmpl');
         $model = $this->getModel($this->view_item);
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
         $setRedirect = '';
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
         $this->club_id = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
@@ -149,13 +146,7 @@ class JSMControllerForm extends FormController
         }
 
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
-            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->club_id<br><pre>' . print_r($this->club_id, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->team_id<br><pre>' . print_r($this->team_id, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_item <br><pre>' . print_r($this->view_item, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_list<br><pre>' . print_r($this->view_list, true) . '</pre>'), '');
 
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');            
         }
 
         if ($return) {

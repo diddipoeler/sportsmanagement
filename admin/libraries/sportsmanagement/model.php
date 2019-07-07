@@ -125,12 +125,6 @@ if (array_key_exists('notes', $data))
 $html = $postData->get('notes','','raw');
 $data['notes'] = $html;
 }
-		
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
-{
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-}
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -671,10 +665,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( $data['id'] )
 		{
-		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
-        {  
-		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
-        }
+
 		$mdl = BaseDatabaseModel::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
@@ -687,10 +678,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( $data['id'] )
 		{
-		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
-        {  
-		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
-        }
+
 		$mdl = BaseDatabaseModel::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
@@ -723,7 +711,6 @@ $result = $this->jsmdb->execute();
 		$this->jsmquery->from('#__sportsmanagement_season_team_id');
 		$this->jsmquery->where('team_id ='. $data['id'] );
 		$this->jsmquery->where('season_id ='. $value );
-		//Factory::getDbo()->setQuery($query);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
 		$delete_season[] = $value;
@@ -991,19 +978,6 @@ catch (Exception $e) {
            } 
         break;  
 		case 'round':
-	/*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'calendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'calendar');       
-        }
-        else
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
-        }
-	*/
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -1042,17 +1016,7 @@ catch (Exception $e) {
 
         break;
         }
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('start_date', 'type', 'calendar'); 
-        }
-        else
-        {
-        $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
-        }
-        */
+        
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
