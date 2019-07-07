@@ -177,21 +177,7 @@ echo "DFB-Schl�ssel";
 <?php
 
 $k = 0;
-
-/**
-* echo "<pre>";
-* print_r($_POST);
-* echo "</pre>";
-*/
-
 $gesendet = mosGetParam( $_POST, 'gesendet', 0 ) ;
-
-
-/**
-* echo "projekt ->".$project->id."<br>";
-*/
-
-
 $database->setQuery( "SELECT jtj.team_id as id, jt.name as name FROM #__joomleague_project_team as jtj,
 #__joomleague_team as jt where jtj.project_id = $project->id and jtj.team_id = jt.id order by jt.name");
 
@@ -208,17 +194,6 @@ $dfbschluessel = $anzmannschaften + 1;
 // echo "Der Wert der Variablen \$zahl ist gerade";
 $dfbschluessel = $anzmannschaften;
 }
-
-
-/**
-* echo "wir haben -> ".$dfbschluessel." mannschaften <br>";
-
-* foreach ($rows AS $row)
-* {
-* echo "nummer -> ". $row->id ." name -> ". $row->name ."<br>";
-* //echo "nummer -> ". $row->id ."<br>";
-* }
-*/
 
 
 // #############################################################################

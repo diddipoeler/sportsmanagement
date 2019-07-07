@@ -641,14 +641,9 @@ abstract class sportsmanagementHelper {
     public static function getDBConnection($request = FALSE, $value = FALSE) {
         $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_sportsmanagement');
-
         $config = Factory::getConfig();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(Uri::root(),true).'</pre>'),'');
 
         if ($params->get('cfg_dbprefix')) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' database<br><pre> wir benutzen andere tabellen</pre>'),'');
-
             $host = $config->get('host'); //replace your IP or hostname
             $user = $config->get('user'); //database user
             $password = $config->get('password'); //database password
@@ -658,13 +653,11 @@ abstract class sportsmanagementHelper {
             $debug = $config->get('config.debug');
 
             $options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r($options,true).'</pre>'),'');   
 
             try {
                 $db = JDatabase::getInstance($options);
             } catch (Exception $e) {
                 // catch any database errors.
-                //$db->transactionRollback();
                 JErrorPage::render($e);
             }
 
@@ -672,17 +665,8 @@ abstract class sportsmanagementHelper {
                 header('HTTP/1.1 500 Internal Server Error');
                 jexit('Database Error: ' . $db->toString());
             } else {
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' database<br><pre> kein verbindungsfehler</pre>'),'');   
+   
             }
-            /*
-              if ($db->getErrorNum() > 0) {
-              JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br />' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
-              }
-              else
-              {
-              //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' database<br><pre> verbindung hergestellt</pre>'),'');
-              }
-             */
             $db->debug($debug);
             return $db;
         } else {
@@ -692,12 +676,7 @@ abstract class sportsmanagementHelper {
                 $cfg_which_database = $params->get('cfg_which_database');
             }
 
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getDbo<br><pre>'.print_r(Factory::getDbo(),true).'</pre>'),'');
-            //self::get_IP_address();
-
             if (!$cfg_which_database) {
-                //self::$_jsm_db = Factory::getDbo(); 
                 return Factory::getDbo();
             } else {
                 $option = array(); //prevent problems
@@ -723,9 +702,6 @@ abstract class sportsmanagementHelper {
                     //   $db->transactionRollback();
                     JErrorPage::render($e);
                 }
-
-                //$user_password = $params->get( 'jsm_server_password' );
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsm_server_password<br><pre>'.print_r($user_password,true).'</pre>'),'');
 
                 if ($user_id) {
 			try{
@@ -2364,7 +2340,6 @@ $output .= '</ul>';
                 } else {
                     $sef = Factory::getConfig()->getValue('config.sef', false);
                 }
-                //$print_urlparams = ($sef ? "/component/1" : "&tmpl=component&print=1");
                 $print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
                 if (is_null($print_link)) {
@@ -2412,9 +2387,6 @@ $output .= '</ul>';
         if ($project_id) {
             $zusatz .= '&pid=' . $project_id;
         }
-        //$app->enqueueMessage(Text::_('ToolbarButton layout<br><pre>'.print_r(Factory::getApplication()->input->getVar('layout'),true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
-
         if (!$view) {
             $view = $jinput->get('view');
         }
@@ -2435,32 +2407,6 @@ $output .= '</ul>';
         $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
         $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
-/*
-// Use core button class or custom class.
-$bar->appendButton(new StandardButton('new'))
-    ->text('JTOOLBAR_NEW')
-    ->task('article.add')
-    ->icon('icon-plus');
-    
-// Use pre-defined megic methods
-$bar->popupButton('preview')
-    ->text('COM_FOO_TOOLBAR_PREVIEW')
-    ->url(Route::_('...'))
-    ->icon('icon-eye')
-    ->listCheck(true)
-    ->iframeWidth(640)
-    ->iframeHeight(480)
-    ->setOption('foo', 'bar');
-*/
-
-
-//// Render the popup button
-//$layout2 = new JLayoutFile('joomla.toolbar.popup');
-
-//$bar->appendButton('Custom', $dhtml);
-
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
     }
 
     /**
@@ -2480,9 +2426,6 @@ $bar->popupButton('preview')
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $window_width = '<script>alert($(window).width()); </script>';
         $window_height = '<script>alert(window.screen.height); </script>';
-
-        //$app->enqueueMessage(Text::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($window_width,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($_SESSION,true).'</pre>'),'Notice');
 
         switch ($view) {
             case 'Template':
@@ -2504,14 +2447,8 @@ $bar->popupButton('preview')
             $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . Text::_('Onlinehilfe') . '</button>';
         }
 
-        /*
-          $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
-          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.Text::_('Onlinehilfe').'</a>';
-         */
-
         // Add a help button.
         $bar->appendButton('Custom', $send);
-        //$bar->appendButton('Help', $ref, $com, $override, $component);
     }
 
     /**
@@ -2613,41 +2550,31 @@ try{
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
         // Select some fields
         if ($template) {
             $query->select('select_columns,select_values');
             // From the table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields');
+            $query->from('#__sportsmanagement_user_extra_fields');
             $query->where('template_backend LIKE ' . $db->Quote('' . $view . ''));
             $query->where('name LIKE ' . $db->Quote('' . $field . ''));
         } else {
             $query->select('select_columns,select_values');
             // From the table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields');
+            $query->from('#__sportsmanagement_user_extra_fields');
             $query->where('views_backend LIKE ' . $db->Quote('' . $view . ''));
             $query->where('views_backend_field LIKE ' . $db->Quote('' . $field . ''));
         }
 
-
         $query->where('fieldtyp = ' . $fieldtyp);
-
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
         $db->setQuery($query);
         $result = $db->loadObject();
         if ($result) {
             $select_columns = explode(",", $result->select_columns);
-            //$select_values = explode(",",$result->select_values);
-
             if ($result->select_values) {
                 $select_values = explode(",", $result->select_values);
             } else {
                 $select_values = explode(",", $result->select_columns);
             }
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
 
             foreach ($select_columns as $key => $value) {
                 $temp = new stdClass();
@@ -2658,7 +2585,6 @@ try{
 
             return $select_options;
         } else {
-//            JError::raiseError(0, $db->getErrorMsg());
             return false;
         }
     }
@@ -2675,8 +2601,6 @@ try{
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
 
         $query->select('ef.id');
         $query->from('#__sportsmanagement_user_extra_fields as ef ');
