@@ -1,41 +1,12 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.00
+ * @file      default_2.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
+ */ 
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -50,28 +21,6 @@ var ajaxmenu_baseurl = '<?php echo Uri::base() ?>';
 </script>
 
 <?PHP
-
-//echo 'tab_points=> <pre>'.print_r($tab_points, true).'</pre><br>';
-
-
-/*
-$options_slider = array(
-    'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-    'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);
-
-array('useCookie'=>0, 'show'=>0, 'display'=>0, 'startOffset'=>-1)
-*/
-
-
 
 if ( $project_id )
 {
@@ -158,34 +107,7 @@ echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenu
 
 <?PHP
 
-/*
-echo 'value => '.$value.'<br>';
-echo 'fed_array => '.$fed_array.'<br>';
 
-
-echo 'jlamtopcountry / country_id => '.$country_id.'<br>';
-echo 'country_federation => '.$country_federation.'<br>';
-
-echo '_country_fed => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$_country_fed, true).'</pre><br>';
-
-echo 'query_getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
-echo 'query_getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
-
-
-echo 'jlamtopassocid => '.$assoc_id.'<br>';
-echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
-echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
-
-
-echo 'jlamtopseason => '.$season_id.'<br>';
-echo 'jlamtopleague => '.$league_id.'<br>';
-echo 'jlamtopproject => '.$project_id.'<br>';
-echo 'jlamtopteam => '.$team_id.'<br>';
-
-echo __METHOD__.' '.__LINE__.' leagueselect<br><pre>'.print_r($leagueselect,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>';
-*/
 
 if ( $country_id )
 {
