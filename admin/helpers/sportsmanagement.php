@@ -459,7 +459,6 @@ abstract class sportsmanagementHelper {
 }
         catch (Exception $e)
         {
-        //$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
 	$app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_EDITMATCH_MATCHDATE'), $match->value),'Notice');
         }
     }
@@ -481,11 +480,7 @@ abstract class sportsmanagementHelper {
             if (array_key_exists($key, $_SERVER) === true) {
                 foreach (explode(',', $_SERVER[$key]) as $IPaddress) {
                     $IPaddress = trim($IPaddress); // Just to be safe
-
-                    $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' key<br><pre>' . print_r($key, true) . '</pre>'), 'Notice');
-                    $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' IPaddress<br><pre>' . print_r($IPaddress, true) . '</pre>'), 'Notice');
-
-                    if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                   if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
 
                         return $IPaddress;
                     }
@@ -506,9 +501,6 @@ abstract class sportsmanagementHelper {
         $option = $jinput->getCmd('option');
 
         $j = new JVersion();
-
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
 
         if (!defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION')) {
             DEFINE('COM_SPORTSMANAGEMENT_JOOMLAVERSION', substr($j->RELEASE, 0, strlen($version)));
@@ -922,26 +914,6 @@ abstract class sportsmanagementHelper {
         $team_id = $app->getUserState("$option.team_id", '0');
         $club_id = $app->getUserState("$option.club_id", '0');
 
-
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-//            $app->enqueueMessage(Text::_('addSubmenu post<br><pre>'.print_r(Factory::getApplication()->input->post->getArray(array()),true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
-
-            $my_text = 'post <pre>' . print_r(Factory::getApplication()->input->post->getArray(array()), true) . '</pre>';
-            $my_text .= 'project_id <pre>' . print_r($project_id, true) . '</pre>';
-            $my_text .= 'project_team_id <pre>' . print_r($project_team_id, true) . '</pre>';
-            $my_text .= 'team_id <pre>' . print_r($team_id, true) . '</pre>';
-            $my_text .= 'club_id <pre>' . print_r($club_id, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
-        //$app->enqueueMessage(Text::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
-
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             JHtmlSidebar::addEntry(
                     Text::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel'
@@ -1028,13 +1000,8 @@ abstract class sportsmanagementHelper {
      */
     static function getExtendedStatistic($data = '', $file, $format = 'ini') {
         $app = Factory::getApplication();
-        //$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file.'.xml';
         $templatepath = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'statistics';
         $xmlfile = $templatepath .DIRECTORY_SEPARATOR. $file . '.xml';
-
-        //$app->enqueueMessage(Text::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-
         $extended = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
         $extended->bind($data);
         return $extended;
@@ -1104,9 +1071,6 @@ abstract class sportsmanagementHelper {
                         $jRegistry->loadJSON($data);
                     }
                 }
-                //$app->enqueueMessage(Text::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-                //$app->enqueueMessage(Text::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-
                 $extended = JForm::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
                 $extended->bind($jRegistry);
                 return $extended;
@@ -1281,14 +1245,10 @@ abstract class sportsmanagementHelper {
         $arrExtensions = array();
         $excludeExtension = array();
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
-
         if (Folder::exists(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions')) {
             $folderExtensions = Folder::folders(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
-
                     if ($ext == $view) {
                         $arrExtensions[] = $ext;
                     }
