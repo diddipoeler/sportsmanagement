@@ -1400,10 +1400,6 @@ if ( $data['id'] )
 
         $query = Factory::getDbo()->getQuery(true);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($team_id,true).'</pre>' ),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_position_id'.'<pre>'.print_r($project_position_id,true).'</pre>' ),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');
-
         // Select some fields
         $query->select('mp.id AS table_id,mp.match_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number,mp.captain AS captain');
         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,pl.ordering,pl.position_id as person_position_id');

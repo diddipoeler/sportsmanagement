@@ -90,8 +90,6 @@ $result = $this->jsmdb->execute();
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');	
 	 for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
@@ -99,8 +97,6 @@ $result = $this->jsmdb->execute();
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');
 	if ( $playground_id ) {	 
         // Create and populate an object.
         $object = new stdClass();
@@ -109,9 +105,6 @@ $result = $this->jsmdb->execute();
         // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
 	 }
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');	 
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' seasonteam_id<br><pre>'.print_r($seasonteam_id , true).'</pre><br>','Notice');	 		 
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');	 		 		 
 		 
 	 }
 	}

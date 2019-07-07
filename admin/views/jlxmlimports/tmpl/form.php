@@ -1495,10 +1495,6 @@ if (isset($this->xml) && is_array($this->xml))
 			//===============================================================================================================
 			if (isset($positions) && (is_array($positions) && count($positions) > 0))
 			{
-				
-//echo ' positions<br><pre>'.print_r($positions,true).'</pre>';                             
-//echo ' this - positions<br><pre>'.print_r($this->positions,true).'</pre>';
-                
                 ?>
 				<fieldset>
 					<legend><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'); ?></strong></legend>

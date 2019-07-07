@@ -519,10 +519,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
-
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
         $fields = array(
@@ -534,7 +532,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -549,12 +546,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
-
-
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
         $fields = array(
@@ -566,11 +559,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
-
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
         $fields = array(
@@ -582,11 +572,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
-
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
         $fields = array(
@@ -598,12 +585,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
-
-
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
         $fields = array(
@@ -615,8 +598,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -631,8 +612,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -647,8 +626,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -663,8 +640,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -695,8 +670,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -711,8 +684,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
@@ -727,8 +698,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
     }

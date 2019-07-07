@@ -719,16 +719,7 @@ $option = $app->input->getCmd('option');
 			$query->order('a.name');    
                     
         $db->setQuery($query);
-        
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-        
-//        foreach ($result as $row)
-//        {
-//            $row->name = Text::_($row->name);
-//        }
-           
         return self::addGlobalSelectElement($result, $required);
         }
         
@@ -1330,10 +1321,8 @@ $option = $app->input->getCmd('option');
         if ( $project_id )
         {
         // ist es ein array ? 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');  
         if ( is_array($project_id) )
         {
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
         $ids = implode(",",array_map('intval', $project_id) ) ;
         $query->where('pt.project_id IN (' . $ids .')' );    
         } 

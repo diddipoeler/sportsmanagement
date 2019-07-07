@@ -14,16 +14,7 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-//echo 'task -> '.$this->task.'<br>';
-//echo 'sm_tables -><pre>'.print_r(sportsmanagementModeldatabasetool::$jsmtables,true).'</pre><br>';
-
-/*
-<div class="progress-label">
-*/
 ?>
-
-
-  
       
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p class="nowarning"><?php echo Text::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>

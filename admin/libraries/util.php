@@ -543,14 +543,6 @@ class jsmGCalendarUtil
 		}
 
 		$date = DateTime::createFromFormat($dateFormat.($allDay ? '' : ' '.$timeFormat), $string, new DateTimeZone($timezone));
-        
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' dateFormat<br><pre>'.print_r($dateFormat, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' allDay<br><pre>'.print_r($allDay, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timeFormat<br><pre>'.print_r($timeFormat, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' string<br><pre>'.print_r($string, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' date<br><pre>'.print_r($date, true).'</pre><br>','Notice');
-        
 		$date = jsmGCalendarUtil::getDate($date->format('U'), $allDay);
 
 		return $date;

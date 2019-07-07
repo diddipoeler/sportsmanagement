@@ -130,23 +130,12 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         $config = new stdClass;
         $configPath = JPATH_SITE.DIRECTORY_SEPARATOR.'configuration.php';
         $config->source	= File::read($configPath);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
-        
-//		if (!$this->_template) {
-//			$this->getTemplate();
-//		}
-
-		//if ($this->_template) {
+       
 			$file_name	= Factory::getApplication()->input->getVar('file_name');
-			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
-			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
             $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file_name;
 
 			if (file_exists($filePath)) {
 				jimport('joomla.filesystem.file');
-
-				//$item->extension_id	= $this->getState('extension.id');
 				$item->filename		= Factory::getApplication()->input->getVar('file_name');
 				$item->source		= File::read($filePath);
 			} else {

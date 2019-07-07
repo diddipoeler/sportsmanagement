@@ -186,17 +186,11 @@ class SMStatisticSumevents extends SMStatistic
         
         $res = new stdclass;
 		$db->setQuery($query_core);
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
 		$res->pagination_total = $db->loadResult();
         
         $query_core->clear('select');
         $query_core->select($query_select_details);
 		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'); 
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-
 		$db->setQuery($query_core, $limitstart, $limit);
 		$res->ranking = $db->loadObjectList();
 	
@@ -252,9 +246,6 @@ class SMStatisticSumevents extends SMStatistic
         $query_num->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id');
         
 		$db->setQuery($query_num, $limitstart, $limit);
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
-        
 		$res = $db->loadObjectList();
 
 		if (!empty($res))

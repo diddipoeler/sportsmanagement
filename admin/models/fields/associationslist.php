@@ -120,11 +120,6 @@ $db = sportsmanagementHelper::getDBConnection();
     $query .= " ORDER BY ordering, name";
     $db->setQuery($query);
     $items = $db->loadObjectList();
-
-// echo 'JJ_categoryArray items<pre>';
-//  	print_r($items);
-//  	echo '</pre>';
-    
     // establish the hierarchy of the menu
     $children = array ();
 
@@ -139,11 +134,6 @@ $db = sportsmanagementHelper::getDBConnection();
 
     // second pass - get an indent list of the items
     $array = $this->fbTreeRecurse(0, '', array (), $children, 10, 0, 1);
-    
-//    echo 'JJ_categoryArray array<pre>';
-//  	print_r($array);
-//  	echo '</pre>';
-	
     return $array;
     }    	
 	

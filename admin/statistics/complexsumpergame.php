@@ -158,15 +158,9 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
 		$query->where('ms.statistic_id IN ('. implode(',', $sqids) .')');
         $query->where('m.published = 1');
-        
         $db->setQuery($query);
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		$stats = $db->loadObjectList();
-		
 		$query = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 		$db->setQuery($query);
 		$gp = $db->loadObjectList('tpid');
 		
@@ -229,9 +223,6 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		}
 
 		$db->setQuery($query);
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		$details = $db->loadObjectList('teamplayer_id');
 
 		$res->ranking = array();

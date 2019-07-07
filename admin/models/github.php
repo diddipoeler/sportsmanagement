@@ -245,16 +245,12 @@ $direction = 'asc|desc';
 $page = 0;
 $perPage = 20;
 $milestones = $github->issues->milestones->getList($github_user, $github_repo);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' milestones <br><pre>'.print_r($milestones ,true).'</pre>'),'');        
-
 // Create an issue
 $labels = array('bug');
 //$github->issues->create($github_user, $github_repo, 'Found a bug', 'having a problem with this.', 'diddipoeler', '1', $labels);
 
 // List Stargazers.
 $starred = $github->activity->starring->getList($github_user, $github_repo);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' starred <br><pre>'.print_r($starred ,true).'</pre>'),'');        
-
 // List issues
 $filter = 'assigned|created|mentioned|subscribed';
 $state = 'open|closed';

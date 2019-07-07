@@ -47,28 +47,14 @@ class sportsmanagementModelround extends JSMModelAdmin
         $option = $jinput->getCmd('option');
        
         //// Get the input
-//        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         $pks = $jinput->get('cid',array(),'array');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         if ( !$pks )
         {
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE_NO_SELECT');
         }
         
-        //$post = $jinput->post;
         $post = $jinput->post->getArray();
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        $post = Factory::getApplication()->input->post->getArray(array());
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
-        
-        //$result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblRound = $this->getTable();

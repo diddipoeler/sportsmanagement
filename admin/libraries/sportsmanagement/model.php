@@ -85,13 +85,11 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
  */ 
 if ( $this->jsmapp->isClient('administrator') )
 {
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isClient('administrator'),true).'</pre>'),'');    
+
 }  
 if( $this->jsmapp->isClient('site') )
 {
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isClient('site'),true).'</pre>'),'');    
+
 }    
         }    
 

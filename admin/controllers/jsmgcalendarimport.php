@@ -39,7 +39,6 @@ class sportsmanagementControllerjsmgcalendarImport extends BaseController
 		$app = Factory::getApplication();
 		parent::__construct($config);
 
-	//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
 	}
     
 	/**

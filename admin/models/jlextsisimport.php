@@ -868,12 +868,8 @@ else
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
-			//$content = file_get_contents($linkresults);
-            //$app->enqueueMessage(Text::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
-            
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
-            //$app->enqueueMessage(Text::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}

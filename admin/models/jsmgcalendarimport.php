@@ -152,36 +152,13 @@ $calList = $cal->calendarList->listCalendarList();
     $code = $e->getCode(); // Returns '500';
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
 
 $tok = json_decode($token, true);
-
-/*
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tok<br><pre>'.print_r($tok,true).'</pre>'),'Notice');
-foreach ($calList['items'] as $cal)
-{
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($cal['id'],true).'</pre>'),'Notice');				    
-} 
-*/
-                   
-/*
-foreach ( $calList->getItems() as $calendarListEntry ) 
-{
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTitle<br><pre>'.print_r($calendarListEntry->getTitle(),true).'</pre>'),'Notice');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getColor<br><pre>'.print_r($calendarListEntry->getColor(),true).'</pre>'),'Notice');
-}
-*/
-
 
 while(true) 
 {
   foreach ($calList->getItems() as $calendarListEntry) 
   {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getSummary<br><pre>'.print_r($calendarListEntry->getSummary(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' backgroundColor<br><pre>'.print_r($calendarListEntry->backgroundColor,true).'</pre>'),'Notice');
-
 $params = new Registry();
 $params->set('refreshToken', $tok['refresh_token']);
 $params->set('client-id', $clientId);

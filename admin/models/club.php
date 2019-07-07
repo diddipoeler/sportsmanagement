@@ -108,21 +108,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
-        
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'coords <pre>'.print_r($coords, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts <pre>'.print_r($address_parts, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts2 <pre>'.print_r($address_parts2, true).'</pre><br>','');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'coords <pre>'.print_r($coords,true).'</pre>';    
-        $my_text .= 'address_parts <pre>'.print_r($address_parts,true).'</pre>';
-        $my_text .= 'address_parts2 <pre>'.print_r($address_parts2,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(sportsmanagementHelper::$_success_text, true).'</pre><br>','');
-        }
-        
+       
         if ( $coords )
         {
 		$tblClub->latitude = $coords['latitude'];
@@ -135,7 +121,6 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 			if(!$tblClub->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
                 $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}

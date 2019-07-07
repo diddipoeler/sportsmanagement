@@ -48,10 +48,7 @@ $query = $db->getQuery(true);
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -72,9 +69,7 @@ $query = $db->getQuery(true);
 				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
 			}
 		}
-
-        //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+      
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
        {

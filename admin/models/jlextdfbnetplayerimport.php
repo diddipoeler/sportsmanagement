@@ -2429,49 +2429,12 @@ $this->_datas['match'] = array_merge($exportmatch);
 // von mir 
 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 
-
-
-//   echo 'match<br><pre>';
-//   print_r($this->_datas['match']);
-//   echo '</pre>';
-  
-//   echo 'projectreferee<br><pre>';
-//   print_r($this->_datas['projectreferee']);
-//   echo '</pre>';
-  
-//   echo 'projectteam<br><pre>';
-//   print_r($this->_datas['projectteam']);
-//   echo '</pre>';
-  
-//   echo 'person<br><pre>';
-//   print_r($this->_datas['person']);
-//   echo '</pre>';
-  
-//   echo 'team<br><pre>';
-//   print_r($this->_datas['team']);
-//   echo '</pre>';
-  
-//   echo 'club<br><pre>';
-//   print_r($this->_datas['club']);
-//   echo '</pre>';
-  
-//   echo 'round<br><pre>';
-//   print_r($this->_datas['round']);
-//   echo '</pre>';
-    
-//   echo 'playground<br><pre>';
-//   print_r($this->_datas['playground']);
-//   echo '</pre>';  
-
 }
 
 }
 
 
     
-//  echo '<pre>';
-//  print_r($this->_datas);
-//  echo '</pre>';
 
 if ( $whichfile == 'playerfile' )
 {

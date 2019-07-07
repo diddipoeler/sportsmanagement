@@ -182,10 +182,6 @@ $this->jsmquery->clear();
     $mdlPerson = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
-
     switch ($post['persontype'])
             {
                 /**

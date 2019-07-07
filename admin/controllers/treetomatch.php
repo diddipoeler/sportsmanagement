@@ -61,10 +61,7 @@ class sportsmanagementControllerTreetomatch extends FormController
     $post = $this->jsmjinput->post->getArray();    
     $cid = $this->jsmjinput->get('cid',array(),'array');
     $post['id'] = $this->jsmjinput->get('nid');
-    
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($post,true).'</pre>'),'Notice');    
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
-    
+   
 		$model = $this->getModel('treetomatchs');
 		if($model->store($post))
 		{

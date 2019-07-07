@@ -66,11 +66,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
 
         $format = $this->element['format'] ? (string) $this->element['format'] : $this->defaultFormat;
         $validFormat = preg_replace('/%/', '', $format);
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' format -> <br><pre>'.print_r($format, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' validFormat -> <br><pre>'.print_r($validFormat, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' value vorher -> <br><pre>'.print_r($this->value, true).'</pre><br>','Notice');
-        
+      
         if ( $this->value == '' || is_null($this->value) )
         {
         $this->value = '0000-00-00';
@@ -85,9 +81,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
         {
         $this->value = '00-00-0000';    
         }
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' value nachher -> <br><pre>'.print_r($this->value, true).'</pre><br>','Notice');
-        
+       
         return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
     }
 

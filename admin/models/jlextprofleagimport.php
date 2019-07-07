@@ -1127,49 +1127,14 @@ $temp->pro_person_id = $value;
 $exportteamstaff[] = $temp;
 }
 
-//$exportteamplayer $exportmatchstaff
-echo "tempexportteamstaff -><pre>".print_r($tempexportteamstaff,true)."</pre>";
-echo "exportteamstaff -><pre>".print_r($exportteamstaff,true)."</pre>";
-echo "exportmatchstaff -><pre>".print_r($exportmatchstaff,true)."</pre>";
-echo "exportplayer -><pre>".print_r($exportplayer,true)."</pre>";
-echo "exportteamplayer -><pre>".print_r($exportteamplayer,true)."</pre>";
-echo "tempexportteamplayer -><pre>".print_r($tempexportteamplayer,true)."</pre>";
-
 $app->setUserState( $option.'tempexportteamplayer',$tempexportteamplayer);
-
 $app->setUserState( $option.'exportplayer', $exportplayer );
 $app->setUserState( $option.'exportteamplayer', $exportteamplayer );
-
-
 $app->setUserState( $option.'exportteamstaff', $exportteamstaff );
 $app->setUserState( $option.'exportreferee', $exportreferee );
-
 $app->setUserState( $option.'exportmatchplayer', $exportmatchplayer );
-
 $app->setUserState( $option.'exportmatchstaff', $exportmatchstaff );
-
 $app->setUserState( $option.'exportmatchevent', $exportmatchevent );
-
-// print "exportmatchevent<pre>"; 
-// print_r($exportmatchevent); 
-// print "</pre>";
-
-// print "exportpositiontemp<pre>"; 
-// print_r($exportpositiontemp); 
-// print "</pre>";
-// print "exportplayerpositiontemp<pre>"; 
-// print_r($exportplayerpositiontemp); 
-// print "</pre>";
-// print "tempexportteamplayer<pre>"; 
-// print_r($tempexportteamplayer); 
-// print "</pre>";
-// print "tempexportplayer<pre>"; 
-// print_r($tempexportplayer); 
-// print "</pre>";
-// print "tempexportreferee<pre>"; 
-// print_r($tempexportreferee); 
-// print "</pre>";
-
 
 // parentposition
 $temp = new stdClass();

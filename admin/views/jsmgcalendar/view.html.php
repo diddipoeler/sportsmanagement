@@ -42,70 +42,7 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
  */
 public function init ()
 	{
-	/*
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db	= sportsmanagementHelper::getDBConnection();
-		$uri = Factory::getURI();
-		$user = Factory::getUser();
-		$model = $this->getModel();
-        $starttime = microtime(); 
-	*/
-        /*
-$client = new Google_Client(); 
-$client->setApprovalPrompt('force');
-$client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
-$client->setClientSecret(ComponentHelper::getParams($option)->get('google_api_clientsecret',''));
-$client->setAccessType("offline");
-$client->addScope("https://www.googleapis.com/auth/calendar");
-$url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']; 
-$url = $url . '?' . http_build_query ($_GET); 
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url <br><pre>'.print_r($url ,true).'</pre>'),'');
-$client->setRedirectUri($url );
-$uri = $client->createAuthUrl();
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
-if (! $app->input->get('code'))
-{
-$app->redirect($client->createAuthUrl());
-$app->close();
-}
-*/
-/*	
-$client = new Google_Client();
-$client->setAccessType('online'); // default: offline
-$client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
-$client->setClientSecret(ComponentHelper::getParams($option)->get('google_api_clientsecret',''));
-$client->addScope("https://www.googleapis.com/auth/calendar");
-$client->setApprovalPrompt("force");
-//$client->setApplicationName('Webclient6');
-$client->setDeveloperKey(ComponentHelper::getParams($option)->get('google_api_developerkey',''));
-$client->setRedirectUri($_SERVER['HTTP_REFERER']);
 
-try {
-$service = new Google_Service_Calendar($client);
-$calendarList = $service->calendarList->listCalendarList();
-} catch(Exception $e){
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($e->getMessage() ,true).'</pre>'),'');			
-$auth_url = $client->createAuthUrl();
-header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
-		}
-*/	
-	/*
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($_GET['code'] ,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' scriptUri <br><pre>'.print_r($scriptUri ,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' googleclient <br><pre>'.print_r($client ,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_r($service ,true).'</pre>'),'');
-*/
-	/*
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-        
-        // Assign the Data
-		$this->form = $form;
-		$this->gcalendar = $item;
-        */
         // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
         if ($this->item->id < 1) 
         {

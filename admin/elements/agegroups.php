@@ -84,23 +84,12 @@ class JFormFieldagegroups extends JFormField
 		$db->setQuery($query);
 		$sports_type = $db->loadResult();
         
-        /*
-		$extension = "COM_SPORTSMANAGEMENT_agegroups";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
-		*/
-        
         if ($sports_type)
 		{
 		$query='SELECT id, name FROM #__'.$database_table.'_agegroup where sportstype_id = '.$sports_type.' ORDER BY name ASC ';
 		$db->setQuery($query);
-        //$app->enqueueMessage(Text::_('JFormFieldSportsTypes<br><pre>'.print_r($query,true).'</pre>'),'');
 		if (!$result = $db->loadObjectList())
 		{
-			//$app->enqueueMessage(Text::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
       sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}

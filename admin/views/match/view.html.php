@@ -534,13 +534,8 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $starters = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
         $starters_id = array_keys($starters);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
-
-
         // get players not already assigned to starter
         $not_assigned = $model->getTeamPersons($tid, $starters_id, 1);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
 
         if (!$not_assigned && !$starters_id) {
             $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'), '');
@@ -551,8 +546,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         }
 
         $projectpositions = $model->getProjectPositionsOptions(0, 1, $this->project_id);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' editlineup player projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
 
         if (!$projectpositions) {
             $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'), '');
@@ -596,21 +589,12 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
                 sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format) . ' - (' . Text::_($player->positionname) . ')');
         }
 
-        /*
-                $lists['all_players']=HTMLHelper::_(	'select.genericlist',$playersoptions,'roster[]',
-                                                'id="roster" style="font-size:12px;height:auto;min-width:15em;" class="inputbox" size="4"',
-                                                'value','text');
-        */
-
         // generate selection list for each position
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
         $starters = array();
         foreach ($projectpositions AS $position_id => $pos) {
             // get players assigned to this position
             $starters[$position_id] = $model->getRoster($tid, $pos->value, $this->item->id, $pos->text);
         }
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
 
         foreach ($starters AS $position_id => $players) {
             $options = array();
@@ -773,9 +757,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
             }
         }
-
-        //$app->enqueueMessage(Text::_('sportsmanagementViewMatch editreferees positions<br><pre>'.print_r($projectpositions,true).'</pre>'   ),'');
-        //$app->enqueueMessage(Text::_('sportsmanagementViewMatch editreferees lists<br><pre>'.print_r($lists,true).'</pre>'   ),'');
 
         $this->positions = $projectpositions;
         $this->lists = $lists;

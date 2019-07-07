@@ -181,7 +181,6 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 		$cid	= Factory::getApplication()->input->getVar('cid',array(),'post','array');
 		ArrayHelper::toInteger($cid);
 		$prediction_id	= Factory::getApplication()->input->getInt('prediction_id',(-1),'post');
-		//echo '<pre>'; print_r($cid); echo '</pre>';
 
 		if (count($cid) < 1)
 		{

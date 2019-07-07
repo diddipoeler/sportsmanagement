@@ -2859,7 +2859,6 @@ catch (Exception $e) {
     // catch any database errors.
 //    $db->transactionRollback();
     JErrorPage::render($e);
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
 }
 if ( $result_insert )
 {
@@ -3013,7 +3012,6 @@ self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -3095,10 +3093,6 @@ $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = 
 $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-
 $mdl = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
 $zaehler = 1;
 foreach( $result as $row )
@@ -3117,7 +3111,6 @@ self::$_success['Update Projektpositionen:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -3269,7 +3262,6 @@ $resultupdate = $db->execute();
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step','ENDE');
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
                   

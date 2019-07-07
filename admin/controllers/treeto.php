@@ -130,12 +130,9 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function generatenode()
 	{
 		Session::checkToken() or die(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		//$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication();
 		$post = $this->jsmjinput->post->getArray(array());
 		$model = $this->getModel('treeto');
 		$project_id = $this->jsmapp->getUserState($this->jsmoption.'.pid');
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
 		if ( $model->setGenerateNode() )
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_GENERATE_NODE');

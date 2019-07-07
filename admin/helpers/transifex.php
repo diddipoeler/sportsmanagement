@@ -41,8 +41,6 @@ private static $languages = array();
  */
 public static function updatelanguage ($data=null,$folder='de-DE')
 {
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-
 if ( $folder == 'de-DE' || $folder == 'en-GB' )
 {
 Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'),'Notice');
@@ -91,10 +89,8 @@ if (strpos($value->file, 'admin-com_') !== false)
 $mod = str_replace('admin-', '', $value->file);	
 $path = $adminpath;
 $path .= '/'.$folder.'.'.$mod;
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
 File::write($path, $content['data']);
 $value->images = 'ok.png';		
@@ -112,11 +108,9 @@ if (strpos( $value->file , 'site-com_') !== false)
 $mod = str_replace('site-', '', $value->file);	
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
 	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
 File::write($path, $content['data']);
 $value->images = 'ok.png';		
@@ -134,11 +128,9 @@ if (strpos($value->file, 'mod_') !== false)
 $mod = str_replace('admin-', '', $value->file);	
 $path = $sitepath;
 $path .= '/'.$folder.'.'.$mod;
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($path,true).'</pre>'),'Notice');		
 $value->folder = $path;	
 	
 $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');	
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' content<br><pre>'.print_r($content,true).'</pre>'),'Notice');			
 try{	
 File::write($path, $content['data']);
 $value->images = 'ok.png';		
@@ -168,9 +160,6 @@ return $data;
 public static function getData ($path)
 	{
 		$url = self::$apiUrl. '/' . $path;
-	
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url,true).'</pre>'),'Notice');
-	
 		$ch = curl_init();
 		$info = '';
 		$timeout = 120;
@@ -207,7 +196,6 @@ public static function getData ($path)
 public static function getLangCode ($lang, $inverse = false,$joomla=true)
 	{
 		$languages = self::getLangmap($joomla);
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' languages<br><pre>'.print_r($languages,true).'</pre>'),'Notice');
 		if ($inverse)
 		{
 			return array_search($lang, $languages);
