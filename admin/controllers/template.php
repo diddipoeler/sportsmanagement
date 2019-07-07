@@ -9,12 +9,12 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory; 
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper; 
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllertemplate
@@ -56,7 +56,7 @@ function remove()
 		$isMaster = Factory::getApplication()->input->getVar('isMaster',array(),'post','array');
 		ArrayHelper::toInteger($isMaster);
 		if (count($cid) < 1){
-			JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'), Log::ERROR, 'jsmerror');
 		}
 		foreach ($cid AS $id)
 		{

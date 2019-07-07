@@ -20,7 +20,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
 HTMLHelper::_( 'behavior.modal' );
 
-$url = 'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option. DS.'assets'.DIRECTORY_SEPARATOR.'icons'.DIRECTORY_SEPARATOR.'sislogo.png';
+$url = 'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'icons'.DIRECTORY_SEPARATOR.'sislogo.png';
 $alt = 'DFBNet';
 
 $attribs['width'] = '170px';

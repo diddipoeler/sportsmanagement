@@ -9,12 +9,12 @@
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerTreeto
@@ -155,7 +155,9 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	{
 		$cid = $this->jsmjinput->get('cid',array(),'array');
 		ArrayHelper::toInteger($cid);
-		if (count($cid) < 1){JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ISELECT_TO_DELETE'));}
+		if (count($cid) < 1){
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ISELECT_TO_DELETE'), Log::ERROR, 'jsmerror');
+			}
 		$model = $this->getModel('treeto');
 		if (!$model->delete($cid)){echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";}
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');

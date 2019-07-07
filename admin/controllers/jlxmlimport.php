@@ -161,7 +161,7 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 			$msg = '';
 			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
 			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'sportsmanagement_import.jlg';
+			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
            
 			if (File::exists($importFile))
 			{

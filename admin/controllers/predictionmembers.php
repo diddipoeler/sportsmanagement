@@ -15,6 +15,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerpredictionmembers
@@ -96,7 +97,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if ( $pgmid == 0 )
 		{
-			JError::raiseWarning( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR'), Log::WARNING, 'jsmerror');
 		}
 		$msg		= '';
 		$d			= ' - ';

@@ -19,6 +19,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllermatch
@@ -413,9 +414,7 @@ return false;
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			//$upload = Factory::getApplication()->input->getVar('import_package',null,'files','array');
             $upload = $app->input->files->get('import_package');
-            //$cid = Factory::getApplication()->input->getVar('cid',array(0),'','array');
             $match_id = Factory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
@@ -442,63 +441,61 @@ Folder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_s
 					}
 					if (!File::upload($tempFilePath,$dest))
 					{
-						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+                        Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 						return;
 					}
 					else
 					{
-						if (strtolower(File::getExt($dest))=='zip')
+						if ( strtolower(File::getExt($dest)) == 'zip' )
 						{
-							$result=JArchive::extract($dest,$extractdir);
+							$result = JArchive::extract($dest,$extractdir);
 							if ($result === false)
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 							File::delete($dest);
-							$src=Folder::files($extractdir,'jlg',false,true);
+							$src = Folder::files($extractdir,'jlg',false,true);
 							if(!count($src))
 							{
-								JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG');
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 								//todo: delete every extracted file / directory
 								return false;
 							}
-							if (strtolower(File::getExt($src[0]))=='jlg')
+							if ( strtolower(File::getExt($src[0])) == 'jlg' )
 							{
 								if (!@ rename($src[0],$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
+                                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'), Log::WARNING, 'jsmerror');
 								return;
 							}
 						}
 						else
 						{
-							if (strtolower(File::getExt($dest))=='csv')
+							if ( strtolower(File::getExt($dest)) == 'csv' )
 							{
 								if (!@ rename($dest,$importFile))
 								{
-									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+                                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						}
 					}
 			}
 		}
-        //$csv_file = $model->getPressebericht();  
-		//$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
-		$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
+		$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
 	    $this->setRedirect($link,$msg);    
         
         

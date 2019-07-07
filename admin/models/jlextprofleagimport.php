@@ -31,7 +31,7 @@ if (empty($maxImportMemory))
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' .DIRECTORY_SEPARATOR. 'SofeeXmlParser.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'SofeeXmlParser.php' );
 
 
 jimport('joomla.html.pane');

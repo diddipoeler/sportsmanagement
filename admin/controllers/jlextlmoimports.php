@@ -64,7 +64,7 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 			$msg = '';
 			$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$upload['name'];
 			$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'. DS.'sportsmanagement_import.l98';
+			$importFile = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98';
 			if ( File::exists($importFile) )
 			{
 				File::delete($importFile);
