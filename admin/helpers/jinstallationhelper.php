@@ -388,7 +388,7 @@ class JInstallationHelper
 		$ftpPaths = array();
 
 		// Connect and login to the FTP server (using binary transfer mode to be able to compare files)
-		$ftp =& JFTP::getInstance($host, $port, array('type'=>FTP_BINARY));
+		$ftp = JFTP::getInstance($host, $port, array('type'=>FTP_BINARY));
 		if (!$ftp->isConnected()) {
 			return JError::raiseError('31', 'NOCONNECT');
 		}
@@ -466,7 +466,7 @@ class JInstallationHelper
 	function FTPVerify($user, $pass, $root, $host='127.0.0.1', $port='21')
 	{
 		jimport('joomla.client.ftp');
-		$ftp = & JFTP::getInstance($host, $port);
+		$ftp = JFTP::getInstance($host, $port);
 
 		// Since the root path will be trimmed when it gets saved to configuration.php, we want to test with the same value as well
 		$root = rtrim($root, '/');
@@ -584,7 +584,7 @@ class JInstallationHelper
 		{
 			// Connect the FTP client
 			jimport('joomla.client.ftp');
-			$ftp = & JFTP::getInstance($srv['ftpHost'], $srv['ftpPort']);
+			$ftp = JFTP::getInstance($srv['ftpHost'], $srv['ftpPort']);
 			$ftp->login($srv['ftpUser'],$srv['ftpPassword']);
 
 			//Translate path for the FTP account
@@ -1421,7 +1421,7 @@ class JInstallationHelper
 		{
 			// Connect the FTP client
 			jimport('joomla.client.ftp');
-			$ftp = & JFTP::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
+			$ftp = JFTP::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
 			$ftp->login($app->getCfg('ftp_user'), $app->getCfg('ftp_pass'));
 
 			//Translate the destination path for the FTP account
