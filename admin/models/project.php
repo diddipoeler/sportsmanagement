@@ -333,10 +333,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $temp->id = $id;
             $export[] = $temp;
             }
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
+    
             $this->_tables_to_delete = array_merge($export);
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
-            
             // jetzt starten wir das löschen
             foreach( $this->_tables_to_delete as $row_to_delete )
             {
@@ -388,7 +386,7 @@ $query->from('#__sportsmanagement_user_extra_fields');
 $query->where('template_backend  LIKE '.$this->jsmdb->Quote(''.'project'.'').' ' );
 $db->setQuery($query);
 $result = $db->loadObjectList();        
-//$app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br>result <pre>'.print_r($result , true).'</pre><br>','Notice');		
+		
 for ($x=0; $x < count($pks); $x++)
 {
 foreach ($result as $id => $value)
@@ -408,11 +406,7 @@ catch (Exception $e)
 }		
 }
 }
-		
-		
-       
-        
-        //$result=true;
+
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblProject = & $this->getTable();

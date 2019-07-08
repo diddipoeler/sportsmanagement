@@ -9,11 +9,9 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
@@ -121,22 +119,9 @@ class sportsmanagementModelStatistics extends ListModel
 
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-        
+       
 		return $query;
-        
-        
-        
-        
 	}
-
-	
-
-
     
     /**
 	* Method to return the position stats array (value,text)
@@ -149,7 +134,6 @@ class sportsmanagementModelStatistics extends ListModel
 	{
 	   $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -162,8 +146,6 @@ class sportsmanagementModelStatistics extends ListModel
         $query->order('ps.ordering ASC');
 
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		return $db->loadObjectList();
 	}
@@ -179,22 +161,16 @@ class sportsmanagementModelStatistics extends ListModel
 	{
 	   $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
-        
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
         $query->from('#__sportsmanagement_statistic AS s');
         $query->join('LEFT','#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = '.(int) $id );
         $query->join('LEFT','#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
         $query->where('ps.id IS NULL');
         $query->order('s.ordering ASC');
-
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		return $db->loadObjectList();
 	}
     
@@ -208,24 +184,15 @@ class sportsmanagementModelStatistics extends ListModel
 	{
 	   $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
-        
         $query->select('id,name,id AS value,name AS text,short,class,note');
         $query->from('#__sportsmanagement_statistic');
         $query->order('name');
-                
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		return $db->loadObjectList();
 	}
-    
-    
-    
 
 }
 ?>

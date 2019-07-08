@@ -246,8 +246,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	$db = Factory::getDBO();
     $query = $db->getQuery(true);	
     $app = Factory::getApplication();    
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team_id,true).'</pre>'),'Notice');    
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
+   
 
 // holen wir uns das land der liga
 $query->clear();
@@ -532,16 +531,7 @@ try{
 
         $this->jsmdb->setQuery( $this->jsmquery );
         $result = $this->jsmdb->loadObject();
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = '_season_id<pre>'.print_r($this->_season_id,true).'</pre>';
-        $my_text .= 'project_art_id<pre>'.print_r($this->project_art_id,true).'</pre>';
-        $my_text .= 'sports_type_id<pre>'.print_r($this->sports_type_id,true).'</pre>';
-        $my_text .= 'country<pre>'.print_r($result->country,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-       
+      
         if ( $this->project_art_id == 3 )
         {
         $this->jsmquery->clear();
@@ -701,7 +691,6 @@ $query->from('#__sportsmanagement_project_team');
 $query->where('project_id = ' . $pid);
 $db->setQuery($query);
 $teamresult = $db->loadColumn();
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teamresult, true).'</pre><br>','Notice');
 
 $query->clear();
 $query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
@@ -743,7 +732,6 @@ $query->where('st.id NOT IN (' . implode(",",$teamresult) .')' );
 		$db->setQuery($query);
 		if (!$result = $db->loadObjectList())
 		{
-//			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS'),'Notice');			
 			return false;
 		}
@@ -751,11 +739,8 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
 		{
 			$teams->name = Text::_($teams->text);
 		}
-
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($result, true).'</pre><br>','Notice');
-		
-		return $result;
 	
+		return $result;
        
 	}
 
@@ -781,14 +766,7 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
         }
         
         $this->jsmquery->clear();
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'project_id<pre>'.print_r($project_id,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
-        }
-        
+       
         if ( $this->project_art_id == 3 )
         {
         // Select some fields
@@ -983,11 +961,6 @@ try{
         $query->where('p.id ='. $project_id);
 		
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 		return $db->loadResult();
 	}

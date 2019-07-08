@@ -159,10 +159,7 @@ $resultupdate = $this->jsmdb->execute();
         $post = $jinput->post->getArray(array());
         $this->_project_id	= $post['pid'];
         $this->persontype	= $post['persontype'];
-        
-//        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
+       
         $result = true;
 		
 // ###############################
@@ -246,8 +243,6 @@ $db->setQuery($query);
 			//if(!$tblPerson->store()) 
             if( !sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__) )
             {
-                $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
             else
@@ -262,7 +257,7 @@ $db->setQuery($query);
 		    
                 if (!$tblperson->store())
 	            {
-		        $app->enqueueMessage(__FILE__.' '.__METHOD__.' '.__LINE__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
+
 	            }
                 
                 // alten eintrag löschen
@@ -299,10 +294,8 @@ $db->setQuery($query);
                 
                 if (!$result)
 	            {
-		        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+
 	            }
-                
-                //$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($profile, true).'</pre><br>','Error');
                 
             }
 		}
@@ -334,21 +327,10 @@ $db->setQuery($query);
         $pid = $post['pid'];
 	$tpid = $post['tpid'];
         $persontype = $post['persontype'];
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' tpid<br><pre>'.print_r($tpid, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-    
-    
-    
-    //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
-    /* Ein Datenbankobjekt beziehen */
+
+    /** Ein Datenbankobjekt beziehen **/
     $db = Factory::getDbo();
-    /* Ein JDatabaseQuery Objekt beziehen */
+    /** Ein JDatabaseQuery Objekt beziehen **/
     $query = $db->getQuery(true);
     
 	$result = false;
@@ -358,7 +340,6 @@ $db->setQuery($query);
 	    {
 		$delete_all[] = $tpid[$value];    
 	    }
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
 	    
 			$cids = implode(',',$delete_all);
 	    $perspropos = implode(',',$pks);

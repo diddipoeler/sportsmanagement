@@ -16,7 +16,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
-
 /**
  * sportsmanagementModelPredictionTemplate
  * 
@@ -28,8 +27,6 @@ use Joomla\CMS\MVC\Model\AdminModel;
  */
 class sportsmanagementModelPredictionTemplate extends AdminModel
 {
-
-
 
     /**
 	 * Method to get a single record.
@@ -49,7 +46,6 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
         $option = $jinput->getCmd('option');
        
        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
- //       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($prediction_id,true).'</pre>'),'Notice');
         
 		if ($item = parent::getItem($pk))
 		{
@@ -104,7 +100,6 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictiontemplate', 'predictiontemplate', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 

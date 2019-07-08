@@ -161,13 +161,7 @@ class sportsmanagementModelRounds extends JSMModelList
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'r.roundcode')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
+       
         return $this->jsmquery;
 	}
 	
@@ -207,7 +201,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
          $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -250,7 +243,6 @@ try{
     {
 		$app = Factory::getApplication();
 $option = $app->input->getCmd('option');        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -410,8 +402,6 @@ $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
-        
       // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS value');
         $query->select('name AS text');
@@ -477,7 +467,6 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
     $roundrobin = new roundrobin($rrteams);
     $roundrobin->free_ticket = false; // free tickets off
     $roundrobin->create_matches();
-    //echo '<pre>',print_r($roundrobin->matches,true),'</pre><br>';
     
     if ($roundrobin->finished) 
     {

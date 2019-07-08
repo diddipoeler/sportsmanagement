@@ -9,19 +9,15 @@
  * @package   sportsmanagement
  * @subpackage models
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
-
 use Joomla\CMS\Filesystem\File;
-jimport('joomla.filesystem.folder');
-//jimport('joomla.filesystem.archive');
-
-
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -140,14 +136,10 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
             $filepath = $base_Dir . $filename;
 
             if (!copy($servercopy, $filepath)) {
-                $app->enqueueMessage(Text::_(get_class($this) . ' ' . __FUNCTION__ . 'file<br><pre>' . print_r($servercopy, true) . '</pre>'), 'Error');
-            } else {
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
 
+            } else {
                 $extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $directory;
                 $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $filename;
-
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
 
                 if (strtolower(File::getExt($dest)) == 'zip') {
                     if (version_compare(JSM_JVERSION, '4', 'eq')) {

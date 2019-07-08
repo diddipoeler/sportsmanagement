@@ -9,13 +9,10 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
 use Joomla\CMS\MVC\Model\ListModel;
-
 
 /**
  * sportsmanagementModelTeamPlayers
@@ -188,6 +185,12 @@ class sportsmanagementModelTeamPlayers extends ListModel
 		return $where;
 	}
 
+	/**
+	 * sportsmanagementModelTeamPlayers::getProjectTeamplayers()
+	 * 
+	 * @param integer $project_team_id
+	 * @return
+	 */
 	function getProjectTeamplayers($project_team_id = 0)
     {
         $option = Factory::getApplication()->input->getCmd('option');
@@ -196,9 +199,7 @@ class sportsmanagementModelTeamPlayers extends ListModel
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
-		
-        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-        
+
         // Select some fields
 		$query->select('pl.*');
         // From table
@@ -207,27 +208,14 @@ class sportsmanagementModelTeamPlayers extends ListModel
         $query->join('INNER', '#__sportsmanagement_project_team as pt on pt.id = tpl.projectteam_id');
         $query->where('pt.team_id = '.$project_team_id);
         $db->setQuery($query);
-        //$db->query();
         $result = $db->loadObjectList();
-        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
-                
+               
 		if (!$result)
 		{
-			//$this->setError($this->_db->getErrorMsg());
-            $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            $app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
 			return false;
 		}
 		return $result;
     }
-
-	
-	
-
-	
-
-	
-
 	
 	/**
 	 * remove specified players from team

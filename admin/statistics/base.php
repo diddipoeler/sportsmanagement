@@ -381,8 +381,7 @@ class SMStatistic extends JObject
 	   $app = Factory::getApplication();
 		$params = self::getParams();
         
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-        
+       
         $stat_ids = $params->get($id_field);
        
 		if (!count($stat_ids)) 
@@ -411,11 +410,6 @@ class SMStatistic extends JObject
 	   $app = Factory::getApplication();
 		$params = self::getParams();
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' id_field<br><pre>'.print_r($id_field,true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' get<br><pre>'.print_r($params->get($id_field),true).'</pre>'),'');
-        
-		//$event_ids = explode(',', $params->get($id_field));
         $event_ids = $params->get($id_field);
         
 		if (!count($event_ids)) 
@@ -505,10 +499,6 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	{
 	   $app = Factory::getApplication();
        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' baseparams<br><pre>'.print_r($this->baseparams,true).'</pre>'),'');
- }
        
 		$paramsdata = $this->baseparams;
 		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'statistics' .DIRECTORY_SEPARATOR. 'base.xml';
@@ -567,14 +557,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
             //$this->_params = self::getClassParams();
           $this->_params = $params;  
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($this->_params,true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
- }
-        
+       
 		return $this->_params;
 	}
 	
@@ -904,10 +887,6 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
         $query->where('p.published = 1');
         $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
 
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         
         if (isset($factors))
 		{
@@ -1022,10 +1001,6 @@ try{
             $query->where('p.sports_type_id = '.$sports_type_id);
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         
 		if (isset($factors))
 		{
@@ -1138,15 +1113,6 @@ try{
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
-        }
-
 		if ( $sids )
         {
         $quoted_sids = array();
@@ -1192,13 +1158,7 @@ $res = $db->loadResult();
 }        
         }
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }       
-        
+       
         
 		if (!isset($res))
 		{
@@ -1254,11 +1214,7 @@ $res = $db->loadResult();
 		{
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
-            
+           
 try {
 $stats = $db->loadObjectList();
 } catch (Exception $e) {
@@ -1297,12 +1253,6 @@ $stats = $db->loadObjectList();
             $query->group('tp.person_id');
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        //sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
             
 try{
 			$res = $db->loadObjectList('person_id');
@@ -1317,12 +1267,6 @@ try{
             $query->select('SUM(ms.value) AS value');
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
 
 try{            
 			$res['totals'] = new stdclass;
@@ -1436,12 +1380,6 @@ AND st.team_id = 9
         $comma_separated_mp = implode(",", $mp_array);
         $comma_separated_mptpid = implode(",", $mptpid_array);
         
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_mp<br><pre>'.print_r($res_mp,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_mp<br><pre>'.print_r($comma_separated_mp,true).'</pre>'),'');
-//}
 
 		$query_ms->clear();
         $query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
@@ -1454,10 +1392,7 @@ AND st.team_id = 9
         $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
         $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
         
-//        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-//        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-//        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-        
+       
         $query_ms->where('pt.project_id = ' . $project_id);
         $query_ms->where('st.team_id = ' . $team_id);
         
@@ -1472,12 +1407,6 @@ AND st.team_id = 9
         $comma_separated_ms = implode(",", $ms_array);
         $comma_separated_mstpid = implode(",", $mstpid_array);
  
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{       
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_ms<br><pre>'.print_r($res_ms,true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_ms<br><pre>'.print_r($comma_separated_ms,true).'</pre>'),'');
-//}
         $query_me->clear();
 		$query_me->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_me->from('#__sportsmanagement_match_event AS md');
@@ -1489,9 +1418,6 @@ AND st.team_id = 9
         $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
         $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
         
-//        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-//        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-//        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         
         $query_me->where('pt.project_id = ' . $project_id);
         $query_me->where('st.team_id = ' . $team_id);
@@ -1506,42 +1432,12 @@ AND st.team_id = 9
 		}
         $comma_separated_me = implode(",", $me_array);
         $comma_separated_metpid = implode(",", $metpid_array);
-        
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_me<br><pre>'.print_r($res_me,true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_me<br><pre>'.print_r($comma_separated_me,true).'</pre>'),'');
-//}
-        
-
-//        $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
-//        $subquery->from('#__sportsmanagement_match AS m');
-//        $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
-//        $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
-//        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
-//        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
-//        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
-//        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
-//        $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-//        $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-//        $subquery->where('st.team_id = '.$team_id);
-//        $subquery->where('p.id = ' . $project_id);
-//        $subquery->where('p.published = 1');
-//        $subquery->where('m.published = 1');
-//        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
-        
+       
         $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
         $subquery->from('#__sportsmanagement_match AS m');
         $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
         $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
-//        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
-//        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
-//        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
-        
-//        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
         $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ');
-        
         $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         
@@ -1575,17 +1471,11 @@ AND st.team_id = 9
         $subquery->where('p.id = ' . $project_id);
         $subquery->where('p.published = 1');
         $subquery->where('m.published = 1');
-//        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
         
         $query->select('pse.person_id, COUNT(pse.mid) AS value');
         $query->from('( '.$subquery.' ) AS pse');
         $query->group('pse.tpid');
         
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//}       
                 
 		$db->setQuery($query);
 		$res = $db->loadObjectList('person_id');
@@ -1641,10 +1531,6 @@ AND st.team_id = 9
                
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }
         
 		$res = $db->loadObjectList('person_id');
 
@@ -1655,10 +1541,7 @@ AND st.team_id = 9
         
 		$db->setQuery($query);
  
- if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{       
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }
+ 
         
 		$res['totals'] = new stdclass;
 		$res['totals']->value = $db->loadResult();

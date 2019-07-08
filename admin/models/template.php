@@ -9,14 +9,9 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
-
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModeltemplate
@@ -68,14 +63,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$current = $db->loadResultArray();
 }
 
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         if ( $current )
         {
         $current = implode("','",$current);
         }
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
-        
         
         // Select some fields
 		$query2->select('id as value, title as text');

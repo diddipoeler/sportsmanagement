@@ -13,11 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
- 
 use Joomla\CMS\MVC\Model\AdminModel;
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
- 
 
 /**
  * sportsmanagementModelsmextxmleditor
@@ -47,7 +45,6 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smextxmleditor', 'smextxmleditor', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -98,8 +95,7 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         jimport('joomla.filesystem.file');
-        //$app->enqueueMessage(Text::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+       
         $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$data['filename'];
         //$return = File::write($filePath, $data['source']);
         if ( !File::write($filePath, $data['source']) )

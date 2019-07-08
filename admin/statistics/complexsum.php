@@ -255,7 +255,6 @@ class SMStatisticComplexsum extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$details = $db->loadObjectList('teamplayer_id');
 
@@ -420,7 +419,6 @@ $stats = $db->loadObjectList();
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		
@@ -455,7 +453,6 @@ $stats = $db->loadObjectList();
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		

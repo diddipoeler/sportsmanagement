@@ -70,7 +70,6 @@ class sportsmanagementModelteamplayer extends AdminModel
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamplayer', 'teamplayer', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -127,9 +126,6 @@ class sportsmanagementModelteamplayer extends AdminModel
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
         
-        $app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -185,8 +181,7 @@ class sportsmanagementModelteamplayer extends AdminModel
 	 */
 	public function delete(&$pks)
 	{
-	$app =& Factory::getApplication();
-    $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app = Factory::getApplication();
     /* Ein Datenbankobjekt beziehen */
     $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -196,7 +191,6 @@ class sportsmanagementModelteamplayer extends AdminModel
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms,me
             FROM #__sportsmanagement_team_player as m    
@@ -211,7 +205,6 @@ class sportsmanagementModelteamplayer extends AdminModel
             $db->execute();
             if (!$db->execute()) 
             {
-                $app->enqueueMessage(Text::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
@@ -241,10 +234,7 @@ class sportsmanagementModelteamplayer extends AdminModel
        $db		= $this->getDbo();
 	   $query	= $db->getQuery(true);
        $query2	= $db->getQuery(true);
-        
-       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        // update personendaten
        // Fields to update.
     $fields = array(
@@ -277,7 +267,7 @@ class sportsmanagementModelteamplayer extends AdminModel
   
  if (!$db->execute())
 		{
-		    $app->enqueueMessage(Text::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
 // update personendaten pro saison
@@ -297,7 +287,7 @@ class sportsmanagementModelteamplayer extends AdminModel
  
  if (!$db->execute())
 		{
-		    $app->enqueueMessage(Text::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
                 
         

@@ -81,11 +81,6 @@ class SMStatisticPercentage extends SMStatistic
 			$ids['den'][] = (int)$s;
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ids<br><pre>'.print_r($ids,true).'</pre>'),'');
-        }
-        
 		return $ids;
 	}
 
@@ -274,7 +269,7 @@ class SMStatisticPercentage extends SMStatistic
 		}
         $query_num->group('tp.id');
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),''); 
+
 		
         $query_den->select('SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
         $query_den->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -296,7 +291,6 @@ class SMStatisticPercentage extends SMStatistic
         $query_den->where('ms.value > 0');
         $query_den->group('tp.id');
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_den<br><pre>'.print_r($query_den->dump(),true).'</pre>'),'');
         
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
  		$query_select_details	= '(n.num / d.den) AS total, 1 as rank,'
@@ -328,7 +322,6 @@ class SMStatisticPercentage extends SMStatistic
 		$res = new stdclass;
 		$db->setQuery($query_core);
         
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
         
@@ -338,7 +331,6 @@ class SMStatisticPercentage extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->ranking = $db->loadObjectList();
 	

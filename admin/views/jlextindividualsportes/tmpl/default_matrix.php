@@ -88,18 +88,6 @@ $teams= $this->ProjectTeams;
 $homeplayer = $this->getHomePlayer;
 $awayplayer = $this->getAwayPlayer;
 
-// echo 'homeplayer<br><pre>';
-// print_r($homeplayer);
-// echo '</pre>';
-
-// echo 'awayplayer<br><pre>';
-// print_r($awayplayer);
-// echo '</pre>';
-
- //echo 'matches<br><pre>';
-// print_r($this->matches);
-// echo '</pre>';
-
 $matrix ='';
 
 //if (count($homeplayer) <= 20  && $homeplayer ) 

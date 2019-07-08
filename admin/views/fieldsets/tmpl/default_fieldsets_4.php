@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage fieldsets
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -360,13 +361,11 @@ case 'teamperson':
 
 // das ist der standard
     default:
-//echo 'fieldset -><pre> '.print_r($this->fieldset,true).'</pre>';
         ?>
 
         <table class="table">
         <?php
         foreach ($this->form->getFieldset($this->fieldset) as $field):
-            //echo 'name -><pre> '.print_r($field,true).'</pre>';
             ?>
                 <tr>
                     <td class="key"><?php echo $field->label; ?></td>

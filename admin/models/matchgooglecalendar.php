@@ -93,7 +93,7 @@ static $_project_id = 0;
 //$options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
 //$options->set('clientsecret', $google_client_secret);
 $google = new JGoogle($options);
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' google<br><pre>'.print_r($google, true).'</pre><br>','Notice');    
+   
 
 
 $oauth = new JOAuth2Client($options,null,$input);
@@ -103,7 +103,7 @@ $options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
 $options->set('clientsecret', $google_client_secret);
 
 $result = $auth->authenticate();
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','Notice');
+
     
     //$oauth = new JOAuth2Client($options, $http, $input);
     //$auth = new JGoogleAuthOauth2($options, $oauth);
@@ -134,7 +134,7 @@ $object->setOption('redirecturi', Uri::root() );
 // Get a calendar API object
 //$calendar = $google->data('calendar');
 
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' isAuth<br><pre>'.print_r($calendar->isAuth(), true).'</pre><br>','Notice');
+
 
 /*
 // If the client hasn't been authenticated via OAuth yet, redirect to the appropriate URL and terminate the program
@@ -151,23 +151,12 @@ if (!$calendar->isAuth())
 
 $result = $object->listCalendars($options);
 
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object, true).'</pre><br>','Notice');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' options<br><pre>'.print_r($options, true).'</pre><br>','Notice');
 
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url, true).'</pre><br>','Notice');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','Notice');
+
+
 
     
-    /*
-    $init_jgoogle = new JGoogle($gh_options,$auth);
-    $app->enqueueMessage(__METHOD__.' '.__LINE__.' $init_jgoogle<br><pre>'.print_r($init_jgoogle, true).'</pre><br>','Notice');
-    
-    $ini_google = new JGoogleDataCalendar($gh_options,$auth);    
-    $ini_google_calendar = $ini_google->listCalendars($gh_options);
-    
-    $app->enqueueMessage(__METHOD__.' '.__LINE__.' ini_google<br><pre>'.print_r($ini_google, true).'</pre><br>','Notice');
-    $app->enqueueMessage(__METHOD__.' '.__LINE__.' ini_google_calendar<br><pre>'.print_r($ini_google_calendar, true).'</pre><br>','Notice');
-    */    
+      
     }  
     
     

@@ -9,12 +9,10 @@
  * @subpackage models
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Model\ListModel;
 
@@ -60,7 +58,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
         // Initialise variables.
         $app = Factory::getApplication('administrator');
 
-        //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
         // Load the filter state.
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
@@ -71,10 +68,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
         $image_folder = $this->getUserStateFromRequest($this->context . '.filter.image_folder', 'filter_image_folder', '');
         $this->setState('filter.image_folder', $image_folder);
 
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-//		// Load the parameters.
-//		$params = ComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
         // List state information.
         parent::populateState('obj.name', 'asc');
     }
@@ -88,11 +81,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
 
-        //$search	= $this->getState('filter.search');
-        //$filter_state = $this->getState('filter.state');
-        //$filter_image_folder = $this->getState('filter.image_folder');
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -111,15 +99,11 @@ class sportsmanagementModelsmimageimports extends ListModel {
             $query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
         }
         if ($this->getState('filter.image_folder')) {
-            //$query->where("obj.folder LIKE '".$this->getState('filter.image_folder')."'");	
             $query->where('obj.folder LIKE ' . $this->_db->Quote('' . $this->getState('filter.image_folder') . ''));
         }
 
         $query->order($db->escape($this->getState('list.ordering', 'name')) . ' ' .
                 $db->escape($this->getState('list.direction', 'ASC')));
-
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 
         return $query;
     }
@@ -146,8 +130,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
             return array();
         }
-
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
         return $result;
     }
@@ -184,23 +166,15 @@ class sportsmanagementModelsmimageimports extends ListModel {
 
 
             if (curl_errno($curl)) {
-                // moving to display page to display curl errors
-                //echo curl_errno($curl) ;
-                //echo curl_error($curl);
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+
             } else {
                 $content = curl_exec($curl);
-                //print_r($content);
                 curl_close($curl);
             }
 
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen')) {
             $content = file_get_contents($datei);
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else {
-            //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
         }
 
@@ -215,9 +189,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
             //$doc = DOMDocument::loadXML($content);
             $doc = new DOMDocument();
             $doc->loadXML($content);
-
-            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
-
             $doc->save(JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml');
         }
     }
@@ -251,10 +222,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
 
             $picturedescription = (string) $picture->picture;
 
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
             $temp = new stdClass();
             $temp->id = $i;
             $temp->picture = $picturedescription;
@@ -284,44 +251,6 @@ class sportsmanagementModelsmimageimports extends ListModel {
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
             }
         }
-
-        /*
-          foreach( $xml->document->pictures as $picture )
-          {
-          $name = $picture->getElementByPath('picture');
-          $attributes = $name->attributes();
-          $picturedescription = $name->data();
-          $folder = $attributes['folder'];
-          $directory = $attributes['directory'];
-          $file = $attributes['file'];
-
-          $temp = new stdClass();
-          $temp->id = $i;
-          $temp->picture = $picturedescription;
-          $temp->folder = $folder;
-          $temp->directory = $directory;
-          $temp->file = $file;
-          $export[] = $temp;
-          $files = array_merge($export);
-          $i++;
-
-          // Create and populate an object.
-          $temp = new stdClass();
-          $temp->name = $picturedescription;
-          $temp->file = $file;
-          $temp->directory = $directory;
-          $temp->folder = $folder;
-          $temp->published = 0;
-          // Insert the object
-          $result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
-
-
-
-
-          }
-         */
-
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
 
         return $files;
     }

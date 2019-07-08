@@ -66,10 +66,6 @@ class SMStatisticEventPergame extends SMStatistic
 		$num = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
 		$den = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
-}
 
 		return self::formatValue($num, $den, SMStatistic::getPrecision());
 	}
@@ -285,7 +281,6 @@ class SMStatisticEventPergame extends SMStatistic
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids,$select,FALSE);
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$num = $db->loadResult();
 		
@@ -294,7 +289,6 @@ class SMStatisticEventPergame extends SMStatistic
         
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$den = $db->loadResult();
 	

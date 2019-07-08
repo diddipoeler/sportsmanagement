@@ -9,7 +9,6 @@
  * @subpackage projectreferee
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper; 
 use Joomla\CMS\Language\Text;
@@ -30,13 +29,10 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& Factory::getApplication();
+		$app = Factory::getApplication();
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        
-        //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -46,7 +42,6 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
 
 			if(!$tblPerson->store()) {
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
 			}
 		}
@@ -62,18 +57,16 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$app =& Factory::getApplication();
-    $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
-    /* Ein Datenbankobjekt beziehen */
+	$app = Factory::getApplication();
+    /** Ein Datenbankobjekt beziehen **/
     $db = Factory::getDbo();
-    /* Ein JDatabaseQuery Objekt beziehen */
+    /** Ein JDatabaseQuery Objekt beziehen /*/
     $query = $db->getQuery(true);
     
 	$result = false;
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mre
             FROM #__sportsmanagement_project_referee as m    
@@ -84,18 +77,11 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
             $db->execute();
             if (!$db->execute()) 
             {
-                $app->enqueueMessage(Text::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
             
         }  
-    
-    
-    //if ( $result )
-    //{        
-    //return parent::delete($pks);
-    //}
       return parent::delete($pks);   
    } 
    

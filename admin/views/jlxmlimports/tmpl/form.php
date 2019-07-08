@@ -28,12 +28,9 @@ else
 $visible = 'hidden';
 }
 
-//echo ' xml <br><pre>'.print_r($this->xml,true).'</pre>';
-
 if (isset($this->xml) && is_array($this->xml))
 {
 	{
-		//echo 'this<pre>'.print_r($this,true).'</pre>';
 		if (array_key_exists('exportversion',$this->xml))
 		{
 			$exportversion =& $this->xml['exportversion'];
@@ -737,8 +734,7 @@ if (isset($this->xml) && is_array($this->xml))
 							$matchingTeam_ID = 0;
 							$matchingTeam_ClubID = 0;
                             $matchingTeam_INFO = '';
-//echo ' count teams<br><pre>'.print_r(count($this->teams),true).'</pre>';
-//echo ' teams<br><pre>'.print_r($this->teams,true).'</pre>';                             
+                            
 							if (count($this->teams) > 0)
 							{
 								foreach ($this->teams AS $team)

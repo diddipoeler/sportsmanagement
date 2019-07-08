@@ -9,7 +9,6 @@
  * @subpackage season
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
@@ -69,8 +68,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');    
         $persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
         
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams, true).'</pre><br>','');
+
         
         foreach ( $pks as $key => $value )
         {
@@ -191,9 +189,7 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()
         $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
         $season_id = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
         
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+
         
         foreach ( $pks as $key => $value )
         {

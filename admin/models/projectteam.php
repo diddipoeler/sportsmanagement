@@ -40,10 +40,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
-        
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks , true).'</pre><br>','Notice');
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');		
-	
+
 	for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
@@ -51,8 +48,6 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 		$proTeam->load( $projectteam_id );
 		$seasonteam_id	= $proTeam->team_id; 
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
-        //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' playground_id<br><pre>'.print_r($playground_id , true).'</pre><br>','Notice');
         
 		if ( $playground_id ) {
 // Fields to update.
@@ -120,13 +115,11 @@ $result = $this->jsmdb->execute();
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
 
 $project_id = $post['pid'];
-//$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
 $this->jsmquery->clear();
 $this->jsmquery->select('l.associations');
 $this->jsmquery->from('#__sportsmanagement_league as l');
@@ -134,7 +127,6 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.league_id 
 $this->jsmquery->where('p.id = '.$project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $associations = $this->jsmdb->loadResult();
-//$app->enqueueMessage('associations <br><pre>'.print_r($associations , true).'</pre><br>','Notice');
        
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -160,8 +152,6 @@ $associations = $this->jsmdb->loadResult();
 			$tblProjectteam->diffgoals_finally = $post['diffgoals_finally' . $pks[$x]];
 
 			if(!$tblProjectteam->store()) {
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		
@@ -215,10 +205,6 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
-        
         for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
@@ -235,7 +221,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }
@@ -266,7 +252,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }    
@@ -297,7 +283,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }        
@@ -321,17 +307,12 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $db = Factory::getDbo();
         $post = Factory::getApplication()->input->post->getArray(array());
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
-        
+
         for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
         $projectteam_division_id = $post['division_id' . $pks[$x]];  
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_division_id<br><pre>'.print_r($projectteam_division_id , true).'</pre><br>','Notice');
-        
+
         // Fields to update.
         $query = $db->getQuery(true);
         $query->clear();
@@ -347,7 +328,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $result = $db->execute();  
         if ( !$result )
 		{
-			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+
 		}
         
         $query->clear();
@@ -363,7 +344,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $result = $db->execute();  
         if ( !$result )
 		{
-			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+
 		}
         
         
@@ -390,12 +371,11 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $query = Factory::getDbo()->getQuery(true);
         if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
         {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+
         }
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
         $delete_team = $post['teamslist'];
-        
 
         if ( $delete_team )
         {
@@ -406,8 +386,6 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
           $_pro_teams_to_delete[] = $row->projectteamid;  
           }
          } 
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_to_delete<br><pre>'.print_r($_pro_teams_to_delete , true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_team<br><pre>'.print_r($delete_team , true).'</pre><br>','Notice');
         
         foreach ( $assign_id as $key => $value )
         {

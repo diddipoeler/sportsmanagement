@@ -9,7 +9,6 @@
  * @subpackage predictionmember
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
@@ -57,8 +56,6 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
   $post	= Factory::getApplication()->input->post->getArray(array());
 	$cid	= Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
   $prediction_id = $post['cid'];
-  //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
-  
   
   foreach ( $post['prediction_members'] as $key => $value )
   {
@@ -73,11 +70,8 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 if ( !$result )
 {
 	
-  //$app->enqueueMessage(Text::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
-  //$table = 'predictionmember';
   $table = 'predictionentry';
   $rowproject = Table::getInstance( $table, 'sportsmanagementTable' );
-  //$rowproject->load( $value );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;
   $rowproject->registerDate = HTMLHelper::date(time(),'%Y-%m-%d %H:%M:%S');
@@ -86,11 +80,11 @@ if ( !$result )
   $rowproject->modified_by = $user->get('id');
   if ( !$rowproject->store() )
   {
-  //echo 'project -> '.$value. ' nicht gesichert <br>';
+
   }
   else
   {
-  //echo 'project -> '.$value. ' gesichert <br>';
+
   }
    
 }
@@ -378,7 +372,7 @@ $mailer->setBody($message);
 $send = $mailer->Send();
 
 if ( $send !== true ) {
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+
 } else {
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email),'notice');
 }
@@ -471,14 +465,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
-		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 		$query =	'	SELECT user_id
 						FROM #__sportsmanagement_prediction_member
 						WHERE	id IN (' . $cids . ')';
-		//echo $query . '<br />';
+
 		$db->setQuery( $query );
 		if ( !$cids = $this->_db->loadResultArray() ) { return false; }
-		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 
 		ArrayHelper::toInteger( $cids );
 		$cids = implode( ',', $cids );
@@ -488,7 +480,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 								u.block = 0 AND
 								u.id IN (' . $cids . ')
 						ORDER BY u.email';
-		//echo $query . '<br />';
+
 		$db->setQuery( $query );
     
      if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -581,45 +573,28 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get( 'id' ) . ' ) )';
 
 			$this->_db->setQuery( $query );
-            
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
-            
+           
 			if ( !$this->_db->execute() )
 			{
-				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
 			// create and send mail about approving member here
-
 			$systemAdminsMails = $this->getSystemAdminsEMailAdresses();
-			//echo '<br /><pre>~' . print_r( $systemAdminsMails, true ) . '~</pre><br />';
-
 			$predictionGameAdminsMails = $this->getPredictionGameAdminsEMailAdresses( $predictionGameID );
-			//echo '<br /><pre>~' . print_r( $predictionGameAdminsMails, true ) . '~</pre><br />';
-
 			$predictionGameMembersMails = $this->getPredictionMembersEMailAdresses( $cids );
-			//echo '<br /><pre>~' . print_r( $predictionGameMembersMails, true ) . '~</pre><br />';
 
 			foreach ( $cid as $predictionMemberID )
 			{
-				//echo '<br /><pre>~' . print_r( $predictionMemberID, true ) . '~</pre><br />';
-
 				$predictionGameMemberMail = $this->getPredictionMemberEMailAdress( $predictionMemberID );
-				//echo '<br /><pre>~' . print_r( $predictionGameMemberMail, true ) . '~</pre><br />';
-
 				if ( count( $predictionGameMemberMail ) > 0 )
 				{
 					//Fetch the mail object
-					$mailer =& Factory::getMailer();
+					$mailer = Factory::getMailer();
 
 					//Set a sender
-					$config =& Factory::getConfig();
+					$config = Factory::getConfig();
 					$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
-					//echo '<br /><pre>~' . print_r( $sender, true ) . '~</pre><br />';
 					$mailer->setSender( $sender );
 
 					//set Member as recipient
@@ -633,10 +608,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							$lastMailAdress = $predictionGameMember_EMail;
 						}
 					}
-					//echo '<br />recipient<pre>~' . print_r( $recipient, true ) . '~</pre><br />';
 					$mailer->addRecipient( $recipient );
-					//unset( $recipient );
-
 					//set system admins as BCC recipients
 					$lastMailAdress = '';
 					$recipientAdmins = array();
@@ -649,8 +621,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						}
 					}
 					$lastMailAdress = '';
-					//echo '<br />recipientAdmins<pre>~' . print_r( $recipientAdmins, true ) . '~</pre><br />';
-
 					//set predictiongame admins as BCC recipients
 					foreach ( $predictionGameAdminsMails AS $predictionGameAdminMail )
 					{
@@ -660,12 +630,9 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							$lastMailAdress = $predictionGameAdminMail;
 						}
 					}
-					//echo '<br />recipientAdmins<pre>~' . print_r( $recipientAdmins, true ) . '~</pre><br />';
 					$mailer->addBCC( $recipientAdmins );
 					unset( $recipientAdmins );
-
 					//Create the mail
-					//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
 					if ( $publish == 1 )
 					{
 						$mailer->setSubject( Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
@@ -677,17 +644,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						$body = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
 					}
 					$mailer->setBody( $body );
-					echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
-
 					// Optional file attached
 					//$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
-					//echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
 
 					//Sending the mail
 					$send =& $mailer->Send();
 					if ( $send !== true )
 					{
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
 						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
 					}
 					else
@@ -729,8 +692,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )
 			{
-				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -776,17 +737,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			{
 				return true;
 			}
-			//echo '<pre>'; print_r($result); echo '</pre>';
-
 			ArrayHelper::toInteger($result);
 			$cids = implode(',',$result);
 			$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
-			//echo $query . '<br />'; return true;
 			$this->_db->setQuery($query);
 			if (!$this->_db->execute())
 			{
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}

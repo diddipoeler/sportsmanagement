@@ -71,7 +71,6 @@ class sportsmanagementModelpredictionproject extends AdminModel
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictionproject', 'predictionproject', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -144,7 +143,6 @@ class sportsmanagementModelpredictionproject extends AdminModel
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -169,19 +167,7 @@ class sportsmanagementModelpredictionproject extends AdminModel
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
-       
-       //$project_id = $app->getUserState( "$option.pid", '0' );
-       
-       $app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       $app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       /*
-       if ( !$data['id'] )
-       {
-       $data['project_id'] = $project_id;
-       }
-       */
-       
+      
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -189,22 +175,22 @@ class sportsmanagementModelpredictionproject extends AdminModel
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
-        
-        //$app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+       
         // Proceed with the save
 		return parent::save($data);   
     }
     
     
+	/**
+	 * sportsmanagementModelpredictionproject::delete()
+	 * 
+	 * @param mixed $pks
+	 * @return
+	 */
 	public function delete(&$pks)
 	{
 	$app = Factory::getApplication();
-    //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
-    
     return parent::delete($pks);
-    
-         
    } 
    
     

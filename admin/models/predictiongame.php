@@ -9,11 +9,7 @@
  * @subpackage models
  */
 
-
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla modelform library
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -41,19 +37,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   //$option = Factory::getApplication()->input->getCmd('option');
-	//$app	= Factory::getApplication();
-    // Get a db connection.
-        //$db = Factory::getDbo();
-       //$date = Factory::getDate();
-	   //$user = Factory::getUser();
        $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $this->jsmdate->toSql();
 	   $data['modified_by'] = $this->jsmuser->get('id');
        
-       //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+
        
        // zuerst sichern, damit wir bei einer neuanlage die id haben
  try{
@@ -99,9 +88,6 @@ catch (Exception $e)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
-        $app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
-        
     }
   
 	
@@ -510,8 +496,6 @@ catch (Exception $e)
 		//$this->_db->setQuery( $query );
 		if ( !$result )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result= false;
 		}
 
@@ -581,8 +565,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 
 					foreach ($predictionProjectResultList AS $predictionProjectResult)
 					{
-						//echo '<br /><pre>~' . print_r($predictionProjectResult,true) . '~</pre><br />';
-
 						$result_home	= $predictionProjectResult->team1_result;
 						$result_away	= $predictionProjectResult->team2_result;
 
@@ -734,9 +716,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						//$this->_db->setQuery($query);
 						if (!$result)
                         {
-                            //$this->setError($this->_db->getErrorMsg());
-                            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                            $result= false;
+                            $result = false;
                             }
 					}
 				}

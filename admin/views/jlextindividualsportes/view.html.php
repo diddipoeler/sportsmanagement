@@ -70,11 +70,9 @@ switch ($this->getLayout()) {
         $mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($rid);
         
-        //$this->app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');
         
         $this->model->checkGames($projectws, $match_id, $rid, $projectteam1_id, $projectteam2_id);
         
-        //$this->app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
         
         $matches = $this->get('Items');
 		$total = $this->get('Total');
@@ -99,10 +97,6 @@ switch ($this->getLayout()) {
 			$lists['awayplayer'] = $teams;
 			unset($teams);    
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' lists<br><pre>'.print_r($lists,true).'</pre>'),'');
-        }
         
         $this->matches	= $matches;
         $this->pagination	= $pagination;

@@ -9,7 +9,6 @@
  * @subpackage predictiontemplates
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
@@ -120,13 +119,7 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'tmpl.title')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
- 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-		
+	
 		return $this->jsmquery;
 	}
 

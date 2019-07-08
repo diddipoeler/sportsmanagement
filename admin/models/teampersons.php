@@ -302,7 +302,7 @@ try {
 catch (Exception $e) {
     // catch any database errors.
 	$result = false;
-	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
+
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
@@ -378,10 +378,7 @@ catch (Exception $e) {
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
-		
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id -> '.$project_team_id.'<br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id -> '.$season_id.'<br>','Notice');
-        
+       
         // Select some fields
 	$query->select('ppl.*');
         // From table
@@ -398,7 +395,6 @@ catch (Exception $e) {
 catch (Exception $e) {
     // catch any database errors.
 	$result = false;
-	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }

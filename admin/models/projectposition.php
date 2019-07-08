@@ -49,10 +49,8 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 	function store($data)
 	{
 		$app = Factory::getApplication();
-        echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
-		$result=true;
-		//$peid=(isset($data['project_teamslist']));
-		$peid=(isset($data['project_positionslist']));
+		$result = true;
+		$peid = (isset($data['project_positionslist']));
 		if ($peid==null)
 		{
 			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id'];
