@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory; 
 use Joomla\CMS\Language\Text;
@@ -46,9 +45,6 @@ class sportsmanagementModelteam extends JSMModelAdmin
         $this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
-        
-        //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id ,true).'</pre>'),'');
-	
 	}
     
     /**
@@ -80,7 +76,6 @@ catch (Exception $e){
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$result = false;
 }	
 	    
@@ -115,10 +110,8 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
         $this->jsmquery->where('st.id = '.$pro_team_id); 
         }
         
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
-
 		$this->jsmdb->setQuery($this->jsmquery);
-		//return $this->jsmdb->loadObject();
+
 try{
             $result = $this->jsmdb->loadObject();
 		 }
@@ -186,13 +179,6 @@ catch (Exception $e)
 	*/
     function UpdateTrainigData($post)
     {
-        //$option = Factory::getApplication()->input->getCmd('option');
-		//$app	= Factory::getApplication();
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-        
-        //$db		= $this->getDbo();
-		//$query	= $db->getQuery(true);
 $this->jsmquery->clear();    
     for($a=0; $a < count($post['tdids']); $a++ )    
     {
@@ -263,8 +249,6 @@ $this->jsmquery->clear();
                 
         $this->jsmquery->order('dayofweek ASC');
         
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
-        
         try{
         $this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
@@ -319,7 +303,6 @@ catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
-    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
     $result = false;
 }
 		

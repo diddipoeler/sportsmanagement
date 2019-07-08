@@ -227,7 +227,6 @@ class sportsmanagementModelMatches extends JSMModelList
         
         $this->_rid = Factory::getApplication()->input->getvar('rid', 0);
         $this->_projectteam = Factory::getApplication()->input->getvar('projectteam', 0);
-        //$app->enqueueMessage(Text::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {

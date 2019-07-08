@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -129,11 +128,6 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 's.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
                 
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
-        
 		return $this->jsmquery;
         
 	}

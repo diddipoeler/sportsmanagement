@@ -253,7 +253,6 @@ catch (Exception $e)
 	public function deleteRoundMatches($pks=array())
 	{
 	$app = Factory::getApplication();
-    //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -314,7 +313,6 @@ catch (Exception $e)
             }
             
             $this->_tables_to_delete = array_merge($export);
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
             
             // jetzt starten wir das löschen
             foreach( $this->_tables_to_delete as $row_to_delete )

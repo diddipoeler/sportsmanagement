@@ -248,7 +248,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $this->jsmquery->where('project_id = '.(int)$project_id);
 	$this->jsmdb->setQuery($this->jsmquery);
 	$resulttemplate = $this->jsmdb->loadResult();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
+
             if ( !$resulttemplate )
             {
         // Create and populate an object.
@@ -274,7 +274,6 @@ else
         $this->jsmquery->where('project_id = '.(int)$project_id);
 	$this->jsmdb->setQuery($this->jsmquery);
 	$resulttemplate = $this->jsmdb->loadResult();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
 						
 // Create and populate an object.
 $object_template = new stdClass();

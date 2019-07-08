@@ -34,18 +34,14 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smquotetxt', 'smquotetxt', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
-        /*        
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
-        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        */
+
 		return $form;
 	}
     
@@ -82,9 +78,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         jimport('joomla.filesystem.file');
-        
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+       
         $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$data['filename'];
         //$return = File::write($filePath, $data['source']);
         

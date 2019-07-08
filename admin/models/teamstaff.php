@@ -185,7 +185,7 @@ class sportsmanagementModelteamstaff extends AdminModel
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+
             // wir löschen mit join
             $query = 'DELETE mp,ms
             FROM #__sportsmanagement_team_staff as m    
