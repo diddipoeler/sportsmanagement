@@ -113,8 +113,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$info = false;
 }
 
@@ -148,8 +146,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$team_name = false;
 }
 
@@ -203,8 +199,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$club_logo = false;
 }
         

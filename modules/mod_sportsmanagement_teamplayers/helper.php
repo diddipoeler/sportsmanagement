@@ -58,16 +58,12 @@ class modSportsmanagementTeamPlayersHelper
         $db->setQuery( $query );
         if ( $params['debug_modus'] )
 	{		
-        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 	}
 		$result = $db->loadRow();
 		$projectteamid = $result[0];
 		$team_name     = $result[1];
 		$season_id     = $result[2];
-
-//		Factory::getApplication()->input->setVar( 'p', $p );
-//		Factory::getApplication()->input->setVar( 'tid', $t);
-//		Factory::getApplication()->input->setVar( 'ptid', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelRoster')) 
         {

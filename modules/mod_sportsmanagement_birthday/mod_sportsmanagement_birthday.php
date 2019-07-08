@@ -60,7 +60,6 @@ $app = Factory::getApplication();
 $document = Factory::getDocument();
 $show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
     DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
@@ -96,9 +95,7 @@ if (count($persons) > 1) {
 }
 
 if ($show_debug_info) {
-    $my_text = 'persons <pre>' . print_r($persons, true) . '</pre>';
-    $my_text .= 'params <pre>' . print_r($params, true) . '</pre>';
-    sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, $module->module, __LINE__, $my_text);
+
 }
 
 $k = 0;

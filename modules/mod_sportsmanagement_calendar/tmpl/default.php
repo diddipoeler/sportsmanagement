@@ -96,9 +96,7 @@ $cnt = 0;
 for ($x=0;$x < count($calendar['list']);$x++)
 {
 	$row = $calendar['list'][$x];
-    
-//echo 'row <pre>'.print_r($row,true).'</pre><br>';
-    
+   
 	if(isset($row['tag'])) 
     {
 		switch ($row['tag']) 

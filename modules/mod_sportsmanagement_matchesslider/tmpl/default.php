@@ -1,5 +1,5 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.00
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -10,9 +10,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
-//echo ' matches<br><pre>'.print_r($slidermatches,true).'</pre>';
-//echo ' projectid<br><pre>'.print_r($projectid,true).'</pre>';
 
 ?>
 

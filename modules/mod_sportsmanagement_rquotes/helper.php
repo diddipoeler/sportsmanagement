@@ -52,9 +52,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
     $catid = 0;
     $row = array();
     $app = Factory::getApplication();
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
     
         if ( $params->get('cfg_which_database') )
         {
@@ -73,9 +70,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
 			$x = count($category);
 		}
 
-        
-//		$x = count($category);
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' x<br><pre>'.print_r($x,true).'</pre>'),'Notice');
 	
 	if( $x == 1) // get $catid when one category is selected 	
 		{
@@ -106,7 +100,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
         	
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -118,8 +111,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $row = array( $rows[$i] );
         }
 
-//echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
-//echo get_class($this).' '.__FUNCTION__.' row<pre>'.print_r($row,true).'</pre><br>';
 		
 }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -182,7 +173,6 @@ static function getMultyRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 				
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -213,8 +203,6 @@ if ( $rows )
 			}
  }
             
-//echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
-//echo get_class($this).' '.__FUNCTION__.' qrows<pre>'.print_r($qrows,true).'</pre><br>';
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect            
 		return $qrows;
 		}
@@ -275,7 +263,6 @@ $query = $db->getQuery(true);
         } 
 	$db->setQuery( $query );
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 	$rows = $db->loadObjectList();
 

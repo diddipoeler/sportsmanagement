@@ -10,10 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
-
-//echo 'data -><pre>'.print_r($data,true).'</pre>';
 
 // check if any results returned
 if ($data['projectscount'] == 0) {

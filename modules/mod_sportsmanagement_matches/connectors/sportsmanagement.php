@@ -380,7 +380,7 @@ $match->alreadyplayed = true;
 		
 if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
 {		
-echo __METHOD__.' '.__LINE__.' matches <pre>'.print_r($matches ,true).'</pre>';
+
 }		
 		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -659,9 +659,7 @@ return false;
 
 if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
 {		
-echo __METHOD__.' '.__LINE__.' row <pre>'.print_r($row ,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' match <pre>'.print_r($match ,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' team <pre>'.print_r($team ,true).'</pre>';	
+	
 }
 		
 		$row['location'] = $thisvenue;
@@ -778,7 +776,6 @@ echo __METHOD__.' '.__LINE__.' team <pre>'.print_r($team ,true).'</pre>';
 			$match->nextaway = $temp[0]->id;
 		}
 
-//echo __METHOD__.' '.__LINE__.' dump <pre>'.print_r($query->dump(),true).'</pre>';
 		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}

@@ -59,7 +59,6 @@ class modJSMClubiconsHelper
 	private function _getData()
 	{
 		$app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
 
 		$project_id = ($app->input->getVar('option','') == 'com_sportsmanagement' AND 
 									$app->input->getInt('p',0) > 0 AND 
@@ -89,7 +88,6 @@ class modJSMClubiconsHelper
 			$teams = sportsmanagementModelProject::getTeams($divisionid,'name',$this->params->get('cfg_which_database'));
 		}
 		
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
         
 		self::buildData($teams);
 		unset($teams);
@@ -107,7 +105,6 @@ class modJSMClubiconsHelper
 	function buildData( &$result )
 	{
 	   $app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
 		if (count($result))
 		{
@@ -131,7 +128,6 @@ class modJSMClubiconsHelper
 	function getLogo( & $item, $class )
 	{
 	   $app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
 		$logourl = $item->$imgtype;
@@ -149,8 +145,7 @@ $paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 }
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
-        
+       
 		$imgtitle = Text::_('View ') . $item->name;
 		return HTMLHelper::image($logourl, $item->name,'border="0" width="'.$this->params->get('jcclubiconsglobalmaxwidth').'" class="'.$class.'" title="'.$imgtitle.'"');
 	}
@@ -164,7 +159,6 @@ $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 	function getLink( &$item )
 	{
 	   $app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
 	    $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->params->get('cfg_which_database');

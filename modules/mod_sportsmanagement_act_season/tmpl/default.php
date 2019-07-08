@@ -10,13 +10,10 @@
  * https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=accordion
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-
-//echo '<pre>'.print_r($list,true).'</pre>';
 
 if ( $params->get("show_slider") )
 {
@@ -98,7 +95,6 @@ $zaehler++;
 </div>  
   
 <?php  
-//echo '<pre>'.print_r($ausland,true).'</pre>';  
 }
 else
 {

@@ -100,31 +100,7 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         $query = $db->getQuery(true);
         $mainframe = Factory::getApplication();
         
-//        $query->clear();
-//        $query->select('r.id');
-//        $query->from('#__sportsmanagement_round as r');
-//        $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
-//        $query->where('(r.round_date_first >= '.$db->Quote(''.$akt_datum.'').' AND r.round_date_last <= '.$db->Quote(''.$akt_datum.'').')');  
-//        $db->setquery($query);
-//        
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        // Joomla! 3.0 code here
-//        $rounds = $db->loadColumn();
-//        }
-//        elseif(version_compare(JVERSION,'2.5.0','ge')) 
-//        {
-//        // Joomla! 2.5 code here
-//        $rounds = $db->loadResultArray();
-//        } 
-//        
-//        if ( $rounds )
-//        {
-//        $round_ids = implode(',',$rounds);
-//        } 
-//        //echo '<pre>'.print_r($round_ids,true).'</pre>';
-//        if ( $round_ids )
-//        {
+
         $query->clear();
         $query->select('jl.id,jl.name,jl.game_regular_time,jl.halftime,jl.fav_team');
         $query->select('jco.alpha2');
@@ -155,8 +131,6 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
-        //echo '<pre>'.print_r($query->dump(),true).'</pre>';
-//        }
 		
 		if ($db->getErrorMsg())
         {

@@ -62,44 +62,7 @@ echo HTMLHelper::_('tabs.panel', Text::_( strtoupper($value) ), 'panelmenue'.($i
 <!--jlajaxtopmenu<?php echo $value?>-<?php echo $module->id?> start-->
 
 <?PHP
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'startoffset=> <pre>'.print_r($startoffset, true).'</pre><br>';
-echo 'country_federation=> <pre>'.print_r($country_federation, true).'</pre><br>';
-echo 'queryvalues => <pre>'.print_r($queryvalues, true).'</pre><br>';
 
-echo 'jlamtopcountry => '.$country_id.'<br>';
-echo 'jlamtopassocid => '.$assoc_id.'<br>';
-echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
-echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
-
-
-echo 'jlamtopseason => '.$season_id.'<br>';
-echo 'jlamtopleague => '.$league_id.'<br>';
-echo 'jlamtopproject => '.$project_id.'<br>';
-echo 'jlamtopteam => '.$team_id.'<br>';
-echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
-
-echo 'federationselect => <pre>'.print_r($federationselect[$value], true).'</pre><br>';
-echo 'countryassocselect => <pre>'.print_r($countryassocselect[$fed_array]['assocs'], true).'</pre><br>';
-echo 'countrysubassocselect => <pre>'.print_r($countrysubassocselect[$fed_array]['assocs'], true).'</pre><br>';
-echo 'countrysubsubassocselect => <pre>'.print_r($countrysubsubassocselect[$fed_array]['subassocs'], true).'</pre><br>';
-echo 'countrysubsubsubassocselect => <pre>'.print_r($countrysubsubsubassocselect[$fed_array]['subsubassocs'], true).'</pre><br>';
-echo 'leagueselect => <pre>'.print_r($leagueselect[$fed_array]['leagues'], true).'</pre><br>';
-echo 'projectselect => <pre>'.print_r($projectselect[$fed_array]['projects'], true).'</pre><br>';
-
-echo 'getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
-echo 'getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
-
-echo 'getCountryAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryAssocSelect, true).'</pre><br>';
-echo 'getCountryFederation => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryFederation, true).'</pre><br>';
-echo 'getCountrySubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubAssocSelect, true).'</pre><br>';
-echo 'getCountrySubSubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubSubAssocSelect, true).'</pre><br>';
-
-echo 'getLeagueAssocId => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueAssocId, true).'</pre><br>';
-echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueSelect, true).'</pre><br>';
-
-}
 ?>
 
 <p>

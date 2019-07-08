@@ -97,7 +97,6 @@ $cfg_which_database = $jinput->getInt('cfg_which_database',0);
 $s = $jinput->getInt('s',0);
 $projectid = $jinput->getInt('p',0);
 
-//echo '<pre>'.print_r($projectid,true).'</pre>';
 if ( !$projectid )
 {
 $cfg_which_database = $params->get('cfg_which_database');
@@ -106,7 +105,6 @@ $s = $params->get('s');
     foreach( $params->get('p') as $key => $value )
     {
       
-//echo '<pre>'.print_r($value,true).'</pre>';
       $projectid = (int)$value;
 	    if ( $params->get('teams') )
 	    {
@@ -117,7 +115,6 @@ $s = $params->get('s');
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database,(int)$valueteam);
-     // echo 'matches<pre>'.print_r($matches,true).'</pre>';
         $slidermatches = array_merge($slidermatches,$matches);	
 	}
 	    }
@@ -132,7 +129,6 @@ $s = $params->get('s');
 	    }
       
       
-      //echo 'slidermatches<pre>'.print_r($slidermatches,true).'</pre>';
       
     }
     
@@ -148,7 +144,6 @@ $slidermatches = array_merge($slidermatches,$matches);
 }
 
 usort($slidermatches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
-//echo '<pre>'.print_r($slidermatches,true).'</pre>';
 
 
 foreach( $slidermatches as $match )

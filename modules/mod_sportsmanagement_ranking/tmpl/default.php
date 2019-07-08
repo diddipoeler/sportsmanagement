@@ -32,9 +32,6 @@ if (count($columns) != count($column_names)) {
 $nametype = $params->get('nametype', 'short_name');
 $colors = $list['colors'];
 
-//echo ' colors<br><pre>'.print_r($colors,true).'</pre>';
-
-
 ?>
 
 <div class="container-fluid">

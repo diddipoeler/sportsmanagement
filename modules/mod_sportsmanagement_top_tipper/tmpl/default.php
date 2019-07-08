@@ -222,12 +222,10 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <?php
             if ( $config['show_debug_modus'] )
             {
-                echo 'mod_sportsmanagement_top_tipper - predictionMember<br /><pre>~' . print_r($predictionMember, true) . '~</pre><br />';
             }
 
             $k          = 0;
             $memberList = sportsmanagementModelPrediction::getPredictionMembersList($config, $configavatar);
-            // echo '<br /><pre>~' . print_r($memberList,true) . '~</pre><br />';
 
             $membersResultsArray = array();
             $membersDataArray    = array();

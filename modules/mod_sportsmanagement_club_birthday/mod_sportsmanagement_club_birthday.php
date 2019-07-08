@@ -112,17 +112,6 @@ $futuremessage = htmlentities(trim(Text::_($params->get('futuremessage'))), ENT_
 $clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit,$season_ids);
 if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jsm_birthday_sort($clubs,$params->def("sort_order"));
 
-if ( $show_debug_info )
-{
-$my_text = 'clubs <pre>'.print_r($clubs,true).'</pre>';
-$my_text .= 'params <pre>'.print_r($params,true).'</pre>';    
-sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,$module->module,__LINE__,$my_text);
-}
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' attribs<br><pre>'.print_r($attribs,true).'</pre>'),'Notice');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
-
-
 $k = 0;
 $counter = 0;
 

@@ -246,9 +246,7 @@ class modMatchesSportsmanagementHelper {
         
         if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
         {
-        //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>'),'Notice');    
-        echo __METHOD__.' '.__LINE__.' projekte<br><pre>'.print_r($this->params->get('p'),true).'</pre>'; 
-        echo __METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>';      
+
         }    
 	}
 	
@@ -614,7 +612,7 @@ class modMatchesSportsmanagementHelper {
 		}
 if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
 {		
-echo 'rows <pre>'.print_r($rows ,true).'</pre>';
+
 }			
 		return $rows;
 	}

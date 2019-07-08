@@ -9,9 +9,6 @@
  * @subpackage mod_sportsmanagement_teamstats_ranking
  */
 
-/**
- * no direct access
- */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -27,8 +24,6 @@ if (!$items) {
 
 $teamnametype = $params->get('teamnametype', 'short_name');
 
-//echo '<pre>';print_r($list); echo '</pre>';exit;
-//echo '<pre>';print_r($list['ranking']); echo '</pre>';exit;
 ?>
 
 <div class="row">

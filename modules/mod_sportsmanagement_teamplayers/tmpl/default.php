@@ -9,16 +9,12 @@
  * @subpackage mod_sportsmanagement_teamplayers
  */
 
-/**
- * no direct access
- */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 // check if any players returned
 $items = count($list['roster']);
 
-//print_r($list['roster']);
 if (!$items) {
 	echo '<p class="modjlgteamplayers">' . Text::_('NO ITEMS') . '</p>';
 	return;

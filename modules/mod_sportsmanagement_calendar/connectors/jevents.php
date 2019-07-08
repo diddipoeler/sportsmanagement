@@ -42,11 +42,7 @@ class JEventsConnector extends JLCalendar{
           $newrow = array();
           $user = Factory::getUser();
           if ($user->id == 62) {
-            /*
-            echo '<pre>';
-            print_r ($row);
-            echo '</pre>';
-            */
+
           }
           $newrow['link'] = JEventsConnector::buildLink ($event, $row['year'], $row['month']);
           $newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']). ' '.strftime('%H:%M', $event->_dtstart);

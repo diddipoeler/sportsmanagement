@@ -54,10 +54,6 @@ class modJSMPlaygroundTicker
         $db->setQuery($query);
         $anz_cnt = $db->loadResult();
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' anz_cnt<pre>'.print_r($anz_cnt,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<pre>'.print_r($params,true).'</pre>'),'');
-
         /**
          * Die Schleife beim Erhalten der Zufallszahlen ist deshalb eine while- und keine for-Schleife, weil es sonst passieren kann,
          * dass es zwar mehr als x Datensätze gibt, die die Bedingungen erfüllen, aber dummerweise 2 mal die gleiche Zufallszahl ermittelt wird.
@@ -73,20 +69,17 @@ class modJSMPlaygroundTicker
                 $rands[$rand] = $rand;
         }
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' rands<pre>'.print_r($rands,true).'</pre>'),'');
 
         $queryparts = array();
         foreach ($rands as $rand)
             $queryparts[] = "SELECT * FROM #__sportsmanagement_playground LIMIT " . $rand .
                 ",1";
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' queryparts<pre>'.print_r($queryparts,true).'</pre>'),'');
 
         $query = "(" . implode(") UNION ALL (", $queryparts) . ")";
         $db->setQuery($query);
         $result = $db->loadObjectList();
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<pre>'.print_r($result,true).'</pre>'),'');
         return $result;
 
     }

@@ -20,7 +20,6 @@ use Joomla\CMS\Component\ComponentHelper;
 
 <?php
 foreach ($persons AS $person) {
-//echo '<pre>'.print_r($person,true).'</pre>';    
     $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
     switch ($person['days_to_birthday']) {
         case 0: $whenmessage = $params->get('todaymessage');
@@ -74,8 +73,6 @@ $params_com = ComponentHelper::getParams('com_sportsmanagement');
 $usefontawesome = $params_com->get('use_fontawesome');
     
     $showname = HTMLHelper::link($person_link, $usedname);
-//echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
-//echo 'birthdayformat<pre>'.print_r($birthdayformat,true).'</pre>';
     ?>
     <div class="card">
         <?php

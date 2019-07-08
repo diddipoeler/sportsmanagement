@@ -66,7 +66,7 @@ class modJSMRandomplayerHelper
        
        if ( $params['debug_modus'] )
 	{		
-        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 	}
 
        
@@ -101,13 +101,9 @@ class modJSMRandomplayerHelper
 
 if ( $params['debug_modus'] )
 	{		
-        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($res,true).'</pre>'),'');
+
 	}
 		
-//		Factory::getApplication()->input->setVar( 'p', $res[1] );
-//		Factory::getApplication()->input->setVar( 'pid', $res[0]);
-//		Factory::getApplication()->input->setVar( 'pt', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelPlayer')) {
             JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
@@ -134,7 +130,7 @@ $playerresult = array('project' => $project,
 			'infoteam' => $infoteam);
     if ( $params['debug_modus'] )
 	{		
-        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($playerresult,true).'</pre>'),'');
+
 	}
 		return $playerresult;
       
