@@ -52,35 +52,14 @@ class JFormFieldprojectrounds extends \JFormFieldList
 			->from('#__sportsmanagement_round AS a')
 			;
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
-
 		if ($menuType = $this->form->getValue('project'))
 		{
 			$query->where('a.project_id = ' . $db->quote($menuType));
 		}
 
-
-
-
 		// Get the options.
 		$db->setQuery($query);
         $options = $db->loadObjectList();
-/*
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		// Pad the option text with spaces using depth level as a multiplier.
-		for ($i = 0, $n = count($options); $i < $n; $i++)
-		{
-			$options[$i]->text = str_repeat('- ', $options[$i]->value) . $options[$i]->text;
-		}
-*/
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 

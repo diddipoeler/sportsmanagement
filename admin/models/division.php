@@ -9,14 +9,9 @@
  * @subpackage division
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModeldivision
@@ -52,7 +47,6 @@ $results = $this->jsmdb->loadObjectList('projectteam1_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 	
 foreach ( $results as $key => $value )
@@ -124,14 +118,7 @@ return count($division_teams);
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
         }
         $post = Factory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
-        
-        //$result=true;
+
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblRound = & $this->getTable();
@@ -142,8 +129,6 @@ return count($division_teams);
             // Set the values
 		    $tblRound->modified = $date->toSql();
 		    $tblRound->modified_by = $user->get('id');
-        
-            
 
 			if(!$tblRound->store()) 
             {

@@ -9,15 +9,12 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Filesystem\Folder;
-
-jimport('joomla.filesystem.file');
-
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementModeljlextindividualsportes
@@ -32,6 +29,12 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 {
 	var $_identifier = "jlextindividualsportes";
     
+   /**
+    * sportsmanagementModeljlextindividualsportes::__construct()
+    * 
+    * @param mixed $config
+    * @return void
+    */
    public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -43,6 +46,11 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
     
     
         
+    /**
+     * sportsmanagementModeljlextindividualsportes::getListQuery()
+     * 
+     * @return
+     */
     protected function getListQuery()
 	{
 		$app = Factory::getApplication();
@@ -51,12 +59,9 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 		$match_id		= Factory::getApplication()->input->getvar('id', 0);;
 		$projectteam1_id		= Factory::getApplication()->input->getvar('team1', 0);;
 		$projectteam2_id		= Factory::getApplication()->input->getvar('team2', 0);;
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        
         // Select some fields
 		$query->select('mc.*');
 		// From the hello table
@@ -66,15 +71,22 @@ class sportsmanagementModeljlextindividualsportes extends ListModel
 $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- 
-
         return $query;
 	}
     
 
 
 
+	/**
+	 * sportsmanagementModeljlextindividualsportes::checkGames()
+	 * 
+	 * @param mixed $project
+	 * @param mixed $match_id
+	 * @param mixed $rid
+	 * @param mixed $projectteam1_id
+	 * @param mixed $projectteam2_id
+	 * @return void
+	 */
 	function checkGames($project,$match_id,$rid,$projectteam1_id,$projectteam2_id)
     {
         $option = Factory::getApplication()->input->getCmd('option');
@@ -82,10 +94,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project, true).'</pre><br>','');
-        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' match_id<br><pre>'.print_r($match_id, true).'</pre><br>','');
-        
+       
         // Select some fields
 		$query->select('COUNT(mc.id)');
 		// From the hello table
@@ -95,14 +104,11 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $db->setQuery($query);
         $singleresult = $db->loadResult();
         
-        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' singleresult<br><pre>'.print_r($singleresult, true).'</pre><br>','');
-        
+      
         if ( $singleresult < $project->tennis_single_matches )
         {
             $insertmatch = $project->tennis_single_matches - $singleresult;
-            
-            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
-            
+           
             for ($i=0; $i < $insertmatch; $i++)
 		    {
 		      // Create and populate an object.
@@ -130,13 +136,9 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $db->setQuery($query);
         $doubleresult = $db->loadResult();
         
-        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' doubleresult<br><pre>'.print_r($doubleresult, true).'</pre><br>','');
-        
         if ( $doubleresult < $project->tennis_double_matches )
         {
             $insertmatch = $project->tennis_double_matches - $doubleresult;
-            
-            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
             
             for ($i=0; $i < $insertmatch; $i++)
 		    {
@@ -185,27 +187,13 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');  
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->where('pt.project_id = ' . $project_id);
-        //$query->where('pl.published = 1');
         $query->order('text ASC');
         
-/*
-		$query = '	SELECT	pt.id AS value,
-							t.name AS text,
-							t.short_name AS short_name,
-							t.notes
-
-					FROM #__sportsmanagement_team AS t
-					LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id
-					WHERE pt.project_id = ' . $project_id . '
-					ORDER BY text ASC ';
-*/
 		$db->setQuery($query);
 
 		if (!$result = $db->loadObjectList())
 		{
-			$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			return false;
+		return false;
 		}
 		else
 		{
@@ -248,6 +236,12 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		}
 	}
 
+	/**
+	 * sportsmanagementModeljlextindividualsportes::getMatchesByRound()
+	 * 
+	 * @param mixed $roundId
+	 * @return
+	 */
 	function getMatchesByRound($roundId)
 	{
 		$query = 'SELECT * FROM #__sportsmanagement_match_single WHERE round_id='.$roundId;
@@ -263,6 +257,13 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	}
 	
 	
+	/**
+	 * sportsmanagementModeljlextindividualsportes::getPlayer()
+	 * 
+	 * @param mixed $teamid
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPlayer($teamid,$project_id)
 	{
   $option = Factory::getApplication()->input->getCmd('option');
@@ -291,15 +292,16 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$db->setQuery($query);
         $result = $db->loadObjectList(); 
         
-        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
 		return $result;
   
   }
  
+  /**
+   * sportsmanagementModeljlextindividualsportes::getSportType()
+   * 
+   * @param mixed $id
+   * @return
+   */
   function getSportType($id)
   {
   $option = Factory::getApplication()->input->getCmd('option');
@@ -324,6 +326,11 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		
   }
   
+  /**
+   * sportsmanagementModeljlextindividualsportes::_getSinglefile()
+   * 
+   * @return void
+   */
   function _getSinglefile()
   {
   $option = Factory::getApplication()->input->getCmd('option');
@@ -338,9 +345,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	
 	$dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'ringerdateien';
   $files = Folder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
-  
-  $app->enqueueMessage(Text::_('_getSinglefile: '.print_r($files,true) ),'');
-  
+ 
   if ( $files )
   {
   $app->enqueueMessage(Text::_('Einzelk&auml;mpfe '.$match_number.' vorhanden' ),'Notice');

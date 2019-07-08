@@ -9,12 +9,13 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\File;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
@@ -40,13 +41,6 @@ require_once( JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components'.DIRECTORY_S
 require_once( JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'ical.php' );
 require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'countries.php');
 
-use Joomla\Utilities\ArrayHelper;
-// import ArrayHelper
-//jimport( 'joomla.utilities.array' );
-//jimport( 'joomla.utilities.arrayhelper' ) ;
-
-// import JFile
-use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
 
 
@@ -130,10 +124,6 @@ $params = ComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
-		//$app->enqueueMessage(Text::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
-        //$app->enqueueMessage(Text::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
-        //$app->enqueueMessage(Text::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
-        
         /**
          * test herren : 001514505501506501000000000000000003000
          * test damen :  001514505501506502000000000000000004000
@@ -153,8 +143,6 @@ switch ($sis_xmllink)
 $liganummer = $post ['liganummer'];
 $teamart = substr( $liganummer , 17, 4);
 
-//$app->enqueueMessage(Text::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
-
 $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -164,8 +152,6 @@ $db = sportsmanagementHelper::getDBConnection();
         $db->setQuery($query);
 		$sp_id = $db->loadResult();
 
-//$app->enqueueMessage(Text::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
-
 $query = $db->getQuery(true);
         $query->select(array('id,name'))
         ->from('#__sportsmanagement_agegroup')
@@ -173,18 +159,8 @@ $query = $db->getQuery(true);
         ->where('country LIKE '."'".$country."'");    
         $db->setQuery($query);
 		$agegroup = $db->loadObject();
-
-//$app->enqueueMessage(Text::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
-        
         $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
-        //$app->enqueueMessage(Text::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
-        
-        
         $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
-//        $app->enqueueMessage(Text::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
-
-
   
   $temp = new stdClass();
   $temp->name = '';
@@ -194,15 +170,6 @@ $query = $db->getQuery(true);
   $temp->id = 1;
   $temp->name = 'COM_SPORTSMANAGEMENT_ST_HANDBALL';
   $this->_datas['sportstype'] = $temp;
-
-  
-  
-//foreach ($linkspielplan->Spielklasse as $tempklasse) 
-//        {
-//        $projectname = $tempklasse->Name;    
-//		}
-
-//$app->enqueueMessage(Text::_('Spielklasse->Name<br><pre>'.print_r($linkspielplan->Spielklasse->Name,true).'</pre>'   ),'');
 
 $projectname = (string) $linkspielplan->Spielklasse->Name;        
         
@@ -622,10 +589,6 @@ $temp->id = 1003;
 $temp->position_id = 1003;
 $exportprojectposition[] = $temp;
 
-//$app->enqueueMessage(Text::_('exportteamplaygroundtemp<br><pre>'.print_r($exportteamplaygroundtemp,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_('exportprojectteams<br><pre>'.print_r($exportprojectteams,true).'</pre>'),'');
-
 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 $this->_datas['position'] = array_merge($exportposition);
 $this->_datas['projectposition'] = array_merge($exportprojectposition);
@@ -687,7 +650,6 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 if ( isset($this->_datas['club']) )
 {
 $app->enqueueMessage(Text::_('club Daten '.'generiert'),'');
-//$app->enqueueMessage(Text::_('club<br><pre>'.print_r($this->_datas['club'],true).'</pre>'   ),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
@@ -793,8 +755,6 @@ File::write($file, $xmlfile);
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';
         
-        //$app->enqueueMessage(Text::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
-        
 		//File laden
 		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		if (file_exists($datei)) 
@@ -802,10 +762,6 @@ File::write($file, $xmlfile);
 			$LetzteAenderung = filemtime($datei);
 			if ( (time() - $LetzteAenderung) > 1800) 
             {
-				//if(file_get_contents($linkresults)) 
-                //{
-			 		//Laden
-					//$content = file_get_contents($linkresults);
                     if (function_exists('curl_version'))
 {
     $curl = curl_init();

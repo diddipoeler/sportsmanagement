@@ -1,6 +1,5 @@
 <?php
-
- /** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      cpanel.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -10,7 +9,6 @@
  * @subpackage cpanel
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -39,15 +37,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     public function getVersion() {
-        //$app = Factory::getApplication();
-//       $option = Factory::getApplication()->input->getCmd('option');
-//       // Create a new query object.		
-//		$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
-
         $this->jsmdb->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
         $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
-        //$app->enqueueMessage(Text::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
         return $manifest_cache['version'];
     }
 
@@ -60,12 +51,9 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $paramsdata = ComponentHelper::getParams($option);
-//$app->enqueueMessage(Text::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 // Load the parameters
         $uname = ComponentHelper::getParams($option)->get('cfg_github_username', 'diddipoeler');
         $repo = ComponentHelper::getParams($option)->get('cfg_github_repository', 'sportsmanagement');
-        //$uname		= $paramsdata->get('cfg_github_username', '');
-        //$repo		= $paramsdata->get('cfg_github_repository', '');
         // Convert the list name to a useable string for the JSON
         if ($repo) {
             $frepo = self::toAscii($repo);
@@ -127,11 +115,6 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         $this->jsmquery->from('#__sportsmanagement_countries');
         $this->jsmdb->setQuery($this->jsmquery);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
         return $this->jsmdb->loadResult();
     }
 
@@ -142,13 +125,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     function checksporttype($type) {
-        //$app = Factory::getApplication();
-        //$option = Factory::getApplication()->input->getCmd('option');
         $starttime = microtime();
-        // Create a new query object.		
-        //	$db = sportsmanagementHelper::getDBConnection();
-        //	$query = $db->getQuery(true);
-
         $type = strtoupper($type);
 
         // Select some fields
@@ -157,13 +134,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         // From the table
         $this->jsmquery->from('#__sportsmanagement_sports_type');
         $this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('%' . $type . '%'));
-
         $this->jsmdb->setQuery($this->jsmquery);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         return $this->jsmdb->loadResult();
     }
@@ -219,8 +190,6 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         // Load the parameters
         $uname = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_username', '');
         $repo = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_github_repository', '');
-        //$uname		= $params->get('cfg_github_username', '');
-        //$repo		= $params->get('cfg_github_repository', '');
         $count = 15;
 
         // Convert the list name to a useable string for the JSON
@@ -232,9 +201,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         foreach ($obj as $o) {
             if ($i <= $count) {
 
-                //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' github<br><pre>'.print_r($github, true).'</pre><br>','Notice');
                 // Initialize a new object
-                //$github[] = '';
                 $temp = new stdClass();
                 $temp->commit = new stdClass;
 

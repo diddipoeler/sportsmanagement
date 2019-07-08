@@ -41,28 +41,18 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $mitems = '';
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
-        
+       
                 if(!$required) 
                 {
                 $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-                
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
-                
                 return array_merge($mitems, $elements);
-                //return $elements;
                 }
                 else
                 {
                 $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-                
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
-                
                 if ( $elements )
                 {
                 return array_merge($mitems, $elements);
-                //return $elements;
                 }
                 else
                 {
@@ -70,7 +60,6 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
                 }
                 
                 }
-                //return $elements;
         }
         
         
@@ -268,9 +257,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
-       
-       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-       
+      
        // Get a db connection.
         if ( !$dbase )
         {
@@ -282,11 +269,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         }
         $query = $db->getQuery(true);
         // Select some fields
-        //$query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,concat(a.name, \' - \',a.country) AS text');
         $query->select('a.id AS value,concat(a.name, \' - \',a.country) AS text');
         // From 
 		$query->from('#__sportsmanagement_agegroup AS a');
-        
         // Where
         if ( $club_id )
         {
@@ -301,12 +286,8 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         {
         $temp = new stdClass();
         $temp->value = 0;
-        //$temp->text = ''; 
         $temp->text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
         $export[] = $temp;
-        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB
-        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_LEGEND
-        // COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB   
         return self::addGlobalSelectElement($export, $required);    
         }
             
@@ -330,25 +311,14 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $jinput = $app->input;
         $db = Factory::getDbo();
 		$query = $db->getQuery(true);
-        
-        
 			
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->where("t.country LIKE " . $db->Quote(''.$country.'') );
-			//$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
-			//$options = $db->loadObjectList();
-			
 			$sections = $db->loadObjectList();
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'Notice');
-            
             return self::addGlobalSelectElement($sections, $required);     
-            
         }
         
         /**
@@ -364,8 +334,6 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
-        //$required = 0;
-        
         // Get a db connection.
         if ( !$dabse )
         {
@@ -443,13 +411,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $query->order('a.place_name'); 
         }
         
-        //$query->order('a.postal_code');    
         if ( $zipcode || $country )
         {            
         $db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
         $result = $db->loadObjectList();
         }
             
@@ -548,11 +512,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
         $query->group('a.postal_code'); 
         $query->order('a.postal_code');    
-                    
         $db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
         $result = $db->loadObjectList();
             
         return self::addGlobalSelectElement($result, $required);    
@@ -835,9 +795,7 @@ $option = $app->input->getCmd('option');
         $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
-       
-       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-       
+      
        // Get a db connection.
         if ( !$dbase )
         {

@@ -70,12 +70,9 @@ $jinput = $app->input;
 $post = $jinput->post->getArray(array());   
 $db = Factory::getDbo(); 
 $query = $db->getQuery(true);  
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');    
 $a = 0;
 foreach( $post['agegroup'] as $key => $value )
 {
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key, true).'</pre><br>','Notice');
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value, true).'</pre><br>','Notice');
 
 $query = $db->getQuery(true);
 $query->clear();
@@ -96,7 +93,7 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $a++;
 }
@@ -127,7 +124,6 @@ $query->group('info,agegroup_id');
 $db->setQuery($query);
 $result = $db->loadObjectList();
     
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 return $result;    
 }
 
@@ -474,21 +470,10 @@ $my_text .= '<br />';
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 
-//$temp = new stdClass();
-//$temp->name = 'Laufzeit:';
-//$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-//self::$_success[] = $temp;
-//$temp = new stdClass();
-//$temp->name = 'JL-Update:';
-//$temp->text = $my_text;
-//self::$_success[] = $temp;
-
 self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
-//Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -509,7 +494,6 @@ $query->join('INNER', '#__joomleague_project_position AS pt ON pt.project_id = p
 $query->where('pr.position_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' result <br><pre>'.print_r($result,true).'</pre>'),'');
 
 foreach( $result as $row )
 {
@@ -530,21 +514,10 @@ $my_text .= '<br />';
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 
-//$temp = new stdClass();
-//$temp->name = 'Laufzeit:';
-//$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-//self::$_success[] = $temp;
-//$temp = new stdClass();
-//$temp->name = 'JL-Update:';
-//$temp->text = $my_text;
-//self::$_success[] = $temp;
-
 self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
-//Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -595,21 +568,10 @@ $my_text .= '<br />';
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 
-//$temp = new stdClass();
-//$temp->name = 'Laufzeit:';
-//$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-//self::$_success[] = $temp;
-//$temp = new stdClass();
-//$temp->name = 'JL-Update:';
-//$temp->text = $my_text;
-//self::$_success[] = $temp;
-
 self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
-//Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -625,7 +587,6 @@ if ( $jl_table_import_step == 3 )
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('pr.id,pr.position_id,pt.project_id');
-//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = pt.project_id and pp.position_id = pr.position_id) AS '.$db->QuoteName('project_position_id'));
 $query->from('#__joomleague_team_player as pr');
 $query->join('INNER', '#__joomleague_project_team AS pt ON pt.id = pr.projectteam_id');
 $query->where('pr.position_id != 0');
@@ -663,9 +624,6 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
-//Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -719,9 +677,6 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r(self::$_success,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -737,7 +692,6 @@ if ( $jl_table_import_step == 5 )
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('mp.id,mp.position_id,r.project_id');
-//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
 $query->from('#__joomleague_match_staff as mp');
 $query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
 $query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
@@ -745,11 +699,6 @@ $query->where('mp.position_id != 0');
 $query->where('mp.project_position_id = 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-//$jinput->set('jl_table_import_step','ENDE');
-//return self::$_success;
 
 foreach( $result as $row )
 {
@@ -783,8 +732,6 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -800,7 +747,6 @@ if ( $jl_table_import_step == 6 )
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('mp.id,mp.position_id,r.project_id,mp.referee_id');
-//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
 $query->from('#__joomleague_match_referee as mp');
 $query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
 $query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
@@ -808,12 +754,6 @@ $query->where('mp.position_id != 0');
 $query->where('mp.project_position_id = 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-//$jinput->set('jl_table_import_step','ENDE');
-//return self::$_success;
-
 foreach( $result as $row )
 {
 $query = $db->getQuery(true);
@@ -847,8 +787,6 @@ self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -865,8 +803,6 @@ self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -883,8 +819,6 @@ self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -901,8 +835,6 @@ self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -956,14 +888,8 @@ $table_copy[] = 'prediction_member';
 $table_copy[] = 'prediction_project';
 $table_copy[] = 'prediction_result';
 $table_copy[] = 'prediction_template';
-        
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' table_copy <br><pre>'.print_r($table_copy,true).'</pre>'),'');        
 
 $tables = $db->getTableList();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tables <br><pre>'.print_r($tables,true).'</pre>'),'');     
-
-//$table_copy = array(); 
-//$table_copy[] = 'club';
 
 /**
 * als erstes kommen die tabellen, die nur kopiert werden !
@@ -974,10 +900,6 @@ $my_text .= '<br />';
 
 foreach ( $table_copy as $key => $value )
 {
-    
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' key <br><pre>'.print_r($key,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' value <br><pre>'.print_r($value,true).'</pre>'),'');
-    
 $jl_table = '#__joomleague_'.$value;
 $jsm_table = '#__sportsmanagement_'.$value;
 
@@ -985,10 +907,7 @@ $jsm_table = '#__sportsmanagement_'.$value;
  * hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert
  */
 $prefix = $db->getPrefix();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
 $key_table = array_search($prefix.'joomleague_'.$value, $tables);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jl_table <br><pre>'.print_r($jl_table,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' key_table <br><pre>'.print_r($key_table,true).'</pre>'),'');
 
 if ( $key_table )
 {
@@ -1011,19 +930,13 @@ $jl_fields = $db->getTableFields('#__joomleague_'.$value);
 $jsm_fields = $db->getTableFields('#__sportsmanagement_'.$value);
 }
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jl_fields <br><pre>'.print_r($jl_fields,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsm_fields <br><pre>'.print_r($jsm_fields,true).'</pre>'),'');            
-
 /**
  * importschritt 0
  */
 if ( count($jl_fields[$jl_table]) === 0 )
 {
-//$app->enqueueMessage(Text::_('Die Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jl_table.' ) ist nicht vorhanden!'),'Error');    
-
 $my_text .= '<span style="color:'.self::$storeFailedColor. '"<strong>Die Tabelle: ( '.$jl_table.' ) kann nicht kopiert werden. Tabelle: ( '.$jl_table.' ) ist nicht vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';
-
 }
 else
 {
@@ -1037,12 +950,9 @@ $query->clear();
 $query = "ALTER TABLE `".$jsm_table."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$result = $db->execute();
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
+
 }
 
 $query = $db->getQuery(true);
@@ -1059,26 +969,14 @@ $query->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
-//$db->truncateTable($jsm_table);
-
-
 /**
  * die anzahl der einträge wird nicht mehr benötigt
  * da wir nur die einträge löschen die das feld import_id gefüllt haben
  */
 $totals = 0; 
-/*
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('COUNT(id) AS total');
-$query->from($jsm_table);
-$db->setQuery($query);
-$totals = $db->loadResult();
-*/
 
 if ( $totals )
 {
-//$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm_table.' ) nicht leer!'),'Error');  
 $my_text .= '<span style="color:'.self::$storeFailedColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm_table.' ) nicht leer!</strong>'.'</span>';
 $my_text .= '<br />';   
 }
@@ -1110,9 +1008,6 @@ catch (Exception $e) {
 */   
 foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             {
-//                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'key2<br><pre>'.print_r($key2,true).'</pre>'),'');
-//                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'value2<br><pre>'.print_r($value2,true).'</pre>'),'');
-                
                 switch ($key2)
                 {
                     case 'import':
@@ -1144,12 +1039,6 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             
             $select_fields_1 = implode(',', $exportfields1);
             $select_fields_2 = implode(',', $exportfields2);
-            
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jl_table<br><pre>'.print_r($jl_table,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' exportfields<br><pre>'.print_r($exportfields1,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' select_fields_1<br><pre>'.print_r($select_fields_1,true).'</pre>'),'');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' select_fields_2<br><pre>'.print_r($select_fields_2,true).'</pre>'),'');
-            
             $query = $db->getQuery(true);
             $query->clear();
             $query = 'INSERT INTO '.$jsm_table.' ('.$select_fields_1.') SELECT '.$select_fields_2.' FROM '.$jl_table;
@@ -1158,10 +1047,8 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             }
             catch (Exception $e) {
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
             }
-
-            //$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    
 
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!</strong>'.'</span>';
 $my_text .= '<br />';             
@@ -1189,10 +1076,10 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 
-//$result = $db->execute();
+
 }
 
 }   
@@ -1235,8 +1122,6 @@ self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1245,16 +1130,12 @@ return self::$_success;
  */
 if ( $jl_table_import_step == 11 )
 {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
-
 /**
  * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
  * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
  */
 $query = $db->getQuery(true);
 $my_text = '';
-//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-//$my_text .= '<br />'; 
 // Fields to update.
 $fields = array(
     $db->quoteName('sports_type_id') . ' = '. $sports_type_id 
@@ -1269,17 +1150,16 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_team ) aktualisiert!</strong>'.'</span>';
-//$my_text .= '<br />';     
+
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
 try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>'.'</span>';
 $my_text .= '<br />';     
@@ -1291,7 +1171,6 @@ self::$_success['Tabellenaktualisierung:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1313,9 +1192,7 @@ $query->from('#__sportsmanagement_club');
 $query->where('import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-
 $zaehler = 1;
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 foreach( $result as $row )
 {
 // Fields to update.
@@ -1335,7 +1212,7 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
@@ -1344,11 +1221,10 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $zaehler++;
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
-//$my_text .= '<br />';
+
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Verein in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
@@ -1365,7 +1241,6 @@ $query->where('import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 foreach( $result as $row )
 {
 // Fields to update.
@@ -1383,8 +1258,6 @@ $query->update($db->quoteName('#__sportsmanagement_club'))->set($fields)->where(
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 $zaehler++;
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
-//$my_text .= '<br />';
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
@@ -1401,7 +1274,6 @@ try{
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 foreach( $result as $row )
 {
 // Fields to update.
@@ -1421,17 +1293,16 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $zaehler++;
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
-//$my_text .= '<br />';
+
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 
 
@@ -1443,7 +1314,6 @@ self::$_success['Update Mannschaften/Spielorte:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1486,7 +1356,7 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Saison '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
@@ -1499,7 +1369,6 @@ self::$_success['Update Saison:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1542,7 +1411,7 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Liga '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
@@ -1557,7 +1426,6 @@ self::$_success['Update Liga:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1678,7 +1546,6 @@ self::$_success['Update Runden/Gruppen/Projektpositionen/Projektschiedsrichter/P
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1822,7 +1689,6 @@ self::$_success['Update Personen/Projektpositionen:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1881,7 +1747,6 @@ self::$_success['Update Team-Spieler/Team-Staff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -1924,9 +1789,7 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
+
 }
 
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' im Projektteam aktualisiert !</strong>'.'</span>';
@@ -1940,7 +1803,6 @@ self::$_success['Update Projektteam:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -2055,7 +1917,6 @@ self::$_success['Update Teamplayer/Teamstaff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -2161,7 +2022,6 @@ self::$_success['Update Matchplayer/Matchstaff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -2313,7 +2173,6 @@ self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -2386,7 +2245,6 @@ self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
@@ -2650,12 +2508,6 @@ $query->where('p.import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-//$result = $db->loadObjectList();
-//echo Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true));
-
-
 foreach( $result as $row )
 {
 $new_id = 0;    
@@ -2686,10 +2538,7 @@ try {
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
-    // catch any database errors.
-//    $db->transactionRollback();
-    JErrorPage::render($e);
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
+
 }
 
 if ( $result_insert )
@@ -2727,10 +2576,7 @@ try {
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 }
 catch (Exception $e) {
-    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
+
 }
 if ( $result_insert )
 {
@@ -2780,12 +2626,6 @@ $query->where('p.import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-//$result = $db->loadObjectList();
-//echo Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true));
-
-
 foreach( $result as $row )
 {
 $new_id = 0;    
@@ -2816,10 +2656,7 @@ try {
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
-    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
+
 }
 if ( $result_insert )
 {
@@ -2827,7 +2664,6 @@ $new_id = $db->insertid();
 }
 }
 
-// $mdl = BaseDatabaseModel::getInstance("joomleagueimport", "sportsmanagementModel");
 $new_id = 0;    
 $query->clear();
 $query->select('id');
@@ -2978,10 +2814,7 @@ try {
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
-    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
+
 }
 
 if ( $result_insert )
@@ -3073,7 +2906,6 @@ self::$_success['Update Match-Statistic:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 

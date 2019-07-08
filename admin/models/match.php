@@ -11,7 +11,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -70,10 +69,6 @@ class sportsmanagementModelMatch extends JSMModelAdmin
     public function __construct($config = array())
     {
         parent::__construct($config);
-
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-
     }
 
 
@@ -137,9 +132,6 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
         $query->where('me.match_id = ' . $match_id);
         $query->order('me.event_time ASC');
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
         $db->setQuery($query);
         return $db->loadObjectList();
     }
@@ -222,22 +214,17 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         $post = Factory::getApplication()->input->post->getArray(array());
 	    $project_id = $post['project_id'];
 	    $match_ids = implode(",", $pks);
-//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre><br>', 'Notice');
-//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' pks<br><pre>' . print_r($pks, true) . '</pre><br>', 'Notice');
-        
-//        $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_id<br><pre>' . print_r($post['calendar_id'], true) . '</pre><br>', 'Notice');
+
 $this->jsmquery->clear();
 $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_gcalendar');
 $this->jsmquery->where('id = ' . $post['calendar_id']);
 $this->jsmdb->setQuery($this->jsmquery);
 $calendar_result = $this->jsmdb->loadObjectList();
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar_result<br><pre>' . print_r($calendar_result, true) . '</pre><br>', 'Notice');
 
 $calendar = new stdClass();
 $calendar->calendarId = new Registry(json_decode($calendar_result[0]->calendar_id));
 $calendar->params = new Registry(json_decode($calendar_result[0]->params));
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' calendar<br><pre>' . print_r($calendar, true) . '</pre><br>', 'Notice');
 
 $params = array();
 $client = new Google_Client(
@@ -280,7 +267,6 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_gcalendar AS gc ON gc.id = p
 $this->jsmquery->where('p.id = ' . $project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $gcalendar_id = $this->jsmdb->loadObject();
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');	    
 // jetzt die spiele
 $this->jsmquery->clear();
 // select some fields
@@ -318,28 +304,8 @@ $this->jsmquery->group('m.id ');
 $this->jsmquery->order('m.match_date ASC,m.match_number');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList();	    
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','');	    
 	    
 foreach ($result as $row) {	    
-  
-  
-//https://www.w3resource.com/php/function-reference/gmdate.php  
-//$test = gmdate('p', $row->match_timestamp);  
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' test<br><pre>' . print_r(gmdate("p, H:i"), true) . '</pre><br>', 'Notice');
-  
-/*  
-$date = new JDate($row->match_date); // A.M. time, in GMT timezone  
-//$timezone = new DateTimeZone( $row->timezone );
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');  
-  
-  
-$date->setTimezone($row->timezone);
-//$date->setTimezone('UTC');  
-//echo $date->toISO8601(false);  
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date, true) . '</pre><br>', 'Notice');    
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date->toISO8601(true), true) . '</pre><br>', 'Notice');  
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r(date("P", strtotime($row->match_date)), true) . '</pre><br>', 'Notice');  
-*/
   
 $event = new Google_Service_Calendar_Event();
 
@@ -352,33 +318,14 @@ list($date2, $time) = explode(" ", $row->match_date);
 //$anstoss = date('H:i', $row->match_date);	
 $anstoss = $time;	
 $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);	
-	
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' anstoss<br><pre>' . print_r($anstoss, true) . '</pre><br>', 'Notice');
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' abpfiff<br><pre>' . print_r($abpfiff, true) . '</pre><br>', 'Notice');
-/*
-$timezone = new DateTimeZone(JFactory::getConfig()->get('offset'));
-$offset   = $timezone->getOffset(new DateTime)/3600;
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' offset<br><pre>' . print_r($offset, true) . '</pre><br>', 'Notice');
-*/        
-        	
+       	
 $start->setDateTime($date2.'T'.$anstoss.date("P", strtotime($row->match_date)) ); 	
-//$start->setDateTime($date->toISO8601(true)); 	  
 $start->setTimeZone($row->timezone);
-//$start->setTimeZone('UTC');      
 $event->setStart($start);      
-  
-//$date = new JDate($date2.' '.$abpfiff.':00' ); // A.M. time, in GMT timezone  
-//$timezone = new DateTimeZone( JFactory::getUser()->getParam('timezone') );
-//$date->setTimezone($row->timezone);  
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' data<br><pre>' . print_r($date->toISO8601(true), true) . '</pre><br>', 'Notice');  
-  
   
 $end = new Google_Service_Calendar_EventDateTime();      
 $end->setDateTime($date2.'T'.$abpfiff.':00'.date("P", strtotime($date2.' '.$abpfiff.':00'))     ); 	
-//$end->setDateTime($date->toISO8601(true)); 	  
 $end->setTimeZone($row->timezone);      
-//$end->setTimeZone('UTC');
 $event->setEnd($end);      
 
 if ( $row->gcal_event_id )
@@ -396,10 +343,6 @@ $object->id = $row->id;
 $object->gcal_event_id = $id;
 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 }
-      
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id<br><pre>' . print_r($row->gcal_event_id, true) . '</pre><br>', 'Notice');    
-
-
 
 }
 return true;
@@ -413,200 +356,7 @@ return true;
      */
     function insertgooglecalendarold()
     {
-	    /*
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
 
-        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' timezone<br><pre>' . print_r($timezone, true) . '</pre><br>', 'Notice');
-
-        // Get a db connection.
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true);
-
-        $post = Factory::getApplication()->input->post->getArray(array());
-        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $project_id = $app->getUserState("$option.pid", '0');
-
-        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-
-        $match_ids = implode(",", $pks);
-        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' match_ids<br><pre>'.print_r($match_ids, true).'</pre><br>','Notice');
-
-        // Select some fields
-        $query->select('p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project as p');
-        $query->join('INNER', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_gcalendar AS gc ON gc.id = p.gcalendar_id');
-        $query->where('p.id = ' . $project_id);
-        $db->setQuery($query);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-        $gcalendar_id = $db->loadObject();
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($gcalendar_id,true).'</pre>'),'');
-
-        // jetzt die spiele
-        $query->clear();
-        // select some fields
-        $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present');
-        $query->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
-        $query->select('pt1.project_id');
-        $query->select('t1.name as hometeam,t2.name as awayteam');
-        $query->select('r.name as roundname');
-        $query->select('d1.name as divhome');
-        $query->select('d2.name as divaway');
-        $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
-        // from
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_match AS m');
-        // join
-        $query->join('INNER', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_round AS r ON m.round_id = r.id ');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_project_team AS pt2 ON m.projectteam2_id = pt2.id');
-
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_season_team_id AS st2 ON st2.id = pt2.team_id ');
-
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_team AS t1 ON t1.id = st1.team_id');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_team AS t2 ON t2.id = st2.team_id');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_division AS d1 ON pt1.division_id = d1.id');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_division AS d2 ON pt2.division_id = d2.id');
-        $query->join('LEFT', '#__' . COM_SPORTSMANAGEMENT_TABLE . '_playground AS playground ON playground.id = m.playground_id');
-
-
-        // where
-        $query->where('m.published = 1');
-        $query->where('m.id IN (' . $match_ids . ' )');
-        $query->where('r.project_id = ' . (int)$project_id);
-
-        if ($gcalendar_id->gcalendar_use_fav_teams) {
-            $query->where('( t1.id IN (' . $gcalendar_id->fav_team . ' ) OR t2.id IN (' . $gcalendar_id->fav_team . ' )  )');
-        }
-
-        // group
-        $query->group('m.id ');
-        // order
-        $query->order('m.match_date ASC,m.match_number');
-
-        $db->setQuery($query);
-        $result = $db->loadObjectList();
-
-        if (!$result) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' getErrorMsg<pre>' . print_r($db->getErrorMsg(), true) . '</pre>'), 'Error');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' dump<br><pre>' . print_r($query->dump(), true) . '</pre>'), '');
-        }
-
-//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' result<br><pre>'.print_r($result, true).'</pre><br>','');
-
-
-        $calendar = jsmGCalendarDBUtil::getCalendar($gcalendar_id->gcalendar_id);
-
-        if ($gcalendar_id) {
-
-            if ($result) {
-                $cryptor = new JSimpleCrypt();
-                $gcalendar_id->password = $cryptor->decrypt($gcalendar_id->password);
-
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' gcalendar_id<br><pre>'.print_r($gcalendar_id->gcalendar_id, true).'</pre><br>','');
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' calendar_id<br><pre>'.print_r($gcalendar_id->calendar_id, true).'</pre><br>','');
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' username<br><pre>'.print_r($gcalendar_id->username, true).'</pre><br>','');
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' password<br><pre>'.print_r($gcalendar_id->password, true).'</pre><br>','');
-
-                //$client = new Zend_Http_Client();
-                //$client = Zend_Gdata_ClientLogin::getHttpClient($gcalendar_id->username, $gcalendar_id->password, Zend_Gdata_Calendar::AUTH_SERVICE_NAME);
-                $client = Zend_Gdata_ClientLogin::getHttpClient($gcalendar_id->username, $gcalendar_id->password, Zend_Gdata_Calendar::AUTH_SERVICE_NAME);
-                $service = new Zend_Gdata_Calendar($client);
-                $service->setMajorProtocolVersion(2);
-
-                foreach ($result as $row) {
-                    // Erstellt einen neuen Eintrag und verwendet die magische Factory
-                    // Methode vom Kalender Service
-                    $event = $service->newEventEntry();
-
-                    if ($row->gcal_event_id) {
-                        $query = $service->newEventQuery();
-                        $query->setUser($gcalendar_id->calendar_id);
-                        $query->setVisibility('private');
-                        $query->setProjection('full');
-                        $query->setEvent($row->gcal_event_id);
-
-                        //$event = jsmGCalendarZendHelper::getEvent($calendar, $row->gcal_event_id);
-                        $event = $service->getCalendarEventEntry($query);
-                        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' alter event<br><pre>'.print_r($event, true).'</pre><br>','');
-                    }
-
-                    // Gibt das Event bekannt mit den gewünschten Informationen
-                    // Beachte das jedes Attribu als Instanz der zugehörenden Klasse erstellt wird
-                    $event->title = $service->newTitle($gcalendar_id->name . ', ' . $row->roundname);
-                    $event->where = array($service->newWhere($row->playground_name . ',' . $row->playground_city . ',' . $row->playground_address));
-                    $event->content = $service->newContent($row->hometeam . ' - ' . $row->awayteam . ' (' . $row->team1_result . ':' . $row->team2_result . ')');
-
-                    // Setze das Datum und verwende das RFC 3339 Format.
-                    list($date, $time) = explode(" ", $row->match_date);
-                    $time = strftime("%H:%M", strtotime($time));
-                    $endtime = date('H:i', strtotime('+' . ($gcalendar_id->game_regular_time + $gcalendar_id->halftime) . ' minutes', strtotime($time)));
-
-//            $allDay = '0';
-//            $startDate = jsmGCalendarUtil::getDateFromString($date, $time, $allDay, $timezone);
-//			$endDate = jsmGCalendarUtil::getDateFromString($date, $endtime, $allDay, $timezone);
-//
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' startDate<br><pre>'.print_r($startDate, true).'</pre><br>','');
-//            $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' endDate<br><pre>'.print_r($endDate, true).'</pre><br>','');
-
-                    $startDate = $date;
-                    $startTime = $time;
-                    $endDate = $date;
-                    $endTime = $endtime;
-                    $tzOffset = "-00";
-
-                    $when = $service->newWhen();
-                    $when->startTime = "{$startDate}T{$startTime}:00.000{$tzOffset}:00";
-                    $when->endTime = "{$endDate}T{$endTime}:00.000{$tzOffset}:00";
-                    $event->when = array($when);
-
-                    if ($row->gcal_event_id) {
-
-                        $event = $service->updateEntry($event, 'https://www.google.com/calendar/feeds/' . $gcalendar_id->calendar_id . '/private/full/' . $row->gcal_event_id);
-
-                        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
-
-                        //$event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/'.$gcalendar_id->calendar_id.'/private/full/');
-                    } else {
-                        $event = $service->insertEntry($event, 'https://www.google.com/calendar/feeds/' . $gcalendar_id->calendar_id . '/private/full');
-
-
-                        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_insert<br><pre>'.print_r($event->id->text, true).'</pre><br>','');
-
-                        $event_id = substr($event->id, strrpos($event->id, '/') + 1);
-                        $row->gcal_event_id = $event_id;
-
-                        //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' event_id<br><pre>'.print_r($event_id, true).'</pre><br>','');
-
-                        // die event id updaten
-                        // Create an object for the record we are going to update.
-                        $object = new stdClass();
-                        // Must be a valid primary key value.
-                        $object->id = $row->id;
-                        $object->gcal_event_id = $row->gcal_event_id;
-                        // Update their details in the users table using id as the primary key.
-                        $result = Factory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_match', $object, 'id');
-
-
-                    }
-
-                }
-
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-*/
     }
 
 
@@ -721,7 +471,6 @@ return true;
         $app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();   
 	$query = $db->getQuery(true);    
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $match_id = $data['match_id'];
         if (isset($data['cid'])) {
             // save all checked rows
@@ -760,8 +509,6 @@ $query->where($conditions);
                     }
                 }
 		} catch (Exception $e) {
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');	    
                 $result = false;
             }    
             }
@@ -804,8 +551,6 @@ $query->where($conditions);
                     }
                 }
 		} catch (Exception $e) {
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-	        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');	    
                 $result = false;
             }    
             }
@@ -825,15 +570,9 @@ $query->where($conditions);
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-
 
         $result = true;
         for ($x = 0; $x < count($pks); $x++) {
@@ -1021,8 +760,6 @@ $query->where($conditions);
         /* Ein JDatabaseQuery Objekt beziehen */
         $query = Factory::getDbo()->getQuery(true);
 
-        //$app->enqueueMessage(Text::_('match delete pk<br><pre>'.print_r($pks,true).'</pre>'   ),'');
-
         $result = false;
         if (count($pks)) {
 
@@ -1046,10 +783,8 @@ $query->where($conditions);
             Factory::getDbo()->setQuery($query);
             Factory::getDbo()->execute();
             if (!Factory::getDbo()->execute()) {
-                //$app->enqueueMessage(Text::_('match delete query getErrorMsg<br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
-            }
 
-            //$app->enqueueMessage(Text::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+            }
 
             return parent::delete($pks);
         }
@@ -1193,9 +928,6 @@ if ( $data['id'] )
             $db->setQuery($query);
             $matches = $db->loadObjectList();
         } catch (Exception $e) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'error');
             $matches = false;
         }
 
@@ -1305,18 +1037,14 @@ if ( $data['id'] )
         $query->order("pl.lastname ASC");
         Factory::getDbo()->setQuery($query);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
         $result = Factory::getDbo()->loadObjectList();
         if (!$result) {
             switch ($persontype) {
                 case 1:
                     $position_value = 'COM_SPORTSMANAGEMENT_SOCCER_F_PLAYERS';
-                    //$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',Text::_($position_value) ),'Error');
                     break;
                 case 2:
                     $position_value = 'COM_SPORTSMANAGEMENT_SOCCER_F_COACH';
-                    //$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',Text::_($position_value)),'Error');
                     break;
             }
 
@@ -1437,11 +1165,8 @@ if ( $data['id'] )
         Factory::getDbo()->setQuery($query);
         $result = Factory::getDbo()->loadObjectList('value');
 
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'');
-
         if (!$result) {
-            //$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',$position_value),'Error');
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+
         }
 
         return $result;
@@ -1727,8 +1452,6 @@ if ( $data['id'] )
 
         Factory::getDbo()->setQuery($query);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
         $res = Factory::getDbo()->loadObjectList();
         $stats = array();
         foreach ($res as $k => $row) {
@@ -1737,8 +1460,6 @@ if ( $data['id'] )
             $stat->set('position_id', $row->posid);
             $stats[] = $stat;
         }
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'Notice');
 
         return $stats;
     }
@@ -1764,13 +1485,6 @@ if ( $data['id'] )
         $query->where('match_id = ' . $match_id);
 
         Factory::getDbo()->setQuery($query);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         $res = Factory::getDbo()->loadObjectList();
         $stats = array($projectteam1_id => array(),
@@ -1802,13 +1516,6 @@ if ( $data['id'] )
         $query->where('match_id = ' . $match_id);
 
         Factory::getDbo()->setQuery($query);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         $res = Factory::getDbo()->loadObjectList();
         $stats = array($projectteam1_id => array(), $projectteam2_id => array());
@@ -1936,20 +1643,13 @@ if ( $data['id'] )
         $positions = $post['positions'];
 
         $paramsmail = ComponentHelper::getParams($option)->get('ishd_referee_insert_match_mail');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' paramsmail <br><pre>'.print_r($paramsmail ,true).'</pre>'),'');
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
-
-        //$project_id=$post['project'];
         foreach ($positions AS $key => $pos) {
             if (isset($post['position' . $key])) {
                 $peid = array_merge((array)$post['position' . $key], $peid);
             }
         }
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
-
-        //if ( $peid == null )
         if (!$peid) {
             // Delete all referees assigned to this match
             $query->delete($db->quoteName('#__sportsmanagement_match_referee'));
@@ -1970,7 +1670,6 @@ if ( $data['id'] )
             $query->where('project_referee_id NOT IN (' . $peids . ')');
             $db->setQuery($query);
             $result_referee_delete = $db->loadObjectList();
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' delete referees: <br><pre>' . print_r($result_referee_delete, true) . '</pre>'), 'Error');
 
             // Delete all referees which are not selected anymore from this match
             ArrayHelper::toInteger($peid);
@@ -2032,15 +1731,11 @@ if ( $data['id'] )
                                 $match_teams = self::getMatchTeams($mid);
                                 $match_detail = self::getMatchData($mid);
                                 $refreee_detail = self::getRefereeRoster($key, $mid, $project_referee_id);
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' refreee_detail <br><pre>'.print_r($refreee_detail ,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match_detail <br><pre>'.print_r($match_detail ,true).'</pre>'),'');
-
                                 $mailer = Factory::getMailer();
                                 $mailer->setSender($sender);
                                 $recipient = $refreee_detail[$project_referee_id]->email;
                                 $mailer->addRecipient($recipient);
 
-//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
                                 $body = sprintf($paramsmail,
                                     $refreee_detail[$project_referee_id]->firstname,
                                     $refreee_detail[$project_referee_id]->lastname,
@@ -2058,9 +1753,9 @@ if ( $data['id'] )
                                 $mailer->setBody($body);
                                 $send = $mailer->Send();
                                 if ($send !== true) {
-                                    $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Error sending email: <br><pre>' . print_r($send->__toString(), true) . '</pre>'), 'Error');
+
                                 } else {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Mail sent <br><pre>'.print_r($mailer ,true).'</pre>'),'');
+
                                 }
                             }
 
@@ -2127,7 +1822,6 @@ if ( $data['id'] )
         $option = Factory::getApplication()->input->getCmd('option');
         $date = Factory::getDate();
         $user = Factory::getUser();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 // Create a new query object.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -2155,9 +1849,7 @@ if ( $data['id'] )
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
-        }
+            }
         if ($result) {
             $query->clear();
             $query->delete($db->quoteName('#__sportsmanagement_match_player'));
@@ -2168,7 +1860,6 @@ if ( $data['id'] )
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns '500';
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
             }
 
         }
@@ -2219,7 +1910,6 @@ if ( $data['id'] )
         $option = Factory::getApplication()->input->getCmd('option');
         $date = Factory::getDate();
         $user = Factory::getUser();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 // Create a new query object.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -2244,9 +1934,7 @@ if ( $data['id'] )
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
         }
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
 
         if ($result) {
             $query->clear();
@@ -2730,18 +2418,7 @@ if ( $data['id'] )
         $query->where('match_id = ' . $match_id);
         $query->order('event_time DESC');
 
-//        $query = "SELECT *
-//    FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_commentary
-//    WHERE match_id = ".(int)$this->matchid."
-//    ORDER BY event_time DESC";
-
-
         $db->setQuery($query);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         return $db->loadObjectList();
     }
@@ -2764,20 +2441,10 @@ if ( $data['id'] )
         $mdl = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdl->getProject($this->project_id);
 
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user, true).'</pre><br>','Notice');
-
         if ($project->fav_team) {
             $mdl = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
             $teamplayer = $mdl->getProjectTeamplayers($project->fav_team, $project->season_id);
         }
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer, true).'</pre><br>','Notice');
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_time_new<br><pre>'.print_r($this->_match_time_new, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_date_new<br><pre>'.print_r($this->_match_date_new, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_time_old<br><pre>'.print_r($this->_match_time_old, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_date_old<br><pre>'.print_r($this->_match_date_old, true).'</pre><br>','Notice');
 
         foreach ($teamplayer as $player) {
             if ($player->email) {
@@ -2832,13 +2499,10 @@ if ( $data['id'] )
         //$match_id = $cid[0];
         $match_id = Factory::getApplication()->input->getVar('match_id');
         $this->_id = $match_id;
-        //$app->enqueueMessage(Text::_('getPressebericht match_id<br><pre>'.print_r($match_id,true).'</pre>'   ),'');
         $file = JPATH_SITE .DIRECTORY_SEPARATOR. 'media' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'pressebericht' .DIRECTORY_SEPARATOR. $match_id . '.jlg';
-        //$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'pressebericht.jlg';
         $app->enqueueMessage(Text::_('datei = ' . $file), '');
         // Where the cache will be stored
         $dcsv['file'] = $file;
-//$dcsv['cachefile']	= dirname(__FILE__).'/tmp/'.md5($dcsv['file']);
         $dcsv['cachefile'] = JPATH_SITE .DIRECTORY_SEPARATOR. '/tmp/' . md5($dcsv['file']);
 
 // If there is no chache saved or is older than the cache time create a new cache
@@ -2851,23 +2515,8 @@ if ( $data['id'] )
 
 // New ParseCSV object.
         $csv = new JSMparseCSV();
-//$csv->encoding('UTF-8', 'UTF-8');
 // Parse CSV with auto delimiter detection
         $csv->auto($dcsv['cachefile']);
-
-//$app->enqueueMessage(Text::_('getPressebericht csv<br><pre>'.print_r($csv,true).'</pre>'   ),'');
-        //$app->enqueueMessage(Text::_('getPressebericht csv->data<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-
-        /*
-    # tab delimited, and encoding conversion
-	$csv = new JSMparseCSV();
-	//$csv->encoding('UTF-16', 'UTF-8');
-	//$csv->delimiter = ";";
-    $csv->auto($file);
-    //$csv->parse($file);
-    $app->enqueueMessage(Text::_('getPressebericht csv<br><pre>'.print_r($csv,true).'</pre>'   ),'');
-    $app->enqueueMessage(Text::_('getPressebericht csv->data<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-    */
 
         return $csv;
     }
@@ -2886,9 +2535,7 @@ if ( $data['id'] )
         $tblmatch = Table::getInstance("match", "sportsmanagementTable");
         $tblmatch->load($match_id);
         $match_number = $tblmatch->match_number;
-        //$app->enqueueMessage(Text::_('getPresseberichtMatchnumber match number<br><pre>'.print_r($match_number,true).'</pre>'   ),'');
         $csv_match_number = $csv_file->data[0]['Spielberichtsnummer'];
-        //$app->enqueueMessage(Text::_('getPresseberichtMatchnumber csv match number<br><pre>'.print_r($csv_match_number,true).'</pre>'   ),'');
         $teile = explode(".", $csv_match_number);
 
         if ($match_number != $teile[0]) {
@@ -2961,10 +2608,7 @@ if ( $data['id'] )
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'error');
         }
-
 
         if ($projectteamid) {
             $this->projectteamid = $projectteamid;
@@ -3258,8 +2902,6 @@ if ( $data['id'] )
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'error');
         }
 
         return $person_id;
@@ -3296,8 +2938,6 @@ if ( $data['id'] )
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'error');
             $projectpersonid = new stdClass();
             $projectpersonid->id = 0;
             $projectpersonid->project_position_id = 0;

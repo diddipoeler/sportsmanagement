@@ -241,10 +241,10 @@ abstract class sportsmanagementHelper {
         $imageArray = '';
 
         if (!File::exists($picture)) {
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture nicht vorhanden <pre>'.print_r($picture, true).'</pre><br>','Error');    
+    
             return false;
         } else {
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture vorhanden <pre>'.print_r($picture, true).'</pre><br>','');    
+    
             return true;
         }
 
@@ -270,16 +270,11 @@ abstract class sportsmanagementHelper {
         $object->class = $klasse;
         $object->line = $zeile;
         $object->text = $text;
-        //if ( !isset(self::$_success_text[$klasse]) )
-        //if ( !is_array(self::$_success_text) )
         if (!array_key_exists($klasse, self::$_success_text)) {
             self::$_success_text[$klasse] = array();
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.'klasse <pre>'.print_r($klasse, true).'</pre><br>','');
         }
         $export[] = $object;
         self::$_success_text[$klasse] = array_merge(self::$_success_text[$klasse], $export);
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(self::$_success_text, true).'</pre><br>','');
     }
 
     /**
@@ -1614,7 +1609,6 @@ case "projectteams/trikot_away":
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
                 $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' date<br><pre>'.print_r($date,true).'</pre>'),'');    
                 return false;
             }
     }
@@ -1684,14 +1678,6 @@ case "projectteams/trikot_away":
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'team <br><pre>' . print_r($team, true) . '</pre>';
-            sportsmanagementHelper::$_success_text[__METHOD__][__LINE__] = $my_text;
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
-        }
 
         if (!isset($team->projectteamid))
             return "";
@@ -2072,7 +2058,6 @@ $output .= '</ul>';
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$db = sportsmanagementHelper::getDBConnection();
         $query = Factory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('manifest_cache');
@@ -2080,12 +2065,7 @@ $output .= '</ul>';
         $query->from('#__extensions');
         $query->where('name LIKE ' . Factory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
         Factory::getDbo()->setQuery($query);
-
-//	   $query->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
         $manifest_cache = json_decode(Factory::getDbo()->loadResult(), true);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' manifest_cache -><br><pre>'.print_r($manifest_cache,true).'</pre>'),'');
-
         return $manifest_cache['version'];
     }
 
@@ -2272,8 +2252,6 @@ $output .= '</ul>';
     public static function printbutton($print_link, &$config) {
         $jinput = Factory::getApplication()->input;
         $app = Factory::getApplication();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
-
         if ($config['show_print_button'] == 1) {
             HTMLHelper::_('behavior.tooltip');
             $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
@@ -2624,13 +2602,9 @@ try{
     public static function saveExtraFields($post, $pid) {
         $app = Factory::getApplication();
         $address_parts = array();
-        //$app->enqueueMessage(Text::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-
         $db = sportsmanagementHelper::getDBConnection();
         //-------extra fields-----------//
         if (isset($post['extraf']) && count($post['extraf'])) {
-            //$app->enqueueMessage(Text::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-            //$app->enqueueMessage(Text::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
             for ($p = 0; $p < count($post['extraf']); $p++) {
                 // Create a new query object.
                 $query = $db->getQuery(true);

@@ -9,14 +9,9 @@
  * @subpackage models
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModelleague
@@ -62,16 +57,7 @@ class sportsmanagementModelleague extends JSMModelAdmin
         // Get the input
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        //$app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
+       
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -85,8 +71,6 @@ class sportsmanagementModelleague extends JSMModelAdmin
 
 			if(!$tblLeague->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}

@@ -90,8 +90,7 @@ $session = JFactory::getSession(array(
 		}
 		$clientId = $session->get('client-id', null, $this->_name);
 		$clientSecret = $session->get('client-secret', null, $this->_name);      
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientId<br><pre>'.print_r($clientId,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientSecret<br><pre>'.print_r($clientSecret,true).'</pre>'),'Notice');      
+      
 if ($app->input->get('code'))
 		{
 			$session->set('client-id', null, $this->_name);
@@ -129,11 +128,7 @@ $uri = Factory::getURI();
 $client->setApprovalPrompt('force');
 
 
-//$client->setRedirectUri(Uri::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
 
-//$uri = $client->createAuthUrl();
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
 
 if (! $app->input->get('code'))
 {

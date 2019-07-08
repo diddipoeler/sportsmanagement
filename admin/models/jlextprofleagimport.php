@@ -9,12 +9,12 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -37,8 +37,8 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIR
 jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
-// import JFile
-use Joomla\CMS\Filesystem\File;
+
+
 jimport( 'joomla.utilities.utility' );
 
 
@@ -286,9 +286,6 @@ $xml = new SofeeXmlParser();
 $xml->parseFile($file); 
 $tree = $xml->getTree(); 
 unset($xml); 
-
-//$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($tree[tournament][season][value],true).'</pre>'),'Notice');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'tree -><pre>'.print_r($tree,true).'</pre>'),'');
 
 $app->setUserState( $option.'pltree', $tree );
 
@@ -1111,12 +1108,8 @@ $lfdnumbermatch++;
 
 }
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'tree -><pre>'.print_r($tree,true).'</pre>'),'');
-//echo "tree -><pre>".print_r($tree,true)."</pre>";
-
 foreach ( $tempexportteamstaff as $key => $value )
 {
-// echo $key.'-'.$value.'<br>';
 $temp = new stdClass();
 $temp->id = $tempexportplayer[$value];
 $temp->projectteam_id = $exportprojectteamtemp[$key];

@@ -9,15 +9,13 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 FormHelper::loadFieldClass('list');
 
 /**
@@ -60,36 +58,23 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
         
         // Initialize variables.
 		$options = array();
-//    $vartable = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar('id');
         $db = Factory::getDbo();
 			$query = $db->getQuery(true);
-			
 			$query->select('pp.id AS value, pos.name AS text');
             $query->from('#__sportsmanagement_position as pos');
             $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
-            
 			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
             $query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
-            
-            //$query->where('ppp.project_position_id = '.$select_id);
             $query->where('pp.project_id = '.$pid);
 			$query->order('pos.ordering,pos.name');
             $query->group('pos.id');
 			$db->setQuery($query);
-            
-        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
-        {
-		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-            
+           
             try { 
 			$options = $db->loadObjectList();
             }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
 Factory::getApplication()->enqueueMessage($db->getErrorMsg());
 }
             foreach ( $options as $row )

@@ -114,11 +114,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
        $post = Factory::getApplication()->input->post->getArray(array());
        // Get a db connection.
         $db = Factory::getDbo();
-        
-       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
-       
+      
        $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
        
        if ( empty($data['id']) )
@@ -153,9 +149,6 @@ $output .= "</entry>". "\n";
     $xml = str_replace('[SUMMARY]', $summary, $xml);
     $response = $gdataCal->post($xml, $uri);
     
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
     
     // die erstellte kalender id übergeben
     $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);

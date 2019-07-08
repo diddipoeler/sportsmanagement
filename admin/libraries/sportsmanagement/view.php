@@ -233,28 +233,12 @@ $this->document->addStyleSheet(Uri::root() .'administrator/components/com_sports
         
         if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        if(isset($this->sortDirection)) {
-            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
-        }
-        if(isset($this->sortColumn)) {
-            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
-        }
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
+        
         }
         
         if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-            
-            //if ( $this->layout == 'edit' )
-            //{
-            //$this->setLayout($this->getLayout() . '_3');
-            //}
-            //else
-            //{
             $this->setLayout($this->getLayout() . '_4');    
-            //}
-            
             $this->table_data_class = 'table table-striped';
             $this->table_data_div = '</div>';
 }
@@ -272,17 +256,10 @@ else
             $this->table_data_class = 'adminlist';
             $this->table_data_div = '';   
 }
-
         
-        
-        //$this->app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
-
 		$this->init();
-
 		$this->addToolbar();
-        
-        //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
-        
+       
         // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -333,9 +310,6 @@ else
 	 */
 	protected function addToolbar ()
 	{
-	   //$option = Factory::getApplication()->input->getCmd('option');
-		//$app = Factory::getApplication();
-        //$view = Factory::getApplication()->input->getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
@@ -500,16 +474,13 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         }
          
         }    
-        
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
-        
+      
         if ( $this->layout == 'edit' 
         || $this->layout == 'edit_3' 
         || $this->layout == 'edit_4' )
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
-        //$view = Factory::getApplication()->input->getCmd('view', 'edit');
             if (empty($this->title))
 		    {
             if ( $isNew )

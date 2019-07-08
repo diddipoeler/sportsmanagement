@@ -9,14 +9,11 @@
  * @subpackage projectreferees
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
-
-
 
 /**
  * sportsmanagementModelProjectReferees
@@ -94,12 +91,6 @@ public function __construct($config = array())
         $value = Factory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
 		// List state information.
 		parent::populateState('p.lastname', 'asc');
 	}
@@ -113,10 +104,7 @@ public function __construct($config = array())
 	{
 		$app	= Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-        //$search	= $this->getState('filter.search');
-        //$search_nation	= $this->getState('filter.search_nation');
-        //$search_project_position_id	= $this->getState('filter.project_position_id');
-        
+       
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         $this->_team_id = Factory::getApplication()->input->getVar('team_id');

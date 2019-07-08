@@ -94,12 +94,7 @@ class JSMControllerForm extends FormController
         $this->jsmdocument = Factory::getDocument();
         $this->jsmuser = Factory::getUser();
         $this->jsmdate = Factory::getDate();
-//        $this->option = $this->jsmjinput->getCmd('option');
-        //$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
-
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-
-        // Map the apply task to the save method.
+        /** Map the apply task to the save method. **/
         //$this->registerTask('apply', 'save');
     }
 

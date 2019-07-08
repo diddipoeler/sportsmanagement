@@ -9,7 +9,6 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
@@ -17,7 +16,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -54,17 +53,9 @@ class JFormFieldseasonteamperson extends FormField
         $this->value = explode(",", $this->value);
         $targettable = $this->element['targettable'];
         $targetid = $this->element['targetid'];
-        
-        
-   
-    
-        // Initialize variables.
-		//$options = array();
-    
     // teilnehmende saisons selektieren
     if ( $select_id )
     {
-    //$db = Factory::getDbo();
     $query = Factory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('stp.season_id,stp.team_id, t.name as teamname, s.name as seasonname, c.logo_big as clublogo');
@@ -72,29 +63,16 @@ class JFormFieldseasonteamperson extends FormField
             $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = stp.team_id');
             $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
             $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = stp.season_id');
-            
 			$query->where($targetid.'='.$select_id);
             $query->order('s.name');
-            
             $starttime = microtime(); 
-            
 			Factory::getDbo()->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
             $options = Factory::getDbo()->loadObjectList();
 	}
     else
     {
         $options = '';
     }		
-    
- 
-
 
 // Initialize variables.
             $html = '';

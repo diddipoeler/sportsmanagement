@@ -572,9 +572,6 @@ echo $this->pane->startPanel('icsfile Termine','icsfile Termine');
 $this->dump_header("icsfile Termine");
 $this->dump_variable("icsfile Termine", $icsfile['VEVENT']);
 echo $this->pane->endPanel();
-    
-//echo 'icsfile -> <br /><pre>~'.print_r($icsfile,true).'~</pre><br />';
-//echo 'icsfile termine -> <br /><pre>~'.print_r($icsfile['VEVENT'],true).'~</pre><br />';
 }
 
 //
@@ -592,13 +589,8 @@ for ($a=0; $a < sizeof($icsfile['VEVENT']) ;$a++ )
 // Diese VEVENT Blöcke sollen ausgeschlossen werden
 	if ( (!strstr($icsfile['VEVENT'][$a]['SUMMARY'], "-\,")) && (!strpos($icsfile['VEVENT'][$a]['SUMMARY'], "-") == "0" ) )
 	{
-		//$app->enqueueMessage($a .' -> '.$icsfile['VEVENT'][$a]['SUMMARY'] .'<br>');
-		//$app->enqueueMessage($a .' -> '.strpos($icsfile['VEVENT'][$a]['SUMMARY'], "-").'<br>');
-
-
 	$icsfile['VEVENT'][$a]['UID'] = $lfdnumbermatch;
 	$exportmatchplan[$icsfile['VEVENT'][$a]['UID']]['match_date'] = date('Y-m-d', $icsfile['VEVENT'][$a]['DTSTART'])." ".date('H:i',$icsfile['VEVENT'][$a]['DTSTART']);
-
 
 // Paarung
 $teile = explode("\,",$icsfile['VEVENT'][$a]['SUMMARY']);
@@ -813,12 +805,7 @@ $this->dump_header("icsfile exportteamstemp");
 $this->dump_variable("icsfile exportteamstemp", $exportteamstemp);
 echo $this->pane->endPanel();
     
-//echo 'icsfile exportmatchplan -> <br /><pre>~'.print_r($exportmatchplan,true).'~</pre><br />';
-//echo 'icsfile exportteamstemp -> <br /><pre>~'.print_r($exportteamstemp,true).'~</pre><br />';
 }
-
-
-//$app->enqueueMessage('<pre>'.print_r($exportteamstemp,true).'</pre>');
 
 // teams verarbeiten
 foreach ( $exportteamstemp as $key => $value )
@@ -875,10 +862,6 @@ $app->enqueueMessage(Text::_('Wir haben '.$anzahlteams.' Teams f&uuml;r die Bere
 $app->enqueueMessage(Text::_('Wir haben '.$anzahltage.' Spieltage'),'');
 $app->enqueueMessage(Text::_('Wir haben '.$anzahlpaarungen.' Paarungen pro Spieltag'),'');
   
-// echo "icsfile exportplaygroundtemp<pre>";
-// print_r($exportplaygroundtemp);
-// echo "</pre>";
-
 // so jetzt die runden erstellen
 for ($a=1; $a <= $anzahltage ;$a++ )
 {
@@ -898,10 +881,6 @@ $lfdnumberpaarung = 1;
 $lfdnumberspieltag = 1;
 foreach ( $exportmatchplan as $key => $value )
 {
-
-// echo "icsfile spiele erstellen<pre>";
-// print_r($value);
-// echo "</pre>";
 
   $tempmatch = new stdClass();
   $tempmatch->id = $lfdnumbermatch;
@@ -1045,8 +1024,6 @@ $app->enqueueMessage(Text::_('playground Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
 
-//$app->enqueueMessage(Text::_("<b>description</b><pre>".print_r($output,true)."</pre>"),'');
-            
 // close the project
 $output .= '</project>';
 // mal als test
@@ -1162,13 +1139,8 @@ $header = array();
 if (($handle = fopen($file, "r")) !== FALSE) {
 while (($data = fgetcsv($handle, 4000, $csv->delimiter)) !== FALSE) {
  
-//echo "<p> $num Felder in Zeile $row: <br /></p>\n";
-//$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_('num <br><pre>'.print_r($num ,true).'</pre>'   ),'');
-  
 if ( $row == 8 )
 {
-//$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
 $num = count($data);  
 for ($c=0; $c < $num; $c++) {  
 $header[$c] = $data[$c];    
@@ -1233,20 +1205,12 @@ $input = file_get_contents( $file );
 $encoding = mb_detect_encoding( $input, mb_list_encodings(), TRUE );  
 $app->enqueueMessage(Text::_(__LINE__.' - '.'encoding<br><pre>'.print_r($encoding,true).'</pre>'   ),'');  
 if( $encoding !== "UTF-8" ) {
-    //$input = mb_convert_encoding( $input, "UTF-8", $encoding );
-  
 $csvneu = explode("\n",$input);
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r($csvneu,true).'</pre>'   ),'');  
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r(sizeof($csvneu),true).'</pre>'   ),'');  
 $numcsv = count($csvneu);
 for($a=0; $a <= $numcsv; $a++  )
 {  
-  
 $csvneu[$a] = mb_convert_encoding( $csvneu[$a], "UTF-8", $encoding );
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'csvneu<br><pre>'.print_r($csvneu[$a],true).'</pre>'   ),'');    
-
 $data = explode("\t",$csvneu[$a]);
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'data<br><pre>'.print_r($data,true).'</pre>'   ),'');
 
 $num = count($data);
 for ($c=1; $c < $num; $c++) {
@@ -1269,32 +1233,16 @@ $csv->data[$row][$header[$c]] = trim(strip_tags($data[$c]));
 $row++;
 }  
  
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'header<br><pre>'.print_r($header,true).'</pre>'   ),''); 
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'file<br><pre>'.print_r($file,true).'</pre>'   ),'');  	  
- 
 }
 else
 {    
-  
-  
-  
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'input<br><pre>'.print_r($input,true).'</pre>'   ),'');  	  
-	
-//$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
-if (($handle = fopen($file, "r")) !== FALSE) {
 
+if (($handle = fopen($file, "r")) !== FALSE) {
   
 while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
   
 $num = count($data);
-        //echo "<p> $num Felder in Zeile $row: <br /></p>\n";
-        //$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
-        //$app->enqueueMessage(Text::_('num <br><pre>'.print_r($num ,true).'</pre>'   ),'');
-        
-        //$row++;
 for ($c=0; $c < $num; $c++) {
-            //echo $data[$c] . "<br />\n";
-            //$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data[$c],true).'</pre>'   ),'');
 if ( empty($row) )
 {
 $header[$c] = $data[$c];    
@@ -1315,10 +1263,7 @@ $row++;
 fclose($handle);
 }	
 }
-  
-
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'csv<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-  
+ 
 for($a=1; $a <= sizeof($csv->data); $a++  )
 {
 $temp = array();
@@ -1327,29 +1272,23 @@ $anhaengengast = FALSE;
 $anhaengenheim = FALSE;		
 foreach ($csv->data[$a] as $pos =>  $val)
 {
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'pos <br><pre>'.print_r($pos ,true).'</pre>'   ),'');	
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
-  
 $temp[$pos] = $val;  
 
 switch (trim($pos))
 {
 case 'Heimmannschaft':
-    //$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 if ( $val )
 {
 $anhaengenheim = TRUE;
 }
 break;		
 case 'Gastmannschaft':
-   // $app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 if ( $val )
 {
 $anhaengengast = TRUE;
 }
 break;		
 case 'Spielkennung':
-    //$app->enqueueMessage(Text::_(__LINE__.' - '.'val <br><pre>'.print_r($val ,true).'</pre>'   ),'');	  
 $spielkennung = $val;
 break;
 case 'verlegtSpieldatum':
@@ -1367,12 +1306,6 @@ break;
 }
 
 }
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'spielkennung <br><pre>'.print_r($spielkennung ,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'anhaengenheim <br><pre>'.print_r($anhaengenheim ,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'anhaengengast <br><pre>'.print_r($anhaengengast ,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'temp <br><pre>'.print_r($temp ,true).'</pre>'   ),'');
-  
   
 if ( $spielkennung && $anhaengenheim && $anhaengengast )
 {
@@ -1390,32 +1323,6 @@ foreach ($dfbnetspiele as $pos => $val)
 {
 $csv->data[] = $val;
 }	
-//$app->enqueueMessage(Text::_(__LINE__.' - '.'csv<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-//$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r(sizeof($dfbnetspiele) ,true).'</pre>'   ),'');			
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
-	
-	
-	// Spielplan anfang
-	# tab delimited, and encoding conversion
-//	$csv = new JSMparseCSV();
-	//$csv->encoding('UTF-16', 'UTF-8');
-	// Spielplan des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
-	//$csv->delimiter = "\t";
-	// switch ($delimiter)
-	// {
-	// 	case ";":
-	// 		$csv->delimiter = ";";
-	// 		break;
-	// 	case ",":
-	// 		$csv->delimiter = ",";
-	// 		break;
-	// 	default:
-	// 		$csv->delimiter = "\t";
-	// 		break;
-	// }
-
-	//$csv->parse($file);
-//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 	if ( sizeof($csv->data) == 0 )
 	{
 		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'Falsches Dateiformat'),'Error');
@@ -1726,8 +1633,6 @@ if ( !$valueplayground )
 {
 $valueplayground = $csv->data[$a]['Spielstaette'];
 }    
-
-//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielorte (Spielstätte):<br><pre>'.print_r($csv->data[$a]['Spielstätte'],true).'</pre>'   ),'');
 
 if ( $valueplayground )
 {
@@ -2293,24 +2198,17 @@ $exportprojectposition[] = $temp;
 }
 
 
-//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten (exportreferee):<br><pre>'.print_r($exportreferee,true).'</pre>'   ),'');
-
 foreach ( $exportteams as $rowteam )
 {
 
 $play_ground = $exportclubsstandardplayground[$rowteam->name];    
 $club_id = $rowteam->club_id;
 
-//echo 'club_id -> '.$club_id.'<br>';
-//echo 'play_ground -> '.$play_ground.'<br>';
-
 foreach ( $exportplayground as $rowground )
 {
 if ( $play_ground == $rowground->name )
 {
 $play_ground_id = $rowground->id;    
-//echo 'play_ground_id -> '.$play_ground_id.'<br>';
-
 foreach ( $exportclubs as $rowclubs )
 {
 if ( $club_id == $rowclubs->id )
@@ -2361,70 +2259,24 @@ $this->dump_header("exportmatch");
 $this->dump_variable("exportmatch", $exportmatch);
 echo $this->pane->endPanel();
 
-/*    
-echo 'exportclubsstandardplayground<br><pre>';
-print_r($exportclubsstandardplayground);
-echo '</pre>';
-
-echo 'exportclubs<br><pre>';
-print_r($exportclubs);
-echo '</pre>';
-
-echo 'exportteams<br><pre>';
-print_r($exportteams);
-echo '</pre>';
-
-echo 'exportplayground<br><pre>';
-print_r($exportplayground);
-echo '</pre>';
-*/
-
 } 
-
-
-
-   
-// echo 'exportteams<br><pre>';
-// print_r($exportteams);
-// echo '</pre>';
-
-// echo 'exportround<br><pre>';
-// print_r($exportround);
-// echo '</pre>';
-
-// spielplan ende
-
-// $temp = new stdClass();
-// $temp->name = 'DFBNet Spielplan';
-// $exportversion[] = $temp;
-// $this->_datas['exportversion'] = array_merge($exportversion);
-
-// $this->_datas['project'] = array_merge($exportproject);
-// $this->_datas['league'] = array_merge($exportleague);
-// $this->_datas['season'] = array_merge($exportseason);
-
 // von mir 
 $this->_datas['position'] = array_merge($exportposition);
 // von mir 
 $this->_datas['projectposition'] = array_merge($exportprojectposition);
 // von mir 
 $this->_datas['parentposition'] = array_merge($exportparentposition);
-  
-  
 // von mir 
 $this->_datas['person'] = array_merge($exportpersons);
 // von mir 
 $this->_datas['projectreferee'] = array_merge($exportreferee);
-
 $this->_datas['team'] = array_merge($exportteams);
 $this->_datas['projectteam'] = array_merge($exportprojectteams);
 $this->_datas['club'] = array_merge($exportclubs);
 $this->_datas['playground'] = array_merge($exportplayground);
-
 // damit die spieltage in der richtigen reihenfolge angelegt werden
 ksort($exportround);
 $this->_datas['round'] = array_merge($exportround);
-
 $this->_datas['match'] = array_merge($exportmatch);
 // von mir 
 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);

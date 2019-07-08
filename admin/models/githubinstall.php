@@ -16,7 +16,6 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
-
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerHelper;
 
@@ -105,7 +104,6 @@ return false;
 
 if (!$result || ($result->code != 200 && $result->code != 310))
 {
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($result->code,true).'</pre>'),'Notice');	
 return false;
 }
 

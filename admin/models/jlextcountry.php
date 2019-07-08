@@ -9,7 +9,6 @@
  * @subpackage models
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -44,22 +43,16 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 		$query = $db->getQuery(true);    
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DS ;
+        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DIRECTORY_SEPARATOR ;
         $cfg_plz_server = ComponentHelper::getParams($option)->get('cfg_plz_server','');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        
+       
         for ($x=0; $x < count($pks); $x++)
 		{
 			$tblCountry = $this->getTable();
 			$tblCountry->load($pks[$x]);
-            
             $alpha2 = $tblCountry->alpha2;
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' alpha2<br><pre>'.print_r($alpha2, true).'</pre><br>','Notice');
-            
             $filename = $alpha2.'.zip';
             $linkaddress = $cfg_plz_server.$filename;
-            
             $filepath = $base_Dir . $filename;
 
 if ( !copy($linkaddress,$filepath) )
@@ -138,40 +131,10 @@ $source	= File::read($file);
         }  
         }  
 
-        /*
-        foreach ($row as $value)
-		{
-//		$temp = new stdClass();
-//		$temp->value = $value;
-//        $exportplayer[] = $temp;
-        //    $app->enqueueMessage(Text::_('value <br><pre>'.print_r($value,true).'</pre>'   ),'');
-		}
-        */
 	    $exportplayer[] = $temp;
         
         $diddipoeler++;
 	}
-    
-    //# auto-detect delimiter character
-	//$csv = new parseCSV();
-	//$csv->auto($file);
-	//print_r($csv->data);
-    
-	//$app->enqueueMessage(Text::_('daten <br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-    /*
-    // anfang schleife csv file
-	for($a=0; $a < sizeof($csv->data); $a++  )
-	{
-		$temp = new stdClass();
-		$temp->id = 0;
-		$temp->knvbnr = $csv->data[$a];
-        $exportplayer[] = $temp;
-
-//        $app->enqueueMessage(Text::_('daten <br><pre>'.print_r($csv->data[$a],true).'</pre>'   ),'');
-    }
-    */
-    
-    //$app->enqueueMessage(Text::_('daten <br><pre>'.print_r($exportplayer,true).'</pre>'   ),'');  
     
     foreach ($exportplayer as $value)
 		{

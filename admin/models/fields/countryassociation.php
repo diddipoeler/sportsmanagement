@@ -47,7 +47,6 @@ class JFormFieldcountryassociation extends \JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-    //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
 		$select_id = Factory::getApplication()->input->getVar($varname);

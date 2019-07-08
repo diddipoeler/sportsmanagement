@@ -606,7 +606,7 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
         $this->jsmdb->setQuery($this->jsmquery);
 	$res = $this->jsmdb->loadObject();
 	$delete_season[] = $value;
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
+
         if ( !$res )
         {
         $this->jsmquery->clear();
@@ -625,13 +625,9 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery();
 }
 catch (Exception $e) {
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 
-//		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-//		{
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
-//		}  
         $message .= 'Saisonzuordnung : '.$res->name.' angelegt.<br>';
         }
         else
@@ -734,11 +730,11 @@ $result = $this->jsmdb->execute();
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $this->app->enqueueMessage(Text::_('sportsmanagementModelteam save<br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
           
         }
-		//$mdl = BaseDatabaseModel::getInstance("seasonteam", "sportsmanagementModel");
+
 		}
 // delete all custom keys
 $this->jsmquery->clear();    
@@ -1456,11 +1452,11 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 	/*
 if ( $this->jsmapp->isClient('administrator') )
 {
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isClient('administrator'),true).'</pre>'),'');    
+    
 }  
 if( $this->jsmapp->isClient('site') )
 {
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isClient('site'),true).'</pre>'),'');    
+    
 }   
 	*/
         }    
@@ -1516,11 +1512,11 @@ public function __construct($config = array())
 	/*
         if ( $this->jsmapp->isClient('administrator') )
         {
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isClient('administrator'),true).'</pre>'),'');    
+        
         }  
         if( $this->jsmapp->isClient('site') )
         {
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isClient('site'),true).'</pre>'),'');    
+        
         } 
 	*/
         

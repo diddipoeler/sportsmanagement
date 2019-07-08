@@ -48,50 +48,27 @@ class JFormFieldFederationsList extends \JFormFieldList
 	protected function getOptions()
 	{
 		$app = Factory::getApplication();
-        //$option = Factory::getApplication()->input->getCmd('option');
         $selected = 0;
 
         // Initialize variables.
 		$options = array();
-    //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
-		//$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
 		$select_id = $app->input->getVar('id');
-//echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
  			$select_id = $select_id;
  		}
 		
-		
 		if ($select_id)
 		{		
-//		$db = Factory::getDbo();
-//		$query = $db->getQuery(true);
-//		$query->select('country');		
-//		$query->from('#__sportsmanagement_'.$vartable.' AS t');
-//		$query->where('t.id = '.$select_id);
-//		$db->setQuery($query);
-//		$country = $db->loadResult();
-		//echo 'country<br /><pre>~' . print_r($country,true) . '~</pre><br />';
-				
 			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id,t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_federations AS t');
-			//$query->where("t.country = '".$country."'");
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
-			//$options = $db->loadObjectList();
-			
 			$sections = $db->loadObjectList ();
-            
-
-            
-  //$categoryparent = empty($sections) ? 0 : $sections->id;
-  //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
-  //$options = $this->JJ_categoryArray();
 $list = $this->JJ_categoryArray(0);
 
 $preoptions = array();
@@ -128,11 +105,7 @@ $db = sportsmanagementHelper::getDBConnection();
     $query .= " ORDER BY ordering, name";
     $db->setQuery($query);
     $items = $db->loadObjectList();
-
-// echo 'JJ_categoryArray items<pre>';
-//  	print_r($items);
-//  	echo '</pre>';
-    
+   
     // establish the hierarchy of the menu
     $children = array ();
 
@@ -147,11 +120,7 @@ $db = sportsmanagementHelper::getDBConnection();
 
     // second pass - get an indent list of the items
     $array = $this->fbTreeRecurse(0, '', array (), $children, 10, 0, 1);
-    
-//    echo 'JJ_categoryArray array<pre>';
-//  	print_r($array);
-//  	echo '</pre>';
-	
+
     return $array;
     }    	
 	

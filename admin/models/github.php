@@ -14,7 +14,6 @@
  * https://octicons.github.com/
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -114,11 +113,6 @@ return false;
     else
     {
     $insertresult = $this->insertissue();    
-    
-//    [number] => 272
-//    [title] => Backend-View: sportstypes Layout: default
-    
-    //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insertresult<br><pre>'.print_r($insertresult,true).'</pre>'),'');    
     }    
         
     }
@@ -127,18 +121,6 @@ return false;
             
     return false; 
     }    
-    
-    
-             
-        
-    
-//    if ( empty($this->post['message']) )
-//    {
-//    $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
-//    return false;    
-//    }    
-//    
-//    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post,true).'</pre>'),'');    
         
     }
     
@@ -167,8 +149,6 @@ return false;
  		} 
 
 $github = new JGithub($gh_options);
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');    
-
 // Create an issue
 $labels = array($this->post['labels']);
 return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);    
@@ -185,14 +165,9 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
     {
         $option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
-        
-        //$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
-        //JApplicationHelper::addClientInfo($this->client);
         $this->client = JApplicationHelper::getClientInfo();
-        
         $github_user = ComponentHelper::getParams($option)->get('cfg_github_username','');
         $github_repo = ComponentHelper::getParams($option)->get('cfg_github_repository','');
-        
         
         $params = ComponentHelper::getParams($option);
 
@@ -205,38 +180,20 @@ $gh_options = new Registry();
  		} 
  		// Set the username and password if set in the params 
  		else
-// 		elseif ($params->get('gh_user', '') && $params->get('gh_password')) 
  		{ 
  			$gh_options->set('api.username', $params->get('gh_user', '')); 
  			$gh_options->set('api.password', $params->get('gh_password', '')); 
-			
  		} 
 
-        
-        
-//$gh_options->set('gh.token', 1 );
 $github = new JGithub($gh_options);
-
-//$github = new JGithub;
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' gh_options<br><pre>'.print_r($gh_options,true).'</pre>'),'');        
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');
-        
 // List pull requests
 $state = 'open|closed';
 $page = 0;
 $perPage = 20;
-//$pulls = $github->pulls->getList($github_user, $github_repo, $state, $page, $perPage);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pulls <br><pre>'.print_r($pulls ,true).'</pre>'),'');        
 
 $page = 0;
 $perPage = 30;
 $commits = $github->commits->getList($github_user, $github_repo, $page, $perPage);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' commits <br><pre>'.print_r($commits ,true).'</pre>'),'');        
-
-
-
 
 // List milestones for a repository
 $state = 'open|closed';
@@ -247,8 +204,6 @@ $perPage = 20;
 $milestones = $github->issues->milestones->getList($github_user, $github_repo);
 // Create an issue
 $labels = array('bug');
-//$github->issues->create($github_user, $github_repo, 'Found a bug', 'having a problem with this.', 'diddipoeler', '1', $labels);
-
 // List Stargazers.
 $starred = $github->activity->starring->getList($github_user, $github_repo);
 // List issues

@@ -63,7 +63,7 @@ $this->jsmquery->where('id = ' . $project_id);
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $project_type = $this->jsmdb->loadResult();
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
+
 return $project_type;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -71,7 +71,7 @@ return $project_type;
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
-//return $country;
+
 }
 	
 
@@ -91,7 +91,6 @@ $this->jsmquery->where('p.id = ' . $project_id);
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $country = $this->jsmdb->loadResult();
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
 return $country;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -99,7 +98,7 @@ return $country;
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
-//return $country;
+
 }
 
 
@@ -113,12 +112,6 @@ return $country;
 	 */
 	function getProjectteams($project_id = 0, $division_id = 0)
 	{
-//		$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication ();
-
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
-		
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
             $this->jsmquery->select('t.name AS text,t.notes');
@@ -137,10 +130,7 @@ $this->jsmdb->setQuery( $this->jsmquery );
 $this->jsmdb->execute();
 $number = $this->jsmdb->getNumRows();
 $result = $this->jsmdb->loadObjectList();    
-
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
-			
+		
 if ( $number > 0 )
 {
 return $result;
@@ -156,34 +146,7 @@ return false;
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }    
-        /*
-        $this->jsmdb->setQuery( $this->jsmquery );
-		if ( !$result = $this->jsmdb->loadObjectList() )
-		{
-			//$this->setError( $this->_db->getErrorMsg() );
-
-			return false;
-		}
-		else
-		{
-		$this->jsmdb->execute();
-		$number = $this->jsmdb->getNumRows();		
-
-Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
-Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
-			
-		if ( $number > 0 )
-		{
-
-    return $result;
-    }
-    else
-    {
-    return false;
-    }
-			
-		}
-        */
+        
 	}
 
 /**
@@ -195,25 +158,10 @@ Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>
  */
 function getDFBKey($number,$matchdays)
 	{
-//	$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication ();
-//	$document	= Factory::getDocument();
-  
 $project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
-	//$project_id = $app->getUserState( $option . 'project' );
-	
 	// gibt es zum land der liga schlüssel ?
     $country = $this->getCountry($project_id);
     $this->jsmquery->clear();
-//$query = "SELECT l.country
-//from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
-//inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
-//on p.league_id = l.id
-//where p.id = '$project_id'
-//";
-//
-//$this->_db->setQuery( $query );
-//$country = $this->_db->loadResult();
 
 	if ( $number % 2 == 0 )
 	{
@@ -230,26 +178,17 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	
 	if ( $matchdays == 'ALL' )
 	{
-//  $query = "select *
-//  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
-//  where schluessel = " . (int) $number . " 
-//  and country like '".$country."' group by spieltag ";
   $this->jsmquery->group('spieltag');
   }
   elseif ( $matchdays == 'FIRST' )
   {
   $this->jsmquery->where('spieltag = 1');
-//  $query = "select *
-//  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
-//  where schluessel = " . (int) $number . "
-//  and country like '".$country."' 
-//  and spieltag = 1 ";
   }
 	
 	try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');		
+	
     return $result;
 	} catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -257,16 +196,6 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
-//		if ( !$result = $this->_db->loadObjectList() )
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//	  else
-//	  {
-//    return $result;
-//
-//    }
 	
 	}
 
@@ -288,7 +217,6 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
     try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');			    
     return $result;
     } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -296,16 +224,6 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
-		//if ( !$result = $this->_db->loadObjectList() )
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//	  else
-//	  {
-//    return $result;
-//
-//    }
 
 	}
 	
@@ -344,7 +262,6 @@ $this->jsmquery->from('#__sportsmanagement_match');
 $this->jsmquery->where('round_id in (' . $rounds . ')' );
 $this->jsmdb->setQuery( $this->jsmquery );
 $count = $this->jsmdb->loadResult();
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' count <pre>'.print_r($count ,true).'</pre>', 'warning');			
 return $count;
 
 } catch (Exception $e) {
@@ -353,24 +270,6 @@ return $count;
     $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
-
-
-
-	//$result = $this->_db->loadResultArray();
-
-
-/*	
-	$rounds = implode(",",$result);
-	$query = 'select count(*)
-  from #__sportsmanagement_match
-  where round_id in (' . $rounds . ')';
-	
-	$this->_db->setQuery( $query );
-	
-	$count = $this->_db->loadResult();
-return $count;
-*/
-
 
   }
 	
@@ -387,18 +286,6 @@ return $count;
 	 */
 	function getSchedule($post = array(), $project_id = 0, $division_id = 0 )
 	{
-//	$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication ();
-
-/*	
-echo '<pre>';
-print_r($post);
-echo '</pre>';
-*/
- 
- //echo 'getSchedule project_id -> '.$projectid.'<br>';
- 
-//$lfdnummer = 1;
 foreach($post as $key => $element)
 {
 if (substr($key,0,10)=="chooseteam")
@@ -416,32 +303,16 @@ if ( $division_id )
 {
 $this->jsmquery->where('pt.division_id = ' . $division_id);	
 }
-/*
-$query = 'select team.name
-  from #__sportsmanagement_team as team
-  inner join #__sportsmanagement_project_team as pteam
-  on team.id = pteam.team_id
-  where pteam.id = ' . (int) $element . ' ';
-*/
   $this->jsmdb->setQuery( $this->jsmquery );
   $chooseteam[$tempteams[1]]['teamname'] = $this->jsmdb->loadResult();
   
-//$lfdnummer++;
 }
 
 }
 
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' chooseteam <pre>'.print_r($chooseteam ,true).'</pre>', 'warning');		
-		
-/*
-echo '<pre>';
-print_r($chooseteam);
-echo '</pre>';
-*/
+
 
 $number = count($chooseteam);
-
-//echo 'numbers '.$number.'<br>';
 
 if ( $number % 2 == 0 )
 	{
@@ -458,24 +329,8 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_round as jr on dfb.spieltag 
 $this->jsmquery->where('dfb.schluessel = ' . (int)$number);
 $this->jsmquery->where('jr.project_id = ' . (int)$project_id);
 $this->jsmquery->order('dfb.spielnummer');
-/*
-$query = 'select dfb.*,jr.id, jr.round_date_first
-  from #__sportsmanagement_dfbkey as dfb
-  inner join #__sportsmanagement_round as jr
-  on dfb.spieltag = jr.roundcode
-  where dfb.schluessel = ' . (int) $number . 
-  ' and jr.project_id = '. $projectid .' order by dfb.spielnummer ';
-*/
   $this->jsmdb->setQuery( $this->jsmquery );
   $dfbresult = $this->jsmdb->loadObjectList();
-
-/*  
-echo '<pre>';
-print_r($dfbresult);
-echo '</pre>';
-*/
-
-//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' dfbresult <pre>'.print_r($dfbresult ,true).'</pre>', 'warning');		
 
 $result = array();
 
@@ -505,8 +360,6 @@ $result = array_merge($result);
 }
 
 $this->savedfb = $result ;
-//  Factory::getApplication()->input->setVar( 'savedfb', $result,'post' );
-//    Factory::getApplication()->input->set( $result,'post' );
 	return $result;
 	}
 	

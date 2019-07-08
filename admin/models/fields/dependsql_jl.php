@@ -77,12 +77,7 @@ class JFormFieldDependSQL extends FormField
 			$attribs	.= '"';
 		}
 		$attribs	.= ' current="'.$this->value.'"';
-		
-	//	// language
-//		$lang = Factory::getLanguage();
-//		$lang->load("com_joomleague", JPATH_ADMINISTRATOR);
-		
-		
+	
 		if ($required=='true') {
 			$options = array();
 		}

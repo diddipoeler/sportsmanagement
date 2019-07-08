@@ -9,14 +9,9 @@
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModelclub
@@ -58,14 +53,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
+      
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -121,7 +109,6 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 			if(!$tblClub->store()) 
             {
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}

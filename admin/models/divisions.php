@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -125,12 +124,6 @@ class sportsmanagementModelDivisions extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'dv.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-
 		return $this->jsmquery;
 	}
 
@@ -148,26 +141,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-        $starttime = microtime(); 
-        // Create a new query object.		
-	//	$db = sportsmanagementHelper::getDBConnection();
-	//	$query = $db->getQuery(true);
+        $starttime = microtime();
+        $this->jsmquery->clear(); 
         $this->jsmquery->select('id AS value,name AS text');
         $this->jsmquery->from('#__sportsmanagement_division');
         $this->jsmquery->where('project_id = ' . $project_id);
         $this->jsmquery->order('name ASC');
-        
 		$this->jsmdb->setQuery( $this->jsmquery );
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		if ( !$result = $this->jsmdb->loadObjectList("value") )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -186,23 +169,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getProjectDivisionsCount($project_id)
 	{
         $starttime = microtime(); 
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_division AS d');
-        $query->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
-        $query->where('p.id = ' . $project_id);
-                
-		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-        
-		return $db->loadResult();
+        $this->jsmquery->clear();
+        $this->jsmquery->select('count(*) AS count');
+        $this->jsmquery->from('#__sportsmanagement_division AS d');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
+        $this->jsmquery->where('p.id = ' . $project_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadResult();
 	}
 	
 }
