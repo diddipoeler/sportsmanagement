@@ -9,12 +9,12 @@
  * @subpackage club
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Plugin\PluginHelper;
+
 /**
  * sportsmanagementViewClub
  * 
@@ -102,7 +102,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         $this->lists = $lists;
         
-$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript('http://maps.googleapis.com/maps/api/js?libraries=places&language=de');
 $this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
 
         if( version_compare(JSM_JVERSION,'4','eq') ) 
