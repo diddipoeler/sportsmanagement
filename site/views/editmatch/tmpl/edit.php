@@ -143,20 +143,5 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 <input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 <input type='hidden' name='save_data' value='1' class='button' />
-<?php //echo HTMLHelper::_('form.token')."\n"; ?>
-
-<input type="hidden" id="token" name="token" value="
-<?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
-
-
-?>" />
-	
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>

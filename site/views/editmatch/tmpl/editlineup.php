@@ -66,22 +66,8 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="changes_check" value="0" id="changes_check" />
 <input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 <input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
-                
-<?php //echo HTMLHelper::_('form.token')."\n"; ?>
-        
-<input type="hidden" id="token" name="token" value="
-<?php 
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-echo JSession::getFormToken();    
-//}
-//else
-//{    
-//echo JUtility::getToken(); 
-//}
+<?php echo HTMLHelper::_('form.token'); ?>       
 
-
-?>" />	
         
 	</div>
 </form>

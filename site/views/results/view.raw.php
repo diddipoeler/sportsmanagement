@@ -534,8 +534,7 @@ class sportsmanagementViewResults extends JViewLegacy
 
 		if ($this->config['use_tabs_events'])
 		{
-			// Make event tabs with JPane integrated function in Joomla 1.5 API
-			$result	=& JPane::getInstance('tabs',array('startOffset'=>0));
+			$result	= JPane::getInstance('tabs',array('startOffset'=>0));
 			$output .= $result->startPane('pane');
 			$cnt	= 0;
 

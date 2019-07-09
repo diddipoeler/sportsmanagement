@@ -246,21 +246,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 		</fieldset>
 </div>
 <div style="clear: both"></div>
-<?php //echo HTMLHelper::_('form.token')."\n"; ?>
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="view" value="" />
-<input type="hidden" id="token" name="token" value="
-<?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
-
-
-?>" />	
+<?php echo HTMLHelper::_('form.token'); ?>	
 </form>
 

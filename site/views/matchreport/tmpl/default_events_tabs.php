@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+
 ?>
 <!-- START of match events -->
 
@@ -31,7 +32,6 @@ echo $this->loadTemplate('timeline');
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
-echo '<br />eventtypes<pre>~' . print_r($this->eventtypes,true) . '~</pre><br />';
 }
 else
 {
@@ -181,9 +181,9 @@ else
     <tr>
         <td>
             <?php 
-            $result='';
-		    $txt_tab='';
-            // Make event tabs with JPane integrated function in Joomla 1.5 API
+            $result = '';
+		    $txt_tab = '';
+
 			$result = JPane::getInstance('tabs',array('startOffset'=>0));
 			echo $result->startPane('pane');
 			foreach ($this->eventtypes AS $event)
@@ -195,9 +195,9 @@ else
 				}
 				else
 				{
-					$imgTitle=Text::_($event->name);
-					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-					$txt_tab=HTMLHelper::image(Uri::root().$pic_tab,$imgTitle,$imgTitle2);
+					$imgTitle = Text::_($event->name);
+					$imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
+					$txt_tab = HTMLHelper::image(Uri::root().$pic_tab,$imgTitle,$imgTitle2);
 				}
 
 				echo $result->startPanel($txt_tab,$event->id);
