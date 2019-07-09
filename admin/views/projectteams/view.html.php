@@ -166,7 +166,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 		else
 		{
-		//JError::raiseWarning('ERROR_CODE','<br />'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM').'<br /><br />');
 		$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'),'Notice');
 		}
 

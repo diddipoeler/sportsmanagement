@@ -44,39 +44,9 @@ class SMStatisticSumstats extends SMStatistic
 		parent::__construct();
 	}
 	
-//	function getSids()
-//	{
-//		$params = &$this->getParams();
-//		$stat_ids = explode(',', $params->get('stat_ids'));
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//				
-//		$db = &sportsmanagementHelper::getDBConnection();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = (int)$s;
-//		}		
-//		return $sids;
-//	}
+
 	
-//	function getQuotedSids()
-//	{
-//		$params = &$this->getParams();
-//		$stat_ids = explode(',', $params->get('stat_ids'));
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//				
-//		$db = &sportsmanagementHelper::getDBConnection();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = $db->Quote($s);
-//		}		
-//		return $sids;
-//	}
+
 	
 	/**
 	 * SMStatisticSumstats::getMatchPlayerStat()

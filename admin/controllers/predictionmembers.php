@@ -9,7 +9,6 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Session\Session; 
 use Joomla\Utilities\ArrayHelper;
@@ -125,7 +124,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -151,7 +150,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -185,7 +184,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel('predictionmember');

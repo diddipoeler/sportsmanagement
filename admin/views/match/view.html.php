@@ -17,6 +17,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
@@ -147,7 +148,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         // events
         $events = $model->getEventsOptions($project_id, $this->item->id);
         if (!$events) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
             return;
         }
 
@@ -354,7 +355,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         // stats
         $stats = $model->getInputStats($this->project_id);
         if (!$stats) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
             //return;
         }
         $playerstats = $model->getMatchStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
@@ -420,7 +421,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         // events
         $events = $model->getEventsOptions($this->project_id, 0);
         if (!$events) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
             return;
         }
         $eventlist = array();
@@ -689,7 +690,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
         $squad = array();
         if (!$projectpositions) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
             return;
         }
 
@@ -795,7 +796,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         // events
         $events = $model->getEventsOptions($project_id);
         if (!$events) {
-            JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
             return;
         }
         $eventlist = array();

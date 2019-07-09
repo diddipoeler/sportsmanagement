@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
@@ -58,7 +59,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		
 		if (count($stat_ids) != count($factors)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				

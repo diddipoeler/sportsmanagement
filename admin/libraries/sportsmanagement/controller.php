@@ -232,7 +232,6 @@ class JSMControllerForm extends FormController
             return true;
         } else {
             $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
-            //JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
             return false;
         }
     }

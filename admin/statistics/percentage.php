@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
@@ -59,14 +60,14 @@ class SMStatisticPercentage extends SMStatistic
         $numerator_ids = $params->get('numerator_ids');
 		if (!count($numerator_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 		//$denominator_ids = explode(',', $params->get('denominator_ids'));
         $denominator_ids = $params->get('denominator_ids');
 		if (!count($denominator_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -99,14 +100,14 @@ class SMStatisticPercentage extends SMStatistic
         $numerator_ids = $params->get('numerator_ids');
 		if (!count($numerator_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 
         $denominator_ids = $params->get('denominator_ids');
 		if (!count($denominator_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				

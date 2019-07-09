@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Log\Log;
 
 /**
  * SMStatistic
@@ -386,7 +387,7 @@ class SMStatistic extends JObject
        
 		if (!count($stat_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -414,7 +415,7 @@ class SMStatistic extends JObject
         
 		if (!count($event_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -615,7 +616,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -638,7 +639,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) 
         {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -663,7 +664,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -703,7 +704,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -714,7 +715,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getMatchPlayersStats($match_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -725,7 +726,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getPlayerStatsByGame($teamplayer_id, $project_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -736,7 +737,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -749,7 +750,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -763,7 +764,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return array();
 	}
 
@@ -797,7 +798,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
             return $query_core;
             break;
             default:
-            JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+            Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
             return array();
             break;
         }
@@ -812,7 +813,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{		
-		JError::raiseWarning(0,$this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add($this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -824,7 +825,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		JError::raiseWarning(0,$this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add($this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -836,7 +837,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
