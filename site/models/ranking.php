@@ -114,32 +114,6 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
         }
         
         sportsmanagementModelProject::$_round_from = self::$from; 
-        
-        
-//        echo 'from <pre>'.print_r($from,true).'</pre>';    
-//        echo 'to <pre>'.print_r($to,true).'</pre>';
-//		echo 'projekt <pre>'.print_r(sportsmanagementModelProject::$_round_to,true).'</pre>';
-//		echo 'self round <pre>'.print_r(self::$round,true).'</pre>';
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'from <pre>'.print_r($from,true).'</pre>';    
-        $my_text .= 'to <pre>'.print_r($to,true).'</pre>';
-        $my_text .= 'projectid '.self::$projectid.'<br>';
-        $my_text .= 'round '.self::$round.'<br>';
-        $my_text .= 'current_round '.self::$current_round.'<br>';
-        $my_text .= 'self from '.self::$from.'<br>';
-        $my_text .= 'self to '.self::$to.'<br>';
-        
-        $my_text .= 'self part '.self::$part.'<br>';
-        $my_text .= 'self type '.self::$type.'<br>';
-        $my_text .= 'viewName '.self::$viewName.'<br>';
-        
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-
-
-    
 		parent::__construct( );
 	}
 
@@ -233,8 +207,6 @@ else
         
          
         }  
-    //var_dump($lists);
-    //echo 'getRssFeeds lists<pre>',print_r($lists,true),'</pre><br>';
     return $lists;         
     }
     
@@ -456,7 +428,6 @@ if ( $project )
 				if ( self::$divLevel )
 				{
 					$divisions = sportsmanagementModelProject::getDivisionsId( self::$divLevel,$cfg_which_database );
-				//	print_r( $divisions);
 				}
 				else
 				{

@@ -221,10 +221,6 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 			
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
             try{
 			$this->_total = $db->loadResult();
 		

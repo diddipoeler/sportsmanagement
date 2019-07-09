@@ -188,11 +188,6 @@ catch (Exception $e)
                 $query->where('id = ' . $team->club_id);
 
                 $db->setQuery($query);
-
-                if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-                }
-
                 self::$club = $db->loadObject();
             }
         }

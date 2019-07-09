@@ -276,11 +276,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
                 
 				$db->setQuery( $query );
                 
-                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-                {
-                $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-                }
-                
 				$info = $db->loadObjectList();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $info;
@@ -353,11 +348,6 @@ if ( empty($result) )
        $query->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
 
 		$db->setQuery( $query );
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        }
 
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -486,8 +476,6 @@ if ( empty($result) )
 			return $allowed;
 		}
         
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
-        
 		return false;
 	}
 
@@ -514,12 +502,7 @@ if ( empty($result) )
        $query->where('tp.persontype = 1');
                         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        }
-        
+
 		$projectTeamIds = array();
 		
     if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -544,12 +527,7 @@ if ( empty($result) )
        $query->where('tp.persontype = 2');
                         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        }
-    
+
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         // Joomla! 3.0 code here

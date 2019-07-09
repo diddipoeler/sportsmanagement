@@ -95,9 +95,8 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
 $registry = new Registry();
 $registry->loadArray($params);
-//$newparams = $registry->toString('ini');
 $newparams = $registry->toArray();
-//echo "<b>menue newparams</b><pre>" . print_r($newparams, true) . "</pre>";  
+ 
 foreach ($newparams['data'] as $key => $value ) {
             
             $this->_params[$key] = $value;
@@ -231,7 +230,6 @@ $query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standa
 $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = tl.project_id' );
             
 $query->where('tl.project_id IN (' . $project_ids . ')' );
-//$query->group('tl.team_id' );
 $query->group('st.team_id' );
             
 
@@ -240,8 +238,7 @@ $query->group('st.team_id' );
         
         if ( !$this->_teams )
         {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+
         }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->_teams;

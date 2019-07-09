@@ -44,9 +44,7 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 			$calendarids = Factory::getApplication()->input->getVar('gcid', null);
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
-        
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
-        
+       
 		if(empty($results))
 			return null;
 
@@ -62,8 +60,6 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 			$calendars[] = $events;
 		}
         
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
-
 		return $calendars;
 	}
 }

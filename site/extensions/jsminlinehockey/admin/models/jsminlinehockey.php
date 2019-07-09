@@ -193,7 +193,7 @@ $query = $db->getQuery(true);
 //set the target directory
 $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. 'clubs/large' . DS;
 $post = $jinput->post->getArray();
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
 $matchlink = '';
 
 if ( $post )
@@ -336,7 +336,7 @@ $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
 $linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
 if ( !copy($linkaddress,$filepath) )
 {
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.print_r($linkaddress,true).'</pre>'),'Error');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.$linkaddress.'</pre>'),'Error');    
 }
 else
 {
@@ -532,7 +532,7 @@ $temp->match_result_type = 2;
 
 if ( $value_match->id == 1324 )
 {
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
+
 }
 
 /**
@@ -826,10 +826,9 @@ $db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 $post = $jinput->post->getArray();
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
 ini_set('max_execution_time', 300);
-$app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.print_r(ini_get('memory_limit'), true).'</pre><br>','Notice');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.print_r(ini_get('max_execution_time'), true).'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.ini_get('memory_limit').'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.ini_get('max_execution_time').'</pre><br>','Notice');
 
 $username = ComponentHelper::getParams($option)->get('ishd_benutzername');
 $password = ComponentHelper::getParams($option)->get('ishd_kennwort');
@@ -878,7 +877,7 @@ $json_object_clubs = json_decode($result);
 $json_array = json_decode($result,true);
 
 $seiten = $json_object_clubs->pages;
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.print_r($seiten ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.$seiten.'</pre>'),'');
 
 for ($seite=1;$seite <= $seiten;$seite++)
 {
@@ -970,7 +969,7 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->id  )
 {
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+
 }
 $json_object_teams = json_decode($result);
 
@@ -1057,7 +1056,7 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->club_id  )
 {
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+
 }
 $json_object_players = json_decode($result);
 
@@ -1153,7 +1152,7 @@ $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.print_r($club_name,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.$club_name.'</pre>'),'');
 }
 else
 {

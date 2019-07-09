@@ -493,15 +493,6 @@ catch (Exception $e)
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
 
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'project_id <pre>' . print_r($project_id, true) . '</pre>';
-            $my_text .= 'projectteam_id <pre>' . print_r($projectteam_id, true) . '</pre>';
-            $my_text .= 'teamplayer_id <pre>' . print_r($teamplayer_id, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
-
         $query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for, mp.in_out_time');
         $query->from('#__sportsmanagement_match AS m');
         $query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.match_id = m.id');

@@ -15,9 +15,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
-
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 jimport('joomla.utilities.utility' );
@@ -240,20 +239,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   
   }
   
-  
-  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-  {
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' this->predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r(self::$pjID,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultchamp<br><pre>'.print_r($resultchamp,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultchamppoints<br><pre>'.print_r($resultchamppoints,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' champ_tipp<br><pre>'.print_r($champ_tipp,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sChampTeamsList<br><pre>'.print_r($sChampTeamsList,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dChampTeamsList<br><pre>'.print_r($dChampTeamsList,true).'</pre>'),'');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' champTeamsList<br><pre>'.print_r($champTeamsList,true).'</pre>'),'');
-
-  }
-				
+			
  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect				
   return $ChampPoints;
   }
@@ -1542,7 +1528,7 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
 
 if ( $configprediction['admin_debug'] )
 {
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r($mailer,true).'</pre>'),'');        
+        
 }        
 
 /**
@@ -1551,14 +1537,10 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r(
 	$send =  $mailer->Send();
 	if ($send !== true)
 	{
-	//echo 'Error sending email to:<br />'.print_r($recipient,true).'<br />';
-	//echo 'Error message: '.$send->message;
 	$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_ERROR'),'Error');
-    //$app->enqueueMessage($send->message,'Error');
 	}
 	else
 	{
-	//echo 'Mail sent';
 	$emailadresses = implode(",",$predictionGameMemberMail);
 	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK',$emailadresses),'notice');
 	}
@@ -1654,8 +1636,6 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r(
 
 					$mailer->setBody($body);
 					
-          //echo '<br /><pre>~'.print_r($mailer,true).'~</pre><br />';
-
 					// Optional file attached
 					//$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
 
@@ -1663,7 +1643,6 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r(
 					$send = $mailer->Send();
 					if ($send !== true)
 					{
-						echo 'Error sending email to:<br />'.print_r($recipient,true).'<br />';
 						echo 'Error message: '.$send->message;
 					}
 					else
@@ -1871,38 +1850,6 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r(
 	 */
 	static function getMemberPredictionPointsForSelectedMatch(&$predictionProject,&$result)
 	{
-
-		//echo '<br /><pre>~'.print_r($predictionProject,true).'~</pre><br />';
-
-/*
-ok[points_correct_result] => 7
-ok[points_correct_result_joker] => 6
-ok[points_correct_diff] => 5
-ok[points_correct_diff_joker] => 4
-ok[points_correct_draw] => 4
-ok[points_correct_draw_joker] => 3
-ok[points_correct_tendence] => 3
-ok[points_correct_tendence_joker] => 2
-ok[points_tipp] => 1						Points for wrong prediction
-ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
- */
-
-
-		//echo '<br /><pre>~'.print_r($result,true).'~</pre><br />';
-
-/*
-[team1_result] => 1					Standard result of the match for hometeam
-[team2_result] => 1					Standard result of the match for awayteam
-[team1_result_decision] => 			There is NO standard result of the match for hometeam but A DECISION
-[team2_result_decision] => 			There is NO standard result of the match for awayteam but A DECISION
-[tipp] => 0							Only interesting for toto
-[tipp_home] => 1					Only interesting for standard mode
-[tipp_away] => 1					Only interesting for standard mode
-[joker] => 1
-*/
-
-
-
 		if ($predictionProject->mode==0)	// Standard prediction Mode
 		{
 		
@@ -1921,15 +1868,6 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 				//Prediction Result is not the same as the match result but the correct difference between home and
 				//away result was tipped and the matchresult is draw
-				/*
-				if ($result->team1_result==$result->team2_result)
-				{
-					if (($result->team1_result - $result->team2_result)==($result->tipp_home - $result->tipp_away))
-					{
-						return $predictionProject->points_correct_draw;
-					}
-				}
-				*/
 				if (($result->team1_result==$result->team2_result) &&
 					($result->team1_result - $result->team2_result)==($result->tipp_home - $result->tipp_away))
 				{
@@ -2191,17 +2129,6 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 		//[pmID] => 46
 
 		$result = true;
-
-		//echo '<br /><pre>~'.print_r($predictionProject,true).'~</pre><br />';
-		//echo '<br /><pre>~'.print_r($memberResult,true).'~</pre><br />';
-		
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-		{
-    $app->enqueueMessage(Text::_('predictionProject<pre>~'.print_r($predictionProject,true).'~</pre>'),'Notice');
-    $app->enqueueMessage(Text::_('memberResult<pre>~'.print_r($memberResult,true).'~</pre>'),'Notice');
-    $app->enqueueMessage(Text::_('prediction mode ~> '.$predictionProject->mode.'<br>'),'Notice');
-    }
-		
 		
 		$result_home = $memberResult->homeResult;
 		$result_away = $memberResult->awayResult;

@@ -9,7 +9,6 @@
  * @subpackage curve
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -78,9 +77,6 @@ if ( $post )
 self::$teamid1 = $post['tid1_'.$post['division']];
 self::$teamid2 = $post['tid2_'.$post['division']];    
 }
-//$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid1<br><pre>'.print_r(self::$teamid1,true).'</pre>'),'Notice');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid2<br><pre>'.print_r(self::$teamid2,true).'</pre>'),'Notice');
         
 		$this->determineTeam1And2();
 	}
@@ -170,14 +166,6 @@ self::$teamid2 = $post['tid2_'.$post['division']];
             $query->order('m.match_date');
             
 			$db->setQuery($query);
-            
-
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 			$match = $db->loadObject();
 
@@ -190,12 +178,6 @@ self::$teamid2 = $post['tid2_'.$post['division']];
                 $starttime = microtime(); 
                 
 				$db->setQuery($query);
-                
-                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 				$match = $db->loadObject();
 			}

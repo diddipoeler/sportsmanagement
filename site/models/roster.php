@@ -232,8 +232,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             self::$_players = $db->loadObjectList();
             }
 catch (Exception $e){
-JLog::add(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'), JLog::ERROR, 'jsmerror');
-JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'), JLog::ERROR, 'jsmerror');     
+JLog::add(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.$e->getMessage().'</pre>'), JLog::ERROR, 'jsmerror');
+JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.$query->dump().'</pre>'), JLog::ERROR, 'jsmerror');     
 }
             
             
@@ -298,13 +298,6 @@ JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump
 		}
 		$query->order('pet.ordering, et.ordering');
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
         
 		$result = $db->loadObjectList();
 		if ($result)
@@ -492,13 +485,6 @@ JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump
                       
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-       
-        
 		$rows = $db->loadObjectList();
 		return $rows;
 	}
@@ -545,13 +531,7 @@ JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump
         $query->where('project_id ='.(int)self::$projectid);
                     
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
         try{
 			$db->setQuery($query);
 			$result = $db->loadResult();

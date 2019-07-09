@@ -239,12 +239,6 @@ class sportsmanagementModelStats extends BaseDatabaseModel
             
 			$db->setQuery( $query );
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
-            
 			$this->matchdaytotals = $db->loadObjectList();
 		}
 		return $this->matchdaytotals;
@@ -273,12 +267,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
 			$db->setQuery($query);
 			$this->totalrounds = $db->loadResult();
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		return $this->totalrounds;
 	}
 
@@ -322,12 +311,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
             $query->order('avgspectatorspt DESC');
             
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
+           
 			$this->attendanceranking = $db->loadObjectList();
 		}
 		return $this->attendanceranking;

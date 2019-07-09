@@ -143,7 +143,7 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
        
         if ( !self::$_history )
         {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            
         }
         
 		return self::$_history;

@@ -130,7 +130,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
             
         if ( !$this->_match  )
 	    {
-		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+
 	    }
         
 			if($this->_match)

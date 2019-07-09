@@ -115,12 +115,7 @@ catch (Exception $e)
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
-       }
-        
+       
         return $teamsart;
     }
     
@@ -156,25 +151,12 @@ catch (Exception $e)
         $query->order('p.name DESC');
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$teamsprojects = $db->loadObjectList();
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teamsprojects'.'<pre>'.print_r($teamsprojects,true).'</pre>' ),'');
-       }
-        
+       
         return $teamsprojects;
-        
-        
-        
+
     }
     
     /**
@@ -209,11 +191,6 @@ catch (Exception $e)
 		$db->setQuery($query);
 		$teamsseasons = $db->loadObjectList();
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teamsseasons'.'<pre>'.print_r($teamsseasons,true).'</pre>' ),'');
-       }
         
         return $teamsseasons;
         
@@ -268,11 +245,6 @@ catch (Exception $e)
 	{
 	   $app = Factory::getApplication();
        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
-       }
-	
     	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
 		if (empty(self::$startdate))
 		{
@@ -561,12 +533,6 @@ catch (Exception $e)
         $db->setQuery($query);
         
         $result = $db->loadObjectList();
-        /*
-        if ( !$result && $db->getErrorMsg() )
-       {
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        }
-        */
 		return $result;
        
 	}

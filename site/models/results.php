@@ -286,8 +286,6 @@ else
         
          
         }  
-    //var_dump($lists);
-    //echo 'getRssFeeds lists<pre>',print_r($lists,true),'</pre><br>';
     return $lists;         
     }
 
@@ -361,7 +359,7 @@ function getTotal() {
             catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.print_r($this->jsmquery->dump(),true)), 'error');	    
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmquery->dump()), 'error');	    
     $this->_data[$k]->content_id = 0;
 }		
                 
@@ -613,10 +611,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$db->setQuery($query);
         $result = $db->loadObjectList('value');
         
-        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 
@@ -683,7 +677,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             catch (Exception $e)
 {
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.print_r($query->dump(),true)), 'error');	    
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$query->dump()), 'error');	    
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	    
     return false;
 }	

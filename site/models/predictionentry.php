@@ -8,7 +8,6 @@
  * @subpackage predictionentry
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -339,8 +338,6 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
 }
    
         if (!$results)

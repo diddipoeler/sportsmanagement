@@ -8,12 +8,10 @@
  * @subpackage predictionusers
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 
 /**
  * sportsmanagementModelPredictionUsers
@@ -141,7 +139,6 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
         
 		if (!$resultquery)
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
 
@@ -230,8 +227,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
        }
        else
        {
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+ 
        }
        break;
        case 'com_kunena':

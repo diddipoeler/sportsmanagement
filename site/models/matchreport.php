@@ -361,8 +361,7 @@ catch (Exception $e)
        
         if ( ComponentHelper::getParams($option)->get('show_debug_info_frontend') )
         {        
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+
         }
 
 	    try{

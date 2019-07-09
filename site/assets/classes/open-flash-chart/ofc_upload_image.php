@@ -5,16 +5,6 @@
 // will see the 'echo' text in a new window.
 //
 
-/*
- 
-print_r( $_GET );
-print_r( $_POST );
-print_r( $_FILES );
-
-print_r( $GLOBALS );
-print_r( $GLOBALS["HTTP_RAW_POST_DATA"] );
-
-*/
 
 use Joomla\CMS\Factory;
 // default path for the image to be stored //
@@ -26,9 +16,6 @@ if (!file_exists($default_path)) mkdir($default_path, 0777, true);
 $destination = $default_path . basename( Factory::getApplication()->input->getString('name')); 
 
 echo 'Saving your image to: '. $destination;
-// print_r( $_POST );
-// print_r( $_SERVER );
-// echo $HTTP_RAW_POST_DATA;
 
 //
 // POST data is usually string data, but we are passing a RAW .png

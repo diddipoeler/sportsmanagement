@@ -327,8 +327,6 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-		Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($query->dump(),true).'</pre>', 'error');
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                 return false;
             }
@@ -644,22 +642,8 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
         $matches = $db->loadObjectList();
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-            
-    	         
         if ( !$matches )
         {
 
