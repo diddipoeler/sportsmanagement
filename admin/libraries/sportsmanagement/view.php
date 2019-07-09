@@ -33,23 +33,11 @@ HTMLHelper::_('behavior.modal');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 }
-//elseif(version_compare(JSM_JVERSION,'2','eq')) 
-//{
-//// Joomla! 2.5 code here
-//HTMLHelper::_('behavior.mootools');  
-//} 
-//elseif(version_compare(JVERSION,'1.7.0','ge')) 
-//{
-//// Joomla! 1.7 code here
-//} 
-//elseif(version_compare(JVERSION,'1.6.0','ge')) 
-//{
-//// Joomla! 1.6 code here
-//} 
-//else 
-//{
-//// Joomla! 1.5 code here
-//}
+elseif(version_compare(substr(JVERSION, 0, 3),'2.0','ge')) 
+{
+HTMLHelper::_('behavior.mootools');
+}
+
 ?>
 
 <?PHP        

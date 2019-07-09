@@ -9,7 +9,7 @@
  * @subpackage fields
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -19,17 +19,6 @@ require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPA
 require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php');  
 
 jimport('joomla.form.helper');
-//FormHelper::loadFieldClass('list');
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-HTMLHelper::_( 'behavior.mootools' );    
-}
 
 /**
  * Renders a Dynamic SQL field
