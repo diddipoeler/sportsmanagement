@@ -58,7 +58,6 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	    
             self::$_project_id	= $this->jsmjinput->getInt('pid',0);
             self::$_division_id	= $this->jsmjinput->getInt('division',0);
-            //$post = Factory::getApplication()->input->get( 'post' );
 
 if ( isset($this->jsmpost['addteam']) )
 {
@@ -127,7 +126,6 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	 */
 	protected function getListQuery()
 	{
-        //$this->_season_id = $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
         self::$_project_id = $this->jsmjinput->getVar('pid');
         self::$_division_id = $this->jsmjinput->getInt('division',0);
 		
