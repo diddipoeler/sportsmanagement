@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-HTMLHelper::_('behavior.formvalidation');
+
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 

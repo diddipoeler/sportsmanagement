@@ -21,7 +21,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 //jimport( 'joomla.html.html.tabs' );
 jimport('joomla.html.pane');
-HTMLHelper::_('behavior.formvalidation');
 
 try{
 $params = $this->form->getFieldsets('params');

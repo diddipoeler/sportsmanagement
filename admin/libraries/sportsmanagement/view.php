@@ -31,6 +31,7 @@ HTMLHelper::_('jquery.framework');
 HTMLHelper::_('behavior.framework', true);
 HTMLHelper::_('behavior.modal');
 HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 }
 //elseif(version_compare(JSM_JVERSION,'2','eq')) 
 //{

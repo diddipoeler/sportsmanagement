@@ -21,7 +21,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 HTMLHelper::_('jquery.framework');
 }
 
-HTMLHelper::_('behavior.formvalidation');
+
 $params = $this->form->getFieldsets('params');
 
 ?>

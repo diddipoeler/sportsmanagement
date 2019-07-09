@@ -26,7 +26,7 @@ HTMLHelper::_('jquery.framework');
 }
 
 
-HTMLHelper::_('behavior.formvalidation');
+
 HTMLHelper::_('behavior.keepalive');
 
 
