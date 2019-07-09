@@ -13,8 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-jimport('joomla.filesystem.file');
-HTMLHelper::_('behavior.modal');
+use Joomla\CMS\Filesystem\File;
+
 $user		= Factory::getUser();
 $userId		= $user->get('id');
 $templatesToLoad = array('footer','listheader');

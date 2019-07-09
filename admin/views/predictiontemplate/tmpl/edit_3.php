@@ -21,8 +21,8 @@ $fieldsets = $this->form->getFieldsets();
 
 
 JHtmlBehavior::formvalidation();
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 
 
 

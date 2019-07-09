@@ -17,8 +17,8 @@ use Joomla\CMS\Uri\Uri;
 //Ordering allowed ?
 //$ordering = ($this->sortColumn=='pre.ordering');
 
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 
 ?>
 

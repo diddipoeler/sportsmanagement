@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">

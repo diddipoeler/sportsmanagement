@@ -17,7 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
 jimport('joomla.filesystem.file');
-HTMLHelper::_('behavior.modal');
+
 $user		= Factory::getUser();
 $userId		= $user->get('id');
 $templatesToLoad = array('footer','listheader');

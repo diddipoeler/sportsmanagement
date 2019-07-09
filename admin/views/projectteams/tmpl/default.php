@@ -16,8 +16,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.filesystem.file');
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 $app = Factory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);

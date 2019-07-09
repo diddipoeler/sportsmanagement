@@ -29,6 +29,8 @@ elseif(version_compare(JSM_JVERSION,'3','eq'))
 {
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('behavior.framework', true);
+HTMLHelper::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
 }
 elseif(version_compare(JSM_JVERSION,'2','eq')) 
 {

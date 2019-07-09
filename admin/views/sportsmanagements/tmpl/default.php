@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
 // load tooltip behavior
-HTMLHelper::_('behavior.tooltip');
+
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" method="post" name="adminForm">
 	<table class="<?php echo $this->table_data_class; ?>">

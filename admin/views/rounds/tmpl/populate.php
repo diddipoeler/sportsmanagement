@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_('behavior.tooltip');
+
 ?>
 
 <form method="post" id="adminForm" action="<?php echo $this->request_url; ?>">

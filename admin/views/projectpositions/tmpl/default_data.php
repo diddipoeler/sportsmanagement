@@ -14,8 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 ?>
 
 

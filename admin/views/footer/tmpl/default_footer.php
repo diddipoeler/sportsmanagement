@@ -17,7 +17,7 @@ use Joomla\CMS\Uri\Uri;
 
 JLoader::import('components.com_sportsmanagement.helpers.html', JPATH_SITE );
 
-HTMLHelper::_('behavior.modal');
+
 $view = $this->jinput->getVar("view");
 $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');

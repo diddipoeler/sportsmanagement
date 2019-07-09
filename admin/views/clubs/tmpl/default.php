@@ -14,8 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 if(version_compare(JSM_JVERSION,'3','eq')) 
 {
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
 }
 
 $templatesToLoad = array('footer','listheader');

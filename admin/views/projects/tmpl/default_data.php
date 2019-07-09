@@ -18,8 +18,8 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 
 ?>
 <div class="table-responsive">

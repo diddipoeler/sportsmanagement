@@ -2,7 +2,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_('behavior.tooltip');
 switch ($this->selectType)
 {
 	case '10':	{		// New Club Selection

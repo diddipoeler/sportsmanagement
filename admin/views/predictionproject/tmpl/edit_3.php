@@ -17,7 +17,7 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
+
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 

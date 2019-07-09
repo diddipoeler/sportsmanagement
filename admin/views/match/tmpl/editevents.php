@@ -15,7 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 
 // welche joomla version ?

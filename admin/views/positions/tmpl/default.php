@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'po.ordering');
 
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

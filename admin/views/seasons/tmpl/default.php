@@ -11,8 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 // welche joomla version
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     HTMLHelper::_('behavior.framework', true);

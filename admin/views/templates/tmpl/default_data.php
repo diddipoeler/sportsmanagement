@@ -16,8 +16,6 @@ use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
 ?>
 <script>
 	function searchTemplate(val,key)

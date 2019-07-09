@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('behavior.tooltip');
+
 
 
 //$params = $this->form->getFieldsets('params');

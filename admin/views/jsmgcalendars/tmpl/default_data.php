@@ -5,7 +5,6 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
-HTMLHelper::_('behavior.tooltip');
 ?>
 
 	<table class="<?php echo $this->table_data_class; ?>">

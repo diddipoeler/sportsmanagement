@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 $app = Factory::getApplication();
 
 $view = $this->jinput->getVar( "view") ;

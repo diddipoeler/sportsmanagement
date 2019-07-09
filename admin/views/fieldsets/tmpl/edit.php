@@ -21,9 +21,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  * Include the component HTML helpers.
  */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
-HTMLHelper::_('behavior.modal');
+
 $params = $this->form->getFieldsets('params');
 
 /**

@@ -17,7 +17,7 @@ use Joomla\CMS\Router\Route;
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 's.ordering');
 
-HTMLHelper::_('behavior.tooltip');HTMLHelper::_('behavior.modal');
+
 ?>
 	<div id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">

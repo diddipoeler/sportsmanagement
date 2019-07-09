@@ -35,7 +35,7 @@ else
 {
 HTMLHelper::_( 'behavior.mootools' );    
 }
-HTMLHelper::_('behavior.modal');
+
 
 ?>
 <style>

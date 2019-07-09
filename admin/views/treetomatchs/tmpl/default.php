@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_('behavior.tooltip');
+
 jimport('joomla.html.pane');
 
 

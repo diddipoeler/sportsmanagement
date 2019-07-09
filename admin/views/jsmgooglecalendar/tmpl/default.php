@@ -16,10 +16,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
-HTMLHelper::_('behavior.tooltip');
-
-//HTMLHelper::_('behavior.modal');
-HTMLHelper::_('behavior.modal', 'a.modal');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);

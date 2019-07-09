@@ -15,13 +15,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    //HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-} else {
-    HTMLHelper::_('behavior.tooltip');
-    HTMLHelper::_('behavior.modal');
-}
-
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 

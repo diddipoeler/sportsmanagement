@@ -21,8 +21,7 @@ if( version_compare(JSM_JVERSION,'4','eq') )
 }
 else
 {	
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
 }
 
 $templatesToLoad = array('footer','listheader');

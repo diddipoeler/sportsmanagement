@@ -18,8 +18,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //Ordering allowed ?
 $ordering=($this->sortColumn == 'obj.ordering');
 
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.modal');
+
+
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	
