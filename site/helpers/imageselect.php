@@ -67,8 +67,6 @@ self::$_view = Factory::getApplication()->input->getVar( 'view' );
 $modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
     
-		HTMLHelper::_( 'behavior.modal' );
-
 		$baseFolder = Uri::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
 
