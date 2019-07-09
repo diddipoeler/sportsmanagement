@@ -9,7 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
+
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Factory;
 
 /**
  * Supports an HTML grouped select list of menu item grouped by menu
@@ -96,10 +98,10 @@ class WFElementMenuItem extends WFElement {
                     $item = &$groupedList[$type->menutype][$i];
 
                     // If menutype is changed but item is not saved yet, use the new type in the list
-                    if (JRequest::getString('option', '', 'get') == 'com_menus') {
-                        $currentItemArray = JRequest::getVar('cid', array(0), '', 'array');
+                    if (Factory::getApplication()->input->getString('option', '', 'get') == 'com_menus') {
+                        $currentItemArray = Factory::getApplication()->input->getVar('cid', array(0), '', 'array');
                         $currentItemId = (int) $currentItemArray[0];
-                        $currentItemType = JRequest::getString('type', $item->type, 'get');
+                        $currentItemType = Factory::getApplication()->input->getString('type', $item->type, 'get');
                         if ($currentItemId == $item->id && $currentItemType != $item->type) {
                             $item->type = $currentItemType;
                         }

@@ -82,7 +82,7 @@ var $_sis_art = 1;
 	{
 		$db = Factory::getDBO();
         $app = Factory::getApplication();
-        $projectid = JRequest::getInt('p',0);
+        $projectid = Factory::getApplication()->input->getInt('p',0);
         
         
         
@@ -164,7 +164,7 @@ var $_sis_art = 1;
     //get sis spielplan
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JRequest::getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
   $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';

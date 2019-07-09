@@ -191,10 +191,10 @@ class plgSystemJCEMediabox extends JPlugin
         $db = Factory::getDBO();
 
         // Causes issue in Safari??
-        $pop = JRequest::getInt('pop');
-        $print = JRequest::getInt('print');
-        $task = JRequest::getVar('task');
-        $tmpl = JRequest::getWord('tmpl');
+        $pop = Factory::getApplication()->input->getInt('pop');
+        $print = Factory::getApplication()->input->getInt('print');
+        $task = Factory::getApplication()->input->getVar('task');
+        $tmpl = Factory::getApplication()->input->getWord('tmpl');
 
         // don't load mediabox on certain pages
         if ($pop || $print || $tmpl == 'component' || $task == 'new' || $task == 'edit') {
@@ -206,7 +206,7 @@ class plgSystemJCEMediabox extends JPlugin
         $components = $params->get('components', '');
         if ($components) {
             $excluded = explode(',', $components);
-            $option = JRequest::getVar('option', '');
+            $option = Factory::getApplication()->input->getVar('option', '');
             foreach ($excluded as $exclude) {
                 if ($option == 'com_' . $exclude || $option == $exclude) {
                     return;
@@ -241,7 +241,7 @@ class plgSystemJCEMediabox extends JPlugin
         $theme = $params->get('theme', 'standard');
 
         if ($params->get('dynamic_themes', 0)) {
-            $theme = JRequest::getWord('theme', $params->get('theme', 'standard'));
+            $theme = Factory::getApplication()->input->getWord('theme', $params->get('theme', 'standard'));
         }
 
         $popup = array(

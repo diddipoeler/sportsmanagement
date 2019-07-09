@@ -173,7 +173,7 @@ static $linkresult = '';
     public function onAfterRoute()
     {
         $app = Factory::getApplication();
-        self::$projectid = JRequest::getInt('p',0);
+        self::$projectid = Factory::getApplication()->input->getInt('p',0);
         if ( $this->params->get('load_debug', 1) )
         {
 
