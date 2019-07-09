@@ -129,7 +129,6 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 														'division',
 														'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
 														'value','text', $this->division);
-//echo $this->lists['divisions'];
 								?>
 							</th><?php
 						}
@@ -140,10 +139,9 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
                             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE'); ?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA').'<br>'; 
+						<th>
+                        <?php  
                         echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA','tl.matches_finally',$this->sortDirection,$this->sortColumn);
-                        
-                        
                         ?></th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
@@ -311,10 +309,6 @@ $this->modalheight);
 							
               <?php                                                                
 								} else {
-//									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-//									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-//													$imageTitle,'title= "'.$imageTitle.'"');
-
 echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
 Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE'),
