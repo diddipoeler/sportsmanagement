@@ -211,7 +211,7 @@ $layoutdrag = 'upload';
         
 		$document->addScriptDeclaration( $js );
 
-		HTMLHelper::_( 'behavior.modal', 'a.modal' );
+//		HTMLHelper::_( 'behavior.modal', 'a.modal' );
 
 		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"" . $fieldid . "\" name=\"" . $fieldname . "\"  value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
