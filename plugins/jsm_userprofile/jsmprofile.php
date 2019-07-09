@@ -9,7 +9,8 @@
  * @subpackage plugins
  */
 
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
  
 /**
  * plgUserjsmprofile
@@ -31,7 +32,7 @@ class plgUserjsmprofile extends JPlugin
      */
     function onContentPrepareData($context, $data)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Check we are manipulating a valid form.
         //if (!in_array($context, array('com_users.profile','com_users.registration','com_users.user','com_admin.profile')))
         if (!in_array($context, array('com_users.user','com_users.profile','com_admin.profile')))
@@ -42,7 +43,7 @@ class plgUserjsmprofile extends JPlugin
         $userId = isset($data->id) ? $data->id : 0;
  
         // Load the profile data from the database.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $db->setQuery(
             'SELECT profile_key, profile_value FROM #__user_profiles' .
             ' WHERE user_id = '.(int) $userId .
@@ -50,9 +51,7 @@ class plgUserjsmprofile extends JPlugin
             ' ORDER BY ordering'
         );
         $results = $db->loadRowList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
- 
+
         // Check for a database error.
         if ($db->getErrorNum()) {
             $this->_subject->setError($db->getErrorMsg());
@@ -78,9 +77,9 @@ class plgUserjsmprofile extends JPlugin
      */
     function onContentPrepareForm($form, $data)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Load user_profile plugin language
-        $lang = JFactory::getLanguage();
+        $lang = Factory::getLanguage();
         $lang->load('plg_user_jsmprofile', JPATH_ADMINISTRATOR);
  
         if (!($form instanceof JForm)) {
@@ -109,14 +108,14 @@ class plgUserjsmprofile extends JPlugin
      */
     function onUserAfterSave($data, $isNew, $result, $error)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
  
         if ($userId && $result && isset($data['jsmprofile']) && (count($data['jsmprofile'])))
         {
             try
             {
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $db->setQuery('DELETE FROM #__user_profiles WHERE user_id = '.$userId.' AND profile_key LIKE \'jsmprofile.%\'');
                 if (!$db->query()) {
                     throw new Exception($db->getErrorMsg());
@@ -152,7 +151,7 @@ class plgUserjsmprofile extends JPlugin
      */
     function onUserAfterDelete($user, $success, $msg)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if (!$success) {
             return false;
         }
@@ -163,7 +162,7 @@ class plgUserjsmprofile extends JPlugin
         {
             try
             {
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $db->setQuery(
                     'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
                     " AND profile_key LIKE 'jsmprofile.%'"

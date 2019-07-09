@@ -38,9 +38,8 @@ https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-typeahead.j
  * 'Joomla_base\libraries\joomla\application'.
  */
 
-
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -75,20 +74,10 @@ class PlgSystemjsm_bootstrap extends JPlugin
     {
         parent::__construct($subject, $params);
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$this->loadLanguage();
         $this->config = $params;
 		$this->subject = $subject;
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'params <br><pre>'.print_r($params,true).'</pre>'),'');
-
-        /*
-        //add the classes for handling
-        $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR.
-        'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'libraries' .DIRECTORY_SEPARATOR. 'cbootstrap.php';
-        if (file_exists($classpath)) {
-        JLoader::register('CBootstrap', $classpath);
-        }
-        */
     }
 
     /**
@@ -98,7 +87,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
      */
     public function onBeforeRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
     }
 
     /**
@@ -108,7 +97,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
      */
     public function onAfterRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
     }
 
     /**
@@ -118,9 +107,9 @@ class PlgSystemjsm_bootstrap extends JPlugin
      */
     public function onAfterRoute()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 	    // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // JInput object
         $this->jinput = $app->input;
         $this->option = $this->jinput->getCmd('option');
@@ -146,7 +135,7 @@ foreach($document->_scripts as $key => $script){
         unset($document->_scripts[$key]);
     }
 }
-JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
+Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
 }		    
     }
 
@@ -157,15 +146,9 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
      */
     public function onAfterDispatch()
     {
-        $app = JFactory::getApplication();
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
-    
-	    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
-
+        $app = Factory::getApplication();
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $load_bootstrap = $this->params->def('load_bootstrap', 1);
         $load_bootstrap_css = $this->params->def('load_bootstrap_css', 1);
         $load_bootstrap_version = $this->params->def('load_bootstrap_version', '3.3.6');
@@ -176,7 +159,7 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js');
                 }
             }
@@ -184,30 +167,30 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
             if ($this->params->def('load_bootstrap_carousel', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
+                    Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
                 }
             }
             
             if ($this->params->def('load_bootstrap_modal', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
+                    Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
                 }
             }
             
 	if ($this->params->def('load_bootstrap_tab', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
+                    Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
                 }
             }
 		
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap.min.css');
-                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
@@ -220,7 +203,7 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
                  */
 
                 // Check for component
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'com_k2'");
                 $is_enabled = $db->loadResult();
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
@@ -240,7 +223,7 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js');
                 }
             }
@@ -248,9 +231,9 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
-                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap.min.css');
-                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
@@ -263,7 +246,7 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
                  */
 
                 // Check for component
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'com_k2'");
                 $is_enabled = $db->loadResult();
                 //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
@@ -286,7 +269,7 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
      */
     public function onAfterInitialise()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
     }
 
 }

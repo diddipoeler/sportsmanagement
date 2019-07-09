@@ -19,7 +19,9 @@
  * @ http://digitarald.de/project/squeezebox/
  *
  */
-defined('_JEXEC') or die('Restricted access');
+ 
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 jimport('joomla.plugin.plugin');
 
@@ -100,7 +102,7 @@ class plgSystemJCEMediabox extends JPlugin
         jimport('joomla.environment.browser');
         jimport('joomla.filesystem.file');
 
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $theme = $vars['theme'] == 'custom' ? $vars['themecustom'] : $vars['theme'];
 
         // Load template css file
@@ -170,13 +172,13 @@ class plgSystemJCEMediabox extends JPlugin
      */
     public function onAfterDispatch()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if ($app->isAdmin()) {
             return;
         }
 
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $docType = $document->getType();
 
         // only in html pages
@@ -186,7 +188,7 @@ class plgSystemJCEMediabox extends JPlugin
 
         $dev = true;
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
 
         // Causes issue in Safari??
         $pop = JRequest::getInt('pop');

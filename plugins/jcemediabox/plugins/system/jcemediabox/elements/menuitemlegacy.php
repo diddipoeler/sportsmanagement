@@ -12,8 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 /**
  * Renders a menu item element
@@ -35,7 +35,7 @@ class JElementMenuItemLegacy extends JElement
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db =& JFactory::getDBO();
+		$db =& Factory::getDBO();
 
 		$menuType = $this->_parent->get('menu_type');
 		if (!empty($menuType)) {

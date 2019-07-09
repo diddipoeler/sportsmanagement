@@ -51,8 +51,8 @@
  */
 
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -101,11 +101,8 @@ static $linkresult = '';
     public function __construct(&$subject, $params)
     {
         parent::__construct($subject, $params);
-        $app = JFactory::getApplication();
-    
-    //self::$projectid = $app->input->getInt('p');
-    //self::$projectid = JRequest::getInt('p',0);
-    
+        $app = Factory::getApplication();
+   
     $date = time();    // aktuelles Datum 
     //echo date('d.m.Y h:i:s', $date) . ""; 
     $stunden = 4;   // z.B. ein Tag 
@@ -124,9 +121,7 @@ static $linkresult = '';
     
     if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' app<br><pre>'.print_r($app,true).'</pre>'),'Notice');
+
         }
 
     
@@ -140,16 +135,14 @@ static $linkresult = '';
      */
     public function onBeforeRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         if ( self::$projectid )
         {
-//        $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
-//        $actionsModel->getmatches(self::$projectid);
         $this->getmatchestoupdate(2);
         }
         
@@ -163,10 +156,10 @@ static $linkresult = '';
      */
     public function onAfterRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
     }
@@ -179,11 +172,11 @@ static $linkresult = '';
      */
     public function onAfterRoute()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         self::$projectid = JRequest::getInt('p',0);
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         if ( self::$projectid )
@@ -206,10 +199,10 @@ static $linkresult = '';
      */
     public function onAfterDispatch()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
 
     }
@@ -222,10 +215,10 @@ static $linkresult = '';
      */
     public function onAfterInitialise()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         
@@ -240,12 +233,12 @@ static $linkresult = '';
      */
     public function getmatchestoupdate($step=1)
     {
-    $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+    $app = Factory::getApplication();
+        $db = Factory::getDBO();
         $query = $db->getQuery(true); 
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         $query->clear(); 
         $query->select('count(*) AS count');
@@ -266,7 +259,7 @@ static $linkresult = '';
     $code = $e->getCode(); // Returns '500';
     if ( $this->params->get('load_debug', 1) )
         {
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     }
 }
     

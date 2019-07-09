@@ -25,7 +25,7 @@ class WFElementMenuItem extends WFElement {
     var $_name = 'MenuItem';
 
     function fetchElement($name, $value, &$node, $control_name) {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $menuType = $this->_parent->get('menu_type');

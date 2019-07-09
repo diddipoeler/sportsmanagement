@@ -17,7 +17,8 @@
  * 'Joomla_base\components\com_search\models'.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 if (! defined('DS'))
@@ -132,11 +133,11 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        //$db 	= JFactory::getDBO();
+        $app = Factory::getApplication();
+        //$db 	= Factory::getDBO();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 
 		// load plugin params info
 		$plugin			= JPluginHelper::getPlugin('search','search_sportsmanagement');
@@ -356,9 +357,7 @@ $escape = 'getEscaped';
             $query->where('tp.persontype = 1');
             $query->group('pe.lastname, pe.firstname, pe.nickname');
             $query->order('pe.lastname,pe.firstname,pe.nickname');
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-            
+
             $db->setQuery( $query );
 			$list = $db->loadObjectList();
 			$rows[] = $list;
