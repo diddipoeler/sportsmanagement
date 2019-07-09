@@ -130,10 +130,6 @@ function __construct( )
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
   $this->debug_info = true;
-  
-  echo '0.) start request -> <br /><pre>~'.print_r($this->request,true).'~</pre><br />';
-  echo '0.) start menue params -> <br /><pre>~'.print_r($this->menue_params,true).'~</pre><br />';
-  
   }
   else
   {
@@ -193,8 +189,6 @@ $tFields = $this->_db->getTableFields($tableName, false);
                     
 $this->jl_tree_bracket_round_width = 16 + ( $this->team_strlen * 4 ) + 25 + 100;  
 // laenge des zu selektierenden feldes
-
-//echo '0.) ende tabellen spalten -> <br /><pre>~'.print_r($tFields,true).'~</pre><br />';
 
 $fieldName = $this->request['tree_name'];
 $fieldtype = $tFields[$tableName][$fieldName]->Type;
@@ -304,11 +298,7 @@ $query = $db->getQuery(true);
 
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
-echo '0.) projekt -> <br /><pre>~'.print_r($this->projectid,true).'~</pre><br />';
-echo '0.) request -> <br /><pre>~'.print_r($this->request,true).'~</pre><br />';
-echo '0.) projekt rounds -> <br /><pre>~'.print_r($this->round,true).'~</pre><br />';
-echo '0.) from round -> <br /><pre>~'.print_r($this->from,true).'~</pre><br />';
-echo '0.) to round -> <br /><pre>~'.print_r($this->to,true).'~</pre><br />';
+
 }
 
 // wurden die wichtigen einstellungen �ben ?
@@ -336,8 +326,7 @@ $result_roundcode = $db->loadResult();
 
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
-echo 'Roundcode -> <br /><pre>~'.print_r($db->loadResult(),true).'~</pre><br />';
-echo 'Roundcode query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
+
 }
 
 $query->clear();
@@ -402,8 +391,7 @@ $db->setQuery($query);
 
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
-echo 'Runden -> <br /><pre>~'.print_r($db->loadObjectList(),true).'~</pre><br />';
-echo 'Runden query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
+
 }
 
 $this->count_tournament_round = count($db->loadObjectList());	
@@ -457,11 +445,6 @@ return false;
 $db = Factory::getDBO();
 $query = $db->getQuery(true);
 
-//echo '1.) rounds -> <br /><pre>~'.print_r($rounds,true).'~</pre><br />';
-
-//$query2 = $db->getQuery(true);
-//$query3 = $db->getQuery(true);
-
 $subQuery = $db->getQuery(true);
 $subQuery2 = $db->getQuery(true);
         
@@ -479,8 +462,6 @@ $round_matches[512] = 512;
 $round_matches[1024] = 1024;
 $round_matches[2048] = 2048;
 
-//echo '1.) project_art_id -> <br /><pre>~'.print_r($this->project_art_id,true).'~</pre><br />';
-//echo '1.) tree_name -> <br /><pre>~'.print_r($this->request['tree_name'],true).'~</pre><br />';
 $this->request['tree_name'] = 'name';
 
 if ( $this->project_art_id == 3 )
@@ -563,16 +544,7 @@ $query->where('r.project_id = '.$this->projectid);
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-//echo '1.) result -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
-		
-if ( $this->debug_info )
-{
-echo '1.) zaehler -> <br /><pre>~'.print_r($zaehler,true).'~</pre><br />';
-echo '1.) query -> <br /><pre>~'.print_r($query,true).'~</pre><br />';
-echo '1.) query2 -> <br /><pre>~'.print_r($query2,true).'~</pre><br />';
-echo '1.) result -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
-}
-  
+ 
 foreach ( $result as $row )
 {
 
@@ -604,8 +576,6 @@ $row->secondlogo = Uri::base().$row->secondlogo;
 if ( array_key_exists($round->roundcode, $this->bracket) && count($result) > 1 )
 {
 
-//echo '1.) this->bracket -> <br /><pre>~'.print_r($this->bracket,true).'~</pre><br />';
-//echo '1.) laenge bracket -> <br /><pre>~'.print_r(sizeof($this->bracket[$round->roundcode]),true).'~</pre><br />';
 
 $finished = true;
 //foreach ( $this->bracket[$round->roundcode] as $value )
@@ -617,9 +587,6 @@ foreach ( $this->bracket[$round->roundcode] as $key => $value )
 
 //echo '<b>1 value -> '.$value.'</b><br />'; 
 
-//echo '1.) result bracket value -> <br /><pre>~'.print_r($value,true).'~</pre><br />';
-//echo '1.) result bracket value -> <br /><pre>~'.print_r($this->bracket[$round->roundcode][$a],true).'~</pre><br />';
-//echo '1.) laenge bracket value -> <br /><pre>~'.print_r(sizeof($key),true).'~</pre><br />';
 
 //foreach ( $key as $value )
 //{
@@ -710,17 +677,12 @@ $this->team_strlen = strlen($row->secondname);
 
 $roundcode = $round->roundcode;		
 
-if ( $this->debug_info )
-{
-echo '1.) this->bracket -> <br /><pre>~'.print_r($this->bracket,true).'~</pre><br />';
-echo '1.) this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).'~</pre><br />';
-echo '1.) Roundcode gesetzt -> <br /><pre>~'.print_r($roundcode,true).'~</pre><br />';
-}
+
 
 // passt die erste gew�te runde zu einem turnierbaum ?
 $count_matches = sizeof( $this->bracket[$round->roundcode] );
 
-//echo '1.) size bracket -> <br /><pre>~'.print_r(sizeof( $this->bracket[$round->roundcode] ),true).'~</pre><br />';
+
 
 $i = $count_matches;
 if ( $count_matches > 4 )
@@ -729,18 +691,18 @@ if ( $count_matches > 4 )
 if ( !array_key_exists($count_matches, $round_matches) ) 
 { 
 
-//echo '1.) spiele in runde -> <br /><pre>~'.print_r('nicht gefunden',true).'~</pre><br />';
+
 
 $finished = false;
 while ( ! $finished ):
 if ( array_key_exists($i, $round_matches) )
 {
-//echo '1.) schleife ende-> <br /><pre>~'.print_r($i,true).'~</pre><br />';
+
 $finished = true;     
 }
 else
 {
-//echo '1.) schleife -> <br /><pre>~'.print_r($i,true).'~</pre><br />';
+
 $i++;    
 }
 endwhile; 
@@ -748,13 +710,13 @@ endwhile;
 }
 else
 {
-//echo '1.) spiele in runde -> <br /><pre>~'.print_r('gefunden',true).'~</pre><br />';    
+    
 } 
 
 }
 
 $new_matches = $i - $count_matches;
-//echo '1.) neue spiele in runde -> <br /><pre>~'.print_r($new_matches,true).'~</pre><br />'; 
+ 
 
 for ($a=1; $a <= $new_matches; $a++)
 {
@@ -790,11 +752,6 @@ break;
 //case 3:
 default:
 
-if ( $this->debug_info )
-{
-echo '2.) Roundcode &uuml;bernommen -> <br /><pre>~'.print_r($roundcode,true).'~</pre><br />';
-}
-
 foreach ( $this->bracket[$roundcode] as $key  )
 {
 //unset($query);
@@ -816,13 +773,9 @@ $query->where('r.project_id = '.$this->projectid);
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
-if ( $this->debug_info )
-{
-echo '2.) query 1.Mannschaft -> <br /><pre>~'.print_r($query,true).'~</pre><br />';
-echo '2.) result 1.Mannschaft -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
-}
 
-//echo '2.) result 1.Mannschaft -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
+
+
 
 if ( $result  )
 {
@@ -1009,11 +962,7 @@ $result = $db->loadObjectList();
 
 
 
-if ( $this->debug_info )
-{
-echo '2.) query 2.Mannschaft -> <br /><pre>~'.print_r($query,true).'~</pre><br />';    
-echo '2.) result 2.Mannschaft -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
-}
+
 
 if ( $result )
 {
@@ -1189,11 +1138,7 @@ $result = true;
 
 // m�freilose angelegt werden ?
 $count_matches = sizeof ( $this->bracket[$round->roundcode] );
-if ( $this->debug_info )
-{
-echo '3. anzahl paarungen -> <br /><pre>~'.print_r($count_matches,true).'~</pre><br />';
-echo '3. in roundcode -> <br /><pre>~'.print_r($round->roundcode,true).'~</pre><br />';
-}
+
 
 
 
@@ -1215,13 +1160,9 @@ $zaehler++;
 
 }
 
-if ( $this->debug_info )
-{
-echo 'Gesamt. this->bracket -> <br /><pre>~'.print_r($this->bracket,true).'~</pre><br />';
-echo 'Gesamt. this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).'~</pre><br />';
-}
 
-//echo 'Gesamt. this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).'~</pre><br />';
+
+
 
 // jetzt die teams und ergebnisse zusammenstellen
 $varteams = array();
@@ -1356,10 +1297,7 @@ foreach ( $this->bracket[$round->roundcode] as $key  )
 $vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
 }
 
-if ( $this->debug_info )
-{
-echo 'pro Runde. vartempresults -> <br /><pre>~'.print_r($vartempresults,true).'~</pre><br />';
-}
+
 
 $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 
@@ -1377,11 +1315,7 @@ $query->where('r.project_id = '.$this->projectid);
 $db->setQuery($query);
 $result = $db->loadObjectList();
 		
-if ( $this->debug_info )
-{
-echo 'dritter platz.) query -> <br /><pre>~'.print_r($query,true).'~</pre><br />';    
-echo 'dritter platz.) result -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
-}		
+
 
 foreach ( $result as $row )
 {
@@ -1407,10 +1341,7 @@ $varresults[$roundcode] = '['.implode(",",$vartempresults).']';
 
 ksort($varresults);
 
-if ( $this->debug_info )
-{
-echo 'Gesamt. varresults -> <br /><pre>~'.print_r($varresults,true).'~</pre><br />';
-}
+
 
 
 return implode(",",$varresults);
