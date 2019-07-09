@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Log\Log;
 JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
@@ -50,7 +50,7 @@ class SMStatisticDifference extends SMStatistic
         $add_ids = $params->get('add_ids');
 		if (!count($add_ids)) 
         {
-			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 		
@@ -58,7 +58,7 @@ class SMStatisticDifference extends SMStatistic
 
 		if (!count($sub_ids)) 
         {
-			JError::raiseError(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id), Log::ERROR, 'jsmerror');
 			return(array(0));
 		}
 				

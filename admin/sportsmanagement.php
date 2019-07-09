@@ -14,13 +14,14 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  *  Access check.
  */
 if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
 {
-	return JError::raiseWarning(404, Text::_('JERROR_ALERTNOAUTHOR'));
+	return Log::add(  Text::_('JERROR_ALERTNOAUTHOR'), Log::WARNING, 'jsmerror');
 }
  
 /**

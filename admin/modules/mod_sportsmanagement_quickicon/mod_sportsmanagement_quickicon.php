@@ -14,11 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
+
 // Make sure Sportsmanagement is enabled
-jimport( 'joomla.application.component.helper' );
 if ( !ComponentHelper::isEnabled( 'com_sportsmanagement', true) )
 {
-	JError::raiseError( 'E_SMNOTENABLED', JText( 'SM_NOT_ENABLED' ) );
+	Log::add( Text( 'SM_NOT_ENABLED' ), Log::ERROR, 'jsmerror' );
 	return;
 }
 

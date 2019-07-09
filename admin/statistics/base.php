@@ -441,7 +441,7 @@ class SMStatistic extends JObject
 		{
 			$file = JPATH_SITE .'/administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'statistics'.DIRECTORY_SEPARATOR.$class.'.php';
 			if (!File::exists($file)) {
-				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
+				Log::add( $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'), Log::ERROR, 'jsmerror');
 			}
             try {
 JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMINISTRATOR);			

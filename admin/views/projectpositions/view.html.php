@@ -17,6 +17,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -135,7 +136,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
                 }
             }
         } else {
-            JError::raiseWarning('ERROR_CODE', '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />');
+            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />', Log::WARNING, 'jsmerror' );
         }
 
         //build the html select list for positions

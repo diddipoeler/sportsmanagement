@@ -127,7 +127,7 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         $istable = $this->model->checkTable();
 
         if (empty($this->project_id)) {
-            JError::raiseWarning(500, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1'));
+            Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1'), Log::WARNING, 'jsmerror');
             $this->app->redirect('index.php?option=' . $this->option . '&view=projects');
         } else {
             // project selected. projectteams available ?
@@ -151,26 +151,26 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
 
                         // matches available
                         if ( $resmatches = $this->model->getMatches($this->project_id,$this->division_id) ) {
-                            JError::raiseNotice(500, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_2'));
-                            JError::raiseWarning(500, Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_7', $resmatches));
+                            Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_2'), Log::WARNING, 'jsmerror');
+                            Log::add( Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_7', $resmatches), Log::WARNING, 'jsmerror');
                             $this->app->redirect('index.php?option=' . $this->option . '&view=rounds');
                         } else {
                             $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_firstmatchday&divisionid='.$this->division_id);
                         }
                     } else {
-                        JError::raiseWarning(500, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'));
-                        JError::raiseNotice(500, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'));
+                        Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'), Log::WARNING, 'jsmerror');
+                        Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'), Log::WARNING, 'jsmerror');
                         $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_createdays&divisionid='.$this->division_id);
                     }
                 } else {
                     $procountry = $this->model->getCountry($this->project_id);
-                    JError::raiseWarning(500, Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry));
+                    Log::add( Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6', $dfbteams, JSMCountries::getCountryFlag($procountry), $procountry), Log::WARNING, 'jsmerror');
                     $this->app->redirect('index.php?option=' . $this->option . '&view=projects');
                 }
 
                 unset($projectteams);
             } else {
-                Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5'));
+                Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5'), Log::WARNING, 'jsmerror');
                 $this->app->redirect('index.php?option=' . $this->option . '&view=projectteams');
             }
         }
