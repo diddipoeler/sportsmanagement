@@ -21,22 +21,22 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 
 // welche joomla version ?
-if( version_compare(JSM_JVERSION,'4','eq') ) 
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
 {
     
 }
-elseif(version_compare(JSM_JVERSION,'3','eq')) 
+elseif(version_compare(substr(JVERSION, 0, 3),'3.0','ge')) 
 {
 HTMLHelper::_('jquery.framework');
 HTMLHelper::_('behavior.framework', true);
 HTMLHelper::_('behavior.modal');
 HTMLHelper::_('behavior.tooltip');
 }
-elseif(version_compare(JSM_JVERSION,'2','eq')) 
-{
-// Joomla! 2.5 code here
-HTMLHelper::_('behavior.mootools');  
-} 
+//elseif(version_compare(JSM_JVERSION,'2','eq')) 
+//{
+//// Joomla! 2.5 code here
+//HTMLHelper::_('behavior.mootools');  
+//} 
 //elseif(version_compare(JVERSION,'1.7.0','ge')) 
 //{
 //// Joomla! 1.7 code here
