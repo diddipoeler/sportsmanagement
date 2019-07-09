@@ -588,11 +588,8 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			$this->icon = strtolower($this->getName());
 		}
 		
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
+    	$document = Factory::getDocument();
         
-        //ToolbarHelper::title(Text::_($this->title), $this->icon);
-		$document = Factory::getDocument();
-        $document->addScript(Uri::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         if(version_compare(JVERSION,'4.0.0-dev','ge')) 
         {
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
@@ -602,6 +599,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         }
         elseif (version_compare(JVERSION,'3.0.0','ge')) 
         {
+        $document->addScript(Uri::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");    
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
         $document->addCustomTag($stylelink);
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
