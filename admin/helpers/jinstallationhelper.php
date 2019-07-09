@@ -18,6 +18,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Client\FtpClient;
 
 /**
  * @package		Joomla
@@ -383,29 +385,29 @@ class JInstallationHelper
 	 */
 	function findFtpRoot($user, $pass, $host='127.0.0.1', $port='21')
 	{
-		jimport('joomla.client.ftp');
+
 		$ftpPaths = array();
 
 		// Connect and login to the FTP server (using binary transfer mode to be able to compare files)
-		$ftp = JFTP::getInstance($host, $port, array('type'=>FTP_BINARY));
+		$ftp = FtpClient::getInstance($host, $port, array('type'=>FTP_BINARY));
 		if (!$ftp->isConnected()) {
-			return JError::raiseError('31', 'NOCONNECT');
+			return Log::add( 'NOCONNECT', Log::ERROR, 'jsmerror');
 		}
 		if (!$ftp->login($user, $pass)) {
-			return JError::raiseError('31', 'NOLOGIN');
+			return Log::add( 'NOLOGIN', Log::ERROR, 'jsmerror');
 		}
 
 		// Get the FTP CWD, in case it is not the FTP root
 		$cwd = $ftp->pwd();
 		if ($cwd === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+			return Log::add( 'NOPWD', Log::ERROR, 'jsmerror');
 		}
 		$cwd = rtrim($cwd, '/');
 
 		// Get list of folders in the CWD
 		$ftpFolders = $ftp->listDetails(null, 'folders');
 		if ($ftpFolders === false || count($ftpFolders) == 0) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NODIRECTORYLISTING');
+			return Log::add( 'NODIRECTORYLISTING', Log::ERROR, 'jsmerror');
 		}
 		for ($i=0, $n=count($ftpFolders); $i<$n; $i++) {
 			$ftpFolders[$i] = $ftpFolders[$i]['name'];
@@ -449,7 +451,7 @@ class JInstallationHelper
 		if (isset($ftpPath)) {
 			return $ftpPath;
 		} else {
-			return JError::raiseError('SOME_ERROR_CODE', 'Unable to autodetect the FTP root folder');
+			return Log::add( 'Unable to autodetect the FTP root folder', Log::ERROR, 'jsmerror');
 		}
 	}
 
@@ -464,83 +466,82 @@ class JInstallationHelper
 	 */
 	function FTPVerify($user, $pass, $root, $host='127.0.0.1', $port='21')
 	{
-		jimport('joomla.client.ftp');
-		$ftp = JFTP::getInstance($host, $port);
+		$ftp = FtpClient::getInstance($host, $port);
 
 		// Since the root path will be trimmed when it gets saved to configuration.php, we want to test with the same value as well
 		$root = rtrim($root, '/');
 
 		// Verify connection
 		if (!$ftp->isConnected()) {
-			return JError::raiseWarning('31', 'NOCONNECT');
+			return Log::add( 'NOCONNECT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify username and password
 		if (!$ftp->login($user, $pass)) {
-			return JError::raiseWarning('31', 'NOLOGIN');
+			return Log::add( 'NOLOGIN', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify PWD function
 		if ($ftp->pwd() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+			return Log::add( 'NOPWD', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify root path exists
 		if (!$ftp->chdir($root)) {
-			return JError::raiseWarning('31', 'NOROOT');
+			return Log::add( 'NOROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify NLST function
 		if (($rootList = $ftp->listNames()) === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NONLST');
+			return Log::add( 'NONLST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify LIST function
 		if ($ftp->listDetails() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOLIST');
+			return Log::add( 'NOLIST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify SYST function
 		if ($ftp->syst() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOSYST');
+			return Log::add( 'NOSYST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify valid root path, part one
 		$checkList = array('CHANGELOG.php', 'COPYRIGHT.php', 'index.php', 'INSTALL.php', 'LICENSE.php');
 		if (count(array_diff($checkList, $rootList))) {
-			return JError::raiseWarning('31', 'INVALIDROOT');
+			return Log::add( 'INVALIDROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify RETR function
 		$buffer = null;
 		if ($ftp->read($root.'/libraries/joomla/version.php', $buffer) === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NORETR');
+			return Log::add( 'NORETR', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify valid root path, part two
 		$checkValue = file_get_contents(JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'version.php');
 		if ($buffer !== $checkValue) {
-			return JError::raiseWarning('31', 'INVALIDROOT');
+			return Log::add( 'INVALIDROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify STOR function
 		if ($ftp->create($root.'/ftp_testfile') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOSTOR');
+			return Log::add( 'NOSTOR', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify DELE function
 		if ($ftp->delete($root.'/ftp_testfile') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NODELE');
+			return Log::add( 'NODELE', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify MKD function
 		if ($ftp->mkdir($root.'/ftp_testdir') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOMKD');
+			return Log::add( 'NOMKD', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify RMD function
 		if ($ftp->delete($root.'/ftp_testdir') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NORMD');
+			return Log::add( 'NORMD', Log::ERROR, 'jsmerror');
 		}
 
 		$ftp->quit();
@@ -582,8 +583,7 @@ class JInstallationHelper
 		if ($ftpFlag == true)
 		{
 			// Connect the FTP client
-			jimport('joomla.client.ftp');
-			$ftp = JFTP::getInstance($srv['ftpHost'], $srv['ftpPort']);
+			$ftp = FtpClient::getInstance($srv['ftpHost'], $srv['ftpPort']);
 			$ftp->login($srv['ftpUser'],$srv['ftpPassword']);
 
 			//Translate path for the FTP account
@@ -1419,8 +1419,7 @@ class JInstallationHelper
 		if ($ftpFlag == true)
 		{
 			// Connect the FTP client
-			jimport('joomla.client.ftp');
-			$ftp = JFTP::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
+			$ftp = FtpClient::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
 			$ftp->login($app->getCfg('ftp_user'), $app->getCfg('ftp_pass'));
 
 			//Translate the destination path for the FTP account
