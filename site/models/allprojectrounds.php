@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -241,7 +242,7 @@ catch (Exception $e){
        
         if ( !$result )
         {
-        JError::raiseWarning(0, 'Keine Auswechselungen vorhanden');      
+        Log::add(Text::_('Keine Auswechselungen vorhanden'), Log::WARNING, 'jsmerror');  
         }
      else
      {   
@@ -287,7 +288,7 @@ catch (Exception $e){
 
 if ( !$res )
         {
-        JError::raiseWarning(0, 'Keine Ereignisse vorhanden');     
+        Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
         }
         
 		foreach ( $res as $row )
@@ -350,8 +351,7 @@ if ( !$res )
 
         if ( !$matchplayers )
         {
-        JError::raiseWarning(0, 'Keine Spieler vorhanden');    
-
+        Log::add(Text::_('Keine Spieler vorhanden'), Log::WARNING, 'jsmerror');
         }
 		
 	

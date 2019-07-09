@@ -106,7 +106,6 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 		$db->setQuery((string)$query);
 
         if (!$db->query()) {
-            JError::raiseError(500, $db->getErrorMsg());
         	return false;
         } else {
         	return true;
