@@ -508,7 +508,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 $resultins = Factory::getDbo()->insertObject('#__sportsmanagement_match_event', $event);
                 if(!$resultins) 
                 {
-                $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+
     		     }
     
     

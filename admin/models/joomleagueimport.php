@@ -172,7 +172,7 @@ $my_text .= '<br />';
                         $tblProjectteam->team_id = $new_id;
                         if (!$tblProjectteam->store())
 				        {
-				        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
 				        }
                     }
 

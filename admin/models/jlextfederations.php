@@ -130,8 +130,6 @@ class sportsmanagementModeljlextfederations extends JSMModelList
  
 		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
 
         return $this->jsmquery;

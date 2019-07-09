@@ -179,10 +179,6 @@ class sportsmanagementModelTeams extends JSMModelList {
 
         $this->jsmdb->setQuery($this->query);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
         if ($results = $this->jsmdb->loadObjectList()) {
             foreach ($results AS $team) {
                 $team->text = $team->name . ' - (' . $team->info . ')';
@@ -218,10 +214,6 @@ class sportsmanagementModelTeams extends JSMModelList {
             $starttime = microtime();
 
             $this->jsmdb->setQuery($this->jsmquery);
-            if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-            }
-
             $rows = $this->jsmdb->loadObjectList();
 
             foreach ($rows as $row) {
@@ -236,10 +228,6 @@ class sportsmanagementModelTeams extends JSMModelList {
 
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
-                if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-                }
-
                 $teams[$row->id]->teaminfo[] = $this->jsmdb->loadObjectList();
 
                 // Select some fields
@@ -250,9 +238,6 @@ class sportsmanagementModelTeams extends JSMModelList {
                 $this->jsmquery->where('id=' . $row->project_id);
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
-                if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-                }
                 $teams[$row->id]->project = $this->jsmdb->loadResult();
             }
         }

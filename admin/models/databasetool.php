@@ -1166,8 +1166,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             $this->jsmdb->setQuery($this->jsmquery);
 
             if (!$this->jsmdb->execute()) {
-
-                $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool insertSportType<br><pre>' . print_r($this->jsmdb->getErrorMsg(), true) . '</pre>'), 'Error');
                 $result = false;
             } else {
                 $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
