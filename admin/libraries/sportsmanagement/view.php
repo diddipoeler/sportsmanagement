@@ -23,7 +23,7 @@ use Joomla\CMS\Log\Log;
 // welche joomla version ?
 if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
 {
-    
+HTMLHelper::_('behavior.formvalidator');    
 }
 elseif(version_compare(substr(JVERSION, 0, 3),'3.0','ge')) 
 {
