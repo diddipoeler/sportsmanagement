@@ -65,9 +65,6 @@
 	<field name="template" type="list" default="default" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE_DESC">
 	  <option value="default">default</option>
 	</field>
-	<!--
-	<field name="max_width" type="text" default="0" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
-	-->
 	
 	<field name="max_width_after_mouse_over" type="text" default="10" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER_DESC" />
 	
@@ -79,9 +76,7 @@
 		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
-<!--	
-				<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
--->				
+		
 	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
 	<field name="iconpos" type="list" default="middle" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_DESC">
 		<option value="top">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_TOP</option>
@@ -118,9 +113,6 @@
 			multiple="multiple"
 						label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" 
 						description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
-<!--						
-  <field name="project_ids" type="projects" default="" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
--->  
   
   <field name="usepfromcomponent" 
   type="extensionradiobutton" 
