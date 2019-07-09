@@ -295,7 +295,6 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 $mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
 $project_person = $mdlPerson->getPerson($row->person_id);
 $position_id = $project_person->position_id;
-//echo '<pre>'.print_r($position_id,true).'</pre>';
 
 //build the html options for position
 $position_ids = array();        

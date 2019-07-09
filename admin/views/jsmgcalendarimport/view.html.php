@@ -53,13 +53,9 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 			$this->onlineItems = $this->get('OnlineData');
 			$this->dbItems = $this->get('DBData');
         }
-        
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
-        
+       
         $this->setLayout('login');
         
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
-
    }     
 
 //	protected $onlineItems = null;

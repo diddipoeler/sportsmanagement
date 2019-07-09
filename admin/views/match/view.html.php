@@ -21,14 +21,6 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
 
-// welche joomla version
-if (version_compare(JVERSION, '3.0.0', 'ge')) {
-    HTMLHelper::_('behavior.framework', true);
-} else {
-    HTMLHelper::_('behavior.mootools');
-}
-
-
 /**
  * sportsmanagementViewMatch
  *
@@ -150,21 +142,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $model = $this->getModel();
         $teams = $model->getMatchTeams($this->item->id);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
-
         $homeRoster = $model->getTeamPersons($teams->projectteam1_id, FALSE, 1);
-        //if (count($homeRoster)==0)
-//		{
-//			$homeRoster=$model->getGhostPlayerbb($teams->projectteam1_id);
-//		}
         $awayRoster = $model->getTeamPersons($teams->projectteam2_id, FALSE, 1);
-        //if (count($awayRoster)==0)
-//		{
-//			$awayRoster=$model->getGhostPlayerbb($teams->projectteam2_id);
-//		}
-
-        //$project_model = $this->getModel('projectws');
-
         // events
         $events = $model->getEventsOptions($project_id, $this->item->id);
         if (!$events) {
@@ -224,11 +203,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
             $newmatches = array_merge($newmatches, $res);
         }
         $lists ['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id);
-
-        //$match = $model->getMatchTeams($this->item->id);
         $lists['count_result'] = HTMLHelper::_('select.booleanlist', 'count_result', 'class="radio btn-group btn-group-yesno"', $this->item->count_result);
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($match,true).'</pre>'),'Notice');
 
         // build the html select booleanlist which team got the won
         $myoptions = array();
@@ -251,14 +226,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
      */
     public function initPicture()
     {
-//		$jinput = Factory::getApplication()->input;
-//        $option = $jinput->getCmd('option');
-//		$document = Factory::getDocument();
-//		$model = $this->getModel();
-
-
         $this->setLayout('picture');
-
     }
 
     /**
@@ -368,24 +336,18 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-
         $positions = $model->getProjectPositionsOptions(0, 1, $this->project_id);
         $staffpositions = $model->getProjectPositionsOptions(0, 2, $this->project_id);
 
-        //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
         $homeRoster = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'player');
         if (count($homeRoster) == 0) {
             //$homeRoster=$model->getGhostPlayer();
         }
-        //$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
         $awayRoster = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'player');
         if (count($awayRoster) == 0) {
             //$awayRoster=$model->getGhostPlayer();
         }
 
-        //$homeStaff = $model->getMatchStaffs($teams->projectteam1_id,0,$this->item->id);
-        //$awayStaff = $model->getMatchStaffs($teams->projectteam2_id,0,$this->item->id);
         $homeStaff = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'staff');
         $awayStaff = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'staff');
 
@@ -409,8 +371,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $this->awayRoster = $awayRoster;
         $this->teams = $teams;
         $this->lists = $lists;
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
         $this->setLayout('editstats');
     }

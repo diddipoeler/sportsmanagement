@@ -39,12 +39,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
         $inputappend = '';
 
 		$starttime = microtime(); 
-                        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-		
+	
         Table::addIncludePath(JPATH_COMPONENT.DIRECTORY_SEPARATOR.'tables');
         $table = Table::getInstance('project', 'sportsmanagementTable');
 		$this->table = $table;

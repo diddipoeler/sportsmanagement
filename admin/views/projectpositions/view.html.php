@@ -9,7 +9,6 @@
  * @subpackage projectpositions
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -58,11 +57,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $this->sortColumn = $this->state->get('list.ordering');
 
         $items = $this->get('Items');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
 
@@ -77,13 +71,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
-//		// table ordering
-//		$lists['order_Dir']=$filter_order_Dir;
-//		$lists['order']=$filter_order;
-
         $this->user = Factory::getUser();
         $this->config = Factory::getConfig();
-        //$this->lists	= $lists;
         $this->positiontool = $items;
         $this->pagination = $pagination;
         $this->request_url = $uri->toString();
@@ -110,10 +99,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $starttime = microtime();
 
         $items = $this->get('Items');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         //build the html select list for project assigned positions
         $ress = array();

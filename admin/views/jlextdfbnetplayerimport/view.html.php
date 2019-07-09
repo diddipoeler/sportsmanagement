@@ -60,7 +60,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
         
         if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
+
         }
         
 		$allSeasons = $mdlSeasons->getSeasons();

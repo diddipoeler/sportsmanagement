@@ -623,13 +623,6 @@ echo "</table>" ;
 
 if ( $gesendet == 1 )
 {
-
-/**
-* echo "<pre>";
-* print_r($_POST);
-* echo "</pre>";
-*/
-
 ?>
 <!-- Info START -->
 </tr>

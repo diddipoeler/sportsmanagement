@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-//echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
+
 ?>
 
 <div id='editcell'>

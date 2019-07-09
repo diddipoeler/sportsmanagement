@@ -304,7 +304,6 @@ echo HTMLHelper::_('select.genericlist',
                         <?php 
                         echo $row->user_field; 
                         $teile = explode("<br>", $row->user_field);
-                        //echo '<pre>'.print_r($teile,true).'</pre>';
                         for ($a=0; $a < sizeof($teile); $a++ )
                         {
                         echo HTMLHelper::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,

@@ -1,13 +1,20 @@
 <?php  
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      edit_matchpicture.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage match
+ */
+ 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-//echo 'this->images<br /><pre>~' . print_r($this->images,true) . '~</pre><br />';
 ?>
-
 <div class="imglist">
-
 		<?php
 		for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);

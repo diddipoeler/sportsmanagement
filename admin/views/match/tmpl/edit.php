@@ -22,8 +22,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 $params = $this->form->getFieldsets('params');
 
-//echo 'sportsmanagementViewMatch _display project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
-
 /**
  * Match Form
  *

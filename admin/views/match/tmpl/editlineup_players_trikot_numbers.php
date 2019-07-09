@@ -12,11 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-/*
-echo 'starters<pre>'.print_r($this->starters,true).'</pre><br>';
-echo 'positions<pre>'.print_r($this->positions,true).'</pre><br>';
-echo 'substitutions<pre>'.print_r($this->substitutions,true).'</pre><br>';
-*/
 
 ?>
 <fieldset class="adminform">

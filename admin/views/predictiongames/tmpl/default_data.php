@@ -214,8 +214,6 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 			if ( $this->dPredictionID > 0 )
 			{
-				//echo '<br />#<pre>'; print_r( $this->predictionProjects ); echo '</pre>#<br />';
-				//echo '<br />#<pre>'; print_r( $this->predictionAdmins ); echo '</pre>#<br />';
 				?>
 				<thead>
 					<tr>

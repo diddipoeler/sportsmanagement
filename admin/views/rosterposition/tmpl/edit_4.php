@@ -23,10 +23,6 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-//echo ' params<br><pre>'.print_r($params,true).'</pre><br>';
-//echo ' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre><br>';
-
-
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP

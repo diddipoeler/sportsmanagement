@@ -455,7 +455,6 @@ marker='1'\|align='center' } ";
             <table class="table">
             <?php
             foreach ($this->form->getFieldset($this->fieldset) as $field):
-                //echo 'name -><pre> '.print_r($field->getFieldAttribute(),true).'</pre>';
                 ?>
                     <tr>
                         <td class="key"><?php echo $field->label; ?></td>

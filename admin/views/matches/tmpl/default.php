@@ -19,8 +19,6 @@ $massadd=Factory::getApplication()->input->getInt('massadd',0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-//echo 'selectlist <br><pre>'.print_r($this->selectlist,true).'</pre>';
-
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');

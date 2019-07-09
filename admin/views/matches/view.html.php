@@ -179,8 +179,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
                 $select_Options = sportsmanagementHelper::getExtraSelectOptions($view, $field);
 
                 if ($select_Options) {
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_Options,true).'</pre>'),'Notice');  
-
                     $select[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
                     $select = array_merge($select, $select_Options);
                     $selectlist[$field] = $select;

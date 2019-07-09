@@ -9,9 +9,6 @@
  * @subpackage rosterposition
  */
 
-/**
- * Check to ensure this file is included in Joomla!
- */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -175,10 +172,6 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$jRegistry = new Registry;
 	$jRegistry->loadString('' , 'ini');
 	$extended->bind($jRegistry);
-
-
-    //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' addposition<br><pre>'.print_r($addposition,true).'</pre>'),'Notice');
-    
     
 	switch ($addposition)
 	{

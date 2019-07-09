@@ -129,12 +129,7 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSI
         
 		if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 		{
-		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+
 		}
  
   

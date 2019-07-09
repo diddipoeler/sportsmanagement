@@ -50,8 +50,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript(Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
-
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
@@ -102,8 +100,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$project_id = (int) $app->getUserState($option.'project', 0);
-        //$app->enqueueMessage(Text::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $data = $model->getData();
         $update_matches = $model->getDataUpdate();

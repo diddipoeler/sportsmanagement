@@ -43,9 +43,8 @@ class sportsmanagementViewtransifex extends sportsmanagementView
 //$lang = Factory::getLanguage();
 //$langtag = $lang->getTag();	
 $langtag = ComponentHelper::getParams('com_languages')->get('site');		
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' langtag<br><pre>'.print_r($langtag,true).'</pre>'),'');	
 $code = sportsmanagementHelperTransifex::getLangCode($langtag,false,true);
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($code,true).'</pre>'),'');		
+
 if ( $langtag == 'de-DE' || $langtag == 'en-GB' )
 {
 $this->app->enqueueMessage(Text::_('Admin Verzeichnis '.$langtag.' ist vorhanden!'),'Notice');
