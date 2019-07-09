@@ -61,7 +61,7 @@ else
 /** 
  * set the target directory 
  */
-$base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp'. DS;
+$base_Dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR;
 $file['name'] = basename($link);
 $filename = $file['name'];
 $filepath = $base_Dir . $filename;
