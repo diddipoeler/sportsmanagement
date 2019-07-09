@@ -48,6 +48,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
                         'tl.admin',
                         'd.name',
                         'tl.picture',
+                        'tl.matches_finally',
                         'st.team_id',
                         'st.id',
                         'tl.id',
