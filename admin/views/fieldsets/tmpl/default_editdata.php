@@ -20,18 +20,6 @@ $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
 $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 
-/**
- * welche joomla version ?
- */
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
-/**  Include the component HTML helpers. */
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('behavior.keepalive');    
-HTMLHelper::_('jquery.framework');
-}    
-
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try{
@@ -47,22 +35,18 @@ catch (Exception $e) {
 $view = $this->jinput->getCmd('view', 'cpanel');
 
 
-/**
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-/**
- * joomla 4
- */     
+/** anfang joomla 4 ---------------------------------------------------------------------------------------------- */     
 ?>
 <div>
 <?php
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details'));
 
 foreach ($fieldsets as $fieldset) 
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 ?>
 <div class="row">
 <div class="col-md-12">
@@ -192,36 +176,17 @@ case 'statistics':
 </div>
 </div>
 <?PHP
-echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('uitab.endTab');
 }
-
-/**
- * bei den positionen müssen noch zusätzliche templates 
- * eingebunden werden
- */
-/*
-switch ($view)
-{
-    case 'position':
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
-    echo $this->loadTemplate('position_events');
-    echo HTMLHelper::_('bootstrap.endTab');
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
-    echo $this->loadTemplate('position_statistics');
-    echo HTMLHelper::_('bootstrap.endTab');  
-    break;
-} 
-*/
-echo HTMLHelper::_('bootstrap.endTabSet'); 
+echo HTMLHelper::_('uitab.endTabSet'); 
 ?>
 </div>
 <?php
+/** ende joomla 4 ---------------------------------------------------------------------------------------------- */
 }	
 elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
-/**
- * joomla 3
- */    
+/** anfang joomla 3 ---------------------------------------------------------------------------------------------- */    
 ?> 
 <div class="form-horizontal">
 <fieldset>
@@ -437,6 +402,7 @@ switch ($view)
 </div> 
 
 <?PHP
+/** ende joomla 3 ---------------------------------------------------------------------------------------------- */
 }
 else
 {
