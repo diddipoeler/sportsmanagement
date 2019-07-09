@@ -75,10 +75,10 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+//if (! defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 jimport('joomla.installer.installer');
  
@@ -426,7 +426,7 @@ foreach ($files as $file)
             echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = ComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
+$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
 $jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
@@ -493,7 +493,7 @@ foreach($form->getFieldset() as $field)
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
+$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
 $jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
@@ -569,22 +569,22 @@ echo self::getFxInitJSCode('steps');
 //    $excludeExtension = array();
 //    $excludeExtension[] = 'extensions';    
 //    $excludeExtension[] = 'sisdata';
-//    $folderAdmin  = Folder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
+//    $folderAdmin  = Folder::folders(JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement',
 //													'.', false, false, $excludeExtension);
 //    
 //    foreach ($folderAdmin as $key => $value )
 //    {
-//        if( Folder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+//        if( Folder::delete(JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.$value) )
 //        {
 //        //echo 'Der Ordner wurde gelöscht';
 //        }
 //    }
-//    $folderSite  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
+//    $folderSite  = Folder::folders(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement',
 //													'.', false, false, $excludeExtension);
 //   
 //    foreach ($folderSite as $key => $value )
 //    {
-//        if( Folder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+//        if( Folder::delete(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.$value) )
 //        {
 //        //echo 'Der Ordner wurde gelöscht';
 //        }
@@ -888,13 +888,13 @@ else
         {
             // plugin ist nicht vorhanden
             // also installieren
-            $path = $src.DS.'plugins'.DS.$name.'_3';
+            $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name.'_3';
             $installer = new JInstaller;
             $result = $installer->install($path);    
         }    
         break;
         default:    
-        $path = $src.DS.'plugins'.DS.$name;
+        $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
         $installer = new JInstaller;
         $result = $installer->install($path);
         break;
@@ -940,7 +940,7 @@ else
         switch ( $name )
         {
         case 'jqueryeasy';
-        case 'jw_ts';
+        //case 'jw_ts';
         case 'plugin_googlemap3';
         if ( $plugin_id )
         {
@@ -951,13 +951,13 @@ else
         {
             // plugin ist nicht vorhanden
             // also installieren
-            $path = $src.DS.'plugins'.DS.$name;
+            $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);    
         }    
         break;
         default:    
-        $path = $src.DS.'plugins'.DS.$name;
+        $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
         $installer = new JInstaller;
         $result = $installer->install($path);
         break;
@@ -1016,7 +1016,7 @@ else
             {
                 $client = 'site';
             }
-            $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$name : $src.DS.'modules'.DS.$name;
+            $path = $client == 'administrator' ? $src.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name : $src.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);
             $ordering = '99';
