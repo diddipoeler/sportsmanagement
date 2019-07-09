@@ -493,7 +493,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
 	 */
 	function getBaseParams()
@@ -509,7 +509,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
 	 */
 	function getClassParams()
@@ -536,7 +536,7 @@ JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMI
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
      * https://docs.joomla.org/J2.5:Developing_a_MVC_Component/Adding_configuration
      * merge params

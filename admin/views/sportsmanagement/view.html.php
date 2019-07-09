@@ -9,12 +9,12 @@
  * @subpackage sportsmanagement
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\Log;
  
 /**
  * SportsManagement View
@@ -35,7 +35,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 		// Assign the Data

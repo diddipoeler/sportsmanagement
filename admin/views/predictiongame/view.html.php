@@ -9,10 +9,10 @@
  * @subpackage predictiongame
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPredictionGame
@@ -40,7 +40,7 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
         // Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 

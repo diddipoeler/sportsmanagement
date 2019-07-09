@@ -8,7 +8,7 @@
  * @package   sportsmanagement
  * @subpackage cpanel
  */
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -20,6 +20,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewcpanel
@@ -246,7 +247,7 @@ break;
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode('<br />', $errors));
+            Log::add( implode('<br />', $errors));
             return false;
         }
         // Assign data to the view

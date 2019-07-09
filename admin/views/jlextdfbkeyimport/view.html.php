@@ -9,13 +9,13 @@
  * @subpackage jlextdfbkeyimport
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewjlextdfbkeyimport
@@ -170,7 +170,7 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
 
                 unset($projectteams);
             } else {
-                JError::raiseError(500, Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5'));
+                Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5'));
                 $this->app->redirect('index.php?option=' . $this->option . '&view=projectteams');
             }
         }

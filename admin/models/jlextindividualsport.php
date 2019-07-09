@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeljlextindividualsport
@@ -853,7 +854,7 @@ $temp = implode( "\n", $defaultvalues );
   $rowupdate->extended = $temp;
   if (!$rowupdate->store()) 
   {
-	JError::raiseError(500, $rowupdate->getError() );
+	Log::add( $rowupdate->getError() );
   }  
     
   }
@@ -939,7 +940,7 @@ $temp = implode( "\n", $defaultvalues );
   $rowupdate->extended = $temp;
   if (!$rowupdate->store()) 
   {
-	JError::raiseError(500, $rowupdate->getError() );
+	Log::add( $rowupdate->getError() );
   }  
 		
   }
