@@ -764,71 +764,7 @@ else
         */
         }
   }
-  else
-  {
-  
-  foreach ($plugins as $plugin)
-        {
-        $name = (string)$plugin->attributes()->plugin;
-        $group = (string)$plugin->attributes()->group;
-        
-        echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
        
-        // Select some fields
-        $query = $db->getQuery(true);
-        $query->clear();
-		$query->select('extension_id');
-        // From table
-        $query->from('#__extensions');
-        $query->where("type = 'plugin' ");
-        $query->where("element = '".$name."' ");
-        $query->where("folder = '".$group."' ");
-        $db->setQuery($query);
-        $plugin_id = $db->loadResult();
-
-        switch ( $name )
-        {
-        case 'jqueryeasy';
-        //case 'jw_ts';
-        case 'plugin_googlemap3';
-        if ( $plugin_id )
-        {
-            // plugin ist vorhanden
-            // wurde vielleicht schon aktualisiert
-        }
-        else
-        {
-            // plugin ist nicht vorhanden
-            // also installieren
-            $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
-            $installer = new JInstaller;
-            $result = $installer->install($path);    
-        }    
-        break;
-        default:    
-        $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
-        $installer = new JInstaller;
-        $result = $installer->install($path);
-        break;
-        }
-
-/**
- * das ein- und ausschalten den anwendern überlassen
- */
-        /*
-        // auf alle faelle erst mal nicht einschalten        
-        // Create an object for the record we are going to update.
-        $object = new stdClass();
-        // Must be a valid primary key value.
-        $object->extension_id = $plugin_id;
-        $object->enabled = 0;
-        // Update their details in the users table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
-        */
-        }
-        
-        }
-        
         
 
     
