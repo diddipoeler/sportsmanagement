@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelsmextxmleditor
@@ -100,11 +101,11 @@ class sportsmanagementModelsmextxmleditor extends AdminModel
         //$return = File::write($filePath, $data['source']);
         if ( !File::write($filePath, $data['source']) )
         {
-        JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
         else
         {
-        JError::raiseNotice(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
         }
     }    
   

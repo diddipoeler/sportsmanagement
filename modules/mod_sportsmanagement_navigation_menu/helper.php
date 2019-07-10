@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * modsportsmanagementNavigationMenuHelper
@@ -360,7 +361,7 @@ class modsportsmanagementNavigationMenuHelper
             $res = $db->loadObjectList();
 
             if (!$res) {
-                Jerror::raiseWarning(0, $db->getErrorMsg());
+                Log::add( $db->getErrorMsg());
             }
             $this->_teamoptions = $res;
         }

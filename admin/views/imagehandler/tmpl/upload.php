@@ -9,11 +9,11 @@
  * @subpackage imagehandler
  */
  
-// no direct access
-
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Log\Log;
+
 ?>
 <div class="container-fluid">
 <form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm" name="adminForm">
@@ -28,7 +28,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 					<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_FTP_DESC'); ?>
 					
-					<?php if(JError::isError($this->ftp)): ?>
+					<?php if( !$this->ftp ): ?>
 						<p><?php echo Text::_($this->ftp->message); ?></p>
 					<?php endif; ?>
 

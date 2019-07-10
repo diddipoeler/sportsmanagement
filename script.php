@@ -487,71 +487,71 @@ foreach($form->getFieldset() as $field)
             
             echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
             }
-            else
-            {
-                   
-		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
-
-$params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
-$jRegistry = new Registry;
-$jRegistry->loadString($params->toString('ini'), 'ini');
-////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-$form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
-$form->bind($jRegistry);
-$newparams = array();
-foreach($form->getFieldset() as $field)
-        {
-        $newparams[$field->name] = $field->value;
-        }
-
-switch ($route)        
-    {
-    case "install":
-    self::setParams($newparams);
-//    self::installComponentLanguages();
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-    
-		self::createImagesFolder();
-		
-//    self::migratePicturePath();
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
-    break;
-    case "update":
-//    self::installComponentLanguages();
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-		
-    self::createImagesFolder();
-		
-//    self::migratePicturePath();
-      self::setParams($newparams);
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
-    break;
-    case "discover_install":
-    break;
-        
-    }
-
-echo HTMLHelper::_('sliders.end');
-echo self::getFxInitJSCode('steps');
-
-}
+//            else
+//            {
+//                   
+//		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+//
+//$params = JComponentHelper::getParams('com_sportsmanagement');
+//$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
+//$jRegistry = new Registry;
+//$jRegistry->loadString($params->toString('ini'), 'ini');
+//////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
+//$form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
+//$form->bind($jRegistry);
+//$newparams = array();
+//foreach($form->getFieldset() as $field)
+//        {
+//        $newparams[$field->name] = $field->value;
+//        }
+//
+//switch ($route)        
+//    {
+//    case "install":
+//    self::setParams($newparams);
+////    self::installComponentLanguages();
+//$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
+//    self::installModules($adapter);
+//    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
+//    self::installPlugins($adapter);
+//    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
+//    
+//		self::createImagesFolder();
+//		
+////    self::migratePicturePath();
+////    self::deleteInstallFolders();
+////    self::sendInfoMail();
+//    break;
+//    case "update":
+////    self::installComponentLanguages();
+//$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
+//    self::installModules($adapter);
+//    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
+//    self::installPlugins($adapter);
+//    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
+//		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
+//		
+//    self::createImagesFolder();
+//		
+////    self::migratePicturePath();
+//      self::setParams($newparams);
+////    self::deleteInstallFolders();
+////    self::sendInfoMail();
+//    break;
+//    case "discover_install":
+//    break;
+//        
+//    }
+//
+//echo HTMLHelper::_('sliders.end');
+//echo self::getFxInitJSCode('steps');
+//
+//}
 
 	}
     
@@ -598,47 +598,47 @@ echo self::getFxInitJSCode('steps');
      * @param mixed $group
      * @return
      */
-    private function getFxInitJSCode ($group) 
-    {
-		$params = array();
-		$params['allowAllClose'] = 'true';
-		$display = (isset($params['startOffset']) && isset($params['startTransition']) && $params['startTransition'])
-		? (int) $params['startOffset'] : null;
-		$show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
-		? (int) $params['startOffset'] : null;
-		$options = '{';
-		$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
-				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_"
-				. $group . "',$$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
-		$opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
-				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($$('div#"
-				. $group . ".pane-sliders > .panel > h3').length==$$('div#" . $group
-				. ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
-		$opt['duration'] = (isset($params['duration'])) ? (int) $params['duration'] : 300;
-		$opt['display'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $display, 'cookie')
-		: $display;
-		$opt['show'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
-		$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
-		$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
-		foreach ($opt as $k => $v)
-		{
-			if ($v)
-			{
-				$options .= $k . ': ' . $v . ',';
-			}
-		}
-		if (substr($options, -1) == ',')
-		{
-			$options = substr($options, 0, -1);
-		}
-		$options .= '}';
-		
-		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
-		. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options
-		. "); });";
-		
-		return '<script>'.$js.'</script>';
-	}
+//    private function getFxInitJSCode ($group) 
+//    {
+//		$params = array();
+//		$params['allowAllClose'] = 'true';
+//		$display = (isset($params['startOffset']) && isset($params['startTransition']) && $params['startTransition'])
+//		? (int) $params['startOffset'] : null;
+//		$show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
+//		? (int) $params['startOffset'] : null;
+//		$options = '{';
+//		$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
+//				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_"
+//				. $group . "',$$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
+//		$opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
+//				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($$('div#"
+//				. $group . ".pane-sliders > .panel > h3').length==$$('div#" . $group
+//				. ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
+//		$opt['duration'] = (isset($params['duration'])) ? (int) $params['duration'] : 300;
+//		$opt['display'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $display, 'cookie')
+//		: $display;
+//		$opt['show'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
+//		$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
+//		$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
+//		foreach ($opt as $k => $v)
+//		{
+//			if ($v)
+//			{
+//				$options .= $k . ': ' . $v . ',';
+//			}
+//		}
+//		if (substr($options, -1) == ',')
+//		{
+//			$options = substr($options, 0, -1);
+//		}
+//		$options .= '}';
+//		
+//		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
+//		. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options
+//		. "); });";
+//		
+//		return '<script>'.$js.'</script>';
+//	}
     
     /**
      * com_sportsmanagementInstallerScript::createImagesFolder()

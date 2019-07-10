@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * modJSMRandomplayerHelper
@@ -93,7 +94,7 @@ class modJSMRandomplayerHelper
 
         if ( !$res )
         {
-        JError::raiseWarning(0, 'Keine Spieler vorhanden');      
+        Log::add( 'Keine Spieler vorhanden');      
         }
         else
         {

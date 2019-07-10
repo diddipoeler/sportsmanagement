@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 // check if any results returned
 $items = count($list['ranking']);
@@ -24,7 +25,7 @@ $columns     = explode(',', $params->get('columns', 'JL_PLAYED, JL_POINTS'));
 $column_names = explode(',', $params->get('column_names', 'MP, PTS'));
 
 if (count($columns) != count($column_names)) {
-	JError::raiseWarning(1, Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
+	Log::add( Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
 	$columns     = array();
 	$column_name = array();
 }

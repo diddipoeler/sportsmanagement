@@ -810,7 +810,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 
 		if ($config['use_tabs_events'])
 		{
-			
+/** joomla 3 anfang ------------------------------------------------------------------------ */			
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             
@@ -834,14 +834,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
         $output .= HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
         
             }
-            else
-            {
-            /**
- * Make event tabs with JPane integrated function in Joomla 1.5 API
- */
-			$result	= JPane::getInstance('tabs',array('startOffset'=>0));
-			$output .= $result->startPane('pane');
-            }
+/** joomla 3 ende ------------------------------------------------------------------------ */            
 
 			/**
  * Size of the event icons in the tabs (when used)

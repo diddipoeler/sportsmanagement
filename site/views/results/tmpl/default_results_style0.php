@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 ?>
 <style>
@@ -55,7 +56,7 @@ if ( $this->config['show_comments_count'] )
 if(!ComponentHelper::isEnabled('com_jcomments', true))
 {
     $comJcomments = false;
-    JError::raiseWarning('Komponentenfehler', Text::_('Die Komponente JComments ist nicht installiert'));
+    Log::add( Text::_('Die Komponente JComments ist nicht installiert'));
 }
 else
 	{

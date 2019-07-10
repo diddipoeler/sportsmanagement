@@ -7,6 +7,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Log\Log;
 
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
 {
@@ -122,7 +123,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		}
 		else
 		{
-			JError::raiseWarning('ERROR_CODE','<br />'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
+			Log::add( '<br />'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
 		}
 
 		//build the html select list for matches

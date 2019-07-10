@@ -1,7 +1,9 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- use Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 // import Joomla view library
 jimport('joomla.application.component.view');
 // import Joomla html for use with stylesheets
@@ -26,7 +28,7 @@ class sportsmanagementViewjson extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 

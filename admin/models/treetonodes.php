@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelTreetonodes
@@ -333,7 +334,7 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 		$result = $this->jsmdb->loadObjectList();
 		if($result === FALSE)
 		{
-			JError::raiseError(0,$this->jsmdb->getErrorMsg());
+			Log::add( $this->jsmdb->getErrorMsg());
 			return false;
 		}
 		else

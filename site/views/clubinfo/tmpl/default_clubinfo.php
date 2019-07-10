@@ -13,6 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 //$this->columns = 2;
 $this->divclass = '';
@@ -32,7 +33,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $paramscomponent->get('use_jsmgr
 }
 
 if (!isset($this->club)) {
-    JError::raiseWarning('ERROR_CODE', Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
+    Log::add( Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
     <div class="<?php echo $this->divclassrow;?>">

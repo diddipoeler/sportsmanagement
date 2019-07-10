@@ -16,7 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 jimport('joomla.filesystem.folder');
 use Joomla\CMS\Filesystem\File;
- 
+use Joomla\CMS\Log\Log; 
 
 class sportsmanagementModelsmquotetxt extends AdminModel
 {
@@ -84,11 +84,11 @@ class sportsmanagementModelsmquotetxt extends AdminModel
         
         if ( !File::write($filePath, $data['source']) )
         {
-        JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
         else
         {
-        JError::raiseNotice(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
         }
     }    
   

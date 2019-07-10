@@ -529,13 +529,37 @@ class sportsmanagementViewResults extends JViewLegacy
 	 */
 	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config)
 	{
-		$output='';
-		$result='';
+		$output = '';
+		$result = '';
 
 		if ($this->config['use_tabs_events'])
 		{
-			$result	= JPane::getInstance('tabs',array('startOffset'=>0));
-			$output .= $result->startPane('pane');
+/** joomla 3 anfang ------------------------------------------------------------------------ */			
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            
+	$start = 1;	    
+	foreach ($projectevents AS $event)
+			{	    
+		 if ( $start == 1 )
+		{
+		/**
+ * Define tabs options for version of Joomla! 3.0
+ */
+        $tabsOptions = array(
+            "active" => 'tab'.$event->id.'_id'.$matchInfo->id // It is the ID of the active tab.
+	);
+		}
+		$start++;
+		}	
+		
+          
+        
+        $output .= HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
+        
+            }
+/** joomla 3 ende ------------------------------------------------------------------------ */   
+            
 			$cnt	= 0;
 
 			foreach ($projectevents AS $event)
@@ -543,7 +567,7 @@ class sportsmanagementViewResults extends JViewLegacy
 				//display only tabs with events
 				foreach ($matchevents AS $me)
 				{
-					$cnt=0;
+					$cnt = 0;
 					if ($me->event_type_id == $event->id)
 					{
 						$cnt++;

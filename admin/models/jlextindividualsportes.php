@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeljlextindividualsportes
@@ -227,7 +228,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$result = $this->_db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $this->_db->getErrorMsg());
+			Log::add( $this->_db->getErrorMsg());
 			return false;
 		}
 		else
@@ -250,7 +251,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$result = $this->_db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $this->_db->getErrorMsg());
+			Log::add( $this->_db->getErrorMsg());
 			return false;
 		}
 		return $result;

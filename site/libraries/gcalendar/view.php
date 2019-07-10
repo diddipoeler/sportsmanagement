@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 class GCalendarView extends JViewLegacy {
 
@@ -41,7 +42,7 @@ class GCalendarView extends JViewLegacy {
 		$this->init();
 
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			Log::add( implode("\n", $errors));
 			return false;
 		}
 

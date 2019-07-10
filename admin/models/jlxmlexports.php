@@ -18,6 +18,7 @@ use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
+use Joomla\CMS\Log\Log;
 
 
 /**
@@ -285,7 +286,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
-			JError::raiseWarning('ERROR_CODE',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+			Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 		}
 		else
 		{
@@ -299,7 +300,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             //$this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else 
       {
@@ -479,7 +480,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				Log::add( Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else {
 				// get the project datas

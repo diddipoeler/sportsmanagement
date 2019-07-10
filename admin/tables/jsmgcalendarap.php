@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Table\Table;
-//JLoader::import('joomla.database.table');
+use Joomla\CMS\Access\Rules;
 
 class  sportsmanagementTablejsmGCalendarAP extends JSMTable {
 
@@ -18,7 +18,7 @@ class  sportsmanagementTablejsmGCalendarAP extends JSMTable {
 
 	public function bind($array, $ignore = '') {
 		if (isset($array['rules']) && is_array($array['rules'])) {
-			$rules = new JRules($array['rules']);
+			$rules = new Rules($array['rules']);
 			$this->setRules($rules);
 		}
 

@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Utility\Utility;
 
 /**
  * sportsmanagementModelPerson
@@ -376,7 +377,7 @@ if ( empty($result) )
 		$app	= Factory::getApplication();
 		$mailFrom = $app->getCfg('mailfrom');
 		$fromName = $app->getCfg('fromname');
-		JUtility::sendMail( $mailFrom, $fromName, $listOfRecipients, $subject, $message );
+		Utility::sendMail( $mailFrom, $fromName, $listOfRecipients, $subject, $message );
 	}
 
 	/**

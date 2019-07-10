@@ -28,6 +28,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Log\Log;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -648,7 +649,7 @@ abstract class sportsmanagementHelper {
                 JErrorPage::render($e);
             }
 
-            if (JError::isError($db)) {
+            if ( !$db ) {
                 header('HTTP/1.1 500 Internal Server Error');
                 jexit('Database Error: ' . $db->toString());
             } else {

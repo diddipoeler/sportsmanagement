@@ -435,8 +435,8 @@ class Google_Service_Doubleclicksearch_SavedColumns_Resource extends Google_Serv
    * Retrieve the list of saved columns for a specified advertiser.
    * (savedColumns.listSavedColumns)
    *
-   * @param string $agencyId DS ID of the agency.
-   * @param string $advertiserId DS ID of the advertiser.
+   * @param string $agencyId D-S ID of the agency.
+   * @param string $advertiserId D-S ID of the advertiser.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Doubleclicksearch_SavedColumnList
    */

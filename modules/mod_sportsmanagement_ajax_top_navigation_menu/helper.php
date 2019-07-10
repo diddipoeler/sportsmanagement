@@ -15,6 +15,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * modSportsmanagementAjaxTopNavigationMenuHelper
@@ -880,7 +881,7 @@ $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text
 			
 			if (!$res) 
             {
-				Jerror::raiseWarning(0, $db->getErrorMsg());
+				Log::add( $db->getErrorMsg());
 			}
 			$this->_teamoptions = $res;			
 		}

@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
  
 /**
  * sportsmanagementModelProject
@@ -146,7 +147,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $db->getErrorMsg());
+			Log::add( $db->getErrorMsg());
 			return false;
 		}
 		else
