@@ -255,12 +255,6 @@ TRUNCATE TABLE `jos_joomleague_playground`;
 	$tempprovorschlag = '';
 	$team2_summary = '';
 
-if ( $this->debug_info )
-{
-$this->pane =& JPane::getInstance('sliders');
-echo $this->pane->startPane('pane');    
-}
-	
 	if ( $project )
 	{
   // projekt wurde mitgegeben, also die liga und alles andere vorselektieren
@@ -954,13 +948,7 @@ $output .= '</project>';
 $xmlfile = $output;
 $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
-
-
-if ( $this->debug_info )
-{
-echo $this->pane->endPane();    
-}
-  
+ 
     $this->import_version='NEW';
     //$this->import_version='';
     return $this->_datas;

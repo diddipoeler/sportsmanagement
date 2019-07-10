@@ -150,25 +150,4 @@ echo '</tr>';
 <?php
 echo HTMLHelper::_('sliders.end');
 
-//echo $pane->endPanel();
-//echo $pane->endPane();
-
-/*
-//1st Parameter: Specify 'tabs' as appearance 
-//2nd Parameter: Starting with third tab as the default (zero based index)
-//open one!
-$pane =& JPane::getInstance('tabs', array('startOffset'=>2)); 
-echo $pane->startPane( 'pane' );
-echo $pane->startPanel( 'Example Panel 1', 'panel1' );
-echo "This is panel1";
-echo $pane->endPanel();
-echo $pane->startPanel( 'Example Panel 2', 'panel2' );
-echo "This is panel2";
-echo $pane->endPanel();
-echo $pane->startPanel( 'Example Panel 3', 'panel3' );
-echo "This is panel3";
-echo $pane->endPanel();
-echo $pane->endPane();
-*/
-
 ?>

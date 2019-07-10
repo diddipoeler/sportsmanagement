@@ -421,13 +421,7 @@ function getData()
   $option = Factory::getApplication()->input->getCmd('option');
   $app = Factory::getApplication();
   $document	= Factory::getDocument();
-
-if ( $this->debug_info )
-{
-$this->pane = JPane::getInstance('sliders');
-echo $this->pane->startPane('pane');    
-}
-  
+ 
   $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
   $project = $app->getUserState( "$option.pid", '0' );
 	
@@ -561,18 +555,6 @@ $ical = new ical();
 $ical->parse($file);
 
 $icsfile = $ical->get_all_data();
-if ( $this->debug_info )
-{
-echo $this->pane->startPanel('icsfile','icsfile');  
-$this->dump_header("icsfile");
-$this->dump_variable("icsfile", $icsfile);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('icsfile Termine','icsfile Termine');
-$this->dump_header("icsfile Termine");
-$this->dump_variable("icsfile Termine", $icsfile['VEVENT']);
-echo $this->pane->endPanel();
-}
 
 //
 $lfdnumber = 0;
@@ -792,20 +774,6 @@ $lfdnumbermatch++;
 }
 
 ksort($exportmatchplan);
-
-if ( $this->debug_info )
-{
-echo $this->pane->startPanel('icsfile exportmatchplan','icsfile exportmatchplan');  
-$this->dump_header("icsfile exportmatchplan");
-$this->dump_variable("icsfile exportmatchplan", $exportmatchplan);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('icsfile exportteamstemp','icsfile exportteamstemp');  
-$this->dump_header("icsfile exportteamstemp");
-$this->dump_variable("icsfile exportteamstemp", $exportteamstemp);
-echo $this->pane->endPanel();
-    
-}
 
 // teams verarbeiten
 foreach ( $exportteamstemp as $key => $value )
@@ -1030,43 +998,7 @@ $output .= '</project>';
 $xmlfile = $output;
 $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
 File::write($file, $xmlfile);
-
-
-
-if ( $this->debug_info )
-{
-echo $this->pane->startPanel('getdata club','getdata club');  
-$this->dump_header("getdata club");
-$this->dump_variable("this->_datas['club']", $this->_datas['club']);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('getdata team','getdata team');  
-$this->dump_header("getdata team");
-$this->dump_variable("this->_datas['team']", $this->_datas['team']);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('getdata projectteam','getdata projectteam');  
-$this->dump_header("getdata projectteam");
-$this->dump_variable("this->_datas['projectteam']", $this->_datas['projectteam']);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('getdata playground','getdata playground');  
-$this->dump_header("getdata playground");
-$this->dump_variable("this->_datas['playground']", $this->_datas['playground']);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('getdata round','getdata round');  
-$this->dump_header("getdata round");
-$this->dump_variable("this->_datas['round']", $this->_datas['round']);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('getdata match','getdata match');  
-$this->dump_header("getdata match");
-$this->dump_variable("this->_datas['match']", $this->_datas['match']);
-echo $this->pane->endPanel();
-
-}     
-   
+  
 }    
 /**
  * kalender file vom bfv ende
@@ -2223,43 +2155,6 @@ $rowclubs->standard_playground = $play_ground_id;
     
 }
 
-
-
-if ( $this->debug_info )
-{
-    
-echo $this->pane->startPanel('exportclubsstandardplayground','exportclubsstandardplayground');  
-$this->dump_header("exportclubsstandardplayground");
-$this->dump_variable("exportclubsstandardplayground", $exportclubsstandardplayground);
-echo $this->pane->endPanel();
-
-
-echo $this->pane->startPanel('exportclubs','exportclubs');  
-$this->dump_header("exportclubs");
-$this->dump_variable("exportclubs", $exportclubs);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('exportteams','exportteams');  
-$this->dump_header("exportteams");
-$this->dump_variable("exportteams", $exportteams);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('exportplayground','exportplayground');  
-$this->dump_header("exportplayground");
-$this->dump_variable("exportplayground", $exportplayground);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('exportround','exportround');  
-$this->dump_header("exportround");
-$this->dump_variable("exportround", $exportround);
-echo $this->pane->endPanel();
-
-echo $this->pane->startPanel('exportmatch','exportmatch');  
-$this->dump_header("exportmatch");
-$this->dump_variable("exportmatch", $exportmatch);
-echo $this->pane->endPanel();
-
-} 
 // von mir 
 $this->_datas['position'] = array_merge($exportposition);
 // von mir 

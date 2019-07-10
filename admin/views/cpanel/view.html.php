@@ -228,11 +228,7 @@ break;
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             
-        } else {
-            jimport('joomla.html.pane');
-            $pane = JPane::getInstance('sliders');
-            $this->pane = $pane;
-        }
+        } 
 
         $this->sporttypes = $sporttypes;
         $this->version = $model->getVersion();
@@ -290,10 +286,6 @@ break;
 
             $bar = Toolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
-
-            
-            
-            //ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,'http://jsm-wiki.diddipoeler.de/index.php?title=Hauptseite');
             
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
