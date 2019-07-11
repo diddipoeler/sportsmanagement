@@ -14,8 +14,8 @@ use Joomla\CMS\Language\Text;
 
 ?>
 
-		<div class="jl_teamsubstats">
-			<table cellspacing="0" border="0" width="100%">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="homegoals">
+			<table class="table">
 			<thead>
 				<tr class="sectiontableheader">
 					<th colspan="2">
@@ -167,8 +167,8 @@ use Joomla\CMS\Language\Text;
 			</tbody>
 			</table>
 		</div>
-		<div class="jl_teamsubstats">
-			<table cellspacing="0" border="0" width="100%">
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="awaygoals">
+			<table class="table">
 			<thead>
 				<tr class="sectiontableheader">
 					<th colspan="2">

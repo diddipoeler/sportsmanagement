@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
 
-<div id="jl_teamstats">
-	<div class="jl_teamsubstats">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="stats">
+
 		<table class="table">
 			<thead>
 				<tr class="sectiontableheader">
@@ -394,6 +394,5 @@ use Joomla\CMS\Factory;
 			?>
 			</tbody>
 		</table>
-	</div>
+
 </div>
-<div class="clr"></div>

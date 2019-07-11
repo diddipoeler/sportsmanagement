@@ -36,49 +36,39 @@ if ( $this->config['show_goals_stats_flash'] == 0 )
 	$show_flash = 'display:none;';
 }
 
-//$show_att_ranking	= '';
-//if ( $this->config['show_attendance_ranking'] == 0 )
-//{
-//	$show_att_ranking = 'display:none;';
-//}
-
-//$show_events = '';
-//if ( $this->config['show_events_stats'] == 0 )
-//{
-//	$show_events  = 'display:none;';
-//}
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="">
-	<?php 
-	echo $this->loadTemplate('projectheading'); 
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultteamstats">
+<?php 
+echo $this->loadTemplate('projectheading'); 
 
-	if ($this->config['show_sectionheader'])
-	{
-		echo $this->loadTemplate('sectionheader'); 
-	}
+if ($this->config['show_sectionheader'])
+{
+echo $this->loadTemplate('sectionheader'); 
+}
 
-	if ($this->config['show_general_stats'])
-	{
-		echo $this->loadTemplate('stats'); 
-	}
+if ($this->config['show_general_stats'])
+{
+echo $this->loadTemplate('stats'); 
+}
 
-	if ($this->config['show_attendance_stats'])
-	{
-		echo $this->loadTemplate('attendance_stats'); 
-	}	
+if ($this->config['show_attendance_stats'])
+{
+echo $this->loadTemplate('attendance_stats'); 
+}	
 
-	echo '<div style="width:100%; float:left">';
-	if ( $this->config['show_goals_stats_flash'] )
-	{
-		echo $this->loadTemplate('flashchart'); 
-	}
-	echo '</div>';
+echo '<div style="width:100%; float:left">';
+if ( $this->config['show_goals_stats_flash'] )
+{
+echo $this->loadTemplate('flashchart'); 
+}
+echo '</div>';
 
-	echo $this->loadTemplate('jsminfo');
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>

@@ -19,20 +19,19 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="defaultteams">
-	<?php 
-	echo $this->loadTemplate('projectheading');
+<?php 
+echo $this->loadTemplate('projectheading');
 
-	if ( $this->config['show_sectionheader'] )
-	{ 
-		echo $this->loadTemplate('sectionheader');
-	}
+if ( $this->config['show_sectionheader'] )
+{ 
+echo $this->loadTemplate('sectionheader');
+}
 		
-	if ( $this->config['show_teams'] )
-	{ 
-		echo $this->loadTemplate('teams');
-	}
+if ( $this->config['show_teams'] )
+{ 
+echo $this->loadTemplate('teams');
+}
 
-	echo $this->loadTemplate('jsminfo');
-	?>
-
+echo $this->loadTemplate('jsminfo');
+?>
 </div>

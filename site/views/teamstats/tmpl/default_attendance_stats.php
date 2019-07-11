@@ -12,9 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 ?>	
-		<div class="clr"></div>
-		<div class="jl_teamsubstats">
-			<table width="50%" align="center" border="0" cellpadding="0" cellspacing="0">
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="attendancestats">
+			<table class="table">
 				<tr class="sectiontableheader">
 					<th colspan="2" class="le">
 						<?php
@@ -73,4 +72,3 @@ use Joomla\CMS\Language\Text;
 			</table>
 		</div>						
 
-<div class="clr"></div>
