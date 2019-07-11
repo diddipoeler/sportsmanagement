@@ -45,14 +45,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<!-- <field name="show_attendance_ranking" type="extensionradiobutton" default="0" label="Show 
-			attendance ranking?" description="Shows a ranking based on the attendance 
-			of each team."> <option value="0">JNO</option> <option 
-			value="1">JYES</option> </field> <field name="show_events_stats" 
-			type="extensionradiobutton" default="0" label="Show event stats?" description="Shows stats 
-			about the events of the selected project. Only funtions in case you are working 
-			with events!"> <option value="0">JNO</option> <option 
-			value="1">JYES</option> </field> -->
+
 	</fieldset>
 
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_TEAMSTATS_PARAMS_GROUP_FLASH_OPTIONS"
