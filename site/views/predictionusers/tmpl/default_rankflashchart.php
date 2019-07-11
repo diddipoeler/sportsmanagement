@@ -27,9 +27,9 @@ window.chartColors = {
 </script>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_RANKS'); ?></h2>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="rankflashchart">
-<canvas id="jsmchartcurve"></canvas>
+<canvas id="jsmrankflashchart"></canvas>
 <script>
-var ctx = document.getElementById('jsmchartcurve').getContext('2d');
+var ctx = document.getElementById('jsmrankflashchart').getContext('2d');
 var color = Chart.helpers.color;
 var chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -44,21 +44,7 @@ datasets: [{
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
-				data: [<?php echo implode(',', $this->homeSum); ?>
-				]
-			}, {
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
-				borderWidth: 1,
-				data: [<?php echo implode(',', $this->awaySum); ?>
-				]
-			}, {
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
-				backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.green,
-				borderWidth: 1,
-				data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
+				data: [<?php echo implode(',', $this->userranking); ?>
 				]
 			}
             
@@ -81,7 +67,7 @@ datasets: [{
 yAxes: [{
 ticks: {
 suggestedMin: 0,   
-suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
+suggestedMax: <?php echo $this->RankingCountMax; ?>, 
 beginAtZero:false,
 reverse: false,
 stepSize:1,

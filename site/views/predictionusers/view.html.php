@@ -255,16 +255,20 @@ $this->round_labels[] = '"'.$r->name.'"';
     //echo 'data -> <pre> '.print_r($data,true).'</pre><br>';
     
 		// Calculate Values for Chart Object
-		$userpoints= array();		
+		$userpoints= array();	
+        $PointsCountMax = 0;	
 		//$round_labels = array();
 
 		foreach( $data as $rw )
 		{
 			if (!$rw->points) $rw->points = 0;
 			$userpoints[] = (int)$rw->points;
+            $PointsCountMax = (int)$rw->points > $PointsCountMax ? (int)$rw->points : $PointsCountMax;
 		//	$round_labels[] = $rw->roundcode;		
 		}
 
+$this->PointsCountMax = $PointsCountMax;
+$this->userpoints = $userpoints;
 		
 //		$chart = new open_flash_chart();
 //		$chart->set_bg_colour($config['bg_colour']);

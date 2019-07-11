@@ -27,9 +27,9 @@ window.chartColors = {
 </script>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_POINTS'); ?></h2>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="pointsflashchart">
-<canvas id="jsmchartcurve"></canvas>
+<canvas id="jsmpointsflashchart"></canvas>
 <script>
-var ctx = document.getElementById('jsmchartcurve').getContext('2d');
+var ctx = document.getElementById('jsmpointsflashchart').getContext('2d');
 var color = Chart.helpers.color;
 var chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -40,28 +40,13 @@ var chart = new Chart(ctx, {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 
 datasets: [{
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'); ?>',
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
-				data: [<?php echo implode(',', $this->homeSum); ?>
+				data: [<?php echo implode(',', $this->userpoints); ?>
 				]
-			}, {
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
-				borderWidth: 1,
-				data: [<?php echo implode(',', $this->awaySum); ?>
-				]
-			}, {
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
-				backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.green,
-				borderWidth: 1,
-				data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
-				]
-			}
-            
+			}            
             ]
 },
 
@@ -81,7 +66,7 @@ datasets: [{
 yAxes: [{
 ticks: {
 suggestedMin: 0,   
-suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
+suggestedMax: <?php echo $this->PointsCountMax; ?>, 
 beginAtZero:false,
 reverse: false,
 stepSize:1,
