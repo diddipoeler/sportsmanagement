@@ -26,9 +26,9 @@ window.chartColors = {
 };
 </script>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="flashchart">
-
+<h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC'); ?>
-
+</h4>
 <canvas id="jsmchartcurve"></canvas>
 <script>
 var ctx = document.getElementById('jsmchartcurve').getContext('2d');
