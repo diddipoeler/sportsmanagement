@@ -33,14 +33,15 @@ class sportsmanagementViewStats extends sportsmanagementView
 	 */
 	function init()
 	{
-		
+		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+        $this->document->addScript($js);    
 		// Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
+		//$document = Factory::getDocument();
 
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getint( "cfg_which_database", 0 ));
@@ -97,11 +98,11 @@ $this->round_labels[] = '"'.$r->name.'"';
 				$pageTitle .= ': ' . $this->division->name;
 			}
 		}
-		$document->setTitle( $pageTitle );
+		$this->document->setTitle( $pageTitle );
         
         $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
         
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 

@@ -69,14 +69,7 @@
 			<option value="logo_middle">COM_SPORTSMANAGEMENT_FES_TEAMINFO_CLUB_LOGO_MIDDLE</option>
 			<option value="logo_big">COM_SPORTSMANAGEMENT_FES_TEAMINFO_CLUB_LOGO_BIG</option>
 		</field>
-<!--		
-		<field 	name="show_events_stats" type="extensionradiobutton" default="0" 
-				label="Show event stats?" 
-				description="Shows stats about the events of the selected project. Only funtions in case you are working with events!">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>	
--->		
+
 	</fieldset>
 	
 <fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
@@ -131,17 +124,7 @@
 			
 		</field>
     		
-<!--		
-		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
+
 					
 	</fieldset>		
 	
