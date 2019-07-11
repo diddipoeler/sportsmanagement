@@ -40,6 +40,35 @@ var chart = new Chart(ctx, {
     data: {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 
+datasets: [{
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR'); ?>',
+				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.red,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}, {
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST'); ?>',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}]
 
 
 },

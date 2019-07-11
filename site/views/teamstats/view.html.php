@@ -109,7 +109,7 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 		$forSum = array();
 		$againstSum = array();
 		$matchDayGoalsCount = array();
-		$matchDayGoalsCount[] = 0;
+//		$matchDayGoalsCount[] = 0;
 //		$round_labels = array();
 
 		$matchDayGoalsCountMax = 0;
@@ -195,6 +195,8 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 //
 //		$this->chartdata = $chart;
 	$this->matchDayGoalsCountMax = $matchDayGoalsCountMax;
+    $this->forSum = $forSum;
+    $this->againstSum = $againstSum;
     }
 }
 ?>
