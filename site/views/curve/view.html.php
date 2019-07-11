@@ -153,11 +153,11 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			$this->round_labels[] = '"'.$r->name.'"';
 		}
         //$this->round_labels = array_map('strval', $this->round_labels);
-		    //$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+		    $this->_setChartdata(array_merge($flashconfig, $rankingconfig));
         }
         else
         {
-			//$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
             }
 			// Set page title
 			$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
@@ -175,23 +175,23 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 	 * @param $config
 	 * @return unknown_type
 	 */
-//	function _setChartdata($config)
-//	{
-//	// Reference global application object
-//        $app = Factory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//	   $option = $jinput->getCmd('option');
-//        
-//		$model = $this->getModel();
-//		$rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
-//		$round_labels = array();
-//		foreach ($rounds as $r) 
-//        {
-//			$round_labels[] = $r->name;
-//		}
-//
-//		$divisions	= $this->divisions;
+	function _setChartdata($config)
+	{
+	// Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+	   $option = $jinput->getCmd('option');
+        
+		$model = $this->getModel();
+		$rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+		$round_labels = array();
+		foreach ($rounds as $r) 
+        {
+			$round_labels[] = $r->name;
+		}
+
+		$divisions	= $this->divisions;
 //
 //		//create a line
 //		$length = (count($rounds)-0.5);
@@ -326,7 +326,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 //			unset($chart);
 //			$this->teamranking[$division->id] = $data;
 //		}
-//	}
+	}
 }
 
 /**
