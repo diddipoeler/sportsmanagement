@@ -57,7 +57,7 @@ var chart = new Chart(ctx, {
 yAxes: [{
 ticks: {
 suggestedMin: 1,   
-suggestedMax: <?php echo $teamcount; ?>, 
+suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
 beginAtZero:false,
 reverse: true,
 stepSize:1,

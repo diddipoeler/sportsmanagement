@@ -110,7 +110,7 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 		$againstSum = array();
 		$matchDayGoalsCount = array();
 		$matchDayGoalsCount[] = 0;
-		$round_labels = array();
+//		$round_labels = array();
 
 		$matchDayGoalsCountMax = 0;
 		foreach( $data as $rw )
@@ -129,8 +129,16 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 			{
 				$matchDayGoalsCount[] = intval($rw->goalsfor + $rw->goalsagainst);
 			}
-			$round_labels[] = $rw->roundcode;
+            
+            $matchDayGoalsCountMax = intval($rw->goalsfor + $rw->goalsagainst) > $matchDayGoalsCountMax ? intval($rw->goalsfor + $rw->goalsagainst) : $matchDayGoalsCountMax;
+//			$round_labels[] = $rw->roundcode;
 		}
+
+echo '<pre>'.print_r($data,true).'</pre>';
+echo '<pre>'.print_r($matchDayGoalsCount,true).'</pre>';
+echo '<pre>'.print_r($forSum,true).'</pre>';
+echo '<pre>'.print_r($againstSum,true).'</pre>';
+
 		
 //		$chart = new open_flash_chart();
 //		//$chart->set_title( $title );
@@ -186,6 +194,7 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 //		$chart->set_y_legend( $y_legend );
 //
 //		$this->chartdata = $chart;
-	}
+	$this->matchDayGoalsCountMax = $matchDayGoalsCountMax;
+    }
 }
 ?>
