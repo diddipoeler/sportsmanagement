@@ -17,11 +17,10 @@ use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.tooltip');
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'allowedAdmin<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
-echo 'predictionMember <br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-echo 'form<br /><pre>~' . print_r($this->form,true) . '~</pre><br />';
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = Uri::getInstance();   
+} else {
+    $uri = Factory::getURI();
 }
 
 
@@ -42,11 +41,7 @@ $script =	'
 $document->addScriptDeclaration($script);
 $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
-} else {
-    $uri = Factory::getURI();
-}
+
 ?>
 <form name='adminForm' id='adminForm' method='post' >
 	<table class="table">
