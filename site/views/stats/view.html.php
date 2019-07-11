@@ -117,15 +117,12 @@ $this->round_labels[] = '"'.$r->name.'"';
 	 */
 	function _setChartdata($config)
 	{
-//		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
-
 		$data = $this->get('ChartData');
 		// Calculate Values for Chart Object
 		$homeSum = array();
 		$awaySum = array();
 		$matchDayGoalsCount = array();
         $matchDayGoalsCountMax = 0;
-//		$round_labels = array();
 
 		foreach( $data as $rw )
 		{
@@ -143,9 +140,8 @@ $this->round_labels[] = '"'.$r->name.'"';
 				$matchDayGoalsCount[] = (int)$rw->homegoalspd + $rw->guestgoalspd;
 			}
             $matchDayGoalsCountMax = (int)$rw->homegoalspd + $rw->guestgoalspd > $matchDayGoalsCountMax ? (int)$rw->homegoalspd + $rw->guestgoalspd : $matchDayGoalsCountMax;
-//			$round_labels[] = $rw->roundcode;
 		}
-
+$this->matchDayGoalsCount = $matchDayGoalsCount;
 $this->matchDayGoalsCountMax = $matchDayGoalsCountMax;
 $this->homeSum = $homeSum;
 $this->awaySum = $awaySum;

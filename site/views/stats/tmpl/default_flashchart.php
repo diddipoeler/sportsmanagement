@@ -55,9 +55,16 @@ datasets: [{
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->awaySum); ?>
 				]
-			}]
-
-
+			}, {
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
+				borderWidth: 1,
+				data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
+				]
+			}
+            
+            ]
 },
 
     // Configuration options go here
