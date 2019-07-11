@@ -62,12 +62,10 @@ if ($this->config['show_attendance_stats'])
 echo $this->loadTemplate('attendance_stats'); 
 }	
 
-echo '<div style="width:100%; float:left">';
 if ( $this->config['show_goals_stats_flash'] )
 {
 echo $this->loadTemplate('flashchart'); 
 }
-echo '</div>';
 
 echo $this->loadTemplate('jsminfo');
 ?>

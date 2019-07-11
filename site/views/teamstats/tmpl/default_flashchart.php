@@ -14,29 +14,28 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 ?>
-
-<!-- Flash Statistik Start -->
-<script	type="text/javascript" src="<?php echo Uri::base().'components/com_sportsmanagement/assets/js/json2.js'; ?>"></script>
-<script	type="text/javascript" src="<?php echo Uri::base().'components/com_sportsmanagement/assets/js/swfobject.js'; ?>"></script>
-<script type="text/javascript">
-	function get_teamstats_chart() {
-		var data_teamstats_chart = <?php echo $this->chartdata->toPrettyString(); ?>;
-		return JSON.stringify(data_teamstats_chart);
-	}
-	swfobject.embedSWF("<?php echo Uri::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
-			"teamstats_chart", "100%", "200", "9.0.0", false, {"get-data": "get_teamstats_chart"} );
+<script>
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
 </script>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="flashchart">
+<canvas id="jsmchartcurve"></canvas>
+<script>
+var ctx = document.getElementById('jsmchartcurve').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
 
-<table width="100%" cellspacing="0" border="0">
-	<tbody>
-	<tr class="sectiontableheader">
-		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC'); ?></th>
-	</tr>
-	<tr>
-		<td>
-			<div id="teamstats_chart"></div>
-			<!-- Flash Statistik END -->
-		</td>
-	</tr>
-	</tbody>
-</table>
+    // The data for our dataset
+    data: {
+        labels: [<?php echo implode(',', $this->round_labels); ?>],
+
+</script>
+</div>
