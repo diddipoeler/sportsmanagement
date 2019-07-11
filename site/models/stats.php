@@ -72,8 +72,6 @@ class sportsmanagementModelStats extends BaseDatabaseModel
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         
-//		if ( is_null( $this->highest_home ) )
-//		{
 			$query->select('t1.name AS hometeam');
             $query->select('t2.name AS guestteam');
             $query->select('t1.id AS hometeam_id');
@@ -131,10 +129,6 @@ class sportsmanagementModelStats extends BaseDatabaseModel
                 
             }
             
-			//echo($this->_db->getQuery());
-			//$this->highest_home = $db->loadObject();
-		//}
-		//return $this->highest_home;
 	}
 
 	/**
