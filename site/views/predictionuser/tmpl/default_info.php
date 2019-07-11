@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_PERS_DATA'); ?></h2>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="info">
 <?php
 if ($this->config['show_full_name'])
 {
@@ -103,7 +104,6 @@ if (!empty($memberPredictionPoints))
 				<?php
 					if ($this->config['show_register_date'])
 					{
-						//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 						?>
 						<tr>
 							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_MEMBERSHIP'); ?></td>
@@ -125,7 +125,6 @@ if (!empty($memberPredictionPoints))
 						<tr>
 							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SLOGAN'); ?></td>
 							<td class='data'><?php
-								//echo strip_tags($this->predictionMember->slogan);
 								echo (!empty($this->predictionMember->slogan)) ? strip_tags($this->predictionMember->slogan) : Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_SLOGAN')
 								?></td>
 						</tr>
@@ -194,9 +193,8 @@ if (!empty($memberPredictionPoints))
 				?>
 				
         <tr>
-					<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /*Meistertipp*/ ?></td>
+					<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /** Meistertipp */ ?></td>
 					<td class='data'><?php
-						//echo '<br /><pre>~' . print_r($this->model->pjID,true) . '~</pre><br />';
 						$found=false;
 
 						if ( !isset($this->predictionMember->champ_tipp) )
@@ -212,27 +210,13 @@ if (!empty($memberPredictionPoints))
 							{
 								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
-									//$predictionProjectSettings->start_date='2010-08-08';
-									//$time=time();
 									$time=strtotime($predictionProjectSettings->start_date);
-									//$date=date("Y-m-d",$time);
-									//echo $date.'/';
 									$time += 86400; // Ein Tag in Sekunden
 									$showDate=date("Y-m-d",$time);
-									//echo $showDate;
+
 									$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
-									//if (($showChamp) || ($this->showediticon))
-									
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-echo '<br />predictionuser info -> time <pre>~' . print_r($time,true) . '~</pre><br />';
-echo '<br />predictionuser info -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> thisTimeDate <pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> competitionStartTimeDate <pre>~' . print_r($competitionStartTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) . '~</pre><br />';
-            }
             									
 									if (($showChamp))
 									{
@@ -303,17 +287,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 				}
 				?>
 				<?php
-					/*
-					if ($this->config['show_ranking'])
-					{
-						?>
-						<tr>
-							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_RANK'); ?></td>
-							<td class='data'><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_RANK_OUTPUT',$this->memberData->rankingAll); ?></td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 				<?php
 					if ($this->config['show_totalpoints'])
@@ -330,22 +304,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					}
 				?>
 				<?php
-					/* only works if game has just one project or we have a project selector
-					if (($this->config['show_lastpoints']) && (count($this->predictionProjectS)==1))
-					{
-						?>
-						<tr>
-							<td class='label'><?php
-								echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_LAST_ROUND');
-								?></td>
-							<td class='data'><?php
-								//add link to last round ranking
-								echo $this->memberData->lastTipp;
-								?></td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 				<?php
 					if ($this->config['show_counttipps'])
@@ -442,30 +401,10 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					}
 				?>
 				<?php
-					/* only works if game has just one project or we have a project selector
-					if (($this->config['show_form']) && (count($this->predictionProjectS)==1))
-					{
-						?>
-						<tr>
-							<td class='label'><?php
-								echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_PRED_FORM');
-								?></td>
-							<td class='data'>
-								<?php
-								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_UP'); $picture = 'media/com_sportsmanagement/jl_images/up.png';
-								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
-								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SAME'); $picture = 'media/com_sportsmanagement/jl_images/same.png';
-								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
-								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_DOWN'); $picture = 'media/com_sportsmanagement/jl_images/down.png';
-								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
-								?>
-							</td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 			</table>
 		</td>
 	</tr>
 </table>
+</div>

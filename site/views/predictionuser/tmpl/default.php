@@ -12,13 +12,15 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class="row-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultpredictionuser">
 <?php
 	echo $this->loadTemplate('predictionheading');
 	if ($this->predictionMember->pmID > 0)
