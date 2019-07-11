@@ -152,7 +152,6 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
         {
 			$this->round_labels[] = '"'.$r->name.'"';
 		}
-        //$this->round_labels = array_map('strval', $this->round_labels);
 		    $this->_setChartdata(array_merge($flashconfig, $rankingconfig));
         }
         else

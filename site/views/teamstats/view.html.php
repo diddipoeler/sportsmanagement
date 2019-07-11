@@ -67,7 +67,18 @@ $this->document->addScript($js);
 			$this->logo = $this->model->getLogo();
 			$this->results = $this->model->getResults();
 
-			$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",sportsmanagementModelTeamStats::$cfg_which_database ), $this->config));
+if ( $this->config['show_goals_stats_flash'] )
+{
+$rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelCurve::$cfg_which_database);
+$this->round_labels = array();
+foreach ($rounds as $r) 
+{
+$this->round_labels[] = '"'.$r->name.'"';
+}
+$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",sportsmanagementModelTeamStats::$cfg_which_database ), $this->config));
+}
+        
+			
            
 		}
 	
