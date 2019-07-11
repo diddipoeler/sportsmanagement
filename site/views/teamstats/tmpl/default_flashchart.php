@@ -35,7 +35,7 @@ var ctx = document.getElementById('jsmchartcurve').getContext('2d');
 var color = Chart.helpers.color;
 var chart = new Chart(ctx, {
     // The type of chart we want to create
-    type: 'line',
+    type: 'bar',
 
     // The data for our dataset
     data: {
@@ -46,28 +46,14 @@ datasets: [{
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
+				data: [<?php echo implode(',', $this->forSum); ?>
 				]
 			}, {
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST'); ?>',
 				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.blue,
 				borderWidth: 1,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
+				data: [<?php echo implode(',', $this->againstSum); ?>
 				]
 			}]
 
