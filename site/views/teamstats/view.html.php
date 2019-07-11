@@ -31,7 +31,11 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 	 */
 	function init()
 	{
-
+if ( $this->config['show_goals_stats_flash'] )
+{
+$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+$this->document->addScript($js);    
+}
 		if ( isset( $this->project ) )
 		{
 

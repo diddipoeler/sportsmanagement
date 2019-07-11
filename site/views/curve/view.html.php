@@ -20,7 +20,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 /**
  * sportsmanagementViewCurve
@@ -49,13 +48,7 @@ if ( $this->config['which_curve'] )
 $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
 $this->document->addScript($js);    
 }
-else
-{
-		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/json2.js';
-		$this->document->addScript($js);
-		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/swfobject.js';
-		$this->document->addScript($js);
-}
+
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",sportsmanagementModelCurve::$cfg_which_database );
 		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database );
 
