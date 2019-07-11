@@ -417,7 +417,38 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		 */
 		function getRanksChartData( )
 		{
+// Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+		  $document	= Factory::getDocument();
+    
+    // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        
+			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
+			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
 
+// Select some fields
+        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name');
+        $query->select('SUM(pr.points) AS points');
+        $query->from('#__sportsmanagement_round AS rounds');
+        $query->join('INNER', '#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');
+        $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = matches.id');
+        $query->join('LEFT', '#__sportsmanagement_prediction_member AS prmem ON prmem.user_id = pr.user_id');
+        
+        $query->where('pr.prediction_id = '.$pgid);
+        $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
+        $query->where('prmem.id = '.$uid);
+        $query->group('rounds.roundcode');
+
+    		$db->setQuery( $query );
+    		$result = $db->loadObjectList();
+    		return $result;
+            
+            
 		}		
 }
 ?>

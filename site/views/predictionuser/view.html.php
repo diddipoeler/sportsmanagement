@@ -39,9 +39,9 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js); 
-        $rounds	= sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
+        $this->rounds = sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
 $this->round_labels = array();
-foreach ($rounds as $r) 
+foreach ($this->rounds as $r) 
 {
 $this->round_labels[] = '"'.$r->name.'"';
 }
@@ -292,6 +292,9 @@ $this->userpoints = $userpoints;
 	 */
 	function _setRankingChartdata($config)
 	{
+	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
+       
+       
 //		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 //
 //		//$data = $this->get('RankChartData');		
