@@ -273,7 +273,16 @@ $this->userpoints = $userpoints;
 	{
 	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
        
-       echo '<pre>'.print_r($this->rounds,true).'</pre>';
+/**
+ * [6] => stdClass Object
+ *         (
+ *             [id] => 1590634:gruppe-3
+ *             [round_date_first] => 0000-00-00
+ *             [round_date_last] => 0000-00-00
+ *             [name] => Gruppe 3
+ *             [roundcode] => 4
+ *         )
+ */
        
        
 //		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
