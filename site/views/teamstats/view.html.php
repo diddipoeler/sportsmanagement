@@ -69,7 +69,7 @@ $this->document->addScript($js);
 
 if ( $this->config['show_goals_stats_flash'] )
 {
-$rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelCurve::$cfg_which_database);
+$rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelTeamStats::$cfg_which_database);
 $this->round_labels = array();
 foreach ($rounds as $r) 
 {
