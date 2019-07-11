@@ -1429,7 +1429,7 @@ case "projectteams/trikot_away":
      */
     public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0) {
         $ret = "";
-        $picturepath = JPath::clean(JPATH_SITE .DIRECTORY_SEPARATOR. str_replace(JPATH_SITE . DS, '', $picture));
+        $picturepath = JPath::clean(JPATH_SITE .DIRECTORY_SEPARATOR. str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
