@@ -59,10 +59,10 @@ var chart = new Chart(ctx, {
     scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 1,   
+suggestedMin: 0,   
 suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
 beginAtZero:false,
-reverse: true,
+reverse: false,
 stepSize:1,
 callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
 }
