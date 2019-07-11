@@ -267,60 +267,21 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 	 */
 	function _setPointsChartdata($config)
 	{
-//		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
-
 		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
-
-    //echo 'data -> <pre> '.print_r($data,true).'</pre><br>';
     
 		// Calculate Values for Chart Object
 		$userpoints= array();
         $PointsCountMax = 0;		
-		//$round_labels = array();
 
 		foreach( $data as $rw )
 		{
 			if (!$rw->points) $rw->points = 0;
 			$userpoints[] = (int)$rw->points;
             $PointsCountMax = (int)$rw->points > $PointsCountMax ? (int)$rw->points : $PointsCountMax;
-		//	$round_labels[] = $rw->roundcode;		
 		}
 $this->PointsCountMax = $PointsCountMax;
 $this->userpoints = $userpoints;
 		
-		//$chart = new open_flash_chart();
-//		$chart->set_bg_colour($config['bg_colour']);
-//		
-//	if(!empty($userpoints))
-//	{
-//		$bar = new $config['bartype_1']();
-//		$bar->set_values( $userpoints);	
-//		$bar->set_tooltip( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'). ": #val#" );
-//		$bar->set_colour( $config['bar1'] );
-//		$bar->set_on_show(new bar_on_show($config['animation_1'], $config['cascade_1'], $config['delay_1']));
-//
-//		$chart->add_element( $bar );
-//	}
-//		//X-axis
-//		$x = new x_axis();
-//		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-//		$x->set_labels_from_array($round_labels);
-//		$chart->set_x_axis( $x );
-//		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
-//		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
-//		$chart->set_x_legend( $x_legend );
-//
-//		//Y-axis
-//		$y = new y_axis();
-//		$y->set_range( 0, @max($userpoints)+2, 1);
-//		$y->set_steps(round(@max($userpoints)/8));
-//		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
-//		$chart->set_y_axis( $y );
-//		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
-//		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
-//		$chart->set_y_legend( $y_legend );
-//		
-//		$this->pointschartdata = $chart;
 	}
 
 	/**
