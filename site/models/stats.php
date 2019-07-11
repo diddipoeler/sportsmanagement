@@ -94,7 +94,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
