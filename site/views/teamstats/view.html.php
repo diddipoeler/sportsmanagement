@@ -134,10 +134,10 @@ $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig
 //			$round_labels[] = $rw->roundcode;
 		}
 
-echo '<pre>'.print_r($data,true).'</pre>';
-echo '<pre>'.print_r($matchDayGoalsCount,true).'</pre>';
-echo '<pre>'.print_r($forSum,true).'</pre>';
-echo '<pre>'.print_r($againstSum,true).'</pre>';
+//echo '<pre>'.print_r($data,true).'</pre>';
+//echo '<pre>'.print_r($matchDayGoalsCount,true).'</pre>';
+//echo '<pre>'.print_r($forSum,true).'</pre>';
+//echo '<pre>'.print_r($againstSum,true).'</pre>';
 
 		
 //		$chart = new open_flash_chart();
