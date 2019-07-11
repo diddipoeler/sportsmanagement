@@ -197,11 +197,11 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 //		$length = (count($rounds)-0.5);
 //		$linewidth = $config['color_legend_line_width'];
 //		$lines = array();
-//		foreach ($divisions as $division)
-//		{
-//			$data = $model->getDataByDivision($division->id);
+		foreach ($divisions as $division)
+		{
+			$data = $model->getDataByDivision($division->id);
 //            
-////$app->enqueueMessage(Text::_('data -> '.'<pre>'.print_r($data ,true).'</pre>' ),'');			
+			
 //            
 //			$allteams = sportsmanagementModelProject::getTeams($division->id,'name',$model::$cfg_which_database);
 //           
@@ -324,8 +324,8 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 //			$this->chartdata_0 = $chart;
 //			}
 //			unset($chart);
-//			$this->teamranking[$division->id] = $data;
-//		}
+			$this->teamranking[$division->id] = $data;
+		}
 	}
 }
 
