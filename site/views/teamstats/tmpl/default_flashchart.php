@@ -37,5 +37,36 @@ var chart = new Chart(ctx, {
     data: {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 
+
+
+]},
+
+    // Configuration options go here
+    options: {
+    responsive: true,
+    legend: {
+      display: true,
+      labels: {
+        padding: 20
+      },
+    },
+    tooltips: {
+      enabled: true,
+    },
+    scales: {
+yAxes: [{
+ticks: {
+suggestedMin: 1,   
+suggestedMax: <?php echo $teamcount; ?>, 
+beginAtZero:false,
+reverse: true,
+stepSize:1,
+callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
+}
+}]
+}
+    }
+});
+
 </script>
 </div>
