@@ -144,25 +144,27 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			$this->allteams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division,'name',sportsmanagementModelCurve::$cfg_which_database);
 			$this->team1select = $team1select;
 			$this->team2select = $team2select;
-            if ( $this->config['which_curve'] )
+            
+if ( $this->config['which_curve'] )
 {
-            $rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelCurve::$cfg_which_database);
-		$this->round_labels = array();
-		foreach ($rounds as $r) 
-        {
-			$this->round_labels[] = '"'.$r->name.'"';
-		}
-		    $this->_setChartdata(array_merge($flashconfig, $rankingconfig));
-        }
-        else
-        {
-			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
-            }
+$rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelCurve::$cfg_which_database);
+$this->round_labels = array();
+foreach ($rounds as $r) 
+{
+$this->round_labels[] = '"'.$r->name.'"';
+}
+$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+}
+else
+{
+$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+}
+            
 			// Set page title
 			$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
 			if (( isset( $this->team1 ) ) AND (isset( $this->team1 )))
 			{
-				//$pageTitle .= ": ".$this->team1->name." - ".$this->team2->name;
+
 			}
 			$this->document->setTitle( $pageTitle );
 		}
@@ -191,160 +193,13 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 		}
 
 		$divisions	= $this->divisions;
-//
-//		//create a line
-//		$length = (count($rounds)-0.5);
-//		$linewidth = $config['color_legend_line_width'];
-//		$lines = array();
+
 		foreach ($divisions as $division)
 		{
 			$data = $model->getDataByDivision($division->id);
-//            
-			
-//            
-//			$allteams = sportsmanagementModelProject::getTeams($division->id,'name',$model::$cfg_which_database);
-//           
-//			if(empty($allteams) || count($allteams)==0) continue;
-//			
-//			$chart = new open_flash_chart();
-//			//$title = $division->name;
-//			//$chart->set_title( $title );
-//			$chart->set_bg_colour($config['bg_colour']);
-//
-//			//colors defined for ranking table lines
-//			//todo: add support for more than 2 lines
-//			foreach( $this->colors as $color )
-//			{
-//				foreach ( $rounds AS $r )
-//				{
-//					for ( $n = $color['from']; $n <= $color['to']; $n++ )
-//					{
-//						$lines[$color['color']][$n][] = $n;
-//					}
-//				}
-//			}
-//			//set lines on the graph
-//			foreach( $lines AS $key => $value )
-//			{
-//				foreach( $value AS $line =>$key2 )
-//				{
-//					$chart->add_element( hline($key,$length,$line,$linewidth) );
-//				}
-//			}
-//			$team1id = 0;
-//			//load team1, first team in the dropdown
-//			foreach ($allteams as $t) {
-//				if(empty($data[$t->projectteamid])) continue;
-//				$team = $data[$t->projectteamid];
-//				
-//				if(($t->division_id == $division->id 
-//				 	&& $t->team_id != $team1id 
-//				 	&& $model::$teamid1 == 0)
-//				 	|| ($model::$teamid1 != 0 && $model::$teamid1 == $t->team_id) 
-//				) {
-//					$team1id = $team->team_id;
-//
-//					$d = new $config['dotstyle_1']();
-//					$d->size((int) $config['line1_dot_strength']);
-//					$d->halo_size(1);
-//					$d->colour($config['line1']);
-//					$d->tooltip('Rank: #val#');
-//	
-//					$line = new line();
-//					$line->set_default_dot_style($d);
-//					$line->set_values( $team->rankings );
-//					$line->set_width( (int) $config['line1_strength'] );
-//					$line->set_key($team->name, 12);
-//					$line->set_colour( $config['line1'] );
-//					$line->on_show(new line_on_show($config['l_animation_1'], $config['l_cascade_1'], $config['l_delay_1']));
-//					$chart->add_element($line);
-//					break;
-//				}
-//			}
-//			if($model::$teamid1!=0) {
-//				$team1id = $model::$teamid1;
-//			}
-//			//load team2, second team in the dropdown
-//			foreach ($allteams as $t) {
-//				if(empty($data[$t->projectteamid])) continue;
-//				$team = $data[$t->projectteamid];
-//				if(($t->division_id == $division->id 
-//				 	&& $t->team_id != $team1id 
-//				 	&& $model::$teamid2 == 0)
-//				 	|| ($model::$teamid2 != 0 && $model::$teamid2 == $t->team_id) 
-//				) {
-//					$d = new $config['dotstyle_2']();
-//					$d->size((int) $config['line2_dot_strength']);
-//					$d->halo_size(1);
-//					$d->colour($config['line2']);
-//					$d->tooltip('Rank: #val#');
-//	
-//					$line = new line();
-//					$line->set_default_dot_style($d);
-//					$line->set_values( $team->rankings );
-//					$line->set_width( (int) $config['line2_strength'] );
-//					$line->set_key($team->name, 12);
-//					$line->set_colour( $config['line2'] );
-//					$line->on_show(new line_on_show($config['l_animation_2'], $config['l_cascade_2'], $config['l_delay_2']));
-//					$chart->add_element($line);
-//					break;
-//				}
-//				//$this->teamranking[$t->team_id] = $team->rankings;
-//			}
-//				
-//			$x = new x_axis();
-//			if ($config['x_axis_label']==1)
-//			{
-//				$xlabels = new x_axis_labels();
-//				$xlabels->set_labels($round_labels);
-//				$xlabels->set_vertical();
-//			}
-//			$x->set_labels($xlabels);
-//			$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-//			$chart->set_x_axis( $x );
-//			$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
-//			$x_legend->set_style( '{font-size: 15px; color: #778877}' );
-//			$chart->set_x_legend( $x_legend );
-//
-//			$y = new y_axis();
-//			$y->set_range( count($data), 1, -1);
-//			$y->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-//			$chart->set_y_axis( $y );
-//			$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
-//			$y_legend->set_style( '{font-size: 15px; color: #778877}' );
-//			$chart->set_y_legend( $y_legend );
-//
-//			if ( $division->id )
-//			{
-//			$this->chartdata_.$division->id = $chart;
-//			}
-//			else
-//			{
-//			$this->chartdata_0 = $chart;
-//			}
-//			unset($chart);
 			$this->teamranking[$division->id] = $data;
 		}
 	}
-}
-
-/**
- * hline()
- * 
- * @param mixed $color
- * @param mixed $length
- * @param mixed $ypoint
- * @param mixed $linewidth
- * @return
- */
-function hline($color, $length, $ypoint, $linewidth)
-{
-	$hline = new shape( $color );
-	$hline->append_value( new shape_point( -0.5, $ypoint) );
-	$hline->append_value( new shape_point( -0.5, $ypoint + $linewidth ) );
-	$hline->append_value( new shape_point( $length, $ypoint + $linewidth) );
-	$hline->append_value( new shape_point( $length, $ypoint ) );
-	return $hline;
 }
 
 ?>
