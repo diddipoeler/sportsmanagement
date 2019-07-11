@@ -32,6 +32,7 @@ window.chartColors = {
 <canvas id="jsmchartcurve"></canvas>
 <script>
 var ctx = document.getElementById('jsmchartcurve').getContext('2d');
+var color = Chart.helpers.color;
 var chart = new Chart(ctx, {
     // The type of chart we want to create
     type: 'line',
