@@ -27,17 +27,17 @@ if ( $this->config['show_sectionheader'] )
 echo $this->loadTemplate('sectionheader');
 }
 
-if ( $this->config['show_curve'] )
-{
+//if ( $this->config['show_curve'] )
+//{
 if ( $this->config['which_curve'] )
 {
 echo $this->loadTemplate('curvejs');    
 }
-else
-{
-echo $this->loadTemplate('curve');
-}
-}
+//else
+//{
+//echo $this->loadTemplate('curve');
+//}
+//}
 
 if ( $this->config['show_colorlegend'] )
 {

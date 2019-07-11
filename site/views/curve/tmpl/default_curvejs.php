@@ -15,10 +15,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-//echo 'teamid1<pre>'.print_r(sportsmanagementModelCurve::$teamid1 ,true).'</pre>';
-//echo 'teamid2<pre>'.print_r(sportsmanagementModelCurve::$teamid2 ,true).'</pre>';
-//echo 'teamranking<pre>'.print_r($this->teamranking,true).'</pre>';
-
 ?>
 <script>
 window.chartColors = {
@@ -36,10 +32,6 @@ window.chartColors = {
 foreach ($this->divisions as $division)
 {
 
-//echo 'division<pre>'.print_r($division,true).'</pre>';
-
-//	$chart = 'chartdata_'.$division->id;
-//	if(empty($this->$chart)) continue;
 	if(empty($this->allteams) || count($this->allteams)==0) continue;
 		?>
 <form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">        
