@@ -266,39 +266,39 @@ $this->round_labels[] = '"'.$r->name.'"';
 		}
 
 		
-		$chart = new open_flash_chart();
-		$chart->set_bg_colour($config['bg_colour']);
-		
-	if(!empty($userpoints))
-	{
-		$bar = new $config['bartype_1']();
-		$bar->set_values( $userpoints);	
-		$bar->set_tooltip( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'). ": #val#" );
-		$bar->set_colour( $config['bar1'] );
-		$bar->set_on_show(new bar_on_show($config['animation_1'], $config['cascade_1'], $config['delay_1']));
-
-		$chart->add_element( $bar );
-	}
-		//X-axis
-		$x = new x_axis();
-		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-		$x->set_labels_from_array($round_labels);
-		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
-		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
-		$chart->set_x_legend( $x_legend );
-
-		//Y-axis
-		$y = new y_axis();
-		$y->set_range( 0, @max($userpoints)+2, 1);
-		$y->set_steps(round(@max($userpoints)/8));
-		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
-		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
-		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
-		$chart->set_y_legend( $y_legend );
-		
-		$this->pointschartdata = $chart;
+//		$chart = new open_flash_chart();
+//		$chart->set_bg_colour($config['bg_colour']);
+//		
+//	if(!empty($userpoints))
+//	{
+//		$bar = new $config['bartype_1']();
+//		$bar->set_values( $userpoints);	
+//		$bar->set_tooltip( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'). ": #val#" );
+//		$bar->set_colour( $config['bar1'] );
+//		$bar->set_on_show(new bar_on_show($config['animation_1'], $config['cascade_1'], $config['delay_1']));
+//
+//		$chart->add_element( $bar );
+//	}
+//		//X-axis
+//		$x = new x_axis();
+//		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
+//		$x->set_labels_from_array($round_labels);
+//		$chart->set_x_axis( $x );
+//		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
+//		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
+//		$chart->set_x_legend( $x_legend );
+//
+//		//Y-axis
+//		$y = new y_axis();
+//		$y->set_range( 0, @max($userpoints)+2, 1);
+//		$y->set_steps(round(@max($userpoints)/8));
+//		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
+//		$chart->set_y_axis( $y );
+//		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
+//		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
+//		$chart->set_y_legend( $y_legend );
+//		
+//		$this->pointschartdata = $chart;
 	}
 
 	/**
@@ -309,78 +309,78 @@ $this->round_labels[] = '"'.$r->name.'"';
 	 */
 	function _setRankingChartdata($config)
 	{
-		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
-
-		//$data = $this->get('RankChartData');		
-		//some example data....fixme!!!
-		$data_1 = array();
-		$data_2 = array();
-
-		for( $i=0; $i<6.2; $i+=0.2 )
-		{
-			$data_1[] = (sin($i) * 1.9) + 10;
-		}
-
-		for( $i=0; $i<6.2; $i+=0.2 )
-		{
-			$data_2[] = (sin($i) * 1.3) + 10;
-		}
-		
-		$chart = new open_flash_chart();
-		//***********
-		
-		//line 1
-		$d = new $config['dotstyle_1']();
-		$d->size((int) $config['line1_dot_strength']);
-		$d->halo_size(1);
-		$d->colour($config['line1']);
-		$d->tooltip('Rank: #val#');
-
-		$line = new line();
-		$line->set_default_dot_style($d);
-		$line->set_values( $data_1 );
-		$line->set_width( (int) $config['line1_strength'] );
-		///$line->set_key($team->name, 12);
-		$line->set_colour( $config['line1'] );
-		$line->on_show(new line_on_show($config['l_animation_1'], $config['l_cascade_1'], $config['l_delay_1']));
-		$chart->add_element($line);
-		
-		//Line 2
-		$d = new $config['dotstyle_2']();
-		$d->size((int) $config['line2_dot_strength']);
-		$d->halo_size(1);
-		$d->colour($config['line2']);
-		$d->tooltip('Rank: #val#');
-
-		$line = new line();
-		$line->set_default_dot_style($d);
-		$line->set_values( $data_2);
-		$line->set_width( (int) $config['line2_strength'] );
-		//$line->set_key($team->name, 12);
-		$line->set_colour( $config['line2'] );
-		$line->on_show(new line_on_show($config['l_animation_2'], $config['l_cascade_2'], $config['l_delay_2']));
-		$chart->add_element($line);
-		
-		//X-axis
-		$x = new x_axis();
-		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-		//$x->set_labels_from_array($round_labels);
-		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
-		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
-		$chart->set_x_legend( $x_legend );
-
-		//Y-axis
-		$y = new y_axis();
-		$y->set_range( 0, @max($data_1)+2, 1);
-		$y->set_steps(round(@max($data_1)/8));
-		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
-		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
-		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
-		$chart->set_y_legend( $y_legend );
-		
-		$this->rankingchartdata = $chart;
+//		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
+//
+//		//$data = $this->get('RankChartData');		
+//		//some example data....fixme!!!
+//		$data_1 = array();
+//		$data_2 = array();
+//
+//		for( $i=0; $i<6.2; $i+=0.2 )
+//		{
+//			$data_1[] = (sin($i) * 1.9) + 10;
+//		}
+//
+//		for( $i=0; $i<6.2; $i+=0.2 )
+//		{
+//			$data_2[] = (sin($i) * 1.3) + 10;
+//		}
+//		
+//		$chart = new open_flash_chart();
+//		//***********
+//		
+//		//line 1
+//		$d = new $config['dotstyle_1']();
+//		$d->size((int) $config['line1_dot_strength']);
+//		$d->halo_size(1);
+//		$d->colour($config['line1']);
+//		$d->tooltip('Rank: #val#');
+//
+//		$line = new line();
+//		$line->set_default_dot_style($d);
+//		$line->set_values( $data_1 );
+//		$line->set_width( (int) $config['line1_strength'] );
+//		///$line->set_key($team->name, 12);
+//		$line->set_colour( $config['line1'] );
+//		$line->on_show(new line_on_show($config['l_animation_1'], $config['l_cascade_1'], $config['l_delay_1']));
+//		$chart->add_element($line);
+//		
+//		//Line 2
+//		$d = new $config['dotstyle_2']();
+//		$d->size((int) $config['line2_dot_strength']);
+//		$d->halo_size(1);
+//		$d->colour($config['line2']);
+//		$d->tooltip('Rank: #val#');
+//
+//		$line = new line();
+//		$line->set_default_dot_style($d);
+//		$line->set_values( $data_2);
+//		$line->set_width( (int) $config['line2_strength'] );
+//		//$line->set_key($team->name, 12);
+//		$line->set_colour( $config['line2'] );
+//		$line->on_show(new line_on_show($config['l_animation_2'], $config['l_cascade_2'], $config['l_delay_2']));
+//		$chart->add_element($line);
+//		
+//		//X-axis
+//		$x = new x_axis();
+//		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
+//		//$x->set_labels_from_array($round_labels);
+//		$chart->set_x_axis( $x );
+//		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
+//		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
+//		$chart->set_x_legend( $x_legend );
+//
+//		//Y-axis
+//		$y = new y_axis();
+//		$y->set_range( 0, @max($data_1)+2, 1);
+//		$y->set_steps(round(@max($data_1)/8));
+//		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
+//		$chart->set_y_axis( $y );
+//		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
+//		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
+//		$chart->set_y_legend( $y_legend );
+//		
+//		$this->rankingchartdata = $chart;
 	}
 }
 ?>
