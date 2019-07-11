@@ -9,7 +9,6 @@
  * @subpackage predictionuser
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -38,9 +37,10 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	 */
 	function init()
 	{
-		
-		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
-		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
+		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+        $this->document->addScript($js);    
+//		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
+//		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
     $mdlPredUsers = BaseDatabaseModel::getInstance("predictionusers", "sportsmanagementModel");
     
@@ -109,11 +109,11 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
                 $this->predictionMember->fav_team='0,0';
                 }
 			$sFavTeamsList = explode(';',$this->predictionMember->fav_team);
-			Uri:: ($sFavTeamsList AS $key => $value)
+			foreach($sFavTeamsList AS $key => $value)
             {
                 $dFavTeamsList[] = explode(',',$value);
                 }
-			Uri:: ($dFavTeamsList AS $key => $value)
+			foreach($dFavTeamsList AS $key => $value)
             {
                 $favTeamsList[$value[0]] = $value[1];
                 }
@@ -123,11 +123,11 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
                 $this->predictionMember->champ_tipp = '0,0';
                 }
 			$sChampTeamsList = explode(';',$this->predictionMember->champ_tipp);
-			Uri:: ($sChampTeamsList AS $key => $value)
+			foreach($sChampTeamsList AS $key => $value)
             {
                 $dChampTeamsList[] = explode(',',$value);
                 }
-			Uri:: ($dChampTeamsList AS $key => $value)
+			foreach($dChampTeamsList AS $key => $value)
             {
                 $champTeamsList[$value[0]] = $value[1];
                 }
@@ -146,14 +146,9 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
                 /**
                  * schleife über die projekte
                  */
-				Uri:: ($this->predictionProjectS AS $predictionProject)
+				foreach($this->predictionProjectS AS $predictionProject)
 				{
-					
-          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-          {
-          echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
-          }
-          
+         
 					$projectteams[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
 					if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 					{
@@ -201,18 +196,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
                 $disabled = ''; 
             }
           }
-
-          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-echo '<br />predictionuser view.html edit -> time <pre>~' . print_r($time,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> thisTimeDate <pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> competitionStartTimeDate <pre>~' . print_r($competitionStartTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> tippAllowed <pre>~' . print_r($tippAllowed,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> disabled <pre>~' . print_r($disabled,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . print_r($this->predictionProjectS,true) . '~</pre><br />';
-            }
-            
+           
           }
           else
           {
@@ -258,7 +242,6 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 
 			$this->document->setTitle($pageTitle);
 
-			//parent::display($tpl);
 		}
 		else
 		{
@@ -277,7 +260,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 	 */
 	function _setPointsChartdata($config)
 	{
-		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
+//		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
@@ -287,7 +270,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 		$userpoints= array();		
 		$round_labels = array();
 
-		Uri::( $data as $rw )
+		foreach( $data as $rw )
 		{
 			if (!$rw->points) $rw->points = 0;
 			$userpoints[] = (int)$rw->points;

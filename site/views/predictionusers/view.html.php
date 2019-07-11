@@ -9,15 +9,11 @@
  * @subpackage predictionusers
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.view');
-
 
 /**
  * sportsmanagementViewPredictionUsers
@@ -28,25 +24,27 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionUsers extends JViewLegacy
+class sportsmanagementViewPredictionUsers extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewPredictionUsers::display()
+	 * sportsmanagementViewPredictionUsers::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
+		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
+        $this->document->addScript($js);    
+        // Get a refrence of the page instance in joomla
 		$document	= Factory::getDocument();
     $option = Factory::getApplication()->input->getCmd('option');
 
 		$app = Factory::getApplication();
 		
-		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
-		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
+//		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
+//		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
 		$model		= $this->getModel();
 
@@ -242,8 +240,6 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
 
 			$document->setTitle($pageTitle);
-
-			parent::display($tpl);
 		}
 		else
 		{
@@ -262,7 +258,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 	 */
 	function _setPointsChartdata($config)
 	{
-		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
+		//JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
 
 		$data = sportsmanagementModelPredictionUsers::getPointsChartData();
 
