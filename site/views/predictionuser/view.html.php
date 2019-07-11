@@ -38,7 +38,14 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	function init()
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-        $this->document->addScript($js);    
+        $this->document->addScript($js); 
+        $rounds	= sportsmanagementModelProject::getRounds('ASC',$jinput->getint( "cfg_which_database", 0 ));
+$this->round_labels = array();
+foreach ($rounds as $r) 
+{
+$this->round_labels[] = '"'.$r->name.'"';
+}
+   
 //		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
 //		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
@@ -53,7 +60,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$config				= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$overallConfig		= sportsmanagementModelPrediction::getPredictionOverallConfig();
 			$tipprankingconfig	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
-			$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
+			//$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 			
 			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       
@@ -82,12 +89,12 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 				$this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
 			}
 			
-			$this->_setPointsChartdata(array_merge($flashconfig, $config));
-			$this->_setRankingChartdata(array_merge($flashconfig, $config));
+			$this->_setPointsChartdata(array_merge($config));
+			$this->_setRankingChartdata(array_merge($config));
             
-             if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
-        {
-            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' predictionMember<br><pre>'.print_r($this->predictionMember,true).'</pre>'),'Notice'); 
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
+{
+ 
 }
 			$lists = array();
 
@@ -268,13 +275,13 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
     
 		// Calculate Values for Chart Object
 		$userpoints= array();		
-		$round_labels = array();
+		//$round_labels = array();
 
 		foreach( $data as $rw )
 		{
 			if (!$rw->points) $rw->points = 0;
 			$userpoints[] = (int)$rw->points;
-			$round_labels[] = $rw->roundcode;		
+		//	$round_labels[] = $rw->roundcode;		
 		}
 
 		

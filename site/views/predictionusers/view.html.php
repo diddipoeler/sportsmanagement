@@ -37,6 +37,13 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js);    
+        $rounds	= sportsmanagementModelProject::getRounds('ASC',$jinput->getint( "cfg_which_database", 0 ));
+$this->round_labels = array();
+foreach ($rounds as $r) 
+{
+$this->round_labels[] = '"'.$r->name.'"';
+}
+
         // Get a refrence of the page instance in joomla
 		$document	= Factory::getDocument();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -56,7 +63,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 			$config				= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 			$overallConfig		= sportsmanagementModelPrediction::getPredictionOverallConfig();
 			$tipprankingconfig	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
-			$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
+			//$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 			
 			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$this->model = $model;
@@ -83,9 +90,8 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 				$this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
 			}
 			
-			$this->_setPointsChartdata(array_merge($flashconfig, $config));
-			$this->_setRankingChartdata(array_merge($flashconfig, $config));
-			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
+			$this->_setPointsChartdata(array_merge($config));
+			$this->_setRankingChartdata(array_merge($config));
 
 			$lists = array();
 
@@ -158,12 +164,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
-					
-          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-          {
-          echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
-          }
-          
+         
 					$projectteams[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
 					if ( $res = $model->getPredictionProjectTeams($predictionProject->project_id) )
 					{
@@ -198,18 +199,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
           $tippAllowed =	( ( $thisTimeDate < $competitionStartTimeDate ) ) ;
 					if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; }
           }
-          
-          if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-echo '<br />predictionuser view.html edit -> time <pre>~' . print_r($time,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> thisTimeDate <pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> competitionStartTimeDate <pre>~' . print_r($competitionStartTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> tippAllowed <pre>~' . print_r($tippAllowed,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> disabled <pre>~' . print_r($disabled,true) . '~</pre><br />';
-echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . print_r($this->predictionProjectS,true) . '~</pre><br />';
-            }
-            
+           
           }
           else
           {
@@ -266,13 +256,13 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
     
 		// Calculate Values for Chart Object
 		$userpoints= array();		
-		$round_labels = array();
+		//$round_labels = array();
 
 		foreach( $data as $rw )
 		{
 			if (!$rw->points) $rw->points = 0;
 			$userpoints[] = (int)$rw->points;
-			$round_labels[] = $rw->roundcode;		
+		//	$round_labels[] = $rw->roundcode;		
 		}
 
 		
