@@ -151,9 +151,9 @@ class sportsmanagementModelStats extends BaseDatabaseModel
         
 		if ( is_null( $this->totals ) )
 		{
-			$query->select('COUNT(matches.id) AS totalmatches');
-          $query->select('COUNT(matches.team1_result) as playedmatches');
-          $query->select('SUM(matches.team1_result) AS homegoals');
+		$query->select('COUNT(matches.id) AS totalmatches');
+        $query->select('COUNT(matches.team1_result) as playedmatches');
+        $query->select('SUM(matches.team1_result) AS homegoals');
           $query->select('SUM(matches.team2_result) AS guestgoals');
           $query->select('SUM(team1_result + team2_result) AS sumgoals');
           $query->select('SUM(crowd) AS sumspectators');
@@ -176,7 +176,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
@@ -297,7 +297,7 @@ class sportsmanagementModelStats extends BaseDatabaseModel
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
