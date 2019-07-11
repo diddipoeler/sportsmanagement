@@ -11,11 +11,11 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+
 ?>
 
-<div id="jl_stats">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="attendancestats">
 
-<div class="jl_substats">
 <table class="<?php echo $this->config['attendance_table_class'];?>">
 	<tr class="sectiontableheader">
 		<th colspan="2"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE'); ?></th>
@@ -53,6 +53,5 @@ use Joomla\CMS\Language\Text;
 		<td class="statvalue"><?php echo $this->worstavg;?></td>
 	</tr>
 </table>
-</div>
 
 </div>

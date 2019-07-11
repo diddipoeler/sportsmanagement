@@ -11,8 +11,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
-?>
 
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="ranking">
     <table class="<?php echo $this->config['ranking_table_class'];?>">
     <tbody>
 	<tr>
@@ -22,7 +23,7 @@ use Joomla\CMS\Language\Text;
     </table>
 
         <br />
-        <div style="<?php // echo $show_att_ranking;?>float:left;width:96%;clear:both;margin:0 0 25px 0;">
+
         <table class="<?php echo $this->config['ranking_table_class'];?>">
 
 			<tr class="sectiontableheader">

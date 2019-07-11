@@ -11,31 +11,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-// Set display style dependent on what stat parts should be shown
-$show_general = 'none';
-if ( $this->config['show_general_stats'] == 1 )
-{
-	$show_general = 'inline';
-}
-
-$show_goals = 'none';
-if ( $this->config['show_goals_stats'] == 1 )
-{
-	$show_goals = 'inline';
-}
-
-$show_attendance = 'none';
-if ( $this->config['show_attendance_stats'] == 1 )
-{
-	$show_attendance = 'inline';
-}
-
-$show_flash = '';
-if ( $this->config['show_goals_stats_flash'] == 0 )
-{
-	$show_flash = 'display:none;';
-}
-
 /**
  * Make sure that in case extensions are written for mentioned (common) views,
  * that they are loaded i.s.o. of the template of this view

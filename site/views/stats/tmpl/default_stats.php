@@ -11,11 +11,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+
 ?>
-
-<div id="jl_stats">
-
-<div class="jl_substats">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="stats">
 <table class="<?php echo $this->config['stats_table_class'];?>">
 <thead>
 	<tr class="sectiontableheader">
@@ -101,6 +99,4 @@ use Joomla\CMS\Language\Text;
 	<?php endif; ?>
 </tbody>	
 </table>
-</div>
-
 </div>

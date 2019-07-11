@@ -46,14 +46,14 @@ datasets: [{
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
-				data: [<?php echo implode(',', $this->forSum); ?>
+				data: [<?php echo implode(',', $this->homeSum); ?>
 				]
 			}, {
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
 				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.blue,
 				borderWidth: 1,
-				data: [<?php echo implode(',', $this->againstSum); ?>
+				data: [<?php echo implode(',', $this->awaySum); ?>
 				]
 			}]
 
