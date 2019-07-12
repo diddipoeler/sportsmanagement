@@ -26,7 +26,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 if (!$this->showediticon)
 {
-	Factory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
+	//Factory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
 }
 $document = Factory::getDocument();
 

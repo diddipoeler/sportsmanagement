@@ -35,50 +35,39 @@ class sportsmanagementViewStats extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js);    
-		// Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Get a refrence of the page instance in joomla
-		//$document = Factory::getDocument();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$this->jinput->getint( "cfg_which_database", 0 ));
 
-		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getint( "cfg_which_database", 0 ));
+		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$this->jinput->getint( "cfg_which_database", 0 ) );
+		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$this->jinput->getint( "cfg_which_database", 0 ) );
 
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$jinput->getint( "cfg_which_database", 0 ) );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$jinput->getint( "cfg_which_database", 0 ) );
-//		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$jinput->getint( "cfg_which_database", 0 ) );
-
-		$this->project = sportsmanagementModelProject::getProject($jinput->getint( "cfg_which_database", 0 ));
+		$this->project = sportsmanagementModelProject::getProject($this->jinput->getint( "cfg_which_database", 0 ));
 		if ( isset( $this->project ) )
 		{
-			$this->division = sportsmanagementModelProject::getDivision($model::$divisionid,$jinput->getint( "cfg_which_database", 0 ));
-			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($jinput->getint( "cfg_which_database", 0 ));
+			$this->division = sportsmanagementModelProject::getDivision($this->jinput->getint( "division", 0 ),$this->jinput->getint( "cfg_which_database", 0 ));
+			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($this->jinput->getint( "cfg_which_database", 0 ));
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
 			$this->config = $config;
-			$this->model = $model;
 			$this->tableconfig = $tableconfig;
 			$this->eventsconfig = $eventsconfig;
-			$this->actualround = sportsmanagementModelProject::getCurrentRoundNumber($jinput->getint( "cfg_which_database", 0 ));
-            $this->highest_home = $model->getHighest('HOME');
-			$this->highest_away = $model->getHighest('AWAY');
-            $this->totals = $model->getSeasonTotals();
-			$this->totalrounds = $model->getTotalRounds();
-			$this->attendanceranking = $model->getAttendanceRanking();
-			$this->bestavg = $model->getBestAvg();
-			$this->bestavgteam = $model->getBestAvgTeam();
-			$this->worstavg = $model->getWorstAvg();
-			$this->worstavgteam = $model->getWorstAvgTeam();
+			$this->actualround = sportsmanagementModelProject::getCurrentRoundNumber($this->jinput->getint( "cfg_which_database", 0 ));
+            $this->highest_home = $this->model->getHighest('HOME');
+			$this->highest_away = $this->model->getHighest('AWAY');
+            $this->totals = $this->model->getSeasonTotals();
+			$this->totalrounds = $this->model->getTotalRounds();
+			$this->attendanceranking = $this->model->getAttendanceRanking();
+			$this->bestavg = $this->model->getBestAvg();
+			$this->bestavgteam = $this->model->getBestAvgTeam();
+			$this->worstavg = $this->model->getWorstAvg();
+			$this->worstavgteam = $this->model->getWorstAvgTeam();
 
 			$limit = 3;
 
 			$this->limit = $limit;
             
-$rounds	= sportsmanagementModelProject::getRounds('ASC',$jinput->getint( "cfg_which_database", 0 ));
+$rounds	= sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
 $this->round_labels = array();
 foreach ($rounds as $r) 
 {
@@ -100,13 +89,12 @@ $this->round_labels[] = '"'.$r->name.'"';
 		}
 		$this->document->setTitle( $pageTitle );
         
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $view = $this->jinput->getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 
-//		parent::display( $tpl );
 	}
 
 	/**
