@@ -258,26 +258,29 @@ try{
 $db->setQuery( $query );
 $pro_result = $db->loadObject();
 }
-        catch (Exception $e)
+catch (Exception $e)
 {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$query->dump()), Log::ERROR, 'jsmerror');
+return false;
 }
 
-try{ 
 $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_season_team_id');
 $query->where('team_id = '.$team_id);
 $query->where('season_id = '.$pro_result->season_id );
-
+try{ 
 $db->setQuery( $query );
 $season_team_id = $db->loadResult();
 }
-        catch (Exception $e)
+catch (Exception $e)
 {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$query->dump()), Log::ERROR, 'jsmerror');
+return false;
 }
 
 // team ist der saison nicht zugeordnet
@@ -295,6 +298,7 @@ $result_season_team_id = Factory::getDbo()->insertObject('#__sportsmanagement_se
     $code = $e->getCode(); // Returns '500';
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
+
 if ( $result_season_team_id )
 {
 $season_team_id = $db->insertid();
