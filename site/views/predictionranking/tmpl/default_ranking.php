@@ -270,21 +270,10 @@ When viewing on anything larger than 768px wide, you will not see any difference
 			</tr>
             </thead>
 			<?php
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-        {
-				echo 'default_ranking - this->predictionMember<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-        }
-        
+       
 				$k = 0;
 				$memberList = sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar);
-				//$memberList = $this->items;
-				
-				if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-        {
-        echo 'getPredictionMembersList<br /><pre>~' . print_r($memberList,true) . '~</pre><br />';
-				}
-				
+			
 				$membersResultsArray = array();
 				$membersDataArray = array();
                 
@@ -297,24 +286,11 @@ When viewing on anything larger than 768px wide, you will not see any difference
         // anfang der tippmitglieder
 				foreach ($memberList AS $member)
 				{
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />this->model->page<pre>~' . print_r($this->model->page,true) . '~</pre><br />';
-}
-                              
 					$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$showProjectID,
 																								sportsmanagementModelPrediction::$from,
 																								sportsmanagementModelPrediction::$to,
 																								$member->user_id,
 																								sportsmanagementModelPrediction::$type);
-																								
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{																			
-echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
-}
-					
-					
 					
 					$predictionsCount = 0;
 					$totalPoints = 0;
@@ -477,10 +453,6 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
-					//tobe removed
-					//$imgTitle = Text::sprintf('JL_PRED_AVATAR_OF',$member->name);
-
-					
 					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
                     $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
@@ -537,37 +509,17 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 				
                 
                 }
-        // ende der tippmitglieder
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-				echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
-				echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
-                if ( $this->model->pggrouprank )
-                {
-                echo '<br />groupmembersResultsArray<pre>~' . print_r($groupmembersResultsArray,true) . '~</pre><br />';
-				echo '<br />groupmembersDataArray<pre>~' . print_r($groupmembersDataArray,true) . '~</pre><br />';
-                }
-				}
-                
+        /** ende der tippmitglieder */
                 if ( sportsmanagementModelPrediction::$pggrouprank )
-                    {
-                        $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($groupmembersResultsArray,$this->config);
-                        }
-                        else
-                        {
-                        $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
-                        }
-
+                {
+                $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($groupmembersResultsArray,$this->config);
+                }
+                else
+                {
+                $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
+                }
 				
 				$recordCount = count($computedMembersRanking);
-				
-				if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-				echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
-				}
-				
-				
 
 				$i=1;
                 
@@ -596,16 +548,11 @@ foreach ($computedMembersRanking AS $key => $value)
 				{				
 				foreach ( $this->items as $items )
 				{
-				//if ( $key == $items->pmID )
                 if ( $key == $items->$schluessel )
 				{
-
-					//$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
 					$styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:'.$this->config['background_color_ranking'].'; color:black; " ' : '';
-					//$class = ($this->predictionMember->pmID==$key) ? 'sectiontableentry1' : $class;
 					$tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
                     $class = '';
-
 					
                         ?>
                         

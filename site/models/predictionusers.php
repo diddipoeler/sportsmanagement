@@ -410,12 +410,15 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		}	
 
     
+	
 		/**
 		 * sportsmanagementModelPredictionUsers::getRanksChartData()
 		 * 
-		 * @return void
+		 * @param integer $predictionGameID
+		 * @param integer $round_id
+		 * @return
 		 */
-		function getRanksChartData( )
+		function getRanksChartData($predictionGameID=0,$round_id=0 )
 		{
 // Reference global application object
         $app = Factory::getApplication();
@@ -428,21 +431,22 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
-			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
+//			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
+//			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
 
 // Select some fields
-        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name');
+        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name,pr.user_id');
         $query->select('SUM(pr.points) AS points');
         $query->from('#__sportsmanagement_round AS rounds');
         $query->join('INNER', '#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');
         $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = matches.id');
         $query->join('LEFT', '#__sportsmanagement_prediction_member AS prmem ON prmem.user_id = pr.user_id');
         
-        $query->where('pr.prediction_id = '.$pgid);
+        $query->where('pr.prediction_id = '.$predictionGameID);
+        $query->where('rounds.id = '.$round_id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        $query->where('prmem.id = '.$uid);
-        $query->group('rounds.roundcode');
+        $query->group('rounds.roundcode,pr.user_id');
+        $query->order('points DESC');
 
     		$db->setQuery( $query );
     		$result = $db->loadObjectList();

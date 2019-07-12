@@ -38,6 +38,8 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js);    
         sportsmanagementModelProject::$projectid = $this->jinput->getint( "pj", 0 );
+        $this->predictionMemberID = $this->jinput->getint('uid','0');
+        $this->predictionGameID = $this->jinput->getint('prediction_id','0');
         $this->rounds = sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
 $this->round_labels = array();
 foreach ($this->rounds as $r) 
@@ -46,7 +48,7 @@ $this->round_labels[] = '"'.$r->name.'"';
 }
 $this->project_id = $this->jinput->getint( "pj", 0 );
 		
-		$model		= $this->getModel();
+		$model = $this->getModel();
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SECTION_TITLE');
@@ -262,11 +264,19 @@ $this->userpoints = $userpoints;
 	 */
 	function _setRankingChartdata($config)
 	{
-	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
+	   $this->userranking = array();
+	   //$data = sportsmanagementModelPredictionUsers::getRanksChartData();
        sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint( "prediction_id", 0 ) ;
        $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
        $this->RankingCountMax = sizeof($memberlist);
        //echo 'project_id <pre>'.print_r($this->project_id,true).'</pre>';
+       
+       
+foreach ($this->rounds as $r) 
+{
+$data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID,$r->id);    
+echo 'data <pre>'.print_r($data,true).'</pre>';    
+}
        
 /**
  * [6] => stdClass Object
