@@ -41,8 +41,8 @@ var chart = new Chart(ctx, {
 
 datasets: [{
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
-				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.red,
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->userranking); ?>
 				]

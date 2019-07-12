@@ -271,6 +271,7 @@ $this->userpoints = $userpoints;
 	function _setRankingChartdata($config)
 	{
 	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
+       sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint( "prediction_id", 0 ) ;
        $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
        $this->RankingCountMax = sizeof($memberlist);
        //echo '<pre>'.print_r($memberlist,true).'</pre>';
