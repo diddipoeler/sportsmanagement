@@ -435,7 +435,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 //			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
 
 // Select some fields
-        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name,pr.user_id');
+        $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name,pr.user_id,prmem.id as member_id');
         $query->select('SUM(pr.points) AS points');
         $query->from('#__sportsmanagement_round AS rounds');
         $query->join('INNER', '#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');

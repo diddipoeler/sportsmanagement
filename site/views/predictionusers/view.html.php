@@ -279,7 +279,7 @@ $data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictio
 
 foreach ($data as $key => $value ) 
 {
-if ( $value->user_id == $this->predictionMemberID )
+if ( $value->member_id == $this->predictionMemberID )
 {
 $this->userranking[] = $key + 1;    
 }
