@@ -272,8 +272,8 @@ $this->userpoints = $userpoints;
 	{
 	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
        $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
-       
-       echo '<pre>'.print_r($memberlist,true).'</pre>';
+       $this->RankingCountMax = sizeof($memberlist);
+       //echo '<pre>'.print_r($memberlist,true).'</pre>';
        
 /**
  * [6] => stdClass Object
