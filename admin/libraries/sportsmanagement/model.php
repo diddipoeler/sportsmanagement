@@ -20,6 +20,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Input\Input;
+use Joomla\CMS\Log\Log;
 
 /**
  * JSMModelAdmin
@@ -1459,6 +1460,12 @@ if( $this->jsmapp->isClient('site') )
     
 }   
 	*/
+/**
+ * alle fehlermeldungen online ausgeben
+ * mit der kategorie: jsmerror       
+ */ 
+Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+    
         }    
     
 }

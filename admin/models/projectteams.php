@@ -246,7 +246,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	$db = Factory::getDBO();
     $query = $db->getQuery(true);	
     $app = Factory::getApplication();    
-   
+    $season_team_id = 0;
 
 // holen wir uns das land der liga
 $query->clear();
