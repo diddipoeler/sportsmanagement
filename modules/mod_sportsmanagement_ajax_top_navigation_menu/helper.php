@@ -1110,7 +1110,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				break;	
 				
 			case "stats":
-				$link = sportsmanagementHelperRoute::getStatsRoute( $this->_project_slug, $this->_division_id );
+                $routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['tid'] = $this->_team_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 				
 			case "statsranking":
