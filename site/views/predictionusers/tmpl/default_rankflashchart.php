@@ -40,7 +40,7 @@ var chart = new Chart(ctx, {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 
 datasets: [{
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?>',
 				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.blue,
 				borderWidth: 1,
