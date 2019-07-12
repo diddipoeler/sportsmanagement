@@ -1692,6 +1692,7 @@ if ( $configprediction['admin_debug'] )
 		return $results;
 	}
 	
+	
 	/**
 	 * sportsmanagementModelPrediction::getPredictionMemberList()
 	 * 
@@ -1699,7 +1700,7 @@ if ( $configprediction['admin_debug'] )
 	 * @param mixed $actUserId
 	 * @return
 	 */
-	static function getPredictionMemberList(&$config,$actUserId=null)
+	static function getPredictionMemberList($config=NULL,$actUserId=NULL)
 	{
 	  // Reference global application object
         $app = Factory::getApplication();
