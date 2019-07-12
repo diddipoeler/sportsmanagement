@@ -40,9 +40,9 @@ var chart = new Chart(ctx, {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 
 datasets: [{
-				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
-				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.red,
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?>',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->userranking); ?>
 				]
@@ -69,7 +69,7 @@ ticks: {
 suggestedMin: 0,   
 suggestedMax: <?php echo $this->RankingCountMax; ?>, 
 beginAtZero:false,
-reverse: false,
+reverse: true,
 stepSize:1,
 callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
 }

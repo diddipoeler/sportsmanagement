@@ -1115,7 +1115,6 @@ $routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_da
 $routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
-$routeparameter['tid'] = $this->_team_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 				
