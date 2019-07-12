@@ -85,21 +85,15 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         self::$from	= $jinput->getVar('from',self::$roundID);
 		self::$to = $jinput->getVar('to',self::$roundID);
 		self::$predictionGameID	= $jinput->getVar('prediction_id','0');
-        
         self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
-        
 		self::$predictionMemberID = $jinput->getVar('uid','0');
 		self::$joomlaUserID	= $jinput->getVar('juid','0');
-		
         self::$pggroup = $jinput->getVar('pggroup','0');
         self::$pggrouprank = $jinput->getInt('pggrouprank',0);
-		
 		self::$isNewMember = $jinput->getInt('s',0);
 		self::$tippEntryDone = $jinput->getInt('eok',0);
-		
 		self::$type	= $jinput->getInt('type',0);
 		self::$page	= $jinput->getInt('page',1);
-
 		parent::__construct();
 	}
   
@@ -170,10 +164,6 @@ $query->where('id = '.(int)$roundIDnew);
 $db->setQuery( $query );
 $roundIDnew = $db->loadResult();
 
-//$tblround = Table::getInstance("round", "sportsmanagementTable");
-//$tblround->load((int)$roundIDnew);
-//$roundIDnew = $tblround->id.':'.$tblround->alias;
-//self::$roundID = $roundIDnew;
 sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
 }
@@ -1745,7 +1735,7 @@ if ( $configprediction['admin_debug'] )
 
 		}
 		$db->setQuery($query);
-		$results=$db->loadObjectList();
+		$results = $db->loadObjectList();
 		return $results;
 	}
 

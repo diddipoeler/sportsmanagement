@@ -82,7 +82,7 @@ $this->round_labels[] = '"'.$r->name.'"';
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = Factory::getUser();
 			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
-			$this->memberData = $model->memberPredictionData();
+			$this->memberData = $this->model->memberPredictionData();
 			$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 			
 			if (!empty($this->predictionMember->user_id)) 
@@ -135,7 +135,6 @@ $this->round_labels[] = '"'.$r->name.'"';
 				$favTeamsList[$value[0]] = $value[1];
 			}
 
-			//echo '<br /><pre>~' . print_r($this->predictionMember->champ_tipp,true) . '~</pre><br />';
 			if ( empty($this->predictionMember->champ_tipp) )
 			{
 				$this->predictionMember->champ_tipp = '0,0';
@@ -166,7 +165,7 @@ $this->round_labels[] = '"'.$r->name.'"';
 				{
          
 					$projectteams[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
-					if ( $res = $model->getPredictionProjectTeams($predictionProject->project_id) )
+					if ( $res = $this->model->getPredictionProjectTeams($predictionProject->project_id) )
 					{
 						$projectteams = array_merge($projectteams,$res);
 					}
@@ -190,7 +189,7 @@ $this->round_labels[] = '"'.$r->name.'"';
           else
           {
           // ist die saison beendet ?
-          $predictionProjectSettings = $model->getPredictionProject($predictionProject->project_id);
+          $predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id);
           $time=strtotime($predictionProject->start_date);
           $time += 86400; // Ein Tag in Sekunden
           $showDate=date("Y-m-d",$time);
@@ -272,6 +271,9 @@ $this->userpoints = $userpoints;
 	function _setRankingChartdata($config)
 	{
 	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
+       $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
+       
+       echo '<pre>'.print_r($memberlist,true).'</pre>';
        
 /**
  * [6] => stdClass Object

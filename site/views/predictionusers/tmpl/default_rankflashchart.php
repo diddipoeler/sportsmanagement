@@ -66,10 +66,10 @@ datasets: [{
     scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 0,   
+suggestedMin: 1,   
 suggestedMax: <?php echo $this->RankingCountMax; ?>, 
 beginAtZero:false,
-reverse: false,
+reverse: true,
 stepSize:1,
 callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
 }
