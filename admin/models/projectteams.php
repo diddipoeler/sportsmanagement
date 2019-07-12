@@ -14,6 +14,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelProjectteams
@@ -253,16 +254,31 @@ $query->select('l.country,p.season_id,p.project_type,p.master_template,p.extende
 $query->from('#__sportsmanagement_league as l');
 $query->join('INNER','#__sportsmanagement_project as p on p.league_id = l.id');
 $query->where('p.id = '.$project_id);
+try{ 
 $db->setQuery( $query );
 $pro_result = $db->loadObject();
+}
+        catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+}
 
+try{ 
 $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_season_team_id');
 $query->where('team_id = '.$team_id);
 $query->where('season_id = '.$pro_result->season_id );
+
 $db->setQuery( $query );
 $season_team_id = $db->loadResult();
+}
+        catch (Exception $e)
+{
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+}
 
 // team ist der saison nicht zugeordnet
 if ( !$season_team_id )
