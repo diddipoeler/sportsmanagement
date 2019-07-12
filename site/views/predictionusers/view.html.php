@@ -37,6 +37,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js);    
+        sportsmanagementModelProject::$projectid = $this->jinput->getint( "pj", 0 );
         $this->rounds = sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
 $this->round_labels = array();
 foreach ($this->rounds as $r) 
@@ -265,7 +266,7 @@ $this->userpoints = $userpoints;
        sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint( "prediction_id", 0 ) ;
        $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
        $this->RankingCountMax = sizeof($memberlist);
-       echo 'project_id <pre>'.print_r($this->project_id,true).'</pre>';
+       //echo 'project_id <pre>'.print_r($this->project_id,true).'</pre>';
        
 /**
  * [6] => stdClass Object
