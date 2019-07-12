@@ -265,17 +265,13 @@ $this->userpoints = $userpoints;
 	function _setRankingChartdata($config)
 	{
 	   $this->userranking = array();
-	   //$data = sportsmanagementModelPredictionUsers::getRanksChartData();
        sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint( "prediction_id", 0 ) ;
        $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
        $this->RankingCountMax = sizeof($memberlist);
-       //echo 'project_id <pre>'.print_r($this->project_id,true).'</pre>';
-       
        
 foreach ($this->rounds as $r) 
 {
 $data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID,$r->id);    
-//echo 'data <pre>'.print_r($data,true).'</pre>';    
 
 foreach ($data as $key => $value ) 
 {
@@ -287,17 +283,7 @@ $this->userranking[] = $key + 1;
 
 
 }
-       
-/**
- * [6] => stdClass Object
- *         (
- *             [id] => 1590634:gruppe-3
- *             [round_date_first] => 0000-00-00
- *             [round_date_last] => 0000-00-00
- *             [name] => Gruppe 3
- *             [roundcode] => 4
- *         )
- */
+      
 
 	}
 }

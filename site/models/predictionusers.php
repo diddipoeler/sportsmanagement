@@ -431,9 +431,6 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-//			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
-//			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
-
 // Select some fields
         $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name,pr.user_id,prmem.id as member_id');
         $query->select('SUM(pr.points) AS points');

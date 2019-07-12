@@ -39,16 +39,16 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js); 
+        sportsmanagementModelProject::$projectid = $this->jinput->getint( "pj", 0 );
+        $this->predictionMemberID = $this->jinput->getint('uid','0');
+        $this->predictionGameID = $this->jinput->getint('prediction_id','0');
         $this->rounds = sportsmanagementModelProject::getRounds('ASC',$this->jinput->getint( "cfg_which_database", 0 ));
 $this->round_labels = array();
 foreach ($this->rounds as $r) 
 {
 $this->round_labels[] = '"'.$r->name.'"';
 }
-   
-//		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
-//		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
-		
+	
     $mdlPredUsers = BaseDatabaseModel::getInstance("predictionusers", "sportsmanagementModel");
     
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
@@ -292,81 +292,29 @@ $this->userpoints = $userpoints;
 	 */
 	function _setRankingChartdata($config)
 	{
-	   $data = sportsmanagementModelPredictionUsers::getRanksChartData();
+$this->userranking = array();
+       sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint( "prediction_id", 0 ) ;
+       $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
+       $this->RankingCountMax = sizeof($memberlist);
+       
+foreach ($this->rounds as $r) 
+{
+$data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID,$r->id);    
+
+foreach ($data as $key => $value ) 
+{
+if ( $value->member_id == $this->predictionMemberID )
+{
+$this->userranking[] = $key + 1;    
+}
+}
+
+
+}
        
        
-//		JLoader::import('components.com_sportsmanagement.assets.classes.open-flash-chart.open-flash-chart', JPATH_SITE);
-//
-//		//$data = $this->get('RankChartData');		
-//		//some example data....fixme!!!
-//		$data_1 = array();
-//		$data_2 = array();
-//
-//		for( $i=0; $i<6.2; $i+=0.2 )
-//		{
-//			$data_1[] = (sin($i) * 1.9) + 10;
-//		}
-//
-//		for( $i=0; $i<6.2; $i+=0.2 )
-//		{
-//			$data_2[] = (sin($i) * 1.3) + 10;
-//		}
-//		
-//		$chart = new open_flash_chart();
-//		//***********
-//		
-//		//line 1
-//		$d = new $config['dotstyle_1']();
-//		$d->size((int) $config['line1_dot_strength']);
-//		$d->halo_size(1);
-//		$d->colour($config['line1']);
-//		$d->tooltip('Rank: #val#');
-//
-//		$line = new line();
-//		$line->set_default_dot_style($d);
-//		$line->set_values( $data_1 );
-//		$line->set_width( (int) $config['line1_strength'] );
-//		///$line->set_key($team->name, 12);
-//		$line->set_colour( $config['line1'] );
-//		$line->on_show(new line_on_show($config['l_animation_1'], $config['l_cascade_1'], $config['l_delay_1']));
-//		$chart->add_element($line);
-//		
-//		//Line 2
-//		$d = new $config['dotstyle_2']();
-//		$d->size((int) $config['line2_dot_strength']);
-//		$d->halo_size(1);
-//		$d->colour($config['line2']);
-//		$d->tooltip('Rank: #val#');
-//
-//		$line = new line();
-//		$line->set_default_dot_style($d);
-//		$line->set_values( $data_2);
-//		$line->set_width( (int) $config['line2_strength'] );
-//		//$line->set_key($team->name, 12);
-//		$line->set_colour( $config['line2'] );
-//		$line->on_show(new line_on_show($config['l_animation_2'], $config['l_cascade_2'], $config['l_delay_2']));
-//		$chart->add_element($line);
-//		
-//		//X-axis
-//		$x = new x_axis();
-//		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
-//		//$x->set_labels_from_array($round_labels);
-//		$chart->set_x_axis( $x );
-//		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
-//		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
-//		$chart->set_x_legend( $x_legend );
-//
-//		//Y-axis
-//		$y = new y_axis();
-//		$y->set_range( 0, @max($data_1)+2, 1);
-//		$y->set_steps(round(@max($data_1)/8));
-//		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
-//		$chart->set_y_axis( $y );
-//		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
-//		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
-//		$chart->set_y_legend( $y_legend );
-//		
-//		$this->rankingchartdata = $chart;
+
+
 	}
 }
 ?>
