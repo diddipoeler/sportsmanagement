@@ -17,6 +17,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Log\Log;
 
 require_once (JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php');
 
@@ -139,7 +140,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         if (count($images)) {
             foreach ($images as $image) {
                 if ($image !== FilterInput::clean($image, 'path')) {
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
                     continue;
                 }
 

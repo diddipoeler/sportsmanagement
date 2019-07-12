@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelClubInfo
@@ -66,7 +67,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel {
 
 	 if ( empty(self::$projectid) )
 	 {
-	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::ERROR, 'jsmerror');	 
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');	 
 	 }
         parent::__construct();
     }
@@ -383,7 +384,7 @@ $query->group('c.name');
 
 if ( empty(self::$projectid) )
 	 {
-	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::ERROR, 'jsmerror');	 
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');	 
 	 }
 	    
 	    if ( $club_id )

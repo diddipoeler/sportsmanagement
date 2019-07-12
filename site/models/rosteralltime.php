@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelRosteralltime
@@ -255,12 +256,12 @@ return $db->loadObjectList();
 		{
 			if (!self::$teamid)
 			{
-				JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), JLog::WARNING, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), Log::WARNING, 'jsmerror');
 				return false;
 			}
 			if (!self::$projectid)
 			{
-				JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), JLog::WARNING, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), Log::WARNING, 'jsmerror');
 				return false;
 			}
             

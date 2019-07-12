@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerjsminlinehockey
@@ -101,39 +102,39 @@ $this->setRedirect ( $link, $msg );
 					File::delete ( $dest );
 				}
 				if (! File::upload ( $tempFilePath, $dest )) {
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), JLog::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 					return;
 				} else {
 					if (strtolower ( File::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), JLog::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 							return false;
 						}
 						File::delete ( $dest );
 						$src = Folder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
-							JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'), JLog::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 							// todo: delete every extracted file / directory
 							return false;
 						}
 						if (strtolower ( File::getExt ( $src [0] ) ) == 'xls') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'), JLog::WARNING, 'jsmerror');
+								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						} else {
-							JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED'), JLog::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED'), Log::WARNING, 'jsmerror');
 							return;
 						}
 					} else {
 						if (strtolower ( File::getExt ( $dest ) ) == 'xls' || strtolower ( File::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), JLog::WARNING, 'jsmerror');
+								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						} else {
-							JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), JLog::WARNING, 'jsmerror');
+							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 							return false;
 						}
 					}

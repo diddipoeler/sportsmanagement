@@ -15,6 +15,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
@@ -151,7 +152,7 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
         
         
         $count_teams = count($result);
-JLog::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), JLog::INFO, 'jsmerror');	    
+Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    
 
         if (count($result)) {
             foreach ($result as $r) {
@@ -245,7 +246,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 }
 else
 {
-JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::WARNING, 'jsmerror');
+Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
 			return false;    
 }
 
@@ -298,17 +299,17 @@ JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::WARNING,
     
     if ( !$res )
         {
-	    JLog::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), JLog::ERROR, 'jsmerror');
+	    Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::ERROR, 'jsmerror');
         }
               
     $this->_matches = $res;
     
     $count_matches = count($res);
-JLog::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), JLog::INFO, 'jsmerror');	    
+Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsmerror');	    
     }
     else
     {
-	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::WARNING, 'jsmerror');
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
 			return false;    
     }  
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
@@ -743,7 +744,7 @@ $query->clear();
         $this->project_ids_array = $result;
        
         $count_project = count($result);
-JLog::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), JLog::INFO, 'jsmerror');	    
+Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::INFO, 'jsmerror');	    
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 
@@ -1040,7 +1041,7 @@ $app = Factory::getApplication();
                 if (method_exists($this, '_cmp' . $v)) {
                     $crit[] = '_cmp' . $v;
                 } else {
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, JLog::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
                 }
             }
             // set a default criteria if empty

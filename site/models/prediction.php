@@ -17,6 +17,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
+
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 jimport('joomla.utilities.utility' );
@@ -586,16 +588,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				$db->setQuery($query);
 				if ( !$result = $db->loadResult() )
 				{
-					JLog::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE',$template,$predictionGame->master_template), JLog::INFO, 'jsmerror');
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), JLog::INFO, 'jsmerror');
+					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE',$template,$predictionGame->master_template), Log::INFO, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), Log::INFO, 'jsmerror');
 					echo '<br /><br />';
 					return false;
 				}
 			}
 			else
 			{
-				JLog::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_TEMPLATE',$template,self::$predictionGameID), JLog::INFO, 'jsmerror');
-				JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), JLog::INFO, 'jsmerror');
+				Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_TEMPLATE',$template,self::$predictionGameID), Log::INFO, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), Log::INFO, 'jsmerror');
 				echo '<br /><br />';
 				return false;
 			}

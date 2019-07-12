@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.filesystem.file');
 jimport( 'joomla.utilities.array' );
@@ -86,7 +87,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), Log::WARNING, 'jsmerror');
 		}
 		else
 		{
@@ -99,7 +100,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             $this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), JLog::WARNING, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), Log::WARNING, 'jsmerror');
 			}
 			else 
       {
@@ -243,7 +244,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JLog::add(Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), JLog::WARNING, 'jsmerror');
+				Log::add(Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), Log::WARNING, 'jsmerror');
 			}
 			else {
 				// get the project datas

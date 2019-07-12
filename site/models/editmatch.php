@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
-
+use Joomla\CMS\Log\Log;
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
@@ -167,8 +167,8 @@ return $result;
         }
         catch (Exception $e)
         {
-        JLog::add(Text::_($e->getCode()), JLog::ERROR, 'jsmerror');    
-		JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');    
+        Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
+		Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
         }
        
     }

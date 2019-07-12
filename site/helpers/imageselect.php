@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * ImageSelectSM
@@ -263,14 +264,14 @@ $app = Factory::getApplication();
 		$allowable	= array ('gif','jpg','jpeg','png','bmp','svg', 'GIF','JPG','JPEG','PNG','BMP','SVG');
 		if ( !in_array( $fileext, $allowable ) )
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 			return false;
 		}
 
 		//Check filesize
 		if ( $imagesize > $sizelimit )
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 			return false;
 		}
 
@@ -291,7 +292,7 @@ $app = Factory::getApplication();
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if ( stristr( $xss_check, '<' . $tag . ' ') || stristr( $xss_check, '<' . $tag . '>' ) )
 			{
-				JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN'), JLog::WARNING, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN'), Log::WARNING, 'jsmerror');
 				return false;
 			}
 		}

@@ -9,11 +9,10 @@
  * @subpackage predictionrules
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Log\Log;
 jimport('joomla.application.component.view');
 
 /**
@@ -67,7 +66,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 		}
 		else
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), JLog::INFO, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
 		}
         
 	}

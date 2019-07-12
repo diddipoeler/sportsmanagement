@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelRoster
@@ -96,12 +97,12 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			{
 				if (!self::$teamid)
 				{
-                    JLog::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'), JLog::WARNING, 'jsmerror');
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'), Log::WARNING, 'jsmerror');
 					return false;
 				}
 				if (!self::$projectid)
 				{
-                    JLog::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'), JLog::WARNING, 'jsmerror');
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'), Log::WARNING, 'jsmerror');
 					return false;
 				}
                 
@@ -232,8 +233,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             self::$_players = $db->loadObjectList();
             }
 catch (Exception $e){
-JLog::add(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.$e->getMessage().'</pre>'), JLog::ERROR, 'jsmerror');
-JLog::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.$query->dump().'</pre>'), JLog::ERROR, 'jsmerror');     
+Log::add(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.$e->getMessage().'</pre>'), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.$query->dump().'</pre>'), Log::ERROR, 'jsmerror');     
 }
             
             

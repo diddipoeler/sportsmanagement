@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -135,7 +136,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         if (!$not_assigned && !$starters_id) {
             $this->playersoptionsout = $playersoptionsout;
             $this->playersoptionsin = $playersoptionsin;
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'), Log::WARNING, 'jsmerror');
             return;
         }
 
@@ -144,7 +145,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         if (!$projectpositions) {
             $this->playersoptionsout = $playersoptionsout;
             $this->playersoptionsin = $playersoptionsin;
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'), Log::WARNING, 'jsmerror');
             return;
         }
 
@@ -276,7 +277,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         // events
         $events = sportsmanagementModelMatch::getEventsOptions($this->project_id, 0);
         if (!$events) {
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), Log::WARNING, 'jsmerror');
             return;
         }
         $eventlist = array();
@@ -388,7 +389,7 @@ $document->addScriptDeclaration( $javascript );
         // stats
         $stats = sportsmanagementModelMatch::getInputStats($this->project_id);
         if (!$stats) {
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS'), Log::WARNING, 'jsmerror');
         }
         $playerstats = sportsmanagementModelMatch::getMatchStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
         $staffstats = sportsmanagementModelMatch::getMatchStaffStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
@@ -498,7 +499,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
         $squad = array();
         if (!$projectpositions) {
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS'), JLog::WARNING, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS'), Log::WARNING, 'jsmerror');
             return;
         }
 

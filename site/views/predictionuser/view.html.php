@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 JLoader::import('components.com_sportsmanagement.models.predictionusers', JPATH_SITE);
 
 /**
@@ -252,7 +253,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('se
 		}
 		else
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), JLog::INFO, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
 		}
 
 

@@ -14,6 +14,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelTeamStats
@@ -464,7 +465,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         
         if ( !self::$totalrounds )
         {
-            JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), JLog::INFO, 'jsmerror');	 
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), Log::INFO, 'jsmerror');	 
         }
         
         return self::$totalrounds;

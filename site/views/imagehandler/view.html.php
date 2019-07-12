@@ -9,7 +9,6 @@
  * @subpackage imagehandler
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -17,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.application.component.view');
 
@@ -77,7 +77,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             parent::display($tpl);
         } else {
             //no images in the folder, redirect to uploadscreen and raise notice
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), JLog::INFO, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), Log::INFO, 'jsmerror');
             $this->setLayout('upload');
             $this->form = $this->get('form');
             $this->_displayupload($tpl);

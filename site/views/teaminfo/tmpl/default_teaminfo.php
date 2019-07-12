@@ -13,10 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 ?>
 <?PHP
 if (!isset($this->team)) {
-	JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), JLog::WARNING, 'jsmerror');
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), Log::WARNING, 'jsmerror');
 } else {
     ?>
 	<!-- anfang default_teaminfo -->

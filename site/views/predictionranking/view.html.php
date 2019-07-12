@@ -9,12 +9,12 @@
  * @subpackage predictionranking
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPredictionRanking
@@ -104,7 +104,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 		}
 		else
 		{
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), JLog::INFO, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
 		}
 	}
 

@@ -141,7 +141,7 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
 		$db->setQuery($query);
     if (!$result = $db->loadObjectList()) 
     {
-			JLog::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), JLog::INFO, 'jsmerror');
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::INFO, 'jsmerror');
 		}
 
 		$this->result = $result;
@@ -174,8 +174,7 @@ $db->setQuery( $query );
 $this->ProjectTeams[$value] = $db->loadResult();
    }
 catch (Exception $e){
-	//JLog::add(Text::_($e->getMessage()), JLog::ERROR, 'jsmerror');
-	JLog::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_FAVTEAM'), JLog::INFO, 'jsmerror');
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_FAVTEAM'), Log::INFO, 'jsmerror');
 }
 	  
   }

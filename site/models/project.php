@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Log\Log;
 
 if (! defined('DS'))
 {
@@ -1195,9 +1196,9 @@ $starttime = microtime();
 
 				if (! $result = $db->loadResult())
 				{
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template, JLog::WARNING, 'jsmerror');
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template, JLog::WARNING, 'jsmerror');
-					JLog::add(Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'), JLog::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template, Log::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template, Log::WARNING, 'jsmerror');
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'), Log::WARNING, 'jsmerror');
 					return $arrStandardSettings;
 				}
 			}
