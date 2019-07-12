@@ -500,10 +500,13 @@ function getCountryTeams()
 		
 		$this->jsmquery->clear();
         // Select some fields
-		$this->jsmquery->select('t.id AS value,t.name AS text,t.info,c.logo_big as picture');
+		//$this->jsmquery->select('t.id AS value,t.name AS text,t.info,c.logo_big as picture');
+        $this->jsmquery->select('t.id AS value,t.name AS text,a.name as info,c.logo_big as picture');
         // From table
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
         $this->jsmquery->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+        /** mit alter */
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS a ON a.id = t.agegroup_id');
         
         if ( $result->country )
         {
@@ -512,7 +515,7 @@ function getCountryTeams()
         
         $this->jsmquery->order('t.name ASC');
         
-try{
+        try{
 		$this->jsmdb->setQuery( $this->jsmquery );
 		$result = $this->jsmdb->loadObjectList();
 		return $result;

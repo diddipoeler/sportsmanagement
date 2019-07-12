@@ -18,10 +18,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Router\Route;
 
-
-
-$app = Factory::getApplication();
-
 $view = $this->jinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;
@@ -60,7 +56,7 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 													}
 												}
 											}
-											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $this->app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
@@ -108,7 +104,7 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 													}
 												}
 											}
-											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $this->app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');

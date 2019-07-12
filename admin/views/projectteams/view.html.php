@@ -95,7 +95,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		
 		$lists['divisions'] = $projectdivisions;
         
-        //build the html select list for project assigned teams
+        /** build the html select list for project assigned teams */
 		$ress = array();
 		$res1 = array();
 		$notusedteams = array();
@@ -169,7 +169,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'),'Notice');
 		}
 
-		//build the html select list for teams
+		/** build the html select list for teams */
 		if (count($notusedteams) > 0)
 		{
 			$lists['teams'] = JHtmlSelect::genericlist( $notusedteams, 
@@ -187,7 +187,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($res1);
 		unset($notusedteams);
         
-        //build the html options for nation
+        /** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
 		{
@@ -209,7 +209,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
         }
         
-        //build the html select list for all teams
+        /** build the html select list for all teams */
 		$allTeams = array();
 		$all_teams[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
 		if( $allTeams = $this->model->getAllTeams($this->project_id) ) 
@@ -263,7 +263,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->app->setUserState( "$this->option.project_art_id", $this->project_art_id );
         $this->app->setUserState( "$this->option.sports_type_id", $this->sports_type_id );
         
-        // Set toolbar items for the page
+        /** Set toolbar items for the page */
         if ( $this->project_art_id != 3 )
         {
             $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
@@ -278,8 +278,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         ToolbarHelper::deleteList('', 'projectteams.delete');
 
 		ToolbarHelper::apply('projectteams.saveshort');
-        //sportsmanagementHelper::ToolbarButton('changeteams', 'move', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
-	//sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
 
 $layout = new JLayoutFile('changeteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
