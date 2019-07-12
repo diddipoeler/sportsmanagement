@@ -275,7 +275,17 @@ $this->userpoints = $userpoints;
 foreach ($this->rounds as $r) 
 {
 $data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID,$r->id);    
-echo 'data <pre>'.print_r($data,true).'</pre>';    
+//echo 'data <pre>'.print_r($data,true).'</pre>';    
+
+foreach ($data as $key => $value ) 
+{
+if ( $value->user_id == $this->predictionMemberID )
+{
+$this->userranking[] = $key + 1;    
+}
+}
+
+
 }
        
 /**

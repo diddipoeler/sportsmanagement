@@ -443,10 +443,10 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
         $query->join('LEFT', '#__sportsmanagement_prediction_member AS prmem ON prmem.user_id = pr.user_id');
         
         $query->where('pr.prediction_id = '.$predictionGameID);
-        $query->where('rounds.id = '.$round_id);
+        $query->where('rounds.id = '.(int)$round_id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        $query->group('rounds.roundcode,pr.user_id');
         $query->order('points DESC');
+        $query->group('rounds.roundcode,pr.user_id');
 
     		$db->setQuery( $query );
     		$result = $db->loadObjectList();
