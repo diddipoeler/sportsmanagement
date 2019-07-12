@@ -98,7 +98,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		}
 		else
 		{
-			Factory::getApplication()->enqueueMessage(Text::_sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
 		}
 	}
     
