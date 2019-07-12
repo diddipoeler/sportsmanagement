@@ -384,7 +384,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
 catch (Exception $e) {
 $result = false;
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');	
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.$e->getMessage().'</pre><br>','Error');	
 }
 
 		return $result;
