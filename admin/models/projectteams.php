@@ -65,7 +65,7 @@ if ( isset($this->jsmpost['addteam']) )
 {
 if ( $this->jsmpost['team_id'] )
 {	
-$this->addNewProjectTeam($post['team_id'],self::$_project_id);    
+$this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);    
 }    
 }
             if ( !self::$_project_id )
