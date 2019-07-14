@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Input\Cookie;
 
 if (! defined('DS'))
 {
@@ -100,7 +101,8 @@ $document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$use_css
 }
     
 $is_ajaxed = isset($_SERVER["HTTP_X_REQUESTED_WITH"])?($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") : false;
-
+$cookie = Factory::getApplication()->input->cookie;
+$cookieValue = $cookie->get('tstoken');
 switch ($action) {
 	case "turtushout_shout":
 
@@ -109,7 +111,7 @@ switch ($action) {
 			break;
 		}
 		if ($use_secret_salt && !(
-			Factory::getApplication()->input->getInt('ts') && isset($_COOKIE['tstoken']) && $_COOKIE['tstoken'] == md5($secret_salt . Factory::getApplication()->input->getInt('ts'))
+			Factory::getApplication()->input->getInt('ts') && !empty($cookieValue) && $cookieValue == md5($secret_salt . Factory::getApplication()->input->getInt('ts'))
 		)) {
 			$ajax_return = "Access Error!";
 			break;

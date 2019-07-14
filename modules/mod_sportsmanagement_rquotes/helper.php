@@ -14,6 +14,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Input\Cookie;
 
 /**
  * modRquotesHelper
@@ -222,6 +223,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 static function getSequentialRquote($category, &$params)
 	{
 	   $app = Factory::getApplication();
+       $cookie = Factory::getApplication()->input->cookie;
+       $cookieValue = $cookie->get('rquote');
 	   $x = 0;
        $row = NULL;
        $catid = 0;
@@ -270,9 +273,9 @@ $query = $db->getQuery(true);
  {
 	$numRows = count($rows) - 1;
 
-	if (isset($_COOKIE['rquote']))
+	if ( !empty($cookieValue) )
     {
-		$i = intval($_COOKIE['rquote']);
+		$i = intval( $cookieValue );
 		if ($i < $numRows)
 			$i++;
 		else 

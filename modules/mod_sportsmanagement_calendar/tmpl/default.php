@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_calendar
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -23,7 +22,7 @@ jlcinjectcontainer['<?php echo $module->id ?>'] = '<?php echo $inject_container 
 jlcmodal['<?php echo $module->id ?>'] = '<?php echo $lightbox ?>';
 var calendar_baseurl = '<?php echo Uri::base() ?>';
 <?PHP
-if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
+if ( $lightbox == 1 && ( Factory::getApplication()->input->getVar('format') != 'pdf' ) ) 
 {
 ?>
       window.addEvent('domready', function() {
@@ -139,18 +138,10 @@ case 'headingrow':
 	}
 	else {
 		$sclass = ($cnt%2) ? 'sectiontableentry1' : 'sectiontableentry2';
-       
         $date = HTMLHelper::date($row['timestamp'] , $params->get('dateformat') );
-
-        
         $uhrzeit = date("H:i",$row['timestamp']);
         $time = date("H:i",$row['timestamp']);
-//        echo " - ",$uhrzeit," Uhr".'<br>';
-//        echo 'row datum '. $row['date'].'<br>';
-//        echo 'datum '.$date.'<br>';
-//        echo 'uhrzeit '.$time.'<br>';
-//        echo 'uhrzeit-2 '.$time2.'<br>';
-        
+       
 		switch ($row['type']) {
 			case 'jevents':
 				$style = ($row['color'] != '') ? ' style="border-left:4px '.$row['color'].' solid;"' : '';
@@ -168,7 +159,6 @@ case 'headingrow':
 		<?php
 		break;
 
-		// joomleague birthday
 case 'jlb':
 	?>
 <tr class="<?php echo $sclass;?> jlcal_matchrow">
