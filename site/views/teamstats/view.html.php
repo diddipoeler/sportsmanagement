@@ -44,8 +44,6 @@ $this->document->addScript($js);
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$this->tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking",sportsmanagementModelTeamStats::$cfg_which_database );
-			$this->eventsconfig = sportsmanagementModelProject::getTemplateConfig("eventsranking",sportsmanagementModelTeamStats::$cfg_which_database );
 			$this->actualround = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementModelTeamStats::$cfg_which_database);
 			$this->team = $this->model->getTeam();
             $this->highest_home = $this->model->getHighest('HOME','WIN');

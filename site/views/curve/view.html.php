@@ -49,9 +49,6 @@ $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
 $this->document->addScript($js);    
 }
 
-		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",sportsmanagementModelCurve::$cfg_which_database );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database );
-
 		$this->season_id = sportsmanagementModelCurve::$season_id;
 		$this->cfg_which_database = sportsmanagementModelCurve::$cfg_which_database;
 		
@@ -135,7 +132,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 				$this->overallconfig['seperator'] = ":";
 			}
 
-			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'],sportsmanagementModelCurve::$cfg_which_database);
+			$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],sportsmanagementModelCurve::$cfg_which_database);
 			$this->divisions = $divisions;
 			$this->division = $this->model->getDivision(sportsmanagementModelCurve::$division);
 			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelCurve::$cfg_which_database);
@@ -153,11 +150,11 @@ foreach ($rounds as $r)
 {
 $this->round_labels[] = '"'.$r->name.'"';
 }
-$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database ), $this->config));
 }
 else
 {
-$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database ), $this->config));
 }
             
 			// Set page title

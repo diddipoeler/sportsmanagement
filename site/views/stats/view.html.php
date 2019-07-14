@@ -35,10 +35,6 @@ class sportsmanagementViewStats extends sportsmanagementView
 	{
 		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
         $this->document->addScript($js);    
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$this->jinput->getint( "cfg_which_database", 0 ));
-
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$this->jinput->getint( "cfg_which_database", 0 ) );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$this->jinput->getint( "cfg_which_database", 0 ) );
 
 		$this->project = sportsmanagementModelProject::getProject($this->jinput->getint( "cfg_which_database", 0 ));
 		if ( isset( $this->project ) )
@@ -49,9 +45,6 @@ class sportsmanagementViewStats extends sportsmanagementView
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->config = $config;
-			$this->tableconfig = $tableconfig;
-			$this->eventsconfig = $eventsconfig;
 			$this->actualround = sportsmanagementModelProject::getCurrentRoundNumber($this->jinput->getint( "cfg_which_database", 0 ));
             $this->highest_home = $this->model->getHighest('HOME');
 			$this->highest_away = $this->model->getHighest('AWAY');
@@ -75,7 +68,7 @@ $this->round_labels[] = '"'.$r->name.'"';
 }
             
             
-			$this->_setChartdata(array_merge($config));
+		$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",sportsmanagementModelTeamStats::$cfg_which_database ),$this->config));
 		}
 		// Set page title
 		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_STATS_PAGE_TITLE' );
