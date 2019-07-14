@@ -17,7 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelClubInfo
