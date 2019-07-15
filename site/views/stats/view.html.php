@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage stats
@@ -68,7 +68,7 @@ $this->round_labels[] = '"'.$r->name.'"';
 }
             
             
-		$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",sportsmanagementModelTeamStats::$cfg_which_database ),$this->config));
+		$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",$this->jinput->getint( "cfg_which_database", 0 ) ),$this->config));
 		}
 		// Set page title
 		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_STATS_PAGE_TITLE' );
