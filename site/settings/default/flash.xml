@@ -3,9 +3,9 @@
 
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS"
-		group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS" addfieldpath ="/administrator/components/com_sportsmanagement/elements"
+		group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_SETTINGS" addfieldpath ="/administrator/components/com_sportsmanagement/models/fields"
 		description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_DESCR_SETTINGS">
-
+<field type="jsmmessage" style="info" text="Info" />
 		
 
 	</fieldset>
@@ -14,7 +14,7 @@
 	label="COM_SPORTSMANAGEMENT_XML_CURVE_VIEW_TITLE"
 		group="COM_SPORTSMANAGEMENT_XML_CURVE_VIEW_TITLE" 
 		description="COM_SPORTSMANAGEMENT_XML_CURVE_VIEW_DESCR">
-
+<field type="jsmmessage" style="info" text="Info" />
 		
 
 	</fieldset>
@@ -23,6 +23,7 @@
 	label="COM_SPORTSMANAGEMENT_XML_STATS_VIEW_TITLE"
 		group="COM_SPORTSMANAGEMENT_XML_STATS_VIEW_TITLE" 
 		description="COM_SPORTSMANAGEMENT_XML_STATS_VIEW_DESCR">
+<field type="jsmmessage" style="info" text="Info" />
 
 		
 	</fieldset>
@@ -31,6 +32,8 @@
 	label="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_VIEW_TITLE"
 		group="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_VIEW_TITLE"
 		description="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_VIEW_DESCR">
+<field type="jsmmessage" style="info" text="Info" />
+
 
 	</fieldset>
 
