@@ -99,8 +99,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
                         $predictionGroups = array_merge($predictionGroups,$groups);
                         $htmlGroupOptions = HTMLHelper::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
             
-//echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-            
+           
             echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
 						'<td>'.$htmlRoundsOptions.'</td>',
 						'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id).'</td>',
@@ -322,11 +321,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->a
             </thead>
 			<?php
 			
-			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-      {
-			echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-			echo '<br />predictionProject<pre>~' . print_r($predictionProject,true) . '~</pre><br />';
-			}
+			
 			
 			$k = 0;
 			$tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
@@ -340,28 +335,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->a
 			$membersDataArray = array();
 			$membersMatchesArray = array();
 
-      if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-		echo '<br />memberList<pre>~' . print_r($this->memberList,true) . '~</pre><br />';
-		}
+      
 				
 			foreach ($this->memberList AS $member)
 			{
 			
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-		echo '<br />member<pre>~' . print_r($member,true) . '~</pre><br />';
-		}
+		
 				
 				$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$predictionProject->project_id,
 																							$this->roundID,
 																							$this->roundID,
 																							$member->user_id);
         
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{																							
-echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
-}
+
 
 				$memberPredictionPointsCount=0;
 				$predictionsCount=0;
@@ -382,10 +368,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 							(!is_null($memberPredictionPoint->awayDecision)))
 						{
 						
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-}
+
 				    
 							$predictionsCount++;
 							$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
@@ -416,10 +399,7 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 							if (!is_null($memberPredictionPoint->prTend)){$totalTend=$totalTend+$memberPredictionPoint->prTend;}
 						}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-}
+
 						
 						$memberPredictionOutput = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 
@@ -441,9 +421,6 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
                                         	(!is_null($memberPredictionPoint->awayDecision)) ||
                                          	$predMemberId[0] == $member->pmID);
 						
-//echo '<br />showAllowed<pre>~' . print_r($showAllowed,true) . '~</pre><br />';
-//echo '<br />matchTimeDate <pre>~' . print_r($matchTimeDate ,true) . '~</pre><br />';
-//echo '<br />thisTimeDate <pre>~' . print_r($thisTimeDate ,true) . '~</pre><br />';
 
 						if ($showAllowed)
 						{
@@ -538,30 +515,17 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
-echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
-}
+
 			
 			$computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
 			$recordCount = count($computedMembersRanking);
 			
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
-echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~</pre><br />';
-}
+
       
 			$i=1;
             $skipMemberCount = 0;
 
-/*			
-            if ((int)$this->config['limit'] < 1){$this->config['limit']=1;}
-			$rlimit=ceil($recordCount / $this->config['limit']);
-			$this->model->page=($this->model->page > $rlimit) ? $rlimit : $this->model->page;
-			$skipMemberCount=($this->model->page > 0) ? (($this->model->page-1)*$this->config['limit']) : 0;
-*/
+
 
 ?>
 <tbody>
