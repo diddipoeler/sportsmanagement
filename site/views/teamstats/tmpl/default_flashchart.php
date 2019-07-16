@@ -43,15 +43,15 @@ var chart = new Chart(ctx, {
 
 datasets: [{
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR'); ?>',
-				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.red,
+				backgroundColor: color('<?php echo $this->flashconfig['teamstats_goalshome_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['teamstats_goalshome_color']; ?>',
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->forSum); ?>
 				]
 			}, {
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST'); ?>',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
+				backgroundColor: color('<?php echo $this->flashconfig['teamstats_goalsaway_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['teamstats_goalsaway_color']; ?>',
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->againstSum); ?>
 				]
