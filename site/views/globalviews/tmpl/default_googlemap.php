@@ -471,7 +471,7 @@ $zaehler++;
 
 }
 
-//echo 'map_markes <br><pre>'.print_r($this->allteams,true).'</pre>';
+
 $comma_separated = implode(",", $map_markes);
 
 
@@ -554,15 +554,9 @@ else
 {
 $plugin = PluginHelper::getPlugin('system', 'plugin_googlemap3');
 $paramsPlugin = new Registry($plugin->params);
-
-//echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
-//echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
-
 $params  = "{mosmap kml[0]='".'tmp'.DIRECTORY_SEPARATOR.$this->kmlfile."'}";
 echo HTMLHelper::_('content.prepare', $params);
-  
 }
-            
             
 ?>
 </div>
