@@ -22,36 +22,33 @@ HTMLHelper::_('behavior.formvalidation');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-//echo ' person<br><pre>'.print_r($this->item,true).'</pre>';
-
 ?>
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (document.formvalidator.isValid(document.id('editperson'))) {
-			Joomla.submitform(task, document.getElementById('editperson'));
-		}
-	}
+Joomla.submitbutton = function(task)
+{
+if (document.formvalidator.isValid(document.id('editperson'))) {
+Joomla.submitform(task, document.getElementById('editperson'));
+}
+}
 </script>
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 <?php
-
-		?>
-	<fieldset class="adminform">
-	<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
-						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
-					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
-						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
-					<button type="button" onclick="Joomla.submitform('editperson.cancel', this.form);">
-						<?php echo Text::_('JCANCEL');?></button>
-				</div>
-	<legend>
-  <?php 
-  echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
-  ?>
-  </legend>
-  </fieldset>
+?>
+<fieldset class="adminform">
+<div class="fltrt">
+<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
+<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
+<button type="button" onclick="Joomla.submitform('editperson.cancel', this.form);">
+<?php echo Text::_('JCANCEL');?></button>
+</div>
+<legend>
+<?php 
+echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
+?>
+</legend>
+</fieldset>
  
 <?php 
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
