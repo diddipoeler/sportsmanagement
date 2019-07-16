@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlextdbbimport
@@ -21,31 +21,12 @@ HTMLHelper::_( 'behavior.tooltip' );
 HTMLHelper::_( 'behavior.modal' );
 
 $url = 'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'icons'.DIRECTORY_SEPARATOR.'dbb-gross.png';
-//$url16 = 'components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif';
 $alt = 'DFBNet';
 
 $attribs['width'] = '101px';
 $attribs['height'] = '160px';
 $attribs['align'] = 'left';
-
-
-
-/*
-echo 'default project <br>';
-echo '<pre>';
-print_r($url);
-echo '</pre>';
-*/
-
-/*
-echo 'default projectteams <br>';
-echo '<pre>';
-print_r($this->projectteams);
-echo '</pre>';
-*/
-
 ?>
-
 <div id="editcell">
 	<form enctype='multipart/form-data' method='post' name="adminForm">
 		<table class='adminlist'>
