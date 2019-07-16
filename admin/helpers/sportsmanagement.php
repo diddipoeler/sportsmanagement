@@ -3098,6 +3098,16 @@ try{
     }
     
     
+    /**
+     * sportsmanagementHelper::JSMdebug()
+     * 
+     * @param mixed $object
+     * @param mixed $title
+     * @param bool $plain
+     * @param integer $limit
+     * @param integer $level
+     * @return
+     */
     public static function JSMdebug ($object, $title=null, $plain=false, $limit=6, $level=0)
     {
         if (defined('DEBUG') && ((isset($_SERVER['REMOTE_ADDR']) && !(debug==$_SERVER['REMOTE_ADDR'] || strpos(debug,$_SERVER['REMOTE_ADDR'].',')===0 || strpos(debug,','.$_SERVER['REMOTE_ADDR'].',')!==false || strpos(debug,','.$_SERVER['REMOTE_ADDR'])===strlen(debug)-strlen($_SERVER['REMOTE_ADDR'])-1)) || (!isset($_SERVER['REMOTE_ADDR']) && debug===false))

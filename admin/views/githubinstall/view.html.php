@@ -36,7 +36,7 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	{
         $github_link = ComponentHelper::getParams($this->option)->get('cfg_update_server_file','');
         $this->github_link = $github_link;
-       $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Github-Link<br><pre>'.print_r($this->github_link,true).'</pre>'),'Notice');
+       $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Github-Link - '.$this->github_link.''),'Notice');
         $this->_success_text = $this->model->CopyGithubLink($github_link);
 
 		// Set the document

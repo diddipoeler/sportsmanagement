@@ -45,9 +45,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
  
 		// Set the toolbar
 		$this->addToolBar();
-		
-		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
- 
+
 		// Display the template
 		parent::display($tpl);
  

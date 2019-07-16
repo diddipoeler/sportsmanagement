@@ -192,11 +192,6 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
             $projectteams = array_merge($projectteams, $res);
             $dfbteams = count($projectteams) - 1;
             if ($resdfbkey = $this->model->getDFBKey($dfbteams, 'ALL')) {
-                /*
-                  echo '<pre>';
-                  print_r($resdfbkey);
-                  echo '</pre>';
-                 */
                 $this->newmatchdays = $resdfbkey;
             }
             unset($projectteams);

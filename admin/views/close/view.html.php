@@ -65,7 +65,7 @@ Joomla.renderMessages( msg );
         switch($this->jsminfo)
         {
             case 'truncate':
-            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->app->isClient('administrator'),true).'</pre>'),'');
+
             break;
         }
         
