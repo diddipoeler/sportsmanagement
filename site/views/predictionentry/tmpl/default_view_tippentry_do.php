@@ -1,83 +1,53 @@
 <?php
-    /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-     * @version   1.0.05
-     * @file      default_view_tippentry_do.php
-     * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-     * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-     * @license   GNU General Public License version 2 or later; see LICENSE.txt
-     * @package   sportsmanagement
-     * @subpackage predictionentry
-     */
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_view_tippentry_do.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage predictionentry
+ */
     defined('_JEXEC') or die('Restricted access');
 	use Joomla\CMS\Language\Text;
 	use Joomla\CMS\HTML\HTMLHelper;
 	use Joomla\CMS\Factory;
 	
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-    {
-        $visible = 'text';
-        echo '<br />config<pre>~' . print_r($this->config,true) . '~</pre><br />';
-        echo '<br />allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
-        echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-    }
-    else
-    {
         $visible = 'hidden';
-    }
-    //$this->config['show_tipp_tendence']=1;
+
     if (((Factory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPredictionMembership())) &&
         ((!$this->allowedAdmin) || ($this->predictionMember->pmID==0)))
     {
         if ($this->allowedAdmin)
         {
             echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SELECT_EXISTING_MEMBER');
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-                echo '<br />allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
-                echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-                echo '<br />getUser<pre>~' . print_r(Factory::getUser()->id,true) . '~</pre><br />';
-            }
         }
     }
     else
     {
         foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
         {
-            //echo __FILE__.' '.__LINE__.' 1 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-            //echo __FILE__.' '.__LINE__.' 1 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
-            
-            //$predictionProject->joker=0;
             $gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject(sportsmanagementModelPrediction::$pjID);
-            //echo __FILE__.' '.__LINE__.' 1 gotSettings<br><pre>'.print_r($gotSettings,true).'</pre>';
             if ( ( ( (int)sportsmanagementModelPredictionEntry::$pjID == (int)$predictionProject->project_id ) && ($gotSettings) ) || ( (int)sportsmanagementModelPredictionEntry::$pjID == 0 ) )
                 //if ( ( ( $this->model->pjID == $predictionProject->project_id ) && ($gotSettings) )  )
             {
-                
-                //echo __FILE__.' '.__LINE__.' 2 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-                //echo __FILE__.' '.__LINE__.' 2 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
-                
+               
                 sportsmanagementModelPredictionEntry::$pjID = sportsmanagementModelPrediction::$pjID;
                 $this->model->predictionProject = $predictionProject;
                 $actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings(sportsmanagementModelPrediction::$pjID);
-                //echo __FILE__.' '.__LINE__.' 3 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-                //echo __FILE__.' '.__LINE__.' 3 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
-                //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPrediction::$roundID,true).'</pre>';
                 
                 if (!isset( sportsmanagementModelPrediction::$roundID ) || ( (int)sportsmanagementModelPrediction::$roundID < 1 ) )
                 {
                     sportsmanagementModelPrediction::$roundID = $actualProjectCurrentRound;
                 }
-                //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
                 if ( (int)sportsmanagementModelPrediction::$roundID < 1)
                 {
                     sportsmanagementModelPrediction::$roundID = 1;
                 }
-                //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
                 if ( (int)sportsmanagementModelPrediction::$roundID > sportsmanagementModelPrediction::getProjectRounds(sportsmanagementModelPrediction::$pjID))
                 {
                     sportsmanagementModelPrediction::$roundID = sportsmanagementModelPrediction::$_projectRoundsCount;
                 }
-                //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
                 $memberProjectJokersCount = sportsmanagementModelPrediction::getMemberPredictionJokerCount($this->predictionMember->user_id,
                                                                                                            sportsmanagementModelPrediction::$pjID);
                 $match_ids = NULL;
@@ -99,25 +69,13 @@
                     $proteams_ids = $this->config['predictionproteamid'];
                 }
                 
-                $roundResults = $this->model->getMatchesDataForPredictionEntry(    sportsmanagementModelPrediction::$predictionGameID,
-                                                                               sportsmanagementModelPrediction::$pjID,
-                                                                               sportsmanagementModelPrediction::$roundID,
-                                                                               $this->predictionMember->user_id,
-                                                                               $match_ids,
-                                                                               $round_ids,
-                                                                               $proteams_ids);
-                //$roundResults = null;
-                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-                {
-                    echo '<br />predictionGameID<pre>~' . print_r($this->model->predictionGameID,true) . '~</pre><br />';
-                    echo '<br />project_id<pre>~' . print_r($predictionProject->project_id,true) . '~</pre><br />';
-                    echo '<br />roundID<pre>~' . print_r($this->model->roundID,true) . '~</pre><br />';
-                    echo '<br />user_id<pre>~' . print_r($this->predictionMember->user_id,true) . '~</pre><br />';
-                    echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
-                }
-                
-                
-                
+$roundResults = $this->model->getMatchesDataForPredictionEntry(    sportsmanagementModelPrediction::$predictionGameID,
+                sportsmanagementModelPrediction::$pjID,
+                sportsmanagementModelPrediction::$roundID,
+                $this->predictionMember->user_id,
+                $match_ids,
+                $round_ids,
+                $proteams_ids);
                 
                 //            if (($this->config['show_help']==0)||($this->config['show_help']==2)){echo $this->model->createHelptText($predictionProject->mode);}
                 ?>
@@ -186,14 +144,7 @@ method='post' onsubmit='return chkFormular()' >
 <?php echo HTMLHelper::_('form.token'); ?>
 
 <?php
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-    {
-        echo '<br />predictionDoTipp<br />';
-        echo '<br />prediction_id<pre>~' . print_r($this->model->predictionGameID,true) . '~</pre><br />';
-        echo '<br />user_id<pre>~' . print_r($this->predictionMember->user_id,true) . '~</pre><br />';
-        echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</pre><br />';
-    }
-    ?>
+?>
 
 <script type='text/javascript'>
 function chkFormular()
@@ -297,37 +248,13 @@ When viewing on anything larger than 768px wide, you will not see any difference
             $matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->timezone);
             $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
             
-            // Änderungen erlaubt ?   $this->config['show_help']
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-                echo '<br />this->closingtime<pre>~' . print_r($closingtime,true) . '~</pre><br />';
-                echo '<br />this->matchTimeDate<pre>~' . print_r($matchTimeDate,true) . '~</pre><br />';
-                echo '<br />this->thisTimeDate<pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-                
-                
-                echo '<br />this->allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
-                echo '<br />this->predictionMember->admintipp<pre>~' . print_r($this->predictionMember->admintipp,true) . '~</pre><br />';
-                echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'],true) . '~</pre><br />';
-            }
-            
             $matchTimeDate = $matchTimeDate - $closingtime;
             $tippAllowed =    ( ( $thisTimeDate < $matchTimeDate ) &&
                                ($resultHome=='-') &&
                                ($resultAway=='-') ) || (($this->allowedAdmin)&&($this->predictionMember->admintipp));
             //$tippAllowed = true;
             if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; $showSaveButton=true;}
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-                echo '<br />this->matchTimeDate nach berechnung<pre>~' . print_r($matchTimeDate,true) . '~</pre><br />';
-                echo '<br />this->thisTimeDate<pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-                echo '<br />resultHome<pre>~'.print_r($resultHome,true).'~</pre><br />';
-                echo '<br />resultAway<pre>~'.print_r($resultAway,true).'~</pre><br />';
-                echo '<br />tippAllowed<pre>~'.print_r($tippAllowed,true).'~</pre><br />';
-                echo '<br />date<pre>~' . print_r( HTMLHelper::_('date',date('Y-m-d H:i:s', $thisTimeDate), "%Y-%m-%d %H:%M:%S"), true ) . '~</pre><br />';
-                echo '<br />predictionProjectSettings<pre>~' . print_r($predictionProjectSettings->timezone, true ) . '~</pre><br />';
-            }
-            
+
             ?>
 <tr class='<?php echo $class; ?>'>
 <!-- <td class="td_c"> -->
