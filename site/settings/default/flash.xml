@@ -86,7 +86,28 @@
 		group="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_VIEW_TITLE"
 		description="COM_SPORTSMANAGEMENT_XML_TEAMSTATS_VIEW_DESCR">
 <field type="jsmmessage" style="info" text="Info" />
-
+<field name="teamstats_goalshome_color" type="extensionradiobutton" default="red" class="radio btn-group btn-group-yesno" 
+			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR6_COLOUR"
+			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR6_COLOUR">
+			<option value="red">red</option>
+			<option value="orange">orange</option>
+			<option value="yellow">yellow</option>
+			<option value="green">green</option>
+			<option value="blue">blue</option>
+			<option value="purple">purple</option>
+			<option value="grey">grey</option>
+		</field>		
+<field name="teamstats_goalsaway_color" type="extensionradiobutton" default="blue" class="radio btn-group btn-group-yesno" 
+			label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_BAR7_COLOUR"
+			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_BAR7_COLOUR">
+			<option value="red">red</option>
+			<option value="orange">orange</option>
+			<option value="yellow">yellow</option>
+			<option value="green">green</option>
+			<option value="blue">blue</option>
+			<option value="purple">purple</option>
+			<option value="grey">grey</option>
+		</field>
 
 	</fieldset>
 
