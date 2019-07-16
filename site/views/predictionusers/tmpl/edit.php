@@ -17,8 +17,6 @@ use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.tooltip');
 
-//echo '<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
-//echo 'predictionMember <br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
@@ -197,7 +195,6 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
 				
-//echo '<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
 					?><td width='10%' style='text-align:right; '><?php
 						//echo $this->lists['champ_tipp'][$predictionProject->project_id];
 						
