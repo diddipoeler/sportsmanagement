@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_show_help.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionresults
@@ -11,8 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//$component_text = 'COM_SPORTSMANAGEMENT_';
-//echo '<br /><pre>~' . print_r($this->predictionMember->pmID,true) . '~</pre><br />';
+
 if (!isset($this->config['show_scoring'])){$this->config['show_scoring']=1;}
 $gameModeStr = ($this->model->predictionProject->mode==0) ? Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_STANDARD_MODE') : Text::_('JL_PRED_RESULTS_TOTO_MODE');
 ?><p style='font-weight: bold; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_NOTICE'); ?></p><p><ul><li><i><?php
