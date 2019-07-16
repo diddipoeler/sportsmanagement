@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      jlextprofleagimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
@@ -82,36 +82,6 @@ function __construct( )
 		parent::__construct( );
 	
 	}
-
-/**
- * sportsmanagementModeljlextprofleagimport::dump_header()
- * 
- * @param mixed $text
- * @return void
- */
-private function dump_header($text)
-	{
-		echo "<h1>$text</h1>";
-	}
-
-	/**
-	 * sportsmanagementModeljlextprofleagimport::dump_variable()
-	 * 
-	 * @param mixed $description
-	 * @param mixed $variable
-	 * @return void
-	 */
-	private function dump_variable($description, $variable)
-	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
-	}
-    
-
-
-
-	
-
-
 
  /**
   * sportsmanagementModeljlextprofleagimport::_getXml()
@@ -1344,7 +1314,7 @@ $this->_datas['positioneventtype'] = array_merge($exportpositioneventtype);
 
 
 /**
- * das ganze für den standardimport aufbereiten
+ * das ganze fÃ¼r den standardimport aufbereiten
  */
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
