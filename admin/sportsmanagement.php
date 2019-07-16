@@ -31,7 +31,7 @@ if ( !class_exists('sportsmanagementHelper') )
 {
 JLoader::register('SportsManagementHelper', dirname(__FILE__) .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php');
 }
-
+JLoader::register('TVarDumper', dirname(__FILE__) .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'TVarDumper.php');
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
 // zur unterscheidung von joomla 3 und 4
