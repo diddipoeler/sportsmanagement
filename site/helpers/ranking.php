@@ -757,17 +757,9 @@ $data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_data
     {
 
 		}
-        
         		
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
 		$res = $db->loadObjectList();
-
 
 /**
  * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
@@ -843,11 +835,7 @@ $res = $db->loadObjectList();
       			
 			$teams[$r->ptid] = $t;
 		}
-/*		
- echo '_initTeams teams<br><pre>';
- print_r($teams);
- echo '</pre>';
-*/		
+	
 		return $teams;
 	}
 
@@ -923,19 +911,14 @@ $option = $app->input->getCmd('option');
     }
     
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$res = $db->loadObjectList();
 		$matches = array();
 		foreach ((array) $res as $r) 
 		{
 			$matches[$r->id] = $r;
 		}
-	//echo '_getMatches matches<br><pre>';print_r($matches);echo '</pre>';
+
 		return $matches;
 	}
 
@@ -963,11 +946,6 @@ $option = $app->input->getCmd('option');
             $query->where('parent_id = ' . $db->Quote($this->_division) );
             
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
             
 			if(version_compare(JVERSION,'3.0.0','ge')) 
         {
