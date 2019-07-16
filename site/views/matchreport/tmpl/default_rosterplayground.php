@@ -14,9 +14,6 @@ use Joomla\CMS\Factory;
 
 $startfade = $this->config['roster_playground_player_fade'];
 
-//echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
-//echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-
 if ( $this->config['roster_playground_player_jquery_fade'] )
 {
 $div_display ="none";    
@@ -253,11 +250,6 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->heim personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
-}
-
 if ($personCount > 0)
 {
 
@@ -266,8 +258,6 @@ foreach ($this->matchplayers as $player)
 
 if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id )
 {
-// player->ppic = person picture
-// player->picture = teamplay picture
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
 $picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
