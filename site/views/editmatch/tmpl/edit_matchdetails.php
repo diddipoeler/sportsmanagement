@@ -12,29 +12,23 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 ?>	
-
-	
 <fieldset class="adminform">
-	<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
-	</legend>
-	<table class="admintable">
-			<?php 
+<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
+</legend>
+<table class="admintable">
+<?php 
+foreach ($this->form->getFieldset('matchdetails') as $field):
                     
-                    foreach ($this->form->getFieldset('matchdetails') as $field):
-                    
-//echo ' field<br><pre>'.print_r($field->type,true).'</pre>';
-
 if ( $field->type == 'Radio' )
 {
-//echo ' field<br><pre>'.print_r($field,true).'</pre>';
 }
                     
-                    ?>
-					<tr>
-						<td class="key"><?php echo $field->label; ?></td>
-						<td><?php echo $field->input; ?></td>
-					</tr>					
-					<?php endforeach; ?>	
-	</table>
+?>
+<tr>
+<td class="key"><?php echo $field->label; ?></td>
+<td><?php echo $field->input; ?></td>
+</tr>					
+<?php endforeach; ?>	
+</table>
 </fieldset>	
 
