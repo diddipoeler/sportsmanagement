@@ -16,10 +16,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
 HTMLHelper::_('behavior.tooltip');
 
-//echo '<pre>',print_r($this->project,true),'</pre><br>';
-//echo 'matchreport<pre>',print_r($this->matchsingle,true),'</pre><br>';
-//echo 'match<pre>',print_r($this->match,true),'</pre><br>';
-
 $complete_results = array();
 $complete_results['COM_SPORTSMANAGEMENT_SINGLE']['SETS1'] = 0;
 $complete_results['COM_SPORTSMANAGEMENT_SINGLE']['SETS2'] = 0;
@@ -78,7 +74,7 @@ if ( $this->project->use_tie_break )
                 if ( $single->teamplayer1_id )
                 {
                 $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->teamplayer1_id); 
-                //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
+
                 foreach( $playerinfo as $player)
                 {
                 $picture = $player->picture;
@@ -112,7 +108,7 @@ if ( $this->project->use_tie_break )
                 if ( $single->teamplayer2_id )
                 {
                 $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->teamplayer2_id); 
-                //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
+
                 foreach( $playerinfo as $player)
                 {  
                 $picture = $player->picture; 
@@ -146,9 +142,7 @@ if ( $this->project->use_tie_break )
                 
                 $result_split1	= explode(";",$single->team1_result_split);
                 $result_split2	= explode(";",$single->team2_result_split);
-                
-                //echo '<pre>',print_r($result_split1,true),'</pre><br>';
-                
+               
                 for ($gp=0; $gp < $this->project->game_parts; $gp++)
                 {
                 echo '<td>';
@@ -254,7 +248,6 @@ if ( $this->project->use_tie_break )
                 {
                 $playerinfo1 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team1_player1);
                 $playerinfo2 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team1_player2);  
-                //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
 
                 foreach( $playerinfo1 as $player)
                 {
@@ -310,7 +303,6 @@ if ( $this->project->use_tie_break )
                 {
                 $playerinfo1 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team2_player1);
                 $playerinfo2 = sportsmanagementModelPlayer::getTeamPlayer($this->project->id,0,$single->double_team2_player2);  
-                //echo '<pre>',print_r($playerinfo,true),'</pre><br>'; 
                 foreach( $playerinfo1 as $player)
                 {  
                 $picture1 = $player->picture; 
@@ -363,7 +355,6 @@ if ( $this->project->use_tie_break )
                 
                 $result_split1	= explode(";",$single->team1_result_split);
                 $result_split2	= explode(";",$single->team2_result_split);
-                //echo '<pre>',print_r($result_split1,true),'</pre><br>';
                 for ($gp=0; $gp < $this->project->game_parts; $gp++)
                 {
                 echo '<td>';
@@ -507,9 +498,6 @@ echo '</tr>';
             
 </table>
 <?PHP
-
-//echo 'results<pre>',print_r($complete_results,true),'</pre><br>';
-
 ?>
 
 </div>
