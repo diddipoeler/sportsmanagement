@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage ranking
  */
+
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -16,7 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 
 <!-- content -->
 <?php
-//echo 'computeRanking this->secondRank -> '.'<pre>'.print_r($this->secondRank,true).'</pre>';
 
 foreach ($this->secondRank as $division => $cu_rk) {
     if ($division) {
