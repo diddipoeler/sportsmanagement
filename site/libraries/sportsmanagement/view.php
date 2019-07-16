@@ -156,6 +156,15 @@ Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_l
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
                 $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
                 break;
+	case 'curve':
+	case 'stats':
+	case 'teamstats':
+	$this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+        $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+        $this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+	$this->flashconfig = sportsmanagementModelProject::getTemplateConfig('flash', sportsmanagementModelProject::$cfg_which_database);
+        $this->config = array_merge($this->overallconfig, $this->config);	
+	break;
             default:
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
                 $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
