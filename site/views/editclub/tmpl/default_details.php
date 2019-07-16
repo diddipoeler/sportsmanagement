@@ -25,11 +25,8 @@ $fieldsets = $this->form->getFieldsets();
                     
                     foreach ($this->form->getFieldset('details') as $field):
                     
-//echo ' field<br><pre>'.print_r($field->type,true).'</pre>';
-
 if ( $field->type == 'Radio' )
 {
-//echo ' field<br><pre>'.print_r($field,true).'</pre>';
 }
                     
                     ?>
