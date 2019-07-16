@@ -13,12 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'club rssfeedoutput<pre>',print_r($this->rssfeedoutput,true),'</pre><br>';
-}
-
-$app	= Factory::getApplication();
+$app = Factory::getApplication();
 
 ?>
 <div class="no-column">
@@ -95,8 +90,6 @@ $app	= Factory::getApplication();
     ?>	
     
 	</table>
-	
-  
   
 	<?php if($this->feedsBlockPostText): ?>
 	<p class="srfrPostText"><?php echo $this->feedsBlockPostText; ?></p>
