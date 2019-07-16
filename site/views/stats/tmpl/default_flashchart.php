@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_flashchart.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage stats
@@ -43,22 +43,22 @@ var chart = new Chart(ctx, {
 
 datasets: [{
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
-				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.red,
+				backgroundColor: color('<?php echo $this->flashconfig['stats_home_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_home_color']; ?>',
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->homeSum); ?>
 				]
 			}, {
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
+				backgroundColor: color('<?php echo $this->flashconfig['stats_away_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_away_color']; ?>',
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->awaySum); ?>
 				]
 			}, {
 				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
-				backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.green,
+				backgroundColor: color('<?php echo $this->flashconfig['stats_overall_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_overall_color']; ?>',
 				borderWidth: 1,
 				data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
 				]
