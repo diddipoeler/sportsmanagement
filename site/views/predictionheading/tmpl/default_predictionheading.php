@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_predictionheading.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionheading
@@ -21,16 +21,9 @@ console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 
 </script>
 <?php
-//echo '<br /><pre>~' . print_r($this,true) . '~</pre><br />';
 if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['show_prediction_heading'] ) )
 {
-    
-//echo __FILE__.' '.__LINE__.' pjID<br><pre>'.print_r(sportsmanagementModelPrediction::$pjID,true).'</pre>';
-//echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPrediction::$roundID,true).'</pre>';
-//echo __FILE__.' '.__LINE__.' pggroup<br><pre>'.print_r(sportsmanagementModelPrediction::$pggroup,true).'</pre>';
-//echo __FILE__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(sportsmanagementModelPrediction::$predictionGameID,true).'</pre>';
-    
-	?>
+?>
 	<table class="table" >
 		<tr>
 			<td class=''>
