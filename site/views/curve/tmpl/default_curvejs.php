@@ -92,7 +92,7 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid1 )
         datasets: [{
             label: "<?php echo $value->name; ?>",
             fill: false,
-		borderColor: window.chartColors.blue,
+		borderColor: '<?php echo $this->flashconfig['curve_team1_color']; ?>',
             data: [<?php echo implode(",",$value->rankings); ?>],
         },
 <?php        
@@ -106,7 +106,7 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
 {
             label: "<?php echo $value->name; ?>",
             fill: false,
-	borderColor: window.chartColors.green,
+	borderColor: '<?php echo $this->flashconfig['curve_team2_color']; ?>',
             data: [<?php echo implode(",",$value->rankings); ?>],
         }
 <?php
