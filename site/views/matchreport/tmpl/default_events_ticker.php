@@ -188,7 +188,6 @@ $match_player = HTMLHelper::link($player_link,$match_player);
                 else
                 {
 		
-//echo ' me<br><pre>'.print_r($me,true).'</pre>';        
         ?>
                     
                     <tr class="" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">

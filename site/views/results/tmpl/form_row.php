@@ -27,8 +27,6 @@ if ( $this->overallconfig['use_jquery_modal'] )
 		$thismatch = Table::getInstance('Match','sportsmanagementTable');
 		$thismatch->bind(get_object_vars($match));
 
-//echo ' thismatch<br><pre>'.print_r($thismatch,true).'</pre>';
-
 		list($datum,$uhrzeit) = explode(' ',$thismatch->match_date);
 
 		if ( isset($this->teams[$thismatch->projectteam1_id]) )

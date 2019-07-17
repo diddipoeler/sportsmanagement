@@ -21,14 +21,6 @@ HTMLHelper::_('behavior.tooltip');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-//echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
-
-//if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//    $uri = Uri::getInstance();   
-//} else {
-//    $uri = Factory::getURI();
-//}
-
 ?>
 <script type="text/javascript">
 //	Joomla.submitbutton = function(task)

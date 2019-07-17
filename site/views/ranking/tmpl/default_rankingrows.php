@@ -180,7 +180,6 @@ $this->overallconfig['use_jquery_modal']);
     echo '</td>';
     echo "\n";
 
-//echo 'teams<pre>'.print_r($team,true).'</pre><br>';
     //**********START OPTIONAL COLUMNS DISPLAY
     foreach ($columns AS $c) {
         $routeparameter = array();

@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-?><?php
-	//echo '<br /><pre>~' . print_r( $this, true ) . '~</pre><br />';
-	?><br />
+?>
+<?php
+
+?>
+<br />

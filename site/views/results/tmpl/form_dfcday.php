@@ -35,24 +35,8 @@ if ( !$this->showediticon )
 	Factory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), Text::_('ALERTNOTAUTH') );
 }
 
-
-//echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
-
 // load javascripts
 $document = Factory::getDocument();
-
-/*
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-HTMLHelper::_( 'behavior.mootools' );   
-require ( JPATH_SITE .DIRECTORY_SEPARATOR. 'libraries' .DIRECTORY_SEPARATOR. 'joomla' .DIRECTORY_SEPARATOR. 'html' .DIRECTORY_SEPARATOR. 'editor.php' );  
-}
-*/
 
 ?>
 <div class="row-fluid" style="overflow:auto;">

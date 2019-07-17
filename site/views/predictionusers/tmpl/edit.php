@@ -222,8 +222,6 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 		<?php
 		if ($this->config['edit_avatar_upload'])
 		{
-		// echo 'imageselect <pre>'.print_r($this->imageselect ,true).'</pre><br>';
-		// /media/com_sportsmanagement/jl_images/spinner.gif 
 		?>
 		<tr>
 			<?php

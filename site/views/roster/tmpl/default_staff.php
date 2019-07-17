@@ -101,9 +101,7 @@ if (count($this->stafflist) > 0)
 			for ($i=0, $n=count($this->stafflist); $i < $n; $i++)
 			{
 				$row =& $this->stafflist[$i];
-                
-                //echo 'getTeamPlayers stafflist<br><pre>'.print_r($row,true).'</pre><br>';
-                
+               
 				?>
 			<tr class="">
 				<?php

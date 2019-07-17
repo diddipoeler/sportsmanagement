@@ -11,7 +11,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//echo 'cfg_which_media_tool<pre>'.print_r($this->cfg_which_media_tool , true).'</pre><br>';
 
 ?>
 

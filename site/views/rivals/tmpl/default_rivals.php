@@ -18,7 +18,6 @@ use Joomla\CMS\Factory;
 //add js file
 HTMLHelper::_('behavior.framework');
 
-//echo ' -><pre>'.print_r($this->opos,true).'</pre>';
 ?>
 <?php echo $this->pagetitle; ?>
 <div class="row-fluid">

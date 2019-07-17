@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//echo '<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
+
 ?><p style='font-weight: bold; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_NOTICE'); ?></p><p><ul><li><i><?php
 							echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_NOTICE_INFO_01');
 							if (!$this->config['show_all_user'])

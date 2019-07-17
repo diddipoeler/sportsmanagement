@@ -41,9 +41,6 @@ foreach ( $this->stats AS $rows )
 $rank = 1;
 foreach ( $this->teamstotal as $key => $value )
 {
-
-
-//echo '<pre>'.print_r($value,true).'</pre>';
 $team = $this->teams[$value[team_id]];
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
@@ -62,7 +59,6 @@ $teamName = sportsmanagementHelper::formatTeamName($team, 't'.$value[team_id].'s
 <?php
 foreach ( $this->stats AS $rows => $rowvalue )
 {
-//echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 if ( $rowvalue->_name == 'basic' )
 {  
 ?>  

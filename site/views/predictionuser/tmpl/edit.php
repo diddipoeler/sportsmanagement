@@ -220,8 +220,6 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
-				
-//echo '<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
 					?><td width='10%' style='text-align:right; '><?php
 						
 						

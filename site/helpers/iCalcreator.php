@@ -7911,7 +7911,7 @@ class iCalUtilityFunctions {
       $enddate = $startdate;
       $enddate['year'] += 1;
     }
-// echo "recur __in_ comp start ".implode('-',$wdate)." period start ".implode('-',$startdate)." period end ".implode('-',$enddate)."<br>\n";print_r($recur);echo "<br>\n";//test###
+
     $endDatets = iCalUtilityFunctions::_date2timestamp( $enddate ); // fix break
     if( !isset( $recur['COUNT'] ) && !isset( $recur['UNTIL'] ))
       $recur['UNTIL'] = $enddate; // create break

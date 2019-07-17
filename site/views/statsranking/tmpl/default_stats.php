@@ -61,9 +61,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		$lastrank = 0;
 		foreach((array) $this->playersstats[$rows->id]->ranking as $row )
 		{
-			
-            //echo 'row <pre>',print_r($row,true),'</pre>';
-            
+           
             if ( $lastrank == $row->rank )
 			{
 				$rank = '-';

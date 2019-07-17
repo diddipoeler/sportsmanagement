@@ -85,7 +85,6 @@ var chart = new Chart(ctx, {
 $teamcount = sizeof($this->teamranking[$division->id]);
 foreach ( $this->teamranking[$division->id] as $key => $value )
 {    
-//echo 'value <pre>'.print_r($value ,true).'</pre>'; 
 if ( $value->team_id == sportsmanagementModelCurve::$teamid1 )
 {
 ?>        

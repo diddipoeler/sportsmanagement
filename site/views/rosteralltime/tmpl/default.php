@@ -16,15 +16,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-
-//echo 'all time player<pre>'.print_r($this->rows,true).'</pre><br>';
-//echo 'all time player config<pre>'.print_r($this->config,true).'</pre><br>';
-//echo 'all time player playerposition<pre>'.print_r($this->playerposition,true).'</pre><br>';
-//echo 'all time player positioneventtypes<pre>'.print_r($this->positioneventtypes,true).'</pre><br>';
 ?>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <?PHP
-//echo $this->loadTemplate('players_new');
 echo $this->loadTemplate('players');
 
 	echo $this->loadTemplate('jsminfo');

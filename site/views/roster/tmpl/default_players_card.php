@@ -25,8 +25,6 @@ foreach ( $this->rows as $position_id => $players ): ?>
 <h2><?php	echo '&nbsp;' . Text::_( $row->position );	?></h2>
 <?php 
 
-//echo 'getTeamPlayers players<br><pre>'.print_r($players,true).'</pre><br>';
-
 foreach ($players as $row): ?>
 <tr	class="">
 <div class="mini-player_links">

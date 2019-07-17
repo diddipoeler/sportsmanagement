@@ -36,8 +36,6 @@ if ( $this->overallconfig['use_squeezebox_modal'] )
 	
 }	
 
-//echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
-
 if ( !$this->showediticon )
 {
 	Factory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), Text::_('ALERTNOTAUTH') );

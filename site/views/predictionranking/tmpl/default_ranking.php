@@ -65,9 +65,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					</td>
 					<td>
           <?php
-
-//echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-          
+         
           echo HTMLHelper::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggrouprank);
           	?>
 					</td>

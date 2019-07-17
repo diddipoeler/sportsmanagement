@@ -21,8 +21,6 @@ HTMLHelper::_('behavior.formvalidation');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-//echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
-
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)

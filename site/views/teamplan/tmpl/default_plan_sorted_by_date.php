@@ -37,7 +37,6 @@ $teamid=Factory::getApplication()->input->getInt('tid');
 		$k=0;
 
 usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
-//echo 'gamesByDate nachher <pre>'.print_r($this->matches,true).'</pre><br>';		
 
 		foreach ( $this->matches as $match )
 		{

@@ -305,20 +305,7 @@ else
 switch ($this->view)
 {
 case 'ranking':
-//echo '<pre>'.print_r($this->allteams,true).'</pre><br>';
-//foreach ( $this->allteams as $row )
-//{
-// team_name
-//$values[]['latLng'] = '['.$row->latitude.','.$row->longitude.'], data:'.$row->team_name;
-//$values[][data] = '['.$row->team_name.']';
-//$latitude = $row->latitude;
-//$longitude = $row->longitude;
-//echo 'latitude  -> '.$latitude .'<br>';
-//echo 'longitude -> '.$longitude .'<br>';
-//}
 $icon = 'http://maps.google.com/mapfiles/marker_green.png';
-//echo json_encode($values);
-
 break;
 case 'clubinfo':
 $latitude = $this->club->latitude;

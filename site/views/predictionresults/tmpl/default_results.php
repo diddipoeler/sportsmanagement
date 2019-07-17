@@ -195,9 +195,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
       
         // hier holen wir uns die spiele zu dem projekt und der runde
 				$roundMatchesList = sportsmanagementModelPredictionResults::getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids,$this->config['show_logo_small_overview']);
-				
-				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
-				
+			
 				foreach ($roundMatchesList AS $match)
 				{
 					?>
