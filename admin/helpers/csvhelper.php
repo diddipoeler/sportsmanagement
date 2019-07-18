@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      csvhelper.php
  * @author    
@@ -8,8 +8,8 @@
  * @package   sportsmanagement
  * @subpackage helpers
  */
+
 class JSMparseCSV {
-	
 /*
 
 	Class: JSMparseCSV v0.4.3 beta
@@ -50,19 +50,16 @@ class JSMparseCSV {
 	----------------
 	# general usage
 	$csv = new JSMparseCSV('data.csv');
-	print_r($csv->data);
 	----------------
 	# tab delimited, and encoding conversion
 	$csv = new JSMparseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	$csv->delimiter = "\t";
 	$csv->parse('data.tsv');
-	print_r($csv->data);
 	----------------
 	# auto-detect delimiter character
 	$csv = new JSMparseCSV();
 	$csv->auto('data.csv');
-	print_r($csv->data);
 	----------------
 	# modify data in a csv file
 	$csv = new JSMparseCSV();
