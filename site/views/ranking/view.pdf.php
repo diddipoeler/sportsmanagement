@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.pdf.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.application.component.view');
+use Joomla\CMS\MVC\View\HtmlView;
 jimport('joomla.filesystem.file');
 
 /**
@@ -28,7 +28,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRanking extends JViewLegacy 
+class sportsmanagementViewRanking extends HtmlView 
 {
 	
 	/**
@@ -149,15 +149,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
         // mannschaften holen
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
-       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
-       }
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
-		
+	
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
 	{
@@ -221,47 +213,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
     // diddipoeler
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id);
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
 		if (($this->config['show_ranking_maps'])==1)
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
-	  
-// 	  $this->map = new simpleGMapAPI();
-//   $this->geo = new simpleGMapGeocoder();
-//   $this->map->setWidth($this->mapconfig['width']);
-//   $this->map->setHeight($this->mapconfig['height']);
-//   $this->map->setZoomLevel($this->mapconfig['map_zoom']); 
-//   $this->map->setMapType($this->mapconfig['default_map_type']);
-//   $this->map->setBackgroundColor('#d0d0d0');
-//   $this->map->setMapDraggable(true);
-//   $this->map->setDoubleclickZoom(false);
-//   $this->map->setScrollwheelZoom(true);
-//   $this->map->showDefaultUI(false);
-//   $this->map->showMapTypeControl(true, 'DROPDOWN_MENU');
-//   $this->map->showNavigationControl(true, 'DEFAULT');
-//   $this->map->showScaleControl(true);
-//   $this->map->showStreetViewControl(true);
-//   $this->map->setInfoWindowBehaviour('SINGLE_CLOSE_ON_MAPCLICK');
-//   $this->map->setInfoWindowTrigger('CLICK');
-  
-  //echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre><br>';
-
-  
   
   Uri:: ( $this->allteams as $row )
     {
@@ -292,11 +248,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$row->address_string = implode(', ', $address_parts);
     
     }
-    
-  
-//   $document->addScript($this->map->JLprintGMapsJS());
-//   $document->addScriptDeclaration($this->map->JLshowMap(false));
-  
+ 
 	}
 
 		// Set page title
@@ -308,7 +260,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$document->setTitle( $pageTitle );
 		$view = Factory::getApplication()->input->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        //$document->addCustomTag($stylelink);
 		parent :: display($tpl);
 	}
 		
