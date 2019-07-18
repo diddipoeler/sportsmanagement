@@ -39,9 +39,7 @@ if ($this->tabelle) {
 	$colspan = 9;
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->tabelle);
-		echo '</pre>';
+
 	}
 
 	echo '<table id="sistabelle">';
@@ -181,17 +179,7 @@ if ($this->spielplan) {
 		}
 		
 		if ( $this->params->get( 'sis_getxmldatei') ) {
-
-			/*
-			echo '<pre>';
-			print_r($this->spieltage);
-			echo '</pre>';
-			*/
-
-			echo '<pre>';
-			print_r($this->spielplan);
-			echo '</pre>';
-			
+		
 		}
 		
 
@@ -211,9 +199,6 @@ if ($this->spielplan) {
 		foreach ($this->spielplan->Spiel as $spiel) {
 			
 			if((string) $spiel->Mannschaft1 === $this->params->get( 'sis_clubnummer') || (string) $spiel->Mannschaft2 === $this->params->get( 'sis_clubnummer') || (string) $spiel->Mannschaft1 === $this->params->get( 'sis_clubnummer1') || (string) $spiel->Mannschaft2 === $this->params->get( 'sis_clubnummer1')) {
-				//$spdatum_exp = explode('.', (string) $spiel->Datum);
-				//print_r($spdatum_exp);
-				//Sun, 09. Oct. 2011 => date('D, d. M. Y', strtotime ($spiel->Datum))
 				$wtagsp = $wtag[date('D', strtotime ($spiel->Datum))];
 				$monatsp = $monat[date('M', strtotime ($spiel->Datum))];
 				$sdatum = mktime(0, 0, 0, date('m', strtotime ($spiel->Datum))  , date('d', strtotime ($spiel->Datum)), date('Y', strtotime ($spiel->Datum)));
@@ -280,9 +265,7 @@ if ($this->spielplan) {
 	}
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->spielplan);
-		echo '</pre>';
+
 }
 
 	if( $this->params->get( 'sis_ueberschrift') ) {
@@ -422,16 +405,12 @@ if ($this->statistik) {
 	$colspan = 5;
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->statistik);
-		echo '</pre>';
 	}
 
 	echo '<table id="sistabelle">';
 
 	foreach ($this->statistik->Spielklasse as $klasse) {
 		echo '<tr>';
-		//echo '<th bgcolor="'.$this->params->get( 'backgroundcolorliganame').'" align="left" colspan="'.$colspan.'">'.'<font size="'.$this->params->get( 'schriftliganame').'" color="'.$this->params->get( 'colorschriftliganame').'">Liganame : ';
 		echo '<th align="left" colspan="'.$colspan.'">';
 		echo $klasse->Name;
 		if( $this->params->get( 'sis_ueberschrift') ) {
