@@ -8,8 +8,8 @@
  * @package   sportsmanagement
  * @subpackage helpers
  */
+
 class parseCSV {
-	
 /*
 
 	Class: parseCSV v0.4.3 beta
@@ -50,19 +50,16 @@ class parseCSV {
 	----------------
 	# general usage
 	$csv = new parseCSV('data.csv');
-	print_r($csv->data);
 	----------------
 	# tab delimited, and encoding conversion
 	$csv = new parseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	$csv->delimiter = "\t";
 	$csv->parse('data.tsv');
-	print_r($csv->data);
 	----------------
 	# auto-detect delimiter character
 	$csv = new parseCSV();
 	$csv->auto('data.csv');
-	print_r($csv->data);
 	----------------
 	# modify data in a csv file
 	$csv = new parseCSV();
@@ -508,8 +505,6 @@ class parseCSV {
 		$valueneu = preg_replace($suchmuster, $ersetzungen, $value);
 		$this->titles[$key] = $valueneu;
 		}
-//        echo 'file_data<pre>',print_r($this->titles,true),'</pre>';        
-        
 		if ( !empty($this->sort_by) ) {
 			$sort_type = SORT_REGULAR;
 			if ( $this->sort_type == 'numeric' ) {
