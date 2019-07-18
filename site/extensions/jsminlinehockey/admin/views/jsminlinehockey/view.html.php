@@ -44,13 +44,12 @@
   91  .icon-48-massemail     { background-image: url(../images/header/icon-48-massmail.png); }
 
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-
-//jimport('joomla.html.html.select');
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjsminlinehockey
@@ -80,7 +79,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
 
         $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
 
-        JToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+        ToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
 
 switch ($this->getLayout())
         {
@@ -101,11 +100,11 @@ switch ($this->getLayout())
      */
     protected function addToolbar() {
         // Set toolbar items for the page
-        JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-        JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+//        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
+//        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
 
         if ($this->projectid) {
-            JToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
+            ToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
         }
     }
 
