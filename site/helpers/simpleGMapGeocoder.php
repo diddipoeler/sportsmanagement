@@ -57,12 +57,7 @@ function JLgetGeoCoords($address)
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=".
                   urlencode($address)."&sensor=false";
-/*    
-    $result = json_decode(file_get_contents($geoCodeURL), true);
-    echo 'getGeoCoords result<br><pre>';
-    print_r($result);
-    echo '</pre><br>';
-*/
+
 if (function_exists('curl_init')) {	
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
@@ -72,18 +67,6 @@ $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
 }
-//    echo 'JLgetGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
-    
-    /*
-    $coords['status'] = $result["status"];
-    
-    if ( isset($result["results"][0]) )
-    {        
-    $coords['lat'] = $result["results"][0]["geometry"]["location"]["lat"];
-    $coords['lng'] = $result["results"][0]["geometry"]["location"]["lng"];
-    }
-    */
-    
     return $result;
 }
 
@@ -107,7 +90,6 @@ $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
 }
-//echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
         
 }
 
@@ -195,13 +177,6 @@ File::write($file, $xmlfile);
 function genkml3prediction($project_id,$allmembers)
 {
 $type = 'prediction';
-
-
-/*
-echo 'genkml3prediction allmembers<br><pre>';
-    print_r($allmembers);
-    echo '</pre><br>';
-*/
 
 foreach ( $allmembers as $row )
 {
@@ -354,16 +329,11 @@ function getGeoCoords($address)
       $address = str_replace("Ü", "Ue", $address);
       $address = str_replace("ß", "ss", $address);
     */
-    
-    //$address = utf8_encode($address);
-    
-    //echo 'getGeoCoords address -> '.$address.'<br>';
-    
+   
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=".
                   urlencode($address)."&sensor=false";
     
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
 	if (function_exists('curl_init')) {
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
@@ -374,12 +344,6 @@ curl_close($initial);
 $result = json_decode($file_content, true);
 	}
 	
-    /*
-    echo 'getGeoCoords result<br><pre>';
-    print_r($result);
-    echo '</pre><br>';
-    */
-    
     $coords['status'] = $result["status"];
     
     if ( isset($result["results"][0]) )
@@ -415,13 +379,8 @@ $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
 }
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
-                
     $address['status'] = $result["status"];
-    
     echo $geoCodeURL."<br />";
-    print_r($result);
-    
     return $address;
 }
 
@@ -451,8 +410,6 @@ $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
 }
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
-//    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
     
     if ( isset($result[0]) )
     {        
@@ -511,16 +468,6 @@ $kml[] = ' <Icon>';
 
 
 $picturepath = JPATH_SITE.DIRECTORY_SEPARATOR.$row->avatar;
-
-/*
-echo 'writekml3prediction picturepath<br><pre>';
-    print_r($picturepath);
-    echo '</pre><br>';
-
-echo 'writekml3prediction avatar<br><pre>';
-    print_r($row->avatar);
-    echo '</pre><br>';
-*/
 
 if ( !file_exists($picturepath) || empty($row->avatar) )
 {
