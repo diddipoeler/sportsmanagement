@@ -27,7 +27,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
  * sportsmanagementModeljsminlinehockey
  * 
  * @package 
- * @author Dieter Pl�
+ * @author Dieter Plöger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -702,9 +702,10 @@ $query->select('id');
 // From the table  
 $query->from('#__sportsmanagement_playground');  
 $query->where('id = '.$playground_id );  
+try {	
 $db->setQuery($query);  
-
-if ( !$db->loadResult() ) 
+$result = $db->loadResult();
+if ( !$result ) 
 {
 // Create and populate an object. 
 $profile = new stdClass(); 
@@ -720,7 +721,10 @@ $profile->alias = JFilterOutput::stringURLSafe( $playground_name );;
 // Insert the object into the table. 
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
 }
-
+} catch (Exception $e) {
+             //   $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
 
 
 }
