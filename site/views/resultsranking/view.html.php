@@ -83,9 +83,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$config = array_merge($rankingconfig, $resultsconfig);
 
 		$this->config = array_merge($this->overallconfig, $config);
+		
 	if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
         {
-        echo __METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'; 
+
         }
 		$this->tableconfig = $rankingconfig;
 		$this->showediticon = $resultsmodel->getShowEditIcon();
