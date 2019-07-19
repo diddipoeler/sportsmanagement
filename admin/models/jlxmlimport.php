@@ -3842,7 +3842,6 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			{
 				$my_text .= 'error on projectreferee import: ';
 				$my_text .= $oldID;
-				$my_text .= '<br />Error: _importProjectReferees<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectreferee,true).'</pre>~';
 				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				return false;
 			}
@@ -5337,10 +5336,7 @@ $query->clear();
 				{
 					$my_text .= 'error on treeto import: ';
 					$my_text .= '#'.$oldID.'#';
-					//$my_text .= "<br />Error: _importTreetos<br />#$my_text#<br />#<pre>".print_r($p_treeto,true).'</pre>#';
 					$this->_success_text['Importing treeto data:']=$my_text;
-					//return false;
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
 				{
@@ -6199,7 +6195,7 @@ $mdl->setNewPicturePath();
 	 */
 	private function dump_variable($description, $variable)
 	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
+		
 	}
     
     /**
