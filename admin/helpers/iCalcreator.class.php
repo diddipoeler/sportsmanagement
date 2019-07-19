@@ -5588,7 +5588,7 @@ class calendarComponent {
       }
     }
     unset( $config );
-// echo $this->objName.'<br />'.var_export( $this->unparsed, TRUE )."<br />\n"; // test ###
+
             /* concatenate property values spread over several lines */
     $lastix    = -1;
     $propnames = array( 'action', 'attach', 'attendee', 'categories', 'comment', 'completed'
