@@ -739,7 +739,7 @@ class iCalUtilityFunctions {
  * @param array $startdate, start date
  * @param array $enddate, optional
  * @return array of recurrence (start-)dates as index
- * @todo BYHOUR, BYMINUTE, BYSECOND, ev. BYSETPOS due to ambiguity, WEEKLY at year end/start
+ * @todos BYHOUR, BYMINUTE, BYSECOND, ev. BYSETPOS due to ambiguity, WEEKLY at year end/start
  */
   public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=FALSE ) {
     foreach( $wdate as $k => $v ) if( ctype_digit( $v )) $wdate[$k] = (int) $v;
@@ -750,7 +750,7 @@ class iCalUtilityFunctions {
       $enddate = $startdate;
       $enddate['year'] += 1;
     }
-// echo "recur __in_ comp start ".implode('-',$wdate)." period start ".implode('-',$startdate)." period end ".implode('-',$enddate)."<br />\n";print_r($recur);echo "<br />\n";//test###
+
     $endDatets = iCalUtilityFunctions::_date2timestamp( $enddate ); // fix break
     if( !isset( $recur['COUNT'] ) && !isset( $recur['UNTIL'] ))
       $recur['UNTIL'] = $enddate; // create break
@@ -816,7 +816,7 @@ class iCalUtilityFunctions {
       }
       else
         iCalUtilityFunctions::_stepdate( $enddate, $endDatets, $step); // make sure to count whole last period
-// echo "BYSETPOS endDat++ =".implode('-',$enddate).' step='.var_export($step,TRUE)."<br />\n";//test###
+
       $bysetposWold = (int) date( 'W', ( $wdatets + $wkst ));
       $bysetposYold = $wdate['year'];
       $bysetposMold = $wdate['month'];
