@@ -39,19 +39,19 @@
 	----------------
 	# general usage
 	$csv = new parseCSV('data.csv');
-	print_r($csv->data);
+
 	----------------
 	# tab delimited, and encoding conversion
 	$csv = new parseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	$csv->delimiter = "\t";
 	$csv->parse('data.tsv');
-	print_r($csv->data);
+
 	----------------
 	# auto-detect delimiter character
 	$csv = new parseCSV();
 	$csv->auto('data.csv');
-	print_r($csv->data);
+
 	----------------
 	# modify data in a csv file
 	$csv = new parseCSV();
