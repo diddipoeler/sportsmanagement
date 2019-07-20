@@ -171,7 +171,7 @@ class JGithubPackageRepositoriesDownloads extends JGithubPackage
 		// Send the request.
 		$response = $this->client->post($url, $data);
 
-		// @todo Process the response..
+		// @internal Process the response..
 
 		return (201 == $response->code) ? true : false;
 	}

@@ -35,7 +35,7 @@
  * 	$ical->get_all_data();
  *  echo "</pre>";
  * @version 1.0
- * @todo get sort todo list
+ * @internal get sort todo list
  */
 class ical
 {

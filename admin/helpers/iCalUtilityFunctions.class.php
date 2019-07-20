@@ -739,7 +739,7 @@ class iCalUtilityFunctions {
  * @param array $startdate, start date
  * @param array $enddate, optional
  * @return array of recurrence (start-)dates as index
- * @todos BYHOUR, BYMINUTE, BYSECOND, ev. BYSETPOS due to ambiguity, WEEKLY at year end/start
+ * @internal BYHOUR, BYMINUTE, BYSECOND, ev. BYSETPOS due to ambiguity, WEEKLY at year end/start
  */
   public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=FALSE ) {
     foreach( $wdate as $k => $v ) if( ctype_digit( $v )) $wdate[$k] = (int) $v;

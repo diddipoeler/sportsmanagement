@@ -34,18 +34,18 @@ use Joomla\CMS\Component\ComponentHelper;
 			<?php
 		}
 	}
-	if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
+	if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_backend',0))
 	{
 		?><fieldset>
 			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
-			<table class='adminlist'><tr><td><?php echo '<pre>'.print_r($this->postData,true).'</pre>'; ?></td></tr></table>
+			<table class='adminlist'><tr><td><?php echo TVarDumper::dump($this->postData,10,TRUE); ?></td></tr></table>
 		</fieldset><?php
 	}
 	?>
 </div>
 <p style='text-align:right;'><a href='#page_top'><?php echo Text::_('top'); ?></a></p>
 <?php
-if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
+if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_backend',0))
 {
 	echo '<center><hr>';
 		echo Text::sprintf('Memory Limit is %1$s',ini_get('memory_limit')) . '<br />';

@@ -65,7 +65,7 @@ abstract class JGithubObject
 
 		if ($this->options->get('gh.token', false))
 		{
-			// Use oAuth authentication - @todo set in request header ?
+			// Use oAuth authentication - @internal set in request header ?
 			$uri->setVar('access_token', $this->options->get('gh.token'));
 		}
 		else
