@@ -9,7 +9,6 @@
  * @subpackage smextxmleditor
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -36,10 +35,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $model = $this->getModel();
-		// $data2 = $jinput->getString('file_name', "");
-		// var_dump($data2);
         $this->file_name = $jinput->getString('file_name', "");
-        
         // Initialise variables.
 		$this->form		= $this->get('Form');
         $this->source	= $this->get('Source');

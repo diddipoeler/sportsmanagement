@@ -440,9 +440,6 @@ foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
-//$mainframe->enqueueMessage(Text::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
-
-
     switch ($route)        
     {
     case "install":

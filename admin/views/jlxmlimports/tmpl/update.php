@@ -27,11 +27,11 @@ use Joomla\CMS\Component\ComponentHelper;
 	}
     
     
-	if (ComponentHelper::getParams($this->option)->get('show_debug_info',0))
+	if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend',0))
 	{
 		?><fieldset>
 			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
-			<table class='adminlist'><tr><td><?php echo '<pre>'.print_r($this->xml,true).'</pre>'; ?></td></tr></table>
+			<table class='adminlist'><tr><td><?php echo TVarDumper::dump($this->xml,10,TRUE);?></td></tr></table>
 		</fieldset><?php
 	}
 	?>

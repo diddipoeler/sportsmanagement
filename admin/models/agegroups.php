@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -67,10 +66,10 @@ class sportsmanagementModelagegroups extends JSMModelList
 	 */
 	protected function populateState($ordering = 'obj.name', $direction = 'asc')
 	{
-	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.TVarDumper::dump($this->context,10,TRUE).''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.TVarDumper::dump($this->context,10,TRUE).''),'');
         }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -165,7 +164,6 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->jsmdb->setQuery($this->jsmquery);
         if ( !$result = $this->jsmdb->loadObjectList() )
         {
-            //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             return array();
         }
 
