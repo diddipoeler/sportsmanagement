@@ -285,7 +285,6 @@ $tempid = $this->_db->loadResult();
 			{
 				$my_text .= 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA_ERROR';
 				$my_text .= $row->match_number;
-				$my_text .= "<br />Error: _updateMatches<br />#$my_text#<br />#<pre>".print_r($p_match,true).'</pre>#';
 				$this->_success_text['COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA']=$my_text;
 				return false;
 			}
@@ -1119,7 +1118,7 @@ $csv = new JSMparseCSV();
 
 $input = file_get_contents( $file );	
 $encoding = mb_detect_encoding( $input, mb_list_encodings(), TRUE );  
-$app->enqueueMessage(Text::_(__LINE__.' - '.'encoding<br><pre>'.print_r($encoding,true).'</pre>'   ),'');  
+
 if( $encoding !== "UTF-8" ) {
 $csvneu = explode("\n",$input);
 $numcsv = count($csvneu);

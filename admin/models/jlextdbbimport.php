@@ -91,30 +91,7 @@ function __construct( )
 		parent::__construct( );
 	
 	}
-
-/**
- * sportsmanagementModeljlextdbbimport::dump_header()
- * 
- * @param mixed $text
- * @return void
- */
-private function dump_header($text)
-	{
-		echo "<h1>$text</h1>";
-	}
-
-	/**
-	 * sportsmanagementModeljlextdbbimport::dump_variable()
-	 * 
-	 * @param mixed $description
-	 * @param mixed $variable
-	 * @return void
-	 */
-	private function dump_variable($description, $variable)
-	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
-	}
-    
+   
 /**
  * sportsmanagementModeljlextdbbimport::multisort()
  * 
@@ -313,7 +290,6 @@ $tempid = $this->_db->loadResult();
 			{
 				$my_text .= 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA_ERROR';
 				$my_text .= $row->match_number;
-				$my_text .= "<br />Error: _updateMatches<br />#$my_text#<br />#<pre>".print_r($p_match,true).'</pre>#';
 				$this->_success_text['COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA']=$my_text;
 				return false;
 			}

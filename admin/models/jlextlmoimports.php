@@ -81,23 +81,6 @@ function __construct( )
 	}
 
 /**
- * sportsmanagementModeljlextlmoimports::dump_header()
- * 
- * @param mixed $text
- * @return void
- */
-private function dump_header($text)
-	{
-		echo "<h1>$text</h1>";
-	}
-
-	private function dump_variable($description, $variable)
-	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
-	}
-    
-
-/**
  * sportsmanagementModeljlextlmoimports::checkStartExtension()
  * 
  * @return void

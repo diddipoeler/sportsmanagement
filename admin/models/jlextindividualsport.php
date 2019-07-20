@@ -631,7 +631,7 @@ $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".
 $this->_db->setQuery($query);
 if (!$this->_db->execute())
 		{
-$app->enqueueMessage(Text::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
+
 		}
 
 

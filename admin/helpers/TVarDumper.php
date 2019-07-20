@@ -11,7 +11,7 @@
 /**
  * TVarDumper class.
  *
- * TVarDumper is intended to replace the buggy PHP function var_dump and print_r.
+ * TVarDumper is intended to replace the buggy PHP function .
  * It can correctly identify the recursively referenced objects in a complex
  * object structure. It also has a recursive depth control to avoid indefinite
  * recursive display of some peculiar variables.
@@ -33,7 +33,7 @@ class TVarDumper
 
 	/**
 	 * Converts a variable into a string representation.
-	 * This method achieves the similar functionality as var_dump and print_r
+	 * This method achieves the similar functionality as 
 	 * but is more robust when handling complex objects such as PRADO controls.
 	 * @param mixed $var variable to be dumped
 	 * @param int $depth maximum depth that the dumper should go into the variable. Defaults to 10.
