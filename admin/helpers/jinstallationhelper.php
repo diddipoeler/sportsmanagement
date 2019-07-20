@@ -27,21 +27,7 @@ use Joomla\CMS\Client\FtpClient;
  */
 class JInstallationHelper
 {
-	/**
-	 * @return string A guess at the db required
-	 */
-	function detectDB()
-	{
-		$map = array ('mysql_connect' => 'mysql', 'mysqli_connect' => 'mysqli', 'mssql_connect' => 'mssql');
-		foreach ($map as $f => $db)
-		{
-			if (function_exists($f))
-			{
-				return $db;
-			}
-		}
-		return 'mysql';
-	}
+	
 
 	/**
 	 * @param array
