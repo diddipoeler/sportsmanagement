@@ -1,6 +1,5 @@
 <?php
-
-/*
+/**
  *  Copyright (c) Nicholas Mossor Rathmann <nicholas.rathmann@gmail.com> 2008. All Rights Reserved.
  *
  *  Modified by julien.vonthron@gmail.com to suit joomleague extension for joomla
@@ -23,6 +22,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+defined('_JEXEC') or die('Restricted access');
+
+ 
+/**
+ * RRobin
+ * 
+ * @package 
+ * @author Nicholas Mossor Rathmann
+ * @copyright 2008
+ * @version $Id$
+ * @access public
  */
 class RRobin {
 
