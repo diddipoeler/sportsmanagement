@@ -77,9 +77,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		//build feed links
 		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
 		$rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
-
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($this->getLayout(),true).'</pre>' ),'');
-        
+      
 		parent::display($tpl);
 	}
 
@@ -487,10 +485,7 @@ class sportsmanagementViewResults extends JViewLegacy
 	
 	function showReportDecisionIcons(&$game)
 	{
-		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
-
 		$output = '';
-		//$report_link = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 
 		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{

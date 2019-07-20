@@ -5,11 +5,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-if ( $this->show_debug_info )
-{
-echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
-}
-
 $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.kml';
 
 ?>

@@ -12,18 +12,9 @@ class sportsmanagementViewjlxmlexports extends JViewLegacy
     // Get a refrence of the page instance in joomla
 		$document = & Factory::getDocument();
 		$uri = &Factory::getURI();		
-				
-		
     
-    //$model =& $this->getModel( 'jlxmlexports' ); 
-    $model =& $this->getModel();
-    
-    /*
-    echo '<pre>';
-		print_r($model);
-		echo '</pre>';
-		*/
-		
+    $model = $this->getModel();
+	
     $model->exportData();
 
 		parent::display( $tpl );

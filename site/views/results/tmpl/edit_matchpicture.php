@@ -3,7 +3,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-echo 'this->images<br /><pre>~' . print_r($this->images,true) . '~</pre><br />';
 ?>
 
 <div class="imglist">

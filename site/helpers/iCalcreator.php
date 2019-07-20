@@ -7900,7 +7900,7 @@ class iCalUtilityFunctions {
  * @param array $startdate, start date
  * @param array $enddate, optional
  * @return void
- * @todo BYHOUR, BYMINUTE, BYSECOND, WEEKLY at year end/start
+ * @internal BYHOUR, BYMINUTE, BYSECOND, WEEKLY at year end/start
  */
   public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=FALSE ) {
     foreach( $wdate as $k => $v ) if( ctype_digit( $v )) $wdate[$k] = (int) $v;

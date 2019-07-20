@@ -12,8 +12,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-echo ' <br><pre>'.print_r($this->items,true).'</pre>';
-
 ?>
 
 <div class="pagination">

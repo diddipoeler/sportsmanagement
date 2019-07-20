@@ -57,12 +57,7 @@ class sportsmanagementViewallteams extends sportsmanagementView
         $starttime = microtime(); 
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$this->pagination	= $this->get('Pagination');
 	
         //build the html options for nation

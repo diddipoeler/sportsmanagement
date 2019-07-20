@@ -38,11 +38,6 @@ class sportsmanagementViewical extends sportsmanagementView
 	$this->matches = $this->model->getResultsPlan($this->jinput->getInt('p',0),$this->jinput->getInt('tid',0),0,0,'ASC',$this->jinput->getInt('cfg_which_database',0)); 	
     $mdlJSMNextMatch = BaseDatabaseModel::getInstance("nextmatch", "sportsmanagementModel");
     $this->teams = $mdlJSMNextMatch->getTeamsFromMatches( $this->matches );;
-
-
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-
     
     // create a new calendar instance
 	$v = new vcalendar();

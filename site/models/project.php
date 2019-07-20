@@ -1844,7 +1844,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				if (!$user->authorise($task, $option)) 
                 {
 					$allowed = false;
-					error_log(Text::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION',$task));
+                    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION',$task),'Error');
 				} 
                 else 
                 {
@@ -1863,7 +1863,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				} 
                 else 
                 {
-					error_log(Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'));
                     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),'Error');
 				}
 			}

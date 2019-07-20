@@ -14,14 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
-}
-
 $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
-
-//echo $kmlpath.'<br>';
 
 ?>
 <div style="width: 100%; float: left">

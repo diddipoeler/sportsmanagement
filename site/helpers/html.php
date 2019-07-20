@@ -403,12 +403,6 @@ $guestteam->division_id = $division_id;
             }
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'rounds <pre>' . print_r($rounds, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
-
         return HTMLHelper::_('select.genericlist', $options, 'select-round', 'onchange="top.location.href=this.options[this.selectedIndex].value;"', 'value', 'text', $currenturl);
     }
 
