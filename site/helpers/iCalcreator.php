@@ -7977,7 +7977,7 @@ class iCalUtilityFunctions {
       }
       else
         iCalUtilityFunctions::_stepdate( $enddate, $endDatets, $step); // make sure to count whole last period
-// echo "BYSETPOS endDat++ =".implode('-',$enddate).' step='.var_export($step,TRUE)."<br>\n";//test###
+
       $bysetposWold = (int) date( 'W', ( $wdatets + $wkst ));
       $bysetposYold = $wdate['year'];
       $bysetposMold = $wdate['month'];
