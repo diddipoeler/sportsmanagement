@@ -99,6 +99,28 @@ class JSMControllerForm extends FormController
     }
 
 	
+    /**
+     * JSMControllerForm::import()
+     * 
+     * @return void
+     */
+    function import()
+{
+    $message = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_IMPORT');
+    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list , false), $message);
+    }
+    
+    /**
+     * JSMControllerForm::export()
+     * 
+     * @return void
+     */
+    function export()
+{
+    $message = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_EXPORT');
+    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list , false), $message);
+    }
+    
 	/**
 	 * JSMControllerForm::cancelmodal()
 	 * 
