@@ -163,7 +163,7 @@ break;
 
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
-                    // es können aber auch neue positionen oder ereignisse dazu kommen
+                    /** es können aber auch neue positionen oder ereignisse dazu kommen */
                     $insert_sport_type = $databasetool->insertSportType($type);
                     
 
@@ -183,15 +183,13 @@ break;
 
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
-                    // es können aber auch neue positionen oder ereignisse dazu kommen
+                    /** es können aber auch neue positionen oder ereignisse dazu kommen */
                     $insert_sport_type = $databasetool->insertSportType($type);
                     if (isset($model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')])) {
                         $model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')] .= $databasetool->my_text;
                     }
 
-                    /**
-                     * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert
-                     */
+                    /** nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert */
                     if ($install_agegroup) {
                         if ($country) {
                             foreach ($country as $keyc => $typec) {
@@ -205,10 +203,11 @@ break;
                 }
             }
         }
-        // Get data from the model
+        /** Get data from the model */
         $items = $this->get('Items');
         $pagination = $this->get('Pagination');
 
+        /** landesverbände */
         if (!$cfg_which_database) {
             $checkassociations = $databasetool->checkAssociations();
         }
@@ -233,7 +232,7 @@ break;
         $this->sporttypes = $sporttypes;
         $this->version = $model->getVersion();
 
-        // diddipoeler erst mal abgeschaltet
+        /** diddipoeler erst mal abgeschaltet */
         $this->importData = $model->_success_text;
         $this->importData2 = $databasetool->_success_text;
 
@@ -241,12 +240,12 @@ break;
 
         }
 
-        // Check for errors.
+        /** Check for errors. */
         if (count($errors = $this->get('Errors'))) {
             Log::add( implode('<br />', $errors));
             return false;
         }
-        // Assign data to the view
+        /** Assign data to the view */
         $this->items = $items;
         $this->pagination = $pagination;
         $this->params = $params;
