@@ -1012,6 +1012,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                             $temp->id = $result;
                             $export[] = $temp;
                             $this->_assoclist[$country][$main] = array_merge($export);
+                            $parent_id = $this->_assoclist[$country][$parentmain];
 
                             /** Fields to update. */
                             $this->jsmquery = $this->jsmdb->getQuery(true);
