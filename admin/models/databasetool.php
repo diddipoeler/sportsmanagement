@@ -986,9 +986,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 /** Create a new query object. */
                                 $insertquery = $this->jsmdb->getQuery(true);
                                 /** Insert columns. */
-                                $columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name');
+                                $columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
                                 /** Insert values. */
-                                $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'');
+                                $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
                                 /** Prepare the insert query. */
                                 $insertquery
                                         ->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
@@ -1019,7 +1019,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 $this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
                                 $this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
                                 $this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
-                                $this->jsmdb->quoteName('alias') . '=' . '\'' . $alias . '\''
+                                $this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
                             );
                             /** Conditions for which records should be updated. */
                             $conditions = array(
