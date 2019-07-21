@@ -1019,7 +1019,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 $this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
                                 $this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
                                 $this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
-                                $this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
+                                $this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\'',
+                                $this->jsmdb->quoteName('parent_id') . '=' . '\'' . $parent_id[0]->id . '\''
                             );
                             /** Conditions for which records should be updated. */
                             $conditions = array(
