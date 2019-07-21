@@ -922,7 +922,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
         $image_path = 'images/' . $this->jsmoption . '/database/associations/';
 
-        // schleife
+        /** schleife */
         foreach ($xml->$document as $association) {
             $country = (string) $association->assocname->attributes()->country;
 
@@ -932,18 +932,23 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                     if ($value == $country) {
                         $main = (string) $association->assocname->attributes()->main;
                         $parentmain = (string) $association->assocname->attributes()->parentmain;
-
                         $icon = $image_path . (string) $association->assocname->attributes()->icon;
                         $flag = (string) $association->assocname->attributes()->flag;
                         $website = (string) $association->assocname->attributes()->website;
                         $shortname = (string) $association->assocname->attributes()->shortname;
-
                         $assocname = (string) $association->assocname;
+                        $middlename = $assocname;
+                        $aliasname = OutputFilter::stringURLSafe( $assocname );
+                        if ( !$shortname )
+                        {
+                        $shortname = $assocname;    
+                        }
+                        
 
                         $this->jsmquery = $this->jsmdb->getQuery(true);
-                        // Select some fields
+                        /** Select some fields  */
                         $this->jsmquery->select('id');
-                        // From the table
+                        /** From the table */
                         $this->jsmquery->from('#__sportsmanagement_associations');
                         $this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
                         $this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($assocname)) . ''));
@@ -952,19 +957,20 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
                         $export = array();
                         if (!$result) {
+                            /** landesverband nicht gefunden */
                             if (empty($parentmain)) {
-                                // Create a new query object.
+                                /** Create a new query object. */
                                 $insertquery = $this->jsmdb->getQuery(true);
-                                // Insert columns.
-                                $columns = array('country', 'name', 'picture', 'assocflag', 'website', 'short_name');
-                                // Insert values.
-                                $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'');
-                                // Prepare the insert query.
+                                /** Insert columns. */
+                                $columns = array('country', 'name', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
+                                /** Insert values. */
+                                $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
+                                /** Prepare the insert query. */
                                 $insertquery
                                         ->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
                                         ->columns($this->jsmdb->quoteName($columns))
                                         ->values(implode(',', $values));
-                                // Set the query using our newly populated query object and execute it.
+                                /** Set the query using our newly populated query object and execute it. */
                                 $this->jsmdb->setQuery($insertquery);
 
                                 if (!self::runJoomlaQuery()) {
@@ -977,18 +983,18 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 }
                             } else {
                                 $parent_id = $this->_assoclist[$country][$parentmain];
-                                // Create a new query object.
+                                /** Create a new query object. */
                                 $insertquery = $this->jsmdb->getQuery(true);
-                                // Insert columns.
+                                /** Insert columns. */
                                 $columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name');
-                                // Insert values.
+                                /** Insert values. */
                                 $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'');
-                                // Prepare the insert query.
+                                /** Prepare the insert query. */
                                 $insertquery
                                         ->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
                                         ->columns($this->jsmdb->quoteName($columns))
                                         ->values(implode(',', $values));
-                                // Set the query using our newly populated query object and execute it.
+                                /** Set the query using our newly populated query object and execute it. */
                                 $this->jsmdb->setQuery($insertquery);
 
                                 if (!self::runJoomlaQuery()) {
@@ -1001,18 +1007,21 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 }
                             }
                         } else {
+                            /** landesverband gefunden */
                             $temp = new stdClass();
                             $temp->id = $result;
                             $export[] = $temp;
                             $this->_assoclist[$country][$main] = array_merge($export);
 
-                            // Fields to update.
+                            /** Fields to update. */
                             $this->jsmquery = $this->jsmdb->getQuery(true);
                             $fields = array(
                                 $this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
-                                $this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\''
+                                $this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
+                                $this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
+                                $this->jsmdb->quoteName('alias') . '=' . '\'' . $alias . '\''
                             );
-                            // Conditions for which records should be updated.
+                            /** Conditions for which records should be updated. */
                             $conditions = array(
                                 $this->jsmdb->quoteName('id') . '=' . $result
                             );
