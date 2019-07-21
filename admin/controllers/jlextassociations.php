@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementControllerjlextassociations
@@ -22,6 +23,20 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementControllerjlextassociations extends JSMControllerAdmin
 {
+
+/**
+ * sportsmanagementControllerjlextassociations::import()
+ * 
+ * @return void
+ */
+function import()
+{
+       $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+       $model = $this->getModel();
+       $msg = $databasetool->checkAssociations();
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=jlextassociations',$msg);
+    
+}  
   
 	/**
 	 * Proxy for getModel.

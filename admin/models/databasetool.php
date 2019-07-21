@@ -891,11 +891,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function checkAssociations() {
-        //$app = Factory::getApplication();
-//    $this->option = Factory::getApplication()->input->getCmd('option');    
-        /* Ein Datenbankobjekt beziehen */
-        //$db = Factory::getDbo();  
-
         $country_assoc_del = '';
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {

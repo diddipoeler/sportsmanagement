@@ -9,7 +9,6 @@
  * @subpackage jlextassociastions
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
@@ -38,9 +37,8 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 	{
         
         $this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
-
         
-        //build the html options for nation
+        /** build the html options for nation */
 		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
@@ -76,12 +74,12 @@ $mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsman
 	*/
 	protected function addToolbar()
 	{
-	// Set toolbar items for the page
+	/** Set toolbar items for the page */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
 		ToolbarHelper::addNew('jlextassociation.add');
 		ToolbarHelper::editList('jlextassociation.edit');
-		ToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::custom('jlextassociations.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		ToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
