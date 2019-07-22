@@ -488,10 +488,10 @@
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="15" parentmain="0">Ligue du Maine de football</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="16" parentmain="0">Ligue de la Méditerranée de football</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="17" parentmain="0">Ligue de Midi-Pyrénées de football</assocname></associations>
-<associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="18" parentmain="0">Ligue du Nord-Pas de Calais de football</assocname></associations>
+<associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="18" parentmain="29">Ligue du Nord-Pas de Calais de football</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="19" parentmain="0">Ligue de Normandie de football</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="20" parentmain="0">Ligue de Paris-Île de France de football</assocname></associations>
-<associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="21" parentmain="0">Ligue de Picardie de football</assocname></associations>
+<associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="21" parentmain="29">Ligue de Picardie de football</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="22" parentmain="23">Ligue de Rhône-Alpes de football</assocname></associations>
 
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="23" parentmain="0">Ligue de Auvergne-Rhône-Alpes de football</assocname></associations>
@@ -500,6 +500,7 @@
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="26" parentmain="0">Ligue de football Nouvelle-Aquitaine</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="27" parentmain="0">Ligue de football d’Occitanie</assocname></associations>
 <associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="28" parentmain="0">Ligue de football des Pays de la Loire</assocname></associations>
+<associations><assocname country="FRA" icon="" flag="" website="" shortname="" main="29" parentmain="0">Ligue de Football des Hauts de France</assocname></associations>  
 
 <associations><assocname country="CZE" icon="" flag="" website="http://www.fotbalpraha.cz/" shortname="Pražský" main="1" parentmain="0">Pražský fotbalový svaz (Prag)</assocname></associations>
 <associations><assocname country="CZE" icon="" flag="" website="http://www.skfs.cz/" shortname="Středočeský" main="2" parentmain="0">Stredoceský kraj (Mittelböhmen)</assocname></associations>
