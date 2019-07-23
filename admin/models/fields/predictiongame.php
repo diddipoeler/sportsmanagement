@@ -54,6 +54,7 @@ class JFormFieldPredictiongame extends FormField
     {
 		$db = sportsmanagementHelper::getDBConnection();
 		$lang = Factory::getLanguage();
+		$mitems = array();
         // welche tabelle soll genutzt werden
         $params = ComponentHelper::getParams( 'com_sportsmanagement' );
 		$query = $db->getQuery(true);
@@ -70,7 +71,7 @@ class JFormFieldPredictiongame extends FormField
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
         
-		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		//$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $options as $option ) {
 			$mitems[] = HTMLHelper::_('select.option',  $option->id, '&nbsp;'.$option->name. ' ('.$option->id.')' );
