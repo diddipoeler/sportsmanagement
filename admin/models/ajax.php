@@ -711,8 +711,8 @@ $option = $app->input->getCmd('option');
         $db->setQuery($query);
         $result = $db->loadObjectList();
 			} catch (Exception $e) {
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($query->dump()), 'Error');
+                //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+		//$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($query->dump()), 'Error');
                 $result = false;
             }
 			
