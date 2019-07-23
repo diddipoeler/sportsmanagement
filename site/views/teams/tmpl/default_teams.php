@@ -202,6 +202,9 @@ if ( $this->config['show_club_phone'] )
 <br />
 <?php
 echo $team->club_phone;
+?>
+<br />
+<?php	
 }
 if ( $this->config['show_club_fax'] ) 
 { 
@@ -209,6 +212,9 @@ if ( $this->config['show_club_fax'] )
 <br />
 <?php
 echo $team->club_fax;
+?>
+<br />
+<?php	
 }
 if ( $this->config['show_club_email'] ) 
 { 
@@ -216,6 +222,9 @@ if ( $this->config['show_club_email'] )
 <br />
 <?php
 echo $team->club_email;
+?>
+<br />
+<?php	
 }    
 if ( $this->config['show_googlemap_link'] ) 
 {
