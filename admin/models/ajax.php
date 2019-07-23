@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelAjax
@@ -706,8 +707,17 @@ $option = $app->input->getCmd('option');
 		$query->from('#__sportsmanagement_prediction_member as a');
         $query->join('LEFT', '#__users AS u ON u.id = a.user_id');   
         $query->where('a.prediction_id = '.$prgame_id);
+		try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
+			} catch (Exception $e) {
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($query->dump()), 'Error');
+                $result = false;
+            }
+			
+			
+			
         return self::addGlobalSelectElement($result, $required);    
         }
         
