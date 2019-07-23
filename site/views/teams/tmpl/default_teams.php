@@ -221,6 +221,7 @@ if ( $this->config['show_club_email'] )
 ?>
 <br />
 <?php
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
 echo $team->club_email;
 ?>
 <br />
