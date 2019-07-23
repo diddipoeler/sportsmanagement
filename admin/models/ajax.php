@@ -706,7 +706,7 @@ $option = $app->input->getCmd('option');
         $query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
 		$query->from('#__sportsmanagement_prediction_member as a');
         $query->join('LEFT', '#__users AS u ON u.id = a.user_id');   
-        $query->where('a.prediction_id = '.$prgame_id);
+        $query->where('a.prediction_id = '.(int)$prgame_id);
 		try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
