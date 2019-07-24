@@ -201,7 +201,7 @@ if ( $this->config['show_club_phone'] )
 ?>
 <br />
 <?php
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', '');	
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', 'width="16"');	
 echo $team->club_phone;
 ?>
 <br />
@@ -212,7 +212,7 @@ if ( $this->config['show_club_fax'] )
 ?>
 <br />
 <?php
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', '');	
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', 'width="16"');	
 echo $team->club_fax;
 ?>
 <br />
