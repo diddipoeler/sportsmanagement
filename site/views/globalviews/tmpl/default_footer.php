@@ -22,7 +22,7 @@ $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-$show_facebook_link = ComponentHelper::getParams($option)->get('$show_facebook_link',0) ;
+$show_facebook_link = ComponentHelper::getParams($option)->get('show_facebook_link',0) ;
 $cfg_bugtracker_server = ComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
 $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width',100) ;
 ?>
