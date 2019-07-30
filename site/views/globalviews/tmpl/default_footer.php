@@ -22,6 +22,7 @@ $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+$show_facebook_link = ComponentHelper::getParams($option)->get('$show_facebook_link',0) ;
 $cfg_bugtracker_server = ComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
 $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width',100) ;
 ?>
@@ -72,9 +73,16 @@ SqueezeBox.open(url, {
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy;
 	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 <br />  
+<?php
+if ( $show_facebook_link )
+{	
+?>
 <img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
 <a href="https://www.facebook.com/joomlasportsmanagement/" target="_blank">JSM auf Facebook</a>	
 	<br />      
+<?php
+}
+?>
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
 	echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
