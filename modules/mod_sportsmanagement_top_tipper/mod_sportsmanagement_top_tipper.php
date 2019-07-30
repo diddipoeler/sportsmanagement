@@ -103,7 +103,8 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
  * das model laden
  */
 $modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
-
+sportsmanagementModelPrediction::$_predictionProjectS = NULL;
+sportsmanagementModelPrediction::$_predictionGame = NULL;
 sportsmanagementModelPrediction::$predictionGameID = (int)$pg_id;
 sportsmanagementModelPredictionRanking::$predictionGameID = (int)$pg_id;
 
