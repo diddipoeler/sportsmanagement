@@ -104,7 +104,7 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
  */
 $modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
 
-sportsmanagementModelPrediction::$predictionGameID = $pg_id;
+sportsmanagementModelPrediction::$predictionGameID = (int)$pg_id;
 sportsmanagementModelPredictionRanking::$predictionGameID = (int)$pg_id;
 
 /**
@@ -116,7 +116,7 @@ $config               = array_merge($overallConfig, $config);
 $configavatar         = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 $predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame();
 $predictionMember[]   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS();
+$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS($pg_id);
 $actJoomlaUser[]      = Factory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
