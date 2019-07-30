@@ -626,6 +626,12 @@ class="radio btn-group btn-group-yesno"
       description="COM_SPORTSMANAGEMENT_SETTINGS_LOGO_PICTURE_WIDTH_DESC">
 		</field>
  
+	<field name="show_facebook_link" type="extensionradiobutton" default="0"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	
                 <field name="use_jsmflex" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
