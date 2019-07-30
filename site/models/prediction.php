@@ -492,7 +492,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * 
 	 * @return
 	 */
-	static function getPredictionProjectS()
+	static function getPredictionProjectS($predictionGameID=0)
 	{
 		 // Reference global application object
         $app = Factory::getApplication();
@@ -502,7 +502,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        
+        if ( $predictionGameID )
+	{
+	self::$predictionGameID = $predictionGameID;	
+	}
         if (!(int)self::$_predictionProjectS)
 		{
 			if ( (int)self::$predictionGameID > 0)
