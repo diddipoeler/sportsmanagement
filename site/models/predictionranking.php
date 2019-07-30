@@ -30,7 +30,7 @@ jimport( 'joomla.utilities.utility' );
 class sportsmanagementModelPredictionRanking extends JSMModelList
 {
 	var $_roundNames = null;
-    var $predictionGameID = 0;
+    static $predictionGameID = 0;
 static $limitstart = 0;
 static $limit = 0;
 	
