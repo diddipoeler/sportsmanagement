@@ -114,9 +114,9 @@ sportsmanagementModelPredictionRanking::$predictionGameID = (int)$pg_id;
 $overallConfig        = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $config               = array_merge($overallConfig, $config);
 $configavatar         = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-$predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame($pg_id);
+$predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame((int)$pg_id);
 $predictionMember[]   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS($pg_id);
+$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS((int)$pg_id);
 $actJoomlaUser[]      = Factory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
