@@ -105,6 +105,8 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
 $modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
+sportsmanagementModelPredictionRanking::$predictionGameID = (int)$pg_id;
+
 /**
  * jetzt noch das overall template nachladen
  * dadurch erhalten wir die sortierung aus dem backend
