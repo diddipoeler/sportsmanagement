@@ -242,14 +242,17 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 * 
 	 * @return
 	 */
-	static function getPredictionGame()
+	static function getPredictionGame($predictionGameID=0)
 	{
 	    // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
+        if ( $predictionGameID )
+	{
+	self::$predictionGameID = $predictionGameID;	
+	}
        
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
