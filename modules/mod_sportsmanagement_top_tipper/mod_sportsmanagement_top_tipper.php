@@ -121,8 +121,6 @@ $predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS((
 $actJoomlaUser[]      = Factory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
-//echo '<pre>'.print_r($predictionProjectS,true).'</pre>';
-
 $type_array    = array();
 $type_array[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
 $type_array[]  = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
