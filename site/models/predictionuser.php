@@ -12,8 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-//jimport('joomla.application.component.model');
-
 // Include dependancy of the main model form
 jimport('joomla.application.component.modelform');
 // import Joomla modelitem library
@@ -35,6 +33,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
   var $predictionGameID = 0;
 	var $predictionMemberID = 0;
 	var $edit_modus = 0;
+  var $cfg_which_database = 0;
 	/**
 	 * sportsmanagementModelPredictionUser::__construct()
 	 * 
@@ -54,7 +53,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
        sportsmanagementModelPrediction::$to = $jinput->getVar('to',$jinput->getVar('r','0'));
-       
+       $this->cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
         sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id','0');
         
         sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid',0);
@@ -73,9 +72,9 @@ class sportsmanagementModelPredictionUser extends JModelForm
       {
       $user = Factory::getUser();
         sportsmanagementModelPrediction::$joomlaUserID = $user->id;
-      echo 'user '.$user->id.'<br>';
         $predictionMemberID = $this->getpredictionmemberid($user->id,$jinput->getVar('prediction_id','0')); 
-        echo 'prediction member id '.$predictionMemberID.'<br>';
+        $redirect = JSMPredictionHelperRoute::getPredictionMemberRoute((int)sportsmanagementModelPrediction::$predictionGameID,$predictionMemberID,'edit',sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$pggroup,$roundID,$this->cfg_which_database);
+        Factory::getApplication()->redirect($redirect);
       }
 		parent::__construct();
 	}
@@ -91,12 +90,8 @@ $query->where('pm.prediction_id = '.(int)$prediction_id);
 $query->where('pm.user_id = '.$user_id);  
 $db->setQuery($query,0,1);  
 $result = $db->loadResult();  
-  
-  echo '<pre>'.print_r($query->dump(),true).'</pre>';
-  echo 'prediction member id <pre>'.print_r($result,true).'</pre><br>';
-  
+ 
 return $result;  
-  
 }  
   
   
