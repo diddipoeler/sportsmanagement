@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form>
 
-<!-- neuer reiter -->
+<!-- reiter 1-->
 <fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
@@ -38,12 +38,20 @@ default="0"
 			
 </fieldset>
 
-<!-- reiter 1 -->
+<!-- reiter 2 -->
 	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
+		<field name="show_prediction_button" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_BUTTON"
+			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_BUTTON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="show_prediction_heading" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_HEADING"
@@ -78,7 +86,7 @@ default="0"
 
 	</fieldset>
 
-<!-- reiter 2 -->
+<!-- reiter 3 -->
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
@@ -142,7 +150,7 @@ default="0"
 
 	</fieldset>
 
-<!-- reiter 3 -->
+<!-- reiter 4 -->
 	<fieldset	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
