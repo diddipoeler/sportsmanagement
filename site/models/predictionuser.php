@@ -1,15 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      predictionuser.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionuser
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
@@ -35,7 +34,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
 {
   var $predictionGameID = 0;
 	var $predictionMemberID = 0;
-	
+	var $edit_modus = 0;
 	/**
 	 * sportsmanagementModelPredictionUser::__construct()
 	 * 
@@ -50,7 +49,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
         $option = $jinput->getCmd('option');
         
         $prediction = new sportsmanagementModelPrediction();  
-      
+      $this->edit_modus = $jinput->getInt('edit_modus',0);
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
