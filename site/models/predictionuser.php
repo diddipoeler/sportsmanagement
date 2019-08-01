@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 
 // Include dependancy of the main model form
 jimport('joomla.application.component.modelform');
@@ -69,11 +69,37 @@ class sportsmanagementModelPredictionUser extends JModelForm
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
        
+      if ( $this->edit_modus && !$jinput->getInt('uid',0) )
+      {
+      $user = Factory::getUser();
+        sportsmanagementModelPrediction::$joomlaUserID = $user->id;
+      echo 'user '.$user->id.'<br>';
+        $predictionMemberID = $this->getpredictionmemberid($user->id,$jinput->getVar('prediction_id','0')); 
+        echo 'prediction member id '.$predictionMemberID.'<br>';
+      }
 		parent::__construct();
 	}
 
 
-
+function getpredictionmemberid($user_id=0,$prediction_id=0) 
+{
+$db = Factory::getDbo();
+$query = $db->getQuery(true);  
+$query->select('pm.id');  
+$query->from('#__sportsmanagement_prediction_member AS pm');
+$query->where('pm.prediction_id = '.(int)$prediction_id);  
+$query->where('pm.user_id = '.$user_id);  
+$db->setQuery($query,0,1);  
+$result = $db->loadResult();  
+  
+  echo '<pre>'.print_r($query->dump(),true).'</pre>';
+  echo 'prediction member id <pre>'.print_r($result,true).'</pre><br>';
+  
+return $result;  
+  
+}  
+  
+  
   
   /**
 	 * Method to get the record form.
