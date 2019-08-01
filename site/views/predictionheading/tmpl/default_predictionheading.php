@@ -129,11 +129,12 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 ?>
                 </li>
                 <?php
-                
+ if ( $this->overallconfig['show_prediction_button'] )
+	{
                 $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RESULTS_IMAGE_TITLE');
-				$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_results.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$roundID,sportsmanagementModelPrediction::$pjID,$pmVar,'',sportsmanagementModelPrediction::$pggroup,sportsmanagementModelPrediction::$cfg_which_database);
-
+		$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_results.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
+		$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$roundID,sportsmanagementModelPrediction::$pjID,$pmVar,'',sportsmanagementModelPrediction::$pggroup,sportsmanagementModelPrediction::$cfg_which_database);
+}
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -141,10 +142,12 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 ?>
                 </li>
                 <?php
-				$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_IMAGE_TITLE');
-				$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,0,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
-
+if ( $this->overallconfig['show_prediction_button'] )
+	{	
+		$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_IMAGE_TITLE');
+		$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
+		$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,0,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
+}
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -154,10 +157,12 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 <?php
                 if ( $this->config['show_pred_group_link'] )
                 {
+if ( $this->overallconfig['show_prediction_button'] )
+	{			
                 $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_GROUP_IMAGE_TITLE');
-				$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/teaminfo_icon.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,1,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
-
+		$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/teaminfo_icon.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
+		$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,1,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
+}
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -166,11 +171,12 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 </li>
                 <?php
                 }
-                
-				$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RULES_IMAGE_TITLE');
-				$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_rules.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				$link = JSMPredictionHelperRoute::getPredictionRulesRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$cfg_which_database);
-
+if ( $this->overallconfig['show_prediction_button'] )
+	{                
+		$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RULES_IMAGE_TITLE');
+		$img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_rules.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
+		$link = JSMPredictionHelperRoute::getPredictionRulesRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$cfg_which_database);
+}
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -178,9 +184,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 ?>
                 </li>
                 <?php
-
-//				echo $output;
-                
+               
 				?>
                 </ul>
 			</td>
