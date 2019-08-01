@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      predictionusers.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage predictionusers
  */
@@ -418,7 +418,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		 * @param integer $round_id
 		 * @return
 		 */
-		function getRanksChartData($predictionGameID=0,$round_id=0 )
+		static function getRanksChartData($predictionGameID=0,$round_id=0 )
 		{
 // Reference global application object
         $app = Factory::getApplication();
