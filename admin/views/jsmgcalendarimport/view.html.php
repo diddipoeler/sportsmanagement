@@ -71,10 +71,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 		$jinput = Factory::getApplication()->input;
         $option = $jinput->getCmd('option');
 		if (strpos($this->getLayout(), 'login') === false) {
-			$canDo = jsmGCalendarUtil::getActions();
-			if ($canDo->get('core.create')){
 				ToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
-			}
 			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		}
         else
@@ -84,13 +81,6 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         
 		parent::addToolbar();
 	}
-
-//	protected function init() {
-//		if (strpos($this->getLayout(), 'login') === false) {
-//			$this->onlineItems = $this->get('OnlineData');
-//			$this->dbItems = $this->get('DBData');
-//		}
-//	}
 
 }
 

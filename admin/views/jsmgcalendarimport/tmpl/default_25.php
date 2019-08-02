@@ -74,7 +74,7 @@ if(!is_array($this->onlineItems)){
 				<td class="nowrap has-context">
 					<?php echo urldecode($item->calendar_id); ?>
 				</td>
-				<td class="nowrap has-context"><div style="background-color: <?php echo jsmGCalendarUtil::getFadedColor($item->color);?>;width:40px;height:20px"></div></td>
+				<td class="nowrap has-context"><div style="background-color: ;width:40px;height:20px"></div></td>
 		</tr>
 		<?php } ?>
 		<tr><td colspan="5"><b><?php echo Text::_( 'COM_GCALENDAR_VIEW_IMPORT_LABEL_ALREADY_ADDED' );?></b></td></tr>
@@ -87,7 +87,7 @@ if(!is_array($this->onlineItems)){
 				<td class="nowrap has-context">
 					<?php echo urldecode($item->calendar_id); ?>
 				</td>
-				<td class="nowrap has-context"><div style="background-color: <?php echo jsmGCalendarUtil::getFadedColor($item->color);?>;width:40px;height:20px"></div></td>
+				<td class="nowrap has-context"><div style="background-color: ;width:40px;height:20px"></div></td>
 		</tr>
 		<?php } ?>
 	</tbody>

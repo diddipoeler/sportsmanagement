@@ -49,15 +49,9 @@ public function init ()
             $this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
             $this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
         }
-            
-        //$this->addToolbar();
-        
-        //parent::display($tpl);
-        
+       
      }   
-//	protected $gcalendar = null;
-//	protected $form = null;
-//
+
 	/**
 	* Add the page title and toolbar.
 	*
@@ -65,55 +59,7 @@ public function init ()
 	*/
     protected function addToolbar() 
     {
-        /*
-	    $app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
-		if ($this->gcalendar->id < 1) 
-        {
-            ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_NEW_GOOGLE'),'gcalendar');
-            
-			if ($canDo->get('core.create')) 
-            {
-                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
-                
-                $this->gcalendar->username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
-                $this->gcalendar->password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
-            
-				ToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
-				ToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
-				ToolbarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
-		} 
-        else 
-        {
-            ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EDIT_NEW_GOOGLE'),'gcalendar');
-            
-			if ($canDo->get('core.edit')) 
-            {
-				ToolbarHelper::publish('jsmgcalendar.insertgooglecalendar', 'JLIB_HTML_CALENDAR');
-                
-                ToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
-				ToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
 
-				if ($canDo->get('core.create')) 
-                {
-					ToolbarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-            {
-				ToolbarHelper::custom('jsmgcalendar.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CLOSE');
-		}
-        
-        ToolbarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		ToolbarHelper::preferences($option);
-*/
 		parent::addToolbar();
 	}
 

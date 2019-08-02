@@ -31,7 +31,7 @@ use Joomla\CMS\Router\Route;
 						<?php echo $item->name; ?>
 					</a>
 				</td>
-				<td width="40px"><div style="background-color: <?php echo jsmGCalendarUtil::getFadedColor($item->color);?>;width: 40px;height: 40px;"></div></td>
+				<td width="40px"><div style="background-color: ;width: 40px;height: 40px;"></div></td>
 				<td style="border: 0;"><?php echo urldecode($item->calendar_id); ?></td>
 				<td style="border: 0;"><?php
 				if(!empty($item->magic_cookie)){
