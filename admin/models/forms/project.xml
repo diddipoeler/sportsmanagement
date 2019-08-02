@@ -258,7 +258,7 @@ JARCHIVED</option>
       extension="" 
       label="JCATEGORIES" 
       description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
-      
+<!--      
 <field name="gcalendar_id" 
 type="gcalendar" 
 default="" 
@@ -266,6 +266,7 @@ multiple=""
 size="10"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS" 
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
+-->
 
 <field 
 			name="approved_gcalendar" 
