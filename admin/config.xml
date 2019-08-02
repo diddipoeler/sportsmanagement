@@ -1170,6 +1170,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 	</fieldset>
 
 <!-- register 7 -->
+<!--
 	<fieldset
 		name="gcalendar"
 		label="COM_SPORTSMANAGEMENT_SETTINGS_GCALENDAR"
@@ -1306,7 +1307,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 	
 	
 </fieldset>
-
+-->
 
 
 
