@@ -67,7 +67,7 @@ class JFormFieldGoogleColorChooser extends \JFormFieldText
 			if($i % 7 == 0)
 			$buffer .= "<tr>\n";
 			$c = $this->googleColors[$i];
-			$cFaded = jsmGCalendarUtil::getFadedColor($c);
+			$cFaded = $c;
 			$buffer .= "<td onmouseover=\"this.style.cursor='pointer'\" onclick=\"document.getElementById('".$this->id."').style.backgroundColor = '".$cFaded."';document.getElementById('".$this->id."').value = '".$c."';\" style=\"background-color: ".$cFaded.";width: 20px;\"></td><td>".$c."</td>\n";
 			if($i % 7 == 6)
 			$buffer .= "</tr>\n";
