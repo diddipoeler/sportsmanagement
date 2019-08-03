@@ -158,7 +158,7 @@ $output .= "</entry>". "\n";
     */
     
     // die erstellte kalender id übergeben
-    $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
+    //$data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
     
         }
         
