@@ -3,9 +3,10 @@
 
 defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
+use Joomla\CMS\Crypt\Crypt;
 
 JLoader::import('joomla.database.table');
-JLoader::import('joomla.utilities.simplecrypt');
+//JLoader::import('joomla.utilities.simplecrypt');
 
 /**
  * sportsmanagementTablejsmGCalendar
@@ -61,7 +62,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 		$result = parent::load($keys, $reset);
 
 		if(isset($this->password) && !empty($this->password)){
-			$cryptor = new JSimpleCrypt();
+			$cryptor = new Crypt();
 			$this->password = $cryptor->decrypt($this->password);
 		}
 
@@ -78,7 +79,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	{
 		$oldPassword = $this->password;
 		if(!empty($oldPassword)){
-			$cryptor = new JSimpleCrypt();
+			$cryptor = new Crypt();
 			$this->password = $cryptor->encrypt($oldPassword);
 		}
 		$result = parent::store($updateNulls);
