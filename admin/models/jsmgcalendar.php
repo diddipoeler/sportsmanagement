@@ -19,8 +19,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 JLoader::import('joomla.application.component.modeladmin');
-
-JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
 /**
@@ -137,7 +136,7 @@ $output .= "</entry>". "\n";
 
         $username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
         $password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
-                
+      /*          
          $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
     $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);
     $gdataCal = new Zend_Gdata_Calendar($client);
@@ -148,7 +147,7 @@ $output .= "</entry>". "\n";
     $xml = str_replace('[TITLE]', $title, $xml);
     $xml = str_replace('[SUMMARY]', $summary, $xml);
     $response = $gdataCal->post($xml, $uri);
-    
+    */
     
     // die erstellte kalender id übergeben
     $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
