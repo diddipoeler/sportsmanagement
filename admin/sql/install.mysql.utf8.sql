@@ -1887,9 +1887,9 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_jl_tables` (
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_gcalendar` (
   `id` int(11) NOT NULL auto_increment,
-  `calendar_id` text NOT NULL,
-  `name` text NOT NULL,
-  `magic_cookie` text NOT NULL,
+  `calendar_id` text NULL DEFAULT NULL,
+  `name` text NULL DEFAULT NULL,
+  `magic_cookie` text NULL DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   `password` text DEFAULT NULL,
   `color` text NOT NULL,
