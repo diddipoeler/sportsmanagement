@@ -14,6 +14,15 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormField;
 
+/**
+ * JFormFieldGoogleColorChooser
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class JFormFieldGoogleColorChooser extends \JFormFieldText
 {
 	protected $type = 'GoogleColorChooser';
@@ -41,13 +50,18 @@ class JFormFieldGoogleColorChooser extends \JFormFieldText
 	,'6E6E41'
 	,'8D6F47');
 
+	/**
+	 * JFormFieldGoogleColorChooser::getInput()
+	 * 
+	 * @return
+	 */
 	public function getInput()
 	{
 		$document = Factory::getDocument();
 		$document->addScript(Uri::base(). 'components/com_sportsmanagement/libraries/jscolor/jscolor.js' );
 
 		$buffer = "<input type=\"text\" name=\"".$this->name."\" id=\"".$this->id."\" readonly=\"readonly\" class=\"inputbox\" \n";
-		$buffer .= "size=\"100%\" value=\"".$this->value."\" style=\"background-color: ".jsmGCalendarUtil::getFadedColor($this->value)."\" />\n";
+		$buffer .= "size=\"100%\" value=\"".$this->value."\" style=\"background-color: "."\" />\n";
 		$buffer .= "<br CLEAR=\"both\"/><label id=\"jform_colors-lbl\" title=\"\" for=\"jform_color\"></label><table><tbody>\n";
 		for ($i = 0; $i < count($this->googleColors); $i++) {
 			if($i % 7 == 0)
