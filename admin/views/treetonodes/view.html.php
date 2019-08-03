@@ -9,7 +9,6 @@
  * @subpackage treetonodes
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -36,16 +35,13 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = Factory::getApplication();
-        
-
         
 		if ( $this->getLayout()=='default' || $this->getLayout()=='default_3' )
 		{
 			$this->_displayDefault();
 			return;
 		}
-	//	parent::display($tpl);
+
 	}
 
 	/**
@@ -55,24 +51,10 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	 */
 	function _displayDefault()
 	{
-		//$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication();
-//		$db = Factory::getDbo();
-//		$uri = Factory::getURI();
-
 		$this->node = $this->items;
-		//$this->total = $this->get('Total');
-//		$this->pagination = $this->get('Pagination');
-
-		//$model = $this->getModel();
-		//$projectws = $this->get('Data','project');
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($this->project_id);
-        
-
-        
-		//$treetows = $this->get('Data','treeto');
         $mdltreeto = BaseDatabaseModel::getInstance('treeto', 'sportsmanagementModel');
 		$treetows = $mdltreeto->getTreeToData($this->jinput->get('tid'));
 

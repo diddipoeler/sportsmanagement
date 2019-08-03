@@ -239,7 +239,11 @@ $client->setScopes(array(
 				'https://www.googleapis.com/auth/calendar'
 		));
 $client->setAccessType("offline");
-$uri = Factory::getURI();
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+            $uri = Uri::getInstance();
+        } else {
+            $uri = Factory::getURI();
+        }
 		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
 		{
 			$uri->setHost('localhost');
