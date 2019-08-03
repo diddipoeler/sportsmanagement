@@ -125,7 +125,15 @@ $output .= "xmlns:gd='http://schemas.google.com/g/2005'". "\n";
 $output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>". "\n";
 $output .= "<title type='text'>[TITLE]</title>". "\n";
 $output .= "<summary type='text'>[SUMMARY]</summary>". "\n";
-$output .= "<gCal:timezone value='".$config->getValue('config.offset')."'></gCal:timezone>". "\n";
+$output .= "<gCal:timezone value='";
+
+if (version_compare(JVERSION, '3.0.0', 'ge')) {
+            $output .= $config->get('config.offset');
+        } else {
+            $output .= $config->getValue('config.offset');
+        }
+
+$output .= "'></gCal:timezone>". "\n";
 $output .= "<gCal:hidden value='false'></gCal:hidden>". "\n";
 $output .= "<gCal:color value='#".$data['color']."'></gCal:color>". "\n";
 $output .= "<gd:where rel='' label='' valueString='Oakland'></gd:where>". "\n";
