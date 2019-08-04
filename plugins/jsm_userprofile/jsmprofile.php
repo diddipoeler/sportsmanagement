@@ -49,13 +49,21 @@ class plgUserjsmprofile extends JPlugin
             ' AND profile_key LIKE \'jsmprofile.%\'' .
             ' ORDER BY ordering'
         );
+        
+        try{
         $results = $db->loadRowList();
 
-        /** Check for a database error. */
-        if ($db->getErrorNum()) {
-            $this->_subject->setError($db->getErrorMsg());
-            return false;
+//        /** Check for a database error. */
+//        if ($db->getErrorNum()) {
+//            $this->_subject->setError($db->getErrorMsg());
+//            return false;
+//        }
         }
+            catch (JException $e)
+            {
+                $this->_subject->setError($e->getMessage());
+                return false;
+            }
  
         /** Merge the profile data. */
         $data->jsmprofile = array();
