@@ -35,7 +35,7 @@ class sportsmanagementControllerjsmgcalendarImport extends BaseController
 	 */
 	function __construct($config = array())
 	{
-	   // Initialise variables.
+	   /** Initialise variables. */
 		$app = Factory::getApplication();
 		parent::__construct($config);
 
@@ -56,17 +56,14 @@ $option = Factory::getApplication()->input->getCmd('option');
         
         if ( $result )
         {
-            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_YES');
         }
         else
         {
-            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_NO');
         }
         
-//$link = $result;
         $link = 'index.php?option=com_sportsmanagement&view=jsmgcalendars';
-//$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=8534039&team=551305&prefill=';
-//http://www.fussballineuropa.de/administrator/index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=8534039&team=551305&prefill=
 
 		$this->setRedirect($link,$msg);
 

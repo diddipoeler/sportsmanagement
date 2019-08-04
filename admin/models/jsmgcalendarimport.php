@@ -18,7 +18,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\OutputFilter;
 
-//require_once('administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php'.DIRECTORY_SEPARATOR.'google-api-php-client'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 
 /**
@@ -34,7 +33,6 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 {
     
     var $_name = 'sportsmanagement';
-    //var $_name = '';
 
 	/**
 	 * sportsmanagementModeljsmgcalendarImport::__construct()
@@ -78,13 +76,8 @@ $google_mail_account = ComponentHelper::getParams($option)->get('google_mail_acc
 $session = JFactory::getSession(array(
 				'expire' => 30
 		));    
-// If we are on the callback from google don't save
 		if (! $app->input->get('code'))
 		{
-//			$params = $app->input->get('params', array(
-//					'client-id' => null,
-//					'client-secret' => null
-//			), 'array');
 			$session->set('client-id', $google_client_id, $this->_name);
 			$session->set('client-secret', $google_client_secret, $this->_name);
 		}
@@ -211,7 +204,6 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $obje
     
 }
 	 
-//    echo $calendarListEntry->getSummary();
   }
   $pageToken = $calList->getNextPageToken();
   if ($pageToken) 
@@ -225,7 +217,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $obje
   }
 }
 
-       
+    return true;   
     }   
 
 }
