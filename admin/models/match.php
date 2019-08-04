@@ -226,6 +226,12 @@ $calendar = new stdClass();
 $calendar->calendarId = new Registry(json_decode($calendar_result[0]->calendar_id));
 $calendar->params = new Registry(json_decode($calendar_result[0]->params));
 
+if ( !$calendar->calendarId )
+{
+    return false;
+}
+
+
 $params = array();
 $client = new Google_Client(
 				array(
@@ -350,17 +356,6 @@ $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $o
 
 }
 return true;
-    }
-
-
-    /**
-     * sportsmanagementModelMatch::insertgooglecalendar()
-     * http://framework.zend.com/manual/1.12/de/zend.gdata.calendar.html
-     * @return
-     */
-    function insertgooglecalendarold()
-    {
-
     }
 
 

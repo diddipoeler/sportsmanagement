@@ -212,9 +212,7 @@ return false;
 				$msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_COPY_MATCH2');
 			}
 		}
-		//echo $msg;
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
-		//$link .= '&hidemainmenu='.Factory::getApplication()->input->getVar('hidemainmenu',0);
 		$this->setRedirect($link,$msg);
 	}
     
