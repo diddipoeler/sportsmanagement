@@ -14,9 +14,13 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Form\FormField;
 
-$classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+/** add the classes for handling */
+$classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+//BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 /**
  * JFormFieldserialnumber
