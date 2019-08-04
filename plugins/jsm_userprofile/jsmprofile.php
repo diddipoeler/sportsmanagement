@@ -33,8 +33,7 @@ class plgUserjsmprofile extends JPlugin
     function onContentPrepareData($context, $data)
     {
         $app = Factory::getApplication();
-        // Check we are manipulating a valid form.
-        //if (!in_array($context, array('com_users.profile','com_users.registration','com_users.user','com_admin.profile')))
+        /** Check we are manipulating a valid form. */
         if (!in_array($context, array('com_users.user','com_users.profile','com_admin.profile')))
         {
             return true;
@@ -42,7 +41,7 @@ class plgUserjsmprofile extends JPlugin
  
         $userId = isset($data->id) ? $data->id : 0;
  
-        // Load the profile data from the database.
+        /** Load the profile data from the database. */
         $db = Factory::getDbo();
         $db->setQuery(
             'SELECT profile_key, profile_value FROM #__user_profiles' .
@@ -52,13 +51,13 @@ class plgUserjsmprofile extends JPlugin
         );
         $results = $db->loadRowList();
 
-        // Check for a database error.
+        /** Check for a database error. */
         if ($db->getErrorNum()) {
             $this->_subject->setError($db->getErrorMsg());
             return false;
         }
  
-        // Merge the profile data.
+        /** Merge the profile data. */
         $data->jsmprofile = array();
         foreach ($results as $v) {
             $k = str_replace('jsmprofile.', '', $v[0]);
@@ -78,7 +77,7 @@ class plgUserjsmprofile extends JPlugin
     function onContentPrepareForm($form, $data)
     {
         $app = Factory::getApplication();
-        // Load user_profile plugin language
+        /** Load user_profile plugin language */
         $lang = Factory::getLanguage();
         $lang->load('plg_user_jsmprofile', JPATH_ADMINISTRATOR);
  
@@ -86,13 +85,12 @@ class plgUserjsmprofile extends JPlugin
             $this->_subject->setError('JERROR_NOT_A_FORM');
             return false;
         }
-        // Check we are manipulating a valid form.
-        //if (!in_array($form->getName(), array('com_users.profile', 'com_users.registration','com_users.user','com_admin.profile'))) {
+        /** Check we are manipulating a valid form. */
             if (!in_array($form->getName(), array('com_users.user','com_admin.profile'))) {
             return true;
         }
 
-        // Add the profile fields to the form.
+        /** Add the profile fields to the form. */
         JForm::addFormPath(dirname(__FILE__).'/profiles');
         $form->loadFile('profile', false);
     }
@@ -109,7 +107,7 @@ class plgUserjsmprofile extends JPlugin
     function onUserAfterSave($data, $isNew, $result, $error)
     {
         $app = Factory::getApplication();
-        $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
+        $userId = JArrayHelper::getValue($data, 'id', 0, 'int');
  
         if ($userId && $result && isset($data['jsmprofile']) && (count($data['jsmprofile'])))
         {
