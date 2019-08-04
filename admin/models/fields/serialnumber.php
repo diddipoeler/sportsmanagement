@@ -20,7 +20,6 @@ if ( !class_exists('sportsmanagementHelper') )
 $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 }
-//BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 /**
  * JFormFieldserialnumber
@@ -51,8 +50,6 @@ $html = '<input type="text" id="'.$this->id.'" name="'.$this->name.'" value="'.$
 		return $html;
 	
 	}
-
-	
 
 }
 ?>
