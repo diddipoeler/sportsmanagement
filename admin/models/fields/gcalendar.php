@@ -15,7 +15,6 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 FormHelper::loadFieldClass('list');
 
 /**
@@ -39,12 +38,15 @@ class JFormFieldGCalendar extends \JFormFieldList
 	 */
 	protected function getOptions()
     {
-		$accounts = jsmGCalendarDBUtil::getAllCalendars();
 		$options = array();
-		foreach($accounts as $account)
-		{
-			$options[] = HTMLHelper::_('select.option', $account->id, $account->name);
-		}
+        $db = Factory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('id AS value, name AS text');
+		$query->from('#__sportsmanagement_gcalendar');
+		$query->order('name');
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;
 	}
