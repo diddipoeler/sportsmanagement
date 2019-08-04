@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\Utilities\ArrayHelper;
  
 /**
  * plgUserjsmprofile
@@ -83,7 +85,7 @@ class plgUserjsmprofile extends JPlugin
         $lang = Factory::getLanguage();
         $lang->load('plg_user_jsmprofile', JPATH_ADMINISTRATOR);
  
-        if (!($form instanceof JForm)) {
+        if (!($form instanceof Form)) {
             $this->_subject->setError('JERROR_NOT_A_FORM');
             return false;
         }
@@ -93,7 +95,7 @@ class plgUserjsmprofile extends JPlugin
         }
 
         /** Add the profile fields to the form. */
-        JForm::addFormPath(dirname(__FILE__).'/profiles');
+        Form::addFormPath(dirname(__FILE__).'/profiles');
         $form->loadFile('profile', false);
     }
  
@@ -156,7 +158,7 @@ class plgUserjsmprofile extends JPlugin
             return false;
         }
  
-        $userId = JArrayHelper::getValue($user, 'id', 0, 'int');
+        $userId = ArrayHelper::getValue($user, 'id', 0, 'int');
  
         if ($userId)
         {
