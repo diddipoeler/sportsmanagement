@@ -170,8 +170,8 @@ $installer = Installer::getInstance();
 
 /** Get the path to the package to install */
 
-$p_dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DS;
-$p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR.'modules'.DS;
+$p_dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR;
+$p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
 
 /** Detect the package type */
 $type = InstallerHelper::detectType($p_dir);   
