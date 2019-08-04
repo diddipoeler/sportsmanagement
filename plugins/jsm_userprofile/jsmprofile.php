@@ -52,12 +52,6 @@ class plgUserjsmprofile extends JPlugin
         
         try{
         $results = $db->loadRowList();
-
-//        /** Check for a database error. */
-//        if ($db->getErrorNum()) {
-//            $this->_subject->setError($db->getErrorMsg());
-//            return false;
-//        }
         }
             catch (JException $e)
             {
@@ -162,7 +156,7 @@ class plgUserjsmprofile extends JPlugin
             return false;
         }
  
-        $userId    = JArrayHelper::getValue($user, 'id', 0, 'int');
+        $userId = JArrayHelper::getValue($user, 'id', 0, 'int');
  
         if ($userId)
         {
