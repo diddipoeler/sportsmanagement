@@ -40,9 +40,6 @@ require_once( JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components'.DIRECTORY_S
 require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'countries.php');
 
 use Joomla\Utilities\ArrayHelper;
-// import ArrayHelper
-jimport( 'joomla.utilities.array' );
-//jimport( 'joomla.utilities.arrayhelper' ) ;
 
 // import JFile
 use Joomla\CMS\Filesystem\File;

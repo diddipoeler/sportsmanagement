@@ -9,15 +9,14 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\Utilities\ArrayHelper;
 jimport('joomla.filesystem.file');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper');
+
 use Joomla\CMS\Log\Log;
 
 

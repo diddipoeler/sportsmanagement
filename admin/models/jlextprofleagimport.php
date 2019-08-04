@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
+use Joomla\Utilities\ArrayHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -36,10 +37,6 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIR
 
 
 jimport('joomla.html.pane');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper') ;
-
-
 jimport( 'joomla.utilities.utility' );
 
 

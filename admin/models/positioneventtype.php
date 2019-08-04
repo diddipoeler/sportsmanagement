@@ -15,10 +15,6 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Utilities\ArrayHelper;
 
-//// import ArrayHelper
-//jimport( 'joomla.utilities.array' );
-//jimport( 'joomla.utilities.arrayhelper' ) ; 
-
 /**
  * sportsmanagementModelpositioneventtype
  * 

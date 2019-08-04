@@ -18,6 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\Utilities\ArrayHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -37,8 +38,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 
 jimport('joomla.html.pane');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper') ;
+
 
 /**
  * sportsmanagementModeljlextlmoimports
