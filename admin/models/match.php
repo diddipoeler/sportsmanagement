@@ -215,6 +215,11 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	    $project_id = $post['project_id'];
 	    $match_ids = implode(",", $pks);
 
+if ( !$post['calendar_id'] )
+{
+    return false;
+}
+
 $this->jsmquery->clear();
 $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_gcalendar');
@@ -225,12 +230,6 @@ $calendar_result = $this->jsmdb->loadObjectList();
 $calendar = new stdClass();
 $calendar->calendarId = new Registry(json_decode($calendar_result[0]->calendar_id));
 $calendar->params = new Registry(json_decode($calendar_result[0]->params));
-
-if ( !$calendar->calendarId )
-{
-    return false;
-}
-
 
 $params = array();
 $client = new Google_Client(
