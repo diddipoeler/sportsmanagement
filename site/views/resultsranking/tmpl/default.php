@@ -56,13 +56,13 @@ $this->output = array();
   
 if ( $this->params->get('what_to_show_first', 0) )
 {
-$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
 $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';  
 }
 else
 {
+$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
 $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
-$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';  
 }
 
 if ( $this->params->get('show_ranking_reiter', 0) )
