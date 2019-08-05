@@ -8,7 +8,7 @@
  * @package   sportsmanagement
  * @subpackage resultsranking
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -25,10 +25,11 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelResultsranking extends BaseDatabaseModel
 {
 	
-    static $divisionid= 0;
-    static $roundid= 0;
-    static $projectid= 0;
-    static $cfg_which_database = 0;
+static $divisionid= 0;
+static $roundid= 0;
+static $projectid= 0;
+static $cfg_which_database = 0;
+static $show_ranking_reiter = 0;
     
     /**
 	 * sportsmanagementModelResultsranking::__construct()
@@ -46,6 +47,7 @@ class sportsmanagementModelResultsranking extends BaseDatabaseModel
 		self::$roundid = (int) $jinput->get('r', 0, '');
 		self::$projectid = (int) $jinput->get('p', 0, '');
 		self::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
+		self::$show_ranking_reiter = $jinput->get('show_ranking_reiter', 0 ,'');
     sportsmanagementModelProject::$projectid = self::$projectid;
     sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
 	}
