@@ -54,19 +54,22 @@ echo $this->loadTemplate('selectround');
  */
 $this->output = array();
   
-if ( $this->params->get('what_to_show_first', 0) == 0 )
+if ( $this->params->get('what_to_show_first', 0) )
 {
-$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
-$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
+$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'ranking';
+$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'results';
 }
 else
 {
-$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
-$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';  
+$this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'results';
+$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'ranking';  
 }
-  
-echo $this->loadTemplate('show_tabs');
 
+if ( $this->params->get('show_ranking_reiter', 0) )
+{ 	
+echo $this->loadTemplate('show_tabs');
+}
+	
 if ( array_key_exists('show_colorlegend', $this->config) )
 {
 if ($this->config['show_colorlegend'])
