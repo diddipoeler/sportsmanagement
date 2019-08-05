@@ -81,6 +81,13 @@
 			    <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RESULTS</option>
 			</field>
 
+<field	name="show_ranking_reiter" type="extensionradiobutton" default="1"
+			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER"
+			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER_DESRC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>		
+		
 <field	name="show_allranking" type="extensionradiobutton" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_DESCR">
