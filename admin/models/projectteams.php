@@ -157,6 +157,7 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         
         // Select some fields
 	$this->jsmquery->select('tl.id AS projectteamid,tl.*,st.team_id as team_id,st.id as season_team_id');
+	$this->jsmquery->select('se.name as seasonname');
         // From table
 	$this->jsmquery->from('#__sportsmanagement_project_team AS tl');
         
@@ -169,6 +170,7 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         else
         {    
         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on tl.team_id = st.id');    
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_season AS se on se.id = st.season_id');	
         // count team player
         $this->jsmsubquery1->select('count(tp.id)');
         $this->jsmsubquery1->from('#__sportsmanagement_season_team_person_id AS tp');
