@@ -89,36 +89,36 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         
         if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+	// Load the filter state.
+	$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+	$this->setState('filter.search', $search);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $published);
+	$this->setState('filter.search_nation', $temp_user_request);
+	$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+	$this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-		$this->setState('list.limit', $value);	
+	$this->setState('list.limit', $value);	
 
-		// List state information.
+	// List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-		$this->setState('list.start', $value);
+	$this->setState('list.start', $value);
         // Filter.order
-		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
-		if (!in_array($orderCol, $this->filter_fields))
-		{
-			$orderCol = 't.name';
-		}
-		$this->setState('list.ordering', $orderCol);
-		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
-		{
-			$listOrder = 'ASC';
-		}
-		$this->setState('list.direction', $listOrder);
+	$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+	if (!in_array($orderCol, $this->filter_fields))
+	{
+		$orderCol = 't.name';
+	}
+	$this->setState('list.ordering', $orderCol);
+	$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+	if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+	{
+		$listOrder = 'ASC';
+	}
+	$this->setState('list.direction', $listOrder);
 	}
 
 	/**
@@ -150,21 +150,21 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         $this->sports_type_id = $this->jsmapp->getUserState( "$this->jsmoption.sports_type_id", '0' );
         
         // Create a new query object.		
-		$this->jsmquery->clear();
+	$this->jsmquery->clear();
         $this->jsmsubquery1->clear();
         $this->jsmsubquery2->clear();
         $this->jsmsubquery3->clear();
         
         // Select some fields
-		$this->jsmquery->select('tl.id AS projectteamid,tl.*,st.team_id as team_id,st.id as season_team_id');
+	$this->jsmquery->select('tl.id AS projectteamid,tl.*,st.team_id as team_id,st.id as season_team_id');
         // From table
-		$this->jsmquery->from('#__sportsmanagement_project_team AS tl');
+	$this->jsmquery->from('#__sportsmanagement_project_team AS tl');
         
         if ( $this->project_art_id == 3 )
         {
         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_person_id AS st on tl.team_id = st.id'); 
         $this->jsmquery->select("concat(t.lastname,' - ',t.firstname,'' ) AS name");
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_person AS t on st.person_id = t.id');   
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_person AS t on st.person_id = t.id');   
         }
         else
         {    
@@ -187,26 +187,26 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         $this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS staffcount');    
 
         // Join over the team
-		$this->jsmquery->select('t.name,t.club_id');
+	$this->jsmquery->select('t.name,t.club_id');
         $this->jsmquery->select('plg.picture as playground_picture');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
         // Join over the club
-		$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location,c.founded_year,c.unique_id');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c on t.club_id = c.id');
+	$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location,c.founded_year,c.unique_id');
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c on t.club_id = c.id');
         // Join over the playground
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_playground AS plg on plg.id = tl.standard_playground');
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_playground AS plg on plg.id = tl.standard_playground');
         // Join over the division
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d on d.id = tl.division_id');
+	$this->jsmquery->join('LEFT', '#__sportsmanagement_division AS d on d.id = tl.division_id');
         }
         
         if ($this->getState('filter.search'))
-		{
+	{
         $this->jsmquery->where('LOWER(t.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         
         // Join over the users for the checked out user.
-		$this->jsmquery->select('u.name AS editor,u.email AS email');
-		$this->jsmquery->join('LEFT', '#__users AS u on tl.admin = u.id');
+	$this->jsmquery->select('u.name AS editor,u.email AS email');
+	$this->jsmquery->join('LEFT', '#__users AS u on tl.admin = u.id');
         
         $this->jsmquery->where('tl.project_id = ' . self::$_project_id);
         
@@ -216,19 +216,19 @@ $this->addNewProjectTeam($this->jsmpost['team_id'],self::$_project_id);
         }	
         
         if ($this->getState('filter.search_nation'))
-		{
+	{
         $this->jsmquery->where('c.country LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
         
         if (is_numeric($this->getState('filter.state')) )
-		{
-		$this->jsmquery->where('tl.published = '.$this->getState('filter.state'));	
-		}
+	{
+	$this->jsmquery->where('tl.published = '.$this->getState('filter.state'));	
+	}
 
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 't.name')).' '.
-                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-		return $this->jsmquery;
+	return $this->jsmquery;
 	}
 
 
