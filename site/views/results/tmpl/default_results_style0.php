@@ -359,8 +359,24 @@ $this->overallconfig['use_jquery_modal']);
     break;
     
     }  
+			
+switch ($this->config['show_logo_small'])
+{
+case 1:
+$pic1 = $team1->logo_small;
+$pic2 = $team2->logo_small;
+break;
+case 5:
+$pic1 = $team1->logo_middle;
+$pic2 = $team2->logo_middle;
+break;
+case 6:
+$pic1 = $team1->logo_big;
+$pic2 = $team2->logo_big;
+break;
+}  
           
-		?>
+?>
 <!-- show team-icons and/or -names -->
 <td width='<?PHP echo $width;?>'>
 <?php 
