@@ -391,7 +391,7 @@ $this->overallconfig['use_jquery_modal']);
 }
 else
 {
-echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->team->name, $config['team_picture_width'], 'auto', 3);	
+echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->team->name, '20', 'auto', 3);	
 }			
 ?>
 </td>
@@ -414,7 +414,7 @@ $this->overallconfig['use_jquery_modal']);
 }
 else
 {
-echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->team->name, $config['team_picture_width'], 'auto', 3);		
+echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->team->name, '20', 'auto', 3);		
 }	
 ?>
 </td>
