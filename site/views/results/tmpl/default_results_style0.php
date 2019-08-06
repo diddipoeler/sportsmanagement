@@ -361,31 +361,33 @@ $this->overallconfig['use_jquery_modal']);
     }  
           
 		?>
-			<!-- show team-icons and/or -names -->
-			<td width='<?PHP echo $width;?>'>
-				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team1,
-                $this->config['show_logo_small'],
-                array('class' => 'teamlogo'),
-                $this->modalwidth,
+<!-- show team-icons and/or -names -->
+<td width='<?PHP echo $width;?>'>
+<?php 
+echo sportsmanagementViewResults::getTeamClubIcon($team1,
+$this->config['show_logo_small'],
+array('class' => 'teamlogo'),
+$this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
-                ?>
-			</td>
-			<td>
-				<?php
-					$isFavTeam = in_array($team1->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0) );
-				?>
-			</td>
-			<td width='<?PHP echo $width;?>'>
-				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
-                $this->modalwidth,
+?>
+</td>
+<td>
+<?php
+$isFavTeam = in_array($team1->id, $this->favteams);
+echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0) );
+?>
+</td>
+<td width='<?PHP echo $width;?>'>
+<?php 
+echo sportsmanagementViewResults::getTeamClubIcon($team2, 
+$this->config['show_logo_small'], 
+array('class' => 'teamlogo'),
+$this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
-                ?>
-			</td>
+?>
+</td>
 			<td>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
