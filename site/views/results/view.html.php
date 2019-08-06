@@ -174,6 +174,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->lists['projectpositions'] = HTMLHelper::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
         $this->positions = $projectpositions;   
+			
+			if ( !isset($this->config['club_link_logo']) )
+			{
+				$this->config['club_link_logo'] = 1;
+			}
 if ( $this->overallconfig['use_table_or_bootstrap'] )
 {
 $this->setLayout('form');
