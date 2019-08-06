@@ -364,12 +364,18 @@ $this->overallconfig['use_jquery_modal']);
 <!-- show team-icons and/or -names -->
 <td width='<?PHP echo $width;?>'>
 <?php 
+if ( $this->config['club_link_logo'] )
+{
 echo sportsmanagementViewResults::getTeamClubIcon($team1,
 $this->config['show_logo_small'],
 array('class' => 'teamlogo'),
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
+}
+else
+{
+}			
 ?>
 </td>
 <td>
@@ -380,12 +386,18 @@ echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$
 </td>
 <td width='<?PHP echo $width;?>'>
 <?php 
+if ( $this->config['club_link_logo'] )
+{			
 echo sportsmanagementViewResults::getTeamClubIcon($team2, 
 $this->config['show_logo_small'], 
 array('class' => 'teamlogo'),
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
+}
+else
+{
+}	
 ?>
 </td>
 			<td>
