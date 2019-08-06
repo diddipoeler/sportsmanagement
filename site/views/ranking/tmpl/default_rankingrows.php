@@ -145,7 +145,8 @@ $team->team->logo_big = empty($team->team->logo_big) ? sportsmanagementHelper::g
         } 
         else {
             $pic = $config['show_logo_small_table'];
-
+if ( $this->config['club_link_logo'] )
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow . 'teamranking' . $team->team->id,
 COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->team->$pic,
 $team->team->name,
@@ -154,7 +155,11 @@ $team->team->name,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
-
+}
+else
+{
+}
+            
         }
 
         echo '</td>';
