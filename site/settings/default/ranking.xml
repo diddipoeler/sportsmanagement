@@ -347,6 +347,13 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 	<option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
 		</field>
 		
+<field name="club_link_logo" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LINK_LOGO"
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LINK_LOGO">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>		
 
         <field name="team_picture_width" type="text" default="21"
                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
