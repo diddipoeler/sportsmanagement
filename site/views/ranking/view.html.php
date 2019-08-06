@@ -216,7 +216,10 @@ $this->matchimages = $images;
         }
         $this->colors = sportsmanagementModelProject::getColors($this->config['colors'], sportsmanagementModelProject::$cfg_which_database);
     }
-        
+    if ( !isset($this->config['club_link_logo']) )
+			{
+				$this->config['club_link_logo'] = 1;
+			}    
       if ( $this->project )
       {
         /**
