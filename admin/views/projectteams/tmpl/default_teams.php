@@ -138,32 +138,32 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 						<th>
                         <?php  
                         echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA','tl.matches_finally',$this->sortDirection,$this->sortColumn);
-                        ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
+                        ?>
+			</th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PENALTY_P'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_W'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_D'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_L'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
-						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
-                        
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_W'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_D'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_L'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
+			<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
                         
                         <th >
-							<?php echo HTMLHelper::_('grid.sort','STID','st.id',$this->sortDirection,$this->sortColumn); ?>
-						</th>
-						<th >
-							<?php echo HTMLHelper::_('grid.sort','TID','st.team_id',$this->sortDirection,$this->sortColumn); ?>
-						</th>
-						<th >
-							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
-						</th>
-					</tr>
-				</thead>
-				<tfoot>
+			<?php echo HTMLHelper::_('grid.sort','STID','st.id',$this->sortDirection,$this->sortColumn); ?>
+			</th>
+			<th >
+			<?php echo HTMLHelper::_('grid.sort','TID','st.team_id',$this->sortDirection,$this->sortColumn); ?>
+			</th>
+			<th >
+			<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
+			</th>
+			</tr>
+			</thead>
+		<tfoot>
                 <tr>
                 <td colspan="<?php echo $cell_count - 4; ?>">
                 <?php echo $this->pagination->getListFooter(); ?>
@@ -173,23 +173,23 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
                 </td>
                 </tr>
                 </tfoot>
-				<tbody>
-					<?php
-					$k=0;
-					for ($i=0, $n=count($this->projectteam); $i < $n; $i++)
-					{
-						$row = &$this->projectteam[$i];
-						$link1 = Route::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
-                        $link2 = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-						$link3 = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-						$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin);
-						?>
-						<tr class="">
-						<td class="center">
-                        <?php
-                        echo $this->pagination->getRowOffset($i);
+		<tbody>
+		<?php
+		$k=0;
+		for ($i=0, $n=count($this->projectteam); $i < $n; $i++)
+		{
+		$row = &$this->projectteam[$i];
+		$link1 = Route::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
+                $link2 = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+		$link3 = Route::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+                $canEdit = $this->user->authorise('core.edit','com_sportsmanagement');
+                $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+		$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin);
+		?>
+		<tr class="">
+		<td class="center">
+                <?php
+                echo $this->pagination->getRowOffset($i);
                         ?>
                         </td>
                         <td class="center">
@@ -360,70 +360,71 @@ $this->modalheight);
 	value="<?php echo $row->club_id; ?>"
 	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
 	
-                            </td>
-                            
-							<td class="center"><?php
-								if( $row->playercount == 0 ) {
-									$image = "players_add.png";
-								} else {
-									$image = "players_edit.png";
-								}
-								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
-								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
-								$imageParams = 'title= "'.$imageTitle.'"';
-								$image = HTMLHelper::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
-								$linkParams = '';
-								echo HTMLHelper::link($link2,$image);
-								?></td>
-							<td class="center"><?php
-								if( $row->staffcount == 0 ) {
-									$image = "players_add.png";
-								} else {
-									$image = "players_edit.png";
-								}
-								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
-								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
-								$imageParams = 'title= "'.$imageTitle.'"';
-								$image = HTMLHelper::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
-								$linkParams = '';
-								echo HTMLHelper::link($link3,$image);
-								?></td>
-							<td class="center"><?php echo $row->editor; ?></td>
-							<?php
-							if ( $this->project->project_type == 'DIVISIONS_LEAGUE' )
-							{
-								?>
-								<td class="nowrap" class="center">
-									<?php
-									$append='';
-									if ($row->division_id == 0)
-									{
-										$append=' style="background-color:#bbffff"';
-									}
-									echo HTMLHelper::_(	'select.genericlist',
-													$this->lists['divisions'],
-													'division_id'.$row->id,
-													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-													$i.'\').checked=true"'.$append,
-													'value','text',$row->division_id);
-									?>
-								</td>
-								<?php
-							}
-							?>
-							<td class="center">
-								<?php
-								if (empty($row->picture) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture))
-								{
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
-									echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
-														$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
-								{
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
-									echo HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/information.png',
-														$imageTitle,'title= "'.$imageTitle.'"');
+        </td>
+	<td class="center"><?php
+	if( $row->playercount == 0 ) {
+	$image = "players_add.png";
+	} else {
+	$image = "players_edit.png";
+	}
+	$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
+	$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
+	$imageParams = 'title= "'.$imageTitle.'"';
+	$image = HTMLHelper::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
+	$linkParams = '';
+	echo HTMLHelper::link($link2,$image);
+	?>
+	</td>
+	<td class="center"><?php
+	if( $row->staffcount == 0 ) {
+	$image = "players_add.png";
+	} else {
+	$image = "players_edit.png";
+	}
+	$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
+	$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
+	$imageParams = 'title= "'.$imageTitle.'"';
+	$image = HTMLHelper::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
+	$linkParams = '';
+	echo HTMLHelper::link($link3,$image);
+        ?>
+	</td>
+	<td class="center"><?php echo $row->editor; ?></td>
+	<?php
+	if ( $this->project->project_type == 'DIVISIONS_LEAGUE' )
+	{
+	?>
+	<td class="nowrap" class="center">
+	<?php
+	$append='';
+	if ($row->division_id == 0)
+	{
+	$append=' style="background-color:#bbffff"';
+	}
+	echo HTMLHelper::_('select.genericlist',
+		$this->lists['divisions'],
+		'division_id'.$row->id,
+		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+		$i.'\').checked=true"'.$append,
+		'value','text',$row->division_id);
+	?>
+	</td>
+	<?php
+	}
+	?>
+	<td class="center">
+	<?php
+	if (empty($row->picture) || !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture))
+	{
+	$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
+	echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
+	$imageTitle,'title= "'.$imageTitle.'"');
+	}
+	elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
+	{
+	$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
+	echo HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/information.png',
+	$imageTitle,'title= "'.$imageTitle.'"');
 								
 ?>
 <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
@@ -431,13 +432,13 @@ $this->modalheight);
 </a>
 <?PHP                                 
                                 
-                                }
-								else
-								{
-								    if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture)) {
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
-									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
+        }
+	else
+	{
+	if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->picture)) {
+	$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
+	echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+		$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100" />
@@ -462,22 +463,22 @@ $this->modalheight);
 <?PHP 
       }
       ?>                          
-							</td>
-							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
-																	name="start_points<?php echo $row->id; ?>"
-																	value="<?php echo $row->start_points; ?>"
-																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
-							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
-																	name="matches_finally<?php echo $row->id; ?>"
-																	value="<?php echo $row->matches_finally; ?>"
-																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
-							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
-																	name="points_finally<?php echo $row->id; ?>"
+	</td>
+	<td class="center">
+	<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
+	name="start_points<?php echo $row->id; ?>"
+	value="<?php echo $row->start_points; ?>"
+	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+	</td>
+	<td class="center">
+	<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
+	name="matches_finally<?php echo $row->id; ?>"
+	value="<?php echo $row->matches_finally; ?>"
+	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+	</td>
+	<td class="center">
+	<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
+	name="points_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->points_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
@@ -529,15 +530,15 @@ $this->modalheight);
 																	name="diffgoals_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->diffgoals_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
-                            
-                            <td class="center">
-									<?php
-                                    $append=' style="background-color:#bbffff"';
-									echo HTMLHelper::_(	'select.genericlist',
-													$this->lists['is_in_score'],
-													'is_in_score'.$row->id,
-													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+	</td>
+                   
+        <td class="center">
+	<?php
+        $append=' style="background-color:#bbffff"';
+	echo HTMLHelper::_(	'select.genericlist',
+		$this->lists['is_in_score'],
+		'is_in_score'.$row->id,
+		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->is_in_score);
 									?>
@@ -554,17 +555,20 @@ $this->modalheight);
 									?>
 								</td>
                             
-                            <td class="center"><?php echo $row->season_team_id; ?></td>
-							<td class="center"><?php echo $row->team_id; ?></td>
-							<td class="center"><?php echo $row->id; ?></td>
-						</tr>
-						<?php
-						$k=(1-$k);
-					}
-					?>
-				</tbody>
+        <td class="center"><?php echo $row->season_team_id; ?>
+	<br>
+	<?php echo $row->seasonname; ?>
+	</td>
+	<td class="center"><?php echo $row->team_id; ?></td>
+	<td class="center"><?php echo $row->id; ?></td>
+	</tr>
+	<?php
+	$k=(1-$k);
+	}
+	?>
+	</tbody>
 
-			</table>
+	</table>
 	<!--	</fieldset> -->
 	</div>
 	
