@@ -24,11 +24,6 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 // get helper
 require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php');
 
-if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',ComponentHelper::getParams( 'com_sportsmanagement' )->get( 'cfg_which_database_table' ) );
-}
-
 HTMLHelper::_('behavior.framework');
 $document = Factory::getDocument();
 //add css file
