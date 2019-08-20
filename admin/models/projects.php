@@ -255,7 +255,7 @@ switch ( $this->getState('filter.unique_id') )
 $this->jsmquery->from('#__sportsmanagement_project as pro');
 $this->jsmquery->join('INNER','#__sportsmanagement_league as le on le.id = pro.league_id');
 $this->jsmquery->where('le.id = '.$league_id);
-$query->where('pro.season_id IN ('.$seasons.')');
+$this->jsmquery->where('pro.season_id IN ('.$seasons.')');
 $this->jsmdb->setQuery( $this->jsmquery );
 $result = $this->jsmdb->loadResult();	
 		return $result;
