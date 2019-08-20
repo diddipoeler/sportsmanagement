@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_navigation_menu
@@ -225,7 +225,6 @@ class modsportsmanagementNavigationMenuHelper
 
         $query->select('p.name AS text, s.name AS season_name, st.name as sports_type_name');
         $query->select('p.id AS value');
-        //$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS value');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->from('#__sportsmanagement_project AS p');
         $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
