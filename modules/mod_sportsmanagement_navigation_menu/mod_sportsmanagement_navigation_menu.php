@@ -1,26 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_navigation_menu.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_navigation_menu
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
 
 if ( !defined('JSM_PATH') )
 {
@@ -43,13 +37,13 @@ $document->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.D
 
 $helper = new modsportsmanagementNavigationMenuHelper($params);
 
-$seasonselect	= $helper->getSeasonSelect();
-$leagueselect	= $helper->getLeagueSelect();
-$projectselect	= $helper->getProjectSelect();
+$seasonselect = $helper->getSeasonSelect();
+$leagueselect = $helper->getLeagueSelect();
+$projectselect = $helper->getProjectSelect();
 $divisionselect = $helper->getDivisionSelect();
-$teamselect		= $helper->getTeamSelect();
+$teamselect = $helper->getTeamSelect();
 
-$defaultview   = $params->get('project_start');
+$defaultview = $params->get('project_start');
 $defaultitemid = $params->get('custom_item_id');
 
 ?>
