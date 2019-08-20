@@ -210,7 +210,13 @@ echo $row->league.'<br>';
 ?>
 </td>
 <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
-<td class="center"><?php echo $row->season; ?></td>
+<td class="center"><?php echo $row->season; ?>
+	<br>
+  <?php
+  
+ //$this->model->existcurrentseason($this->season_ids,$row->league_id);
+  ?>
+	</td>
 <td class="center">
 <?php 
 echo Text::_($row->sportstype); 
