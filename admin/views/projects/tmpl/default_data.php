@@ -19,8 +19,6 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-
-
 ?>
 <div class="table-responsive">
 <table class="<?php echo $this->table_data_class; ?>">
@@ -49,6 +47,10 @@ echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.c
 <?php
 echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
 ?>
+<br>
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');	
+?>	
 </th>
 <th class="title">
 <?php
