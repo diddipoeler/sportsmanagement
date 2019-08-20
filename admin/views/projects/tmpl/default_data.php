@@ -213,8 +213,8 @@ echo $row->league.'<br>';
 <td class="center"><?php echo $row->season; ?>
 	<br>
   <?php
-  
- //$this->model->existcurrentseason($this->season_ids,$row->league_id);
+$picture = $this->model->existcurrentseason($this->season_ids,$row->league_id) ? 'ok.png' : 'error.png';
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture, '', 'title= "' . '' . '"');    
   ?>
 	</td>
 <td class="center">
