@@ -220,22 +220,23 @@ $lists['mastertemplates'] = $myoptions;
         //$lists['association'] = $nation;
         
         
-		$lists['association2']= JHtmlSelect::genericlist(	$nation, 
-																'filter_search_association', 
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_association'));
+	$lists['association2']= JHtmlSelect::genericlist($nation, 
+		'filter_search_association', 
+		$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+		'value', 
+		'text', 
+		$this->state->get('filter.search_association'));
         
         
-		$mdlProjectDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
-		$mdlRounds = BaseDatabaseModel::getInstance('Rounds', 'sportsmanagementModel');
+	$mdlProjectDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
+	$mdlRounds = BaseDatabaseModel::getInstance('Rounds', 'sportsmanagementModel');
       $mdlMatches = BaseDatabaseModel::getInstance('Matches', 'sportsmanagementModel');
       
-        $this->modeldivision	= $mdlProjectDivisions;
-        $this->modelround	= $mdlRounds;
-        $this->modelmatches	= $mdlMatches;
-		$this->lists	= $lists;
+        $this->modeldivision = $mdlProjectDivisions;
+        $this->modelround = $mdlRounds;
+        $this->modelmatches = $mdlMatches;
+	$this->lists = $lists;
+	$this->season_ids = ComponentHelper::getParams($this->option)->get( 'current_season' );
 
 	}
 
@@ -246,21 +247,19 @@ $lists['mastertemplates'] = $myoptions;
 	*/
 	protected function addToolbar()
 	{
-		// Set toolbar items for the page
+	// Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
         $this->icon = 'projects';
 
-		ToolbarHelper::publishList('projects.publish');
-		ToolbarHelper::unpublishList('projects.unpublish');
-		ToolbarHelper::divider();
-		
+	ToolbarHelper::publishList('projects.publish');
+	ToolbarHelper::unpublishList('projects.unpublish');
+	ToolbarHelper::divider();
         ToolbarHelper::apply('projects.saveshort');
-        
-		ToolbarHelper::addNew('project.add');
-		ToolbarHelper::editList('project.edit');
-		ToolbarHelper::custom('project.import','upload','upload',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		ToolbarHelper::archiveList('project.export',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		ToolbarHelper::custom('project.copy','copy.png','copy_f2.png',Text::_('JTOOLBAR_DUPLICATE'),false);
+	ToolbarHelper::addNew('project.add');
+	ToolbarHelper::editList('project.edit');
+	ToolbarHelper::custom('project.import','upload','upload',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
+	ToolbarHelper::archiveList('project.export',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+	ToolbarHelper::custom('project.copy','copy.png','copy_f2.png',Text::_('JTOOLBAR_DUPLICATE'),false);
 
         parent::addToolbar();
 	}
