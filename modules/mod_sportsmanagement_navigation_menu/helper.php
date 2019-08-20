@@ -232,6 +232,13 @@ class modsportsmanagementNavigationMenuHelper
         $query->join('INNER','#__sportsmanagement_sports_type AS st on st.id = p.sports_type_id ');
 
         $query->where('p.published = 1');
+        
+        if ($this->getParam('show_project_dropdown') == 'season' && !$this->getProject()) {
+        if ( $this->getParam('s', 0) )
+        {
+        $query->where('p.season_id = ' . (int)$this->getParam('s') );
+        }    
+        }
 
         if ($this->getParam('show_project_dropdown') == 'season' && $this->getProject()) {
 
