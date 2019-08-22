@@ -211,7 +211,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 <tr>
 <td>
 
-<ul class="jsmpage pagination">
+<ul class="jsmpage pagination" id="pagination">
 
 
 </ul> 
