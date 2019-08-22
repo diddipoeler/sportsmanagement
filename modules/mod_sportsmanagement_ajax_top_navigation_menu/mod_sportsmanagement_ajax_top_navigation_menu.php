@@ -386,6 +386,17 @@ $script[] = "});";
 
 // project ändern teams wählen
 $script[] = "$('#jlamtopprojects".$row->name.$module->id."').change(function(){";
+$script[] = "$('ul.jsmpage').empty();";
+$script[] = "$('ul.pagination').empty();";
+$script[] = "  
+loadHtml = \"<p id='loadingDiv-\"
+			+ \"' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>\";
+	loadHtml += \"<img src='\" + ajaxmenu_baseurl + 
+				\"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>\";
+	loadHtml += \"</p>\";
+	document.getElementById('pagination').innerHTML += loadHtml;  
+  ";	
+	
 $script[] = "var value10 = $('#jlamtopprojects".$row->name.$module->id."').val();";
 $script[] = "var url10 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectTeams&project_id=' + value10;";
 $script[] = "console.log('project_id value10 = ' + value10 );";
