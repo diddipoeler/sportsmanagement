@@ -71,7 +71,9 @@ $msg = '';
 		$linkaddress = $this->jsmjinput->getVar( 'linkaddress' );
 		// Set FTP credentials, if given
 		ClientHelper::setCredentialsFromRequest( 'ftp' );
-
+echo "<script> window.closeModal = function(){
+    jQuery('upload".$fieldid."').modal('hide');
+}; </script>\n";
 		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR  . 'images' . DIRECTORY_SEPARATOR  . $this->jsmoption . DIRECTORY_SEPARATOR  .'database'.DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR ;
         
     //do we have an imagelink?
@@ -139,7 +141,7 @@ $type = 'error';
 $app->enqueueMessage(Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ),'');			
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-      echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field','$fieldid');window.parent.jModalClose();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
+      echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field','$fieldid');window.closeModal();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
 			$msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' );
 			$type = 'notice'; 
 			//$app->close();
