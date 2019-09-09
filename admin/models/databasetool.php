@@ -1014,7 +1014,14 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                             $this->_assoclist[$country][$main] = array_merge($export);
                             if ( $parentmain )
                             {
+                                if ( array_key_exists($parentmain,$this->_assoclist[$country]) )
+                                {
                             $parent_id = $this->_assoclist[$country][$parentmain];
+                                }
+                                else
+                                {
+                                    $parent_id = 0;
+                                }
                             }
                             else
                             {
