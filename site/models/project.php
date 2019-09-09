@@ -227,7 +227,6 @@ $result = $db->execute();
    
         if ( self::$projectid > 0 )
 		{
-			//fs_sport_type_name = sport_type folder name
             $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
             $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name  ');
             $query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
@@ -248,7 +247,14 @@ $result = $db->execute();
 			$db->setQuery($query,0,1);
     
 			self::$_project = $db->loadObject();
-            
+        $query->clear();
+        $query->select('eventtime');
+        $query->from('#__sportsmanagement_sports_type');
+        $query->where('id = ' . self::$_project->sports_type_id);
+        $db->setQuery($query);
+        $useeventtime = $db->loadResult();
+        self::$_project->useeventtime = $useeventtime;
+		
             if ( self::$_project)
             {
             self::$projectslug = self::$_project->slug;
