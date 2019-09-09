@@ -92,7 +92,9 @@ $ende_if = false;
 $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
 $sub_sub_assoc_parent_id = 0;
-
+$assoc_id = 0;
+$subassoc_id = 0;	
+$subsubassoc_id = 0;	
 $project_id = $jinput->get('p', 0, 'INT'); 
 $team_id = $jinput->get('tid', 0, 'INT'); 
 $division_id = $jinput->get('division', 0, 'INT'); 
