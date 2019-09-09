@@ -87,7 +87,7 @@ $tab_points[] = $row->name;
 
 
 $tab_points[] = 'NON';
-
+$user_name = '';
 $ende_if = false;
 $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
