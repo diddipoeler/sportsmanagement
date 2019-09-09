@@ -257,6 +257,7 @@ else
 				$feed->title = $rssDoc->get_title();
 				$feed->link = $rssDoc->get_link();
 				$feed->description = $rssDoc->get_description();
+		$feed->image = NULL;
 	$feed->image->url = '';
 		$feed->image->title = '';
 				// channel image if exists
