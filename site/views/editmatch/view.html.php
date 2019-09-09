@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\View\HtmlView;
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -31,7 +32,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewEditMatch extends JViewLegacy 
+class sportsmanagementViewEditMatch extends HtmlView 
 {
 
     /**
@@ -58,13 +59,15 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 
         $this->project_id = $jinput->getInt('p', 0);
         sportsmanagementModelProject::setProjectID($this->project_id);
-        $projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
+        //$projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
+	$projectws = sportsmanagementModelProject::getProject($this->project_id);
 
         $app->setUserState("$option.pid", $projectws->id);
         $app->setUserState("$option.season_id", $projectws->season_id);
 
         $this->projectws = $projectws;
         $this->eventsprojecttime = $projectws->game_regular_time;
+	$this->useeventtime = $projectws->useeventtime;
 
         // Get some data from the models
         $match = $this->get('Data');
@@ -238,6 +241,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 	$javascript .= "var matchid = ".$this->match->id.";" . "\n";
         $javascript .= "var teamid = ".$this->tid.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
+	$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";
         $javascript .= "var str_delete = '".Text::_('JACTION_DELETE')."';" . "\n";
 	$javascript .= 'jQuery(document).ready(function() {' . "\n";
 	$javascript .= "updatePlayerSelect();". "\n";
@@ -348,6 +352,7 @@ $document->addScript(Uri::base().'administrator/components/'.$option.'/assets/js
 $javascript = "\n";
 $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsmanagement';". "\n";	    
 $javascript .= "var matchid = ".$this->match->id.";" . "\n";
+$javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";	    
 $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
 $javascript .= "var str_delete = '".Text::_('JACTION_DELETE')."';" . "\n";
 $javascript .= "\n";
