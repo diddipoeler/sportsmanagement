@@ -59,8 +59,8 @@ class sportsmanagementViewEditMatch extends HtmlView
 
         $this->project_id = $jinput->getInt('p', 0);
         sportsmanagementModelProject::setProjectID($this->project_id);
-        //$projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
-	$projectws = sportsmanagementModelProject::getProject($this->project_id);
+        $projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
+	//$projectws = sportsmanagementModelProject::getProject($this->project_id);
 
         $app->setUserState("$option.pid", $projectws->id);
         $app->setUserState("$option.season_id", $projectws->season_id);
