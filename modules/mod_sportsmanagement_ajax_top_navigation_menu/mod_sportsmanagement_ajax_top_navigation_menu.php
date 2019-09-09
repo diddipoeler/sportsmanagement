@@ -99,6 +99,7 @@ $project_id = $jinput->get('p', 0, 'INT');
 $team_id = $jinput->get('tid', 0, 'INT'); 
 $division_id = $jinput->get('division', 0, 'INT'); 
 $countrysubassocselect = array();
+$countrysubsubassocselect = array();
 $helper->setProject( $project_id, $team_id, $division_id );
 $league_id  = $helper->getLeagueId();
 $country_id  = $helper->getProjectCountry($project_id);
