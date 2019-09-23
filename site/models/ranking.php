@@ -477,6 +477,15 @@ if ( $project )
 			}
 			self::_sortRanking(self::$currentRanking[$division]);
 
+if ( empty(self::$from)  )
+{
+$from = sportsmanagementModelRounds::getFirstRound(self::$projectid,sportsmanagementModelProject::$cfg_which_database);
+self::$from = $from['id'];
+}
+if ( empty(self::$to)  )
+{
+self::$to = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementModelProject::$cfg_which_database);
+}
 			
 			//previous rank
 			if( $tableconfig['last_ranking'] )
