@@ -451,7 +451,8 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
-					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+					//$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+                    $output = HTMLHelper::image( $picture, $playerName , array('title' => $playerName,'width' => $this->config['show_user_icon_width'] ));
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
                     $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
                     $membersDataArray[$member->pmID]['pg_group_id']	= $member->pg_group_id;
