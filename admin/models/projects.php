@@ -247,6 +247,13 @@ switch ( $this->getState('filter.unique_id') )
 	}
 	
 	
+	/**
+	 * sportsmanagementModelProjects::existcurrentseason()
+	 * 
+	 * @param mixed $season_ids
+	 * @param integer $league_id
+	 * @return
+	 */
 	function existcurrentseason($season_ids=array(),$league_id=0)
 	{
 	$seasons = implode(",",$season_ids); 
@@ -257,8 +264,15 @@ $this->jsmquery->join('INNER','#__sportsmanagement_league as le on le.id = pro.l
 $this->jsmquery->where('le.id = '.$league_id);
 $this->jsmquery->where('pro.season_id IN ('.$seasons.')');
 $this->jsmdb->setQuery( $this->jsmquery );
+try {
 $result = $this->jsmdb->loadResult();	
 		return $result;
+        } catch (Exception $e) {
+                //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                return NULL;
+            }
+        
+        
 	}
 	
 	
