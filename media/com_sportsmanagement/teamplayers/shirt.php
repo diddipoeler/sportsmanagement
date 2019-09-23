@@ -11,8 +11,9 @@
 
 //defined( '_JEXEC' ) or die( 'Restricted access' );
 defined( '_JEXEC' );
-use Joomla\CMS\Factory;
-$text = Factory::getApplication()->input->getInt('text', 0);
+//use Joomla\CMS\Factory;
+//$text = Factory::getApplication()->input->getInt('text', 0);
+$text = intval( $_GET['text']);
 $image_file = dirname(__FILE__).'/shirt.png';
 
 if(is_file($image_file)) {
