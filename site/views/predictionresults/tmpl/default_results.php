@@ -497,7 +497,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->a
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
 			
-					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+//$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+$output = HTMLHelper::image( $picture, $playerName , array('title' => $playerName,'width' => $this->config['show_user_icon_width'] ));					
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
 				
 					if ( ( $this->config['link_name_to'] ) && (($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
