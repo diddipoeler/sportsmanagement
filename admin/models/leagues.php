@@ -40,6 +40,7 @@ class sportsmanagementModelLeagues extends JSMModelList
                         'obj.alias',
                         'obj.short_name',
                         'obj.country',
+                        'obj.published_act_season',
                         'st.name',
                         'obj.id',
                         'obj.ordering',
@@ -113,7 +114,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->jsmquery->clear();
         // Select some fields
 		$this->jsmquery->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time,obj.agegroup_id');
-        $this->jsmquery->select('obj.published,obj.modified,obj.modified_by');
+        $this->jsmquery->select('obj.published,obj.modified,obj.modified_by,obj.published_act_season');
         $this->jsmquery->select('st.name AS sportstype');
 		// From table
 		$this->jsmquery->from('#__sportsmanagement_league as obj');
