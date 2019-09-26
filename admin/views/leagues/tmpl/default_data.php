@@ -56,6 +56,9 @@ use Joomla\CMS\Router\Route;
             <th>
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
             </th>
+            <th>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD'); ?>
+            </th>
             <th width="" class="nowrap center">
                 <?php
                 echo HTMLHelper::_('grid.sort', 'JSTATUS', 'objassoc.published', $this->sortDirection, $this->sortColumn);
@@ -167,6 +170,9 @@ use Joomla\CMS\Router\Route;
                     }
                     ?>
                 </td>
+                <td class="center">
+                    
+                </td>    
                 <td class="center">
                     <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'leagues.', $canChange, 'cb'); ?>
