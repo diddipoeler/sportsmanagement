@@ -1291,6 +1291,23 @@ catch (Exception $e) {
 		{
 			$data = $this->getItem();
 		}
+		
+	switch ( $this->getName() )
+       {
+     
+       case 'league': 
+          if ( !$data->middle_name )
+      {
+        $data->middle_name = $data->name;
+      }
+      if ( !$data->short_name )
+      {
+        $data->short_name = $data->name;
+      }
+          break;
+      }
+		
+		
 		return $data;
 	}
 
