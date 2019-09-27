@@ -346,7 +346,7 @@ $data['notes'] = $html;
         // Must be a valid primary key value.
         $object->id = $team_id;
         $object->name = $team_name;
-        $object->alias = JFilterOutput::stringURLSafe( $team_name );
+        $object->alias = OutputFilter::stringURLSafe( $team_name );
         // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
         }
@@ -436,7 +436,6 @@ $data['notes'] = $html;
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
-       //$data['fav_team'] = implode(',',$post['jform']['fav_team']);
        $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
        if ( !$post['jform']['fav_team'] )
        {
@@ -647,7 +646,7 @@ $result = $this->jsmdb->execute();
 
 		}
         
-        //-------extra fields-----------//
+        /** -------extra fields----------- */
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
         break;
