@@ -171,7 +171,33 @@ use Joomla\CMS\Router\Route;
                     ?>
                 </td>
                 <td class="center">
-                    
+<?php	
+
+$class = "btn-group btn-group-yesno";
+$options = array(
+            JHtml::_('select.option', '0', Text::_('JNO')),
+            JHtml::_('select.option', '1', Text::_('JYES'))
+        );
+
+        $html = array();
+$html[] = '<fieldset id="published_act_season' . $row->id . '" class="' . $class. '" >';
+foreach ($options as $in => $option)
+        {
+$checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
+$btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';	
+$btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;	  	
+	
+  $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
+  $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
+                . $option->value . '"' . $onchange . ' />';
+
+$html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
+                . Text::_( $option->text) . '</label>';
+  
+}						
+						
+echo implode($html);							
+?>                       
                 </td>    
                 <td class="center">
                     <div class="btn-group">

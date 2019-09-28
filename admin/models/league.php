@@ -36,8 +36,6 @@ class sportsmanagementModelleague extends JSMModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-    
 	}	   
     
     /**
@@ -57,18 +55,15 @@ class sportsmanagementModelleague extends JSMModelAdmin
         // Get the input
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-       
-        $result=true;
+        $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-		  
 			$tblLeague = & $this->getTable();
-            
 			$tblLeague->id	= $pks[$x];
             $tblLeague->associations = $post['association' . $pks[$x]];
             $tblLeague->country = $post['country' . $pks[$x]];
             $tblLeague->agegroup_id = $post['agegroup'.$pks[$x]];
-
+            $tblLeague->published_act_season = $post['published_act_season'.$pks[$x]];
 			if(!$tblLeague->store()) 
             {
 				$result = false;

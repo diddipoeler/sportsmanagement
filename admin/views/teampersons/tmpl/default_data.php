@@ -8,7 +8,6 @@
  * @package   sportsmanagement
  * @subpackage teampersons
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -19,7 +18,7 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-// welche joomla version
+/** welche joomla version */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 HTMLHelper::_('behavior.framework', true);
@@ -28,10 +27,7 @@ else
 {
 HTMLHelper::_( 'behavior.mootools' );    
 }
-
-
 ?>
-        
 		<div class="table-responsive">
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
@@ -383,22 +379,7 @@ $html[] = '<label for="project_published' .  $row->id .$in  . '"' . $checked . '
 }						
 						
 echo implode($html);							
-						
-						
-						
-/*						
-JFormHelper::loadFieldClass('radio');
-$field = new JFormFieldRadio();
-$field->setup(new SimpleXMLElement('<field " onchange="document.getElementById(\'cb'.$i.'\').checked=true" name="project_published'.$row->id.'" type="radio" size="1" default="'.$row->project_published.'" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), 1);
-echo $field->renderField(array('hiddenLabel'=>true));
-*/						
-						/*
-HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 1 ? 'un' : '') . 'sichtbar', 'cb' . $i, 'teampersons');
-HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 0 ? 'un' : '') . 'nicht sichtbar', 'cb' . $i, 'teampersons');
-echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));	
-						*/
-//echo HTMLHelper::_('jgrid.published', $row->project_published, $i, 'teampersons.', $canChange, 'cb');						
-						?>
+?>
 							</td>	
 							<td class="center">
 <div class="btn-group">
