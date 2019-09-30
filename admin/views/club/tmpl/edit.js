@@ -133,7 +133,8 @@ getlatlonopenstreet(1);
 
 function getlatlonopenstreet(result)
 {
-var inp = dpjQuery("#jform_geocomplete").val();
+//var inp = dpjQuery("#jform_geocomplete").val();
+var inp = encodeURI(dpjQuery("#jform_geocomplete").val());	
 console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
 var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
