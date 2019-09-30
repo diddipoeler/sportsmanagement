@@ -257,6 +257,10 @@ if ( $this->config['show_playground_picture'] )
 ?>
 <br>	
 <?php	
+if ( ( is_null( $team->playground_picture ) ) || ( !file_exists( $team->playground_picture ) ) )
+{
+$team->playground_picture = sportsmanagementHelper::getDefaultPlaceholder("stadium");
+}	
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playgroundclubinfo' . $team->team_name,
             $team->playground_picture,
             $team->playground_name,
