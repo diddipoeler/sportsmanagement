@@ -124,6 +124,7 @@ if ( $opencagedataapi )
 {
 $javascript = "\n";
 $javascript .= 'var opencage = "https://api.opencagedata.com/geocode/v1/json?key='.$opencagedataapi.'&pretty=1&no_annotations=1&q=";' . "\n";
+$javascript .= 'var opencagekey = "'.$opencagedataapi.'";' . "\n";	
 $javascript .= "\n";
 $this->document->addScriptDeclaration( $javascript );
 }		
