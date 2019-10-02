@@ -29,8 +29,15 @@ function geocode(query){
         dataType: 'json',
         statusCode: {
           200: function(response){  // success
+	console.log('opencagedata');
             console.log(response);
             console.log(response.results[0].formatted);
+console.log(response.results[0].geometry.lat);
+            console.log(response.results[0].geometry.lng);
+            
+            console.log(response.results[0].components.county);
+            console.log(response.results[0].components.state);
+            console.log(response.results[0].components.state_district);		  
           },
           402: function(){
             console.log('hit free-trial daily limit');
