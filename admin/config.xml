@@ -1310,10 +1310,20 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 -->
 
 
+<!-- register 9 --> 
+<fieldset
+		name="opencagedata"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_DESC"
+	>
+<field name="opencagedata_api_clientid" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />	
 
-
-
-
+</fieldset>
 
           		
 <!-- register ende -->		
