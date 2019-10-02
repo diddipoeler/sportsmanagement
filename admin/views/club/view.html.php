@@ -123,7 +123,7 @@ $opencagedataapi = $params->get('opencagedata_api_clientid');
 if ( $opencagedataapi )
 {
 $javascript = "\n";
-$javascript .= 'var opencage = "https://api.opencagedata.com/geocode/v1/json?key='.$opencagedataapi.'&pretty=1&no_annotations=1";' . "\n";
+$javascript .= 'var opencage = "https://api.opencagedata.com/geocode/v1/json?key='.$opencagedataapi.'&pretty=1&no_annotations=1&q=";' . "\n";
 $javascript .= "\n";
 $this->document->addScriptDeclaration( $javascript );
 }		
