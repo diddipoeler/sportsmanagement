@@ -27,7 +27,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 class sportsmanagementViewClub extends sportsmanagementView
 {
 	
-	
 	/**
 	 * sportsmanagementViewClub::init()
 	 * 
@@ -80,10 +79,10 @@ class sportsmanagementViewClub extends sportsmanagementView
             $this->map = true;
         }
 		
-		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
-		$this->extended	= $extended;
+	$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
+	$this->extended	= $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');		
-		$this->extendeduser	= $extendeduser;
+	$this->extendeduser = $extendeduser;
         
         $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
         $lists = array();
@@ -118,8 +117,16 @@ if ( PluginHelper::isEnabled( 'system', 'jsm_soccerway' ) )
 {
 $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/club/tmpl/soccerway.js');    
 }
-
-                            
+$params = ComponentHelper::getParams($this->option);
+$opencagedataapi = $params->get('opencagedata_api_clientid');
+if ( $opencagedataapi )
+{
+$javascript = "\n";
+$javascript .= 'var opencage = "https://api.opencagedata.com/geocode/v1/json?key='.$opencagedataapi.'&pretty=1&no_annotations=1";' . "\n";
+$javascript .= "\n";
+$this->document->addScriptDeclaration( $javascript );
+}		
+		
 	}
  
 	
