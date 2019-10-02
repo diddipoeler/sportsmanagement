@@ -138,7 +138,11 @@ var inp = encodeURI(dpjQuery("#jform_geocomplete").val());
 console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
 var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
+	
+var opencageurl = opencage  + dpjQuery("#jform_geocomplete").val();
+	
 console.log('openstreetmap url ' + url );
+console.log('opencage url ' + opencageurl );	
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME").val('');
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val('');
