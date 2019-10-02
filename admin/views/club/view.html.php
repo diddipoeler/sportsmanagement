@@ -127,8 +127,14 @@ $javascript .= 'var opencage = "https://api.opencagedata.com/geocode/v1/json?key
 $javascript .= 'var opencagekey = "'.$opencagedataapi.'";' . "\n";	
 $javascript .= "\n";
 $this->document->addScriptDeclaration( $javascript );
+}	
+else
+{	
+$javascript = "\n";
+$javascript .= 'var opencage = "";' . "\n";
+$javascript .= 'var opencagekey = "";' . "\n";	
+$javascript .= "\n";
 }		
-		
 	}
  
 	
