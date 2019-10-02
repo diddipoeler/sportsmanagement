@@ -14,9 +14,40 @@ var zip;
 var province;
 
 var yourQuery;	
-	
+
+function geocode(query){
+      dpjQuery.ajax({
+        url: 'https://api.opencagedata.com/geocode/v1/json',
+        method: 'GET',
+        data: {
+          'key': opencagekey ,
+          'q': query,
+          'no_annotations': 1
+          // see other optional params:
+          // https://opencagedata.com/api#forward-opt
+        },
+        dataType: 'json',
+        statusCode: {
+          200: function(response){  // success
+            console.log(response);
+            console.log(response.results[0].formatted);
+          },
+          402: function(){
+            console.log('hit free-trial daily limit');
+            console.log('become a customer: https://opencagedata.com/pricing');
+          }
+          // other possible response codes:
+          // https://opencagedata.com/api#codes
+        }
+      });
+    }     
+
+
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
+	
+//geocode(dpjQuery("#jform_geocomplete").val());
+	
 //dpjQuery("#jform_geocomplete").trigger("geocode");
 //getlatlonopenstreet(1); 
 	
