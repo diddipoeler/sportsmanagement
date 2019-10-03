@@ -61,15 +61,35 @@ addLayer(response.results[0].geometry.lat,response.results[0].geometry.lng);
 
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
-	
-	
-if ( dpjQuery("#jform_latitude").val() )
+if ( dpjQuery("#jform_latitude").val() == '' )
+{
+if ( opencagekey != '' )
+{
+geocode(dpjQuery("#jform_geocomplete").val());	
+}
+else
+{	
+getlatlonopenstreet(0);
+}
+}	
+elseif ( dpjQuery("#jform_latitude").val() == '0.00000000' )
+{
+if ( opencagekey != '' )
+{
+geocode(dpjQuery("#jform_geocomplete").val());	
+}
+else
+{	
+getlatlonopenstreet(0);
+}
+}	
+elseif ( dpjQuery("#jform_latitude").val() != '0.00000000' )
 {
 addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
 else
 {
-//addLayer('0.00000000','0.00000000');
+
 if ( opencagekey != '' )
 {
 geocode(dpjQuery("#jform_geocomplete").val());	
