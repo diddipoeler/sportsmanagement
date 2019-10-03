@@ -53,10 +53,6 @@ console.log(response.results[0].geometry.lat);
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
 	
-//geocode(dpjQuery("#jform_geocomplete").val());
-	
-//dpjQuery("#jform_geocomplete").trigger("geocode");
-//getlatlonopenstreet(1); 
 	
 if ( dpjQuery("#jform_latitude").val() )
 {
@@ -64,10 +60,19 @@ addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
 else
 {
+
+if ( opencagekey != '' )
+{
+geocode(dpjQuery("#jform_geocomplete").val());	
+}
+else
+{	
 getlatlonopenstreet(0);
+}
+
 }	
 
-//geocoder = new L.Control.Geocoder.Nominatim();
+
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
 var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
@@ -94,77 +99,18 @@ yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
 
 console.log('ready yourQuery ' + yourQuery );
 
-//geocoder.geocode(yourQuery, function(results) {
-//console.log(results);
-//});
-
-
-	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state, #jform_country').bind('change', function(e) {
-		dpjQuery("#jform_geocomplete").val(getAddresString());
-		dpjQuery("#jform_geocomplete").trigger("geocode");
-		
+dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state, #jform_country').bind('change', function(e) {
+dpjQuery("#jform_geocomplete").val(getAddresString());
+dpjQuery("#jform_geocomplete").trigger("geocode");
+if ( opencagekey != '' )
+{
+geocode(dpjQuery("#jform_geocomplete").val());	
+}
+else
+{
 getlatlonopenstreet(1);
-		
-//var inp = dpjQuery("#jform_geocomplete").val();
-//console.log('jform_geocomplete ' + inp );
-//var xmlhttp = new XMLHttpRequest();
-//var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
- 
-//console.log('openstreetmap url ' + url );
-
-//dpjQuery.ajax({
-//url:url,
-//dataType: 'json',
-//async: false,
-//type: "POST",
-//success:function(res){
-//console.log('openstreetmap ' + res );
-
-//dpjQuery.each(res , function (i, val) {
-//console.log(i);
-//console.log(val);
-
-//console.log('latitude ' + val.lat);
-//console.log('longitude ' + val.lon);
-//dpjQuery("#jform_latitude").val(val.lat);
-//dpjQuery("#jform_longitude").val(val.lon);
-//addLayer(val.lat,val.lon);
-//});			  
-//}
-//});
-
-
-
-			 
-// xmlhttp.onreadystatechange = function()
-// {
-//   if (this.readyState == 4 && this.status == 200)
-//   {
-//    var myArr = JSON.parse(this.responseText);
-//    console.log('openstreetmap ' + myArr.lat );
-//    //myFunction(myArr);
-//   }
-// };
-// xmlhttp.open("GET", url, true);
-// xmlhttp.send();
- 
- 		
+}
 	});
-	
-	
-	
-	
-//	dpjQuery("#jform_geocomplete").bind("geocode:dragged", function(event, latLng){
-//		dpjQuery.ajax({
-//			  url:"//maps.googleapis.com/maps/api/geocode/json?latlng="+latLng.lat()+","+latLng.lng()+"&sensor=true",
-//			  type: "POST",
-//			  success:function(res){
-//				 if(res.results[0].address_components.length){
-//					 setGeoResult(res.results[0]);
-//				 }
-//			  }
-//			});
-//    });
     
 });
 
