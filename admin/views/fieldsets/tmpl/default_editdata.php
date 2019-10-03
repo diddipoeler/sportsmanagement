@@ -305,6 +305,11 @@ switch ($fieldset->name)
     case 'club':
     case 'playground':
     case 'person':
+    if ( !$this->item->latitude )
+    {
+        $this->item->latitude = '0.00000000';
+        $this->item->longitude = '0.00000000';
+    }
 ?>
 <div class="span6">
 <div class="control-group">
