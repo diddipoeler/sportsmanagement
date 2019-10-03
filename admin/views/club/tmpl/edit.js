@@ -69,7 +69,7 @@ addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
 else
 {
-
+addLayer('0.00000000','0.00000000');
 if ( opencagekey != '' )
 {
 geocode(dpjQuery("#jform_geocomplete").val());	
