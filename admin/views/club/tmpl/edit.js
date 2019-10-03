@@ -61,7 +61,7 @@ addLayer(response.results[0].geometry.lat,response.results[0].geometry.lng);
 
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
-
+addLayer('0.00000000','0.00000000');
 if ( opencagekey != '' )
 {
 geocode(dpjQuery("#jform_geocomplete").val());	
