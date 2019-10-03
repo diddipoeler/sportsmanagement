@@ -45,7 +45,7 @@ dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME")
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val(response.results[0].components.state_district);	
 dpjQuery("#jform_latitude").val(response.results[0].geometry.lat);
 dpjQuery("#jform_longitude").val(response.results[0].geometry.lng);
-addLayer(val.lat,val.lon);
+addLayer(response.results[0].geometry.lat,response.results[0].geometry.lng);
 
           },
           402: function(){
