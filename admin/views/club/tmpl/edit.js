@@ -37,7 +37,16 @@ console.log(response.results[0].geometry.lat);
             
             console.log(response.results[0].components.county);
             console.log(response.results[0].components.state);
-            console.log(response.results[0].components.state_district);		  
+            console.log(response.results[0].components.state_district);	
+//state = val.address.state;
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(response.results[0].components.state);
+dpjQuery("#jform_state").val(response.results[0].components.state);	
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(response.results[0].components.county);	
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val(response.results[0].components.state_district);	
+dpjQuery("#jform_latitude").val(response.results[0].geometry.lat);
+dpjQuery("#jform_longitude").val(response.results[0].geometry.lng);
+addLayer(val.lat,val.lon);
+
           },
           402: function(){
             console.log('hit free-trial daily limit');
@@ -161,11 +170,10 @@ console.log('neighbourhood ' + val.address.neighbourhood);
 
 
 state = val.address.state;
-//if ( val.address.state != 'undefined' )
-//{
+
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
 dpjQuery("#jform_state").val(state);	
-//}	
+
 if ( val.address.county )
 {
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(val.address.county);	
