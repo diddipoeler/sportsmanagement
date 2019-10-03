@@ -382,8 +382,8 @@ var markerLocation = new L.LatLng(lat,lng);
 var marker = new L.Marker(markerLocation);
 //console.log(marker);
 console.log("Adding layer");
-
-
+console.log(lat);
+console.log(lng);
     
 //L.marker([lat, lng]).addTo(layerGroup);
 //console.log(layerGroup);
