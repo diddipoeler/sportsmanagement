@@ -87,19 +87,18 @@ elseif ( dpjQuery("#jform_latitude").val() != '0.00000000' )
 {
 addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
-else
-{
 
-if ( opencagekey != '' )
-{
-geocode(dpjQuery("#jform_geocomplete").val());	
-}
-else
-{	
-getlatlonopenstreet(0);
-}
-
-}	
+//else
+//{
+//if ( opencagekey != '' )
+//{
+//geocode(dpjQuery("#jform_geocomplete").val());	
+//}
+//else
+//{	
+//getlatlonopenstreet(0);
+//}
+//}	
 
 
 countryleaflet = dpjQuery("#jform_country").val();
