@@ -71,45 +71,6 @@ else
 getlatlonopenstreet(0);
 }
 
-//if ( dpjQuery("#jform_latitude").val() == '' )
-//{
-//if ( opencagekey != '' )
-//{
-//geocode(dpjQuery("#jform_geocomplete").val());	
-//}
-//else
-//{	
-//getlatlonopenstreet(0);
-//}
-//}	
-//elseif ( dpjQuery("#jform_latitude").val() == '0.00000000' )
-//{
-//if ( opencagekey != '' )
-//{
-//geocode(dpjQuery("#jform_geocomplete").val());	
-//}
-//else
-//{	
-//getlatlonopenstreet(0);
-//}
-//}	
-//elseif ( dpjQuery("#jform_latitude").val() != '0.00000000' )
-//{
-//addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
-//}
-//else
-//{
-//if ( opencagekey != '' )
-//{
-//geocode(dpjQuery("#jform_geocomplete").val());	
-//}
-//else
-//{	
-//getlatlonopenstreet(0);
-//}
-//}	
-
-
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
 var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
@@ -225,13 +186,6 @@ addLayer(val.lat,val.lon);
 
 function getAddresString()
 {
-//	var address = '';
-//	var street = '';
-//	var city = '';
-//	var zip = '';
-//	var province = '';
-	//var country = '';
-	//var countryleaflet = '';
 	street = '';
 	city = '';
 	country = '';
@@ -250,14 +204,6 @@ function getAddresString()
 	if (dpjQuery("#jform_state").val()) {
 		province = dpjQuery("#jform_state").val() + ', ';
 	}
-	
-//  if(dpjQuery("#jform_country").val()){
-//		country = dpjQuery("#jform_country").val() + ', ';
-//	}
-  
-//  if(dpjQuery("#jform_country").val()){
-//		country = dpjQuery("#jform_country :selected").text() + ', ';
-//	}
 
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('getAddresString countryleaflet ' + countryleaflet);
@@ -338,13 +284,6 @@ var route = '';
       dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(result.address_components[i].long_name);
       dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME").val(result.address_components[i].short_name);
 			break;
-      
-      
-      
-      
-//			case 'country':
-//				dpjQuery("#jform_country").val(result.address_components[i].long_name);
-//			break;
 			case 'postal_code':
 				dpjQuery("#jform_zipcode").val(result.address_components[i].long_name);
 			break;
@@ -370,17 +309,6 @@ var lng = dpjQuery("#jform_longitude").val();
 console.log('lat ' + lat );
 console.log('lng ' + lng );
 addLayer(lat,lng);
-// Creating a marker
-//var marker = L.marker([lat , lng ]);
-// Adding marker to the map
-//marker.addTo(map);
-
-
-
-//	if (dpjQuery("#jform_title").val() == '')
-//	{
-//		dpjQuery("#jform_title").val(result.formatted_address);
-//	}
 	
 	dpjQuery("#jform_geocomplete").val(result.formatted_address);
 }
@@ -389,51 +317,13 @@ function addLayer(lat,lng) {
 	
 var markerLocation = new L.LatLng(lat,lng);
 var marker = new L.Marker(markerLocation);
-//console.log(marker);
 console.log("Adding layer");
 console.log(lat);
 console.log(lng);
     
-//L.marker([lat, lng]).addTo(layerGroup);
-//console.log(layerGroup);
-//map.removeLayer(layerGroup);
 //Add a marker to show where you clicked.
 theMarker = L.marker([lat,lng]).addTo(map);  
 map.setView(new L.LatLng(lat, lng), 15);	
-//L.marker([lat, lng]).addTo(layerGroup);
-//layerGroup.addLayer(marker);
 
-
-
-//var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-//					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//					'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-//var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
-//				streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
-
-//var baseLayers = {
-//				"Grayscale": grayscale,
-//				"Streets": streets
-//			};
-//var baseControl = L.control.layers(baseLayers).addTo(map);
-			// make a global control variable for the control with the cities layer...
-			//var citiesControl;	
-			//	console.log("Adding layer");
-//				cities = L.layerGroup();
-				//L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
-				//L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
-				//L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
-				//L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
-				//var overlays = {
-//					"Cities": cities
-				//};
-//console.log(cities);
-				//map.addLayer(cities);
-
-				// remove the current control panel
-				//map.removeControl(baseControl);
-				// add one with the cities
-				//citiesControl = L.control.layers(baseLayers, overlays).addTo(map);
 }
 			
