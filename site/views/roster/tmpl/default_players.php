@@ -26,28 +26,30 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
  * $this->rows
  */
 
-// Show team-players as defined
+/** Show team-players as defined */
 if (!empty($this->rows))
 {
 	$k = 0;
 	$position = '';
 	$totalEvents = array();
 
-	// Layout of the columns in the table
-	//  1. Position number  (optional : $this->config['show_player_numbers'])
-	//  2. Player picture   (optional : $this->config['show_player_icon'])
-	//  3. Country flag     (optional : $this->config['show_country_flag'])
-	//  4. Player name
-	//  5. Injured/suspended/away icons
-	//  6. Birthday         (optional : $this->config['show_birthday'])
-	//  7. Games played     (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_games_played'])
-	//  8. Starting line-up (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	//  9. In               (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	// 10. Out              (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	// 10. Event type       (optional : $this->config['show_events_stats'] && count($this->playereventstats) > 0,
-	//                       multiple columns possible (depends on the number of event types for the position))
-	// 11. Stats type       (optional : $this->config['show_stats'] && isset($this->stats[$row->position_id]),
-	//                       multiple columns possible (depends on the number of stats types for the position))
+/**
+ * 	 Layout of the columns in the table
+ * 	  1. Position number  (optional : $this->config['show_player_numbers'])
+ * 	  2. Player picture   (optional : $this->config['show_player_icon'])
+ * 	  3. Country flag     (optional : $this->config['show_country_flag'])
+ * 	  4. Player name
+ * 	  5. Injured/suspended/away icons
+ * 	  6. Birthday         (optional : $this->config['show_birthday'])
+ * 	  7. Games played     (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_games_played'])
+ * 	  8. Starting line-up (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+ * 	  9. In               (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+ * 	 10. Out              (optional : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+ * 	 10. Event type       (optional : $this->config['show_events_stats'] && count($this->playereventstats) > 0,
+ * 	                       multiple columns possible (depends on the number of event types for the position))
+ * 	 11. Stats type       (optional : $this->config['show_stats'] && isset($this->stats[$row->position_id]),
+ */
+	
 
 	$positionHeaderSpan = 0;
 	$totalcolspan = 0;
@@ -70,7 +72,7 @@ if (!empty($this->rows))
 		$positionHeaderSpan++;
 		$totalcolspan++;
 	}
-	// Player name and injured/suspended/away columns are always there
+	/** Player name and injured/suspended/away columns are always there */
 	$positionHeaderSpan += 2;
 	$totalcolspan       += 2;
 	if ($this->config['show_birthday'] || $this->config['show_birthday_staff'])
@@ -245,9 +247,7 @@ if (!empty($this->rows))
 				}
 			}
 		}
-/**
- *         diddipoeler marktwert
- */
+/** diddipoeler marktwert */
         if ($this->config['show_player_market_value'])
 	{
 	?>
@@ -315,9 +315,7 @@ $this->overallconfig['use_jquery_modal']
 		}
 		elseif ($this->config['show_staff_icon'])
 		{ 
-/**
- * 			Put empty column to keep vertical alignment with the staff table
- */
+/**	Put empty column to keep vertical alignment with the staff table */
 			?>
 		<td width="40" class="td_c" nowrap="nowrap">&nbsp;</td><?php
 		}
@@ -329,9 +327,7 @@ $this->overallconfig['use_jquery_modal']
 		}
 		elseif ($this->config['show_country_flag_staff'])
 		{
-/**
- * 			Put empty column to keep vertical alignment with the staff table
- */
+/**	Put empty column to keep vertical alignment with the staff table */
 			?>
 		<td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
 		}
@@ -414,9 +410,7 @@ $this->overallconfig['use_jquery_modal']
 			{
 				$birthdateStr="-";
 			}
-/**
- * deathday
- */
+/** deathday */
 			if ( $row->deathday !="0000-00-00" )
 			{
 				$birthdateStr .= ' [&dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
@@ -458,9 +452,7 @@ $this->overallconfig['use_jquery_modal']
 				<?php
 			}
             
-/**
- *             spielzeit des spielers
- */
+/** spielzeit des spielers */
             $timePlayed = 0;
             if ( !isset($this->overallconfig['person_events']) )
             {
@@ -480,9 +472,7 @@ $this->overallconfig['use_jquery_modal']
 		}
 		if ($this->config['show_events_stats'] && count($this->playereventstats) > 0)
 		{
-/**
- * user_defined events in the database are shown
- */
+/** user_defined events in the database are shown */
 			foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
 			{
 				?>
@@ -562,9 +552,7 @@ $this->overallconfig['use_jquery_modal']
 			}
 		}
         
-/**
- *         diddipoeler marktwert
- */
+/** diddipoeler marktwert */
         if ($this->config['show_player_market_value'])
 	   {
 	       $total_market_value += $row->market_value;
@@ -581,7 +569,7 @@ $this->overallconfig['use_jquery_modal']
 		?>
 	</tr>
 	<?php
-// dartanzeige
+/** dartanzeige */
 if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 {			
 ?>  
@@ -621,18 +609,15 @@ echo $value->total;
 }
 else
 {
-//echo '-';
+
 }
 ?>
 </td>
 </tr>
 <?php
 }
-//echo $eventId.'<br>';
-//echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
 
 }
-//$this->playereventstatsdart
 
 ?>
 </tr>
@@ -645,13 +630,6 @@ else
 </tr>		
 <?php			
 }		
-	
-	
-	
-	
-	
-	
-	
 	
 	$k=(1-$k);
 	}
@@ -729,9 +707,7 @@ else
 				}
 			}
 		}
-/**
- *         diddipoeler marktwert
- */
+/** diddipoeler marktwert  */
         if ($this->config['show_player_market_value'])
 	   {
 	   ?>
