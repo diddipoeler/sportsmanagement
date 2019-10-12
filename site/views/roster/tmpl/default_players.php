@@ -458,7 +458,7 @@ $this->overallconfig['use_jquery_modal']
             {
                 $this->overallconfig['person_events'] = NULL;
             }
-            $this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']);
+            $this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events'],$row->project_id);
             $timePlayed = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{

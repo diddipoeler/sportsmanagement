@@ -337,26 +337,26 @@ catch (Exception $e)
         return $info;
     }
 
+    
     /**
-     * sportsmanagementModelPLayer::getTimePlayed()
+     * sportsmanagementModelPlayer::getTimePlayed()
      * 
      * @param mixed $player_id
      * @param mixed $game_regular_time
      * @param mixed $match_id
      * @param mixed $cards
+     * @param integer $project_id
      * @return
      */
     public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0) {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
+        /** Create a new query object. */		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         $result = 0;
-/**
- * startaufstellung ohne ein und auswechselung
- */
+/** startaufstellung ohne ein und auswechselung */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
         $query->where('mp.teamplayer_id = ' . $player_id);
@@ -379,9 +379,7 @@ catch (Exception $e)
             $result += $totalresult->totalmatch * $game_regular_time;
         }
         
-/**
- * einwechselung
- */
+/** einwechselung */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalin');
@@ -407,9 +405,7 @@ catch (Exception $e)
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
         }
 
-/**
- * auswechselung
- */
+/** auswechselung */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalout');
@@ -434,9 +430,7 @@ catch (Exception $e)
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
         }
 
-/**
- * jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
- */
+/** jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen */
         if ($cards) {
             $query = $db->getQuery(true);
             $query->clear();
