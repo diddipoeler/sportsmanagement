@@ -159,7 +159,7 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 					<?php
 $jdate = Factory::getDate($game->match_date);
 $jdate->setTimezone(new DateTimeZone($this->project->timezone));
-$body = $jdate->format('l, d.F Y H:i'); 		    
+$body = $jdate->format('l, d. F Y H:i'); 		    
 					echo HTMLHelper::link($report_link,$body);
 					?>
 					</td>
