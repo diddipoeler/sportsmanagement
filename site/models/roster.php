@@ -408,12 +408,17 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.$query->dump().'</pre
         $query->select('tp.person_id');
 	$query->from('#__sportsmanagement_match_event AS me'); 
     $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');  
-    $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');
+
+$query->join('INNER','#__sportsmanagement_match AS ma ON ma.id = me.match_id');		
+$query->join('INNER','#__sportsmanagement_round AS r ON r.id = ma.round_id');
+		
+    $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id and pt.project_id = r.project_id');
     $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id'); 
     $query->where('me.event_type_id = '.$eventtype_id);
     $query->where('pt.id = '.$projectteam->id);
     $query->where('pt.project_id = '.self::$projectid);
+$query->where('r.project_id = '.self::$projectid);
     $query->where('pro.id = '.self::$projectid);
 		if ( $dart )
 		{
