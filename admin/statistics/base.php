@@ -1206,9 +1206,11 @@ $res = $db->loadResult();
         $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
         $query->join('INNER','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
         $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+	$query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id AND r.project_id = pt.project_id ');
         $query->where('st.team_id = '. $team_id);
         $query->where('pt.project_id = ' . $project_id);
         $query->where('ppos.position_id = '. $position_id);
+	$query->where('r.project_id = ' . $project_id);
 
 
 		if (isset($factors))
