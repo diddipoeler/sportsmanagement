@@ -49,7 +49,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	 */
 	function __construct( )
 	{
-	   // Reference global application object
+	    /** Reference global application object */
         $app = Factory::getApplication();
 		parent::__construct( );
 		self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT' );
@@ -80,13 +80,13 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
         
 		if (!$this->_match)
 		{
-		  // Select some fields
+		  /** Select some fields */
 		  $query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present');
           $query->select('t1.project_id');
           $query->select('r.roundcode');
@@ -151,13 +151,13 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		if (empty($this->_match))
 		{
-		  // Select some fields
+		  /** Select some fields */
 		$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('t1.project_id');
         $query->select('r.roundcode');
@@ -212,8 +212,10 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 			$team2 = sportsmanagementModelProject::getTeaminfo($match->projectteam2_id,self::$cfg_which_database);
 			$this->teams[] = $team1;
 			$this->teams[] = $team2;
-			// Set the division id, so that the home and away ranks are 
-			// determined for a division, if the team is part of a division
+/**
+ * 			Set the division id, so that the home and away ranks are 
+ * 			determined for a division, if the team is part of a division
+ */
 			$this->divisionid = $team1->division_id;
 		}
 		return $this->teams;
@@ -229,13 +231,13 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$match = self::getMatch();
         
-        // Select some fields
+        /** Select some fields */
 	$query->select('p.firstname, p.nickname, p.lastname, p.country, p.id as person_id');
         $query->select('pos.name AS position_name');
         $query->from('#__sportsmanagement_match_referee AS mr  ');
@@ -319,12 +321,12 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
-        // Select some fields
-	$query->select('m.id AS mid,m.team1_result AS homegoals,m.team2_result AS awaygoals');
+        /** Select some fields */
+	    $query->select('m.id AS mid,m.team1_result AS homegoals,m.team2_result AS awaygoals');
         $query->select('t1.name AS hometeam');
         $query->select('t2.name AS awayteam');
         $query->select('pt1.project_id AS pid');
@@ -377,8 +379,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
             }
             break;
         }
-        
-        
   
 		$db->setQuery($query, 0, 1);
 		return $db->loadObject();
@@ -397,7 +397,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestHomeWin( $teams[0]->team_id );
         return self::_getHighestMatches( $teams[0]->team_id , 'HOME' , 'WIN');
 	}
 
@@ -413,7 +412,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestHomeWin( $teams[1]->team_id );
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'WIN');
 	}
 
@@ -429,7 +427,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestHomeDef( $teams[0]->team_id );
         return self::_getHighestMatches( $teams[0]->team_id , 'HOME' , 'LOST');
 	}
 
@@ -445,7 +442,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestHomeDef( $teams[1]->team_id );
         return self::_getHighestMatches( $teams[1]->team_id , 'AWAY' , 'LOST');
 	}
 
@@ -461,7 +457,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestAwayWin( $teams[0]->team_id );
         return self::_getHighestMatches( $teams[0]->team_id , 'AWAY' , 'WIN');
 	}
 
@@ -477,7 +472,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestAwayWin( $teams[1]->team_id );
         return self::_getHighestMatches( $teams[1]->team_id , 'HOME' , 'WIN');
 	}
 
@@ -493,7 +487,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestAwayDef( $teams[0]->team_id );
         return self::_getHighestMatches( $teams[0]->team_id , 'AWAY' , 'LOST');
 	}
 
@@ -509,7 +502,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		{
 			return null;
 		}
-		//return $this->_getHighestAwayDef( $teams[1]->team_id );
         return self::_getHighestMatches( $teams[1]->team_id , 'HOME' , 'LOST');
 	}
 
@@ -521,7 +513,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
@@ -532,41 +524,33 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 			return null;
 		}
         
-        // Select some fields
+        /** Select some fields */
         $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
         $query->select('s.name as seasonname');
         $query->select('p.name AS project_name,p.id AS prid');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS mname');
-        
-	$query->select('t1.id as team1_id');
-	$query->select('t2.id as team2_id');
-		
+    	$query->select('t1.id as team1_id');
+	    $query->select('t2.id as team2_id');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-       
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
-        
         $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
-        
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
         $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
         $query->join('INNER','#__sportsmanagement_round r ON m.round_id = r.id  ');
-
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .') OR (st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
         $query->where('m.published = 1');
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
-        //$query->group('m.id');
         $query->order('s.name DESC, m.match_date ASC');
-  
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -585,7 +569,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
@@ -603,7 +587,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		}
 		$listTeamId = implode( ",", array_unique( $teamsId ) );
 
-		// Select some fields
+		/** Select some fields */
 		$query->select('t.id, t.name');
         $query->select('pt.id as ptid');
         $query->from('#__sportsmanagement_project_team AS pt ');
@@ -644,8 +628,6 @@ catch (Exception $e)
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $teams = false;
 }
-        
-        
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teams;
@@ -725,22 +707,19 @@ catch (Exception $e)
 	{
 	   $app = Factory::getApplication();
        $option = Factory::getApplication()->input->getCmd('option');
-       // Create a new query object.		
+       /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$config = sportsmanagementModelProject::getTemplateConfig('nextmatch',self::$cfg_which_database);
 		$nblast = $config['nb_previous'];
         
-        // Select some fields
-		//$query->select('m.*');
+        /** Select some fields */
         $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('r.project_id, r.id AS roundid, r.roundcode ');
-        
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-        
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id ');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
