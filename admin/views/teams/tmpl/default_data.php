@@ -70,6 +70,10 @@ $this->readonly = '';
                 <th class="title">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
+                     ?>
+                    </br>
+                    <?php 
+            echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO');    
                     ?>
                 </th>
                 <th class="title">
@@ -182,6 +186,8 @@ $this->readonly = '';
                         echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
                                 $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id);
                         ?>
+</br>
+            <?php echo $row->info; ?>
                     </td>
 
                     <td class="center">
