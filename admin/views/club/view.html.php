@@ -134,6 +134,7 @@ $javascript = "\n";
 $javascript .= 'var opencage = "";' . "\n";
 $javascript .= 'var opencagekey = "";' . "\n";	
 $javascript .= "\n";
+$this->document->addScriptDeclaration( $javascript );	
 }		
 	}
  
