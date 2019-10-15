@@ -9,7 +9,6 @@
  * @subpackage predictiontemplates
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text; 
@@ -63,7 +62,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
       
         $this->table = Table::getInstance('predictiontemplate', 'sportsmanagementTable');
         
-		//build the html select list for prediction games
+		/** build the html select list for prediction games */
 		$predictions = array();
 		$predictions[] = HTMLHelper::_( 'select.option', '0', '- ' . Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 

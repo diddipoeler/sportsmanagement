@@ -122,11 +122,9 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 	
 		return $this->jsmquery;
 	}
-
-
-
 	
 	/**
+     * sportsmanagementModelPredictionTemplates::checklist()
 	 * check that all prediction templates in default location have a corresponding record, except if game has a master template
 	 *
 	 */
@@ -204,9 +202,11 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		{
 			if ($handle = opendir($xmldir))
 			{
-				/* check that each xml template has a corresponding record in the
-				database for this project. If not, create the rows with default values
-				from the xml file */
+				/**
+                 *  check that each xml template has a corresponding record in the
+                 * 	database for this project. If not, create the rows with default values
+                 * 	from the xml file 
+                 */
 				while ($file = readdir($handle))
 				{
 					if ($file!='.'&&$file!='..'&&strtolower(substr($file,(-3)))=='xml'&&
