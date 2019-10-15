@@ -1514,7 +1514,6 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),
 class JSMRankingTeamClass
 {
 
-// new for use_finally
 	var $_use_finally = 0;
 	var $_points_finally = 0;
 	var $_neg_points_finally = 0;   
@@ -1525,37 +1524,12 @@ class JSMRankingTeamClass
 	var $_homegoals_finally = 0;
 	var $_guestgoals_finally = 0;
 	var $_diffgoals_finally = 0;
-
-	// new for is_in_score 
 	var $_is_in_score = 0;
-
-	/**
-	 * project team id
-	 * @var int
-	 */
 	var $_ptid = 0;
-	/**
-	 * team id
-	 * @var int
-	 */
 	var $_teamid = 0;
-	/**
-	 * division id
-	 * @var int
-	 */
 	var $_divisionid = 0;
-	/**
-	 * start point / penalty
-	 * @var int
-	 */
-	//public static $_startpoints = 0;
     var $_startpoints = 0;
-	/**
-	 * team name
-	 * @var string
-	 */
 	var $_name = null;
-
 	var $cnt_matches   	= 0;
 	var $cnt_won       	= 0;
 	var $cnt_draw      	= 0;
@@ -1566,7 +1540,6 @@ class JSMRankingTeamClass
 	var $cnt_won_away  	= 0;
 	var $cnt_draw_away 	= 0;
 	var $cnt_lost_away 	= 0;
-	
 	var $cnt_wot		= 0; 
 	var $cnt_wso		= 0;
 	var $cnt_lot		= 0;
@@ -1579,8 +1552,6 @@ class JSMRankingTeamClass
 	var $cnt_wso_away	= 0;
 	var $cnt_lot_away	= 0;
 	var $cnt_lso_away	= 0;	
-	
-	//public static $sum_points    	= 0;
     var $sum_points    	= 0;
 	var $neg_points    	= 0;
 	var $bonus_points  	= 0;
@@ -1589,81 +1560,155 @@ class JSMRankingTeamClass
 	var $sum_away_for   = 0;
 	var $sum_team1_legs = 0;
 	var $sum_team2_legs = 0;
-    
-    
     var $sum_team1_matchpoint = 0;
 	var $sum_team2_matchpoint = 0;
     var $sum_team1_sets = 0;
 	var $sum_team2_sets = 0;
     var $sum_team1_games = 0;
 	var $sum_team2_games = 0;
-    
-    
 	var $diff_team_results = 0;
 	var $diff_team_legs = 0;
 	var $round          = 0;
 	var $rank           = 0;
 	
+
 	/**
-	 * contructor requires ptid
-	 * @param int $ptid
+	 * JSMRankingTeamClass::JSMRankingTeam()
+	 * 
+	 * @param mixed $ptid
+	 * @return void
 	 */
 	function JSMRankingTeam($ptid)
 	{
 		$this->setPtid($ptid);
 	}
 
-// new for is_in_score
+	/**
+	 * JSMRankingTeamClass::setis_in_score()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setis_in_score($val)
 	{
 		$this->_is_in_score = (int) $val;
 	}
 	
-// new for use finally
+	/**
+	 * JSMRankingTeamClass::setuse_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setuse_finally($val)
 	{
 		$this->_use_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setpoints_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setpoints_finally($val)
 	{
 		$this->_points_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setneg_points_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setneg_points_finally($val)
 	{
 		$this->_neg_points_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setmatches_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setmatches_finally($val)
 	{
 		$this->_matches_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setwon_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setwon_finally($val)
 	{
 		$this->_won_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setdraws_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setdraws_finally($val)
 	{
 		$this->_draws_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setlost_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setlost_finally($val)
 	{
 		$this->_lost_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::sethomegoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function sethomegoals_finally($val)
 	{
 		$this->_homegoals_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setguestgoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setguestgoals_finally($val)
 	{
 		$this->_guestgoals_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setdiffgoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setdiffgoals_finally($val)
 	{
 		$this->_diffgoals_finally = (int) $val;
 	}
-
+	
 	/**
-	 * set project team id
-	 * @param int ptid
+	 * JSMRankingTeamClass::setPtid()
+	 * 
+	 * @param mixed $ptid
+	 * @return void
 	 */
 	function setPtid($ptid)
 	{
@@ -1671,8 +1716,10 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team id
-	 * @param int id
+	 * JSMRankingTeamClass::setTeamid()
+	 * 
+	 * @param mixed $id
+	 * @return void
 	 */
 	function setTeamid($id)
 	{
@@ -1680,8 +1727,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * returns project team id
-	 * @return int id
+	 * JSMRankingTeamClass::getPtid()
+	 * 
+	 * @return
 	 */
 	function getPtid()
 	{
@@ -1689,8 +1737,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * returns team id
-	 * @return int id
+	 * JSMRankingTeamClass::getTeamid()
+	 * 
+	 * @return
 	 */
 	function getTeamid()
 	{
@@ -1698,8 +1747,10 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team division id
-	 * @param int val
+	 * JSMRankingTeamClass::setDivisionid()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setDivisionid($val)
 	{
@@ -1707,8 +1758,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return team division id
-	 * @return int id
+	 * JSMRankingTeamClass::getDivisionid()
+	 * 
+	 * @return
 	 */
 	function getDivisionid()
 	{
@@ -1716,18 +1768,21 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team start points
-	 * @param int val
+	 * JSMRankingTeamClass::setStartpoints()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setStartpoints($val)
 	{
-		//self::$_startpoints = $val;
         $this->_startpoints = $val;
 	}
 	
 	/**
-	 * set team neg points
-	 * @param int val
+	 * JSMRankingTeamClass::setNegpoints()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setNegpoints($val)
 	{
@@ -1735,8 +1790,10 @@ class JSMRankingTeamClass
 	}
 	
 	/**
-	 * set team name
-	 * @param string val
+	 * JSMRankingTeamClass::setName()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setName($val)
 	{
@@ -1744,9 +1801,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return winning percentage
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::winPct()
+	 * 
+	 * @return
 	 */
 	function winPct()
 	{
@@ -1759,12 +1816,11 @@ class JSMRankingTeamClass
 			return ($this->cnt_won/($this->cnt_won+$this->cnt_lost+$this->cnt_draw))*100;
 		}
 	}
-
-
+	
 	/**
-	 * return scoring average
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::scoreAvg()
+	 * 
+	 * @return
 	 */
 	function scoreAvg()
 	{
@@ -1779,9 +1835,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return scoring percentage
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::scorePct()
+	 * 
+	 * @return
 	 */
 	function scorePct()
 	{
@@ -1789,11 +1845,10 @@ class JSMRankingTeamClass
 		return $result;
 	}
 
-
 	/**
-	 * return leg ratio
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::legsRatio()
+	 * 
+	 * @return
 	 */
 	function legsRatio()
 	{
@@ -1808,9 +1863,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points ratio
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::pointsRatio()
+	 * 
+	 * @return
 	 */
 	function pointsRatio()
 	{
@@ -1827,9 +1882,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points quot
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::pointsQuot()
+	 * 
+	 * @return
 	 */
 	function pointsQuot()
 	{
@@ -1857,20 +1912,19 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points total
-	 *
-	 * @param boolean include start points, default true
+	 * JSMRankingTeamClass::getPoints()
+	 * 
+	 * @param bool $include_start
+	 * @return
 	 */
 	function getPoints($include_start = true)
 	{
 		if ($include_start) 
         {
-			//return self::$sum_points + self::$_startpoints;
             return $this->sum_points + $this->_startpoints;
 		}
 		else 
         {
-			//return self::$sum_points;
             return $this->sum_points;
 		}
 	}
@@ -1894,6 +1948,7 @@ class JSMRankingTeamClass
 	}	 
 	
 	/**
+     * JSMRankingTeamClass::getGAA()
 	 * GAA:Goal Against Average per match = Goal against / played matches
 	 *
 	 * @return float
@@ -1911,6 +1966,7 @@ class JSMRankingTeamClass
 	}	
 
 	/**
+     * JSMRankingTeamClass::getPPG()
 	 * PpG:Points per Game = points / played matches
 	 *
 	 * @return float
@@ -1928,6 +1984,7 @@ class JSMRankingTeamClass
 	}		
  
 	/**
+     * JSMRankingTeamClass::getPPP()
 	 * %PP:Team points in relation into max points = (points / (played matches*win points))*100
 	 *
 	 * @return float
