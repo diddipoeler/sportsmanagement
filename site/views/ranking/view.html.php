@@ -34,7 +34,7 @@ class sportsmanagementViewRanking extends sportsmanagementView {
      * @return void
      */
     function init() {
-$this->matchimages = array[];
+$this->matchimages = array();
 	    
 if ( $this->config['show_pictures'] )
 {
