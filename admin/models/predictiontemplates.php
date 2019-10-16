@@ -232,6 +232,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
  */
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
 
+                         //echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';
+                         
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
@@ -281,8 +283,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query->where('template LIKE '.$db->Quote(''.$template.''));
 		$db->setQuery($query);
 		$record_tpl = $db->loadResult();
+                          echo __LINE__.'<pre>'.print_r($record_tpl,true).'</pre>';
         if( !$record_tpl )
         {
+          echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';
                             $mdl = BaseDatabaseModel::getInstance("predictiontemplate", "sportsmanagementModel");
                             $tblTemplate_Config = $mdl->getTable();
 							
@@ -306,8 +310,42 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 								return false;
 							}
 							array_push($records,$template);
-		}					
+		}	
+                          else
+                          {
+//echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';                            
+$newround = new stdClass();
+$newround->id = $record_tpl;
+$newround->title = $attributetitle;
+// update the object
+$result = $db->updateObject('#__sportsmanagement_prediction_template', $newround, 'id',true);                            
+                            
+                            
+                          }
 							
+						}
+                      else
+						{
+//echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';                            							
+// Select some fields
+                        $query->clear('');
+        $query->select('id');
+		// From table
+		$query->from('#__sportsmanagement_prediction_template ');
+        $query->where('prediction_id = ' . $prediction_id );
+        $query->where('template LIKE '.$db->Quote(''.$template.''));
+		$db->setQuery($query);
+		$record_tpl = $db->loadResult();
+                          //echo __LINE__.'<pre>'.print_r($record_tpl,true).'</pre>';
+if( $record_tpl )
+        {
+  $newround = new stdClass();
+$newround->id = $record_tpl;
+$newround->title = $attributetitle;
+// update the object
+$result = $db->updateObject('#__sportsmanagement_prediction_template', $newround, 'id',true);   
+}
+                        
 						}
 					}
 				}
