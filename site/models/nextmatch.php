@@ -287,7 +287,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 				return $team;
 			}
 		}
-		return false;
+		return new JSMRankingTeamClass(0);
 	}
 
 	/**
@@ -306,7 +306,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 				return $team;
 			}
 		}
-		return false;
+		return new JSMRankingTeamClass(0);
 	}
 
 	/**
