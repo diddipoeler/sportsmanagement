@@ -131,8 +131,8 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-
-			$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],sportsmanagementModelCurve::$cfg_which_database);
+$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::sportsmanagementModelCurve::$cfg_which_database );
+			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'],sportsmanagementModelCurve::$cfg_which_database);
 			$this->divisions = $divisions;
 			$this->division = $this->model->getDivision(sportsmanagementModelCurve::$division);
 			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelCurve::$cfg_which_database);
