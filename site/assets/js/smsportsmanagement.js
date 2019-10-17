@@ -77,10 +77,10 @@ function switchMenu(obj)
 	
 jQuery('.jsmeventsshowhide').each(function(index) {
           if (jQuery(this).attr("id") == obj) {
-               $(this).toggle();
+               jQuery(this).toggle();
           }
           else {
-               $(this).hide();
+               jQuery(this).hide();
           }
      });
 	
