@@ -196,7 +196,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 		{
 		?>
 		    <td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
 		    </td>
 		<?php
 		}
