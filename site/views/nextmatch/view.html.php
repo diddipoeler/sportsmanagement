@@ -97,16 +97,34 @@ $this->statgames = array();
         if ( $this->games ) {
 foreach( $this->games as $game )
 {
+    
+if ( !isset($this->statgames['home'][$game->team1_result.'-'.$game->team2_result]) )  
+{
+  $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] = 0;
+}
+if ( !isset($this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result]) )  
+{
+  $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] = 0;
+}    
+if ( !isset($this->statgames['away'][$game->team1_result.'-'.$game->team2_result] ) )  
+{
+  $this->statgames['away'][$game->team1_result.'-'.$game->team2_result]  = 0;
+}
+if ( !isset($this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] ) )  
+{
+  $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] = 0;
+}    
+    
 if ( $game->team1_id == $this->teams[0]->id )
 {
     $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
     $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] += 1;
 }
-    elseif ( $game->team2_id == $this->teams[0]->id )
-    {
-    $this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
-    $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
-    }
+elseif ( $game->team2_id == $this->teams[0]->id )
+{
+$this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
+$this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
+}
 }
     }        
         // Set page title
