@@ -27,7 +27,7 @@ if ($this->games) {
             <td>
                 <table class="<?php echo $this->config['hystory_table_class']; ?>">
                     <?php
-                    //sort games by dates
+                    /** sort games by dates */
                     $gamesByDate = Array();
 
                     $pr_id = 0;
@@ -35,7 +35,6 @@ if ($this->games) {
                     foreach ($this->games as $game) {
                         $gamesByDate[substr($game->match_date, 0, 10)][] = $game;
                     }
-                    // $teams = $this->project->getTeamsFromMatches( $this->games );
 
                     foreach ($gamesByDate as $date => $games) {
                         foreach ($games as $game) {

@@ -544,10 +544,12 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
         $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__sportsmanagement_project AS p2 ON p2.id = pt2.project_id ');
         $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
         $query->join('INNER','#__sportsmanagement_round r ON m.round_id = r.id  ');
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .') OR (st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
+        $query->where('p2.published = 1');
         $query->where('m.published = 1');
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->order('s.name DESC, m.match_date ASC');
