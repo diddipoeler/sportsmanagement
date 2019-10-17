@@ -461,6 +461,10 @@ catch (Exception $e)
             $boldEnd = '';
             $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
             $toolTipText = '';
+		if ( !isset(self::$teams[$game->projectteam1_id]->standard_playground) )
+		{
+			self::$teams[$game->projectteam1_id]->standard_playground = 0;
+		}
             $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
 
             if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id)) {
