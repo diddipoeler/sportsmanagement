@@ -52,7 +52,8 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			</option>
 			<option value="2">COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY
 			</option>
-			
+			<option value="4">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAN_LAYOUT_SORTED_BY_DATE
+			</option>
 		</field>
 		<field name="MatchesOrderBy" type="extensionradiobutton" default="ASC"
     class="radio btn-group btn-group-yesno"
