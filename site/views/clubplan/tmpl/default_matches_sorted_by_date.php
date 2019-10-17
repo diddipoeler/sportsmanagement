@@ -107,7 +107,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			$hometeam->project_id	= $game->prid;
 			$hometeam->club_id		= $game->t1club_id;
 			$hometeam->projectteamid = $game->projectteam1_id;
-			$tname1 = sportsmanagementHelper::formatTeamName($hometeam,'clubplan',$this->config,$isFavTeam);
+			$tname1 = sportsmanagementHelper::formatTeamName($hometeam,'clubplanhome'.$cnt++,$this->config,$isFavTeam);
 
 			$isFavTeam				= false;
 			$isFavTeam				= in_array($game->team2_id,$this->favteams);
@@ -120,7 +120,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			$awayteam->project_id	= $game->prid;
 			$awayteam->club_id		= $game->t2club_id;
 			$awayteam->projectteamid = $game->projectteam2_id;
-			$tname2 = sportsmanagementHelper::formatTeamName($awayteam,'clubplan',$this->config,$isFavTeam);
+			$tname2 = sportsmanagementHelper::formatTeamName($awayteam,'clubplanaway'.$cnt++,$this->config,$isFavTeam);
 
 
 			$favStyle = '';
