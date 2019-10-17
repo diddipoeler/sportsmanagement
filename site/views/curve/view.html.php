@@ -58,7 +58,7 @@ $this->document->addScript($js);
 			$teamid2 = sportsmanagementModelCurve::$teamid2;
 			$options = array(	HTMLHelper::_( 'select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
 			$divisions = sportsmanagementModelProject::getDivisions(0,sportsmanagementModelCurve::$cfg_which_database);
-			if (count($divisions)>0 && $division == 0)
+			if ( count($divisions) > 0 )
 			{
 				foreach ($divisions as $d)
 				{
