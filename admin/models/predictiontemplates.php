@@ -139,15 +139,11 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
         
-		//$prediction_id	= $this->_prediction_id;
-		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DIRECTORY_SEPARATOR.'settings';
 		$defaultpath	= JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
-    //$extensionspath	= JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'extensions' . DS;
     // Get the views for this component.
 	$path = JPATH_SITE.'/components/'.$option.'/views';
         
 		$templatePrefix	= 'prediction';
-//    $defaultvalues = array();
     
 		if (!$prediction_id)
         {
@@ -313,7 +309,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		}	
                           else
                           {
-//echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';                            
 $newround = new stdClass();
 $newround->id = $record_tpl;
 $newround->title = $attributetitle;
@@ -326,7 +321,6 @@ $result = $db->updateObject('#__sportsmanagement_prediction_template', $newround
 						}
                       else
 						{
-//echo __LINE__.'<pre>'.print_r($attributetitle,true).'</pre>';                            							
 // Select some fields
                         $query->clear('');
         $query->select('id');
@@ -336,7 +330,6 @@ $result = $db->updateObject('#__sportsmanagement_prediction_template', $newround
         $query->where('template LIKE '.$db->Quote(''.$template.''));
 		$db->setQuery($query);
 		$record_tpl = $db->loadResult();
-                          //echo __LINE__.'<pre>'.print_r($record_tpl,true).'</pre>';
 if( $record_tpl )
         {
   $newround = new stdClass();

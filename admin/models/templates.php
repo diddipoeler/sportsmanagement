@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -191,7 +190,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
          
             if ($handle=opendir($xmldir))
 			{
-				/* check that each xml template has a corresponding record in the
+				/** check that each xml template has a corresponding record in the
 				database for this project. If not,create the rows with default values
 				from the xml file */
 				while ($file=readdir($handle))
