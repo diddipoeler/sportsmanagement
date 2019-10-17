@@ -414,12 +414,16 @@ $guestteam->division_id = $division_id;
      * @return
      */
     public static function showMatchPlayground(&$game, $config = array()) {
-
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-
+if ( !isset(self::$teams[$game->projectteam1_id]) )
+{
+self::$teams[$game->projectteam1_id] = new stdClass();
+self::$teams[$game->projectteam1_id]->standard_playground = 0;
+}
+	    
         if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id)) {
             if (empty($game->playground_id)) {
                 $game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
@@ -461,10 +465,6 @@ catch (Exception $e)
             $boldEnd = '';
             $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
             $toolTipText = '';
-		if ( !isset(self::$teams[$game->projectteam1_id]->standard_playground) )
-		{
-			self::$teams[$game->projectteam1_id]->standard_playground = 0;
-		}
             $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
 
             if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id)) {
