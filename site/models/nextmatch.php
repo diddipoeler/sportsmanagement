@@ -516,7 +516,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
        /** Create a new query object. */		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
-       
+       $not_used_project_id = array();
 		$result = array();
 		$teams = self::getMatchTeams();
 		if ( is_null ( $teams ) )
@@ -532,7 +532,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
       $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
-        $query->select('s.name as seasonname');
+        $query->select('s.name as seasonname,s.id as season_id');
         $query->select('p.name AS project_name,p.id AS prid');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS mname');
     	$query->select('t1.id as team1_id');
@@ -565,7 +565,7 @@ $query->clear();
       $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
-        $query->select('s.name as seasonname');
+        $query->select('s.name as seasonname,s.id as season_id');
         $query->select('p.name AS project_name,p.id AS prid');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS mname');
     	$query->select('t1.id as team1_id');
@@ -590,36 +590,69 @@ $query->clear();
         $query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery( $query );
 		$result2 = $db->loadObjectList();
-      
+
+//echo 'result 1 <pre>'.print_r($result1,true).'</pre>';       
+      foreach ($result1 as $key => $val) {
+        if ( !isset($not_used_project_id[$val->project_id])  )
+        {
+      $not_used_project_id[$val->project_id] = $val->project_id;  
+        }
+      }
+      foreach ($result2 as $key => $val) {
+        
+if ( !isset($not_used_project_id[$val->project_id])  )
+        {
+      $not_used_project_id[$val->project_id] = $val->project_id;  
+        }  
+        
+      }
+
+//echo 'not_used_project_id <pre>'.print_r($not_used_project_id,true).'</pre>';      
+$not_used_project = implode(",",$not_used_project_id);   
+//echo 'not_used_project <pre>'.print_r($not_used_project,true).'</pre>';
+
+   
      /**
       * schritt 3 
       * jetzt kann es aber auch vorkommen, das beide mannschaften in einer liga
       * gespielt haben, aber es dazu noch keine spielpaarungen gibt
       */     
-      /*
+
       $query->clear();
-        $query->select('pt1.project_id');
-        $query->select('s.name as seasonname');
+        $query->select('pt1.project_id,pt1.id as projectteam1_id');
+        $query->select('pt2.id as projectteam2_id');
+        $query->select('s.name as seasonname,s.id as season_id');
         $query->select('p.name AS project_name,p.id AS prid');
     	$query->select('t1.id as team1_id');
 	    $query->select('t2.id as team2_id');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
-        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+        $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS round_slug');
+        $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS roundid');
+        $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS roundcode');
+        $query->select('CONCAT_WS( \' \', \'0000-00-00\', \'00:00\' ) AS match_date');
         $query->from('#__sportsmanagement_project_team AS pt1 ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
         $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON pt2.project_id = pt1.project_id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id AND p.id = pt2.project_id ');
         $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
         $query->where('(st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
+        $query->where('p.project_type = '.$db->Quote('SIMPLE_LEAGUE'));
+        $query->where('p.id not in ('.$not_used_project.')');
+        $query->where('pt1.project_id not in ('.$not_used_project.')');
+        $query->where('pt2.project_id not in ('.$not_used_project.')');
         $query->order('s.name DESC');
 		$db->setQuery( $query );
 		$result3 = $db->loadObjectList();
-        */
+//echo 'dump <pre>'.print_r($query->dump(),true).'</pre>'; 
+//echo 'result3 <pre>'.print_r($result3,true).'</pre>'; 
+
+        
       $result = array_merge($result1, $result2);
+      $result = array_merge($result, $result3);
       foreach ($result as $key => $val) {
     $seasonname[$key]  = $val->seasonname;
     $match_date[$key]  = $val->match_date;
