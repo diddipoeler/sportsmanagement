@@ -57,7 +57,8 @@ class sportsmanagementControllerteams extends JSMControllerAdmin {
     function saveshort() {
         $model = $this->getModel();
         $msg = $model->saveshort();
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=teams', $msg);
+        $club_id = $this->jsmjinput->getInt('club_id');
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=teams&club_id='.$club_id, $msg);
     }
 
     /**
