@@ -553,7 +553,7 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .')' );
         $query->where('p.published = 1');
         $query->where('m.published = 1');
-        $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
+        //$query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery( $query );
 		$result1 = $db->loadObjectList();
@@ -586,7 +586,7 @@ $query->clear();
         $query->where('(st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
         $query->where('m.published = 1');
-        $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
+        //$query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery( $query );
 		$result2 = $db->loadObjectList();
