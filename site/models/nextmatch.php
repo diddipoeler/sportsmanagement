@@ -650,18 +650,26 @@ $not_used_project = implode(",",$not_used_project_id);
 //echo 'dump <pre>'.print_r($query->dump(),true).'</pre>'; 
 //echo 'result3 <pre>'.print_r($result3,true).'</pre>'; 
 
-        
+  /*      
       $result = array_merge($result1, $result2);
       $result = array_merge($result, $result3);
       foreach ($result as $key => $val) {
     $seasonname[$key]  = $val->seasonname;
     $match_date[$key]  = $val->match_date;
     $project_name[$key]  = $val->project_name;    
-
 }
-
       array_multisort($seasonname, SORT_DESC, $project_name, SORT_DESC,$match_date, SORT_ASC, $result);
+*/
+$result = array_merge($result1, $result2, $result3);		
+$prod = usort($result, function($a, $b) {
+    $c = strcmp($b->seasonname , $a->seasonname);
+    $c .= strcmp($a->project_name , $b->project_name);
+  $c .= $a->roundcode - $b->roundcode;
+    return $c;
+});
       
+//echo 'result <pre>'.print_r($result,true).'</pre>'; 
+		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
