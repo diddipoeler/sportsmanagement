@@ -33,7 +33,7 @@ if ($this->games) {
                     $pr_id = 0;
                     $k = 0;
                     foreach ($this->games as $game) {
-                        $gamesByDate[substr($game->match_date, 0, 10)][] = $game;
+                        $gamesByDate[$game->project_name][] = $game;
                     }
 
                     foreach ($gamesByDate as $date => $games) {
@@ -77,7 +77,7 @@ if ($this->games) {
                                     echo HTMLHelper::link($result_link, $game->roundcode);
                                     ?></td>
                                 <td class="nowrap"><?php
-                                    echo HTMLHelper::date($date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
+                                    echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
                                     ?></td>
                                 <td><?php
                                     echo substr($game->match_date, 11, 5);
