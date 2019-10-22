@@ -30,7 +30,7 @@ use Joomla\CMS\Router\Route;
  */
 class JSMControllerAdmin extends AdminController
 {
-
+var $team_club_id = 0;
     /**
      * Constructor.
      *
@@ -73,7 +73,7 @@ class JSMControllerAdmin extends AdminController
  */
 class JSMControllerForm extends FormController
 {
-
+var $team_club_id = 0;
     /**
      * Class Constructor
      *
@@ -91,9 +91,12 @@ class JSMControllerForm extends FormController
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
+      $this->team_club_id = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
         $this->jsmdocument = Factory::getDocument();
         $this->jsmuser = Factory::getUser();
         $this->jsmdate = Factory::getDate();
+      
+      //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->team_club_id), 'error');
         /** Map the apply task to the save method. **/
         //$this->registerTask('apply', 'save');
     }
@@ -213,7 +216,7 @@ class JSMControllerForm extends FormController
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->person_id) . $setRedirect, false), $message);
                                 break;
                             case 'team':
-                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->team_id) . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item .'&club_id=' .$this->team_club_id. $this->getRedirectToItemAppend($this->team_id) . $setRedirect, false), $message);
                                 break;
                             default:
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
@@ -241,7 +244,7 @@ class JSMControllerForm extends FormController
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&club_id=' . $this->club_id . $this->getRedirectToListAppend(), false), $message);
                                 break;
                             case 'team':
-                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&team_id=' . $this->team_id . $this->getRedirectToListAppend(), false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list .'&club_id=' .$this->team_club_id. '&team_id=' . $this->team_id . $this->getRedirectToListAppend(), false), $message);
                                 break;
                             default:
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend() . $setRedirect, false), $message);
