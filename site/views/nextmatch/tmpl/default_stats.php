@@ -353,7 +353,7 @@ use Joomla\CMS\Factory;
 </table>
 <!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
 <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
-<table class="table">
+<table class="table table-stripped">
 <?php
 foreach ( $this->gesamtspiele as $key => $value )
 {
@@ -368,7 +368,32 @@ echo $key;
 <?php
 echo $value->gesamtspiele;    
 ?>     
-</td>    
+</td>
+<td> 
+<?php
+echo $value->gewonnen;    
+?>     
+</td> 
+<td> 
+<?php
+echo $value->unentschieden;    
+?>     
+</td> 
+<td> 
+<?php
+echo $value->verloren;    
+?>     
+</td>     
+<td> 
+<?php
+echo $value->plustore;    
+?>     
+</td>
+<td> 
+<?php
+echo $value->minustore;    
+?>     
+</td>
 </tr>  
 <?php    
 }    
