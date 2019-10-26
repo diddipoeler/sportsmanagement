@@ -354,6 +354,31 @@ use Joomla\CMS\Factory;
 <!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
 <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
 <table class="table table-striped">
+<thead>
+<tr>    
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COUNT_MATCHES'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WON'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DRAW'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LOST'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_SCOREFOR'); ?>
+</td>
+<td>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_SCOREAGAINST'); ?>
+</td>
+</tr>
+<thead>
 <?php
 foreach ( $this->gesamtspiele as $key => $value )
 {
