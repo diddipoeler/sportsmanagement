@@ -95,9 +95,10 @@ $this->statgames = array();
         }
 
         if ( $this->games ) {
+            $gesamtspiele = 0;  
 foreach( $this->games as $game )
 {
-    
+$gesamtspiele += 1;      
 if ( !isset($this->statgames['home'][$game->team1_result.'-'.$game->team2_result]) )  
 {
   $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] = 0;
