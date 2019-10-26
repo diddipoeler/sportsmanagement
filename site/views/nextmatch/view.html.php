@@ -95,10 +95,53 @@ $this->statgames = array();
         }
 
         if ( $this->games ) {
-            $gesamtspiele = 0;  
+            $gesamtspiele = array();  
 foreach( $this->games as $game )
 {
-$gesamtspiele += 1;      
+
+  if ( !isset($gesamtspiele[$game->leaguename]) )
+  {
+  $gesamtspiele[$game->leaguename] = new stdClass();  
+    
+  }
+  $gesamtspiele[$game->leaguename]->gesamtspiele += 1;
+  if ( $game->team1_result == $game->team2_result )
+  {
+  $gesamtspiele[$game->leaguename]->unentschieden += 1;  
+  $gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
+  $gesamtspiele[$game->leaguename]->minustore += $game->team2_result;      
+  }
+
+if ( $game->team1_id == $this->teams[0]->id )
+{
+    if ( $game->team1_result > $game->team2_result )
+    {
+    $gesamtspiele[$game->leaguename]->gewonnen += 1;    
+    }
+    if ( $game->team1_result < $game->team2_result )
+    {
+    $gesamtspiele[$game->leaguename]->verloren += 1;    
+    }
+  $gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
+  $gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
+}
+elseif ( $game->team2_id == $this->teams[0]->id )
+{
+    if ( $game->team1_result < $game->team2_result )
+    {
+    $gesamtspiele[$game->leaguename]->gewonnen += 1;    
+    }
+    if ( $game->team1_result > $game->team2_result )
+    {
+    $gesamtspiele[$game->leaguename]->verloren += 1;    
+    }  
+  $gesamtspiele[$game->leaguename]->plustore += $game->team2_result;    
+  $gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
+}  
+      
+  
+  
+  
 if ( !isset($this->statgames['home'][$game->team1_result.'-'.$game->team2_result]) )  
 {
   $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] = 0;
@@ -127,6 +170,9 @@ $this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
 $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
 }
 }
+          
+//echo 'gesamtspiele <pre>'.print_r($gesamtspiele,true).'</pre>'; 
+          
     }        
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
