@@ -351,6 +351,11 @@ use Joomla\CMS\Factory;
     <?php endif; ?>
 
 </table>
+<!-- gesamtübersicht der spiele gegeneinander nach ligen  -->
+<h4><?php echo Text::_(''); ?></h4>
+<table class="table">
+
+</table>
     
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
 <div class="panel-group" id="countresult">    
