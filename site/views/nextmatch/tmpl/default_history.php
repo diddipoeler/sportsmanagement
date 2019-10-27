@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-//echo 'result <pre>'.print_r($this->games,true).'</pre>'; 
+ 
 ?>
 <!-- Start of show matches through all projects -->
 <?php

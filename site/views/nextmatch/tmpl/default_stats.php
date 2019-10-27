@@ -378,7 +378,7 @@ use Joomla\CMS\Factory;
 <?php echo Text::_('COM_SPORTSMANAGEMENT_SCOREAGAINST'); ?>
 </td>
 </tr>
-<thead>
+</thead>
 <?php
 foreach ( $this->gesamtspiele as $key => $value )
 {
