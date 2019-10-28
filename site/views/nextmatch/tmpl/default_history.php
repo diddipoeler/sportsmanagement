@@ -73,7 +73,7 @@ if ($this->games) {
                             $away = $this->gamesteams[$game->projectteam2_id];
                             ?>
                             <tr class="">
-                                <td><?php
+                                <td id="roundcode"><?php
                                     echo HTMLHelper::link($result_link, $game->roundcode);
                                     ?></td>
                                 <td class="nowrap"><?php
@@ -82,7 +82,7 @@ if ($this->games) {
                                 <td><?php
                                     echo substr($game->match_date, 11, 5);
                                     ?></td>
-                                <td class="nowrap"><?php
+                                <td class="nowrap" id="homename"><?php
                                     echo $home->name;
                                     ?></td>
 
