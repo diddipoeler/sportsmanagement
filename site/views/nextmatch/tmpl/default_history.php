@@ -87,7 +87,7 @@ if ($this->games) {
                          }
                                     ?></td>
                                 <td><?php
-                         if ( $game->match_date == == '0000-00-00 00:00:00')
+                         if ( $game->match_date == '0000-00-00 00:00:00')
                          {
                          echo ''; 
                          }
