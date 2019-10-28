@@ -48,6 +48,7 @@ class JFormFieldImageSelect extends FormField
 		$output .= '<img class="imagepreview" src="'.Uri::root(true).'/media/com_sportsmanagement/jl_images/spinner.gif" '; 
 		$output .= ' name="'.$this->name.'_preview" id="'.$this->id.'_preview" border="3" alt="Preview" title="Preview" />';
 		$output .= '<input type="hidden" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';
+        $output .= '<input type="hidden" id="copy_'.$this->id.'" name="copy_'.$this->name.'" value="'.$this->value.'" />';
 		return $output;
 	}
 }
