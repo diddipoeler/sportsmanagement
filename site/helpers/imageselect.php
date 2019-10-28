@@ -81,7 +81,7 @@ $typefolder = $type;
 break;
 }
 		
-		//Build the image select functionality
+		/** Build the image select functionality */
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
@@ -220,11 +220,6 @@ $layoutdrag = 'upload';
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,'',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
 		
-		
-
-
-		
-		
 $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcname ,'',Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),'20',Uri::base().$link2,$modalwidth,$modalheight);   		
 $imageselect .=	 "</div></div>\n";
@@ -254,11 +249,9 @@ Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . T
 $app = Factory::getApplication();
 		$params = ComponentHelper::getParams( 'com_sportsmanagement' );
 
-
-
 		$sizelimit = $params->get( 'image_max_size', 120 )*1024; //size limit in kb
 		$imagesize = $file['size'];
-		//check if the imagefiletype is valid
+		/** check if the imagefiletype is valid */
 		$fileext = File::getExt($file['name']);
 
 		$allowable	= array ('gif','jpg','jpeg','png','bmp','svg', 'GIF','JPG','JPEG','PNG','BMP','SVG');
@@ -268,14 +261,14 @@ $app = Factory::getApplication();
 			return false;
 		}
 
-		//Check filesize
+		/** Check filesize */
 		if ( $imagesize > $sizelimit )
 		{
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 			return false;
 		}
 
-		//XSS check
+		/** XSS check */
 		$xss_check = File::read( $file['tmp_name'], false, 256 );
 		$html_tags = array( 'abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big',
 							'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col',
@@ -289,7 +282,7 @@ $app = Factory::getApplication();
 							'wbr', 'xml', 'xmp', '!DOCTYPE', '!--' );
 		foreach( $html_tags as $tag )
 		{
-			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
+			/**  A tag is '<tagname ', so we need to add < and a space or '<tagname>' */
 			if ( stristr( $xss_check, '<' . $tag . ' ') || stristr( $xss_check, '<' . $tag . '>' ) )
 			{
 				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN'), Log::WARNING, 'jsmerror');
@@ -316,23 +309,25 @@ $app = Factory::getApplication();
 		jimport( 'joomla.filesystem.file' );
     
     
-		//check for any leading/trailing dots and remove them (trailing shouldn't be possible cause of the getEXT check)
+		/** check for any leading/trailing dots and remove them (trailing shouldn't be possible cause of the getEXT check) */
 		$filename = preg_replace( "/^[.]*/", '', $filename );
 		$filename = preg_replace( "/[.]*$/", '', $filename ); //shouldn't be necessary, see above
 
-		//we need to save the last dot position cause preg_replace will also replace dots
+		/** we need to save the last dot position cause preg_replace will also replace dots */
 		$lastdotpos = strrpos( $filename, '.' );
 
-		//replace invalid characters
+		/** replace invalid characters */
 		$chars = '[^0-9a-zA-Z()_-]';
 		$filename	 = strtolower( preg_replace( "/$chars/", '_', $filename ) );
 
-		//get the parts before and after the dot (assuming we have an extension...check was done before)
+		/** get the parts before and after the dot (assuming we have an extension...check was done before) */
 		$beforedot	= substr( $filename, 0, $lastdotpos );
 		$afterdot	 = substr( $filename, $lastdotpos + 1 );
 
-		//make a unique filename for the image and check it is not already taken
-		//if it is already taken keep trying till success
+/**
+ * 		make a unique filename for the image and check it is not already taken
+ * 		if it is already taken keep trying till success
+ */
 		$now = time();
 
 		while( File::exists( $base_Dir . $beforedot . '_' . $now . '.' . $afterdot ) )
@@ -340,7 +335,7 @@ $app = Factory::getApplication();
 			$now++;
 		}
 
-		//create out of the seperated parts the new filename
+		/** create out of the seperated parts the new filename */
 		if ( self::$_foldertype == 'flags' )
 		{
     $filename = $beforedot . '.' . $afterdot;

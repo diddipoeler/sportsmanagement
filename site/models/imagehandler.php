@@ -17,7 +17,15 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 
-
+/**
+ * sportsmanagementModelImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelImagehandler extends BaseDatabaseModel
 {
 	/**
@@ -35,21 +43,24 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	function __construct()
 	{
 		parent::__construct();
-
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app	= Factory::getApplication();
-
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
 		$search 	= $app->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
-
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
-
 	}
 
+	/**
+	 * sportsmanagementModelImagehandler::getState()
+	 * 
+	 * @param mixed $property
+	 * @param mixed $default
+	 * @return
+	 */
 	function getState($property = null, $default = NULL)
 	{
 		static $set;
@@ -88,8 +99,6 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 					$info = @getimagesize($list[$i]->path);
 					$list[$i]->width		= @$info[0];
 					$list[$i]->height	= @$info[1];
-					//$list[$i]->type		= @$info[2];
-					//$list[$i]->mime		= @$info['mime'];
 
 					if (($info[0] > 60) || ($info[1] > 60)) {
 						$dimensions = $this->_imageResize($info[0], $info[1], 60);
@@ -120,24 +129,24 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$app	= Factory::getApplication();
         static $list;
 
-		// Only process the list once per request
+		/** Only process the list once per request */
 		if (is_array($list)) {
 			return $list;
 		}
 
-		// Get folder from request
+		/** Get folder from request */
 		$folder = $this->getState('folder');
 		$search = $this->getState('search');
 
-		// Initialize variables
+		/** Initialize variables */
 		$basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
 		$images 	= array ();
 
-		// Get the list of files and folders from the given folder
+		/** Get the list of files and folders from the given folder */
 		$fileList 	= Folder::files($basePath);
 
-		// Iterate over the files if they exist
+		/** Iterate over the files if they exist */
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
@@ -202,16 +211,18 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 */
 	function _imageResize($width, $height, $target)
 	{
-		//takes the larger size of the width and height and applies the
-		//formula accordingly...this is so this script will work
-		//dynamically with any size image
+/**
+ * 		takes the larger size of the width and height and applies the
+ * 		formula accordingly...this is so this script will work
+ * 		dynamically with any size image
+ */
 		if ($width > $height) {
 			$percentage = ($target / $width);
 		} else {
 			$percentage = ($target / $height);
 		}
 
-		//gets the new value and applies the percentage, then rounds the value
+		/** gets the new value and applies the percentage, then rounds the value */
 		$width = round($width * $percentage);
 		$height = round($height * $percentage);
 

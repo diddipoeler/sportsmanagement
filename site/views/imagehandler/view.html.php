@@ -17,10 +17,18 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\View\HtmlView;
 
-jimport('joomla.application.component.view');
-
-class sportsmanagementViewImagehandler extends JViewLegacy {
+/**
+ * sportsmanagementViewImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewImagehandler extends HtmlView {
 
     /**
      * Image selection List
@@ -42,7 +50,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             return;
         }
 
-        //get vars
+        /** get vars */
         $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
         $field = Factory::getApplication()->input->getVar('field');
@@ -50,16 +58,12 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $search = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
         $search = trim(StringHelper::strtolower($search));
 
-        //add css
-        //$version = urlencode(sportsmanagementHelper::getVersion());
-        //$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
-
         Factory::getApplication()->input->setVar('folder', $folder);
 
-        // Do not allow cache
+        /** Do not allow cache */
         JResponse::allowCache(false);
 
-        //get images
+        /** get images */
         $images = $this->get('Images');
         $pageNav = $this->get('Pagination');
 
@@ -76,7 +80,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             $this->fieldid = $fieldid;
             parent::display($tpl);
         } else {
-            //no images in the folder, redirect to uploadscreen and raise notice
+            /** no images in the folder, redirect to uploadscreen and raise notice */
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), Log::INFO, 'jsmerror');
             $this->setLayout('upload');
             $this->form = $this->get('form');
@@ -104,7 +108,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
 
-        //initialise variables
+        /** initialise variables */
         $document = Factory::getDocument();
         $uri = Factory::getURI();
         $params = ComponentHelper::getParams($option);
@@ -113,13 +117,13 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $field = Factory::getApplication()->input->getVar('field');
         $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $menu = Factory::getApplication()->input->setVar('hidemainmenu', 1);
-        //get vars
+        /** get vars */
         $task = Factory::getApplication()->input->getVar('task');
 
         jimport('joomla.client.helper');
         $ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
-        //assign data to template
+        /** assign data to template */
         $this->params = $params;
         $this->request_url = $uri->toString();
         $this->ftp = $ftp;

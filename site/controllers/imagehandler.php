@@ -21,6 +21,15 @@ use Joomla\CMS\Log\Log;
 
 require_once (JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php');
 
+/**
+ * sportsmanagementControllerImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerImagehandler extends BaseController {
 
     /**
