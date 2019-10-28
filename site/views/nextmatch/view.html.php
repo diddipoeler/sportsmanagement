@@ -103,16 +103,8 @@ foreach( $this->games as $game )
   {
   $this->gesamtspiele[$game->leaguename] = new stdClass();  
   }
-  if ( $game->team1_result != NULL && $game->team2_result != NULL )
-  {
   $this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
-  if ( $game->team1_result == $game->team2_result )
-  {
-  $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
-  $this->gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
-  $this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;      
-  }
-}
+  
 if ( $game->team1_id == $this->teams[0]->id )
 {
     if ( $game->team1_result != NULL && $game->team2_result != NULL )
@@ -125,6 +117,10 @@ if ( $game->team1_id == $this->teams[0]->id )
     {
     $this->gesamtspiele[$game->leaguename]->verloren += 1;    
     }
+      if ( $game->team1_result == $game->team2_result )
+  {
+  $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
+  }
   $this->gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
   $this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
   }
@@ -141,6 +137,10 @@ elseif ( $game->team2_id == $this->teams[0]->id )
     {
     $this->gesamtspiele[$game->leaguename]->verloren += 1;    
     }  
+      if ( $game->team1_result == $game->team2_result )
+  {
+  $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
+  }
   $this->gesamtspiele[$game->leaguename]->plustore += $game->team2_result;    
   $this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
   }
