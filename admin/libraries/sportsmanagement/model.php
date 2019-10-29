@@ -356,6 +356,12 @@ $data['notes'] = $html;
 /**
  * hat der user die bildfelder geleert, werden die standards gesichert.
  */
+       $data['logo_big'] = $post['jform']['copy_jform']['logo_big'];
+       $data['logo_middle'] = $post['jform']['copy_jform']['logo_middle'];
+       $data['logo_small'] = $post['jform']['copy_jform']['logo_small'];
+       $data['trikot_home'] = $post['jform']['copy_jform']['trikot_home'];
+       $data['trikot_away'] = $post['jform']['copy_jform']['trikot_away'];
+		       
        if ( empty($data['logo_big']) )
        {
        $data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big','');
