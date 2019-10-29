@@ -87,7 +87,7 @@ break;
 		{
 			console.log('selectImage fieldid : ' + fieldid);
 			console.log('selectImage field : ' + field);
-			
+			document.getElementById('copy_' + fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
 			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
 			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
 			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
