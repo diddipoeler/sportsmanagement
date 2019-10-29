@@ -180,14 +180,12 @@ function jInsertFieldValue(value, id) {
 console.log("jInsertFieldValue value : " + value);
 console.log("jInsertFieldValue id : " + id);	
 jQuery("#" + id).val(value);
+jQuery("#copy_" + id).val(value);
 select = jQuery("#" + id).val();
-
 console.log("jInsertFieldValue select : " + select);
 var $img = jQuery("#" + id + "_preview");
-
 console.log("jInsertFieldValue img : " + $img);	
-
-			$img.attr("src", "' . Uri::root(). '" + select);
+$img.attr("src", "' . Uri::root(). '" + select);
 }      
 ';
 
