@@ -47,7 +47,7 @@ class JFormFieldImageSelect extends FormField
 		$output  = ImageSelectSM::getSelector($this->name, $this->name.'_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
 		$output .= '<img class="imagepreview" src="'.Uri::root(true).'/media/com_sportsmanagement/jl_images/spinner.gif" '; 
 		$output .= ' name="'.$this->name.'_preview" id="'.$this->id.'_preview" border="3" alt="Preview" title="Preview" />';
-		$output .= '<input type="hidden" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';
+		$output .= '<input type="hidden" id="original_'.$this->id.'" name="original_'.$this->name.'" value="'.$this->value.'" />';
         $output .= '<input type="hidden" id="copy_'.$this->id.'" name="copy_'.$this->name.'" value="'.$this->value.'" />';
 		return $output;
 	}
