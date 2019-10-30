@@ -105,7 +105,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
         document.getElementById('copy_" . $fieldid . "').value = picture;
         
 			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			//console.log('1.reset fieldpreview_name : ' + imgSource );
+			console.log('1.reset original : ' + imgSource );
 			//document.getElementById('" . $fieldid . "').value = '" . $default . "';
 			//document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
