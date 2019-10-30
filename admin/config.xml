@@ -482,7 +482,14 @@ filter="safehtml"/>
 			directory="images/com_sportsmanagement/database/placeholders/"
 			preview="show">
 		</field>
-		
+		<field name="ph_trikot" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
 		<field name="ph_logo_small" 
     type="media"
 			default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.gif"
