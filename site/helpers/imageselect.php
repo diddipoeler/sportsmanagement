@@ -101,8 +101,8 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
 		{
         var imgSource = document.getElementById('original_" . $fieldid . "').value;
         document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + imgSource  ;
-        document.getElementById('" . $fieldid . "').value = picture;
-        document.getElementById('copy_" . $fieldid . "').value = picture;
+        document.getElementById('" . $fieldid . "').value = imgSource;
+        document.getElementById('copy_" . $fieldid . "').value = imgSource;
         
 			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
 			console.log('1.reset original : ' + imgSource );
