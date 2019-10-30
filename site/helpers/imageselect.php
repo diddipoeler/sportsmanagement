@@ -222,10 +222,10 @@ $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcname ,'',Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),'20',Uri::base().$link2,$modalwidth,$modalheight);   		
 $imageselect .=	 "</div></div>\n";
 		
-$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-primary\" title=\"" .
 Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
 		
-$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-large btn-success\" title=\"" .
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-primary\" title=\"" .
 Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
         
         $imageselect .=	"</td></tr>\n";
