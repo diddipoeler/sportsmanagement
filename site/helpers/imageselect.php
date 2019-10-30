@@ -99,14 +99,19 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
         
 		function reset_" . $funcname . "()
 		{
-			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('1.reset fieldpreview_name : ' + imgSource );
-			document.getElementById('" . $fieldid . "').value = '" . $default . "';
-			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
+        var imgSource = document.getElementById('original_" . $fieldid . "').value;
+        document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + imgSource  ;
+        document.getElementById('" . $fieldid . "').value = picture;
+        document.getElementById('copy_" . $fieldid . "').value = picture;
+        
+			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
+			//console.log('1.reset fieldpreview_name : ' + imgSource );
+			//document.getElementById('" . $fieldid . "').value = '" . $default . "';
+			//document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
-			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('2.reset fieldpreview_name : ' + imgSource );
-			console.log('3.reset default : ' + '" . $default . "' );
+			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
+			//console.log('2.reset fieldpreview_name : ' + imgSource );
+			//console.log('3.reset default : ' + '" . $default . "' );
 		}
 
 		function clear_" . $funcname . "()
