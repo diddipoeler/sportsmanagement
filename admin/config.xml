@@ -484,7 +484,7 @@ filter="safehtml"/>
 		</field>
 		<field name="ph_trikot" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_small.png" 
+			default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif" 
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
 			directory="images/com_sportsmanagement/database/placeholders/"
@@ -492,7 +492,7 @@ filter="safehtml"/>
 		</field>
 		<field name="ph_logo_small" 
     type="media"
-			default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.gif"
+			default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_SMALL"
 			directory="images/com_sportsmanagement/database/clubs/small/"
