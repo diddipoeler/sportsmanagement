@@ -151,6 +151,7 @@ console.log('pictureprev : ' + pictureprev );
 			//alert(select);
 
 document.getElementById('" . $fieldid . "').value = picture;
+document.getElementById('copy_" . $fieldid . "').value = picture;
 document.getElementById('" . $fieldid . "_preview').src = pictureprev;
 		}
 
