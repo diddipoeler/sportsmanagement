@@ -485,7 +485,7 @@ filter="safehtml"/>
 		
 		<field name="ph_logo_small" 
     type="media"
-			default="images/com_sportsmanagement/database/clubs/small/placeholder_small.gif"
+			default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.gif"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_SMALL"
 			directory="images/com_sportsmanagement/database/clubs/small/"
@@ -494,7 +494,7 @@ filter="safehtml"/>
 		
 		<field name="ph_logo_medium" 
     type="media"
-			default="images/com_sportsmanagement/database/clubs/medium/placeholder_50.png" 
+			default="images/com_sportsmanagement/database/clubs/medium/placeholder_wappen_50.png" 
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_MEDIUM"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_MEDIUM"
 			directory="images/com_sportsmanagement/database/clubs/medium/"
@@ -503,7 +503,7 @@ filter="safehtml"/>
 		
 		<field name="ph_logo_big" 
     type="media"
-			default="images/com_sportsmanagement/database/clubs/large/placeholder_150.png"
+			default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_BIG" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_BIG"
 			directory="images/com_sportsmanagement/database/clubs/large/"
