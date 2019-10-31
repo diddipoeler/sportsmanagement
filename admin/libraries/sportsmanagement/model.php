@@ -260,7 +260,7 @@ $data['notes'] = $html;
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['position_id'] = $data['request']['position_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
-
+       $data['picture'] = $post['copy_jform']['picture'];
        
        switch($data['person_art'])
         {
@@ -420,6 +420,7 @@ $data['notes'] = $html;
  * mannschaft 
  */       
        case 'team':
+       $data['picture'] = $post['copy_jform']['picture'];
        if ( $post['delete'] )
         {
             sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
