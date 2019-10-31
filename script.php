@@ -594,17 +594,22 @@ foreach($form->getFieldset() as $field)
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
 		break;
-		case 'clubs/small':
+		//case 'clubs/small':
         case 'clubs/trikot_home':
         case 'clubs/trikot_away':
         case 'clubs/trikot':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
 		break;
+		case 'clubs/small':
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_20.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_20.png');				
+		break;
 		case 'clubs/medium':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_50.png');
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_50.png');				
 		break;
 		case 'clubs/large':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_150.png');				
 		break;
 	    }
 		} catch (Exception $e) {
