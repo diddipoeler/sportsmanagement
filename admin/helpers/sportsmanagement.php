@@ -1408,6 +1408,7 @@ return $ph_icon;
 break;
 case "team": //team picture
 case "team_picture":
+case "teams":
 case "projectteams":
 case "projectteam_picture":
 return $ph_team;
