@@ -1344,76 +1344,76 @@ abstract class sportsmanagementHelper {
         $ph_logo_small = $params->get('ph_logo_small', 0);
         $ph_icon = $params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');
         $ph_team = $params->get('ph_team', 0);
-	$ph_stadium = $params->get('ph_stadium', 0);
-	    
+	    $ph_stadium = $params->get('ph_stadium', 0);
+	    $ph_trikot = $params->get('ph_trikot', 0);
 	    $ph_player_men_large = $params->get('ph_player_men_large', 0);
 	    $ph_player_men_small = $params->get('ph_player_men_small', 0);
 	    $ph_player_woman_large = $params->get('ph_player_woman_large', 0);
 	    $ph_player_woman_small = $params->get('ph_player_woman_small', 0);
 
-        //setup the different placeholders
-        switch ($type) {
+/** setup the different placeholders */
+switch ($type) {
 case "trikot_home": //
-case "projectteams/trikot_home":			
-                return $ph_logo_small;
-                break;
-				
 case "trikot_away": //
+case "clubs_trikot_home": //
+case "clubs_trikot_away": //
+return $ph_trikot;
+break;
+case "projectteams/trikot_home":			
+return $ph_logo_small;
+break;
 case "projectteams/trikot_away":			
-                return $ph_logo_small;
-                break;				
-            case "player": //player
-			case "persons": 
-                return $ph_player;
-                break;
-	 case "stadium": //
-                return $ph_stadium;
-                break;
-			
-	case "menlarge": //
-                return $ph_player_men_large;
-                break;
-	case "mensmall": //
-                return $ph_player_men_small;
-                break;
-	case "womanlarge": //
-                return $ph_player_woman_large;
-                break;
-	case "womansmall": //
-                return $ph_player_woman_small;
-                break;
-			
-            case "clublogobig": //club logo big
-            case "logo_big":
-            case "clubs_large":
-			case "projects":
-			case "league":
-			case "leagues":
-                return $ph_logo_big;
-                break;
-            case "clublogomedium": //club logo medium
-            case "logo_middle":
-            case "clubs_medium":
-                return $ph_logo_medium;
-                break;
-            case "clublogosmall": //club logo small
-            case "logo_small":
-            case "clubs_small":
-                return $ph_logo_small;
-                break;
-            case "icon": //icon
-                return $ph_icon;
-                break;
-            case "team": //team picture
-            case "team_picture":
-			case "projectteams":
-            case "projectteam_picture":
-                return $ph_team;
-                ;
-                break;
-            default:
-                $picture = null;
-                break;
+return $ph_logo_small;
+break;				
+case "player": //player
+case "persons": 
+return $ph_player;
+break;
+case "stadium": //
+return $ph_stadium;
+break;
+case "menlarge": //
+return $ph_player_men_large;
+break;
+case "mensmall": //
+return $ph_player_men_small;
+break;
+case "womanlarge": //
+return $ph_player_woman_large;
+break;
+case "womansmall": //
+return $ph_player_woman_small;
+break;
+case "clublogobig": //club logo big
+case "logo_big":
+case "clubs_large":
+case "projects":
+case "league":
+case "leagues":
+return $ph_logo_big;
+break;
+case "clublogomedium": //club logo medium
+case "logo_middle":
+case "clubs_medium":
+return $ph_logo_medium;
+break;
+case "clublogosmall": //club logo small
+case "logo_small":
+case "clubs_small":
+return $ph_logo_small;
+break;
+case "icon": //icon
+return $ph_icon;
+break;
+case "team": //team picture
+case "team_picture":
+case "projectteams":
+case "projectteam_picture":
+return $ph_team;
+break;
+default:
+$picture = null;
+break;
         }
     }
 

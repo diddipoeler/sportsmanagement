@@ -149,11 +149,10 @@ pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('woma
   
 console.log('picture : ' + picture );
 console.log('pictureprev : ' + pictureprev );
-
-			console.log('1.clear type: ' + '" . $type . "' );
-			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
-			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
-			//alert(select);
+console.log('1.clear type: ' + '" . $type . "' );
+console.log('2.clear fieldname: ' + '" . $fieldname . "' );
+console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
+//alert(select);
 
 document.getElementById('" . $fieldid . "').value = picture;
 document.getElementById('copy_" . $fieldid . "').value = picture;
