@@ -1370,6 +1370,7 @@ case "persons":
 return $ph_player;
 break;
 case "stadium": //
+case "playgrounds": //
 return $ph_stadium;
 break;
 case "menlarge": //
