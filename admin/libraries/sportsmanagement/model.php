@@ -166,7 +166,6 @@ $data['notes'] = $html;
        case 'division': 
        if ( !$data['id'] )
        {
-       //$data['project_id'] = $post['pid'];
        $data['project_id'] = $this->project_id;       
        }
        if (isset($post['extended']) && is_array($post['extended'])) 
@@ -360,12 +359,13 @@ $data['notes'] = $html;
 /**
  * hat der user die bildfelder geleert, werden die standards gesichert.
  */
+ if (array_key_exists('copy_jform', $post)) {
        $data['logo_big'] = $post['copy_jform']['logo_big'];
        $data['logo_middle'] = $post['copy_jform']['logo_middle'];
        $data['logo_small'] = $post['copy_jform']['logo_small'];
        $data['trikot_home'] = $post['copy_jform']['trikot_home'];
        $data['trikot_away'] = $post['copy_jform']['trikot_away'];
-		       
+		       }
        if ( empty($data['logo_big']) )
        {
        $data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big','');
