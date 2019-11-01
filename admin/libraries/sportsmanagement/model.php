@@ -208,6 +208,9 @@ $data['notes'] = $html;
  * projektteam 
  */        
        case 'projectteam':
+       $data['picture'] = $post['copy_jform']['picture'];
+       $data['trikot_home'] = $post['copy_jform']['trikot_home'];
+       $data['trikot_away'] = $post['copy_jform']['trikot_away'];
        if ( $post['delete'] )
         {
             $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
@@ -236,7 +239,7 @@ $data['notes'] = $html;
         $object = new stdClass();
         // Must be a valid primary key value.
         $object->id = (int)$post['jform']['team_id'];
-        $object->picture = $post['jform']['picture'];
+        $object->picture = $data['picture'];
         $object->modified = $this->jsmdate->toSql();
 	    $object->modified_by = $this->jsmuser->get('id');
         // Update their details in the table using id as the primary key.
@@ -247,6 +250,7 @@ $data['notes'] = $html;
  * liga 
  */       
        case 'league': 
+       $data['picture'] = $post['copy_jform']['picture'];
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        break; 
@@ -436,10 +440,20 @@ $data['notes'] = $html;
             sportsmanagementModelteam::addNewTrainigData($data[id]);
         }
        break;  
+       
+/**
+ * playground
+ */
+       case 'playground':
+       $data['picture'] = $post['copy_jform']['picture'];
+       break;
+
+       
 /**
  * projekt 
  */        
        case 'project':
+       $data['picture'] = $post['copy_jform']['picture'];
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
@@ -452,8 +466,6 @@ $data['notes'] = $html;
        {
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
        }
-
-
        break; 
 /**
  * tippspiel 
