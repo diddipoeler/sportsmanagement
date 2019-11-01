@@ -207,9 +207,11 @@ $data['notes'] = $html;
  * projektteam 
  */        
        case 'projectteam':
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
        $data['trikot_home'] = $post['copy_jform']['trikot_home'];
        $data['trikot_away'] = $post['copy_jform']['trikot_away'];
+       }
        if ( $post['delete'] )
         {
             $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
@@ -249,7 +251,9 @@ $data['notes'] = $html;
  * liga 
  */       
        case 'league': 
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
+       }
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        break; 
@@ -263,8 +267,9 @@ $data['notes'] = $html;
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['position_id'] = $data['request']['position_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
-       
+       }
        switch($data['person_art'])
         {
             case 1:
@@ -424,7 +429,9 @@ $data['notes'] = $html;
  * mannschaft 
  */       
        case 'team':
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
+       }
        if ( $post['delete'] )
         {
             sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
@@ -445,7 +452,9 @@ $data['notes'] = $html;
  * playground
  */
        case 'playground':
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
+       }
        break;
 
        
@@ -453,7 +462,9 @@ $data['notes'] = $html;
  * projekt 
  */        
        case 'project':
+       if (array_key_exists('copy_jform', $post)) {
        $data['picture'] = $post['copy_jform']['picture'];
+       }
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
