@@ -94,7 +94,7 @@ $this->overallconfig['use_jquery_modal']
 				{
 				$picture = $this->project->picture;
 				$copyright = $this->project->cr_picture;
-                if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
+                if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png' || empty($picture) )
 				{
 				$picture = $this->project->leaguepicture;
 				$copyright = $this->project->cr_leaguepicture;
