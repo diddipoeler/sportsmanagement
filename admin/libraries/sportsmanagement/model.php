@@ -810,7 +810,11 @@ $result = $this->jsmdb->execute();
         $joomladirectory = '';
         if ( $cfg_which_media_tool == 'media' )
         {
+        /** welche joomla version ? */
+            if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+            {
             $joomladirectory = 'local-0:/';
+            }
         }
         $prefix = $this->jsmapp->getCfg('dbprefix');
         
