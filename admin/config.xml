@@ -465,6 +465,15 @@ filter="safehtml"/>
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
+	<field name="ph_project" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_PICTURE" 
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_PICTURE"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
+		
 		<field name="ph_flags" 
     type="media"
 			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"

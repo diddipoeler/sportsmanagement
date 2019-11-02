@@ -1346,6 +1346,7 @@ abstract class sportsmanagementHelper {
         $ph_team = $params->get('ph_team', 0);
 	    $ph_stadium = $params->get('ph_stadium', 0);
 	    $ph_trikot = $params->get('ph_trikot', 0);
+        $ph_project = $params->get('ph_project', 0);
 	    $ph_player_men_large = $params->get('ph_player_men_large', 0);
 	    $ph_player_men_small = $params->get('ph_player_men_small', 0);
 	    $ph_player_woman_large = $params->get('ph_player_woman_large', 0);
@@ -1358,6 +1359,9 @@ case "trikot_away": //
 case "clubs_trikot_home": //
 case "clubs_trikot_away": //
 return $ph_trikot;
+break;
+case "projects":			
+return $ph_project;
 break;
 case "projectteams/trikot_home":			
 return $ph_logo_small;

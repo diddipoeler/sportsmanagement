@@ -370,7 +370,6 @@ $app = Factory::getApplication();
 			case "clubs_large":
 				return "clubs/large";
 				break;
-				
 			case "clubs_trikot_home":
                 return "clubs/trikot";
 				break;
@@ -386,7 +385,6 @@ $app = Factory::getApplication();
 			case "associations":
 				return "associations";
 				break;	
-        
 			case "events":
 				return "events";
 				break;	
@@ -405,25 +403,21 @@ case "projectreferee":
       case "playgrounds":
 				return "playgrounds";
 				break;
-                
                 case "positions":
 				return "positions";
 				break;
-                
       case "projects":
 				return "projects";
 				break;	
       case "projectteams":
 				return "projectteams";
 				break;
-			
       case "projectteams_trikot_home":
 				return "projectteams/trikot_home";
 				break;
       case "projectteams_trikot_away":
 				return "projectteams/trikot_away";
 				break;
-          	
 		  case "seasons":
 				return "seasons";
 				break;
@@ -448,11 +442,9 @@ case "projectreferee":
                 case "rounds":
 				return "rounds";
 				break;
-                
             case "agegroups":
 				return "agegroups";
 				break;    
-				
 			default:
 				return "events/".$type;
 		}
