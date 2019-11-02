@@ -256,7 +256,7 @@ switch ( $this->getState('filter.unique_id') )
 	 */
 	function existcurrentseason($season_ids=array(),$league_id=0)
 	{
-	   if ( $seasons )
+	   if ( $season_ids )
        {
 	$seasons = implode(",",$season_ids); 
 	$this->jsmquery->clear();	
