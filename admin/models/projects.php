@@ -256,6 +256,8 @@ switch ( $this->getState('filter.unique_id') )
 	 */
 	function existcurrentseason($season_ids=array(),$league_id=0)
 	{
+	   if ( $seasons )
+       {
 	$seasons = implode(",",$season_ids); 
 	$this->jsmquery->clear();	
 	$this->jsmquery->select('pro.id');
@@ -271,8 +273,11 @@ $result = $this->jsmdb->loadResult();
                 //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 return NULL;
             }
-        
-        
+        }
+        else
+        {
+            return NULL;
+        }
 	}
 	
 	
