@@ -807,13 +807,18 @@ $result = $this->jsmdb->execute();
 			return false;
 		}
         
+        $joomladirectory = '';
+        if ( $cfg_which_media_tool == 'media' )
+        {
+            $joomladirectory = 'local-0:/';
+        }
         $prefix = $this->jsmapp->getCfg('dbprefix');
         
         switch ($this->getName())
 		{
 		case 'position':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -839,7 +844,7 @@ $result = $this->jsmdb->execute();
         break;
         case 'statistic':
         $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/statistics');
+        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/statistics');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -865,31 +870,31 @@ $result = $this->jsmdb->execute();
         break;
         case 'projectreferee':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectreferees');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectreferees');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'division':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/divisions');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/divisions');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'teamperson':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamplayers');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/teamplayers');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'smquote':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'jlextfederation':
          $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        $form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -916,7 +921,7 @@ $result = $this->jsmdb->execute();
         break;
         case 'jlextcountry':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/flags');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/flags');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -948,11 +953,11 @@ catch (Exception $e) {
         break;
         case 'jlextassociation':
         $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        $form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
        
         $this->jsmquery->clear();
@@ -979,7 +984,7 @@ catch (Exception $e) {
         break;
         case 'eventtype':
          $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
+        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/events');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
 
        $this->jsmquery->clear();
@@ -1005,7 +1010,7 @@ catch (Exception $e) {
         break;  
 		case 'round':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;  
 		case 'project':
@@ -1044,22 +1049,22 @@ catch (Exception $e) {
         }
         
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         
         break;
         case 'projectteam':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectteams');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/projectteams/trikot_home');
+        $form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_home');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
         $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/projectteams/trikot_away');
+        $form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         break;
         case 'club':
@@ -1154,7 +1159,7 @@ catch (Exception $e) {
             $form->setFieldAttribute('merge_clubs', 'type', 'hidden');
         }
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teams');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/teams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1185,7 +1190,7 @@ catch (Exception $e) {
         break;
         case 'sportstype':
         $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/sport_types');
+        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
         
         $this->jsmquery->clear();
@@ -1213,7 +1218,7 @@ catch (Exception $e) {
         
         case 'playground':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1239,12 +1244,12 @@ catch (Exception $e) {
         break;
         case 'agegroup':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'league':
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/leagues');
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
         break;
         case 'person':
