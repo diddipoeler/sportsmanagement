@@ -610,6 +610,7 @@ foreach($form->getFieldset() as $field)
         break;
 		case 'agegroups':
         case 'leagues':
+        case 'sport_types':
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_21.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_21.png');
         break;
         case 'clubs/trikot_home':

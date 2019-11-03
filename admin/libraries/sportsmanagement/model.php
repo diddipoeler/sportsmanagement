@@ -1193,8 +1193,8 @@ catch (Exception $e) {
        
         break;
         case 'sportstype':
-        $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
+        //$form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
         
         $this->jsmquery->clear();
