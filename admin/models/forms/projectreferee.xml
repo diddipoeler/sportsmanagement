@@ -66,16 +66,18 @@ readonly="true"
   <fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">		
-			<field
-				name="picture"
-				type="media"
-        default=""
-				label="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC"
-				description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC_DESC"
-				class="inputbox"
-				preview="show"
-			       targetfolder="persons"
-				directory=""/>
+<field
+name="picture"
+type="media"
+default="images/com_sportsmanagement/database/projectreferees/men_large.png"
+label="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC"
+description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC_DESC"
+class="inputbox"
+preview="show"
+targetfolder="persons"
+directory="images/com_sportsmanagement/database/projectreferees"
+showon="show_info:1[AND]show_image:1"
+/>
       <field
 			name="cr_picture"
 			type="text"

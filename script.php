@@ -588,6 +588,7 @@ foreach($form->getFieldset() as $field)
 		switch ( $folder )
 	    {
 		case 'persons':
+        case 'projectreferees':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_small.png');
@@ -604,6 +605,9 @@ foreach($form->getFieldset() as $field)
         case 'teams':
         case 'projectteams':
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_450_3.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_450_3.png');
+        break;
+        case 'projects':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_450_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_450_2.png');
         break;
         case 'playgrounds':
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_stadium.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_stadium.png');

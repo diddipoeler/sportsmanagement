@@ -873,8 +873,8 @@ $result = $this->jsmdb->execute();
            } 
         break;
         case 'projectreferee':
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectreferees');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectreferees');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'division':
@@ -897,8 +897,8 @@ $result = $this->jsmdb->execute();
         //$form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1052,8 +1052,8 @@ catch (Exception $e) {
         break;
         }
         
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         
