@@ -594,6 +594,17 @@ foreach($form->getFieldset() as $field)
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
 		break;
+        case 'flags_associations':
+        case 'flags':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_flags.png');
+        break;
+        case 'positions':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_3.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_3.png');
+        break;
+        case 'teams':
+        case 'projectteams':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_450_3.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_450_3.png');
+        break;
         case 'playgrounds':
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_stadium.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_stadium.png');
         break;
@@ -603,6 +614,8 @@ foreach($form->getFieldset() as $field)
         break;
         case 'clubs/trikot_home':
         case 'clubs/trikot_away':
+        case 'projectteams/trikot_home':
+        case 'projectteams/trikot_away':
         case 'clubs/trikot':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
 		break;
@@ -610,6 +623,7 @@ foreach($form->getFieldset() as $field)
 File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_20.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_20.png');				
 		break;
 		case 'clubs/medium':
+        case 'associations':
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_50.png');
 File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_50.png');				
 		break;

@@ -212,13 +212,15 @@
         <field
             name="picture"
             type="media"
-            default=""				
+            default="images/com_sportsmanagement/database/teams/placeholder_450_3.png"								
             label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
             description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
             class="inputbox"
             preview="show"
             targetfolder="teams"
-            directory=""/>	
+            showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/teams"
+			/>	
         
         <field
             name="cr_picture"
