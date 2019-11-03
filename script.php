@@ -594,6 +594,9 @@ foreach($form->getFieldset() as $field)
 		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
 		break;
+        case 'playgrounds':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_stadium.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_stadium.png');
+        break;
 		case 'agegroups':
         case 'leagues':
         File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_21.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_21.png');
