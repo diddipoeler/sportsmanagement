@@ -893,7 +893,7 @@ $result = $this->jsmdb->execute();
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'jlextfederation':
-         $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
         $form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
@@ -1252,8 +1252,8 @@ catch (Exception $e) {
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'league':
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
         break;
         case 'person':
