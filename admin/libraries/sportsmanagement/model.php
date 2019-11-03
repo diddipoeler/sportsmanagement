@@ -1247,8 +1247,8 @@ catch (Exception $e) {
            } 
         break;
         case 'agegroup':
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/agegroups');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'league':

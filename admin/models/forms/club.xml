@@ -318,7 +318,7 @@
 	    <field
             name="logo_big"
             type="media"
-            default="images/com_sportsmanagement/database/clubs/large/placeholder_150.png"
+            default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
             class="inputbox"
@@ -338,7 +338,7 @@
 	  <field
             name="logo_middle"
             type="media"
-            default="images/com_sportsmanagement/database/clubs/medium/placeholder_50.png" 
+            default="images/com_sportsmanagement/database/clubs/medium/placeholder_wappen_50.png" 
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
             class="inputbox"
@@ -358,7 +358,7 @@
         <field
             name="logo_small"
             type="media"
-            default="images/com_sportsmanagement/database/clubs/small/placeholder_small.gif"				
+            default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.png"				
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
             class="inputbox"
@@ -375,35 +375,31 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
             class="inputbox"
         />  
-			
-       
-        			
-        
        
         <field
             name="trikot_home"
             type="media"
-            default="images/com_sportsmanagement/database/clubs/trikot/placeholder_small.gif" 
+            default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" 
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
             class="inputbox"
             preview="show"
             targetfolder="clubs_trikot_home"
 			showon="show_info:1[AND]show_image:1"
-            directory="com_sportsmanagement/database/clubs/trikot"
+            directory="images/com_sportsmanagement/database/clubs/trikot_home"
         />		
         		
         <field
             name="trikot_away"
             type="media"
-            default="images/com_sportsmanagement/database/clubs/trikot/placeholder_small.gif"
+            default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"
             class="inputbox"
             preview="show"
             targetfolder="clubs_trikot_away"
 			showon="show_info:1[AND]show_image:1"
-            directory="com_sportsmanagement/database/clubs/trikot"
+            directory="images/com_sportsmanagement/database/clubs/trikot_away"
         />	
         
     </fieldset>	
