@@ -1221,8 +1221,8 @@ catch (Exception $e) {
         break;
         
         case 'playground':
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
