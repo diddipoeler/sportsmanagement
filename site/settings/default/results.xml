@@ -23,6 +23,14 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 <option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
 </field>	
 
+<field name="show_historylink" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_HISTORY"
+			description="COM_SPORTSMANAGEMENT_HISTORY">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 <field name="show_pagenav" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PAGENAV"

@@ -194,6 +194,12 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 $history_link = '';
 			}
 
+if ( !$this->config['show_historylink'] ) 
+                {
+$history_link = '';                    
+                    }
+
+
 			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0));
 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
@@ -247,7 +253,7 @@ $history_link = '';
 		{
 			?>
 		<!-- show matchnumber -->
-		<td width="" class=""><?php
+		<td width="" class="" id="matchnumber"><?php
 		if ( $game->match_number>0 )
 		{
 			echo $game->match_number;
@@ -313,7 +319,7 @@ $this->overallconfig['use_jquery_modal']);
 		<!-- show divisions -->
 		<?php
 		if($this->config['show_division']) {
-			echo '<td width="" class="" nowrap="nowrap">';
+			echo '<td width="" class="" nowrap="nowrap" id="divisions">';
 			echo sportsmanagementHelperHtml::showDivisonRemark(	$this->teams[$game->projectteam1_id],
 			$this->teams[$game->projectteam2_id],
 			$this->config,$game->division_id );
@@ -323,7 +329,7 @@ $this->overallconfig['use_jquery_modal']);
 		{
 			?>
 		<!-- show matchtime -->
-		<td width='' class=''><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
+		<td width='' class='' id="matchtime"><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
 		</abbr></td>
 		<?php
 		}
