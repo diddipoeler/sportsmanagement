@@ -77,17 +77,17 @@ if ($this->games) {
                                     echo HTMLHelper::link($result_link, $game->roundcode);
                                     ?></td>
                                 <td class="nowrap" id="matchdate"><?php
-                         if ( $game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) )
+                         if ( $game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date) )
                          {
                          echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY'); 
                          }
                          else
                          {
-                                    echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
+                         echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
                          }
                                     ?></td>
                                 <td id="matchtime"><?php
-                         if ( $game->match_date == '0000-00-00 00:00:00'  || empty($game->match_date) )
+                         if ( $game->match_date == '0000-00-00 00:00:00'  || empty($game->match_date) || !isset($game->match_date) )
                          {
                          echo ''; 
                          }
