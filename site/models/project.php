@@ -1559,9 +1559,9 @@ $use_jquery_modal);
     $query->clear();
     $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
     $query->from('#__sportsmanagement_match_player AS mp');
-        
     $query->where('mp.match_id = '.(int)$match_id);
     $query->where('mp.came_in > 0');
+    $query->order('mp.came_in');
     $db->setQuery($query);
 	$result = $db->loadObjectList();
 	

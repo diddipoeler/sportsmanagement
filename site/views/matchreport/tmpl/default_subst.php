@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 <!-- START of Substitutions -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-subst">
 <?php
 if ( $this->config['show_substitutions'] )
 {
