@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+usort($this->substitutes, function($a, $b) {return $a->in_out_time > $b->in_out_time;});
 ?>
 <!-- START of Substitutions -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-subst">
