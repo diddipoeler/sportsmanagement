@@ -634,7 +634,7 @@ $not_used_project = implode(",",$not_used_project_id);
         $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS round_slug');
         $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS roundid');
         $query->select('CONCAT_WS( \':\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1' ).'\', \''.Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2' ).'\' ) AS roundcode');
-        $query->select('CONCAT_WS( \' \', \'0000-00-00\', \'00:00\' ) AS match_date');
+        $query->select('CONCAT_WS( \' \', \'0000-00-00\', \'00:00:00\' ) AS match_date');
         $query->from('#__sportsmanagement_project_team AS pt1 ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
