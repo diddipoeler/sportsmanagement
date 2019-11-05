@@ -2992,7 +2992,13 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
                 $p_person = new stdClass();
                 
 				$import_person = $this->_datas['person'][$key];
-//echo '<pre>'.print_r($import_person,true).'</pre>';				
+//echo '<pre>'.print_r($import_person,true).'</pre>';
+foreach ($import_person as $key => $value )
+{
+echo '<pre>'.print_r($key,true).'</pre>';	
+	echo '<pre>'.print_r($value,true).'</pre>';	
+}
+				
 				$oldID = $this->_getDataFromObject($import_person,'id');
 				$p_person->lastname = trim($this->_newperson_lastname[$key]);
 				$p_person->firstname = trim($this->_newperson_firstname[$key]);
