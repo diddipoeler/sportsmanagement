@@ -23,6 +23,28 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
+/** welche joomla version ? */
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+/**  Include the component HTML helpers. */
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');    
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');    
+HTMLHelper::_('jquery.framework');    
+}
+elseif(version_compare(substr(JVERSION, 0, 3),'3.0','ge')) 
+{
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('behavior.framework', true);
+HTMLHelper::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
+}
+elseif(version_compare(substr(JVERSION, 0, 3),'2.0','ge')) 
+{
+HTMLHelper::_('behavior.mootools');
+}
+
 $document = Factory::getDocument();
 
 $params_com = ComponentHelper::getParams( 'com_sportsmanagement' );
