@@ -3041,7 +3041,10 @@ break;
 //				$p_person->address_country = $this->_getDataFromObject($import_person,'address_country');
 //				$p_person->extended = $this->_getDataFromObject($import_person,'extended');
 				$p_person->published = 1;
-                
+                if ( !$p_person->notes )
+                {
+                    $p_person->notes = ' ';
+                }
                 
     // geo coding
     $address_parts = array();
