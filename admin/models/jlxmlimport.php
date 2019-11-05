@@ -2992,6 +2992,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
                 $p_person = new stdClass();
                 
 				$import_person = $this->_datas['person'][$key];
+echo '<pre>'.print_r($import_person,true).'</pre>';				
 				$oldID = $this->_getDataFromObject($import_person,'id');
 				$p_person->lastname = trim($this->_newperson_lastname[$key]);
 				$p_person->firstname = trim($this->_newperson_firstname[$key]);
@@ -3009,7 +3010,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 				$p_person->show_on_frontend = $this->_getDataFromObject($import_person,'show_on_frontend');
 				$p_person->info = $this->_getDataFromObject($import_person,'info');
 				$p_person->notes = $this->_getDataFromObject($import_person,'notes');
-				$p_person->phonev$this->_getDataFromObject($import_person,'phone');
+				$p_person->phone = $this->_getDataFromObject($import_person,'phone');
 				$p_person->mobile = $this->_getDataFromObject($import_person,'mobile');
 				$p_person->email = $this->_getDataFromObject($import_person,'email');
 				$p_person->website = $this->_getDataFromObject($import_person,'website');
