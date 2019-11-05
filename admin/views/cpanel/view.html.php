@@ -273,6 +273,7 @@ break;
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
 
         if ($canDo->get('core.admin')) {
+            /*
             if ($this->jquery) {
                 $this->app->setUserState("$this->option.install", 'jqueryeasy');
                 sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'), 'githubinstall', 1);
@@ -282,7 +283,7 @@ break;
                 $this->app->setUserState("$this->option.install", 'plugin_googlemap3');
                 sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'), 'githubinstall', 1);
             }
-
+*/
             $bar = Toolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
             
