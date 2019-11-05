@@ -4510,8 +4510,14 @@ if ( $this->_getDataFromObject($match,'alt_decision') )
 				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
 
 				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
+				if ( $this->_getDataFromObject($match,'cancel') )
+				{
 				$p_match->cancel = $this->_getDataFromObject($match,'cancel');
+				}
+				if ( $this->_getDataFromObject($match,'cancel_reason') )
+				{
 				$p_match->cancel_reason = $this->_getDataFromObject($match,'cancel_reason');
+				}
 				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
 				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
 				$p_match->summary = $this->_getDataFromObject($match,'summary');
