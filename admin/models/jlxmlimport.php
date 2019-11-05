@@ -3107,6 +3107,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 				}
 				else
 				{
+					/*
 					if ($p_person->store()===false)
 					{
 						$my_text .= 'error on person import: ';
@@ -3115,10 +3116,11 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 						$my_text .= $p_person->nickname.'-';
 						$my_text .= $p_person->birthday;
 						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 					}
-					else
+					*/
+					try
 					{
+						$p_person->store()
 						$insertID = Factory::getDbo()->insertid();
 						$this->_convertPersonID[$oldID] = $insertID;
 						$dNameStr=((!empty($p_person->lastname)) ?
@@ -3150,6 +3152,19 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }	
 }						
 					}
+					catch (Exception $e)
+{
+    //$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+$my_text .= 'error on person import: ';
+						$my_text .= $p_person->lastname.'-';
+						$my_text .= $p_person->firstname.'-';
+						$my_text .= $p_person->nickname.'-';
+						$my_text .= $p_person->birthday.'<br>';
+						$my_text .= $e->getMessage().'<br>';
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;						
+}
+
+					
 				}
 			}
 		}
