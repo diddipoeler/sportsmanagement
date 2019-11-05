@@ -2995,9 +2995,12 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 echo '<pre>'.print_r($import_person,true).'</pre>';
 foreach ($import_person as $key => $value )
 {
-echo '<pre>'.print_r($key,true).'</pre>';	
-echo '<pre>'.print_r($value[0],true).'</pre>';	
-echo '<pre>'.print_r($import_person->$key,true).'</pre>';	
+echo 'key <pre>'.print_r($key,true).'</pre>';	
+echo 'vallue <pre>'.print_r($value[0],true).'</pre>';	
+
+echo 'wert <pre>'.print_r($this->_getDataFromObject($import_person,$key),true).'</pre>';
+
+//echo '<pre>'.print_r($import_person->$key,true).'</pre>';	
 }
 				
 				$oldID = $this->_getDataFromObject($import_person,'id');
