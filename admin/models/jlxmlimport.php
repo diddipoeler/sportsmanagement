@@ -2988,38 +2988,38 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 			foreach ($this->_newpersonsid AS $key => $id)
 			{
 				
-                $mdl = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
-                $p_person = $mdl->getTable();
+                //$mdl = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
+                $p_person = new stdClass();
                 
-				$import_person=$this->_datas['person'][$key];
-				$oldID=$this->_getDataFromObject($import_person,'id');
-				$p_person->set('lastname',trim($this->_newperson_lastname[$key]));
-				$p_person->set('firstname',trim($this->_newperson_firstname[$key]));
-				$p_person->set('nickname',trim($this->_newperson_nickname[$key]));
-				$p_person->set('birthday',$this->_newperson_birthday[$key]);
-				$p_person->set('agegroup_id',$this->_dbpersonsagegroup[$key]);
-				$p_person->set('country',$this->_getDataFromObject($import_person,'country'));
-				$p_person->set('knvbnr',$this->_getDataFromObject($import_person,'knvbnr'));
-				$p_person->set('height',$this->_getDataFromObject($import_person,'height'));
-				$p_person->set('weight',$this->_getDataFromObject($import_person,'weight'));
-				$p_person->set('picture',$this->_getDataFromObject($import_person,'picture'));
-				$p_person->set('show_pic',$this->_getDataFromObject($import_person,'show_pic'));
-				$p_person->set('show_persdata',$this->_getDataFromObject($import_person,'show_persdata'));
-				$p_person->set('show_teamdata',$this->_getDataFromObject($import_person,'show_teamdata'));
-				$p_person->set('show_on_frontend',$this->_getDataFromObject($import_person,'show_on_frontend'));
-				$p_person->set('info',$this->_getDataFromObject($import_person,'info'));
-				$p_person->set('notes',$this->_getDataFromObject($import_person,'notes'));
-				$p_person->set('phone',$this->_getDataFromObject($import_person,'phone'));
-				$p_person->set('mobile',$this->_getDataFromObject($import_person,'mobile'));
-				$p_person->set('email',$this->_getDataFromObject($import_person,'email'));
-				$p_person->set('website',$this->_getDataFromObject($import_person,'website'));
-				$p_person->set('address',$this->_getDataFromObject($import_person,'address'));
-				$p_person->set('zipcode',$this->_getDataFromObject($import_person,'zipcode'));
-				$p_person->set('location',$this->_getDataFromObject($import_person,'location'));
-				$p_person->set('state',$this->_getDataFromObject($import_person,'state'));
-				$p_person->set('address_country',$this->_getDataFromObject($import_person,'address_country'));
-				$p_person->set('extended',$this->_getDataFromObject($import_person,'extended'));
-				$p_person->set('published',1);
+				$import_person = $this->_datas['person'][$key];
+				$oldID = $this->_getDataFromObject($import_person,'id');
+				$p_person->lastname = trim($this->_newperson_lastname[$key]);
+				$p_person->firstname = trim($this->_newperson_firstname[$key]);
+				$p_person->nickname = trim($this->_newperson_nickname[$key]);
+				$p_person->birthday = $this->_newperson_birthday[$key];
+				$p_person->agegroup_id = $this->_dbpersonsagegroup[$key];
+				$p_person->country = $this->_getDataFromObject($import_person,'country');
+				$p_person->knvbnr = $this->_getDataFromObject($import_person,'knvbnr');
+				$p_person->height = $this->_getDataFromObject($import_person,'height');
+				$p_person->weight = $this->_getDataFromObject($import_person,'weight');
+				$p_person->picture = $this->_getDataFromObject($import_person,'picture');
+				$p_person->show_pic = $this->_getDataFromObject($import_person,'show_pic');
+				$p_person->show_persdata = $this->_getDataFromObject($import_person,'show_persdata');
+				$p_person->show_teamdata = $this->_getDataFromObject($import_person,'show_teamdata');
+				$p_person->show_on_frontend = $this->_getDataFromObject($import_person,'show_on_frontend');
+				$p_person->info = $this->_getDataFromObject($import_person,'info');
+				$p_person->notes = $this->_getDataFromObject($import_person,'notes');
+				$p_person->phonev$this->_getDataFromObject($import_person,'phone');
+				$p_person->mobile = $this->_getDataFromObject($import_person,'mobile');
+				$p_person->email = $this->_getDataFromObject($import_person,'email');
+				$p_person->website = $this->_getDataFromObject($import_person,'website');
+				$p_person->address = $this->_getDataFromObject($import_person,'address');
+				$p_person->zipcode = $this->_getDataFromObject($import_person,'zipcode');
+				$p_person->location = $this->_getDataFromObject($import_person,'location');
+				$p_person->state = $this->_getDataFromObject($import_person,'state');
+				$p_person->address_country = $this->_getDataFromObject($import_person,'address_country');
+				$p_person->extended = $this->_getDataFromObject($import_person,'extended');
+				$p_person->published = 1;
                 
                 
     // geo coding
@@ -3054,8 +3054,8 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
-    $p_person->set('latitude',$coords['latitude']);
-    $p_person->set('longitude',$coords['longitude']);       
+    $p_person->latitude = $coords['latitude'] = ;
+    $p_person->longitude = $coords['longitude'];       
     
     
 				if ($this->_importType!='persons')	// force position_id to be set to default if only persons are imported
@@ -3064,7 +3064,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 					{
 						if (isset($this->_convertPositionID[(int)$this->_getDataFromObject($import_person,'position_id')]))
 						{
-							$p_person->set('position_id',(int)$this->_convertPositionID[(int)$this->_getDataFromObject($import_person,'position_id')]);
+							$p_person->position_id = (int)$this->_convertPositionID[(int)$this->_getDataFromObject($import_person,'position_id')];
 						}
 					}
 				}
@@ -3073,11 +3073,11 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 				$p_alias = JFilterOutput::stringURLSafe(implode(' ',$aliasparts));
 				if ((isset($alias)) && (trim($alias)!=''))
 				{
-					$p_person->set('alias',JFilterOutput::stringURLSafe($alias));
+					$p_person->alias = JFilterOutput::stringURLSafe($alias);
 				}
 				else
 				{
-					$p_person->set('alias',$p_alias);
+					$p_person->alias = $p_alias;
 				}
                 
                 $query->clear();
@@ -3119,7 +3119,8 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 					*/
 					try
 					{
-						$p_person->store();
+						//$p_person->store();
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $p_person);						
 						$insertID = Factory::getDbo()->insertid();
 						$this->_convertPersonID[$oldID] = $insertID;
 						$dNameStr=((!empty($p_person->lastname)) ?
