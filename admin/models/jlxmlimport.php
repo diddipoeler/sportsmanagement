@@ -4519,7 +4519,10 @@ if ( $this->_getDataFromObject($match,'alt_decision') )
 				$p_match->cancel_reason = $this->_getDataFromObject($match,'cancel_reason');
 				}
 				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
+				if ( $this->_getDataFromObject($match,'crowd') )
+				{
 				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
+				}
 				$p_match->summary = $this->_getDataFromObject($match,'summary');
 				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
 				$p_match->preview = $this->_getDataFromObject($match,'preview');
@@ -4609,7 +4612,10 @@ if ( $this->_getDataFromObject($match,'alt_decision') )
 
 				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
 				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
+				if ( $this->_getDataFromObject($match,'crowd') )
+				{
 				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
+				}
 				$p_match->summary = $this->_getDataFromObject($match,'summary');
 				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
 				if ( $this->_getDataFromObject($match,'match_result_detail') )
