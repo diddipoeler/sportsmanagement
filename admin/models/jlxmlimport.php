@@ -3055,7 +3055,7 @@ echo '<pre>'.print_r($import_person,true).'</pre>';
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
-    $p_person->latitude = $coords['latitude'] = ;
+    $p_person->latitude = $coords['latitude'];
     $p_person->longitude = $coords['longitude'];       
     
     
