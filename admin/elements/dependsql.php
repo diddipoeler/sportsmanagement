@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      dependsql.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage elements
@@ -18,16 +18,6 @@ JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPAT
 
 jimport('joomla.form.helper');
 //JFormHelper::loadFieldClass('list');
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-HTMLHelper::_( 'behavior.mootools' );    
-}
 
 /**
  * Renders a Dynamic SQL field
