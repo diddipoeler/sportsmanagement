@@ -3195,7 +3195,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		$p_project->editor = $this->_joomleague_editor;
 		$p_project->master_template = $this->_template_id;
 		$p_project->sub_template_id = 0;
-		$p_project->teams_as_referees = 0; 
 		$p_project->staffel_id = $this->_getDataFromObject($this->_datas['project'],'staffel_id');
 		$p_project->extension = $this->_getDataFromObject($this->_datas['project'],'extension');
 		$p_project->timezone = $this->_getDataFromObject($this->_datas['project'],'timezone');
@@ -3232,7 +3231,11 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		}
 		
 		if ($this->_publish){$p_project->published = 1;}
-		
+
+if ( !$p_project->teams_as_referees )
+{
+$p_project->teams_as_referees = 0; 		
+}
 try {		
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project', $p_project);
 $insertID = Factory::getDbo()->insertid();
