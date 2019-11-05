@@ -2611,19 +2611,19 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 					}
 					*/
-					try
-					{
-						$p_club->store();
-						$insertID = Factory::getDbo()->insertid();
-						$this->_convertClubID[$oldID] = $insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf(	'Created new club data: %1$s - %2$s',
-													"</span><strong>$p_club->name</strong>",
-													"".$p_club->country.""
-													);
-						$my_text .= '<br />';
-					}
-					catch (Exception $e)
+try
+{
+$p_club->store();
+$insertID = Factory::getDbo()->insertid();
+$this->_convertClubID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new club data: %1$s - %2$s - %3$s',
+	"</span><strong>$p_club->name</strong>",
+	"".$p_club->country."",$insertID
+	);
+$my_text .= '<br />';
+}
+catch (Exception $e)
 {
     //$app->enqueueMessage(JText::_($e->getMessage()), 'error');
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
