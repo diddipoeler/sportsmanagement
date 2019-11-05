@@ -3120,7 +3120,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 					*/
 					try
 					{
-						$p_person->store()
+						$p_person->store();
 						$insertID = Factory::getDbo()->insertid();
 						$this->_convertPersonID[$oldID] = $insertID;
 						$dNameStr=((!empty($p_person->lastname)) ?
