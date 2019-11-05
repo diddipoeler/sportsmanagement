@@ -2992,7 +2992,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
                 $p_person = new stdClass();
                 
 				$import_person = $this->_datas['person'][$key];
-echo '<pre>'.print_r($import_person,true).'</pre>';
+//echo '<pre>'.print_r($import_person,true).'</pre>';
 foreach ($import_person as $key => $value )
 {
 echo 'key <pre>'.print_r($key,true).'</pre>';	
