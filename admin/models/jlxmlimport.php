@@ -2495,9 +2495,14 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 
                 $p_club->dissolved_year = $this->_getDataFromObject($import_club,'dissolved_year');
                 $p_club->founded_year = $this->_getDataFromObject($import_club,'founded_year');
+				if ( $this->_getDataFromObject($import_club,'unique_id') )
+				{
                 $p_club->unique_id = $this->_getDataFromObject($import_club,'unique_id');
+				}
+				if ( $this->_getDataFromObject($import_club,'new_club_id') )
+				{
                 $p_club->new_club_id = $this->_getDataFromObject($import_club,'new_club_id');
-                
+				}
     // geo coding
     $address_parts = array();
     $addressdata = $this->_getDataFromObject($import_club,'address');
