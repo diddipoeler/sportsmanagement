@@ -2996,7 +2996,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 foreach ($import_person as $key => $value )
 {
 echo '<pre>'.print_r($key,true).'</pre>';	
-	echo '<pre>'.print_r($value,true).'</pre>';	
+	echo '<pre>'.print_r($value[0],true).'</pre>';	
 }
 				
 				$oldID = $this->_getDataFromObject($import_person,'id');
