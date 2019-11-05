@@ -3786,7 +3786,14 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 					$p_projectteam->standard_playground = $this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')];
 				}
 			}
-
+if ( !$p_projectteam->is_in_score )
+{
+$p_projectteam->is_in_score = 1;
+}
+if ( !$p_projectteam->use_finally )
+{
+$p_projectteam->use_finally = 0;	
+}	
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $p_projectteam);
 $insertID = Factory::getDbo()->insertid();
