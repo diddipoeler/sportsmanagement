@@ -3257,6 +3257,10 @@ if ( !$p_project->enable_sb )
 {
 $p_project->enable_sb = 0; 		
 }		
+if ( !$p_project->sb_catid )
+{
+$p_project->sb_catid = 0; 		
+}				
 try {		
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project', $p_project);
 $insertID = Factory::getDbo()->insertid();
