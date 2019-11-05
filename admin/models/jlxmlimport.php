@@ -2992,47 +2992,54 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
                 $p_person = new stdClass();
                 
 				$import_person = $this->_datas['person'][$key];
-//echo '<pre>'.print_r($import_person,true).'</pre>';
+
 foreach ($import_person as $key => $value )
 {
-echo 'key <pre>'.print_r($key,true).'</pre>';	
-echo 'vallue <pre>'.print_r($value[0],true).'</pre>';	
+switch ($key)
+{
+case 'id':
+break;
+default:
+$p_person->$key = $this->_getDataFromObject($import_person,$key);    
+break;    
+}    
+//echo 'key <pre>'.print_r($key,true).'</pre>';	
+//echo 'vallue <pre>'.print_r($value[0],true).'</pre>';	
+//echo 'wert <pre>'.print_r($this->_getDataFromObject($import_person,$key),true).'</pre>';
 
-echo 'wert <pre>'.print_r($this->_getDataFromObject($import_person,$key),true).'</pre>';
 
-//echo '<pre>'.print_r($import_person->$key,true).'</pre>';	
 }
 				
 				$oldID = $this->_getDataFromObject($import_person,'id');
-				$p_person->lastname = trim($this->_newperson_lastname[$key]);
-				$p_person->firstname = trim($this->_newperson_firstname[$key]);
-				$p_person->nickname = trim($this->_newperson_nickname[$key]);
-				$p_person->birthday = $this->_newperson_birthday[$key];
-				$p_person->agegroup_id = $this->_dbpersonsagegroup[$key];
-				$p_person->country = $this->_getDataFromObject($import_person,'country');
-				$p_person->knvbnr = $this->_getDataFromObject($import_person,'knvbnr');
-				if ( $this->_getDataFromObject($import_person,'height') )
-				{
-				$p_person->height = $this->_getDataFromObject($import_person,'height');
-				}
-				$p_person->weight = $this->_getDataFromObject($import_person,'weight');
-				$p_person->picture = $this->_getDataFromObject($import_person,'picture');
-				$p_person->show_pic = $this->_getDataFromObject($import_person,'show_pic');
-				$p_person->show_persdata = $this->_getDataFromObject($import_person,'show_persdata');
-				$p_person->show_teamdata = $this->_getDataFromObject($import_person,'show_teamdata');
-				$p_person->show_on_frontend = $this->_getDataFromObject($import_person,'show_on_frontend');
-				$p_person->info = $this->_getDataFromObject($import_person,'info');
-				$p_person->notes = $this->_getDataFromObject($import_person,'notes');
-				$p_person->phone = $this->_getDataFromObject($import_person,'phone');
-				$p_person->mobile = $this->_getDataFromObject($import_person,'mobile');
-				$p_person->email = $this->_getDataFromObject($import_person,'email');
-				$p_person->website = $this->_getDataFromObject($import_person,'website');
-				$p_person->address = $this->_getDataFromObject($import_person,'address');
-				$p_person->zipcode = $this->_getDataFromObject($import_person,'zipcode');
-				$p_person->location = $this->_getDataFromObject($import_person,'location');
-				$p_person->state = $this->_getDataFromObject($import_person,'state');
-				$p_person->address_country = $this->_getDataFromObject($import_person,'address_country');
-				$p_person->extended = $this->_getDataFromObject($import_person,'extended');
+//				$p_person->lastname = trim($this->_newperson_lastname[$key]);
+//				$p_person->firstname = trim($this->_newperson_firstname[$key]);
+//				$p_person->nickname = trim($this->_newperson_nickname[$key]);
+//				$p_person->birthday = $this->_newperson_birthday[$key];
+//				$p_person->agegroup_id = $this->_dbpersonsagegroup[$key];
+//				$p_person->country = $this->_getDataFromObject($import_person,'country');
+//				$p_person->knvbnr = $this->_getDataFromObject($import_person,'knvbnr');
+//				if ( $this->_getDataFromObject($import_person,'height') )
+//				{
+//				$p_person->height = $this->_getDataFromObject($import_person,'height');
+//				}
+//				$p_person->weight = $this->_getDataFromObject($import_person,'weight');
+//				$p_person->picture = $this->_getDataFromObject($import_person,'picture');
+//				$p_person->show_pic = $this->_getDataFromObject($import_person,'show_pic');
+//				$p_person->show_persdata = $this->_getDataFromObject($import_person,'show_persdata');
+//				$p_person->show_teamdata = $this->_getDataFromObject($import_person,'show_teamdata');
+//				$p_person->show_on_frontend = $this->_getDataFromObject($import_person,'show_on_frontend');
+//				$p_person->info = $this->_getDataFromObject($import_person,'info');
+//				$p_person->notes = $this->_getDataFromObject($import_person,'notes');
+//				$p_person->phone = $this->_getDataFromObject($import_person,'phone');
+//				$p_person->mobile = $this->_getDataFromObject($import_person,'mobile');
+//				$p_person->email = $this->_getDataFromObject($import_person,'email');
+//				$p_person->website = $this->_getDataFromObject($import_person,'website');
+//				$p_person->address = $this->_getDataFromObject($import_person,'address');
+//				$p_person->zipcode = $this->_getDataFromObject($import_person,'zipcode');
+//				$p_person->location = $this->_getDataFromObject($import_person,'location');
+//				$p_person->state = $this->_getDataFromObject($import_person,'state');
+//				$p_person->address_country = $this->_getDataFromObject($import_person,'address_country');
+//				$p_person->extended = $this->_getDataFromObject($import_person,'extended');
 				$p_person->published = 1;
                 
                 
