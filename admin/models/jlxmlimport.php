@@ -2479,7 +2479,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$p_club->location = $this->_getDataFromObject($import_club,'location');
 				$p_club->state = $this->_getDataFromObject($import_club,'state');
 				$p_club->country = $this->_newclubscountry[$key];
+				if ( $this->_getDataFromObject($import_club,'founded') )
+				{
 				$p_club->founded = $this->_getDataFromObject($import_club,'founded');
+				}
 				$p_club->phone = $this->_getDataFromObject($import_club,'phone');
 				$p_club->fax = $this->_getDataFromObject($import_club,'fax');
 				$p_club->email = $this->_getDataFromObject($import_club,'email');
