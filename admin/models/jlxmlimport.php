@@ -2401,14 +2401,6 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 	   $app = Factory::getApplication();
 	   $query = Factory::getDbo()->getQuery(true);
 
-if ( $this->show_debug_info )
-{	   
-$this->dump_header("function _importClubs");
-$this->dump_variable("this->_datas club", $this->_datas['club']);
-$this->dump_variable("this->_dbclubsid", $this->_dbclubsid);
-$this->dump_variable("this->_newclubs", $this->_newclubs);
-}
-
 		$my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
@@ -2440,20 +2432,11 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			{
 				if (empty($this->_newclubs[$key]))
 				{
-					//$oldID = $this->_getDataFromObject($this->_datas['club'][$key],'id');
                     
                     $oldID = $this->_getDataFromObject($this->_datas['team'][$key],'club_id');
 					$this->_convertClubID[$oldID] = $id;
                     
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
-//                    $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
 
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_datas['club'] key", $key);
-$this->dump_variable("this->_dbclubsid id", $id);
-$this->dump_variable("this->_dbclubsid oldID", $oldID);
-}                    
                     
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 					$my_text .= Text::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
@@ -2472,8 +2455,8 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
 			foreach ($this->_newclubsid AS $key => $id)
 			{
 				
-                $mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
-                $p_club = $mdl->getTable();
+                //$mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
+                $p_club = new stdClass();;
                 
                 //$this->dump_variable("p_club", $p_club);
                 
@@ -2486,41 +2469,31 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
 					}
 				}
 
-if ( $this->show_debug_info )
-{                
-$this->dump_variable("import_club", $import_club);
-}
+				$oldID = $this->_getDataFromObject($import_club,'id');
+				$alias = $this->_getDataFromObject($import_club,'alias');
 
-				$oldID=$this->_getDataFromObject($import_club,'id');
-				$alias=$this->_getDataFromObject($import_club,'alias');
-
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_newclubs", $this->_newclubs);
-}
-
-				$p_club->set('name',$this->_newclubs[$key]);
-				$p_club->set('admin',$this->_joomleague_admin);
-				$p_club->set('address',$this->_getDataFromObject($import_club,'address'));
-				$p_club->set('zipcode',$this->_getDataFromObject($import_club,'zipcode'));
-				$p_club->set('location',$this->_getDataFromObject($import_club,'location'));
-				$p_club->set('state',$this->_getDataFromObject($import_club,'state'));
-				$p_club->set('country',$this->_newclubscountry[$key]);
-				$p_club->set('founded',$this->_getDataFromObject($import_club,'founded'));
-				$p_club->set('phone',$this->_getDataFromObject($import_club,'phone'));
-				$p_club->set('fax',$this->_getDataFromObject($import_club,'fax'));
-				$p_club->set('email',$this->_getDataFromObject($import_club,'email'));
-				$p_club->set('website',$this->_getDataFromObject($import_club,'website'));
-				$p_club->set('president',$this->_getDataFromObject($import_club,'president'));
-				$p_club->set('manager',$this->_getDataFromObject($import_club,'manager'));
-				$p_club->set('logo_big',$this->_getDataFromObject($import_club,'logo_big'));
-				$p_club->set('logo_middle',$this->_getDataFromObject($import_club,'logo_middle'));
-				$p_club->set('logo_small',$this->_getDataFromObject($import_club,'logo_small'));
+				$p_club->name = $this->_newclubs[$key];
+				$p_club->admin = $this->_joomleague_admin;
+				$p_club->address = $this->_getDataFromObject($import_club,'address');
+				$p_club->zipcode = $this->_getDataFromObject($import_club,'zipcode');
+				$p_club->location = $this->_getDataFromObject($import_club,'location');
+				$p_club->state = $this->_getDataFromObject($import_club,'state');
+				$p_club->country = $this->_newclubscountry[$key];
+				$p_club->founded = $this->_getDataFromObject($import_club,'founded');
+				$p_club->phone = $this->_getDataFromObject($import_club,'phone');
+				$p_club->fax = $this->_getDataFromObject($import_club,'fax');
+				$p_club->email = $this->_getDataFromObject($import_club,'email');
+				$p_club->website = $this->_getDataFromObject($import_club,'website');
+				$p_club->president = $this->_getDataFromObject($import_club,'president');
+				$p_club->manager = $this->_getDataFromObject($import_club,'manager');
+				$p_club->logo_bigv = $this->_getDataFromObject($import_club,'logo_big');
+				$p_club->logo_middle = $this->_getDataFromObject($import_club,'logo_middle');
+				$p_club->logo_small = $this->_getDataFromObject($import_club,'logo_small');
                 
-                $p_club->set('dissolved_year',$this->_getDataFromObject($import_club,'dissolved_year'));
-                $p_club->set('founded_year',$this->_getDataFromObject($import_club,'founded_year'));
-                $p_club->set('unique_id',$this->_getDataFromObject($import_club,'unique_id'));
-                $p_club->set('new_club_id',$this->_getDataFromObject($import_club,'new_club_id'));
+                $p_club->dissolved_year = $this->_getDataFromObject($import_club,'dissolved_year');
+                $p_club->founded_year = $this->_getDataFromObject($import_club,'founded_year');
+                $p_club->unique_id = $this->_getDataFromObject($import_club,'unique_id');
+                $p_club->new_club_id = $this->_getDataFromObject($import_club,'new_club_id');
                 
     // geo coding
     $address_parts = array();
@@ -2554,18 +2527,18 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
-    $p_club->set('latitude',$coords['latitude']);
-    $p_club->set('longitude',$coords['longitude']);        
+    $p_club->latitude = $coords['latitude'];
+    $p_club->longitude = $coords['longitude'];        
                 
                 
                 
                 if ((isset($alias)) && (trim($alias)!=''))
 				{
-					$p_club->set('alias',$alias);
+					$p_club->alias = $alias;
 				}
 				else
 				{
-					$p_club->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_club,'name')));
+					$p_club->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_club,'name'));
 				}
 				if ($this->_importType!='clubs')	// force playground_id to be set to default if only clubs are imported
 				{
@@ -2573,13 +2546,13 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 					{
 						if (isset($this->_convertPlaygroundID[(int)$this->_getDataFromObject($import_club,'standard_playground')]))
 						{
-							$p_club->set('standard_playground',(int)$this->_convertPlaygroundID[(int)$this->_getDataFromObject($import_club,'standard_playground')]);
+							$p_club->standard_playground = (int)$this->_convertPlaygroundID[(int)$this->_getDataFromObject($import_club,'standard_playground')];
 						}
 					}
 				}
 				if (($this->import_version=='NEW') && ($import_club->extended!=''))
 				{
-					$p_club->set('extended',$this->_getDataFromObject($import_club,'extended'));
+					$p_club->extended = $this->_getDataFromObject($import_club,'extended');
 				}
 				
                 $query->clear();
@@ -2613,7 +2586,8 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 					*/
 try
 {
-$p_club->store();
+//$p_club->store();
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $p_club);	
 $insertID = Factory::getDbo()->insertid();
 $this->_convertClubID[$oldID] = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
