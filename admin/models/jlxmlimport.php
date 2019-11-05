@@ -2992,7 +2992,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
                 $p_person = new stdClass();
                 
 				$import_person = $this->_datas['person'][$key];
-echo '<pre>'.print_r($import_person,true).'</pre>';				
+//echo '<pre>'.print_r($import_person,true).'</pre>';				
 				$oldID = $this->_getDataFromObject($import_person,'id');
 				$p_person->lastname = trim($this->_newperson_lastname[$key]);
 				$p_person->firstname = trim($this->_newperson_firstname[$key]);
@@ -3001,7 +3001,10 @@ echo '<pre>'.print_r($import_person,true).'</pre>';
 				$p_person->agegroup_id = $this->_dbpersonsagegroup[$key];
 				$p_person->country = $this->_getDataFromObject($import_person,'country');
 				$p_person->knvbnr = $this->_getDataFromObject($import_person,'knvbnr');
+				if ( $this->_getDataFromObject($import_person,'height') )
+				{
 				$p_person->height = $this->_getDataFromObject($import_person,'height');
+				}
 				$p_person->weight = $this->_getDataFromObject($import_person,'weight');
 				$p_person->picture = $this->_getDataFromObject($import_person,'picture');
 				$p_person->show_pic = $this->_getDataFromObject($import_person,'show_pic');
