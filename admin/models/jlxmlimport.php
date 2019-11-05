@@ -2602,6 +2602,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 				}
 				else
 				{
+					/*
 					if ($p_club->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
@@ -2609,8 +2610,10 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 						$my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
 						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 					}
-					else
+					*/
+					try
 					{
+						$p_club->store();
 						$insertID = Factory::getDbo()->insertid();
 						$this->_convertClubID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -2620,6 +2623,17 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 													);
 						$my_text .= '<br />';
 					}
+					catch (Exception $e)
+{
+    //$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
+$my_text .= $e->getMessage().'<br />';						
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;						
+}
+
+					
 				}
 
 if ( $this->show_debug_info )
