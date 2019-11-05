@@ -4499,9 +4499,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 				$team2_result_so = $this->_getDataFromObject($match,'team2_result_so');
 				if (isset($team2_result_so) && ($team2_result_so !=NULL)) { $p_match->team2_result_so = $team2_result_so; }
-
+if ( $this->_getDataFromObject($match,'alt_decision') )
+{
 				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
-
+}
 				$team1_result_decision = $this->_getDataFromObject($match,'team1_result_decision');
 				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
 
@@ -4590,9 +4591,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 				$team2_result_ot = $this->_getDataFromObject($match,'matchpart2_result_ot');
 				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
-
+if ( $this->_getDataFromObject($match,'alt_decision') )
+{
 				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
-
+}
 				$team1_result_decision = $this->_getDataFromObject($match,'matchpart1_result_decision');
 				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
 
