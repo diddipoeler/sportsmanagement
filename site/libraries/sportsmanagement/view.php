@@ -22,6 +22,7 @@ use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /** welche joomla version ? */
 if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
