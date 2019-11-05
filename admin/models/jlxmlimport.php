@@ -4527,8 +4527,14 @@ if ( $this->_getDataFromObject($match,'alt_decision') )
 				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
 				$p_match->preview = $this->_getDataFromObject($match,'preview');
 				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
+				if ( $this->_getDataFromObject($match,'new_match_id') )
+				{
 				$p_match->new_match_id = $this->_getDataFromObject($match,'new_match_id');
+				}
+				if ( $this->_getDataFromObject($match,'old_match_id') )
+				{
 				$p_match->old_match_id = $this->_getDataFromObject($match,'old_match_id');
+				}
 				$p_match->extended = $this->_getDataFromObject($match,'extended');
 				$p_match->published = $this->_getDataFromObject($match,'published');
                 
