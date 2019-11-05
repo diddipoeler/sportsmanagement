@@ -12,13 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-
-// welche joomla version
-if (version_compare(JVERSION, '3.0.0', 'ge')) {
-    HTMLHelper::_('behavior.framework', true);
-} else {
-    HTMLHelper::_('behavior.mootools');
-}
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
