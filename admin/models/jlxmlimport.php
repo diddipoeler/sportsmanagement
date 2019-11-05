@@ -2875,7 +2875,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-					
+if ( !$p_team->agegroup_id )
+{
+$p_team->agegroup_id = 0;
+}
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
 $insertID = Factory::getDbo()->insertid();
