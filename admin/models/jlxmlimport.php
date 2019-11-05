@@ -4577,7 +4577,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 				$p_match->team1_result_split = $this->_getDataFromObject($match,'matchpart1_result_split');//NULL
 				$p_match->team2_result_split = $this->_getDataFromObject($match,'matchpart2_result_split');//NULL
+				if ( $this->_getDataFromObject($match,'match_result_type') )
+				{
 				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
+				}
 
 				$team1_result_ot = $this->_getDataFromObject($match,'matchpart1_result_ot');
 				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
@@ -4598,7 +4601,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
 				$p_match->summary = $this->_getDataFromObject($match,'summary');
 				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
+				if ( $this->_getDataFromObject($match,'match_result_detail') )
+				{
 				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
+				}
 				$p_match->published = $this->_getDataFromObject($match,'published');
                 
                 // diddipoeler
