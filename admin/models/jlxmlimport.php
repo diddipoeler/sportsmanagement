@@ -4483,7 +4483,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 				$p_match->team1_result_split = $this->_getDataFromObject($match,'team1_result_split');
 				$p_match->team2_result_split = $this->_getDataFromObject($match,'team2_result_split');
+				if ( $this->_getDataFromObject($match,'match_result_type') )
+				{
 				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
+				}
 
 				$team1_result_ot = $this->_getDataFromObject($match,'team1_result_ot');
 				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
