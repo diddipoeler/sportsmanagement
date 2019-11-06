@@ -2268,8 +2268,6 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 	{
 	   $app = Factory::getApplication();
 	   $query = Factory::getDbo()->getQuery(true);
-       
-
 		$my_text = '';
 		if (!isset($this->_datas['playground']) || count($this->_datas['playground'])==0){return true;}
 		if ((!isset($this->_newplaygroundid) || count($this->_newplaygroundid)==0) &&
@@ -2294,7 +2292,6 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			foreach ($this->_newplaygroundid AS $key => $id)
 			{
                 $p_playground = new stdClass();
-                
 				$import_playground = $this->_datas['playground'][$key];
 				
 foreach ($import_playground as $import => $value )
@@ -2313,23 +2310,8 @@ break;
 				$alias = $this->_getDataFromObject($import_playground,'alias');
 				$p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
 				$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
-				//$p_playground->address = $this->_getDataFromObject($import_playground,'address');
-				//$p_playground->zipcode = $this->_getDataFromObject($import_playground,'zipcode');
-				//$p_playground->city = $this->_getDataFromObject($import_playground,'city');
-				//$p_playground->country = $this->_getDataFromObject($import_playground,'country');
-				//$p_playground->max_visitors = $this->_getDataFromObject($import_playground,'max_visitors');
-				//$p_playground->website = $this->_getDataFromObject($import_playground,'website');
-				//$p_playground->picture = $this->_getDataFromObject($import_playground,'picture');
-//		if ( $this->_getDataFromObject($import_playground,'notes') )
-//                {
-  //              $p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
-    //            }
-      //          else
-        //        {
-          //      $p_playground->notes = ' ';    
-            //    }
                 
-    // geo coding
+    /** geo coding */
     $address_parts = array();
     $addressdata = $this->_getDataFromObject($import_playground,'address');
     $city = $this->_getDataFromObject($import_playground,'city');
@@ -2377,12 +2359,9 @@ break;
 				}
                 
                 $query->clear();
-          // Select some fields
         $query->select('id,name,country');
-		// From the table
 		$query->from('#__sportsmanagement_playground');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
-        //$query->where('country LIKE '.Factory::getDbo()->Quote(''.$p_playground->country.''));
 			Factory::getDbo()->setQuery($query);
  
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
@@ -2408,7 +2387,6 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 						$my_text .= Text::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
                     $my_text .= $e->getMessage().'<br />';
-					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }					
 
 				}
