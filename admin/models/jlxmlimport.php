@@ -3209,7 +3209,18 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }		
         $p_project = new stdClass();
-       
+$import_project = $this->_datas['project'];
+foreach ($import_project as $key => $value )
+{
+switch ($key)
+{
+case 'id':
+break;
+default:
+$p_project->$key = $this->_getDataFromObject($import_project,$key);    
+break;    
+}    
+}       
 		$p_project->name = substr(trim($this->_name),0,99);
 		$p_project->alias = substr(JFilterOutput::stringURLSafe(trim($this->_name)),0,99);
 		$p_project->league_id = $this->_league_id;
@@ -3219,32 +3230,33 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		$p_project->editor = $this->_joomleague_editor;
 		$p_project->master_template = $this->_template_id;
 		$p_project->sub_template_id = 0;
-		$p_project->staffel_id = $this->_getDataFromObject($this->_datas['project'],'staffel_id');
-		$p_project->extension = $this->_getDataFromObject($this->_datas['project'],'extension');
-		$p_project->timezone = $this->_getDataFromObject($this->_datas['project'],'timezone');
-		$p_project->project_type = $this->_getDataFromObject($this->_datas['project'],'project_type');
-		$p_project->teams_as_referees = $this->_getDataFromObject($this->_datas['project'],'teams_as_referees');
-		$p_project->sports_type_id = $this->_sportstype_id;
-		$p_project->current_round = $this->_getDataFromObject($this->_datas['project'],'current_round');
-		$p_project->current_round_auto = $this->_getDataFromObject($this->_datas['project'],'current_round_auto');
-		$p_project->auto_time = $this->_getDataFromObject($this->_datas['project'],'auto_time');
-		$p_project->start_date = $this->_getDataFromObject($this->_datas['project'],'start_date');
-		$p_project->start_time = $this->_getDataFromObject($this->_datas['project'],'start_time');
-		$p_project->fav_team_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_color');
-		$p_project->fav_team_text_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_text_color');
-		$p_project->use_legs = $this->_getDataFromObject($this->_datas['project'],'use_legs');
-		$p_project->game_regular_time = $this->_getDataFromObject($this->_datas['project'],'game_regular_time');
-		$p_project->game_parts = $this->_getDataFromObject($this->_datas['project'],'game_parts');
-		$p_project->halftime = $this->_getDataFromObject($this->_datas['project'],'halftime');
-		$p_project->allow_add_time = $this->_getDataFromObject($this->_datas['project'],'allow_add_time');
-		$p_project->add_time = $this->_getDataFromObject($this->_datas['project'],'add_time');
-		$p_project->points_after_regular_time = $this->_getDataFromObject($this->_datas['project'],'points_after_regular_time');
-		$p_project->points_after_add_time = $this->_getDataFromObject($this->_datas['project'],'points_after_add_time');
-		$p_project->points_after_penalty = $this->_getDataFromObject($this->_datas['project'],'points_after_penalty');
-		$p_project->template = $this->_getDataFromObject($this->_datas['project'],'template');
-		$p_project->enable_sb = $this->_getDataFromObject($this->_datas['project'],'enable_sb');
-		$p_project->sb_catid = $this->_getDataFromObject($this->_datas['project'],'sb_catid');
 		
+		//$p_project->staffel_id = $this->_getDataFromObject($this->_datas['project'],'staffel_id');
+		//$p_project->extension = $this->_getDataFromObject($this->_datas['project'],'extension');
+		//$p_project->timezone = $this->_getDataFromObject($this->_datas['project'],'timezone');
+		//$p_project->project_type = $this->_getDataFromObject($this->_datas['project'],'project_type');
+		//$p_project->teams_as_referees = $this->_getDataFromObject($this->_datas['project'],'teams_as_referees');
+		$p_project->sports_type_id = $this->_sportstype_id;
+		//$p_project->current_round = $this->_getDataFromObject($this->_datas['project'],'current_round');
+		//$p_project->current_round_auto = $this->_getDataFromObject($this->_datas['project'],'current_round_auto');
+		//$p_project->auto_time = $this->_getDataFromObject($this->_datas['project'],'auto_time');
+		//$p_project->start_date = $this->_getDataFromObject($this->_datas['project'],'start_date');
+		//$p_project->start_time = $this->_getDataFromObject($this->_datas['project'],'start_time');
+		//$p_project->fav_team_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_color');
+		//$p_project->fav_team_text_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_text_color');
+		//$p_project->use_legs = $this->_getDataFromObject($this->_datas['project'],'use_legs');
+		//$p_project->game_regular_time = $this->_getDataFromObject($this->_datas['project'],'game_regular_time');
+		//$p_project->game_parts = $this->_getDataFromObject($this->_datas['project'],'game_parts');
+		//$p_project->halftime = $this->_getDataFromObject($this->_datas['project'],'halftime');
+		//$p_project->allow_add_time = $this->_getDataFromObject($this->_datas['project'],'allow_add_time');
+		//$p_project->add_time = $this->_getDataFromObject($this->_datas['project'],'add_time');
+		//$p_project->points_after_regular_time = $this->_getDataFromObject($this->_datas['project'],'points_after_regular_time');
+		//$p_project->points_after_add_time = $this->_getDataFromObject($this->_datas['project'],'points_after_add_time');
+		//$p_project->points_after_penalty = $this->_getDataFromObject($this->_datas['project'],'points_after_penalty');
+		//$p_project->template = $this->_getDataFromObject($this->_datas['project'],'template');
+		//$p_project->enable_sb = $this->_getDataFromObject($this->_datas['project'],'enable_sb');
+		//$p_project->sb_catid = $this->_getDataFromObject($this->_datas['project'],'sb_catid');
+		/*
 		if ( $this->_getDataFromObject($this->_datas['project'],'projectinfo') )
 		{
 		$p_project->projectinfo = $this->_getDataFromObject($this->_datas['project'],'projectinfo');	
@@ -3253,9 +3265,9 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 		$p_project->projectinfo = ' ';	
 		}
-		
+		*/
 		if ($this->_publish){$p_project->published = 1;}
-
+/*
 if ( !$p_project->teams_as_referees )
 {
 $p_project->teams_as_referees = 0; 		
@@ -3267,7 +3279,8 @@ $p_project->enable_sb = 0;
 if ( !$p_project->sb_catid )
 {
 $p_project->sb_catid = 0; 		
-}				
+}		
+		*/
 try {		
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project', $p_project);
 $insertID = Factory::getDbo()->insertid();
