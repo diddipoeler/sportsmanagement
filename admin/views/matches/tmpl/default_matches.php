@@ -548,23 +548,15 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
 
                     </td>
                     <td class="center">
-                        <a rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
-                           href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
-                           class="modal open-editreferees"
-                           title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'); ?>">
-                            <?php
-                            if ($row->referees_count == 0) {
+                    <?php
+                    if ($row->referees_count == 0) {
                                 $image = 'players_add.png';
                             } else {
                                 $image = 'icon-16-Referees.png';
                             }
-                            $title = $row->referees_count;
-                            echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $image,
-                                Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'),
-                                'title= "' . $title . '"');
-                            echo '<sub>' . $row->referees_count . '</sub> ';
-                            ?>
-                        </a>
+echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/'.$image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);                    
+                    ?>
+                        
                     </td>
                     <td style='text-align:center; '>
                         <?php
