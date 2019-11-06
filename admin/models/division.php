@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModeldivision
@@ -125,7 +126,7 @@ return count($division_teams);
 			$tblRound->id = $pks[$x];
 			$tblRound->name	= $post['name'.$pks[$x]];
             
-            $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
+            $tblRound->alias = OutputFilter::stringURLSafe( $post['name'.$pks[$x]] );
             // Set the values
 		    $tblRound->modified = $date->toSql();
 		    $tblRound->modified_by = $user->get('id');

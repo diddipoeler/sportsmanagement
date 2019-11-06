@@ -9,12 +9,10 @@
  * @subpackage updates
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.filter.output');
+use Joomla\CMS\Filter\OutputFilter;
 
 $uri	= Factory::getUri();
 
@@ -76,7 +74,7 @@ foreach ( $result as $row )
 $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $row->id;  
-$object->alias = JFilterOutput::stringURLSafe( $row->firstname ).'-'.JFilterOutput::stringURLSafe( $row->lastname );
+$object->alias = OutputFilter::stringURLSafe( $row->firstname ).'-'.OutputFilter::stringURLSafe( $row->lastname );
 // Update their details in the table using id as the primary key.
 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }		
@@ -103,7 +101,7 @@ foreach ( $result as $row )
 $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $row->id;  
-$object->alias = JFilterOutput::stringURLSafe( $row->name );
+$object->alias = OutputFilter::stringURLSafe( $row->name );
 // Update their details in the table using id as the primary key.
 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }

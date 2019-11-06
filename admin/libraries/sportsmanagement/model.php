@@ -482,7 +482,7 @@ $data['notes'] = $html;
  * tippspiel 
  */         
        case 'predictiongame':
-       $data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
+       $data['alias'] = OutputFilter::stringURLSafe( $data['name'] ); 
        if ( isset($data['notify_to']) )
        {
         

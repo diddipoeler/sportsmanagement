@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry; 
- 
+use Joomla\CMS\Filter\OutputFilter; 
 
 /**
  * sportsmanagementModelsmquote
@@ -66,7 +66,7 @@ $query = $db->getQuery(true);
 			if ($data['name'] == $orig_table->name)
 			{
 				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
-				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
+				$data['alias'] = OutputFilter::stringURLSafe( $data['name'] );
 			}
 		}
       

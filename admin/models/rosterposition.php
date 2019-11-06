@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelrosterposition
@@ -55,7 +56,7 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
     // Set the values
 		$data['modified'] = $date->toSql();
 		$data['modified_by'] = $user->get('id');
-        $data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
+        $data['alias'] = OutputFilter::stringURLSafe( $data['name'] );
         
     // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )

@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filter\OutputFilter;
 jimport('joomla.filesystem.file');
 
 use Joomla\CMS\Log\Log;
@@ -309,9 +310,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 				$filename[0] = $filename[0]."-".$table;
 			}
 		}			
-    $l98filename = JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His");
+    $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
     //$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$l98filename.'.jlg';
-    $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.JFilterOutput::stringURLSafe($filename[0]).'.jlg';   
+    $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
     
     $userpath = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username;
     if ( Folder::exists($userpath) )
@@ -490,7 +491,7 @@ $xmlfile = $xmlfile.$output;
 		}
 		/**/
 		header('Content-type: "text/xml"; charset="utf-8"');
-		header("Content-Disposition: attachment; filename=\"" . JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
+		header("Content-Disposition: attachment; filename=\"" . OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
 		header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 2, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-cache, must-revalidate");

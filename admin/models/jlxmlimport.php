@@ -1676,9 +1676,9 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				
                 $p_league = new stdClass();
 				$p_league->name = substr(trim($this->_league_new),0,74);
-				$p_league->alias = substr(JFilterOutput::stringURLSafe($this->_league_new),0,74);
-                $p_league->short_name = substr(JFilterOutput::stringURLSafe($this->_league_new),0,14);
-                $p_league->middle_name = substr(JFilterOutput::stringURLSafe($this->_league_new),0,24);
+				$p_league->alias = substr(OutputFilter::stringURLSafe($this->_league_new),0,74);
+                $p_league->short_name = substr(OutputFilter::stringURLSafe($this->_league_new),0,14);
+                $p_league->middle_name = substr(OutputFilter::stringURLSafe($this->_league_new),0,24);
 				$p_league->country = $this->_league_new_country;
                 $p_league->sports_type_id = $this->_sportstype_id;
                 
@@ -1751,7 +1751,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $p_season = $mdl->getTable();
                 
 				$p_season->set('name',trim($this->_season_new));
-				$p_season->set('alias',JFilterOutput::stringURLSafe($this->_season_new));
+				$p_season->set('alias',OutputFilter::stringURLSafe($this->_season_new));
 
 				if ($p_season->store()===false)
 				{
@@ -1833,7 +1833,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-					$p_eventtype->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_eventtype,'name')));
+					$p_eventtype->set('alias',OutputFilter::stringURLSafe($this->_getDataFromObject($p_eventtype,'name')));
 				}
                 
                 $query->clear();
@@ -1928,7 +1928,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-					$p_statistic->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_statistic,'name')));
+					$p_statistic->set('alias',OutputFilter::stringURLSafe($this->_getDataFromObject($p_statistic,'name')));
 				}
 				$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_statistic WHERE name='".addslashes(stripslashes($p_statistic->name))."' AND class='".addslashes(stripslashes($p_statistic->class))."'";
 				Factory::getDbo()->setQuery($query);
@@ -2016,7 +2016,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-					$p_position->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name'));
+					$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				}
 				
                 $query->clear();
@@ -2140,7 +2140,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-					$p_position->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name'));
+					$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				}
 				
                 $query->clear();
@@ -2393,7 +2393,7 @@ break;
 				}
 				else
 				{
-					$p_playground->alias = substr(JFilterOutput::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
+					$p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
 				}
 				
 				if ( $this->_importType != 'playgrounds' )	// force club_id to be set to default if only playgrounds are imported
@@ -2610,7 +2610,7 @@ break;
 				}
 				else
 				{
-					$p_club->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_club,'name'));
+					$p_club->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_club,'name'));
 				}
 				if ($this->_importType!='clubs')	// force playground_id to be set to default if only clubs are imported
 				{
@@ -2919,7 +2919,7 @@ break;
 				}
 				else
 				{
-					$p_team->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_team,'name'));
+					$p_team->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_team,'name'));
 				}
 				if (($this->import_version=='NEW') && ($import_team->extended!=''))
 				{
@@ -3169,10 +3169,10 @@ break;
 				}
 				$alias = $this->_getDataFromObject($import_person,'alias');
 				$aliasparts = array(trim($p_person->firstname),trim($p_person->lastname));
-				$p_alias = JFilterOutput::stringURLSafe(implode(' ',$aliasparts));
+				$p_alias = OutputFilter::stringURLSafe(implode(' ',$aliasparts));
 				if ((isset($alias)) && (trim($alias)!=''))
 				{
-					$p_person->alias = JFilterOutput::stringURLSafe($alias);
+					$p_person->alias = OutputFilter::stringURLSafe($alias);
 				}
 				else
 				{
@@ -3297,7 +3297,7 @@ break;
 }    
 }       
 		$p_project->name = substr(trim($this->_name),0,99);
-		$p_project->alias = substr(JFilterOutput::stringURLSafe(trim($this->_name)),0,99);
+		$p_project->alias = substr(OutputFilter::stringURLSafe(trim($this->_name)),0,99);
 		$p_project->league_id = $this->_league_id;
         $p_project->import_project_id = $this->_import_project_id;
 		$p_project->season_id = $this->_season_id;
@@ -3723,7 +3723,7 @@ $t_params = json_encode( $ini );
 					}
 					else
 					{
-						$p_division->set('alias',JFilterOutput::stringURLSafe($name));
+						$p_division->set('alias',OutputFilter::stringURLSafe($name));
 					}
 				}
 				if ($p_division->store()===false)
@@ -4469,7 +4469,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			}
 			else
 			{
-				$p_round->set('alias',JFilterOutput::stringURLSafe($name));
+				$p_round->set('alias',OutputFilter::stringURLSafe($name));
 			}
 			$p_round->set('round_date_first',$this->_getDataFromObject($round,'round_date_first'));
 			$round_date_last=trim($this->_getDataFromObject($round,'round_date_last'));

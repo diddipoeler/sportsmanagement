@@ -48,10 +48,10 @@ class sportsmanagementTableSeason extends JSMTable
 		// setting alias
 		if ( empty( $this->alias ) )
 		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe( $this->name );
 		}
 		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 		//should check name unicity
 		return true;

@@ -20,7 +20,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
-
+use Joomla\CMS\Filter\OutputFilter;
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
@@ -3192,7 +3192,7 @@ if ( $data['id'] )
         $temp = new stdClass();
         $temp->firstname = $firstname;
         $temp->lastname = $lastname;
-        $temp->alias = JFilterOutput::stringURLSafe($temp->firstname . ' ' . $temp->lastname);
+        $temp->alias = OutputFilter::stringURLSafe($temp->firstname . ' ' . $temp->lastname);
         $temp->position_id = $position_id;
         $temp->notes = ' ';
         $temp->email = ' ';

@@ -47,7 +47,7 @@ class sportsmanagementTableProject extends JSMTable
 	function check()
 	{
 		// setting alias
-        $this->alias = JFilterOutput::stringURLSafe( $this->name );
+        $this->alias = OutputFilter::stringURLSafe( $this->name );
 
 		return true;
 	}

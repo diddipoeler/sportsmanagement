@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelagegroup
@@ -99,7 +100,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 
 			$tblRound->name	= $post['name'.$pks[$x]];
             
-            $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
+            $tblRound->alias = OutputFilter::stringURLSafe( $post['name'.$pks[$x]] );
             // Set the values
 		    $tblRound->modified = $date->toSql();
 		    $tblRound->modified_by = $user->get('id');
