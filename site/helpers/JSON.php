@@ -119,6 +119,7 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 */
 class JSMServices_JSON
 {
+ var $use = 0;
    /**
     * constructs a new JSON instance
     *
