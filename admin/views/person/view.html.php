@@ -140,7 +140,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
         
-//$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript('https://maps.googleapis.com/maps/api/js?libraries=places&language=de');
 $this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
 $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/person/tmpl/edit.js');
     
