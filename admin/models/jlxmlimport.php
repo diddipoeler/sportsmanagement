@@ -17,6 +17,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -1974,7 +1975,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
        
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['parentposition']) || count($this->_datas['parentposition'])==0){return true;}
 		if ((!isset($this->_newparentpositionsid) || count($this->_newparentpositionsid)==0) &&
 			(!isset($this->_dbparentpositionsid) || count($this->_dbparentpositionsid)==0)){return true;}
@@ -1983,7 +1984,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 			foreach ($this->_dbparentpositionsid AS $key => $id)
 			{
-				$oldID=$this->_getDataFromObject($this->_datas['parentposition'][$key],'id');
+				$oldID = $this->_getDataFromObject($this->_datas['parentposition'][$key],'id');
 				$this->_convertParentPositionID[$oldID]=$id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 				$my_text .= Text::sprintf(	'Using existing parentposition data: %1$s',
@@ -1997,25 +1998,25 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			foreach ($this->_newparentpositionsid AS $key => $id)
 			{
 				
-                $mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
-                $p_position = $mdl->getTable();
+//                $mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
+                $p_position = new stdClass();
                 
-				$import_position=$this->_datas['parentposition'][$key];
-//$this->dump_variable("import_position", $import_position);
+				$import_position = $this->_datas['parentposition'][$key];
+                
 				$oldID = $this->_getDataFromObject($import_position,'id');
 				$alias = $this->_getDataFromObject($import_position,'alias');
-				$p_position->set('name',trim($this->_newparentpositionsname[$key]));
-				$p_position->set('parent_id',0);
-				$p_position->set('persontype',$this->_getDataFromObject($import_position,'persontype'));
-				$p_position->set('sports_type_id',$this->_sportstype_id);
-				$p_position->set('published',1);
-				if ((isset($alias)) && (trim($alias)!=''))
+				$p_position->name = trim($this->_newparentpositionsname[$key]);
+				$p_position->parent_id = 0;
+				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype');
+				$p_position->sports_type_id = $this->_sportstype_id;
+				$p_position->published = 1;
+				if ( isset($alias) && trim($alias) != '' )
 				{
-					$p_position->set('alias',$alias);
+					$p_position->alias = $alias;
 				}
 				else
 				{
-					$p_position->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name')));
+					$p_position->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				}
 				
                 $query->clear();
@@ -2030,14 +2031,16 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if (Factory::getDbo()->getAffectedRows())
 				{
-					$p_position->load(Factory::getDbo()->loadResult());
-					$this->_convertParentPositionID[$oldID]=$p_position->id;
+				    $row = Table::getInstance('position', 'sportsmanagementTable');
+					$row->load(Factory::getDbo()->loadResult());
+					$this->_convertParentPositionID[$oldID] = $row->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= Text::sprintf('Using existing parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
+					$my_text .= Text::sprintf('Using existing parent-position data: %1$s','</span><strong>'.Text::_($row->name).'</strong>');
 					$my_text .= '<br />';
 				}
 				else
 				{
+				    /*
 					if ($p_position->store()===false)
 					{
 						$my_text .= 'error on parent-position import: ';
@@ -2052,6 +2055,24 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 						$my_text .= Text::sprintf('Created new parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
 					}
+                    */
+try
+{
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);	
+$insertID = Factory::getDbo()->insertid();
+$this->_convertParentPositionID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
+$my_text .= '<br />';
+}
+catch (Exception $e)
+{
+$my_text .= 'error on parent-position import: ';
+$my_text .= $oldID;
+$my_text .= $e->getMessage().'<br />';                        
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+}                    
+                    
 				}
 			}
 		}
@@ -2095,30 +2116,31 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			foreach ($this->_newpositionsid AS $key => $id)
 			{
 				
-                $mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
-                $p_position = $mdl->getTable();
+                //$mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
+                $p_position = new stdClass();
                 
 				$import_position = $this->_datas['position'][$key];
-				$oldID=$this->_getDataFromObject($import_position,'id');
-				$alias=$this->_getDataFromObject($import_position,'alias');
-				$p_position->set('name',trim($this->_newpositionsname[$key]));
-				$oldParentPositionID=$this->_getDataFromObject($import_position,'parent_id');
+                
+				$oldID = $this->_getDataFromObject($import_position,'id');
+				$alias = $this->_getDataFromObject($import_position,'alias');
+				$p_position->name = trim($this->_newpositionsname[$key]);
+				$oldParentPositionID = $this->_getDataFromObject($import_position,'parent_id');
 				if (isset($this->_convertPositionID[$oldParentPositionID]))
 				{
-					$p_position->set('parent_id',$this->_convertPositionID[$oldParentPositionID]);
+					$p_position->parent_id = $this->_convertPositionID[$oldParentPositionID];
 				} else {
-					$p_position->set('parent_id', 0);
+					$p_position->parent_id = 0;
 				}
-				$p_position->set('persontype',$this->_getDataFromObject($import_position,'persontype'));
-				$p_position->set('sports_type_id',$this->_sportstype_id);
-				$p_position->set('published',1);
-				if ((isset($alias)) && (trim($alias)!=''))
+				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype');
+				$p_position->sports_type_id = $this->_sportstype_id;
+				$p_position->published = 1;
+				if ( isset($alias) && trim($alias) != '' )
 				{
-					$p_position->set('alias',$alias);
+					$p_position->alias = $alias;
 				}
 				else
 				{
-					$p_position->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name')));
+					$p_position->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				}
 				
                 $query->clear();
@@ -2133,36 +2155,55 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if (Factory::getDbo()->getAffectedRows())
 				{
-					$p_position->load(Factory::getDbo()->loadResult());
+					$row = Table::getInstance('position', 'sportsmanagementTable');
+                    $row->load(Factory::getDbo()->loadResult());
 					// Prevent showing of using existing position twice (see the foreach Factory::getDbo()positionsid loop)
 					if ( isset($this->_convertPositionID[$oldID]) )
                     {
-                    if ( $this->_convertPositionID[$oldID] != $p_position->id )
+                    if ( $this->_convertPositionID[$oldID] != $row->id )
 					{
-						$this->_convertPositionID[$oldID]=$p_position->id;
+						$this->_convertPositionID[$oldID] = $row->id;
 						$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1','</span><strong>'.Text::_($p_position->name).'</strong>');
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1','</span><strong>'.Text::_($row->name).'</strong>');
 						$my_text .= '<br />';
 					}
                     }
 				}
 				else
 				{
-					if ($p_position->store()===false)
-					{
-						$my_text .= 'error on position import: ';
-						$my_text .= $oldID;
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-					}
-					else
-					{
-						$insertID = Factory::getDbo()->insertid();
-						$this->_convertPositionID[$oldID] = $insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.Text::_($p_position->name).'</strong>');
-						$my_text .= '<br />';
-					}
+//					if ($p_position->store()===false)
+//					{
+//						$my_text .= 'error on position import: ';
+//						$my_text .= $oldID;
+//						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+//                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
+//					}
+//					else
+//					{
+//						$insertID = Factory::getDbo()->insertid();
+//						$this->_convertPositionID[$oldID] = $insertID;
+//						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+//						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.Text::_($p_position->name).'</strong>');
+//						$my_text .= '<br />';
+//					}
+try
+{
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);	
+$insertID = Factory::getDbo()->insertid();
+$this->_convertPositionID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.Text::_($p_position->name).'</strong>');
+$my_text .= '<br />';
+}
+catch (Exception $e)
+{
+$my_text .= 'error on position import: ';
+$my_text .= $oldID;
+$my_text .= $e->getMessage().'<br />';
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;    
+}                    
+                    
+                    
 				}
 			}
 		}
@@ -2469,7 +2510,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			{
 				
                 //$mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
-                $p_club = new stdClass();;
+                $p_club = new stdClass();
                 
                 //$this->dump_variable("p_club", $p_club);
                 
