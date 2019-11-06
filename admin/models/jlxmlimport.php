@@ -2481,6 +2481,7 @@ default:
 $p_club->$import = $this->_getDataFromObject($import_club,$import);    
 break;    
 }   
+}
 				$p_club->name = $this->_newclubs[$key];
 				$p_club->admin = $this->_joomleague_admin;
 				//$p_club->address = $this->_getDataFromObject($import_club,'address');
