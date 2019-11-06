@@ -2816,12 +2816,22 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $p_team = new stdClass();
             
 				$import_team = $this->_datas['team'][$key];
-
+foreach ($import_team as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_team->$import = $this->_getDataFromObject($import_team,$import);    
+break;    
+}   
+}
 				$oldID = $this->_getDataFromObject($import_team,'id');
 				$alias = $this->_getDataFromObject($import_team,'alias');
 				$oldClubID = $this->_getDataFromObject($import_team,'club_id');
                 
-				if ((!empty($import_team->club_id)) && (isset($this->_convertClubID[$oldClubID])))
+				if ( !empty($import_team->club_id) && isset($this->_convertClubID[$oldClubID]) )
 				{
 					$p_team->club_id = $this->_convertClubID[$oldClubID];
 				}
@@ -2830,25 +2840,25 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 					$p_team->club_id = 0;
 				}
                 
-				$p_team->name = substr($this->_newteams[$key],0,74);
-				$p_team->short_name = substr($this->_newteamsshort[$key],0,14);
-				$p_team->middle_name = substr($this->_newteamsmiddle[$key],0,24);
-				$p_team->website = $this->_getDataFromObject($import_team,'website');
+				//$p_team->name = substr($this->_newteams[$key],0,74);
+				//$p_team->short_name = substr($this->_newteamsshort[$key],0,14);
+				//$p_team->middle_name = substr($this->_newteamsmiddle[$key],0,24);
+				//$p_team->website = $this->_getDataFromObject($import_team,'website');
                 
-                $p_team->agegroup_id = $this->_getDataFromObject($import_team,'agegroup_id');
-                $p_team->sports_type_id = $this->_sportstype_id;
-                if ( $this->_getDataFromObject($import_team,'notes') )
-		{
-				$p_team->notes = $this->_getDataFromObject($import_team,'notes');
-		}
-				else
-				{
-				$p_team->notes = ' ';	
-				}
-				$p_team->picture = $this->_getDataFromObject($import_team,'picture');
-				$p_team->info = $this->_newteamsinfo[$key];
+                //$p_team->agegroup_id = $this->_getDataFromObject($import_team,'agegroup_id');
+                //$p_team->sports_type_id = $this->_sportstype_id;
+//                if ( $this->_getDataFromObject($import_team,'notes') )
+//		{
+//				$p_team->notes = $this->_getDataFromObject($import_team,'notes');
+//		}
+//				else
+//				{
+//				$p_team->notes = ' ';	
+//				}
+				//$p_team->picture = $this->_getDataFromObject($import_team,'picture');
+				//$p_team->info = $this->_newteamsinfo[$key];
 				
-				if ((isset($alias)) && (trim($alias)!=''))
+				if ( isset($alias) && trim($alias) != '' )
 				{
 					$p_team->alias = $alias;
 				}
@@ -2881,10 +2891,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-if ( !$p_team->agegroup_id )
-{
-$p_team->agegroup_id = 0;
-}
+//if ( !$p_team->agegroup_id )
+//{
+//$p_team->agegroup_id = 0;
+//}
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
 $insertID = Factory::getDbo()->insertid();
