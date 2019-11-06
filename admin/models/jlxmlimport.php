@@ -2462,47 +2462,56 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 
 				foreach ($this->_datas['club'] AS $dClub)
 				{
-					if ($dClub->id == $id)
+					if ( $dClub->id == $id )
 					{
-						$import_club=$dClub;
+						$import_club = $dClub;
 						break;
 					}
 				}
 
 				$oldID = $this->_getDataFromObject($import_club,'id');
 				$alias = $this->_getDataFromObject($import_club,'alias');
-
+foreach ($import_club as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_club->$import = $this->_getDataFromObject($import_club,$import);    
+break;    
+}   
 				$p_club->name = $this->_newclubs[$key];
 				$p_club->admin = $this->_joomleague_admin;
-				$p_club->address = $this->_getDataFromObject($import_club,'address');
-				$p_club->zipcode = $this->_getDataFromObject($import_club,'zipcode');
-				$p_club->location = $this->_getDataFromObject($import_club,'location');
-				$p_club->state = $this->_getDataFromObject($import_club,'state');
+				//$p_club->address = $this->_getDataFromObject($import_club,'address');
+				//$p_club->zipcode = $this->_getDataFromObject($import_club,'zipcode');
+				//$p_club->location = $this->_getDataFromObject($import_club,'location');
+				//$p_club->state = $this->_getDataFromObject($import_club,'state');
 				$p_club->country = $this->_newclubscountry[$key];
-				if ( $this->_getDataFromObject($import_club,'founded') )
-				{
-				$p_club->founded = $this->_getDataFromObject($import_club,'founded');
-				}
-				$p_club->phone = $this->_getDataFromObject($import_club,'phone');
-				$p_club->fax = $this->_getDataFromObject($import_club,'fax');
-				$p_club->email = $this->_getDataFromObject($import_club,'email');
-				$p_club->website = $this->_getDataFromObject($import_club,'website');
-				$p_club->president = $this->_getDataFromObject($import_club,'president');
-				$p_club->manager = $this->_getDataFromObject($import_club,'manager');
-				$p_club->logo_bigv = $this->_getDataFromObject($import_club,'logo_big');
-				$p_club->logo_middle = $this->_getDataFromObject($import_club,'logo_middle');
-				$p_club->logo_small = $this->_getDataFromObject($import_club,'logo_small');
+				//if ( $this->_getDataFromObject($import_club,'founded') )
+				//{
+				//$p_club->founded = $this->_getDataFromObject($import_club,'founded');
+				//}
+				//$p_club->phone = $this->_getDataFromObject($import_club,'phone');
+				//$p_club->fax = $this->_getDataFromObject($import_club,'fax');
+				//$p_club->email = $this->_getDataFromObject($import_club,'email');
+				//$p_club->website = $this->_getDataFromObject($import_club,'website');
+				//$p_club->president = $this->_getDataFromObject($import_club,'president');
+				//$p_club->manager = $this->_getDataFromObject($import_club,'manager');
+				//$p_club->logo_big = $this->_getDataFromObject($import_club,'logo_big');
+				//$p_club->logo_middle = $this->_getDataFromObject($import_club,'logo_middle');
+				//$p_club->logo_small = $this->_getDataFromObject($import_club,'logo_small');
                 
-                $p_club->dissolved_year = $this->_getDataFromObject($import_club,'dissolved_year');
-                $p_club->founded_year = $this->_getDataFromObject($import_club,'founded_year');
-				if ( $this->_getDataFromObject($import_club,'unique_id') )
-				{
-                $p_club->unique_id = $this->_getDataFromObject($import_club,'unique_id');
-				}
-				if ( $this->_getDataFromObject($import_club,'new_club_id') )
-				{
-                $p_club->new_club_id = $this->_getDataFromObject($import_club,'new_club_id');
-				}
+                //$p_club->dissolved_year = $this->_getDataFromObject($import_club,'dissolved_year');
+                //$p_club->founded_year = $this->_getDataFromObject($import_club,'founded_year');
+		//		if ( $this->_getDataFromObject($import_club,'unique_id') )
+		//		{
+                //$p_club->unique_id = $this->_getDataFromObject($import_club,'unique_id');
+		//		}
+		//		if ( $this->_getDataFromObject($import_club,'new_club_id') )
+		//		{
+                //$p_club->new_club_id = $this->_getDataFromObject($import_club,'new_club_id');
+		//		}
     // geo coding
     $address_parts = array();
     $addressdata = $this->_getDataFromObject($import_club,'address');
@@ -2540,7 +2549,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 
                 
                 
-                if ((isset($alias)) && (trim($alias)!=''))
+                if ( isset($alias) && trim($alias) != '' )
 				{
 					$p_club->alias = $alias;
 				}
