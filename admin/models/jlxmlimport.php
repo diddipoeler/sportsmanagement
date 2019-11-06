@@ -2652,18 +2652,7 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 	private function _convertNewPlaygroundIDs()
 	{
     $app = Factory::getApplication();   
-
-if ( $this->show_debug_info )
-{
-$this->dump_header("Function _convertNewPlaygroundIDs");
-}
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_convertPlaygroundID", $this->_convertPlaygroundID);
-$this->dump_variable("this->_convertClubID", $this->_convertClubID);
-}
-		
-        $my_text='';
+        $my_text = '';
 		$converted=false;
 		if ( isset($this->_convertPlaygroundID) && !empty($this->_convertPlaygroundID) )
 		{
@@ -2689,7 +2678,7 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
                 {
                     if ( $this->_updatePlaygroundRecord($new_club_id,$new_pg_id) )
 						{
-							$converted=true;
+							$converted = true;
 							$my_text .= '<span style="color:green">';
 							$my_text .= Text::sprintf(	'Converted club-info %1$s in imported playground %2$s - [club_id: %3$s] [playground-id: %4$s]',
 														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
@@ -2703,46 +2692,8 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
                 
             }
             
-            
-            
-            /*
-            foreach ($this->_convertPlaygroundID AS $key => $new_pg_id)
-			{
-			 
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_convertPlaygroundID -> key", $key);
-$this->dump_variable("this->_convertPlaygroundID -> new_club_id", $new_pg_id);
-}
-             
-				$p_playground = $this->_getPlaygroundRecord($new_pg_id);
-				foreach ($this->_convertClubID AS $key2 => $new_club_id)
-				{
-
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_convertClubID -> key", $key2);
-$this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
-}
-                    
-					//if (isset($p_playground->club_id) && ($p_playground->club_id == $key2))
-					//{
-						if ( $this->_updatePlaygroundRecord($new_club_id,$new_pg_id) )
-						{
-							$converted=true;
-							$my_text .= '<span style="color:green">';
-							$my_text .= Text::sprintf(	'Converted club-info %1$s in imported playground %2$s',
-														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
-														"</span><strong>$p_playground->name</strong>");
-							$my_text .= '<br />';
-						}
-						break;
-					//}
-				}
-			}
-            */
 			if (!$converted){$my_text .= '<span style="color:green">'.Text::_('Nothing needed to be converted').'<br />';}
-			$this->_success_text['Converting new playground club-IDs of new playground data:']=$my_text;
+			$this->_success_text['Converting new playground club-IDs of new playground data:'] = $my_text;
 		}
 		return true;
 	}
@@ -2839,25 +2790,7 @@ break;
 				{
 					$p_team->club_id = 0;
 				}
-                
-				//$p_team->name = substr($this->_newteams[$key],0,74);
-				//$p_team->short_name = substr($this->_newteamsshort[$key],0,14);
-				//$p_team->middle_name = substr($this->_newteamsmiddle[$key],0,24);
-				//$p_team->website = $this->_getDataFromObject($import_team,'website');
-                
-                //$p_team->agegroup_id = $this->_getDataFromObject($import_team,'agegroup_id');
-                //$p_team->sports_type_id = $this->_sportstype_id;
-//                if ( $this->_getDataFromObject($import_team,'notes') )
-//		{
-//				$p_team->notes = $this->_getDataFromObject($import_team,'notes');
-//		}
-//				else
-//				{
-//				$p_team->notes = ' ';	
-//				}
-				//$p_team->picture = $this->_getDataFromObject($import_team,'picture');
-				//$p_team->info = $this->_newteamsinfo[$key];
-				
+			
 				if ( isset($alias) && trim($alias) != '' )
 				{
 					$p_team->alias = $alias;
@@ -2872,9 +2805,7 @@ break;
 				}
                 
                 $query->clear();
-          // Select some fields
         $query->select('id,name,short_name,middle_name,info,club_id');
-		// From the table
 		$query->from('#__sportsmanagement_team');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_team->name)).''));
         $query->where('middle_name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_team->middle_name)).''));
@@ -2891,10 +2822,7 @@ break;
 				}
 				else
 				{
-//if ( !$p_team->agegroup_id )
-//{
-//$p_team->agegroup_id = 0;
-//}
+
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
 $insertID = Factory::getDbo()->insertid();
@@ -2914,31 +2842,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
-					/*
-					if ($p_team->store()===false)
-					{
-						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-					}
-					else
-					{
-						$insertID = Factory::getDbo()->insertid();
-						$this->_convertTeamID[$oldID] = $insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf(	'Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
-													"</span><strong>$p_team->name</strong>",
-													"<strong>$p_team->short_name</strong>",
-													"<strong>$p_team->middle_name</strong>",
-													"<strong>$p_team->info</strong>",
-													"<strong>$p_team->club_id</strong>"
-													);
-						$my_text .= '<br />';
-					}
-					*/
+
 				}
 			}
 		}
@@ -2997,7 +2902,7 @@ $newseasonperson->persontype = 1;
 // Insert the object
 $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);	
 } catch (Exception $e) {
-$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+//$app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }
 }						
 					}
@@ -3007,10 +2912,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 		{
 			foreach ($this->_newpersonsid AS $key => $id)
 			{
-				
-                //$mdl = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
                 $p_person = new stdClass();
-                
 				$import_person = $this->_datas['person'][$key];
 
 foreach ($import_person as $key => $value )
@@ -3023,50 +2925,17 @@ default:
 $p_person->$key = $this->_getDataFromObject($import_person,$key);    
 break;    
 }    
-//echo 'key <pre>'.print_r($key,true).'</pre>';	
-//echo 'vallue <pre>'.print_r($value[0],true).'</pre>';	
-//echo 'wert <pre>'.print_r($this->_getDataFromObject($import_person,$key),true).'</pre>';
-
 
 }
 				
 				$oldID = $this->_getDataFromObject($import_person,'id');
-//				$p_person->lastname = trim($this->_newperson_lastname[$key]);
-//				$p_person->firstname = trim($this->_newperson_firstname[$key]);
-//				$p_person->nickname = trim($this->_newperson_nickname[$key]);
-//				$p_person->birthday = $this->_newperson_birthday[$key];
-//				$p_person->agegroup_id = $this->_dbpersonsagegroup[$key];
-//				$p_person->country = $this->_getDataFromObject($import_person,'country');
-//				$p_person->knvbnr = $this->_getDataFromObject($import_person,'knvbnr');
-//				if ( $this->_getDataFromObject($import_person,'height') )
-//				{
-//				$p_person->height = $this->_getDataFromObject($import_person,'height');
-//				}
-//				$p_person->weight = $this->_getDataFromObject($import_person,'weight');
-//				$p_person->picture = $this->_getDataFromObject($import_person,'picture');
-//				$p_person->show_pic = $this->_getDataFromObject($import_person,'show_pic');
-//				$p_person->show_persdata = $this->_getDataFromObject($import_person,'show_persdata');
-//				$p_person->show_teamdata = $this->_getDataFromObject($import_person,'show_teamdata');
-//				$p_person->show_on_frontend = $this->_getDataFromObject($import_person,'show_on_frontend');
-//				$p_person->info = $this->_getDataFromObject($import_person,'info');
-//				$p_person->notes = $this->_getDataFromObject($import_person,'notes');
-//				$p_person->phone = $this->_getDataFromObject($import_person,'phone');
-//				$p_person->mobile = $this->_getDataFromObject($import_person,'mobile');
-//				$p_person->email = $this->_getDataFromObject($import_person,'email');
-//				$p_person->website = $this->_getDataFromObject($import_person,'website');
-//				$p_person->address = $this->_getDataFromObject($import_person,'address');
-//				$p_person->zipcode = $this->_getDataFromObject($import_person,'zipcode');
-//				$p_person->location = $this->_getDataFromObject($import_person,'location');
-//				$p_person->state = $this->_getDataFromObject($import_person,'state');
-//				$p_person->address_country = $this->_getDataFromObject($import_person,'address_country');
-//				$p_person->extended = $this->_getDataFromObject($import_person,'extended');
 				$p_person->published = 1;
                 if ( !$p_person->notes )
                 {
                     $p_person->notes = ' ';
                 }
                 
-    // geo coding
+    /** geo coding */
     $address_parts = array();
     $addressdata = $this->_getDataFromObject($import_person,'address');
     $city = $this->_getDataFromObject($import_person,'city');
@@ -3125,9 +2994,7 @@ break;
 				}
                 
                 $query->clear();
-          // Select some fields
         $query->select('*');
-		// From the table
 		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_person->firstname)).''));
         $query->where('lastname LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_person->lastname)).''));
@@ -3150,20 +3017,8 @@ break;
 				}
 				else
 				{
-					/*
-					if ($p_person->store()===false)
-					{
-						$my_text .= 'error on person import: ';
-						$my_text .= $p_person->lastname.'-';
-						$my_text .= $p_person->firstname.'-';
-						$my_text .= $p_person->nickname.'-';
-						$my_text .= $p_person->birthday;
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-					}
-					*/
 					try
 					{
-						//$p_person->store();
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $p_person);						
 						$insertID = Factory::getDbo()->insertid();
 						$this->_convertPersonID[$oldID] = $insertID;
@@ -3205,7 +3060,6 @@ $my_text .= 'error on person import: ';
 						$my_text .= $p_person->nickname.'-';
 						$my_text .= $p_person->birthday.'<br>';
 						$my_text .= $e->getMessage().'<br>';
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;						
 }
 
 					
