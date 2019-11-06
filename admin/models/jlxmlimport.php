@@ -2830,7 +2830,8 @@ break;
 				$oldID = $this->_getDataFromObject($import_team,'id');
 				$alias = $this->_getDataFromObject($import_team,'alias');
 				$oldClubID = $this->_getDataFromObject($import_team,'club_id');
-                
+                $p_team->short_name = substr($p_team->name,0,14);
+		$p_team->middle_name = substr($p_team->name,0,24);
 				if ( !empty($import_team->club_id) && isset($this->_convertClubID[$oldClubID]) )
 				{
 					$p_team->club_id = $this->_convertClubID[$oldClubID];
