@@ -2410,22 +2410,15 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }		
-		// $this->_datas['club'] : array of all clubs obtained from the xml import file
-		// $this->_newclubsid    : array of club ids (xml values) for the new clubs to be created in the database
-		// Factory::getDbo()clubsid     : array of club ids (db values) for the existing clubs to be used from the database
-		//                         (value of 0 means that the club does not exist in the database)
+
 		if (!isset($this->_datas['club']) || count($this->_datas['club'])==0){return true;}
 		if ((!isset($this->_newclubsid) || count($this->_newclubsid)==0) &&
 			(!isset($this->_dbclubsid) || count($this->_dbclubsid)==0)){return true;}
 
-
-
 		if (!empty($this->_dbclubsid))
 		{
 		  $query->clear();
-          // Select some fields
         $query->select('id,name,standard_playground,country');
-		// From the table
 		$query->from('#__sportsmanagement_club');
         $query->group('id');
         
@@ -2453,11 +2446,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 			foreach ($this->_newclubsid AS $key => $id)
 			{
-				
-                //$mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
                 $p_club = new stdClass();
-                
-                //$this->dump_variable("p_club", $p_club);
                 
 				foreach ($this->_datas['club'] AS $dClub)
 				{
@@ -2483,36 +2472,9 @@ break;
 }
 				$p_club->name = $this->_newclubs[$key];
 				$p_club->admin = $this->_joomleague_admin;
-				//$p_club->address = $this->_getDataFromObject($import_club,'address');
-				//$p_club->zipcode = $this->_getDataFromObject($import_club,'zipcode');
-				//$p_club->location = $this->_getDataFromObject($import_club,'location');
-				//$p_club->state = $this->_getDataFromObject($import_club,'state');
 				$p_club->country = $this->_newclubscountry[$key];
-				//if ( $this->_getDataFromObject($import_club,'founded') )
-				//{
-				//$p_club->founded = $this->_getDataFromObject($import_club,'founded');
-				//}
-				//$p_club->phone = $this->_getDataFromObject($import_club,'phone');
-				//$p_club->fax = $this->_getDataFromObject($import_club,'fax');
-				//$p_club->email = $this->_getDataFromObject($import_club,'email');
-				//$p_club->website = $this->_getDataFromObject($import_club,'website');
-				//$p_club->president = $this->_getDataFromObject($import_club,'president');
-				//$p_club->manager = $this->_getDataFromObject($import_club,'manager');
-				//$p_club->logo_big = $this->_getDataFromObject($import_club,'logo_big');
-				//$p_club->logo_middle = $this->_getDataFromObject($import_club,'logo_middle');
-				//$p_club->logo_small = $this->_getDataFromObject($import_club,'logo_small');
-                
-                //$p_club->dissolved_year = $this->_getDataFromObject($import_club,'dissolved_year');
-                //$p_club->founded_year = $this->_getDataFromObject($import_club,'founded_year');
-		//		if ( $this->_getDataFromObject($import_club,'unique_id') )
-		//		{
-                //$p_club->unique_id = $this->_getDataFromObject($import_club,'unique_id');
-		//		}
-		//		if ( $this->_getDataFromObject($import_club,'new_club_id') )
-		//		{
-                //$p_club->new_club_id = $this->_getDataFromObject($import_club,'new_club_id');
-		//		}
-    // geo coding
+
+    /** geo coding */
     $address_parts = array();
     $addressdata = $this->_getDataFromObject($import_club,'address');
     $state = $this->_getDataFromObject($import_club,'state');
@@ -2547,8 +2509,6 @@ break;
     $p_club->latitude = $coords['latitude'];
     $p_club->longitude = $coords['longitude'];        
                 
-                
-                
                 if ( isset($alias) && trim($alias) != '' )
 				{
 					$p_club->alias = $alias;
@@ -2573,14 +2533,11 @@ break;
 				}
 				
                 $query->clear();
-          // Select some fields
         $query->select('id,name,country');
-		// From the table
 		$query->from('#__sportsmanagement_club');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_club->name)).''));
         $query->where('country LIKE '.Factory::getDbo()->Quote(''.$p_club->country.''));
 			Factory::getDbo()->setQuery($query);
-            
 
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ( $object = Factory::getDbo()->loadObject())
@@ -2592,18 +2549,9 @@ break;
 				}
 				else
 				{
-					/*
-					if ($p_club->store()===false)
-					{
-						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-					}
-					*/
+
 try
 {
-//$p_club->store();
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $p_club);	
 $insertID = Factory::getDbo()->insertid();
 $this->_convertClubID[$oldID] = $insertID;
@@ -2616,7 +2564,6 @@ $my_text .= '<br />';
 }
 catch (Exception $e)
 {
-    //$app->enqueueMessage(JText::_($e->getMessage()), 'error');
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
@@ -2627,18 +2574,8 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 					
 				}
 
-if ( $this->show_debug_info )
-{
-$this->dump_variable("p_club", $p_club);
-}
-
 			}
 		}
-
-if ( $this->show_debug_info )
-{
-$this->dump_variable("this->_convertClubID", $this->_convertClubID);
-}
 
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
@@ -4333,6 +4270,22 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			
             $p_match = new stdClass();
 			$oldId = (int)$match->id;
+/*            
+foreach ($match as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_match->$import = $this->_getDataFromObject($match,$import);    
+break;    
+}   
+}            
+*/            
+            
+            
+            
 			if ( $this->import_version == 'NEW' )
 			{
 				$p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match,'round_id')];
