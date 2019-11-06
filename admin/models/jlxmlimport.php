@@ -5085,29 +5085,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			{
 				$p_matchreferee->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_matchreferee->ordering = $this->_getDataFromObject($import_matchreferee,'ordering');
-            /*
-			if ($p_matchreferee->store()===false)
-			{
-				$my_text .= 'error on matchreferee import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-			}
-			else
-			{
-				$dPerson=$this->_getPersonFromProjectReferee($p_matchreferee->project_referee_id);
-				$dPosName=(($p_matchreferee->project_position_id==0) ?
-							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
-							$this->_getProjectPositionName($p_matchreferee->project_position_id));
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new matchreferee data. MatchID: %1$s - Referee: %2$s,%3$s - Position: %4$s',
-								'</span><strong>'.$p_matchreferee->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								'</span><strong>'.$dPerson->lastname,
-								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>$dPosName</strong>");
-				$my_text .= '<br />';
-			}
-            */
+			$p_matchreferee->ordering = $this->_getDataFromObject($import_matchreferee,'ordering') ? $this->_getDataFromObject($import_matchreferee,'ordering') : 0;
             
 try
 {
@@ -5123,9 +5101,6 @@ $dPerson = $this->_getPersonFromProjectReferee($p_matchreferee->project_referee_
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								"</span><strong>$dPosName</strong>");
 				$my_text .= '<br />';
-                
-
-
 }
 catch (Exception $e)
 {
@@ -5133,12 +5108,11 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= __LINE__.' error on matchreferee import: ';
 $my_text .= $oldID.'<br />';
 $my_text .= $e->getMessage().'<br />';
-//$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 }
             
             
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
