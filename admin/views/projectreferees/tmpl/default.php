@@ -16,15 +16,7 @@ use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-HTMLHelper::_( 'behavior.mootools' );    
-}
+
 ?>
 <style>
 .search-item {
