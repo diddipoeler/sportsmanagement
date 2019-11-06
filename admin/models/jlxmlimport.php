@@ -3742,8 +3742,27 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
             $p_projectteam = new stdClass();
 			$import_projectteam = $this->_datas['projectteam'][$key];
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
-			$p_projectteam->project_id = $this->_project_id;
-            $p_projectteam->picture = $this->_getDataFromObject($projectteam,'picture');
+		
+foreach ($import_projectteam as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+case 'description':
+$p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
+break;
+case 'info':		
+$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
+break;		
+default:
+$p_projectteam->$import = $this->_getDataFromObject($import_projectteam,$import);    
+break;    
+}    
+}  		
+
+	$p_projectteam->project_id = $this->_project_id;
+        //$p_projectteam->picture = $this->_getDataFromObject($projectteam,'picture');
             
 /**
 * jetzt erfolgt die umsetzung der team_id in die neue struktur 
@@ -3808,20 +3827,21 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			}
             }
 
-			$p_projectteam->start_points = $this->_getDataFromObject($projectteam,'start_points');
-			$p_projectteam->points_finally = $this->_getDataFromObject($projectteam,'points_finally');
-			$p_projectteam->neg_points_finally = $this->_getDataFromObject($projectteam,'neg_points_finally');
-			$p_projectteam->matches_finally = $this->_getDataFromObject($projectteam,'matches_finally');
-			$p_projectteam->won_finally = $this->_getDataFromObject($projectteam,'won_finally');
-			$p_projectteam->draws_finally = $this->_getDataFromObject($projectteam,'draws_finally');
-			$p_projectteam->lost_finally = $this->_getDataFromObject($projectteam,'lost_finally');
-			$p_projectteam->homegoals_finally = $this->_getDataFromObject($projectteam,'homegoals_finally');
-			$p_projectteam->guestgoals_finally = $this->_getDataFromObject($projectteam,'guestgoals_finally');
-			$p_projectteam->diffgoals_finally = $this->_getDataFromObject($projectteam,'diffgoals_finally');
-			$p_projectteam->is_in_score = $this->_getDataFromObject($projectteam,'is_in_score');
-			$p_projectteam->use_finally = $this->_getDataFromObject($projectteam,'use_finally');
+			//$p_projectteam->start_points = $this->_getDataFromObject($projectteam,'start_points');
+			//$p_projectteam->points_finally = $this->_getDataFromObject($projectteam,'points_finally');
+			//$p_projectteam->neg_points_finally = $this->_getDataFromObject($projectteam,'neg_points_finally');
+			//$p_projectteam->matches_finally = $this->_getDataFromObject($projectteam,'matches_finally');
+			//$p_projectteam->won_finally = $this->_getDataFromObject($projectteam,'won_finally');
+			//$p_projectteam->draws_finally = $this->_getDataFromObject($projectteam,'draws_finally');
+			//$p_projectteam->lost_finally = $this->_getDataFromObject($projectteam,'lost_finally');
+			//$p_projectteam->homegoals_finally = $this->_getDataFromObject($projectteam,'homegoals_finally');
+			//$p_projectteam->guestgoals_finally = $this->_getDataFromObject($projectteam,'guestgoals_finally');
+			//$p_projectteam->diffgoals_finally = $this->_getDataFromObject($projectteam,'diffgoals_finally');
+			//$p_projectteam->is_in_score = $this->_getDataFromObject($projectteam,'is_in_score');
+			//$p_projectteam->use_finally = $this->_getDataFromObject($projectteam,'use_finally');
 			$p_projectteam->admin = $this->_joomleague_admin;
 
+		/*
 			if ($this->import_version=='NEW')
 			{
 				if (isset($import_projectteam->mark))
@@ -3829,6 +3849,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 					$p_projectteam->mark = $this->_getDataFromObject($projectteam,'mark');
 				}
 				$p_projectteam->info = $this->_getDataFromObject($projectteam,'info');
+				
 				if ( $this->_getDataFromObject($projectteam,'reason') )
 				{
                 $p_projectteam->reason = $this->_getDataFromObject($projectteam,'reason');
@@ -3837,6 +3858,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 {
                 $p_projectteam->reason = ' ';    
                 }
+				
                 if ( $this->_getDataFromObject($projectteam,'notes') )
 				{
 				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'notes');
@@ -3858,7 +3880,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
 			}
-			
+			*/
 			
 			
 			if ((isset($projectteam->standard_playground)) && ($projectteam->standard_playground > 0))
@@ -3868,14 +3890,14 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 					$p_projectteam->standard_playground = $this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')];
 				}
 			}
-if ( !$p_projectteam->is_in_score )
-{
-$p_projectteam->is_in_score = 1;
-}
-if ( !$p_projectteam->use_finally )
-{
-$p_projectteam->use_finally = 0;	
-}	
+//if ( !$p_projectteam->is_in_score )
+//{
+//$p_projectteam->is_in_score = 1;
+//}
+//if ( !$p_projectteam->use_finally )
+//{
+//$p_projectteam->use_finally = 0;	
+//}	
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $p_projectteam);
 $insertID = Factory::getDbo()->insertid();
