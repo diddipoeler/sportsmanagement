@@ -1656,9 +1656,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		if ( !empty($this->_league_new) )
 		{
 		  $query->clear();
-          // Select some fields
         $query->select('id,name,country');
-		// From the table
 		$query->from('#__sportsmanagement_league');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($this->_league_new)).''));
 			Factory::getDbo()->setQuery($query);
@@ -1673,7 +1671,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			}
 			else
 			{
-				
                 $p_league = new stdClass();
 				$p_league->name = substr(trim($this->_league_new),0,74);
 				$p_league->alias = substr(OutputFilter::stringURLSafe($this->_league_new),0,74);
@@ -1695,7 +1692,6 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= Text::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
                     $my_text .= $e->getMessage().'<br />';
-					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }
 
 				
@@ -1737,7 +1733,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 
-			if ($seasonObject=Factory::getDbo()->loadObject())
+			if ( $seasonObject=Factory::getDbo()->loadObject() )
 			{
 				$this->_season_id=$seasonObject->id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -1747,28 +1743,24 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			else
 			{
 				
-                $mdl = BaseDatabaseModel::getInstance("season", "sportsmanagementModel");
-                $p_season = $mdl->getTable();
-                
-				$p_season->set('name',trim($this->_season_new));
-				$p_season->set('alias',OutputFilter::stringURLSafe($this->_season_new));
+                $p_season = new stdClass();
+				$p_season->name = trim($this->_season_new);
+				$p_season->alias = OutputFilter::stringURLSafe($this->_season_new);
 
-				if ($p_season->store()===false)
-				{
-					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
-					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-				}
-				else
-				{
-					$insertID=Factory::getDbo()->insertid();
-					$this->_season_id=$insertID;
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= Text::sprintf('Created new season data: %1$s',"</span><strong>$this->_season_new</strong>");
-					$my_text .= '<br />';
-				}
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_season', $p_season);
+$insertID = Factory::getDbo()->insertid();
+$this->_season_id = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new season data: %1$s',"</span><strong>$this->_season_new</strong>");
+$my_text .= '<br />';                   
+}
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
+}                
+                
 			}
 		}
 		else
