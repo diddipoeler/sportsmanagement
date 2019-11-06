@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__log_entries` (
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_log_entries` (
   `priority` int(11) DEFAULT NULL,
   `message` varchar(512) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
