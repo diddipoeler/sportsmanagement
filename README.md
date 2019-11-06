@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   06-11-2019: **2.1.00** Anpassungen Joomla 4
 *   04-10-2019: **2.0.00** OpenCage Geocoder
 *   05-08-2019: **1.0.75** Google Kalender Joomla 4
 *   27-06-2019: **1.0.74** Neues Feld bei der Sportart (Zeiteingabe bei den Ereignissen)
