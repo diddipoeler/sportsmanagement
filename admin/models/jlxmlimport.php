@@ -1997,17 +1997,13 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 			foreach ($this->_newparentpositionsid AS $key => $id)
 			{
-				
-//                $mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
                 $p_position = new stdClass();
-                
 				$import_position = $this->_datas['parentposition'][$key];
-                
 				$oldID = $this->_getDataFromObject($import_position,'id');
 				$alias = $this->_getDataFromObject($import_position,'alias');
 				$p_position->name = trim($this->_newparentpositionsname[$key]);
 				$p_position->parent_id = 0;
-				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype');
+				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype') ? $this->_getDataFromObject($import_position,'persontype') : 1;
 				$p_position->sports_type_id = $this->_sportstype_id;
 				$p_position->published = 1;
 				if ( isset($alias) && trim($alias) != '' )
@@ -2040,22 +2036,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-				    /*
-					if ($p_position->store()===false)
-					{
-						$my_text .= 'error on parent-position import: ';
-						$my_text .= $oldID;
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-					}
-					else
-					{
-						$insertID = Factory::getDbo()->insertid();
-						$this->_convertParentPositionID[$oldID] = $insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf('Created new parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
-						$my_text .= '<br />';
-					}
-                    */
 try
 {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);	
@@ -2067,7 +2047,8 @@ $my_text .= '<br />';
 }
 catch (Exception $e)
 {
-$my_text .= 'error on parent-position import: ';
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= __LINE__.' error on parent-position import: ';
 $my_text .= $oldID;
 $my_text .= $e->getMessage().'<br />';                        
 $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
