@@ -2282,25 +2282,38 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $p_playground = new stdClass();
                 
 				$import_playground = $this->_datas['playground'][$key];
+				
+foreach ($import_playground as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_playground->$import = $this->_getDataFromObject($import_playground,$import);    
+break;    
+}   
+}
+				
 				$oldID = $this->_getDataFromObject($import_playground,'id');
 				$alias = $this->_getDataFromObject($import_playground,'alias');
 				$p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
 				$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
-				$p_playground->address = $this->_getDataFromObject($import_playground,'address');
-				$p_playground->zipcode = $this->_getDataFromObject($import_playground,'zipcode');
-				$p_playground->city = $this->_getDataFromObject($import_playground,'city');
-				$p_playground->country = $this->_getDataFromObject($import_playground,'country');
-				$p_playground->max_visitors = $this->_getDataFromObject($import_playground,'max_visitors');
-				$p_playground->website = $this->_getDataFromObject($import_playground,'website');
-				$p_playground->picture = $this->_getDataFromObject($import_playground,'picture');
-				if ( $this->_getDataFromObject($import_playground,'notes') )
-                {
-                $p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
-                }
-                else
-                {
-                $p_playground->notes = ' ';    
-                }
+				//$p_playground->address = $this->_getDataFromObject($import_playground,'address');
+				//$p_playground->zipcode = $this->_getDataFromObject($import_playground,'zipcode');
+				//$p_playground->city = $this->_getDataFromObject($import_playground,'city');
+				//$p_playground->country = $this->_getDataFromObject($import_playground,'country');
+				//$p_playground->max_visitors = $this->_getDataFromObject($import_playground,'max_visitors');
+				//$p_playground->website = $this->_getDataFromObject($import_playground,'website');
+				//$p_playground->picture = $this->_getDataFromObject($import_playground,'picture');
+//		if ( $this->_getDataFromObject($import_playground,'notes') )
+//                {
+  //              $p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
+    //            }
+      //          else
+        //        {
+          //      $p_playground->notes = ' ';    
+            //    }
                 
     // geo coding
     $address_parts = array();
@@ -2333,7 +2346,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
     $p_playground->latitude = $coords['latitude'];
     $p_playground->longitude = $coords['longitude'];        
                 
-				if ( ( isset($alias) ) && ( trim($alias) != '' ) )
+				if ( isset($alias) && trim($alias) != '' )
 				{
 					$p_playground->alias = substr($alias,0,74);
 				}
