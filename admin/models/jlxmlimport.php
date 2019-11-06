@@ -3206,7 +3206,7 @@ $newseasonperson->persontype = 1;
 // Insert the object
 $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);												
 } catch (Exception $e) {
-$app->enqueueMessage(Text::_($e->getMessage()), 'error');
+//$app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }	
 }						
 					}
