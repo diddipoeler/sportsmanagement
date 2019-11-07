@@ -49,8 +49,7 @@ if(count($this->extended->getFieldsets()) > 0)
 			{
 				?>
 				
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
 <h4>
 <?php 
 echo Text::_($fieldset->name); 
@@ -128,8 +127,7 @@ break;
 }
 ?>
 </table>
-</div>
-</div>
+
 </div>                
 <br/>
 <?php
