@@ -3558,12 +3558,12 @@ break;
  * ist das team schon durch ein anderes projekt angelegt ?
  */
             $query = $db->getQuery(true);
-		    $query->select('id');		
-		    $query->from('#__sportsmanagement_season_team_id AS t');
-		    $query->where('t.team_id = '.$team_id);
+	    $query->select('id');		
+	    $query->from('#__sportsmanagement_season_team_id AS t');
+	    $query->where('t.team_id = '.$team_id);
             $query->where('t.season_id = '.$this->_season_id);
-		    $db->setQuery($query);
-		    $new_team_id = $db->loadResult();
+	    $db->setQuery($query);
+	    $new_team_id = $db->loadResult();
                
             if ( $new_team_id )
             {
@@ -3571,29 +3571,23 @@ break;
             }
             else
             {
-            // Create a new query object.
             $insertquery = $db->getQuery(true);
-            // Insert columns.
             $columns = array('team_id','season_id','picture');
-            // Insert values.
             $values = array($team_id,$this->_season_id,'\''.$p_projectteam->picture.'\'');
-            // Prepare the insert query.
             $insertquery
             ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
-            // Set the query using our newly populated query object and execute it.
             $db->setQuery($insertquery);
-            
-			if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-			{
-			}
-			else
-			{
-                // die neue id übergeben
-                $new_team_id = $db->insertid();
-                $p_projectteam->team_id = $new_team_id;
-			}
+            if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+	    {
+	    }
+	    else
+	    {
+            /** die neue id übergeben */
+            $new_team_id = $db->insertid();
+            $p_projectteam->team_id = $new_team_id;
+	    }
             }
             }
             
@@ -3685,7 +3679,7 @@ $insertID = Factory::getDbo()->insertid();
 $p_projectteam->id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('Created new projectteam data: %1$s - Team ID : %2$s',
-	'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
+	'</span><strong>'.$this->_getTeamName2(0,$p_projectteam->team_id).'</strong>',
         '<strong>'.$team_id.'</strong>');
 $my_text .= '<br />';
 }	
