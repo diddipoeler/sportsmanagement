@@ -62,6 +62,7 @@ echo Text::_($fieldset->name);
 					$value = $field->value;
 					if (!empty($value)) // && !$field->backendonly)
 					{
+						$field->description = '';
 						?>
                           <div class="row">
                           <div class="col-sm-12">
