@@ -2263,6 +2263,7 @@ $my_text .= $e->getMessage().'<br />';
 	{
 	   $app = Factory::getApplication();
 	   $query = Factory::getDbo()->getQuery(true);
+       $option = Factory::getApplication()->input->getCmd('option');
 		$my_text = '';
 		if (!isset($this->_datas['playground']) || count($this->_datas['playground'])==0){return true;}
 		if ((!isset($this->_newplaygroundid) || count($this->_newplaygroundid)==0) &&
@@ -2301,10 +2302,11 @@ break;
 }   
 }
 				
-				$oldID = $this->_getDataFromObject($import_playground,'id');
-				$alias = $this->_getDataFromObject($import_playground,'alias');
-				$p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
-				$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
+$oldID = $this->_getDataFromObject($import_playground,'id');
+$alias = $this->_getDataFromObject($import_playground,'alias');
+$p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
+$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
+$p_playground->picture = $p_playground->picture ? $p_playground->picture : ComponentHelper::getParams($option)->get('ph_stadium','');
                 
     /** geo coding */
     $address_parts = array();
