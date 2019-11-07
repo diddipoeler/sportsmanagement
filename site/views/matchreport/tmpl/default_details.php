@@ -21,8 +21,8 @@ use Joomla\CMS\Factory;
 echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
 ?>
 </h2>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-details">
-<div class="col-md-12">
+<div class="<?php echo $this->divclassrow;?>" id="matchreport-details">
+<!-- <div class="col-md-12"> -->
 	<!-- Prev Match-->
 	<?php
 	if ($this->match->old_match_id > 0)
@@ -55,10 +55,17 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-            <address>
+              <div class="row">
+                          <div class="col-sm-12">
+                        <div class="col-2 col-sm-2 col-lg-2">
+            
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
-			<?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
-            </address>
+              </div>
+			<div class="col-2 col-sm-2 col-lg-2">
+              <?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
+            </div>
+                </div>
+                </div>
             <?php
         }
         else
@@ -80,10 +87,16 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-             <address>
+             <div class="row">
+                          <div class="col-sm-12">
+                        <div class="col-2 col-sm-2 col-lg-2">
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
+              </div>
+			<div class="col-2 col-sm-2 col-lg-2">
 			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
-            </address>
+            </div>
+                </div>
+                </div>
             <?php
         }
         else
@@ -234,6 +247,6 @@ $this->overallconfig['use_jquery_modal']);
     }
     ?>
 
-</div>
+<!-- </div> -->
 </div>
 <br/>
