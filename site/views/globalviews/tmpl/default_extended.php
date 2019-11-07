@@ -56,7 +56,7 @@ echo Text::_($fieldset->name);
 ?>
 </h4>
 
-<div class="table-responsive">    
+   
 <table class="table">			
 				<?php
 				foreach ($fields as $field)
@@ -128,7 +128,7 @@ break;
 ?>
 </table>
 
-</div>                
+             
 <br/>
 <?php
 }
