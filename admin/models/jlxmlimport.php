@@ -3680,18 +3680,17 @@ $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $p
 $insertID = Factory::getDbo()->insertid();
 $p_projectteam->id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= Text::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
-			'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
-            '<strong>'.$team_id.'</strong>');
+$my_text .= Text::sprintf('Created new projectteam data: %1$s - Team ID : %2$s',
+	'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
+        '<strong>'.$team_id.'</strong>');
 $my_text .= '<br />';
 }	
 catch (Exception $e){
 $p_projectteam->id = 0;    
-$my_text .= 'error on projectteam import: ';
+$my_text .= __LINE__.' error on projectteam import: ';
 $my_text .= $oldID;
 $my_text .= '<br />';
 $my_text .= $e->getMessage().'<br />';
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
            
 			$insertID = $p_projectteam->id;//Factory::getDbo()->insertid();
