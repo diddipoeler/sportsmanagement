@@ -88,9 +88,6 @@ switch ($field->value)
 case 'foggy':
 echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');		
 break;
-case 'foggy':
-echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');		
-break;
 case 'rainy':
 echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');		
 break;
@@ -122,24 +119,22 @@ default:
 echo Text::_( $field->value );		
 break;
 }				    
-//                            echo Text::_( $field->value );
-                            }
-                            ?>
-                        </td>
-                        </tr>
-						<?php
-					}
-				}
-				?>
+}
+?>
+</td>
+</tr>
+<?php
+}
+}
+?>
 </table>
 </div>
 </div>
 </div>                
-                
-				<br/>
-				<?php
-			}
-		}
-	}
+<br/>
+<?php
+}
+}
+}
 }
 ?>	
