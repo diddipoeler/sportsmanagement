@@ -533,8 +533,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 				$i++;
 			}
 
-// ############################ anpassungen anfang ###########################################################            
-            // bilderpfade anpassen
+/** ############################ anpassungen anfang ########################################################### */           
+            /** bilderpfade anpassen */
             if ( isset($this->_datas['person']) )
             {
             foreach ($this->_datas['person'] as $temppicture)
@@ -557,6 +557,19 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
                       $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player','');
+                }
+            }    
+            }
+            
+            if ( isset($this->_datas['playground']) )
+            {
+            foreach ($this->_datas['playground'] as $temppicture)
+            {
+                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
+                {
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_stadium','');
                 }
             }    
             }
@@ -2092,12 +2105,8 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 			foreach ($this->_newpositionsid AS $key => $id)
 			{
-				
-                //$mdl = BaseDatabaseModel::getInstance("position", "sportsmanagementModel");
                 $p_position = new stdClass();
-                
 				$import_position = $this->_datas['position'][$key];
-                
 				$oldID = $this->_getDataFromObject($import_position,'id');
 				$alias = $this->_getDataFromObject($import_position,'alias');
 				$p_position->name = trim($this->_newpositionsname[$key]);
@@ -2121,9 +2130,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				
                 $query->clear();
-          // Select some fields
         $query->select('id,name');
-		// From the table
 		$query->from('#__sportsmanagement_position');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
         $query->where('parent_id = '.$p_position->parent_id);
@@ -2148,21 +2155,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 				else
 				{
-//					if ($p_position->store()===false)
-//					{
-//						$my_text .= 'error on position import: ';
-//						$my_text .= $oldID;
-//						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-//                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-//					}
-//					else
-//					{
-//						$insertID = Factory::getDbo()->insertid();
-//						$this->_convertPositionID[$oldID] = $insertID;
-//						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-//						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.Text::_($p_position->name).'</strong>');
-//						$my_text .= '<br />';
-//					}
+
 try
 {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);	
@@ -2174,12 +2167,10 @@ $my_text .= '<br />';
 }
 catch (Exception $e)
 {
-$my_text .= 'error on position import: ';
+$my_text .= __LINE__.' error on position import: ';
 $my_text .= $oldID;
 $my_text .= $e->getMessage().'<br />';
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;    
 }                    
-                    
                     
 				}
 			}
@@ -2381,16 +2372,16 @@ break;
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $p_playground);
 $insertID = Factory::getDbo()->insertid();
-						$this->_convertPlaygroundID[$oldID] = $insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
-						$my_text .= '<br />';                   
-                    }
+$this->_convertPlaygroundID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
+$my_text .= '<br />';                   
+}
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= Text::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
-                    $my_text .= $e->getMessage().'<br />';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
+$my_text .= $e->getMessage().'<br />';
 }					
 
 				}
