@@ -1136,7 +1136,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	if ( $season_team_id )
 	{
 	$query->join('INNER',' #__sportsmanagement_season_team_id st ON st.team_id = t.id ');	
-	$query->where('st.team_id = '.(int)$team_id);
+	$query->where('st.id = '.(int)$season_team_id);
 	}
 	else
 	{
