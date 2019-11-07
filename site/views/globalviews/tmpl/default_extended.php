@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      deafault_extended.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage globalviews
@@ -83,7 +83,46 @@ echo Text::_($fieldset->name);
                             }
                             else
                             { 
-                            echo Text::_( $field->value );
+switch ($field->value)
+{
+case 'foggy':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');		
+break;
+case 'foggy':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');		
+break;
+case 'rainy':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');		
+break;
+case 'sunny':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY');		
+break;
+case 'windy':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY');		
+break;
+case 'dry':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY');		
+break;
+case 'snowing':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING');		
+break;
+case 'normal':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL');		
+break;
+case 'wet':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET');		
+break;
+case 'fielddry':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY');		
+break;
+case 'snow':
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');		
+break;	
+default:
+echo Text::_( $field->value );		
+break;
+}				    
+//                            echo Text::_( $field->value );
                             }
                             ?>
                         </td>
