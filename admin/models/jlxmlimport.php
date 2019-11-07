@@ -2377,6 +2377,7 @@ $insertID = Factory::getDbo()->insertid();
 $this->_convertPlaygroundID[$oldID] = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
+$my_text .= Text::sprintf('Standard picture: %1$s (%2$s)',"</span><strong>Picture</strong>","<strong>$p_playground->picture</strong>");
 $my_text .= '<br />';                   
 }
 catch (Exception $e){
