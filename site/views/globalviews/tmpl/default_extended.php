@@ -55,9 +55,7 @@ if(count($this->extended->getFieldsets()) > 0)
 echo Text::_($fieldset->name); 
 ?>
 </h4>
-
-   
-<table class="table">			
+			
 				<?php
 				foreach ($fields as $field)
 				{
@@ -65,11 +63,13 @@ echo Text::_($fieldset->name);
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
-                        <tr>
-                        <td>
+                          <div class="row">
+                          <div class="col-sm-12">
+                        <div class="col-6 col-sm-6 col-lg-6">
+                        
                         <strong><?php echo Text::_( $field->label); ?></strong>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-6 col-sm-6 col-lg-6">
                             <?php
                             if ( is_array($field->value) )
                             {
@@ -120,13 +120,14 @@ break;
 }				    
 }
 ?>
-</td>
-</tr>
+</div>
+  </div>
+  </div>
 <?php
 }
 }
 ?>
-</table>
+
 
              
 <br/>
