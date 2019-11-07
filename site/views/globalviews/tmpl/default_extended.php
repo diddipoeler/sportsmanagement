@@ -65,11 +65,11 @@ echo Text::_($fieldset->name);
 						?>
                           <div class="row">
                           <div class="col-sm-12">
-                        <div class="col-6 col-sm-6 col-lg-6">
+                        <div class="col-2 col-sm-2 col-lg-2">
                         
-                        <strong><?php echo Text::_( $field->label); ?></strong>
+                        <strong><?php echo Text::_( $field->label).':'; ?></strong>
                         </div>
-                        <div class="col-6 col-sm-6 col-lg-6">
+                        <div class="col-2 col-sm-2 col-lg-2">
                             <?php
                             if ( is_array($field->value) )
                             {
