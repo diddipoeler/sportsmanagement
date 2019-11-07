@@ -1128,23 +1128,27 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	 * @param mixed $team_id
 	 * @return
 	 */
-	private function _getTeamName2($team_id)
+	private function _getTeamName2($team_id=0,$season_team_id=0)
 	{
-		// Create a new query object.		
-		//$db = sportsmanagementHelper::getDBConnection();
         $query = Factory::getDbo()->getQuery(true);
-        // Select some fields
-        $query->select('name');
-		// From the table
-		$query->from('#__sportsmanagement_team');
-        $query->where('id = '.(int)$team_id);
-		Factory::getDbo()->setQuery($query);
-		sportsmanagementModeldatabasetool::runJoomlaQuery();
+        $query->select('t.name');
+	$query->from('#__sportsmanagement_team as t');
+	if ( $season_team_id )
+	{
+	$query->join('INNER',' #__sportsmanagement_season_team_id st ON st.team_id = t.id ');	
+	$query->where('st.team_id = '.(int)$team_id);
+	}
+	else
+	{
+        $query->where('t.id = '.(int)$team_id);
+	}
+	Factory::getDbo()->setQuery($query);
+	sportsmanagementModeldatabasetool::runJoomlaQuery();
         $result = Factory::getDbo()->loadResult();
-		if ($result)
-		{
-			return $result;
-		}
+	if ($result)
+	{
+		return $result;
+	}
         else
         {
 		return __FUNCTION__.' '.__LINE__.'#Error in _getTeamName2# team_id -> '.$team_id.'<br>';
