@@ -561,18 +561,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }    
             }
             
-            if ( isset($this->_datas['playground']) )
-            {
-            foreach ($this->_datas['playground'] as $temppicture)
-            {
-                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
-                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
-                {
-                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_stadium','');
-                }
-            }    
-            }
+//            if ( isset($this->_datas['playground']) )
+//            {
+//            foreach ($this->_datas['playground'] as $temppicture)
+//            {
+//                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
+//                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
+//                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
+//                {
+//                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_stadium','');
+//                }
+//            }    
+//            }
             
             if ( isset($this->_datas['teamstaff']) )
             {
@@ -788,7 +788,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $playground->picture = str_replace('media', 'images', $playground->picture);
                 if (preg_match("/placeholders/i", $playground->picture) || empty($playground->picture) ) 
                 {
-                      $playground->picture = ComponentHelper::getParams($option)->get('ph_team','');
+                      $playground->picture = ComponentHelper::getParams($option)->get('ph_stadium','');
                 }
             }    
             }
