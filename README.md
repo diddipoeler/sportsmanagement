@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   07-11-2019: **2.3.00** Datenbankanpassungen Joomla 4
 *   06-11-2019: **2.2.00** Anpassungen Joomla 4
 *   06-11-2019: **2.1.00** Anpassungen Joomla 4
 *   04-10-2019: **2.0.00** OpenCage Geocoder
