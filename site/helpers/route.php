@@ -826,8 +826,8 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	public static function _findItem($query)
 	{
 		$component = ComponentHelper::getComponent('com_sportsmanagement');
-		$site = new JSite();
-		$menus	= $site->getMenu();
+		$app  = Factory::getApplication();
+		$menus	= $app->getMenu();
 		$items	= $menus->getItems('component', $component->id);
 		$user 	=  Factory::getUser();
 		$access = (int)$user->get('aid');
