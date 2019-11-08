@@ -15,13 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-/**
- * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
- */
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-
 if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
