@@ -8,11 +8,11 @@
  * @package   sportsmanagement
  * @subpackage ranking
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.switcher');
-HTMLHelper::_('behavior.modal');
 
 $this->startPane = 'startTabSet';
 $this->endPane = 'endTabSet';
