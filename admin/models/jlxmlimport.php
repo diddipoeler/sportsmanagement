@@ -2305,7 +2305,7 @@ break;
 $oldID = $this->_getDataFromObject($import_playground,'id');
 $alias = $this->_getDataFromObject($import_playground,'alias');
 $p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
-$p_playground->short_name = substr($p_playground->name,0,14);
+$p_playground->short_name = substr(trim($this->_newplaygroundname[$key]),0,14);
 $p_playground->picture = $p_playground->picture ? $p_playground->picture : ComponentHelper::getParams($option)->get('ph_stadium','');
                 
     /** geo coding */
@@ -2355,22 +2355,22 @@ $p_playground->picture = $p_playground->picture ? $p_playground->picture : Compo
 					}
 				}
                 
-                $query->clear();
-        $query->select('id,name,country');
-		$query->from('#__sportsmanagement_playground');
-        $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
-			Factory::getDbo()->setQuery($query);
+$query->clear();
+$query->select('id,name,country');
+$query->from('#__sportsmanagement_playground');
+$query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
+Factory::getDbo()->setQuery($query);
  
-                sportsmanagementModeldatabasetool::runJoomlaQuery();
-				if ($object = Factory::getDbo()->loadObject())
-				{
-					$this->_convertPlaygroundID[$oldID] = $object->id;
-					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= Text::sprintf('Using existing playground data: %1$s',"</span><strong>$object->name</strong>");
-					$my_text .= '<br />';
-				}
-				else
-				{
+sportsmanagementModeldatabasetool::runJoomlaQuery();
+if ($object = Factory::getDbo()->loadObject())
+{
+$this->_convertPlaygroundID[$oldID] = $object->id;
+$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+$my_text .= Text::sprintf('Using existing playground data: %1$s',"</span><strong>$object->name</strong>");
+$my_text .= '<br />';
+}
+else
+{
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $p_playground);
 $insertID = Factory::getDbo()->insertid();
@@ -2382,8 +2382,8 @@ $my_text .= '<br />';
 }
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-$my_text .= Text::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
+$my_text .= __LINE__.' '.Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Playgroundname: %1$s Shortname [%2$s]',$p_playground->name,$p_playground->short_name).'<br />';
 $my_text .= $e->getMessage().'<br />';
 }					
 
