@@ -111,6 +111,7 @@
 
         <field
             name="latitude"
+	       default="0,00000000"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
@@ -119,6 +120,7 @@
         
         <field
             name="longitude"
+	       default="0,00000000"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
