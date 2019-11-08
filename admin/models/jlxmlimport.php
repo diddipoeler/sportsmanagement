@@ -2672,18 +2672,15 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 					$oldID = $this->_getDataFromObject($this->_datas['team'][$key],'id');
 					$this->_convertTeamID[$oldID] = $id;
                     
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
-//                    $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
-                    
-					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= Text::sprintf(	'Using existing team data: %1$s - %2$s - %3$s - %4$s <- %5$s',
-												'</span><strong>'.$dbTeams[$id]->name.'</strong>',
-												'<strong>'.$dbTeams[$id]->short_name.'</strong>',
-												'<strong>'.$dbTeams[$id]->middle_name.'</strong>',
-												'<strong>'.$dbTeams[$id]->info.'</strong>',
-												'<strong>'.$id.'</strong>'
-												);
-					$my_text .= '<br />';
+$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+$my_text .= Text::sprintf('Using existing team data 1: %1$s - %2$s - %3$s - %4$s <- %5$s',
+	'</span><strong>'.$dbTeams[$id]->name.'</strong>',
+	'<strong>'.$dbTeams[$id]->short_name.'</strong>',
+	'<strong>'.$dbTeams[$id]->middle_name.'</strong>',
+	'<strong>'.$dbTeams[$id]->info.'</strong>',
+	'<strong>'.$id.'</strong>'
+	);
+$my_text .= '<br />';
 				}
 			}
 
@@ -2752,7 +2749,7 @@ break;
 				{
 					$this->_convertTeamID[$oldID]=$object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= Text::sprintf('Using existing team data: %1$s',"</span><strong>$object->name</strong>");
+					$my_text .= Text::sprintf('Using existing team data 2: %1$s',"</span><strong>$object->name</strong>");
 					$my_text .= '<br />';
 				}
 				else
