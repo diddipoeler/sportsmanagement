@@ -591,7 +591,11 @@ Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
             $query->where('id = ' . $stadium);
 
             $db->setQuery($query, 0, 1);
-            $playgrounds[] = $db->loadObject();
+		$result = $db->loadObject();
+		if ( $result )
+		{
+            $playgrounds[] = $result;
+		}
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $playgrounds;
