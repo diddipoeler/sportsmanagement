@@ -36,7 +36,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	{
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelClubInfo::$cfg_which_database);
                         
-		$this->club = sportsmanagementModelClubInfo::getClub(1);
+	$this->club = sportsmanagementModelClubInfo::getClub(1);
         if ( $this->checkextrafields )
         {
             $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
@@ -104,8 +104,8 @@ if ( $this->mapconfig['map_kmlfile'] )
 /**
  * clubhistory
  */
-        $this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
-		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
+$this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
+$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
 $this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
 $this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id,$this->config['show_bootstrap_tree']);
