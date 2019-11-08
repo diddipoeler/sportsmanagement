@@ -2091,7 +2091,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $p_position = new stdClass();
 				$import_position = $this->_datas['position'][$key];
 				$oldID = $this->_getDataFromObject($import_position,'id');
-				$alias = $this->_getDataFromObject($import_position,'alias');
 				$p_position->name = trim($this->_newpositionsname[$key]);
 				$oldParentPositionID = $this->_getDataFromObject($import_position,'parent_id');
 				if (isset($this->_convertPositionID[$oldParentPositionID]))
@@ -2103,14 +2102,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype');
 				$p_position->sports_type_id = $this->_sportstype_id;
 				$p_position->published = 1;
-				if ( isset($alias) && trim($alias) != '' )
-				{
-					$p_position->alias = $alias;
-				}
-				else
-				{
-					$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
-				}
+				$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				
                 $query->clear();
         $query->select('id,name');
@@ -2124,7 +2116,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				{
 					$row = Table::getInstance('position', 'sportsmanagementTable');
                     $row->load(Factory::getDbo()->loadResult());
-					// Prevent showing of using existing position twice (see the foreach Factory::getDbo()positionsid loop)
 					if ( isset($this->_convertPositionID[$oldID]) )
                     {
                     if ( $this->_convertPositionID[$oldID] != $row->id )
@@ -2430,7 +2421,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 
 				$oldID = $this->_getDataFromObject($import_club,'id');
-				$alias = $this->_getDataFromObject($import_club,'alias');
+
 foreach ($import_club as $import => $value )
 {
 switch ($import)
@@ -2480,15 +2471,8 @@ break;
 	$coords = sportsmanagementHelper::resolveLocation($address);
     $p_club->latitude = $coords['latitude'];
     $p_club->longitude = $coords['longitude'];        
-                
-                if ( isset($alias) && trim($alias) != '' )
-				{
-					$p_club->alias = $alias;
-				}
-				else
-				{
-					$p_club->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_club,'name'));
-				}
+	$p_club->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_club,'name'));
+
 				if ($this->_importType!='clubs')	// force playground_id to be set to default if only clubs are imported
 				{
 					if (($this->import_version=='NEW') && ($import_club->standard_playground > 0))
@@ -2628,9 +2612,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		if (!empty($this->_dbteamsid))
 		{
 		  $query->clear();
-          // Select some fields
         $query->select('id,name,club_id,short_name,middle_name,info');
-		// From the table
 		$query->from('#__sportsmanagement_team');
         $query->group('id');
         
@@ -2684,7 +2666,6 @@ break;
 }   
 }
 				$oldID = $this->_getDataFromObject($import_team,'id');
-				$alias = $this->_getDataFromObject($import_team,'alias');
 				$oldClubID = $this->_getDataFromObject($import_team,'club_id');
                 $p_team->short_name = substr($p_team->name,0,14);
 		$p_team->middle_name = substr($p_team->name,0,24);
@@ -2696,15 +2677,8 @@ break;
 				{
 					$p_team->club_id = 0;
 				}
-			
-				if ( isset($alias) && trim($alias) != '' )
-				{
-					$p_team->alias = $alias;
-				}
-				else
-				{
-					$p_team->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_team,'name'));
-				}
+				$p_team->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_team,'name'));
+
 				if (($this->import_version=='NEW') && ($import_team->extended!=''))
 				{
 					$p_team->extended = $this->_getDataFromObject($import_team,'extended');
@@ -2783,7 +2757,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$this->_convertPersonID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 				$my_text .= Text::sprintf(	'Using existing person data: %1$s',
-											'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
+							'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
 				$my_text .= '<br />';
                 
                 $mdl = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
@@ -2887,17 +2861,10 @@ break;
 						}
 					}
 				}
-				$alias = $this->_getDataFromObject($import_person,'alias');
+
 				$aliasparts = array(trim($p_person->firstname),trim($p_person->lastname));
 				$p_alias = OutputFilter::stringURLSafe(implode(' ',$aliasparts));
-				if ((isset($alias)) && (trim($alias)!=''))
-				{
-					$p_person->alias = OutputFilter::stringURLSafe($alias);
-				}
-				else
-				{
-					$p_person->alias = $p_alias;
-				}
+				$p_person->alias = $p_alias;
                 
                 $query->clear();
         $query->select('*');
@@ -3010,57 +2977,9 @@ break;
 		$p_project->editor = $this->_joomleague_editor;
 		$p_project->master_template = $this->_template_id;
 		$p_project->sub_template_id = 0;
-		
-		//$p_project->staffel_id = $this->_getDataFromObject($this->_datas['project'],'staffel_id');
-		//$p_project->extension = $this->_getDataFromObject($this->_datas['project'],'extension');
-		//$p_project->timezone = $this->_getDataFromObject($this->_datas['project'],'timezone');
-		//$p_project->project_type = $this->_getDataFromObject($this->_datas['project'],'project_type');
-		//$p_project->teams_as_referees = $this->_getDataFromObject($this->_datas['project'],'teams_as_referees');
 		$p_project->sports_type_id = $this->_sportstype_id;
-		//$p_project->current_round = $this->_getDataFromObject($this->_datas['project'],'current_round');
-		//$p_project->current_round_auto = $this->_getDataFromObject($this->_datas['project'],'current_round_auto');
-		//$p_project->auto_time = $this->_getDataFromObject($this->_datas['project'],'auto_time');
-		//$p_project->start_date = $this->_getDataFromObject($this->_datas['project'],'start_date');
-		//$p_project->start_time = $this->_getDataFromObject($this->_datas['project'],'start_time');
-		//$p_project->fav_team_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_color');
-		//$p_project->fav_team_text_color = $this->_getDataFromObject($this->_datas['project'],'fav_team_text_color');
-		//$p_project->use_legs = $this->_getDataFromObject($this->_datas['project'],'use_legs');
-		//$p_project->game_regular_time = $this->_getDataFromObject($this->_datas['project'],'game_regular_time');
-		//$p_project->game_parts = $this->_getDataFromObject($this->_datas['project'],'game_parts');
-		//$p_project->halftime = $this->_getDataFromObject($this->_datas['project'],'halftime');
-		//$p_project->allow_add_time = $this->_getDataFromObject($this->_datas['project'],'allow_add_time');
-		//$p_project->add_time = $this->_getDataFromObject($this->_datas['project'],'add_time');
-		//$p_project->points_after_regular_time = $this->_getDataFromObject($this->_datas['project'],'points_after_regular_time');
-		//$p_project->points_after_add_time = $this->_getDataFromObject($this->_datas['project'],'points_after_add_time');
-		//$p_project->points_after_penalty = $this->_getDataFromObject($this->_datas['project'],'points_after_penalty');
-		//$p_project->template = $this->_getDataFromObject($this->_datas['project'],'template');
-		//$p_project->enable_sb = $this->_getDataFromObject($this->_datas['project'],'enable_sb');
-		//$p_project->sb_catid = $this->_getDataFromObject($this->_datas['project'],'sb_catid');
-		/*
-		if ( $this->_getDataFromObject($this->_datas['project'],'projectinfo') )
-		{
-		$p_project->projectinfo = $this->_getDataFromObject($this->_datas['project'],'projectinfo');	
-		}
-		else
-		{
-		$p_project->projectinfo = ' ';	
-		}
-		*/
 		if ($this->_publish){$p_project->published = 1;}
-/*
-if ( !$p_project->teams_as_referees )
-{
-$p_project->teams_as_referees = 0; 		
-}
-if ( !$p_project->enable_sb )
-{
-$p_project->enable_sb = 0; 		
-}		
-if ( !$p_project->sb_catid )
-{
-$p_project->sb_catid = 0; 		
-}		
-		*/
+
 try {		
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project', $p_project);
 $insertID = Factory::getDbo()->insertid();
@@ -3068,16 +2987,14 @@ $this->_project_id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$this->_name</strong>");
 $my_text .= '<br />';
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-return true;		
 } catch (Exception $e) {
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Projectname: %1$s',$p_project->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 }		
-		
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+return true;		
 	}
 
 	/**
@@ -3403,50 +3320,50 @@ $t_params = json_encode( $ini );
 	 */
 	private function _importDivisions()
 	{
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['division']) || count($this->_datas['division']) == 0 ){return true;}
 		if (isset($this->_datas['division']))
 		{
 			foreach ($this->_datas['division'] as $key => $division)
 			{
-				
-                $mdl = BaseDatabaseModel::getInstance("division", "sportsmanagementModel");
-                $p_division = $mdl->getTable();
+				$import_division = $this->_datas['division'][$key];
+                $p_division = new stdClass();
                 
 				$oldId = (int)$division->id;
-				$p_division->set('project_id',$this->_project_id);
+				
 				if ( $division->id == $this->_datas['division'][$key]->id )
 				{
-					$name=trim($this->_getDataFromObject($division,'name'));
-					$p_division->set('name',$name);
-					$p_division->set('shortname',$this->_getDataFromObject($division,'shortname'));
-					$p_division->set('notes',$this->_getDataFromObject($division,'notes'));
-					$p_division->set('parent_id',$this->_getDataFromObject($division,'parent_id'));
-					if ( trim($p_division->alias) != '' )
-					{
-						$p_division->set('alias',$this->_getDataFromObject($division,'alias'));
-					}
-					else
-					{
-						$p_division->set('alias',OutputFilter::stringURLSafe($name));
-					}
-				}
-				if ($p_division->store()===false)
-				{
-					$my_text .= 'error on division import: ';
-					$my_text .= '#'.$oldID.'#';
-					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-				}
-				else
-				{
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= Text::sprintf('Created new division data: %1$s',"</span><strong>$name</strong>");
-					$my_text .= '<br />';
-				}
-				$insertID = Factory::getDbo()->insertid();
-				$this->_convertDivisionID[$oldId] = $insertID;
-			}
-			$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+foreach ($import_division as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_division->$import = $this->_getDataFromObject($import_division,$import);    
+break;    
+}    
+}  	
+$p_division->project_id =  $this->_project_id;
+$p_division->alias = OutputFilter::stringURLSafe($p_division->name);				    
+}
+			
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_division', $p_division);
+$insertID = Factory::getDbo()->insertid();
+$this->_convertDivisionID[$oldId] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new division data: %1$s',"</span><strong>$p_division->name</strong>");
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= __LINE__.' error on division import: ';
+$my_text .= '#'.$oldID.'#<br />';
+$my_text .= $e->getMessage().'<br />';
+}            
+            
+            }
+			$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 			return true;
 		}
 	}
@@ -3459,7 +3376,6 @@ $t_params = json_encode( $ini );
 	private function _importProjectTeam()
 	{
 	   $app = Factory::getApplication();
-        // Get a db connection.
         $db = Factory::getDbo();
         
 		$my_text = '';
@@ -3508,7 +3424,6 @@ break;
 }  		
 
 	$p_projectteam->project_id = $this->_project_id;
-        //$p_projectteam->picture = $this->_getDataFromObject($projectteam,'picture');
             
 /**
 * jetzt erfolgt die umsetzung der team_id in die neue struktur 
@@ -3567,61 +3482,7 @@ break;
 			}
             }
 
-			//$p_projectteam->start_points = $this->_getDataFromObject($projectteam,'start_points');
-			//$p_projectteam->points_finally = $this->_getDataFromObject($projectteam,'points_finally');
-			//$p_projectteam->neg_points_finally = $this->_getDataFromObject($projectteam,'neg_points_finally');
-			//$p_projectteam->matches_finally = $this->_getDataFromObject($projectteam,'matches_finally');
-			//$p_projectteam->won_finally = $this->_getDataFromObject($projectteam,'won_finally');
-			//$p_projectteam->draws_finally = $this->_getDataFromObject($projectteam,'draws_finally');
-			//$p_projectteam->lost_finally = $this->_getDataFromObject($projectteam,'lost_finally');
-			//$p_projectteam->homegoals_finally = $this->_getDataFromObject($projectteam,'homegoals_finally');
-			//$p_projectteam->guestgoals_finally = $this->_getDataFromObject($projectteam,'guestgoals_finally');
-			//$p_projectteam->diffgoals_finally = $this->_getDataFromObject($projectteam,'diffgoals_finally');
-			//$p_projectteam->is_in_score = $this->_getDataFromObject($projectteam,'is_in_score');
-			//$p_projectteam->use_finally = $this->_getDataFromObject($projectteam,'use_finally');
 			$p_projectteam->admin = $this->_joomleague_admin;
-
-		/*
-			if ($this->import_version=='NEW')
-			{
-				if (isset($import_projectteam->mark))
-				{
-					$p_projectteam->mark = $this->_getDataFromObject($projectteam,'mark');
-				}
-				$p_projectteam->info = $this->_getDataFromObject($projectteam,'info');
-				
-				if ( $this->_getDataFromObject($projectteam,'reason') )
-				{
-                $p_projectteam->reason = $this->_getDataFromObject($projectteam,'reason');
-				}
-                else
-                {
-                $p_projectteam->reason = ' ';    
-                }
-				
-                if ( $this->_getDataFromObject($projectteam,'notes') )
-				{
-				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'notes');
-				}
-				else
-				{
-				$p_projectteam->notes = ' ';	
-				}
-			}
-			else
-			{
-				if ( $this->_getDataFromObject($projectteam,'notes') )
-				{
-				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
-				}
-				else
-				{
-				$p_projectteam->notes = ' ';	
-				}
-				$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
-			}
-			*/
-			
 			
 			if ((isset($projectteam->standard_playground)) && ($projectteam->standard_playground > 0))
 			{
@@ -3630,14 +3491,7 @@ break;
 					$p_projectteam->standard_playground = $this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')];
 				}
 			}
-//if ( !$p_projectteam->is_in_score )
-//{
-//$p_projectteam->is_in_score = 1;
-//}
-//if ( !$p_projectteam->use_finally )
-//{
-//$p_projectteam->use_finally = 0;	
-//}	
+
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $p_projectteam);
 $insertID = Factory::getDbo()->insertid();
