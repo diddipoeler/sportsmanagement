@@ -2003,25 +2003,15 @@ $my_text .= $e->getMessage().'<br />';
                 $p_position = new stdClass();
 				$import_position = $this->_datas['parentposition'][$key];
 				$oldID = $this->_getDataFromObject($import_position,'id');
-				$alias = $this->_getDataFromObject($import_position,'alias');
 				$p_position->name = trim($this->_newparentpositionsname[$key]);
 				$p_position->parent_id = 0;
 				$p_position->persontype = $this->_getDataFromObject($import_position,'persontype') ? $this->_getDataFromObject($import_position,'persontype') : 1;
 				$p_position->sports_type_id = $this->_sportstype_id;
 				$p_position->published = 1;
-				if ( isset($alias) && trim($alias) != '' )
-				{
-					$p_position->alias = $alias;
-				}
-				else
-				{
-					$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
-				}
+				$p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position,'name'));
 				
                 $query->clear();
-          // Select some fields
         $query->select('id,name');
-		// From the table
 		$query->from('#__sportsmanagement_position');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
         $query->where('parent_id = 0');
@@ -2054,13 +2044,12 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= __LINE__.' error on parent-position import: ';
 $my_text .= $oldID;
 $my_text .= $e->getMessage().'<br />';                        
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 }                    
                     
 				}
 			}
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
