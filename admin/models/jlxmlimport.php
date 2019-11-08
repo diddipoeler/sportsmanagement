@@ -2305,7 +2305,7 @@ break;
 $oldID = $this->_getDataFromObject($import_playground,'id');
 $alias = $this->_getDataFromObject($import_playground,'alias');
 $p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
-$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
+$p_playground->short_name = substr($p_playground->name,0,14);
 $p_playground->picture = $p_playground->picture ? $p_playground->picture : ComponentHelper::getParams($option)->get('ph_stadium','');
                 
     /** geo coding */
