@@ -105,15 +105,24 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $this->teamseasons = $this->model->getTeamsSeasons();
         
         $fromteamart[] = HTMLHelper::_('select.option', '', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+		if ( $this->teamart )
+		{
 		$fromteamart = array_merge($fromteamart, $this->teamart);
+		}
 		$lists['fromteamart'] = $fromteamart;
         
         $fromteamprojects[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
+		if ( $this->teamprojects )
+		{
 		$fromteamprojects = array_merge($fromteamprojects, $this->teamprojects);
+		}
 		$lists['fromteamprojects'] = $fromteamprojects;
         
         $fromteamseasons[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
+		if ( $this->teamseasons )
+		{
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
+		}
 		$lists['fromteamseasons'] = $fromteamseasons;
 
 /**
