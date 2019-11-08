@@ -1512,7 +1512,7 @@ break;
                     $ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
                 }
             } else {
-                $picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DS, "", $picture);
+                $picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, "", $picture);
                 $title = $alttext;
                 //height and width set, let the browser resize it
                 $bUseHighslide = $params->get('use_highslide', false);
