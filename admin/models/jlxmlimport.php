@@ -3351,6 +3351,7 @@ $p_division->alias = OutputFilter::stringURLSafe($p_division->name);
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_division', $p_division);
 $insertID = Factory::getDbo()->insertid();
+$p_division->id = $insertID;
 $this->_convertDivisionID[$oldId] = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('Created new division data: %1$s',"</span><strong>$p_division->name</strong>");
@@ -3534,7 +3535,7 @@ $my_text .= $e->getMessage().'<br />';
 	 */
 	private function _importProjectReferees()
 	{
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['projectreferee']) || count($this->_datas['projectreferee'])==0){return true;}
 
 		if (!isset($this->_datas['person']) || count($this->_datas['person'])==0){return true;}
@@ -3543,37 +3544,43 @@ $my_text .= $e->getMessage().'<br />';
 
 		foreach ($this->_datas['projectreferee'] as $key => $projectreferee)
 		{
-			$import_projectreferee=$this->_datas['projectreferee'][$key];
-			$oldID=$this->_getDataFromObject($import_projectreferee,'id');
+			$import_projectreferee = $this->_datas['projectreferee'][$key];
+			$oldID = $this->_getDataFromObject($import_projectreferee,'id');
 			
-            $mdl = BaseDatabaseModel::getInstance("projectreferee", "sportsmanagementModel");
-            $p_projectreferee = $mdl->getTable();
+            $p_projectreferee = new stdClass();
 
-			$p_projectreferee->set('project_id',$this->_project_id);
-			$p_projectreferee->set('person_id',$this->_convertPersonID[$this->_getDataFromObject($import_projectreferee,'person_id')]);
-			$p_projectreferee->set('project_position_id',$this->_convertProjectPositionID[$this->_getDataFromObject($import_projectreferee,'project_position_id')]);
-
-			$p_projectreferee->set('notes',$this->_getDataFromObject($import_projectreferee,'notes'));
-			$p_projectreferee->set('picture',$this->_getDataFromObject($import_projectreferee,'picture'));
-			$p_projectreferee->set('extended',$this->_getDataFromObject($import_projectreferee,'extended'));
-            $p_projectreferee->set('published',1);
-
-			if ($p_projectreferee->store()===false)
-			{
-				$my_text .= 'error on projectreferee import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-				return false;
-			}
-			else
-			{
-				$dPerson=$this->_getPersonName($p_projectreferee->person_id);
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new projectreferee data: %1$s,%2$s',"</span><strong>$dPerson->lastname","$dPerson->firstname</strong>");
-				$my_text .= '<br />';
-			}
-			$insertID=$p_projectreferee->id;//Factory::getDbo()->insertid();
-			$this->_convertProjectRefereeID[$oldID]=$insertID;
+foreach ($import_projectreferee as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+$p_projectreferee->$import = $this->_getDataFromObject($import_projectreferee,$import);    
+break;    
+}    
+}  	
+$p_projectreferee->project_id = $this->_project_id;
+$p_projectreferee->person_id = $this->_convertPersonID[$this->_getDataFromObject($import_projectreferee,'person_id')];
+$p_projectreferee->project_position_id = $this->_convertProjectPositionID[$this->_getDataFromObject($import_projectreferee,'project_position_id')];
+$p_projectreferee->published = 1;
+           
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_project_referee', $p_projectreferee);
+$insertID = Factory::getDbo()->insertid();
+$p_projectreferee->id = $insertID;
+$this->_convertProjectRefereeID[$oldID] = $insertID;
+$dPerson = $this->_getPersonName($p_projectreferee->person_id);
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf(	'Created new projectreferee data: %1$s,%2$s',"</span><strong>$dPerson->lastname","$dPerson->firstname</strong>");
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= __LINE__.' error on projectreferee import: ';
+$my_text .= '#'.$oldID.'#<br />';
+$my_text .= $e->getMessage().'<br />';
+}                
+            
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
@@ -3586,21 +3593,15 @@ $my_text .= $e->getMessage().'<br />';
 	 */
 	private function _importProjectPositions()
 	{
-	   // Reference global application object
         $app = Factory::getApplication();
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
         
-//$this->dump_header("function _importProjectPositions");
 		$my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }		
-//$this->dump_variable("this->_datas['projectposition']", $this->_datas['projectposition']);
-//$this->dump_variable("this->_newpositionsid", $this->_newpositionsid);
-//$this->dump_variable("this->_dbpositionsid", Factory::getDbo()positionsid);
 		if (!isset($this->_datas['projectposition']) || count($this->_datas['projectposition'])==0){return true;}
-
 		if (!isset($this->_datas['position']) || count($this->_datas['position'])==0){return true;}
 		if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) &&
 			(!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)){return true;}
@@ -3608,13 +3609,9 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		foreach ($this->_datas['projectposition'] as $key => $projectposition)
 		{
 			$import_projectposition = $this->_datas['projectposition'][$key];
-//$this->dump_variable("import_projectposition", $import_projectposition);
-			$oldID=$this->_getDataFromObject($import_projectposition,'id');
-			
-            $mdl = BaseDatabaseModel::getInstance("projectposition", "sportsmanagementModel");
-            $p_projectposition = $mdl->getTable();
-            
-			$p_projectposition->set('project_id',$this->_project_id);
+			$oldID = $this->_getDataFromObject($import_projectposition,'id');
+            $p_projectposition = new stdClass();
+			$p_projectposition->project_id = $this->_project_id;
 			$oldPositionID = $this->_getDataFromObject($import_projectposition,'position_id');
 			
             if (!isset($this->_convertPositionID[$oldPositionID]))
@@ -3626,12 +3623,10 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				continue;
 			}
             
-			$p_projectposition->set('position_id',$this->_convertPositionID[$oldPositionID]);
+			$p_projectposition->position_id = $this->_convertPositionID[$oldPositionID];
             
             $query->clear();
-            // Select some fields
             $query->select('id');
-		      // From the table
 		      $query->from('#__sportsmanagement_project_position');
             $query->where('project_id = ' . $this->_project_id );
         $query->where('position_id = ' . $this->_convertPositionID[$oldPositionID] );
@@ -3645,23 +3640,26 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
         }
         else
         {
-			if ( $p_projectposition->store() === false )
-			{
-				$my_text .= 'error on ProjectPosition import: ';
-				$my_text .= '#'.$oldID.'#';
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-			}
-			else
-			{
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new projectposition data: %1$s - %2$s',
-								"</span><strong>".Text::_($this->_getObjectName('position',$p_projectposition->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>".$p_projectposition->position_id.'</strong>');
-				$my_text .= '<br />';
-			}
-            }
-			$insertID = $p_projectposition->id;//Factory::getDbo()->insertid();
-			$this->_convertProjectPositionID[$oldID] = $insertID;
+            
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_project_position', $p_projectposition);
+$insertID = Factory::getDbo()->insertid();
+$p_projectposition->id = $insertID;
+$this->_convertProjectPositionID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf(	'Created new projectposition data: %1$s - %2$s',
+		"</span><strong>".Text::_($this->_getObjectName('position',$p_projectposition->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+		"</span><strong>".$p_projectposition->position_id.'</strong>');
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= __LINE__.' error on ProjectPosition import: ';
+$my_text .= '#'.$oldID.'#<br />';
+$my_text .= $e->getMessage().'<br />';
+}               
+            
+        }
+			
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
