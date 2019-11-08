@@ -622,6 +622,7 @@ Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+	Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
             return false;
         }
 
