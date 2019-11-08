@@ -466,16 +466,19 @@ if ( empty(self::$projectid) )
                     $subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
                     $subquery1->from('#__sportsmanagement_project AS p');
                     $subquery1->where('p.id = ' . $team->pid);
+			try {
                     $db->setQuery($subquery1);
-                    $result = $db->loadResult();
-                  if ( $result )
-                  {
                     $team->pid = $db->loadResult();
-                  }
-                  else
-                  {
-                    $team->pid = 0;
-                  }
+		} catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . '<pre>'.print_r($subquery1->dump(),true).'</pre>', 'error');					
+                $team->pid = 0;
+            }		
+                  
+			
+			
                 }
                
             } catch (Exception $e) {
