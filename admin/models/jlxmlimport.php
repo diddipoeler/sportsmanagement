@@ -1696,21 +1696,20 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$p_league->country = $this->_league_new_country;
                 $p_league->sports_type_id = $this->_sportstype_id;
                 
-                try {
+try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_league', $p_league);
 $insertID = Factory::getDbo()->insertid();
-					$this->_league_id = $insertID;
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= Text::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
-					$my_text .= '<br />';                    
-                    }
+$this->_league_id = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
+$my_text .= '<br />';                    
+}
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= Text::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
-                    $my_text .= $e->getMessage().'<br />';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
+$my_text .= $e->getMessage().'<br />';
 }
-
 				
 			}
 		}
@@ -1742,9 +1741,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		if (!empty($this->_season_new))
 		{
 		  $query->clear();
-          // Select some fields
         $query->select('id');
-		// From the table
 		$query->from('#__sportsmanagement_season');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($this->_season_new)).''));
 			Factory::getDbo()->setQuery($query);
@@ -1801,7 +1798,7 @@ $my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
 
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['event']) || count($this->_datas['event'])==0){return true;}
 		if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0) &&
 			(!isset($this->_dbeventsid) || count($this->_dbeventsid)==0)){return true;}
@@ -1809,11 +1806,11 @@ $my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
 		{
 			foreach ($this->_dbeventsid AS $key => $id)
 			{
-				$oldID=$this->_getDataFromObject($this->_datas['event'][$key],'id');
-				$this->_convertEventID[$oldID]=$id;
+				$oldID = $this->_getDataFromObject($this->_datas['event'][$key],'id');
+				$this->_convertEventID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= Text::sprintf(	'Using existing event data: %1$s',
-											'</span><strong>'.Text::_($this->_getObjectName('eventtype',$id)).'</strong>');
+				$my_text .= Text::sprintf('Using existing event data: %1$s',
+							'</span><strong>'.Text::_($this->_getObjectName('eventtype',$id)).'</strong>');
 				$my_text .= '<br />';
 			}
 		}
@@ -1822,33 +1819,29 @@ $my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
 		{
 			foreach ($this->_neweventsid AS $key => $id)
 			{
-				
-                $mdl = BaseDatabaseModel::getInstance("eventtype", "sportsmanagementModel");
-                $p_eventtype = $mdl->getTable();
+                $p_eventtype = new stdClass();
+				$import_event = $this->_datas['event'][$key];
+				$oldID = $this->_getDataFromObject($import_event,'id');
                 
-				$import_event=$this->_datas['event'][$key];
-				$oldID=$this->_getDataFromObject($import_event,'id');
-				$alias=$this->_getDataFromObject($import_event,'alias');
-				$p_eventtype->set('name',trim($this->_neweventsname[$key]));
-				$p_eventtype->set('icon',$this->_getDataFromObject($import_event,'icon'));
-				$p_eventtype->set('parent',$this->_getDataFromObject($import_event,'parent'));
-				$p_eventtype->set('splitt',$this->_getDataFromObject($import_event,'splitt'));
-				$p_eventtype->set('direction',$this->_getDataFromObject($import_event,'direction'));
-				$p_eventtype->set('double',$this->_getDataFromObject($import_event,'double'));
-				$p_eventtype->set('sports_type_id',$this->_sportstype_id);
-				if ((isset($alias)) && (trim($alias)!=''))
-				{
-					$p_eventtype->set('alias',$alias);
-				}
-				else
-				{
-					$p_eventtype->set('alias',OutputFilter::stringURLSafe($this->_getDataFromObject($p_eventtype,'name')));
-				}
+foreach ($import_event as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+case 'name':
+$p_eventtype->name = trim($this->_neweventsname[$key]);
+break;
+default:
+$p_eventtype->$import = $this->_getDataFromObject($import_event,$import);    
+break;    
+}   
+}                
+$p_eventtype->sports_type_id = $this->_sportstype_id;				
+$p_eventtype->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_eventtype,'name'));
                 
                 $query->clear();
-          // Select some fields
         $query->select('id,name');
-		// From the table
 		$query->from('#__sportsmanagement_eventtype');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_eventtype->name)).''));
         
@@ -1856,28 +1849,29 @@ $my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ($object=Factory::getDbo()->loadObject())
 				{
-					$this->_convertEventID[$oldID]=$object->id;
+					$this->_convertEventID[$oldID] = $object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 					$my_text .= Text::sprintf('Using existing eventtype data: %1$s','</span><strong>'.Text::_($object->name).'</strong>');
 					$my_text .= '<br />';
 				}
 				else
 				{
-					if ($p_eventtype->store()===false)
-					{
-						$my_text .= 'error on event import: ';
-						$my_text .= $oldID;
-						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-					}
-					else
-					{
-						$insertID=Factory::getDbo()->insertid();
-						$this->_convertEventID[$oldID]=$insertID;
-						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= Text::sprintf('Created new eventtype data: %1$s','</span><strong>'.Text::_($p_eventtype->name).'</strong>');
-						$my_text .= '<br />';
-					}
+                    
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_eventtype', $p_eventtype);
+$insertID = Factory::getDbo()->insertid();
+$this->_convertEventID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new eventtype data: %1$s','</span><strong>'.Text::_($p_eventtype->name).'</strong>');
+$my_text .= '<br />';                  
+}
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= __LINE__.'error on event import: ';
+$my_text .= $oldID.'<br />';
+$my_text .= $e->getMessage().'<br />';
+}	
+                    
 				}
 			}
 		}
@@ -2303,7 +2297,7 @@ break;
 }
 				
 $oldID = $this->_getDataFromObject($import_playground,'id');
-$alias = $this->_getDataFromObject($import_playground,'alias');
+$p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
 $p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
 $p_playground->short_name = substr(trim($this->_newplaygroundname[$key]),0,14);
 $p_playground->picture = $p_playground->picture ? $p_playground->picture : ComponentHelper::getParams($option)->get('ph_stadium','');
@@ -2338,15 +2332,6 @@ $p_playground->picture = $p_playground->picture ? $p_playground->picture : Compo
 	$coords = sportsmanagementHelper::resolveLocation($address);
     $p_playground->latitude = $coords['latitude'];
     $p_playground->longitude = $coords['longitude'];        
-                
-				if ( isset($alias) && trim($alias) != '' )
-				{
-					$p_playground->alias = substr($alias,0,74);
-				}
-				else
-				{
-					$p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
-				}
 				
 				if ( $this->_importType != 'playgrounds' )	// force club_id to be set to default if only playgrounds are imported
 				{
