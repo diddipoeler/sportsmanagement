@@ -1444,7 +1444,7 @@ break;
         $ph_icon = $params->get('ph_icon', 0);
         $ph_team = $params->get('ph_team', 0);
 
-        if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DS) {
+        if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DIRECTORY_SEPARATOR) {
             //setup the different placeholders
             switch ($type) {
                 case 0: //player
