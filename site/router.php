@@ -13,6 +13,12 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
 
+if (!class_exists('sportsmanagementHelperRoute')) {
+/**
+ * add the classes for handling
+ */
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);     
+}
 
 /**
  * SportsmanagementRouter
