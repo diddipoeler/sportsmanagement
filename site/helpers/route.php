@@ -35,7 +35,11 @@ static $season = 0;
 static $view = 0;
 static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
+public static $views = array( 
+ 		'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''), 
 
+ 	); 
+	
 /*
 
 
