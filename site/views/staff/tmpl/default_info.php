@@ -14,12 +14,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-
 ?>
 <!-- person data START -->
 <h4><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 <div class="col-md-6">
 
 
