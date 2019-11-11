@@ -51,7 +51,7 @@ public static $views = array(
 'rankingalltime'   => array('cfg_which_database' => ''),
 	
 'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
-'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'r' => ''),
 'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
