@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 <!-- Player stats History START -->
 <h4><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h4>
 <table class="<?php echo $this->config['table_class'];?>" >
@@ -119,5 +119,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 		</td>
 	</tr>
 </table>
+</div>
 <br/>
 <!-- staff stats History END -->
