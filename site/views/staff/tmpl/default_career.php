@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 if (count($this->history) > 0)
 {
 	?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 	<!-- staff history START -->
 	<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h4>	
 	<table class="<?php echo $this->config['table_class'];?>">
@@ -73,6 +74,7 @@ if (count($this->history) > 0)
 		</tr>
 	</table>
 	<br /><br />
+</div>
 	<!-- staff history END -->
 	<?php
 }
