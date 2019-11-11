@@ -431,7 +431,7 @@ directory="images/com_sportsmanagement/database/rosterground"
 			<option value="1">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_LINK_ALIGNMENT_UNDER</option>
 		</field>
 
-<field 	name="show_player_profile_name_trikotnumber" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+<field 	name="show_player_profile_name_trikotnumber" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PLAYER_PROFILE_NAME_TRIKOTNUMBER"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PLAYER_PROFILE_NAME_TRIKOTNUMBER">
 			<option value="0">JNO</option>
