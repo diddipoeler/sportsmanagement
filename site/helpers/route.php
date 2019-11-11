@@ -42,7 +42,7 @@ public static $views = array(
 	
 'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 
-'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
 	
 'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 	
