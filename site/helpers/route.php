@@ -53,7 +53,7 @@ public static $views = array(
 'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'results'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
-'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 	
 'stats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
