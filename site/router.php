@@ -69,6 +69,13 @@ class SportsmanagementRouter extends RouterBase
 		
 	// Get view for later use (query wins menu item)
 	$view = isset($query ['view']) ? (string) preg_replace('/[^a-z]/', '', $query ['view']) : $menuitem->query ['view'];	
+
+// Get default values for URI variables 
+ 	if (isset(sportsmanagementHelperRoute::$views[$view])) 
+ 	{ 
+ 		$defaults = sportsmanagementHelperRoute::$views[$view]; 
+ 	} 
+//echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';
 		
 	// Check all URI variables and remove those which aren't needed
 	foreach ($query as $var => $value)
