@@ -50,7 +50,7 @@ public static $views = array(
 	
 'rankingalltime'   => array('cfg_which_database' => ''),
 	
-'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
 'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'r' => ''),
 'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
