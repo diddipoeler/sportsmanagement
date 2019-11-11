@@ -36,7 +36,13 @@ static $view = 0;
 static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
 public static $views = array( 
+'clubinfo'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'clubplan'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'curve'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
 'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+
+'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 	
 'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 	
@@ -47,11 +53,15 @@ public static $views = array(
 'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'results'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 	
 'stats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
-	
+'teaminfo'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'teamplan'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 	
  	); 
