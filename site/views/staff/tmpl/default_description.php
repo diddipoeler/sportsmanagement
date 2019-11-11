@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- Person description START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 <?php
 	$description = "";
 	if ( !empty($this->inprojectinfo->notes) )
@@ -51,4 +52,5 @@ use Joomla\CMS\HTML\HTMLHelper;
 		<?php
 	}
 ?>
+</div>
 <!-- Person description END -->
