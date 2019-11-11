@@ -166,6 +166,24 @@ class SportsmanagementRouter extends RouterBase
  	} 
 //echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';		
 		
+      
+      if ( $defaults )
+      {
+        $vars['view'] = $segments[0];
+      $count = 1;  
+      foreach ( $defaults as $key => $value )  
+      {
+      //  echo __METHOD__.' '.__LINE__.' key <pre>'.print_r($key,true).'</pre>';		
+      $vars[$key] = $segments[$count];  
+      $count++;  
+      }
+        
+        
+      }
+      
+      
+      
+      /*
 	// Handle all segments
 		$count = 0;
 	while (($segment = array_shift($segments)) !== null)
@@ -197,7 +215,7 @@ break;
 		
 		$count++;
 	}
-		
+	*/	
 		
 		
 		
@@ -206,7 +224,7 @@ break;
 		
 
 
-//echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';
+echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';
 		
 		return $vars;
 	}
