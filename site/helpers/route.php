@@ -45,7 +45,7 @@ public static $views = array(
 'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
 	
 'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
-	
+'player'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
 'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 	
 'rankingalltime'   => array('cfg_which_database' => ''),
