@@ -67,7 +67,7 @@ public static $views = array(
 'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
 'predictionresults'   => array('r' => '', 'uid' => ''),	
 'predictionranking'   => array('pggrouprank' => '', 'type' => '', 'from' => '', 'to' => ''),	
-'predictionusers'   => array('r' => '', 'uid' => ''),		
+'predictionusers'   => array('r' => '', 'uid' => '','prediction_id' => '', 'pj' => ''),		
 	
 	
  	); 
