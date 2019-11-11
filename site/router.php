@@ -89,7 +89,8 @@ class SportsmanagementRouter extends RouterBase
 	// Check all URI variables and remove those which aren't needed
 	foreach ($query as $var => $value)
 	{
-		if (isset($defaults [$var]) && !isset($menuitem->query [$var]) ) 
+		//if (isset($defaults [$var]) && !isset($menuitem->query [$var]) ) 
+		if (isset($defaults [$var]) ) 
  		{ 
         $segments [] = $value;
  			// Remove URI variable which has default value 
