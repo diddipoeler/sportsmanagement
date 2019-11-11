@@ -9,7 +9,6 @@
  * @subpackage helpers
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -65,7 +64,11 @@ public static $views = array(
 'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 
 	
-'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => ''),	
+'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
+'predictionresults'   => array('r' => '', 'uid' => ''),	
+'predictionranking'   => array('pggrouprank' => '', 'type' => '', 'from' => '', 'to' => ''),	
+'predictionusers'   => array('r' => '', 'uid' => ''),		
+	
 	
  	); 
 	
