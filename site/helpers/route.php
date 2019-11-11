@@ -46,7 +46,7 @@ public static $views = array(
 	
 'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 	
-'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => ''),
+'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 	
 'rankingalltime'   => array('cfg_which_database' => ''),
 	
