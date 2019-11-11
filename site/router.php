@@ -159,6 +159,12 @@ class SportsmanagementRouter extends RouterBase
 		$vars['view'] = '';
 	}
 	
+// Get default values for URI variables 
+ 	if (isset(sportsmanagementHelperRoute::$vars['view'])) 
+ 	{ 
+ 		$defaults = sportsmanagementHelperRoute::$vars['view']; 
+ 	} 
+//echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';		
 		
 	// Handle all segments
 		$count = 0;
