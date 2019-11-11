@@ -82,7 +82,8 @@ class SportsmanagementRouter extends RouterBase
  		$defaults = sportsmanagementHelperRoute::$views[$view]; 
  	} 
 //echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';
-		
+		$segments [] = $view;
+		unset($query['view']);
 	// Check all URI variables and remove those which aren't needed
 	foreach ($query as $var => $value)
 	{
