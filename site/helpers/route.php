@@ -65,10 +65,11 @@ public static $views = array(
 
 	
 'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
-'predictionresults'   => array('r' => '', 'uid' => '', 'prediction_id' => ''),	
-'predictionranking'   => array('pggrouprank' => '', 'type' => '', 'from' => '', 'to' => '','prediction_id' => '', 'pj' => ''),	
-'predictionusers'   => array('r' => '', 'uid' => '','prediction_id' => '', 'pj' => ''),		
-	
+'predictionresults'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
+'predictionranking'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '','type' => '', 'from' => '', 'to' => ''),	
+'predictionuser'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => '', 'layout' => 'edit'),		
+'predictionusers'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => ''),		
+'predictionrules'   => array('cfg_which_database' => '', 'prediction_id' => ''),			
 	
  	); 
 	
