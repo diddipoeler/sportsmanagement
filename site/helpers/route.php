@@ -63,6 +63,9 @@ public static $views = array(
 'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+
+	
+'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => ''),	
 	
  	); 
 	
