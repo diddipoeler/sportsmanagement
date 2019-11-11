@@ -61,7 +61,7 @@ public static $views = array(
 'teaminfo'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'teamplan'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
-'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 	
  	); 
