@@ -224,7 +224,7 @@ break;
 		
 
 
-echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';
+//echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';
 		
 		return $vars;
 	}
