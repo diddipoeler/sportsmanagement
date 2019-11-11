@@ -36,8 +36,24 @@ static $view = 0;
 static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
 public static $views = array( 
- 		'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''), 
-
+'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
+'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
+'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
+'rankingalltime'   => array('cfg_which_database' => ''),
+	
+'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'results'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
+'stats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
+'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+	
  	); 
 	
 /*
