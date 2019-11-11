@@ -80,7 +80,13 @@ class SportsmanagementRouter extends RouterBase
 	// Check all URI variables and remove those which aren't needed
 	foreach ($query as $var => $value)
 	{
-		if (isset($menuitem->query [$var]) && $value == $menuitem->query [$var] && $var != 'Itemid' && $var != 'option')
+		if (isset($defaults [$var]) && !isset($menuitem->query [$var]) ) 
+ 		{ 
+        $segments [] = $value;
+ 			// Remove URI variable which has default value 
+ 			unset($query [$var]); 
+ 		} 
+		elseif (isset($menuitem->query [$var]) && $value == $menuitem->query [$var] && $var != 'Itemid' && $var != 'option')
 		{
 			// Remove URI variable which has the same value as menu item
 			unset($query [$var]);
@@ -89,7 +95,7 @@ class SportsmanagementRouter extends RouterBase
 		
 //echo __METHOD__.' '.__LINE__.' query <pre>'.print_r($query,true).'</pre>';
 		
-		
+		/*
 		$segments [] = $view;
 		unset($query['view']);
 		$segments [] = (int) $query['cfg_which_database'];
@@ -98,7 +104,7 @@ class SportsmanagementRouter extends RouterBase
 		unset($query['s']);
 		$segments [] = $query['p'];
 		unset($query['p']);
-		
+		*/
 		
 		
 		
