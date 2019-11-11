@@ -79,7 +79,14 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $player->team_slug;
 $routeparameter['pid'] = $player->person_slug;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+if ( $this->config['show_player_profile_name_trikotnumber'] )
+{
 $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
+}
+else
+{
+$prefix = null;    
+}
 $match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
@@ -169,8 +176,14 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $player->team_slug;
 $routeparameter['pid'] = $player->person_slug;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-
+if ( $this->config['show_player_profile_name_trikotnumber'] )
+{
 $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
+}
+else
+{
+$prefix = null;    
+}
 $match_player=sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
