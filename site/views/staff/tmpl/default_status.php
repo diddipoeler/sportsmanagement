@@ -18,6 +18,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 		( isset($this->inprojectinfo->away) && $this->inprojectinfo->away > 0 ) )
 {
 	?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 	<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS');	?></h2>
 
 	<table class="status">
@@ -341,6 +342,7 @@ if (	( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
 		}
 		?>
 	</table>
+</div>
 	<br/>
 	<?php
 }
