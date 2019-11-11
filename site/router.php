@@ -82,6 +82,8 @@ class SportsmanagementRouter extends RouterBase
  		$defaults = sportsmanagementHelperRoute::$views[$view]; 
  	} 
 //echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';
+		
+		/*
 		$segments [] = $view;
 		unset($query['view']);
 	// Check all URI variables and remove those which aren't needed
@@ -99,10 +101,10 @@ class SportsmanagementRouter extends RouterBase
 			unset($query [$var]);
 		}
 	}	
-		
+	*/	
 //echo __METHOD__.' '.__LINE__.' query <pre>'.print_r($query,true).'</pre>';
 		
-		/*
+		
 		$segments [] = $view;
 		unset($query['view']);
 		$segments [] = (int) $query['cfg_which_database'];
@@ -111,7 +113,7 @@ class SportsmanagementRouter extends RouterBase
 		unset($query['s']);
 		$segments [] = $query['p'];
 		unset($query['p']);
-		*/
+		
 		
 		
 		
