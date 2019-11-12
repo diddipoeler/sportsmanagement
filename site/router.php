@@ -163,7 +163,7 @@ class SportsmanagementRouter extends RouterBase
       foreach ( $defaults as $key => $value )  
       {
 	
-      if ( $active->query )  
+      if ( $active->query && sizeof($segments) < 2 )  
       {
         
       }
