@@ -40,55 +40,50 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->model->matchid = $this->jinput->getInt('mid',0);
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
         $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
-        $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
+	$this->match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
+        $this->matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
-		$this->match = $match;
-        
-        $this->matchsingle = $matchsingle;
-        
-		if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
+	if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
-		$this->newmatchtext = $ret->text;
+	$this->newmatchtext = $ret->text;
         }
-		if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
+	if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
-		$this->oldmatchtext = $ret->text;
+	$this->oldmatchtext = $ret->text;
         }
         
 /**
  * hole den artikel zum spiel
  */
         $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid,$project->category_id);
-
-		$this->round = $this->model->getRound();
-		$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);
-		$this->team2 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,sportsmanagementModelProject::$cfg_which_database);
-		$this->team1_club = $this->model->getClubinfo($this->team1->club_id);
-		$this->team2_club = $this->model->getClubinfo($this->team2->club_id);
+	$this->round = $this->model->getRound();
+	$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);
+	$this->team2 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,sportsmanagementModelProject::$cfg_which_database);
+	$this->team1_club = $this->model->getClubinfo($this->team1->club_id);
+	$this->team2_club = $this->model->getClubinfo($this->team2->club_id);
         $this->matchplayerpositions = $this->model->getMatchPositions('player');
         $this->matchplayers = $this->model->getMatchPersons('player');
         $this->matchstaffpositions = $this->model->getMatchPositions('staff');
         $this->matchstaffs = $this->model->getMatchPersons('staff');
         $this->matchrefereepositions = $this->model->getMatchPositions('referee');
-		$this->matchreferees = $this->model->getMatchReferees();
+	$this->matchreferees = $this->model->getMatchReferees();
         $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         $this->substitutes = sportsmanagementModelProject::getMatchSubstitutions($this->model->matchid,sportsmanagementModelProject::$cfg_which_database);
-		$this->eventtypes = $this->model->getEventTypes();
-		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
-		$this->matchevents = sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc,sportsmanagementModelProject::$cfg_which_database);
-		$this->playground = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
+	$this->eventtypes = $this->model->getEventTypes();
+	$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
+	$this->matchevents = sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc,sportsmanagementModelProject::$cfg_which_database);
+	$this->playground = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
         $this->stats = sportsmanagementModelProject::getProjectStats(0,0,sportsmanagementModelProject::$cfg_which_database);
-		$this->playerstats = $this->model->getMatchStats();
-		$this->staffstats = $this->model->getMatchStaffStats();
+	$this->playerstats = $this->model->getMatchStats();
+	$this->staffstats = $this->model->getMatchStaffStats();
         
         $xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'match.xml';
-		$jRegistry = new Registry;
-		$jRegistry->loadString($match->extended, 'ini');
-		$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
-		$extended->bind($jRegistry);
+	$jRegistry = new Registry;
+	$jRegistry->loadString($match->extended, 'ini');
+	$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
+	$extended->bind($jRegistry);
 		
-		$this->extended = $extended;
+	$this->extended = $extended;
 
     $this->extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
     $this->formation1 = $this->extended2->getValue('formation1');
