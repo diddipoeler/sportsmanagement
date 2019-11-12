@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 if (!class_exists('sportsmanagementHelperRoute')) {
 /**
@@ -116,23 +117,7 @@ class SportsmanagementRouter extends RouterBase
 		unset($query['p']);
 		*/
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-	
-		
-		
-	
-		
-//echo __METHOD__.' '.__LINE__.' segments <pre>'.print_r($segments,true).'</pre>';		
-		
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' segments <pre>'.print_r($segments,true).'</pre>'), '');		
 		
 		return $segments;
 	}
@@ -227,14 +212,7 @@ break;
 	}
 		
 		
-		
-		
-		
-		
-		
-
-
-//echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' vars <pre>'.print_r($vars,true).'</pre>'), '');				
 		
 		return $vars;
 	}
