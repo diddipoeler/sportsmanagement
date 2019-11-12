@@ -152,7 +152,8 @@ class SportsmanagementRouter extends RouterBase
  	{ 
  		$defaults = sportsmanagementHelperRoute::$views[$segments[0]]; 
  	} 
-//echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';		
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' query <pre>'.print_r($active->query,true).'</pre>'), '');				
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' segments <pre>'.print_r($segments,true).'</pre>'), '');						
 		
       
       if ( $defaults )
@@ -161,17 +162,17 @@ class SportsmanagementRouter extends RouterBase
       $count = 1;  
       foreach ( $defaults as $key => $value )  
       {
-	      /*
+	
       if ( $active->query )  
       {
         
       }
         else
         {
-		*/
+	
       //  echo __METHOD__.' '.__LINE__.' key <pre>'.print_r($key,true).'</pre>';		
       $vars[$key] = $segments[$count];  
-        //}
+        }
       $count++;  
       }
         
