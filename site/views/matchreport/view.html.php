@@ -43,11 +43,11 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 	$this->match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
         $this->matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
-	if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
+	if ( $ret = sportsmanagementModelMatch::getMatchText($this->match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
 	$this->newmatchtext = $ret->text;
         }
-	if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
+	if ( $ret = sportsmanagementModelMatch::getMatchText($this->match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
 	$this->oldmatchtext = $ret->text;
         }
