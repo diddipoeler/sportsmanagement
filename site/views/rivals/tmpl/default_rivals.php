@@ -16,8 +16,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-<?php echo $this->pagetitle; ?>
+<?php echo $this->pagetitle; 
+?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="rivals">
+<?php	
+if ( $this->opos )
+{
+?>
 <table class="<?php echo $this->config['table_class']; ?>">
 <tr class="sectiontableheader">
 <th class="name_row"><?php echo ''; ?></th>
@@ -29,8 +34,7 @@ use Joomla\CMS\Factory;
 <th class="goals_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_TOTAL_GOALS'); ?></th>
 </tr>
 <?php
-if ( $this->opos )
-{
+
 $k=0;
 foreach ($this->opos as $opos => $v)
 {
@@ -104,14 +108,13 @@ echo sportsmanagementHelper::formatTeamName( $team, 'tr' . $k, $this->config, $i
 <?php
 $k=1-$k;
 }
+?>
+</table>
+<?php	
 }
 else
 {
 echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES');		
-}
-	
-	
-	
-?>
-</table>
+}	
+?>	
 </div>
