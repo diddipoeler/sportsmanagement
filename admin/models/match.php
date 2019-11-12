@@ -2418,7 +2418,6 @@ if ( $data['id'] )
 try{
         $db->setQuery($query);
         return $db->loadObjectList();
-	    }
                     } catch (Exception $e) {
 $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match id' . $match_id, 'error'); // commonly to still display that error	    
                         $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
