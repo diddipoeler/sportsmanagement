@@ -161,15 +161,17 @@ class SportsmanagementRouter extends RouterBase
       $count = 1;  
       foreach ( $defaults as $key => $value )  
       {
+	      /*
       if ( $active->query )  
       {
         
       }
         else
         {
+		*/
       //  echo __METHOD__.' '.__LINE__.' key <pre>'.print_r($key,true).'</pre>';		
       $vars[$key] = $segments[$count];  
-        }
+        //}
       $count++;  
       }
         
