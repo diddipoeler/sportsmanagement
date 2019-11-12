@@ -2415,10 +2415,17 @@ if ( $data['id'] )
         $query->from('#__sportsmanagement_match_commentary');
         $query->where('match_id = ' . $match_id);
         $query->order('event_time DESC');
-
+try{
         $db->setQuery($query);
-
         return $db->loadObjectList();
+	    }
+                    } catch (Exception $e) {
+$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match id' . $match_id, 'error'); // commonly to still display that error	    
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
+	    return false;
+                    }
+	    
     }
 
 
