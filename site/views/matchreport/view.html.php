@@ -79,13 +79,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         
         $xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'match.xml';
 	$jRegistry = new Registry;
-	$jRegistry->loadString($match->extended, 'ini');
+	$jRegistry->loadString($this->match->extended, 'ini');
 	$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
 	$extended->bind($jRegistry);
 		
 	$this->extended = $extended;
 
-    $this->extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
+    $this->extended2 = sportsmanagementHelper::getExtended($this->match->extended, 'match');
     $this->formation1 = $this->extended2->getValue('formation1');
     $this->formation2 = $this->extended2->getValue('formation2');
     $this->youtube = $this->extended2->getValue('youtube');
