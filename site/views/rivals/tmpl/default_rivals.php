@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 
 ?>
 <?php echo $this->pagetitle; ?>
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="rivals">
 <table class="<?php echo $this->config['table_class']; ?>">
 	<tr class="sectiontableheader">
     <th class="name_row"><?php echo ''; ?></th>
