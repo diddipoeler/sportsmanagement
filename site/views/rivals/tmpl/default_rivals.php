@@ -19,19 +19,21 @@ use Joomla\CMS\Factory;
 <?php echo $this->pagetitle; ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="rivals">
 <table class="<?php echo $this->config['table_class']; ?>">
-	<tr class="sectiontableheader">
-    <th class="name_row"><?php echo ''; ?></th>
-		<th class="name_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_RIVAL'); ?></th>
-		<th class="match_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_MATCHES'); ?></th>
-		<th class="win_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_WIN'); ?></th>
-		<th class="tie_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_DRAW'); ?></th>
-		<th class="los_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_LOS'); ?></th>
-		<th class="goals_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_TOTAL_GOALS'); ?></th>
-	</tr>
-	<?php
-	$k=0;
-	foreach ($this->opos as $opos => $v)
-	{
+<tr class="sectiontableheader">
+<th class="name_row"><?php echo ''; ?></th>
+<th class="name_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_RIVAL'); ?></th>
+<th class="match_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_MATCHES'); ?></th>
+<th class="win_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_WIN'); ?></th>
+<th class="tie_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_DRAW'); ?></th>
+<th class="los_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_LOS'); ?></th>
+<th class="goals_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_TOTAL_GOALS'); ?></th>
+</tr>
+<?php
+if ( $this->opos )
+{
+$k=0;
+foreach ($this->opos as $opos => $v)
+{
 		if( empty($v['name']) ) continue;
 		$team = ArrayHelper::toObject($v);
 		if(empty($team->id)) continue;
@@ -84,25 +86,32 @@ use Joomla\CMS\Factory;
     
     }
     ?>
-    </td>
-		<td class="">
-        <?php 
-		$isFavTeam = in_array( $team->id, explode(",",$this->project->fav_team) );
-		// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
-		$config['highlight_fav'] = $isFavTeam;
-		echo sportsmanagementHelper::formatTeamName( $team, 'tr' . $k, $this->config, $isFavTeam );
-		//echo $v['name'].'</pre><br>';
-		?>
-        </td>
-		<td class="match_row"><?php echo $v['match']; ?></td>
-		<td class="win_row"><?php echo $v['win']!=0 ? $v['win'] : 0; ?></td>
-		<td class="tie_row"><?php echo $v['tie']!=0 ? $v['tie']: 0 ; ?></td>
-		<td class="los_row"><?php echo $v['los']!=0 ? $v['los']: 0 ; ?></td>
-		<td class="goals_row"><?php echo $v['g_for'].' '. $this->overallconfig['seperator'] .' '.$v['g_aga']; ?></td>
-	</tr>
-	<?php
-	$k=1-$k;
-	}
-	?>
+</td>
+<td class="">
+<?php 
+$isFavTeam = in_array( $team->id, explode(",",$this->project->fav_team) );
+// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
+$config['highlight_fav'] = $isFavTeam;
+echo sportsmanagementHelper::formatTeamName( $team, 'tr' . $k, $this->config, $isFavTeam );
+?>
+</td>
+<td class="match_row"><?php echo $v['match']; ?></td>
+<td class="win_row"><?php echo $v['win']!=0 ? $v['win'] : 0; ?></td>
+<td class="tie_row"><?php echo $v['tie']!=0 ? $v['tie']: 0 ; ?></td>
+<td class="los_row"><?php echo $v['los']!=0 ? $v['los']: 0 ; ?></td>
+<td class="goals_row"><?php echo $v['g_for'].' '. $this->overallconfig['seperator'] .' '.$v['g_aga']; ?></td>
+</tr>
+<?php
+$k=1-$k;
+}
+}
+else
+{
+echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES');		
+}
+	
+	
+	
+?>
 </table>
 </div>
