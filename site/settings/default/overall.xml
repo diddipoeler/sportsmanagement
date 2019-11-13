@@ -268,4 +268,29 @@
 		</field>    	
         	
 	</fieldset>	
+	
+<!-- register 5 -->	
+ <fieldset 
+        name="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC"
+	   
+<field name="extended_cols" type="text" default="12"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_COLS">
+</field>	   
+<field name="extended_description_cols" type="text" default="3"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_DESCRIPTION_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_DESCRIPTION_COLS">
+</field>	   
+<field name="extended_value_cols" type="text" default="2"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_VALUE_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_VALUE_COLS">
+</field>
+
+	   
+    >	
+</fieldset>	
+	
+	
 </form>
