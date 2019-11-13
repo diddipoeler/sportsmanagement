@@ -94,7 +94,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
               </div>
 <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
-                            <?php
+
 			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
             </div>
                 </div>
