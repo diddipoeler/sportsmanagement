@@ -31,11 +31,11 @@ $field_type = $field->field_type;
 if (!empty($value)) // && !$field->backendonly)
 {
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
+<div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
 <strong><?php echo Text::_( $field->name); ?></strong>
 </div>
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
 <?php 
 switch (Factory::getApplication()->input->getVar('view'))
 {
