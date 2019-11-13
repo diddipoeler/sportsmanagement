@@ -64,7 +64,7 @@ echo Text::_($fieldset->name);
 					{
 						$field->description = '';
 						?>
-                          <div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?>">
 <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
                         
