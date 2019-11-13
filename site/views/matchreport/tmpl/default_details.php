@@ -55,13 +55,13 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-              <div class="row">
+              <div class="<?php echo $this->divclassrow;?>">
                           <div class="col-sm-12">
                         <div class="col-2 col-sm-2 col-lg-2">
             
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
               </div>
-			<div class="col-2 col-sm-2 col-lg-2">
+			<div class="col-4 col-sm-4 col-lg-4">
               <?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
             </div>
                 </div>
@@ -87,12 +87,12 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-             <div class="row">
+             <div class="<?php echo $this->divclassrow;?>">
                           <div class="col-sm-12">
                         <div class="col-2 col-sm-2 col-lg-2">
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
               </div>
-			<div class="col-2 col-sm-2 col-lg-2">
+			<div class="col-4 col-sm-4 col-lg-4">
 			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
             </div>
                 </div>
