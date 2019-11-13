@@ -273,7 +273,7 @@
  <fieldset 
         name="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
         label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
 	   
 <field name="extended_cols" type="text" default="12"
 label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_COLS"
@@ -289,7 +289,6 @@ description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_VALUE_COLS">
 </field>
 
 	   
-    >	
 </fieldset>	
 	
 	
