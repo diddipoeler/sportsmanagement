@@ -61,7 +61,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
             
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
               </div>
-<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
+<div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
                             <?php
               <?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
             </div>
