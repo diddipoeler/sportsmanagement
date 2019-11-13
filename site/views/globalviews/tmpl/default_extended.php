@@ -65,12 +65,12 @@ echo Text::_($fieldset->name);
 						$field->description = '';
 						?>
                           <div class="row">
-                          <div class="col-sm-12">
-                        <div class="col-2 col-sm-2 col-lg-2">
+                          <div class="col-sm-<?php echo $this->config['extended_cols'];?>">
+                        <div class="col-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
                         
                         <strong><?php echo Text::_( $field->label).':'; ?></strong>
                         </div>
-                        <div class="col-2 col-sm-2 col-lg-2">
+                        <div class="col-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
                             <?php
                             if ( is_array($field->value) )
                             {
