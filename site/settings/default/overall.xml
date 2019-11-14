@@ -274,7 +274,14 @@
         name="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
         label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
         description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
-	   
+	 
+<field	name="show_extended_text" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_TEXT"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_TEXT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	 
 <field name="extended_cols" type="text" default="12"
 label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_COLS"
 description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_COLS">
