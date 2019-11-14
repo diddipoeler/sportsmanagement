@@ -52,7 +52,10 @@ if(count($this->extended->getFieldsets()) > 0)
 
 <h4>
 <?php 
+if ( $this->config['show_extended_text'] )
+{
 echo Text::_($fieldset->name); 
+}				
 ?>
 </h4>
 			
