@@ -60,6 +60,7 @@ echo Text::_($fieldset->name);
 				foreach ($fields as $field)
 				{
 					$value = $field->value;
+					$label = $field->label;
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						$field->description = '';
@@ -68,7 +69,7 @@ echo Text::_($fieldset->name);
 <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
                         
-                        <strong><?php echo Text::_( $field->label); ?></strong>
+                        <strong><?php echo Text::_( $label).':'; ?></strong>
                         </div>
 <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
                             <?php
