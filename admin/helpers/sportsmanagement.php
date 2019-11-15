@@ -1009,7 +1009,7 @@ abstract class sportsmanagementHelper {
      * @param string $file
      * @return object
      */
-    static function getExtended($data = '', $file, $format = 'ini') {
+    static function getExtended($data = '', $file, $format = 'ini', $frontend = FALSE) {
         $app = Factory::getApplication();
         $xmlfile = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'assets' .DIRECTORY_SEPARATOR. 'extended' .DIRECTORY_SEPARATOR. $file . '.xml';
         /**
@@ -1029,7 +1029,14 @@ abstract class sportsmanagementHelper {
 
                 $extended = JForm::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
                 $extended->bind($jRegistry);
+		    if ( $frontend )
+		    {
+		return $jRegistry;	    
+		    }
+		    else
+		    {
                 return $extended;
+		    }
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
