@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+//echo '<pre>'.print_r($this->extended,true).'</pre>';
+
 ?>
 <!-- EXTENDED DATA-->
 <?php
