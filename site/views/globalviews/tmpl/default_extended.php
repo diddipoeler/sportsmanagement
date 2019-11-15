@@ -33,29 +33,63 @@ if ( $value )
 <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">  
 <strong>
-	<?php 
- $keytext = $key;
- switch($keytext)
- {
-	 case 'formation1':
-		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME'; 
-		 break;
+<?php 
+$keytext = $key;
+$valuetext = $value; 
+switch($keytext)
+{
+case 'formation1':
+$keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME'; 
+break;
 case 'formation2':
-		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY'; 
-		 break;
+$keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY'; 
+break;
 case 'Weather':
-		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER'; 
-		 break;		 
-		 
- }
- echo Text::_( $keytext ).':'; 
-	?>
-	</strong>
+$keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER'; 
+break;		 
+}
+ 
+switch ($valuetext)
+{
+case 'foggy':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY';		
+break;
+case 'rainy':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY';		
+break;
+case 'sunny':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY';		
+break;
+case 'windy':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY';		
+break;
+case 'dry':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY';		
+break;
+case 'snowing':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING';		
+break;
+case 'normal':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL';		
+break;
+case 'wet':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET';		
+break;
+case 'fielddry':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY';		
+break;
+case 'snow':
+$valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW';		
+break;	
+}			 
+echo Text::_( $keytext ).' :'; 
+?>
+</strong>
 </div>    
   
 <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">  
 <?php  
-echo Text::_( $value );
+echo Text::_( $valuetext );
 ?>  
 </div>
   
