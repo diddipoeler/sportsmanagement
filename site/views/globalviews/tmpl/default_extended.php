@@ -50,6 +50,7 @@ echo Text::_( $value );
 
 
 return;
+?>
 <!-- EXTENDED DATA-->
 <?php
 if(count($this->extended->getFieldsets()) > 0)
