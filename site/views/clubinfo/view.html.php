@@ -46,7 +46,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$lng ='';
 		
 		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
-		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
+		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club','ini',TRUE);
 		$this->teams = sportsmanagementModelClubInfo::getTeamsByClubId();
 		if ( sportsmanagementModelClubInfo::$projectid )
 		{
