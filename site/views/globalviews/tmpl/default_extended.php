@@ -120,7 +120,8 @@ case 'snow':
 echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');		
 break;	
 default:
-echo Text::_( $field->value );		
+$value = $field->value;		
+echo Text::_( $value );		
 break;
 }				    
 }
