@@ -14,6 +14,42 @@ use Joomla\CMS\Language\Text;
 //echo '<pre>'.print_r($this->extended,true).'</pre>';
 
 ?>
+<h4>
+<?php 
+if ( $this->config['show_extended_text'] )
+{
+echo Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES'); 
+}				
+?>
+</h4>
+			
+<?php
+foreach ( $this->extended as $key => $value )
+{
+if ( $value )  
+{
+?>
+<div class="<?php echo $this->divclassrow;?>">
+<div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
+<div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">  
+<strong><?php echo Text::_( $key ).':'; ?></strong>
+</div>    
+  
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">  
+<?php  
+echo Text::_( $value );
+?>  
+</div>
+  
+</div>    
+</div>  
+<?php  
+}
+  
+}
+
+
+return;
 <!-- EXTENDED DATA-->
 <?php
 if(count($this->extended->getFieldsets()) > 0)
