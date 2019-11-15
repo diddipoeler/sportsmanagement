@@ -60,7 +60,8 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	  {
     $mod_name = "mod_jw_srfr";
     $rssfeeditems = '';
-    $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
+    //$rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
+    $rssfeedlink = $this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'];
     
     if ( $rssfeedlink )
     {
