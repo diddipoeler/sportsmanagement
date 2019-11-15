@@ -32,7 +32,25 @@ if ( $value )
 <div class="<?php echo $this->divclassrow;?>">
 <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">  
-<strong><?php echo Text::_( $key ).':'; ?></strong>
+<strong>
+	<?php 
+ $keytext = $key;
+ switch($keytext)
+ {
+	 case 'formation1':
+		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME'; 
+		 break;
+case 'formation2':
+		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY'; 
+		 break;
+case 'Weather':
+		 $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER'; 
+		 break;		 
+		 
+ }
+ echo Text::_( $keytext ).':'; 
+	?>
+	</strong>
 </div>    
   
 <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">  
