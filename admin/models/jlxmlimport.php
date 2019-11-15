@@ -2659,6 +2659,7 @@ foreach ($import_team as $import => $value )
 switch ($import)
 {
 case 'id':
+case 'team_id':		
 break;
 default:
 $p_team->$import = $this->_getDataFromObject($import_team,$import);    
@@ -2962,6 +2963,7 @@ foreach ($import_project as $key => $value )
 switch ($key)
 {
 case 'id':
+case 'country':		
 break;
 default:
 $p_project->$key = $this->_getDataFromObject($import_project,$key);    
