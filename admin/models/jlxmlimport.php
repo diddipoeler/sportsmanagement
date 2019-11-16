@@ -133,6 +133,29 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     
       
     }
+    
+    
+    
+    /**
+     * sportsmanagementModelJLXMLImport::_importDataForSave()
+     * 
+     * @param mixed $datas
+     * @param string $table
+     * @return
+     */
+    public function _importDataForSave($datas=array(),$table='')
+    {
+    $p_returndata = new stdClass();             
+    if ( $table )
+    {    
+    $columnArr = Factory::getDbo()->getTableColumns("#__sportsmanagement_".$table);    
+        
+        
+        
+        
+    }    
+    return $p_returndata;    
+    }
         
     /**
      * sportsmanagementModelJLXMLImport::getDataUpdate()
