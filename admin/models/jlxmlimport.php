@@ -4426,7 +4426,7 @@ $my_text .= $e->getMessage().'<br />';
 $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
 
-			$insertID = $p_match->id;//Factory::getDbo()->insertid();
+			$insertID = $p_match->id;
 			$this->_convertMatchID[$oldId] = $insertID;
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
@@ -4443,9 +4443,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
        
-       
-//$this->dump_header("function _importMatchPlayer");
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['matchplayer']) || count($this->_datas['matchplayer'])==0)
         {
             return true;
@@ -4461,17 +4459,12 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
                 return true;
                 }
 
-//$this->dump_variable("this->_convertTeamPlayerID", $this->_convertTeamPlayerID);
-//$this->dump_variable("this->_convertProjectPositionID", $this->_convertProjectPositionID);
 		foreach ($this->_datas['matchplayer'] as $key => $matchplayer)
 		{
 			$import_matchplayer = $this->_datas['matchplayer'][$key];
-//$this->dump_variable("import_matchplayer", $import_matchplayer);
 			$oldID = $this->_getDataFromObject($import_matchplayer,'id');
 			
-            $mdl = BaseDatabaseModel::getInstance("matchplayer", "sportsmanagementModel");
-            $p_matchplayer = $mdl->getTable();
-            
+            $p_matchplayer = new stdClass();
 			$oldMatchID = $this->_getDataFromObject($import_matchplayer,'match_id');
 			$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'teamplayer_id');
 			if (!isset($this->_convertMatchID[$oldMatchID]) ||
@@ -4484,52 +4477,54 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 								"</span><strong>$oldTeamPlayerID</strong>").'<br />';
 				continue;
 			}
-			$p_matchplayer->set('match_id',$this->_convertMatchID[$oldMatchID]);
-			$p_matchplayer->set('teamplayer_id',$this->_convertTeamPlayerID[$oldTeamPlayerID]);
+			$p_matchplayer->match_id = $this->_convertMatchID[$oldMatchID];
+			$p_matchplayer->teamplayer_id = $this->_convertTeamPlayerID[$oldTeamPlayerID];
             $newTeamPlayerID = $this->_convertTeamPlayerID[$oldTeamPlayerID];
             
 			$oldPositionID = $this->_getDataFromObject($import_matchplayer,'project_position_id');
 			if (isset($this->_convertProjectPositionID[$oldPositionID]))
 			{
-				$p_matchplayer->set('project_position_id',$this->_convertProjectPositionID[$oldPositionID]);
+				$p_matchplayer->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_matchplayer->set('came_in',$this->_getDataFromObject($import_matchplayer,'came_in'));
+			$p_matchplayer->came_in = $this->_getDataFromObject($import_matchplayer,'came_in');
 			if ($import_matchplayer->in_for > 0)
 			{
 				$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'in_for');
 				if (isset($this->_convertTeamPlayerID[$oldTeamPlayerID]))
 				{
-					$p_matchplayer->set('in_for',$this->_convertTeamPlayerID[$oldTeamPlayerID]);
+					$p_matchplayer->in_for = $this->_convertTeamPlayerID[$oldTeamPlayerID];
 				}
 			}
-			$p_matchplayer->set('out',$this->_getDataFromObject($import_matchplayer,'out'));
-			$p_matchplayer->set('in_out_time',$this->_getDataFromObject($import_matchplayer,'in_out_time'));
-			$p_matchplayer->set('ordering',$this->_getDataFromObject($import_matchplayer,'ordering'));
+			$p_matchplayer->out = $this->_getDataFromObject($import_matchplayer,'out');
+			$p_matchplayer->in_out_time = $this->_getDataFromObject($import_matchplayer,'in_out_time');
+			$p_matchplayer->ordering = $this->_getDataFromObject($import_matchplayer,'ordering');
 
-			if ($p_matchplayer->store()===false)
-			{
-				$my_text .= 'error on matchplayer import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-			}
-			else
-			{
-				$dPerson = $this->_getPersonFromTeamPlayer($p_matchplayer->teamplayer_id);
-				$dPosName = (($p_matchplayer->project_position_id==0) ?
-							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
-							$this->_getProjectPositionName($p_matchplayer->project_position_id));
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s - oldTeamPlayerID : %5$s - newTeamPlayerID : %6$s',
-								'</span><strong>'.$p_matchplayer->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								'</span><strong>'.$dPerson->lastname,
-								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>$dPosName</strong>",
-                                "</span><strong>$oldTeamPlayerID</strong>",
-                                "</span><strong>$newTeamPlayerID</strong>");
-				$my_text .= '<br />';
-			}
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_match_player', $p_matchplayer);
+$dPerson = $this->_getPersonFromTeamPlayer($p_matchplayer->teamplayer_id);
+$dPosName = (($p_matchplayer->project_position_id==0) ?
+		'<span style="color:orange">'.Text::_('Has no position').'</span>' :
+		$this->_getProjectPositionName($p_matchplayer->project_position_id));
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s - oldTeamPlayerID : %5$s - newTeamPlayerID : %6$s',
+		'</span><strong>'.$p_matchplayer->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+		'</span><strong>'.$dPerson->lastname,
+		$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+		"</span><strong>$dPosName</strong>",
+        "</span><strong>$oldTeamPlayerID</strong>",
+        "</span><strong>$newTeamPlayerID</strong>");
+$my_text .= '<br />';                  
+}
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= __LINE__.' '.Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)).'</strong></span><br />';
+$my_text .= 'error on matchplayer import: ';
+$my_text .= $oldID;
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
+}           
+            
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
