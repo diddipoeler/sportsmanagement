@@ -48,7 +48,8 @@ public static $views = array(
 'player'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
 'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 	
-'rankingalltime'   => array('cfg_which_database' => ''),
+'rankingalltime'   => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
+
 'referee'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
 'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
 'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
