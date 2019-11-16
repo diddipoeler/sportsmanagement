@@ -2659,7 +2659,9 @@ foreach ($import_team as $import => $value )
 switch ($import)
 {
 case 'id':
-case 'team_id':		
+case 'team_id':	
+case 'is_in_score':
+case 'project_team_id':	
 break;
 default:
 $p_team->$import = $this->_getDataFromObject($import_team,$import);    
@@ -2963,7 +2965,8 @@ foreach ($import_project as $key => $value )
 switch ($key)
 {
 case 'id':
-case 'country':		
+case 'country':
+case 'serveroffset':	
 break;
 default:
 $p_project->$key = $this->_getDataFromObject($import_project,$key);    
@@ -3413,6 +3416,13 @@ foreach ($import_projectteam as $import => $value )
 switch ($import)
 {
 case 'id':
+case 'name':
+case 'alias':
+case 'club_id':
+case 'project_team_id':
+case 'middle_name':
+case 'short_name':
+case 'is_in_score':
 break;
 case 'description':
 $p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
