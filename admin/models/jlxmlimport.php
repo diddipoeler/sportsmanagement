@@ -7,6 +7,11 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlxmlimport
+ * 
+ * $columnArr = $this->jsmdb->getTableColumns("#__sportsmanagement_club");
+ * echo '<pre>'.print_r($columnArr,true).'</pre>'; 
+ * 
+ * 
  */
 
 defined('_JEXEC') or die('Restricted access');
