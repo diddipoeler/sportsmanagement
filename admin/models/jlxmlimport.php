@@ -2996,7 +2996,7 @@ $my_text .= '<br />';
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Projectname: %1$s',$p_project->name).'<br />';
-$my_text .= __LINE_.' '.$e->getMessage().'<br />';	
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';	
 }		
 $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 return true;		
