@@ -3369,23 +3369,24 @@ $t_params = json_encode( $ini );
 			foreach ($this->_datas['division'] as $key => $division)
 			{
 				$import_division = $this->_datas['division'][$key];
-                $p_division = new stdClass();
+               // $p_division = new stdClass();
                 
 				$oldId = (int)$division->id;
 				
 				if ( $division->id == $this->_datas['division'][$key]->id )
 				{
-foreach ($import_division as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-break;
-default:
-$p_division->$import = $this->_getDataFromObject($import_division,$import);    
-break;    
-}    
-}  	
+$p_division = $this->_importDataForSave($import_division,'division');				    
+//foreach ($import_division as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//break;
+//default:
+//$p_division->$import = $this->_getDataFromObject($import_division,$import);    
+//break;    
+//}    
+//}  	
 $p_division->project_id =  $this->_project_id;
 $p_division->alias = OutputFilter::stringURLSafe($p_division->name);				    
 }
