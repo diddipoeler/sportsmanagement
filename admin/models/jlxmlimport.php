@@ -1809,7 +1809,7 @@ $my_text .= '<br />';
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-$my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
+$my_text .= __LINE__.' '.Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
 }                
                 
 			}
@@ -2298,20 +2298,20 @@ $my_text .= $e->getMessage().'<br />';
 		{
 			foreach ($this->_newplaygroundid AS $key => $id)
 			{
-                $p_playground = new stdClass();
+                //$p_playground = new stdClass();
 				$import_playground = $this->_datas['playground'][$key];
-				
-foreach ($import_playground as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-break;
-default:
-$p_playground->$import = $this->_getDataFromObject($import_playground,$import);    
-break;    
-}   
-}
+$p_playground = $this->_importDataForSave($import_playground,'playground');				
+//foreach ($import_playground as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//break;
+//default:
+//$p_playground->$import = $this->_getDataFromObject($import_playground,$import);    
+//break;    
+//}   
+//}
 				
 $oldID = $this->_getDataFromObject($import_playground,'id');
 $p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
@@ -2386,7 +2386,7 @@ catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= __LINE__.' '.Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Playgroundname: %1$s Shortname [%2$s]',$p_playground->name,$p_playground->short_name).'<br />';
-$my_text .= $e->getMessage().'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }					
 
 				}
@@ -2994,21 +2994,22 @@ $my_text .= 'error on person import: ';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }		
-        $p_project = new stdClass();
+       // $p_project = new stdClass();
 $import_project = $this->_datas['project'];
-foreach ($import_project as $key => $value )
-{
-switch ($key)
-{
-case 'id':
-case 'country':
-case 'serveroffset':	
-break;
-default:
-$p_project->$key = $this->_getDataFromObject($import_project,$key);    
-break;    
-}    
-}       
+$p_project = $this->_importDataForSave($import_project,'project');
+//foreach ($import_project as $key => $value )
+//{
+//switch ($key)
+//{
+//case 'id':
+//case 'country':
+//case 'serveroffset':	
+//break;
+//default:
+//$p_project->$key = $this->_getDataFromObject($import_project,$key);    
+//break;    
+//}    
+//}       
 		$p_project->name = substr(trim($this->_name),0,99);
 		$p_project->alias = substr(OutputFilter::stringURLSafe(trim($this->_name)),0,99);
 		$p_project->league_id = $this->_league_id;
@@ -3595,19 +3596,19 @@ $my_text .= $e->getMessage().'<br />';
 			$import_projectreferee = $this->_datas['projectreferee'][$key];
 			$oldID = $this->_getDataFromObject($import_projectreferee,'id');
 			
-            $p_projectreferee = new stdClass();
-
-foreach ($import_projectreferee as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-break;
-default:
-$p_projectreferee->$import = $this->_getDataFromObject($import_projectreferee,$import);    
-break;    
-}    
-}  	
+            //$p_projectreferee = new stdClass();
+$p_projectreferee = $this->_importDataForSave($import_projectreferee,'project_referee');	
+//foreach ($import_projectreferee as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//break;
+//default:
+//$p_projectreferee->$import = $this->_getDataFromObject($import_projectreferee,$import);    
+//break;    
+//}    
+//}  	
 $p_projectreferee->project_id = $this->_project_id;
 $p_projectreferee->person_id = $this->_convertPersonID[$this->_getDataFromObject($import_projectreferee,'person_id')];
 $p_projectreferee->project_position_id = $this->_convertProjectPositionID[$this->_getDataFromObject($import_projectreferee,'project_position_id')];
@@ -4082,7 +4083,6 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				$my_text .= 'error on round import: ';
 				$my_text .= $oldID;
 				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 			}
 			else
 			{
