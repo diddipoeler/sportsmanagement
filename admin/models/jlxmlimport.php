@@ -4651,7 +4651,7 @@ $my_text .= $e->getMessage().'<br />';
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
        
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['matchevent']) || count($this->_datas['matchevent'])==0)
         {
             return true;
@@ -4680,58 +4680,38 @@ $my_text .= $e->getMessage().'<br />';
 		{
 			$import_matchevent = $this->_datas['matchevent'][$key];
 			$oldID = $this->_getDataFromObject($import_matchevent,'id');
-
 			
-            $mdl = BaseDatabaseModel::getInstance("matchevent", "sportsmanagementModel");
-            $p_matchevent = $mdl->getTable();
-
-			$p_matchevent->set('match_id',$this->_convertMatchID[$this->_getDataFromObject($import_matchevent,'match_id')]);
-			$p_matchevent->set('projectteam_id',$this->_convertProjectTeamID[$this->_getDataFromObject($import_matchevent,'projectteam_id')]);
-			if ($import_matchevent->teamplayer_id > 0)
-			{
-				$p_matchevent->set('teamplayer_id',$this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent,'teamplayer_id')]);
-			}
-			else
-			{
-				$p_matchevent->set('teamplayer_id',0);
-			}
-			if ($import_matchevent->teamplayer_id2 > 0)
-			{
-				$p_matchevent->set('teamplayer_id2',$this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent,'teamplayer_id2')]);
-			}
-			else
-			{
-				$p_matchevent->set('teamplayer_id2',0);
-			}
-			$p_matchevent->set('event_time',$this->_getDataFromObject($import_matchevent,'event_time'));
-			$p_matchevent->set('event_type_id',$this->_convertEventID[$this->_getDataFromObject($import_matchevent,'event_type_id')]);
-			$p_matchevent->set('event_sum',$this->_getDataFromObject($import_matchevent,'event_sum'));
-			$p_matchevent->set('notice',$this->_getDataFromObject($import_matchevent,'notice'));
-			$p_matchevent->set('notes',$this->_getDataFromObject($import_matchevent,'notes'));
-
-			if ($p_matchevent->store()===false)
-			{
-				$my_text .= 'error on matchevent import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-			}
-			else
-			{
-				$dPerson=$this->_getPersonFromTeamPlayer($p_matchevent->teamplayer_id);
-				$dEventName=(($p_matchevent->event_type_id==0) ?
-							'<span style="color:orange">'.Text::_('Has no event').'</span>' :
-							Text::_($this->_getObjectName('eventtype',$p_matchevent->event_type_id)));
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new matchevent data. MatchID: %1$s - Player: %2$s,%3$s - Eventtime: %4$s - Event: %5$s',
-								'</span><strong>'.$p_matchevent->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								'</span><strong>'.$dPerson->lastname,
-								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								'</span><strong>'.$p_matchevent->event_time.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>$dEventName</strong>");
-				$my_text .= '<br />';
-			}
+$p_matchevent = $this->_importDataForSave($import_matchevent,'match_event');
+$p_matchevent->match_id = $this->_convertMatchID[$this->_getDataFromObject($import_matchevent,'match_id')];
+$p_matchevent->projectteam_id = $this->_convertProjectTeamID[$this->_getDataFromObject($import_matchevent,'projectteam_id')];
+$p_matchevent->teamplayer_id = $this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent,'teamplayer_id')];
+$p_matchevent->teamplayer_id2 = $this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent,'teamplayer_id2')];
+$p_matchevent->event_type_id = $this->_convertEventID[$this->_getDataFromObject($import_matchevent,'event_type_id')];
+            
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_match_event', $p_matchevent);
+$insertID = Factory::getDbo()->insertid();
+$dPerson = $this->_getPersonFromTeamPlayer($p_matchevent->teamplayer_id);
+$dEventName=(($p_matchevent->event_type_id==0) ?
+			'<span style="color:orange">'.Text::_('Has no event').'</span>' :
+			Text::_($this->_getObjectName('eventtype',$p_matchevent->event_type_id)));
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf(	'Created new matchevent data. MatchID: %1$s - Player: %2$s,%3$s - Eventtime: %4$s - Event: %5$s',
+			'</span><strong>'.$p_matchevent->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+			'</span><strong>'.$dPerson->lastname,
+			$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+			'</span><strong>'.$p_matchevent->event_time.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+			"</span><strong>$dEventName</strong>");
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= ' error on matchevent import: ';
+$my_text .= '#'.$oldID.'#<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
+}              
+            
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
