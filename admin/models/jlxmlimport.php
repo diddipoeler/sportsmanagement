@@ -2446,7 +2446,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		{
 			foreach ($this->_newclubsid AS $key => $id)
 			{
-                $p_club = new stdClass();
+//                $p_club = new stdClass();
                 
 				foreach ($this->_datas['club'] AS $dClub)
 				{
@@ -2686,23 +2686,24 @@ $my_text .= '<br />';
 			foreach ($this->_newteams AS $key => $value)
 			{
 				
-                $p_team = new stdClass();
+                //$p_team = new stdClass();
             
 				$import_team = $this->_datas['team'][$key];
-foreach ($import_team as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-case 'team_id':	
-case 'is_in_score':
-case 'project_team_id':	
-break;
-default:
-$p_team->$import = $this->_getDataFromObject($import_team,$import);    
-break;    
-}   
-}
+$p_team = $this->_importDataForSave($import_team,'team');                
+//foreach ($import_team as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//case 'team_id':	
+//case 'is_in_score':
+//case 'project_team_id':	
+//break;
+//default:
+//$p_team->$import = $this->_getDataFromObject($import_team,$import);    
+//break;    
+//}   
+//}
 				$oldID = $this->_getDataFromObject($import_team,'id');
 				$oldClubID = $this->_getDataFromObject($import_team,'club_id');
                 $p_team->short_name = substr($p_team->name,0,14);
@@ -2830,28 +2831,28 @@ $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_pers
 		{
 			foreach ($this->_newpersonsid AS $key => $id)
 			{
-                $p_person = new stdClass();
+                //$p_person = new stdClass();
 				$import_person = $this->_datas['person'][$key];
-
-foreach ($import_person as $key => $value )
-{
-switch ($key)
-{
-case 'id':
-break;
-default:
-$p_person->$key = $this->_getDataFromObject($import_person,$key);    
-break;    
-}    
-
-}
+$p_person = $this->_importDataForSave($import_person,'person');
+//foreach ($import_person as $key => $value )
+//{
+//switch ($key)
+//{
+//case 'id':
+//break;
+//default:
+//$p_person->$key = $this->_getDataFromObject($import_person,$key);    
+//break;    
+//}    
+//
+//}
 				
 				$oldID = $this->_getDataFromObject($import_person,'id');
 				$p_person->published = 1;
-                if ( !$p_person->notes )
-                {
-                    $p_person->notes = ' ';
-                }
+//                if ( !$p_person->notes )
+//                {
+//                    $p_person->notes = ' ';
+//                }
                 
     /** geo coding */
     $address_parts = array();
