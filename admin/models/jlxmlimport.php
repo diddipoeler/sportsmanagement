@@ -2166,9 +2166,9 @@ $my_text .= '<br />';
 }
 catch (Exception $e)
 {
-$my_text .= __LINE__.' error on position import: ';
+$my_text .= ' error on position import: ';
 $my_text .= $oldID;
-$my_text .= $e->getMessage().'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }                    
                     
 				}
@@ -2670,28 +2670,10 @@ $my_text .= '<br />';
 
 		if (!empty($this->_newteams))
 		{
-
 			foreach ($this->_newteams AS $key => $value)
 			{
-				
-                //$p_team = new stdClass();
-            
 				$import_team = $this->_datas['team'][$key];
 $p_team = $this->_importDataForSave($import_team,'team');                
-//foreach ($import_team as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//case 'team_id':	
-//case 'is_in_score':
-//case 'project_team_id':	
-//break;
-//default:
-//$p_team->$import = $this->_getDataFromObject($import_team,$import);    
-//break;    
-//}   
-//}
 
 $oldID = $this->_getDataFromObject($import_team,'id');
 $oldClubID = $this->_getDataFromObject($import_team,'club_id');
@@ -2737,7 +2719,6 @@ $p_team->agegroup_id = $this->_agegroup_id;
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
 $insertID = Factory::getDbo()->insertid();
-$this->_convertTeamID[$oldID] = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
 	"</span><strong>$p_team->name</strong>",
@@ -2749,12 +2730,13 @@ $my_text .= Text::sprintf('Created new team data: %1$s - %2$s - %3$s - %4$s - cl
 $my_text .= '<br />';
 }	
 catch (Exception $e){
+$insertID = 0;
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
 $my_text .= __LINE__.' '.$e->getMessage().'<br />';	
 }	
-
+$this->_convertTeamID[$oldID] = $insertID;
 				}
 			}
 		}
@@ -2823,28 +2805,10 @@ $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_pers
 		{
 			foreach ($this->_newpersonsid AS $key => $id)
 			{
-                //$p_person = new stdClass();
-				$import_person = $this->_datas['person'][$key];
+$import_person = $this->_datas['person'][$key];
 $p_person = $this->_importDataForSave($import_person,'person');
-//foreach ($import_person as $key => $value )
-//{
-//switch ($key)
-//{
-//case 'id':
-//break;
-//default:
-//$p_person->$key = $this->_getDataFromObject($import_person,$key);    
-//break;    
-//}    
-//
-//}
-				
-				$oldID = $this->_getDataFromObject($import_person,'id');
-				$p_person->published = 1;
-//                if ( !$p_person->notes )
-//                {
-//                    $p_person->notes = ' ';
-//                }
+$oldID = $this->_getDataFromObject($import_person,'id');
+$p_person->published = 1;
                 
     /** geo coding */
     $address_parts = array();
@@ -2986,22 +2950,10 @@ $my_text .= 'error on person import: ';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }		
-       // $p_project = new stdClass();
+
 $import_project = $this->_datas['project'];
 $p_project = $this->_importDataForSave($import_project,'project');
-//foreach ($import_project as $key => $value )
-//{
-//switch ($key)
-//{
-//case 'id':
-//case 'country':
-//case 'serveroffset':	
-//break;
-//default:
-//$p_project->$key = $this->_getDataFromObject($import_project,$key);    
-//break;    
-//}    
-//}       
+
 		$p_project->name = substr(trim($this->_name),0,99);
 		$p_project->alias = substr(OutputFilter::stringURLSafe(trim($this->_name)),0,99);
 		$p_project->league_id = $this->_league_id;
@@ -3362,24 +3314,11 @@ $t_params = json_encode( $ini );
 			foreach ($this->_datas['division'] as $key => $division)
 			{
 				$import_division = $this->_datas['division'][$key];
-               // $p_division = new stdClass();
-                
 				$oldId = (int)$division->id;
 				
 				if ( $division->id == $this->_datas['division'][$key]->id )
 				{
 $p_division = $this->_importDataForSave($import_division,'division');				    
-//foreach ($import_division as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//break;
-//default:
-//$p_division->$import = $this->_getDataFromObject($import_division,$import);    
-//break;    
-//}    
-//}  	
 $p_division->project_id =  $this->_project_id;
 $p_division->alias = OutputFilter::stringURLSafe($p_division->name);				    
 }
@@ -3394,9 +3333,9 @@ $my_text .= Text::sprintf('Created new division data: %1$s',"</span><strong>$p_d
 $my_text .= '<br />';
 }	
 catch (Exception $e){
-$my_text .= __LINE__.' error on division import: ';
+$my_text .= ' error on division import: ';
 $my_text .= '#'.$oldID.'#<br />';
-$my_text .= $e->getMessage().'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }            
             
             }
@@ -3598,19 +3537,8 @@ $my_text .= $e->getMessage().'<br />';
 			$import_projectreferee = $this->_datas['projectreferee'][$key];
 			$oldID = $this->_getDataFromObject($import_projectreferee,'id');
 			
-            //$p_projectreferee = new stdClass();
 $p_projectreferee = $this->_importDataForSave($import_projectreferee,'project_referee');	
-//foreach ($import_projectreferee as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//break;
-//default:
-//$p_projectreferee->$import = $this->_getDataFromObject($import_projectreferee,$import);    
-//break;    
-//}    
-//}  	
+
 $p_projectreferee->project_id = $this->_project_id;
 $p_projectreferee->person_id = $this->_convertPersonID[$this->_getDataFromObject($import_projectreferee,'person_id')];
 $p_projectreferee->project_position_id = $this->_convertProjectPositionID[$this->_getDataFromObject($import_projectreferee,'project_position_id')];
@@ -3627,9 +3555,9 @@ $my_text .= Text::sprintf(	'Created new projectreferee data: %1$s,%2$s',"</span>
 $my_text .= '<br />';
 }	
 catch (Exception $e){
-$my_text .= __LINE__.' error on projectreferee import: ';
+$my_text .= ' error on projectreferee import: ';
 $my_text .= '#'.$oldID.'#<br />';
-$my_text .= $e->getMessage().'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }                
             
 		}
@@ -4049,52 +3977,32 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 		foreach ($this->_datas['round'] as $key => $round)
 		{
-			
-            $mdl = BaseDatabaseModel::getInstance("round", "sportsmanagementModel");
-            $p_round = $mdl->getTable();
-            
+			$import_round = $this->_datas['round'][$key];
+            $p_round = $this->_importDataForSave($import_round,'round');
 			$oldId = (int)$round->id;
-			$name = trim($this->_getDataFromObject($round,'name'));
-			$alias = trim($this->_getDataFromObject($round,'alias'));
-			// if the roundcode field is empty,it is an old .jlg-Import file
-			$roundnumber = $this->_getDataFromObject($round,'roundcode');
-			if (empty($roundnumber))
-			{
-				$roundnumber = $this->_getDataFromObject($round,'matchcode');
-			}
-			$p_round->set('roundcode',$roundnumber);
-			$p_round->set('name',$name);
-			if ($alias!='')
-			{
-				$p_round->set('alias',$alias);
-			}
-			else
-			{
-				$p_round->set('alias',OutputFilter::stringURLSafe($name));
-			}
-			$p_round->set('round_date_first',$this->_getDataFromObject($round,'round_date_first'));
-			$round_date_last=trim($this->_getDataFromObject($round,'round_date_last'));
-			if (($round_date_last=='') || ($round_date_last=='0000-00-00'))
-			{
-				$round_date_last=$this->_getDataFromObject($round,'round_date_first');
-			}
-			$p_round->set('round_date_last',$round_date_last);
-			$p_round->set('project_id',$this->_project_id);
-			if ($p_round->store()===false)
-			{
-				$my_text .= 'error on round import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-			}
-			else
-			{
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
-				$my_text .= '<br />';
-			}
-			
-            $insertID = Factory::getDbo()->insertid();
-			$this->_convertRoundID[$oldId]=$insertID;
+
+$p_round->alias = OutputFilter::stringURLSafe($p_round->name);
+$p_round->project_id = $this->_project_id;
+// if the roundcode field is empty,it is an old .jlg-Import file
+if (array_key_exists('matchcode', $import_round)) {
+$p_round->roundcode = $this->_getDataFromObject($round,'matchcode');
+}
+
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_round', $p_round);
+$insertID = Factory::getDbo()->insertid();
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$insertID = 0;    
+$my_text .= ' error on round import: ';
+$my_text .= '#'.$oldID.'#<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
+}    
+$this->_convertRoundID[$oldId] = $insertID;
+
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
@@ -5291,7 +5199,6 @@ $query->clear();
 	   $app = Factory::getApplication();
        $this->_season_id = $post['filter_season'];
        $this->_agegroup_id = $post['agegroup_id'];
-       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
        
 		$option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
@@ -5336,33 +5243,6 @@ $query->clear();
 		$this->_newstatisticsname=array();
 		$this->_newstatisticsid=array();
 		$this->_dbstatisticsid=array();
-/*
-		//tracking of old -> new ids
-		// The 0 entry is needed to translate an input with ID 0 to an output with ID 0;
-		// this can happen when the exported file contains a field with ID equal to 0
-
-		$standard_translation = array(0 => 0);
-		$this->_convertProjectTeamID=$standard_translation;
-		$this->_convertProjectRefereeID=$standard_translation;
-		$this->_convertTeamPlayerID=$standard_translation;
-		$this->_convertTeamStaffID=$standard_translation;
-		$this->_convertProjectPositionID=$standard_translation;
-		$this->_convertClubID=$standard_translation;
-		$this->_convertPersonID=$standard_translation;
-		$this->_convertTeamID=$standard_translation;
-		$this->_convertRoundID=$standard_translation;
-		$this->_convertDivisionID=$standard_translation;
-		$this->_convertCountryID=$standard_translation;
-		$this->_convertPlaygroundID=$standard_translation;
-		$this->_convertEventID=$standard_translation;
-		$this->_convertPositionID=$standard_translation;
-		$this->_convertParentPositionID=$standard_translation;
-		$this->_convertMatchID=$standard_translation;
-		$this->_convertStatisticID=$standard_translation;
-		$this->_convertTreetoID=$standard_translation;
-		$this->_convertTreetonodeID=$standard_translation;
-		$this->_convertTreetomatchID=$standard_translation;
-*/
 
 		if (is_array($post) && count($post) > 0)
 		{

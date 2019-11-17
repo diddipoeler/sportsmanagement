@@ -41,7 +41,6 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$post = $this->jinput->post->getArray(array());
 		$files = $this->jinput->getArray(array('files'));
 
-		//$this->request_url	= $uri->toString();
 		$this->config	= $config;
 		$teile = explode("-",$lang->getTag());
 		$country = JSMCountries::convertIso2to3($teile[1]);
