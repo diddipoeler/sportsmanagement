@@ -8,10 +8,6 @@
  * @package   sportsmanagement
  * @subpackage jlxmlimport
  * 
- * $columnArr = $this->jsmdb->getTableColumns("#__sportsmanagement_club");
- * echo '<pre>'.print_r($columnArr,true).'</pre>'; 
- * 
- * 
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -149,7 +145,20 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     if ( $table )
     {    
     $columnArr = Factory::getDbo()->getTableColumns("#__sportsmanagement_".$table);    
-        
+    
+foreach ($datas as $import => $value )
+{
+switch ($import)
+{
+case 'id':
+break;
+default:
+if (array_key_exists($import, $columnArr)) {
+$p_returndata->$import = $this->_getDataFromObject($datas,$import);
+}
+break;    
+}   
+}    
         
         
         
@@ -2449,18 +2458,18 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 
 				$oldID = $this->_getDataFromObject($import_club,'id');
-
-foreach ($import_club as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-break;
-default:
-$p_club->$import = $this->_getDataFromObject($import_club,$import);    
-break;    
-}   
-}
+$p_club = $this->_importDataForSave($import_club,'club');
+//foreach ($import_club as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//break;
+//default:
+//$p_club->$import = $this->_getDataFromObject($import_club,$import);    
+//break;    
+//}   
+//}
 				$p_club->name = $this->_newclubs[$key];
 				$p_club->admin = $this->_joomleague_admin;
 				$p_club->country = $this->_newclubscountry[$key];
@@ -2551,10 +2560,8 @@ catch (Exception $e)
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
-$my_text .= $e->getMessage().'<br />';						
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;						
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';						
 }
-
 					
 				}
 
