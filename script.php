@@ -103,7 +103,7 @@ class com_sportsmanagementInstallerScript
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
-    private $release = '2.3.00';
+    private $release = '2.4.00';
     //$language_update = '';
     
     /**
