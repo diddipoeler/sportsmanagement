@@ -97,10 +97,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      */
     private function _displayUpdate($tpl) {
         $app = Factory::getApplication();
+        $post = Factory::getApplication()->input->post->getArray(array());
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-        $data = $model->getData();
+        $data = $model->getData($post);
         $update_matches = $model->getDataUpdate();
         $this->xml = $data;
         $this->importData = $update_matches;
@@ -130,13 +131,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $starttime = $mtime;
 
         $app = Factory::getApplication();
+        $post = Factory::getApplication()->input->post->getArray(array());
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-        $data = $model->getData();
+        $data = $model->getData($post);
         $uploadArray = $app->getUserState($option . 'uploadArray', array());
         // TODO: import timezone
         $value = isset($data['project']->timezone) ? $data['project']->timezone : 321;

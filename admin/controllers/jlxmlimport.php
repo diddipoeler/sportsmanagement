@@ -21,7 +21,6 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
 jimport('joomla.filesystem.archive');
 
-
 /**
  * sportsmanagementControllerJLXMLImport
  * 
@@ -92,8 +91,8 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-		$selectType=Factory::getApplication()->input->getVar('type',0,'get','int');
-		$recordID=Factory::getApplication()->input->getVar('id',0,'get','int');
+		$selectType = Factory::getApplication()->input->getVar('type',0,'get','int');
+		$recordID = Factory::getApplication()->input->getVar('id',0,'get','int');
 		$app->setUserState($option.'selectType',$selectType);
 		$app->setUserState($option.'recordID',$recordID);
 
@@ -113,7 +112,7 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 	{
 		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-		$msg='';
+		$msg = '';
 		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = Factory::getApplication();
 		$post = Factory::getApplication()->input->post->getArray(array());
@@ -249,8 +248,8 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 	function insert()
 	{
 		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement'));
-		$post=Factory::getApplication()->input->post->getArray(array());
-		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
+		$post = Factory::getApplication()->input->post->getArray(array());
+		$link = 'index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
 		$this->setRedirect($link);
 	}
 

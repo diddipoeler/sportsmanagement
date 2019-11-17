@@ -229,9 +229,11 @@ break;
         return $this->_success_text;
     }
 
+	
 	/**
 	 * sportsmanagementModelJLXMLImport::getData()
 	 * 
+	 * @param mixed $post
 	 * @return
 	 */
 	public function getData($post = array() )
@@ -241,9 +243,7 @@ break;
        $query = Factory::getDbo()->getQuery(true);
         $this->_season_id = $post['filter_season'];
         $this->_agegroup_id = $post['agegroup_id'];
-        
-        Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, '');
-        
+       
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
