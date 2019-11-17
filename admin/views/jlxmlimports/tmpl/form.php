@@ -568,23 +568,13 @@ if (isset($this->xml) && is_array($this->xml))
                             <tr>
                             <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
 								<td style='background-color:#EEEEEE'>
-								<!--	<select name='agegroup_id' id='agegroup_id'> -->
 										<?php
                                         echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup_id',
-													'class="form-control form-control-inline"',
+													'class=""',
 													'value','text',0);
-                                                    
-										//foreach ($this->agegroups AS $row)
-//										{
-//											echo '<option ';
-//												echo "value='$row->id;'>";
-//												echo $row->text;
-//											echo '</option>';
-//										}
 										?>
-								<!--	</select> -->
 								</td>
                             
                             </tr>

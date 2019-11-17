@@ -239,8 +239,8 @@ break;
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-        //$post = Factory::getApplication()->input->post->getArray(array());
         $this->_season_id = $post['filter_season'];
+        $this->_agegroup_id = $post['agegroup_id'];
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
@@ -2707,6 +2707,7 @@ $oldClubID = $this->_getDataFromObject($import_team,'club_id');
 $p_team->short_name = substr($p_team->name,0,14);
 $p_team->middle_name = substr($p_team->name,0,24);
 $p_team->sports_type_id = $this->_sportstype_id;
+$p_team->agegroup_id = $this->_agegroup_id;
 
 				if ( !empty($import_team->club_id) && isset($this->_convertClubID[$oldClubID]) )
 				{

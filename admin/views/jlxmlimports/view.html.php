@@ -159,9 +159,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         $this->xml = $data;
         // diddi
-        $mdl = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
-        $this->agegroups = $mdl->getAgeGroups();
-        // diddi
         $mdl = BaseDatabaseModel::getInstance('leagues', 'sportsmanagementModel');
         $this->leagues = $mdl->getLeagues();
         // diddi
