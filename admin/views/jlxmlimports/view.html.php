@@ -139,7 +139,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $data = $model->getData();
         $uploadArray = $app->getUserState($option . 'uploadArray', array());
         // TODO: import timezone
-        $value = isset($data['project']->timezone) ? $data['project']->timezone : null;
+        $value = isset($data['project']->timezone) ? $data['project']->timezone : 321;
 
         // Get the list of time zones from the server.
         $zones = DateTimeZone::listIdentifiers();

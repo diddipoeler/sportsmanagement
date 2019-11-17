@@ -241,6 +241,9 @@ break;
        $query = Factory::getDbo()->getQuery(true);
         $this->_season_id = $post['filter_season'];
         $this->_agegroup_id = $post['agegroup_id'];
+        
+        Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, '');
+        
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
@@ -598,20 +601,7 @@ break;
                 }
             }    
             }
-            
-//            if ( isset($this->_datas['playground']) )
-//            {
-//            foreach ($this->_datas['playground'] as $temppicture)
-//            {
-//                $temppicture->picture = str_replace('com_joomleague', $option, $temppicture->picture);
-//                $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
-//                if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
-//                {
-//                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_stadium','');
-//                }
-//            }    
-//            }
-            
+           
             if ( isset($this->_datas['teamstaff']) )
             {
             foreach ($this->_datas['teamstaff'] as $temppicture)
@@ -3021,6 +3011,7 @@ $p_project = $this->_importDataForSave($import_project,'project');
 		$p_project->master_template = $this->_template_id;
 		$p_project->sub_template_id = 0;
 		$p_project->sports_type_id = $this->_sportstype_id;
+        $p_project->agegroup_id = $this->_agegroup_id;
 		if ($this->_publish){$p_project->published = 1;}
 
 try {		

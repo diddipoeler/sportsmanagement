@@ -93,7 +93,7 @@ Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_l
          */
 		if (count($this->errors = $this->get('Errors')))
 		{
-			$this->app->enqueueMessage(implode("\n",$errors));
+			$this->app->enqueueMessage(implode("\n",$this->errors));
 			return false;
 		}
         
