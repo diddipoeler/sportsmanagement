@@ -244,6 +244,8 @@ break;
         $this->_season_id = $post['filter_season'];
         $this->_agegroup_id = $post['agegroup_id'];
        
+       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
+       
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
