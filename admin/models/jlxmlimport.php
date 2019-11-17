@@ -3992,7 +3992,7 @@ try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_round', $p_round);
 $insertID = Factory::getDbo()->insertid();
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$p_round->name</strong>");
 $my_text .= '<br />';
 }	
 catch (Exception $e){
