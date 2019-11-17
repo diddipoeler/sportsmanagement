@@ -440,13 +440,13 @@ if (isset($this->xml) && is_array($this->xml))
 								$leagueCountry = "";
 								if (isset($league->name))
 								{
-									$dLeagueName=$league->name;
-									$leagueCountry=$league->country;
+									$dLeagueName = $league->name;
+									$leagueCountry = $league->country;
 								}
-								$dCountry=$leagueCountry;
+								$dCountry = $leagueCountry;
 								if (preg_match('=^[0-9]+$=',$dCountry))
 								{
-									$dCountry=$this->OldCountries[(int)$dCountry];
+									$dCountry = $this->OldCountries[(int)$dCountry];
 								}
 								if (count($this->leagues) > 0)
 								{
@@ -454,7 +454,7 @@ if (isset($this->xml) && is_array($this->xml))
 									foreach ($this->leagues AS $row)
 									{
 										$options .= '<option ';
-										if ($row->name==$dLeagueName)
+										if ( $row->name == $dLeagueName )
 										{
 											$foundMatchingLeague = true;
 											$options .= "selected='selected' ";
@@ -568,17 +568,23 @@ if (isset($this->xml) && is_array($this->xml))
                             <tr>
                             <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
 								<td style='background-color:#EEEEEE'>
-									<select name='agegroup_id' id='agegroup_id'>
+								<!--	<select name='agegroup_id' id='agegroup_id'> -->
 										<?php
-										foreach ($this->agegroups AS $row)
-										{
-											echo '<option ';
-												echo "value='$row->id;'>";
-												echo $row->text;
-											echo '</option>';
-										}
+                                        echo HTMLHelper::_(	'select.genericlist',
+													$this->lists['agegroup'],
+													'agegroup_id',
+													'class="form-control form-control-inline"',
+													'value','text',0);
+                                                    
+										//foreach ($this->agegroups AS $row)
+//										{
+//											echo '<option ';
+//												echo "value='$row->id;'>";
+//												echo $row->text;
+//											echo '</option>';
+//										}
 										?>
-									</select>
+								<!--	</select> -->
 								</td>
                             
                             </tr>
