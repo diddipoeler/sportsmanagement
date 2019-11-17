@@ -4403,16 +4403,16 @@ try
 {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_referee', $p_matchreferee);
 $dPerson = $this->_getPersonFromProjectReferee($p_matchreferee->project_referee_id);
-				$dPosName=(($p_matchreferee->project_position_id==0) ?
-							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
-							$this->_getProjectPositionName($p_matchreferee->project_position_id));
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= Text::sprintf(	'Created new matchreferee data. MatchID: %1$s - Referee: %2$s,%3$s - Position: %4$s',
-								'</span><strong>'.$p_matchreferee->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								'</span><strong>'.$dPerson->lastname,
-								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>$dPosName</strong>");
-				$my_text .= '<br />';
+$dPosName=(($p_matchreferee->project_position_id==0) ?
+		'<span style="color:orange">'.Text::_('Has no position').'</span>' :
+		$this->_getProjectPositionName($p_matchreferee->project_position_id));
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf(	'Created new matchreferee data. MatchID: %1$s - Referee: %2$s,%3$s - Position: %4$s',
+		'</span><strong>'.$p_matchreferee->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+		'</span><strong>'.$dPerson->lastname,
+		$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
+		"</span><strong>$dPosName</strong>");
+$my_text .= '<br />';
 }
 catch (Exception $e)
 {
