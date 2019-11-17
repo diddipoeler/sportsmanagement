@@ -9,7 +9,6 @@
  * @subpackage jlxmlimports
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -108,19 +107,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->projektfussballineuropa = $model->getDataUpdateImportID();
         $this->option = $option;
 
-        // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
-        // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
-        // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
         $this->icon = 'xmlimport';
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 
         $this->setLayout('update');
-        //parent::addToolbar();
-        //parent::display($tpl);
     }
 
     /**
@@ -147,7 +141,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // TODO: import timezone
         $value = isset($data['project']->timezone) ? $data['project']->timezone : null;
 
-
         // Get the list of time zones from the server.
         $zones = DateTimeZone::listIdentifiers();
 
@@ -164,8 +157,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // diddi
         $this->countries = JSMCountries::getCountryOptions();
 
-        //$this->request_url = $uri->toString();
         $this->xml = $data;
+        // diddi
+        $mdl = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
+        $this->agegroups = $mdl->getAgeGroups();
         // diddi
         $mdl = BaseDatabaseModel::getInstance('leagues', 'sportsmanagementModel');
         $this->leagues = $mdl->getLeagues();
@@ -189,7 +184,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $mdl = BaseDatabaseModel::getInstance('eventtypes', 'sportsmanagementModel');
         $this->events = $mdl->getEventList();
         // diddi
-        //$mdl = BaseDatabaseModel::getInstance("positions", "sportsmanagementModel",$config);
         $mdl = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
         $this->positions = $mdl->getPositionListSelect();
         $this->parentpositions = $mdl->getParentsPositions();
@@ -198,7 +192,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->playgrounds = $mdl->getPlaygroundListSelect();
 
         $mdl = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-        //$this->jlxmlimport ?
         // diddi
         $mdl = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
         $this->persons = $mdl->getPersonListSelect();
@@ -224,19 +217,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         $this->lists = $lists;
 
-        //	// Get a refrence of the page instance in joomla
-//		$document	= Factory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3');
         $this->icon = 'xmlimport';
 
         ToolbarHelper::custom('jlxmlimport.insert', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
-
-        //parent::addToolbar();
 
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $js = "registerproject('" . Uri::base() . "','" . $projectid . "','" . $app->getCfg('sitename') . "','1');" . "\n";
@@ -244,7 +229,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         $this->setLayout('form');
 
-        //parent::display($tpl);
     }
 
     /**

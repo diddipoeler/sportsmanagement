@@ -15,17 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
-
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-$visible = 'text';
-}
-else
-{
-$visible = 'hidden';
-}
 
 if (isset($this->xml) && is_array($this->xml))
 {
@@ -380,7 +371,7 @@ if (isset($this->xml) && is_array($this->xml))
 								$dSportsTypeName = "";
 								if (isset($sportstype->name))
 								{
-									$dSportsTypeName=$sportstype->name;
+									$dSportsTypeName = $sportstype->name;
 								}
 								if (count($this->sportstypes) > 0)
 								{
@@ -445,8 +436,8 @@ if (isset($this->xml) && is_array($this->xml))
 								<td style='background-color:#EEEEEE'>
 								<?php
 								$foundMatchingLeague = false;
-								$dLeagueName="";
-								$leagueCountry="";
+								$dLeagueName = "";
+								$leagueCountry = "";
 								if (isset($league->name))
 								{
 									$dLeagueName=$league->name;
@@ -573,6 +564,25 @@ if (isset($this->xml) && is_array($this->xml))
 								?>
 								</td>
 							</tr>
+                            
+                            <tr>
+                            <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
+								<td style='background-color:#EEEEEE'>
+									<select name='agegroup_id' id='agegroup_id'>
+										<?php
+										foreach ($this->agegroups AS $row)
+										{
+											echo '<option ';
+												echo "value='$row->id;'>";
+												echo $row->text;
+											echo '</option>';
+										}
+										?>
+									</select>
+								</td>
+                            
+                            </tr>
+                            
 							<tr>
 								<td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ADMIN'); ?></td>
 								<td style='background-color:#EEEEEE'>

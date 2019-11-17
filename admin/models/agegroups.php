@@ -170,9 +170,5 @@ class sportsmanagementModelagegroups extends JSMModelList
         return $result;
     }
 
-
-
-	
-
 }
 ?>

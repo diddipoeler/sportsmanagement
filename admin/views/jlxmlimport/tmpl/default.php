@@ -12,8 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-
-
 $model = $this->getModel('jlxmlimport');
 echo $model->getXml;
 ?>

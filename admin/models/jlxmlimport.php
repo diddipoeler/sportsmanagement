@@ -53,6 +53,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	var $_season_id = 0;
     var $_project_id = 0;
 	var $_sportstype_id = 0;
+    var $_agegroup_id = 0;
 	var $import_version = '';
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
@@ -1635,15 +1636,12 @@ break;
        
 		$my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
-    //$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 $this->_success_text = array(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0') => "");	
 }		
 		if (!empty($this->_sportstype_new))
 		{
 		  $query->clear();
-          // Select some fields
         $query->select('id');
-		// From the table
 		$query->from('#__sportsmanagement_sports_type');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($this->_sportstype_new)).''));
 			Factory::getDbo()->setQuery($query);
@@ -1659,34 +1657,33 @@ $this->_success_text = array(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUN
 			}
 			else
 			{
-				
-                $mdl = BaseDatabaseModel::getInstance("sportstype", "sportsmanagementModel");
-                $p_sportstype = $mdl->getTable();
-            
-				$p_sportstype->set('name',trim($this->_sportstype_new));
+                $p_sportstype = new stdClass();
+				$p_sportstype->name = trim($this->_sportstype_new);
 
-				if ($p_sportstype->store()===false)
-				{
-					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= Text::sprintf('Sportstypename: %1$s',Text::_($this->_sportstype_new)).'<br />';
-					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-				}
-				else
-				{
-					$insertID = Factory::getDbo()->insertid();
-					$this->_sportstype_id = $insertID;
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= Text::sprintf('Created new sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
-					$my_text .= '<br />';
-				}
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_sports_type', $p_league);
+$insertID = Factory::getDbo()->insertid();
+$this->_sportstype_id = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Created new sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
+$my_text .= '<br />';
+}
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Sportstypename: %1$s',Text::_($this->_sportstype_new)).'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
+}                
+                
+                
+                
 			}
 		}
 		else
 		{
 			$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-			$my_text .= Text::sprintf(	'Using existing sportstype data: %1$s',
-										'</span><strong>'.Text::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
+			$my_text .= Text::sprintf('Using existing sportstype data: %1$s',
+						'</span><strong>'.Text::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
 			$my_text .= '<br />';
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
@@ -1745,7 +1742,7 @@ catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
-$my_text .= $e->getMessage().'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }
 				
 			}
@@ -2704,10 +2701,13 @@ $p_team = $this->_importDataForSave($import_team,'team');
 //break;    
 //}   
 //}
-				$oldID = $this->_getDataFromObject($import_team,'id');
-				$oldClubID = $this->_getDataFromObject($import_team,'club_id');
-                $p_team->short_name = substr($p_team->name,0,14);
-		$p_team->middle_name = substr($p_team->name,0,24);
+
+$oldID = $this->_getDataFromObject($import_team,'id');
+$oldClubID = $this->_getDataFromObject($import_team,'club_id');
+$p_team->short_name = substr($p_team->name,0,14);
+$p_team->middle_name = substr($p_team->name,0,24);
+$p_team->sports_type_id = $this->_sportstype_id;
+
 				if ( !empty($import_team->club_id) && isset($this->_convertClubID[$oldClubID]) )
 				{
 					$p_team->club_id = $this->_convertClubID[$oldClubID];
