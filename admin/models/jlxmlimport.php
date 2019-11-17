@@ -3388,31 +3388,6 @@ $p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
 if (array_key_exists('info', $import_projectteam)) {
 $p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
 }
-	
-//foreach ($import_projectteam as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//case 'name':
-//case 'alias':
-//case 'club_id':
-//case 'project_team_id':
-//case 'middle_name':
-//case 'short_name':
-//case 'is_in_score':
-//break;
-//case 'description':
-//$p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
-//break;
-//case 'info':		
-//$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
-//break;		
-//default:
-//$p_projectteam->$import = $this->_getDataFromObject($import_projectteam,$import);    
-//break;    
-//}    
-//}  		
 
 	$p_projectteam->project_id = $this->_project_id;
             
@@ -4039,267 +4014,81 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 		foreach ($this->_datas['match'] as $key => $match)
 		{
-			
+			$import_match = $this->_datas['match'][$key];
             $p_match = new stdClass();
 			$oldId = (int)$match->id;
-/*            
-foreach ($match as $import => $value )
+            $p_match = $this->_importDataForSave($import_match,'match');
+           
+$p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match,'round_id')];
+$p_match->projectteam1_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))];            
+$p_match->projectteam2_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))];            
+if (!empty($this->_convertPlaygroundID))
 {
-switch ($import)
+if (array_key_exists((int)$this->_getDataFromObject($match,'playground_id'),$this->_convertPlaygroundID))
 {
-case 'id':
-break;
-default:
-$p_match->$import = $this->_getDataFromObject($match,$import);    
-break;    
-}   
-}            
-*/            
-            
-            
-            
-			if ( $this->import_version == 'NEW' )
-			{
-				$p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match,'round_id')];
-				$p_match->match_number = $this->_getDataFromObject($match,'match_number');
-
-				if ($match->projectteam1_id > 0)
-				{
-				    if ( isset($this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))]) )
-                    {
-					$team1 = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))];
-                    }
-                    else
-                    {
-                    $team1 = 0;    
-                    }
-				}
-				else
-				{
-					$team1 = 0;
-				}
-				$p_match->projectteam1_id = $team1;
-
-				if ($match->projectteam2_id > 0)
-				{
-				    if ( isset($this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))]) )
-                    {
-					$team2 = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))];
-                    }
-                    else
-                    {
-                    $team2 = 0;    
-                    }
-				}
-				else
-				{
-					$team2 = 0;
-				}
-				$p_match->projectteam2_id = $team2;
-
-				if (!empty($this->_convertPlaygroundID))
-				{
-					if (array_key_exists((int)$this->_getDataFromObject($match,'playground_id'),$this->_convertPlaygroundID))
-					{
-						$p_match->playground_id = $this->_convertPlaygroundID[$this->_getDataFromObject($match,'playground_id')];
-					}
-					else
-					{
-						$p_match->playground_id = 0;
-					}
-				}
-				if ( $p_match->playground_id == 0 )
-				{
-					$p_match->playground_id = NULL;
-				}
-
-				$p_match->match_date = $this->_getDataFromObject($match,'match_date');
-
-/**
- * hier muss noch der timestamp übergeben werden, da sonst
- * die spiele nicht angezeigt weden. 
- */                
-				$p_match->match_timestamp = sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match,'match_date'));
-                $p_match->time_present = $this->_getDataFromObject($match,'time_present');
-
-				$team1_result = $this->_getDataFromObject($match,'team1_result');
-				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->team1_result = $team1_result; }
-
-				$team2_result = $this->_getDataFromObject($match,'team2_result');
-				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->team2_result = $team2_result; }
-
-				$team1_bonus = $this->_getDataFromObject($match,'team1_bonus');
-				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->team1_bonus = $team1_bonus; }
-
-				$team2_bonus = $this->_getDataFromObject($match,'team2_bonus');
-				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->team2_bonus = $team2_bonus; }
-
-				$team1_legs = $this->_getDataFromObject($match,'team1_legs');
-				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->team1_legs = $team1_legs; }
-
-				$team2_legs = $this->_getDataFromObject($match,'team2_legs');
-				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->team2_legs = $team2_legs; }
-
-				$p_match->team1_result_split = $this->_getDataFromObject($match,'team1_result_split');
-				$p_match->team2_result_split = $this->_getDataFromObject($match,'team2_result_split');
-				if ( $this->_getDataFromObject($match,'match_result_type') )
-				{
-				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
-				}
-
-				$team1_result_ot = $this->_getDataFromObject($match,'team1_result_ot');
-				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
-
-				$team2_result_ot=$this->_getDataFromObject($match,'team2_result_ot');
-				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
-
-				$team1_result_so = $this->_getDataFromObject($match,'team1_result_so');
-				if (isset($team1_result_so) && ($team1_result_so !=NULL)) { $p_match->team1_result_so = $team1_result_so; }
-
-				$team2_result_so = $this->_getDataFromObject($match,'team2_result_so');
-				if (isset($team2_result_so) && ($team2_result_so !=NULL)) { $p_match->team2_result_so = $team2_result_so; }
-if ( $this->_getDataFromObject($match,'alt_decision') )
-{
-				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
+$p_match->playground_id = $this->_convertPlaygroundID[$this->_getDataFromObject($match,'playground_id')];
 }
-				$team1_result_decision = $this->_getDataFromObject($match,'team1_result_decision');
-				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
-
-				$team2_result_decision = $this->_getDataFromObject($match,'team2_result_decision');
-				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
-
-				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
-				if ( $this->_getDataFromObject($match,'cancel') )
-				{
-				$p_match->cancel = $this->_getDataFromObject($match,'cancel');
-				}
-				if ( $this->_getDataFromObject($match,'cancel_reason') )
-				{
-				$p_match->cancel_reason = $this->_getDataFromObject($match,'cancel_reason');
-				}
-				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
-				if ( $this->_getDataFromObject($match,'crowd') )
-				{
-				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
-				}
-				$p_match->summary = $this->_getDataFromObject($match,'summary');
-				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
-				$p_match->preview = $this->_getDataFromObject($match,'preview');
-				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
-				if ( $this->_getDataFromObject($match,'new_match_id') )
-				{
-				$p_match->new_match_id = $this->_getDataFromObject($match,'new_match_id');
-				}
-				if ( $this->_getDataFromObject($match,'old_match_id') )
-				{
-				$p_match->old_match_id = $this->_getDataFromObject($match,'old_match_id');
-				}
-				$p_match->extended = $this->_getDataFromObject($match,'extended');
-				$p_match->published = $this->_getDataFromObject($match,'published');
-                
-/**
- * diddipoeler
- */
-                $p_match->import_match_id = $this->_getDataFromObject($match,'id');
-                
-                if ( isset($this->_convertDivisionID) )
-                {
-                $p_match->division_id = $this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')];
-                }
-                
-                
-			}
-			else // ($this->import_version=='OLD')
-			{
-				$p_match->round_id = $this->_convertRoundID[intval($match->round_id)];
-				$p_match->match_number = $this->_getDataFromObject($match,'match_number');
-                
-				if ($match->matchpart1 > 0)
-				{
-                    $p_match->projectteam1_id = $this->_convertProjectTeamID[intval($match->matchpart1)];
-				}
-				else
-				{
-					$p_match->projectteam1_id = 0;
-				}
-
-				if ($match->matchpart2 > 0)
-				{
-                    $p_match->projectteam2_id = $this->_convertProjectTeamID[intval($match->matchpart2)];
-				}
-				else
-				{
-					$p_match->projectteam2_id = 0;
-				}
-                
-				$matchdate = (string)$match->match_date;
-				$p_match->match_date = $matchdate;
-
-				$team1_result = $this->_getDataFromObject($match,'matchpart1_result');
-				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->team1_result = $team1_result; }
-
-				$team2_result = $this->_getDataFromObject($match,'matchpart2_result');
-				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->team2_result = $team2_result; }
-
-				$team1_bonus = $this->_getDataFromObject($match,'matchpart1_bonus');
-				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->team1_bonus = $team1_bonus; }
-
-				$team2_bonus = $this->_getDataFromObject($match,'matchpart2_bonus');
-				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->team2_bonus = $team2_bonus; }
-
-				$team1_legs = $this->_getDataFromObject($match,'matchpart1_legs');
-				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->team1_legs = $team1_legs; }
-
-				$team2_legs = $this->_getDataFromObject($match,'matchpart2_legs');
-				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->team2_legs = $team2_legs; }
-
-				$p_match->team1_result_split = $this->_getDataFromObject($match,'matchpart1_result_split');//NULL
-				$p_match->team2_result_split = $this->_getDataFromObject($match,'matchpart2_result_split');//NULL
-				if ( $this->_getDataFromObject($match,'match_result_type') )
-				{
-				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
-				}
-
-				$team1_result_ot = $this->_getDataFromObject($match,'matchpart1_result_ot');
-				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
-
-				$team2_result_ot = $this->_getDataFromObject($match,'matchpart2_result_ot');
-				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
-if ( $this->_getDataFromObject($match,'alt_decision') )
+else
 {
-				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
+$p_match->playground_id = 0;
 }
-				$team1_result_decision = $this->_getDataFromObject($match,'matchpart1_result_decision');
-				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
-
-				$team2_result_decision = $this->_getDataFromObject($match,'matchpart2_result_decision');
-				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
-
-				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
-				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
-				if ( $this->_getDataFromObject($match,'crowd') )
-				{
-				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
-				}
-				$p_match->summary = $this->_getDataFromObject($match,'summary');
-				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
-				if ( $this->_getDataFromObject($match,'match_result_detail') )
-				{
-				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
-				}
-				$p_match->published = $this->_getDataFromObject($match,'published');
-                
-                // diddipoeler
-                $p_match->import_match_id = $this->_getDataFromObject($match,'id');
-			}
-
-if ( !$p_match->summary )
-{
-    $p_match->summary = ' ';
 }
-if ( !$p_match->preview )
+if ( $p_match->playground_id == 0 )
 {
-    $p_match->preview = ' ';
+$p_match->playground_id = NULL;
+}
+$p_match->match_timestamp = sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match,'match_date'));
+$p_match->import_match_id = $this->_getDataFromObject($match,'id');
+if ( isset($this->_convertDivisionID) )
+{
+$p_match->division_id = $this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')];
+}
+
+if (array_key_exists('matchpart1', $import_match)) {
+$p_match->projectteam1_id = $this->_convertProjectTeamID[intval($match->matchpart1)];
+}
+if (array_key_exists('matchpart2', $import_match)) {
+$p_match->projectteam2_id = $this->_convertProjectTeamID[intval($match->matchpart2)];
+}
+if (array_key_exists('matchpart1_result', $import_match)) {
+$p_match->team1_result = $this->_getDataFromObject($match,'matchpart1_result');
+}
+if (array_key_exists('matchpart2_result', $import_match)) {
+$p_match->team2_result = $this->_getDataFromObject($match,'matchpart2_result');
+}
+
+if (array_key_exists('matchpart1_bonus', $import_match)) {
+$p_match->team1_bonus = $this->_getDataFromObject($match,'matchpart1_bonus');
+}
+if (array_key_exists('matchpart2_bonus', $import_match)) {
+$p_match->team2_bonus = $this->_getDataFromObject($match,'matchpart2_bonus');
+}
+if (array_key_exists('matchpart1_legs', $import_match)) {
+$p_match->team1_legs = $this->_getDataFromObject($match,'matchpart1_legs');
+}
+if (array_key_exists('matchpart2_legs', $import_match)) {
+$p_match->team2_legs = $this->_getDataFromObject($match,'matchpart2_legs');
+}
+
+if (array_key_exists('matchpart1_result_split', $import_match)) {
+$p_match->team1_result_split = $this->_getDataFromObject($match,'matchpart1_result_split');
+}
+if (array_key_exists('matchpart2_result_split', $import_match)) {
+$p_match->team2_result_split = $this->_getDataFromObject($match,'matchpart2_result_split');
+}
+
+if (array_key_exists('matchpart1_result_ot', $import_match)) {
+$p_match->team1_result_ot = $this->_getDataFromObject($match,'matchpart1_result_ot');
+}
+if (array_key_exists('matchpart2_result_ot', $import_match)) {
+$p_match->team2_result_ot = $this->_getDataFromObject($match,'matchpart2_result_ot');
+}
+
+if (array_key_exists('matchpart1_result_decision', $import_match)) {
+$p_match->team1_result_decision = $this->_getDataFromObject($match,'matchpart1_result_decision');
+}
+if (array_key_exists('matchpart2_result_decision', $import_match)) {
+$p_match->team2_result_decision = $this->_getDataFromObject($match,'matchpart2_result_decision');
 }
 
 try {
