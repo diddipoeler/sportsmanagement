@@ -3445,34 +3445,42 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
         foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
 
-            $p_projectteam = new stdClass();
+          //  $p_projectteam = new stdClass();
 			$import_projectteam = $this->_datas['projectteam'][$key];
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
-		
-foreach ($import_projectteam as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-case 'name':
-case 'alias':
-case 'club_id':
-case 'project_team_id':
-case 'middle_name':
-case 'short_name':
-case 'is_in_score':
-break;
-case 'description':
+$p_projectteam = $this->_importDataForSave($import_projectteam,'project_team');	
+
+if (array_key_exists('description', $import_projectteam)) {
 $p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
-break;
-case 'info':		
+}
+if (array_key_exists('info', $import_projectteam)) {
 $p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
-break;		
-default:
-$p_projectteam->$import = $this->_getDataFromObject($import_projectteam,$import);    
-break;    
-}    
-}  		
+}
+	
+//foreach ($import_projectteam as $import => $value )
+//{
+//switch ($import)
+//{
+//case 'id':
+//case 'name':
+//case 'alias':
+//case 'club_id':
+//case 'project_team_id':
+//case 'middle_name':
+//case 'short_name':
+//case 'is_in_score':
+//break;
+//case 'description':
+//$p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
+//break;
+//case 'info':		
+//$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
+//break;		
+//default:
+//$p_projectteam->$import = $this->_getDataFromObject($import_projectteam,$import);    
+//break;    
+//}    
+//}  		
 
 	$p_projectteam->project_id = $this->_project_id;
             
