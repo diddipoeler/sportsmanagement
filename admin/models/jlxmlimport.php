@@ -242,14 +242,13 @@ break;
 		$app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
         $this->_season_id = $post['filter_season'];
-        $this->_agegroup_id = $post['agegroup_id'];
-       
-       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
+
+//        $this->_agegroup_id = $post['agegroup_id'];
+//       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
        
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
-        
         $this->pl_import = $app->getUserState($option.'pltree'); ;
         
 
@@ -5290,10 +5289,13 @@ $query->clear();
 	public function importData($post)
 	{
 	   $app = Factory::getApplication();
+       $this->_season_id = $post['filter_season'];
+       $this->_agegroup_id = $post['agegroup_id'];
+       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
        
 		$option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        $this->_datas=$this->getData();
+        $this->_datas = $this->getData();
 
 		$this->_newteams=array();
 		$this->_newteamsshort=array();

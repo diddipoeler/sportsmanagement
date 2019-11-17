@@ -248,28 +248,18 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel', $config);
 
         $data2 = $jinput->post->getArray(array());
-        // Set toolbar items for the page
+
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3');
         $this->icon = 'xmlimport';
 
-
-
         $this->starttime = $starttime;
-
         $this->importData = $model->importData($data2);
         $this->postData = $data2;
-
-//		$this->importData	= $model->importData($post);
-//		$this->postData	= $post;
         $this->option = $option;
-
         ToolbarHelper::divider();
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
-
         $this->setLayout('info');
 
-        //parent::addToolbar();
-        //parent::display($tpl);
     }
 
     /**
