@@ -3639,14 +3639,14 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 		foreach ($this->_datas['teamplayer'] as $key => $teamplayer)
 		{
-			
-            $mdl = BaseDatabaseModel::getInstance("teamplayer", "sportsmanagementModel");
-            $p_teamplayer = $mdl->getTable();
             
-			$import_teamplayer=$this->_datas['teamplayer'][$key];
-			$oldID=$this->_getDataFromObject($import_teamplayer,'id');
-			$oldTeamID=$this->_getDataFromObject($import_teamplayer,'projectteam_id');
-			$oldPersonID=$this->_getDataFromObject($import_teamplayer,'person_id');
+			$import_teamplayer = $this->_datas['teamplayer'][$key];
+$p_teamplayer = $this->_importDataForSave($import_teamplayer,'team_player');
+            
+			$oldID = $this->_getDataFromObject($import_teamplayer,'id');
+			$oldTeamID = $this->_getDataFromObject($import_teamplayer,'projectteam_id');
+			$oldPersonID = $this->_getDataFromObject($import_teamplayer,'person_id');
+            
 			if (!isset($this->_convertProjectTeamID[$oldTeamID]) ||
 				!isset($this->_convertPersonID[$oldPersonID]))
 			{
@@ -3657,48 +3657,20 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 								"</span><strong>$oldPersonID</strong>").'<br />';
 				continue;
 			}
-			$p_teamplayer->set('projectteam_id',$this->_convertProjectTeamID[$oldTeamID]);
-			$p_teamplayer->set('person_id',$this->_convertPersonID[$oldPersonID]);
-			$oldPositionID=$this->_getDataFromObject($import_teamplayer,'project_position_id');
+			$p_teamplayer->projectteam_id = $this->_convertProjectTeamID[$oldTeamID];
+			$p_teamplayer->person_id = $this->_convertPersonID[$oldPersonID];
+			$oldPositionID = $this->_getDataFromObject($import_teamplayer,'project_position_id');
 			if (isset($this->_convertProjectPositionID[$oldPositionID]))
 			{
-				$p_teamplayer->set('project_position_id',$this->_convertProjectPositionID[$oldPositionID]);
+				$p_teamplayer->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_teamplayer->set('active',$this->_getDataFromObject($import_teamplayer,'active'));
-			$p_teamplayer->set('jerseynumber',$this->_getDataFromObject($import_teamplayer,'jerseynumber'));
-			$p_teamplayer->set('notes',$this->_getDataFromObject($import_teamplayer,'notes'));
-			$p_teamplayer->set('picture',$this->_getDataFromObject($import_teamplayer,'picture'));
-			$p_teamplayer->set('extended',$this->_getDataFromObject($import_teamplayer,'extended'));
-			$p_teamplayer->set('injury',$this->_getDataFromObject($import_teamplayer,'injury'));
-			$p_teamplayer->set('injury_date',$this->_getDataFromObject($import_teamplayer,'injury_date'));
-			$p_teamplayer->set('injury_end',$this->_getDataFromObject($import_teamplayer,'injury_end'));
-			$p_teamplayer->set('injury_detail',$this->_getDataFromObject($import_teamplayer,'injury_detail'));
-			$p_teamplayer->set('injury_date_start',$this->_getDataFromObject($import_teamplayer,'injury_date_start'));
-			$p_teamplayer->set('injury_date_end',$this->_getDataFromObject($import_teamplayer,'injury_date_end'));
-			$p_teamplayer->set('suspension',$this->_getDataFromObject($import_teamplayer,'suspension'));
-			$p_teamplayer->set('suspension_date',$this->_getDataFromObject($import_teamplayer,'suspension_date'));
-			$p_teamplayer->set('suspension_end',$this->_getDataFromObject($import_teamplayer,'suspension_end'));
-			$p_teamplayer->set('suspension_detail',$this->_getDataFromObject($import_teamplayer,'suspension_detail'));
-			$p_teamplayer->set('susp_date_start',$this->_getDataFromObject($import_teamplayer,'susp_date_start'));
-			$p_teamplayer->set('susp_date_end',$this->_getDataFromObject($import_teamplayer,'susp_date_end'));
-			$p_teamplayer->set('away',$this->_getDataFromObject($import_teamplayer,'away'));
-			$p_teamplayer->set('away_date',$this->_getDataFromObject($import_teamplayer,'away_date'));
-			$p_teamplayer->set('away_end',$this->_getDataFromObject($import_teamplayer,'away_end'));
-			$p_teamplayer->set('away_detail',$this->_getDataFromObject($import_teamplayer,'away_detail'));
-			$p_teamplayer->set('away_date_start',$this->_getDataFromObject($import_teamplayer,'away_date_start'));
-			$p_teamplayer->set('away_date_end',$this->_getDataFromObject($import_teamplayer,'away_date_end'));
-            $p_teamplayer->set('published',1);
-
-			if ($p_teamplayer->store()===false)
-			{
-				$my_text .= 'error on teamplayer import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
-			}
-			else
-			{
-				$dPerson = $this->_getPersonName($p_teamplayer->person_id);
+			
+            $p_teamplayer->published = 1;
+            
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team_player', $p_teamplayer);
+$insertID = Factory::getDbo()->insertid();
+$dPerson = $this->_getPersonName($p_teamplayer->person_id);
 				$project_position_id = $p_teamplayer->project_position_id;
 				if($project_position_id>0) {
 					$query ='SELECT *
@@ -3724,9 +3696,18 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 									"</span><strong>$dPosName</strong>");
 					$my_text .= '<br />';
 				}
-			}
-			$insertID = $p_teamplayer->id;//Factory::getDbo()->insertid();
-			$this->_convertTeamPlayerID[$oldID]=$insertID;
+}	
+catch (Exception $e){
+$insertID = 0;
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= $oldID.'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';	
+}	
+
+            
+			//$insertID = $p_teamplayer->id;//Factory::getDbo()->insertid();
+			$this->_convertTeamPlayerID[$oldID] = $insertID;
 		}
 
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
