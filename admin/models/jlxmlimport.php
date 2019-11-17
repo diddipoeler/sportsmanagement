@@ -3721,7 +3721,6 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 	 */
 	private function _importTeamStaff()
 	{
-//$this->dump_header("function _importTeamStaff");
 		$my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
@@ -3732,18 +3731,16 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 		if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) &&
 			(!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)){return true;}
 
-//$this->dump_variable("this->_convertPersonID", $this->_convertPersonID);
 		foreach ($this->_datas['teamstaff'] as $key => $teamstaff)
 		{
-			
-            $mdl = BaseDatabaseModel::getInstance("teamstaff", "sportsmanagementModel");
-            $p_teamstaff = $mdl->getTable();
-            
-			$import_teamstaff=$this->_datas['teamstaff'][$key];
-//$this->dump_variable("import_teamstaff", $import_teamstaff);
+			$import_teamstaff = $this->_datas['teamstaff'][$key];
+$p_teamstaff = $this->_importDataForSave($import_teamstaff,'team_staff');
 			$oldID = $this->_getDataFromObject($import_teamstaff,'id');
 			$oldProjectTeamID = $this->_getDataFromObject($import_teamstaff,'projectteam_id');
 			$oldPersonID = $this->_getDataFromObject($import_teamstaff,'person_id');
+            
+            
+            
 			if (!isset($this->_convertProjectTeamID[$oldProjectTeamID]) ||
 				!isset($this->_convertPersonID[$oldPersonID]))
 			{
@@ -3754,53 +3751,28 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 								"</span><strong>$oldPersonID</strong>").'<br />';
 				continue;
 			}
-			$p_teamstaff->set('projectteam_id',$this->_convertProjectTeamID[$oldProjectTeamID]);
-			$p_teamstaff->set('person_id',$this->_convertPersonID[$oldPersonID]);
-			$oldPositionID=$this->_getDataFromObject($import_teamstaff,'project_position_id');
+			$p_teamstaff->projectteam_id = $this->_convertProjectTeamID[$oldProjectTeamID];
+			$p_teamstaff->person_id = $this->_convertPersonID[$oldPersonID];
+			$oldPositionID = $this->_getDataFromObject($import_teamstaff,'project_position_id');
+            
 			if (isset($this->_convertProjectPositionID[$oldPositionID]))
 			{
-				$p_teamstaff->set('project_position_id',$this->_convertProjectPositionID[$oldPositionID]);
+				$p_teamstaff->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_teamstaff->set('active',$this->_getDataFromObject($import_teamstaff,'active'));
-			$p_teamstaff->set('notes',$this->_getDataFromObject($import_teamstaff,'notes'));
-			$p_teamstaff->set('injury',$this->_getDataFromObject($import_teamstaff,'injury'));
-			$p_teamstaff->set('injury_date',$this->_getDataFromObject($import_teamstaff,'injury_date'));
-			$p_teamstaff->set('injury_end',$this->_getDataFromObject($import_teamstaff,'injury_end'));
-			$p_teamstaff->set('injury_detail',$this->_getDataFromObject($import_teamstaff,'injury_detail'));
-			$p_teamstaff->set('injury_date_start',$this->_getDataFromObject($import_teamstaff,'injury_date_start'));
-			$p_teamstaff->set('injury_date_end',$this->_getDataFromObject($import_teamstaff,'injury_date_end'));
-			$p_teamstaff->set('suspension',$this->_getDataFromObject($import_teamstaff,'suspension'));
-			$p_teamstaff->set('suspension_date',$this->_getDataFromObject($import_teamstaff,'suspension_date'));
-			$p_teamstaff->set('suspension_end',$this->_getDataFromObject($import_teamstaff,'suspension_end'));
-			$p_teamstaff->set('suspension_detail',$this->_getDataFromObject($import_teamstaff,'suspension_detail'));
-			$p_teamstaff->set('susp_date_start',$this->_getDataFromObject($import_teamstaff,'susp_date_start'));
-			$p_teamstaff->set('susp_date_end',$this->_getDataFromObject($import_teamstaff,'susp_date_end'));
-			$p_teamstaff->set('away',$this->_getDataFromObject($import_teamstaff,'away'));
-			$p_teamstaff->set('away_date',$this->_getDataFromObject($import_teamstaff,'away_date'));
-			$p_teamstaff->set('away_end',$this->_getDataFromObject($import_teamstaff,'away_end'));
-			$p_teamstaff->set('away_detail',$this->_getDataFromObject($import_teamstaff,'away_detail'));
-			$p_teamstaff->set('away_date_start',$this->_getDataFromObject($import_teamstaff,'away_date_start'));
-			$p_teamstaff->set('away_date_end',$this->_getDataFromObject($import_teamstaff,'away_date_end'));
-			$p_teamstaff->set('picture',$this->_getDataFromObject($import_teamstaff,'picture'));
-			$p_teamstaff->set('extended',$this->_getDataFromObject($import_teamstaff,'extended'));
-            $p_teamstaff->set('published',1);
 
-			if ($p_teamstaff->store()===false)
-			{
-				$my_text .= 'error on teamstaff import: ';
-				$my_text .= $oldID;
-				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-			}
-			else
-			{
-				$dPerson=$this->_getPersonName($p_teamstaff->person_id);
+            $p_teamstaff->published = 1;
+
+try {
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team_staff', $p_teamstaff);
+$insertID = Factory::getDbo()->insertid();
+$dPerson=$this->_getPersonName($p_teamstaff->person_id);
 				$project_position_id = $p_teamstaff->project_position_id;
 				if($project_position_id>0) 
                 {
 					$query ='SELECT * FROM #__sportsmanagement_project_position WHERE id='.$project_position_id;
 					Factory::getDbo()->setQuery($query);
 					sportsmanagementModeldatabasetool::runJoomlaQuery();
-					$object=Factory::getDbo()->loadObject();
+					$object = Factory::getDbo()->loadObject();
 					$position_id = $object->position_id;
 					$dPosName=Text::_($this->_getObjectName('position',$position_id));
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -3821,12 +3793,21 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 									"</span><strong>$dPosName</strong>");
 					$my_text .= '<br />';
 				}
-			}
-//$this->dump_variable("p_teamstaff", $p_teamstaff);
-			$insertID=$p_teamstaff->id;//Factory::getDbo()->insertid();
-			$this->_convertTeamStaffID[$oldID]=$insertID;
+}	
+catch (Exception $e){
+$insertID = 0;
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= $oldID.'<br />';
+$my_text .= __LINE__.' '.$e->getMessage().'<br />';	
+}	
+
+
+
+			//$insertID=$p_teamstaff->id;//Factory::getDbo()->insertid();
+			$this->_convertTeamStaffID[$oldID] = $insertID;
 		}
-//$this->dump_variable("this->_convertTeamStaffID", $this->_convertTeamStaffID);
+
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
