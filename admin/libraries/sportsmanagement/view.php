@@ -655,6 +655,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
             case 'predictiongroups':
             case 'jlextdfbkeyimport':
 	case 'transifex';
+    case 'predictions';
             break;    
             default:    
 /**
