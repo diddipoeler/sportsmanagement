@@ -244,7 +244,14 @@ break;
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+		if ( isset($post['filter_season']) )
+		{
         $this->_season_id = $post['filter_season'];
+		}
+		else
+		{
+$this->_season_id = 0;			
+		}
 
 //        $this->_agegroup_id = $post['agegroup_id'];
 //       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
