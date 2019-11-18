@@ -173,6 +173,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->admins = $model->getUserList(false);
         $this->editors = $model->getUserList(false);
         $this->templates = $model->getTemplateList();
+     unset($myoptions);
+        $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'));
+     $myoptions = array_merge($myoptions, $this->templates);
+     $lists['templates'] = $myoptions;
         // diddi
         $mdl = BaseDatabaseModel::getInstance('teams', 'sportsmanagementModel');
         $this->teams = $mdl->getTeamListSelect();
@@ -201,7 +205,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->OldCountries = $model->getCountryByOldid();
         $this->import_version = $model->import_version;
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
-
+unset($myoptions);
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ($res = $mdlagegroup->getAgeGroups('', 0)) {
