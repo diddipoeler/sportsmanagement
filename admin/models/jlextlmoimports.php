@@ -490,8 +490,6 @@ if (array_key_exists('league',$this->_datas))
     
     foreach ($parse['Round'.$a] AS $key => $value)
 		{
-    //$lfdmatch = 1;
-    
 		$temp = new stdClass();
 		$tempmatch = new stdClass();
 	    $tempmatch->playground_id = 0;
@@ -503,16 +501,17 @@ if (array_key_exists('league',$this->_datas))
 		
     if ( $key == 'D1' )
 		{
-		//echo $value.'<br>';
 		$round_id = $a;
 		$datetime = strtotime($value);
     $round_date_first = date('Y-m-d', $datetime); 
-		//$round_date_first = $value;
+	    if ( $a == 1 )
+	    {
+		$this->_datas['project']->start_date = $round_date_first;    
+	    }
 		}
 		
 		if ( $key == 'D2' )
 		{
-		//echo $value.'<br>';
 		$temp->round_date_first = $round_date_first;
 		$datetime = strtotime($value);
 		$temp->round_date_last = date('Y-m-d', $datetime);
