@@ -169,9 +169,11 @@ class SportsmanagementRouter extends RouterBase
       }
         else
         {
-	
+	if (  isset($segments[$count]) )
+	{
       //  echo __METHOD__.' '.__LINE__.' key <pre>'.print_r($key,true).'</pre>';		
       $vars[$key] = $segments[$count];  
+	}
         }
       $count++;  
       }
