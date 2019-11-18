@@ -9,7 +9,6 @@
  * @subpackage extensions
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -38,12 +37,8 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{ 
-  		// Get a refrence of the page instance in joomla
-	$document	= Factory::getDocument();
-    $option = Factory::getApplication()->input->getCmd('option');
-        // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
         ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		$canDo = sportsmanagementHelper::getActions();
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
@@ -60,8 +55,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	protected function setDocument() 
 	{
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
 	}
 	
 	/**
