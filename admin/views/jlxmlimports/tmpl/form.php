@@ -612,20 +612,20 @@ $this->lists['agegroup'],
 									</select>
 								</td>
 							</tr>
-							<tr>
-								<td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES'); ?></td>
-								<td style='background-color:#EEEEEE'>
-									<select name='copyTemplate' id='copyTemplate'>
-										<option value="0" selected><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>
-										<?php
-										foreach ($this->templates AS $row)
-										{
-											echo "<option value=\"$row->id\">$row->name</option>\n";
-										}
-										?>
-									</select>
-								</td>
-							</tr>
+						
+<tr>
+<td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES'); ?></td>
+<td style='background-color:#EEEEEE'>
+<?php
+echo HTMLHelper::_('select.genericlist',
+$this->lists['templates'],
+'copyTemplate',
+'class=""',
+'id','name',$this->master_template);
+?>	
+</td>
+</tr>
+						
 							<tr>
 								<td style='background-color:#DDDDDD'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE'); ?></td>
 								<td style='background-color:#DDDDDD'>
