@@ -44,7 +44,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-        
+        ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		$canDo = sportsmanagementHelper::getActions();
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
 		if ($canDo->get('core.admin')) 
