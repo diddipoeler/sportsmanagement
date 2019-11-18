@@ -1689,6 +1689,7 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 	private function _importLeague()
 	{
 	   $app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
        $query = Factory::getDbo()->getQuery(true);
        
 		$my_text = '';
@@ -1714,12 +1715,13 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			else
 			{
                 $p_league = new stdClass();
-				$p_league->name = substr(trim($this->_league_new),0,74);
-				$p_league->alias = substr(OutputFilter::stringURLSafe($this->_league_new),0,74);
+		$p_league->name = substr(trim($this->_league_new),0,74);
+		$p_league->alias = substr(OutputFilter::stringURLSafe($this->_league_new),0,74);
                 $p_league->short_name = substr(OutputFilter::stringURLSafe($this->_league_new),0,14);
                 $p_league->middle_name = substr(OutputFilter::stringURLSafe($this->_league_new),0,24);
-				$p_league->country = $this->_league_new_country;
+		$p_league->country = $this->_league_new_country;
                 $p_league->sports_type_id = $this->_sportstype_id;
+		$p_league->picture = ComponentHelper::getParams($option)->get('ph_logo_big','');
                 
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_league', $p_league);
