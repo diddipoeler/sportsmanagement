@@ -2973,6 +2973,14 @@ $p_project = $this->_importDataForSave($import_project,'project');
 		$p_project->sports_type_id = $this->_sportstype_id;
         $p_project->agegroup_id = $this->_agegroup_id;
 		 $p_project->picture = ComponentHelper::getParams($option)->get('ph_project','');
+		
+		if ( is_numeric($this->timezone) )
+		{
+	// Get the list of time zones from the server.
+        $zones = DateTimeZone::listIdentifiers();
+	$p_project->timezone = $zones[$this->timezone];	
+		}
+		
 		if ($this->_publish){$p_project->published = 1;}
 
 try {		
@@ -4940,7 +4948,7 @@ $query->clear();
 	$this->master_template = $post['copyTemplate'];
 		$this->_template_id = $post['copyTemplate'];
 		$this->timezone = $post['timezone'];
-       echo __LINE__.' timezone <pre>'.print_r($this->timezone,true).'</pre>';			
+       
 		$option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $this->_datas = $this->getData();
