@@ -200,8 +200,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         $this->OldCountries = $model->getCountryByOldid();
         $this->import_version = $model->import_version;
-        $this->lists = $lists;
-
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
 
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
@@ -210,8 +208,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
             $myoptions = array_merge($myoptions, $res);
             $this->search_agegroup = $res;
         }
+     $agegroup = $data['project']->agegroup_id ? $data['project']->agegroup_id : $this->state->get('filter.search_agegroup') ;
         $lists['agegroup'] = $myoptions;
-        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions, 'filter_search_agegroup', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_agegroup'));
+        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions, 'filter_search_agegroup', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $agegroup);
         unset($myoptions);
 
         $this->lists = $lists;
