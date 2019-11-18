@@ -565,19 +565,18 @@ if (isset($this->xml) && is_array($this->xml))
 								</td>
 							</tr>
                             
-                            <tr>
-                            <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
-								<td style='background-color:#EEEEEE'>
-										<?php
-                                        echo HTMLHelper::_(	'select.genericlist',
-													$this->lists['agegroup'],
-													'agegroup_id',
-													'class=""',
-													'value','text',0);
-										?>
-								</td>
-                            
-                            </tr>
+<tr>
+<td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
+<td style='background-color:#EEEEEE'>
+<?php
+echo HTMLHelper::_('select.genericlist',
+$this->lists['agegroup'],
+'agegroup_id',
+'class=""',
+'value','text',$this->agegroup_id);
+?>
+</td>
+</tr>
                             
 							<tr>
 								<td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ADMIN'); ?></td>
