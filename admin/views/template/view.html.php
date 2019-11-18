@@ -9,7 +9,6 @@
  * @subpackage template
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
@@ -69,7 +68,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             foreach($teile as $key => $value )
             {
             $teile2 = explode(",",$value);      
-            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;  
+            if ( isset($colors_ranking[$count]) )
+            {
+            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
+            }  
             $count++;  
             }
             $this->form->setValue('colors_ranking', null, $colors_ranking);
