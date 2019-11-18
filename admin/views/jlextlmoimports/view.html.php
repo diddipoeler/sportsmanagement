@@ -59,7 +59,9 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
     protected function addToolbar() 
     {
         ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
-        parent::addToolbar();
+        ToolbarHelper::divider();
+	sportsmanagementHelper::ToolbarButtonOnlineHelp();
+	ToolbarHelper::preferences($option);
 	}
     
 
