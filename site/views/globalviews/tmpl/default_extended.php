@@ -82,7 +82,7 @@ case 'snow':
 $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW';		
 break;	
 }			 
-echo Text::_( $keytext ).' :'; 
+echo Text::_( $keytext ).':'; 
 ?>
 </strong>
 </div>    
