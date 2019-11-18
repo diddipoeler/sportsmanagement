@@ -54,6 +54,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     var $_project_id = 0;
 	var $_sportstype_id = 0;
     var $_agegroup_id = 0;
+	var $_template_id = 0;
+	var $master_template = 0;
 	var $import_version = '';
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
@@ -4933,6 +4935,8 @@ $query->clear();
 	   $app = Factory::getApplication();
        $this->_season_id = $post['filter_season'];
        $this->_agegroup_id = $post['agegroup_id'];
+	$this->master_template = $post['copyTemplate'];
+		$this->_template_id = $post['copyTemplate'];
        
 		$option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
