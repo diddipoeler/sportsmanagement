@@ -9,12 +9,12 @@
  * @subpackage jlextlmoimports
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewjlextlmoimports
@@ -41,14 +41,27 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$post = $this->jinput->post->getArray(array());
 		$files = $this->jinput->getArray(array('files'));
 
-		$this->config	= $config;
+		$this->config = $config;
 		$teile = explode("-",$lang->getTag());
 		$country = JSMCountries::convertIso2to3($teile[1]);
-		$this->country	= $country;
+		$this->country = $country;
 		$countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
-		$this->countries	= $lists['countries'];
+		$this->countries = $lists['countries'];
    
+		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
+        if ($res = $mdlagegroup->getAgeGroups('', 0)) {
+            $myoptions = array_merge($myoptions, $res);
+        }
+        $lists['agegroup'] = $myoptions;
+	$this->agegroup = $lists['agegroup'];	
+		
+		$model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
+		$this->templates = $model->getTemplateList();
+		
+		
+		
 	}
     
     /**
