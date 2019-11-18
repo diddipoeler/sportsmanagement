@@ -56,6 +56,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     var $_agegroup_id = 0;
 	var $_template_id = 0;
 	var $master_template = 0;
+	var $timezone = 0;
 	var $import_version = '';
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
@@ -4937,7 +4938,8 @@ $query->clear();
        $this->_agegroup_id = $post['agegroup_id'];
 	$this->master_template = $post['copyTemplate'];
 		$this->_template_id = $post['copyTemplate'];
-       
+		$this->timezone = $post['timezone'];
+       echo __LINE__.' timezone <pre>'.print_r($this->timezone,true).'</pre>';			
 		$option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $this->_datas = $this->getData();
