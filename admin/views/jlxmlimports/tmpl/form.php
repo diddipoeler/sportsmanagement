@@ -313,7 +313,7 @@ if (isset($this->xml) && is_array($this->xml))
 							{
 								?>
 								<p><?php
-									echo Text::sprintf('This file was created using JoomLeague-Export-Routine dated: %1$s',$exportversion->exportRoutine).'<br />';
+									echo Text::sprintf('This file was created using SportsManagement-Export-Routine dated: %1$s',$exportversion->exportRoutine).'<br />';
 									echo Text::sprintf('Date and time of this file is: %1$s - %2$s',$exportversion->exportDate,$exportversion->exportTime).'<br />';
 									echo Text::sprintf('The name of the Joomla-System where this file was created is: %1$s',$exportversion->exportSystem).'<br />';
 									?></p><?php
