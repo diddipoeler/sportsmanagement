@@ -621,7 +621,7 @@ echo HTMLHelper::_('select.genericlist',
 $this->lists['templates'],
 'copyTemplate',
 'class=""',
-'id','name',$this->master_template);
+'value','text',$this->master_template);
 ?>	
 </td>
 </tr>
