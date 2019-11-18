@@ -2946,6 +2946,7 @@ $my_text .= 'error on person import: ';
 	private function _importProject()
 	{
 		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
         $my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
     $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
@@ -2965,6 +2966,7 @@ $p_project = $this->_importDataForSave($import_project,'project');
 		$p_project->sub_template_id = 0;
 		$p_project->sports_type_id = $this->_sportstype_id;
         $p_project->agegroup_id = $this->_agegroup_id;
+		 $p_project->picture = ComponentHelper::getParams($option)->get('ph_project','');
 		if ($this->_publish){$p_project->published = 1;}
 
 try {		
