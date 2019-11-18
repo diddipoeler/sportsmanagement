@@ -228,7 +228,9 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   
   $post = Factory::getApplication()->input->post->getArray(array());
   $country = $post['country'];
-  //$country = JSMCountries::convertIso2to3($teile[1]);
+	$agegroup = $post['agegroup'];
+	$template = $post['copyTemplate'];
+  
   
   $app->enqueueMessage(Text::_('land '.$country.''),'');
   
@@ -457,7 +459,10 @@ if (array_key_exists('league',$this->_datas))
     $temp->admin = 62;
     $temp->editor = 62;
     $temp->timezone = 321;
-    
+	
+	$temp->master_template = $template;
+    $temp->agegroup_id = $agegroup;
+	
     $temp->current_round_auto = 1;
     $temp->auto_time = 1440;
     
