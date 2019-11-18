@@ -648,6 +648,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 	case 'projectteams':
 		case 'cpanel':	    
 	case 'jlxmlimports':	
+			    case 'jlextlmoimports':
 		    case 'projectpositions':
             case 'predictionmembers':
 	case 'templates':
