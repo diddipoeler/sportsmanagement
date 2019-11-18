@@ -56,7 +56,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
             $myoptions = array_merge($myoptions, $res);
         }
         $lists['agegroup'] = $myoptions;
-	$this->agegroup = $lists['agegroup'];	
+	$this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'] , 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);	
 		
 		$model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$this->templates = $model->getTemplateList();
