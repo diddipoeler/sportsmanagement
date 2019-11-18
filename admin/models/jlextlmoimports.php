@@ -245,7 +245,8 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   // projekt wurde mitgegeben, also die liga und alles andere vorselektieren
   
   $temp = new stdClass();
-  $temp->exportRoutine = '2010-09-19 23:00:00';  
+  $temp->exportRoutine = '2010-09-19 23:00:00';
+  $temp->exportSystem = 'LMO File';    
   $this->_datas['exportversion'] = $temp;
 
 // projektname
