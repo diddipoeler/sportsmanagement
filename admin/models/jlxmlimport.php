@@ -3984,11 +3984,12 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 		foreach ($this->_datas['match'] as $key => $match)
 		{
-			$import_match = $this->_datas['match'][$key];
-            $p_match = new stdClass();
-			$oldId = (int)$match->id;
-            $p_match = $this->_importDataForSave($import_match,'match');
-           
+$import_match = $this->_datas['match'][$key];
+$p_match = new stdClass();
+$oldId = (int)$match->id;
+$p_match = $this->_importDataForSave($import_match,'match');
+$oldteam1 = 0;
+$oldteam2 = 0;
 $p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match,'round_id')];
 $p_match->projectteam1_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))];            
 $p_match->projectteam2_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))];            
@@ -4084,15 +4085,15 @@ else
 $teamname2='<span style="color:orange">'.Text::_('Guest-Team not asigned').'</span>';
 }
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= Text::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
-			'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
-			"</span><strong>$teamname1</strong>",
-            "<strong>$teamname2</strong>",
-			"<strong>$match->projectteam1_id</strong>",
-            "<strong>$match->projectteam2_id</strong>",
-            "<strong>$team1</strong>",
-            "<strong>$team2</strong>"
-            );
+$my_text .= Text::sprintf('Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID New: %4$s - %5$s / ProjectTeamID Old: %6$s - %7$s',
+	'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+	"</span><strong>$teamname1</strong>",
+        "<strong>$teamname2</strong>",
+	"<strong>$match->projectteam1_id</strong>",
+        "<strong>$match->projectteam2_id</strong>",
+        "<strong>$oldteam1</strong>",
+        "<strong>$oldteam2</strong>"
+        );
 $my_text .= '<br />';
 }
                 
