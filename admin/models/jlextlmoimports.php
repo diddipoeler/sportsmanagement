@@ -456,7 +456,7 @@ if (array_key_exists('league',$this->_datas))
     $temp->sports_type_id = 1;
     $temp->admin = 62;
     $temp->editor = 62;
-    $temp->timezone = 'Europe/Amsterdam';
+    $temp->timezone = 321;
     
     $temp->current_round_auto = 1;
     $temp->auto_time = 1440;
