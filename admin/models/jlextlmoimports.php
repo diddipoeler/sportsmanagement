@@ -494,7 +494,8 @@ if (array_key_exists('league',$this->_datas))
     
 		$temp = new stdClass();
 		$tempmatch = new stdClass();
-//  		$temp->id = 0;
+	    $tempmatch->playground_id = 0;
+
     $temp->id = $a;
 		$temp->roundcode = $a;
 		$temp->name = $a.'. Spieltag';
