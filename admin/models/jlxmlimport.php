@@ -881,7 +881,7 @@ break;
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-       $query->select('id, name');
+       $query->select('id as value, name as text');
        $query->from('#__sportsmanagement_project');
        $query->where('master_template = 0');  
        $query->order('name ASC');
