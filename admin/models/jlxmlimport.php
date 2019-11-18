@@ -1721,6 +1721,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
                 $p_league->middle_name = substr(OutputFilter::stringURLSafe($this->_league_new),0,24);
 		$p_league->country = $this->_league_new_country;
                 $p_league->sports_type_id = $this->_sportstype_id;
+		$p_league->agegroup_id = $this->_agegroup_id;
 		$p_league->picture = ComponentHelper::getParams($option)->get('ph_logo_big','');
                 
 try {
