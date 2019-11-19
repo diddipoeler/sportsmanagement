@@ -14,7 +14,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -152,12 +151,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class="order">
                         <span>
                             <?php
-                            echo $this->pagination->orderUpIcon($i, $i > 0, 'eventtypes.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', $ordering);
+                            echo $this->pagination->orderUpIcon($i, $i > 0, 'eventtypes.orderup', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_UP', $row->ordering);
                             ?>
                         </span>
                         <span>
     <?php
-    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'eventtypes.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', $ordering);
+    echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'eventtypes.orderdown', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER_DOWN', $row->ordering);
     ?>
                             <?php
                             $disabled = true ? '' : 'disabled="disabled"';
