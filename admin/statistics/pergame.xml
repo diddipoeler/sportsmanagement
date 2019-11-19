@@ -13,6 +13,7 @@
       value_field="name" 
 					label="COM_SPORTSMANAGEMENT_STAT_PERGAME_NUMERATOR_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_PERGAME_NUMERATOR_IDS_DESC">
+					<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
 			</field>
 			<field 	name="precision" 
       type="text" 
