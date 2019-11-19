@@ -37,11 +37,13 @@
 		
 <field name="formation1" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME_DESC"
 query="SELECT name AS value, name AS formation1 FROM #__sportsmanagement_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
-</field>
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+		</field>
 
 <field name="formation2" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY_DESC"
 query="SELECT name AS value, name AS formation2 FROM #__sportsmanagement_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
-</field>
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+		</field>
 
 	</fieldset>
 </config>
