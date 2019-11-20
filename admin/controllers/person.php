@@ -37,18 +37,18 @@ class sportsmanagementControllerperson extends JSMControllerForm
     }    
 
 
-/**
- * sportsmanagementControllerperson::cancel()
- * 
- * @return void
- */
-function cancel()
-	{
-      if ( $this->view_list == 'people' )
-      {
-      $this->view_list == 'persons' ; 
-      }
-       $this->setRedirect(Route::_('index.php?option='.$this->jsmoption.'&view='.$this->view_list, false));
-    } 
+///**
+// * sportsmanagementControllerperson::cancel()
+// * 
+// * @return void
+// */
+//function cancel()
+//	{
+//      if ( $this->view_list == 'people' )
+//      {
+//      $this->view_list == 'persons' ; 
+//      }
+//       $this->setRedirect(Route::_('index.php?option='.$this->jsmoption.'&view='.$this->view_list, false));
+//    } 
 
 }
