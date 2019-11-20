@@ -40,10 +40,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-
         $model = $this->getModel();
         $params = ComponentHelper::getParams($option);
-        $document = Factory::getDocument();
+
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         
@@ -171,7 +170,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $lists['divisions'] = $divisions;
         unset($divisions);
 
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
 
         $selectlist = array();
         if (isset($table_info['#__sportsmanagement_match'])) {
@@ -187,8 +186,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             }
         }
 
-        //$this->assignRef('division',$division);
-
         $this->user = Factory::getUser();
         $this->lists = $lists;
         $this->selectlist = $selectlist;
@@ -197,8 +194,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->ress = $ress;
         $this->projectws = $projectws;
         $this->roundws = $roundws;
-        //$this->pagination	= $pagination;
-        //$this->request_url = $uri->toString();
         $this->prefill = $params->get('use_prefilled_match_roster',0);
 
 switch ( $this->getLayout() )
@@ -240,11 +235,6 @@ switch ( $this->getLayout() )
      * @since	1.7
      */
     protected function addToolbar() {
-        //// Get a refrence of the page instance in joomla
-//		$document	= Factory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
 
         $app = Factory::getApplication();
         $jinput = $app->input;

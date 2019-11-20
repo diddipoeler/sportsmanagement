@@ -44,10 +44,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $filter_season = $jinput->getInt('filter_season', 0);
         $this->filter_season = $filter_season;
 
-        // Get a refrence of the page instance in joomla
-        $document = Factory::getDocument();
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-        $document->addScript(Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
+        $this->document->addScript(Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
@@ -108,9 +106,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->projektfussballineuropa = $model->getDataUpdateImportID();
         $this->option = $option;
 
-        $document = Factory::getDocument();
         $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
         $this->icon = 'xmlimport';
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
@@ -134,7 +131,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $post = Factory::getApplication()->input->post->getArray(array());
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
@@ -226,9 +222,9 @@ unset($myoptions);
         ToolbarHelper::custom('jlxmlimport.insert', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 
-        $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $js = "registerproject('" . Uri::base() . "','" . $projectid . "','" . $app->getCfg('sitename') . "','1');" . "\n";
-        $document->addScriptDeclaration($js);
+        $this->document->addScriptDeclaration($js);
 
         $this->setLayout('form');
 
@@ -276,7 +272,6 @@ unset($myoptions);
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
         $uri = Factory::getURI();
         $model = BaseDatabaseModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
@@ -399,13 +394,10 @@ unset($myoptions);
         }
 
         $this->lists = $lists;
-        // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE');
-        $document->setTitle($pageTitle);
-
+        $this->document->setTitle($pageTitle);
         $this->setLayout('selectpage');
 
-        //parent::display($tpl);
     }
 
 }

@@ -19,7 +19,6 @@ $app = Factory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $view = $jinput->getCmd('view', 'cpanel');
-$document = Factory::getDocument();
 
 /**
  * retrieve the value of the state variable. If no value is specified,

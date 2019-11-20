@@ -96,7 +96,6 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
             $uri = Factory::getURI();
         }
         $model = $this->getModel();
-        $document = Factory::getDocument();
         $starttime = microtime();
 
         $items = $this->get('Items');
@@ -148,7 +147,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
 
 
-        $document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
         $this->request_url = $uri->toString();
         $this->user = Factory::getUser();
         $this->project = $project;

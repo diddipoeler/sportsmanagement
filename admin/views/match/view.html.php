@@ -136,7 +136,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $project_id = $app->getUserState("$option.pid", '0');
-        $document = Factory::getDocument();
         $params = ComponentHelper::getParams($option);
         $default_name_format = $params->get("name_format");
 
@@ -240,7 +239,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $model = $this->getModel();
 
         $csv_file = $model->getPressebericht();
@@ -329,12 +327,11 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $model = $this->getModel();
         $lists = array();
 
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
 
         $positions = $model->getProjectPositionsOptions(0, 1, $this->project_id);
@@ -387,16 +384,14 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $this->useeventtime = $jinput->get('useeventtime');
-        $document = Factory::getDocument();
         $model = $this->getModel();
         $params = ComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
 
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        //$document->addScript(Uri::base().'components/'.$option.'/assets/js/editevents.js');
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-        $document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+        $this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 
         $javascript = "\n";
         $javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
@@ -442,7 +437,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 
         $matchCommentary = $model->getMatchCommentary($this->item->id);
         $matchevents = $model->getMatchEvents($this->item->id);
-        $document->addScriptDeclaration($javascript);
+        $this->document->addScriptDeclaration($javascript);
         
         $this->matchevents = $matchevents;
         $this->matchcommentary = $matchCommentary;
@@ -467,15 +462,13 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $model = $this->getModel();
         $default_name_format = '';
         $lists = array();
 
-        $document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-        //$document->addScript(Uri::base().'components/'.$option.'/assets/js/editlineup.js');
+        $this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
         $tid = Factory::getApplication()->input->getVar('team', '0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
@@ -634,7 +627,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $javascript .= "var teamid = " . $this->tid . ";" . "\n";
         $javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
         $javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
-        $document->addScriptDeclaration($javascript);
+        $this->document->addScriptDeclaration($javascript);
 
         $this->setLayout('editlineup');
     }
@@ -649,12 +642,11 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $model = $this->getModel();
         $default_name_format = '';
 
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
         // projekt schiedsrichter
         $allreferees = array();
         //$allreferees = $model->getRefereeRoster(0,$this->item->id);
@@ -737,7 +729,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $post = $app->input->post->getArray(array());
         $project_id = $app->getUserState("$option.pid", '0');;
         $model = $this->getModel();
@@ -759,7 +750,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = Factory::getDocument();
         $project_id = $app->getUserState("$option.pid", '0');;
         $config = ComponentHelper::getParams('com_media');
         $this->config = $config;
@@ -842,10 +832,9 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
     protected function setDocument()
     {
         $isNew = $this->item->id == 0;
-        $document = Factory::getDocument();
-        $document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-        $document->addScript(Uri::root() . $this->script);
-        $document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        $this->document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+        $this->document->addScript(Uri::root() . $this->script);
+        $this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
     }
 
@@ -854,13 +843,10 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
      */
     protected function addToolBar()
     {
-        // Get a refrence of the page instance in joomla
-        $document = Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
 
-        //Factory::getApplication()->input->setVar('hidemainmenu', true);
         $jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
         $user = Factory::getUser();
