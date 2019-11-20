@@ -17,8 +17,15 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
  
+
 /**
- *  View
+ * sportsmanagementViewextensions
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementViewextensions extends sportsmanagementView
 {
