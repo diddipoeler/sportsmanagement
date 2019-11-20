@@ -162,3 +162,15 @@ var request = new Request({
                         }).send();
                         		
 		}
+
+function register(homepage,notes,homepagename,isadmin)
+	{
+var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var request = new Request({
+                        url: url2,
+                        method:'post',
+                        data: data
+                        }).send();
+                        		
+		}
