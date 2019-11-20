@@ -9,7 +9,6 @@
  * @subpackage specialextensions
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Factory;
@@ -33,14 +32,7 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$model	= $this->getModel();
-        
-		$this->Extensions = $model->getSpecialExtensions();
-        
-
+		$this->Extensions = $this->model->getSpecialExtensions();
 	}
 	
 	/**
