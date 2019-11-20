@@ -260,7 +260,9 @@ break;
         $task = $this->jinput->getCmd('task');
 
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-
+$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
+        $document->addScriptDeclaration($js);
+        
         if ($this->app->isClient('administrator')) {
             if ($task == '' && $this->option == 'com_sportsmanagement') {
 
