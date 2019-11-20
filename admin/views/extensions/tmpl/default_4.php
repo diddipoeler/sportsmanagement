@@ -8,33 +8,25 @@
  * @package   sportsmanagement
  * @subpackage extensions
 */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-$templatesToLoad = array('footer','listheader');
+use Joomla\CMS\Uri\Uri;
+
+$templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
-<div id="jsm" class="admin override">
-
-<?php if (!empty( $this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="span10">
-<?php else : ?>
-	<div id="j-main-container">
-<?php endif;?>
-
-<section class="content-block" role="main">
-
-<div class="row-fluid">
-<div class="span7">
-<div class="well well-small">        
-<div id="dashboard-icons" class="btn-group">
-
-<?php 
-                
+<div class="row">
+    <?php if (!empty($this->sidebar)) : ?>
+        <div id="j-sidebar-container" class="col-md-2">
+            <?php echo $this->sidebar; ?>
+        </div>
+        <div class="col-md-8">
+        <?php else : ?>
+            <div class="col-md-10">
+            <?php endif; ?>      
+            <div id="dashboard-iconss" class="dashboard-icons">
+                <?php
 foreach ( $this->sporttypes as $key => $value )
 {
 switch ($value)
@@ -78,52 +70,17 @@ break;
 default:
 break;
 }
-}
-?>
-     
-        
-</div>        
-</div>
-</div>
-
-<div class="span5">
-					<div class="well well-small">
-						<div class="center">
-							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
-						</div>
-						<hr class="hr-condensed">
-						<dl class="dl-horizontal">
-							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
-							<dd><?php echo Text::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
-                            
-							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
-							<dd><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
-
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
-							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
-							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
-							<dd>GNU General Public License</dd>
-						</dl>
-					</div>
-
-					
-
-				</div>
-
-
-</div>
-</section>
-
-</div>
-</div>
-
+}                
+                ?>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <?php sportsmanagementHelper::jsminfo(); ?>
+        </div>
+    </div>
+</div>                
 <?PHP
-//echo "<div>";
-//echo $this->loadTemplate('footer');
-//echo "</div>";
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
 ?>   
