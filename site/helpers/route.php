@@ -39,6 +39,7 @@ public static $views = array(
 'clubplan'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'curve'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 
+'editclub'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),	
 'editmatch'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
 'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
 
