@@ -96,7 +96,8 @@ var $team_club_id = 0;
         $this->jsmuser = Factory::getUser();
         $this->jsmdate = Factory::getDate();
       
-      //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->team_club_id), 'error');
+      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_list), '');
+      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_item), '');
         /** Map the apply task to the save method. **/
         //$this->registerTask('apply', 'save');
     }
