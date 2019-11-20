@@ -455,7 +455,7 @@ abstract class sportsmanagementHelper {
 }
         catch (Exception $e)
         {
-	$app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_EDITMATCH_MATCHDATE'), $match->value),'Notice');
+	//$app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_EDITMATCH_MATCHDATE'), $match->value),'Notice');
         }
     }
 	
