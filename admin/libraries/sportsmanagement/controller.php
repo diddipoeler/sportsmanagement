@@ -95,10 +95,10 @@ var $team_club_id = 0;
         $this->jsmdocument = Factory::getDocument();
         $this->jsmuser = Factory::getUser();
         $this->jsmdate = Factory::getDate();
-      if ( $this->view_list == 'people' )
-      {
-      $this->view_list == 'persons' ; 
-      }
+//      if ( $this->view_list == 'people' )
+//      {
+//      $this->view_list == 'persons' ; 
+//      }
 //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_list), '');
 //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_item), '');
         /** Map the apply task to the save method. **/
