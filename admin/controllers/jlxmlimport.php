@@ -221,6 +221,14 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 									return false;
 								}
 							}
+							elseif ( strtolower(File::getExt($dest)) == 'xml' )
+							{
+								if (!@ rename($dest,$importFile))
+								{
+								    Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
+									return false;
+								}
+							}
 							else
 							{
 							 Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
