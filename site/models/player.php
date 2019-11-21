@@ -247,7 +247,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('tp.picture as season_picture');
         $query->select('p.picture as project_picture');
-	$query->select('p.game_regular_time');
+	$query->select('p.game_regular_time,p.add_time');
         $query->select('c.logo_big as club_picture');
         $query->from('#__sportsmanagement_person AS pr');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
