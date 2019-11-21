@@ -355,8 +355,16 @@ catch (Exception $e)
         /** Create a new query object. */		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-$game_regular_time = $game_regular_time + $add_time;
+//$game_regular_time = $game_regular_time + $add_time;
         $result = 0;
+      /*
+      if ( $add_time )
+      {
+      echo __LINE__.' player <pre>'.print_r($player_id,true).'</pre>';
+      echo __LINE__.' match_id <pre>'.print_r($match_id,true).'</pre>';
+      echo __LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>';
+      }
+      */
 /** startaufstellung ohne ein und auswechselung */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
@@ -367,6 +375,10 @@ $game_regular_time = $game_regular_time + $add_time;
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+          if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -376,6 +388,26 @@ $game_regular_time = $game_regular_time + $add_time;
 
         $db->setQuery($query);
         $totalresult = $db->loadObject();
+      
+          if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $totalresult2 = $db->loadObject();
+            //echo __LINE__.' totalresult2 <pre>'.print_r($totalresult2,true).'</pre>';
+        if ($totalresult2) {
+            $result += $totalresult2->totalmatch * ($game_regular_time + $add_time);
+        }    
+            
+            
+          }
         if ($totalresult) {
             $result += $totalresult->totalmatch * $game_regular_time;
         }
@@ -393,6 +425,10 @@ $game_regular_time = $game_regular_time + $add_time;
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+           if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -402,6 +438,27 @@ $game_regular_time = $game_regular_time + $add_time;
         $db->setQuery($query);
         $cameinresult = $db->loadObject();
 
+      if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $cameinresult2 = $db->loadObject();
+            //echo __LINE__.' totalresult2 <pre>'.print_r($cameinresult2,true).'</pre>';
+        if ($cameinresult2) {
+          $result += ( $cameinresult->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult->totalin );
+        }    
+            
+            
+          }
+      
+      
         if ($cameinresult) {
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
         }
@@ -418,6 +475,10 @@ $game_regular_time = $game_regular_time + $add_time;
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+           if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -427,6 +488,31 @@ $game_regular_time = $game_regular_time + $add_time;
         $db->setQuery($query);
         $cameautresult = $db->loadObject();
 
+      if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $cameautresult2 = $db->loadObject();
+            //echo __LINE__.' totalresult2 <pre>'.print_r($cameautresult2,true).'</pre>';
+        if ($cameautresult2) {
+
+          $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * ($game_regular_time + $add_time) );
+        }    
+            
+            
+          }
+      
+      
+      
+      
+      
         if ($cameautresult) {
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
         }
