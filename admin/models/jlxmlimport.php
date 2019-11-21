@@ -858,13 +858,23 @@ $this->_season_id = 0;
 		$xmlData = $this->_getXml();
 		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);	
 		echo '<pre>'.print_r($arrayelanska,true).'</pre>';	
-			 
-$this->_datas['league'] = $arrayelanska['liga'];
-$this->_datas['season'] = $arrayelanska['sifra_lige'];
-$this->_datas['project'] = $arrayelanska['liga'];
+$object = new stdClass();
+$object->id = 1;	
+$object->name = $arrayelanska['liga'];
+$this->_datas['league'] = $object;
+$object = new stdClass();
+$object->id = 1;	
+$object->name = $arrayelanska['sifra_lige'];
+$this->_datas['season'] = $object;
+$object = new stdClass();
+$object->id = 1;	
+$object->name = $arrayelanska['liga'];			 
+$this->_datas['project'] = $object;
 $object = new stdClass();
 $object->version = '2.4.00';	
 $object->exportRoutine = '2010-09-23 15:00:00';
+$object->exportDate = '2010-09-23';
+$object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
 			 
 for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
@@ -873,11 +883,12 @@ $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];
 $this->_datas['club'][$object->id] = $object;
+$this->_datas['team'][$object->id] = $object;	
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];
 $this->_datas['club'][$object->id] = $object;
-
+$this->_datas['team'][$object->id] = $object;
 
 
 
