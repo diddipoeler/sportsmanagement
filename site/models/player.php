@@ -349,13 +349,13 @@ catch (Exception $e)
      * @param integer $project_id
      * @return
      */
-    public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0) {
+    public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0,$add_time = 0) {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         /** Create a new query object. */		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-
+$game_regular_time = $game_regular_time + $add_time;
         $result = 0;
 /** startaufstellung ohne ein und auswechselung */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
