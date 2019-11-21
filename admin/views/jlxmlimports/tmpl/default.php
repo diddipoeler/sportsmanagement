@@ -88,7 +88,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       </fieldset>
       </td>
       </tr>
-				
+<tr>
+<td><?php echo $this->countries; ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->country); ?>&nbsp;(<?php echo $this->country; ?>)</td>
+</tr>
+<tr>
+<td><?php echo $this->agegroup; ?></td>
+</tr>				
+<tr>
+<td style='background-color:#EEEEEE'>
+<select name='copyTemplate' id='copyTemplate' style="display:none">
+<option value="0" selected><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>
+<?php
+foreach ($this->templates AS $row)
+{
+echo "<option value=\"$row->id\">$row->name</option>\n";
+}
+?>
+</select>
+</td>
+</tr>						
             </tbody>
 		</table>
 		<input type='hidden' name='sent' value='1' />
