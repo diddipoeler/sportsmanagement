@@ -862,6 +862,11 @@ $this->_season_id = 0;
 $this->_datas['league'] = $arrayelanska['liga'];
 $this->_datas['season'] = $arrayelanska['sifra_lige'];
 $this->_datas['project'] = $arrayelanska['liga'];
+$object = new stdClass();
+$object->version = '2.4.00';	
+$object->exportRoutine = '2010-09-23 15:00:00';
+$this->_datas['exportversion'] = $object;
+			 
 for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
 {
 $object = new stdClass();
