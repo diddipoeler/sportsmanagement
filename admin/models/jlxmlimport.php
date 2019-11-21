@@ -861,7 +861,15 @@ $this->_season_id = 0;
 		 if ( $importelanska )
 		{
 		$xmlData = $this->_getXml();
-		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);	
+		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);
+        
+for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
+{        
+if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
+{
+echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a]['season'],true).'</pre>';    
+}        
+}        	
 		//echo '<pre>'.print_r($arrayelanska,true).'</pre>';
 			 
 $object = new stdClass();
