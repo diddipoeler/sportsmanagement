@@ -68,7 +68,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 		$country = JSMCountries::convertIso2to3($teile[1]);
 		$this->country = $country;
 	    
-	    
+	    $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
+        $this->seasons = $mdl->getSeasons();
 	    
      $countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
