@@ -861,7 +861,7 @@ $this->_season_id = 0;
 		{
 		$xmlData = $this->_getXml();
 		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);	
-		echo '<pre>'.print_r($arrayelanska,true).'</pre>';
+		//echo '<pre>'.print_r($arrayelanska,true).'</pre>';
 			 
 $object = new stdClass();
 $object->id = 1;	
