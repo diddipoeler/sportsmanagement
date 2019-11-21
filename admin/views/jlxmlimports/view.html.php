@@ -70,7 +70,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 		$this->country = $country;
 	    
 	    $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
-        $seasons = $mdl->getSeasons();
+        $seasons = $mdl->getSeasons(TRUE);
 	    
      $countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
@@ -89,7 +89,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'));
         $myoptions = array_merge($myoptions, $seasons);
         $lists['seasons'] = $myoptions;
-	$this->seasons = HTMLHelper::_('select.genericlist', $lists['seasons'] , 'seasons', 'class="inputbox" size="1"', 'id', 'name', 0);
+	$this->seasons = HTMLHelper::_('select.genericlist', $lists['seasons'] , 'seasons', 'class="inputbox" size="1"', 'value', 'text', 0);
         
         
         

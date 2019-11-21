@@ -222,9 +222,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 	public function getSeasonTeams($season_id=0)
     {
     $this->jsmquery->clear();
-        // Select some fields
 		    $this->jsmquery->select('t.id as value, t.name as text');
-        // From the seasons table
 		    $this->jsmquery->from('#__sportsmanagement_team as t');
         $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $this->jsmquery->where('st.season_id = '.$season_id);
@@ -240,19 +238,29 @@ class sportsmanagementModelSeasons extends JSMModelList
         } 
     }
         
-	/**
-     * Method to return a seasons array (id,name)
-     *
-     * @access	public
-     * @return	array seasons
-     * @since	1.5.0a
+	
+    /**
+     * sportsmanagementModelSeasons::getSeasons()
+     * 
+     * @param bool $selectoptions
+     * @return
      */
-    function getSeasons()
+    function getSeasons($selectoptions = false)
     {
         $this->jsmquery->clear();
+        
+        if ( $selectoptions )
+        {
+        $this->jsmquery->select(array('id as value', 'name as text'))
+        ->from('#__sportsmanagement_season')
+        ->order('name DESC');    
+        }
+        else
+        {
         $this->jsmquery->select(array('id', 'name'))
         ->from('#__sportsmanagement_season')
         ->order('name DESC');
+        }
 
         try{
         $this->jsmdb->setQuery($this->jsmquery);
