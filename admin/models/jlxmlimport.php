@@ -874,6 +874,7 @@ $object = new stdClass();
 $object->version = '2.4.00';	
 $object->exportRoutine = '2010-09-23 15:00:00';
 $object->exportDate = '2010-09-23';
+$object->exportTime = '2010-09-23';
 $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
 			 
@@ -883,11 +884,25 @@ $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];
 $this->_datas['club'][$object->id] = $object;
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->club_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->short_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->middle_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->info = '';	
 $this->_datas['team'][$object->id] = $object;	
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];
 $this->_datas['club'][$object->id] = $object;
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->club_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->short_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->middle_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
+$object->info = '';	
 $this->_datas['team'][$object->id] = $object;
 
 
