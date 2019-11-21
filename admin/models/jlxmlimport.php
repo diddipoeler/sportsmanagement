@@ -929,7 +929,8 @@ $object->agegroup_id = $agegroup;
 $this->_datas['team'][$object->id] = $object;
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
 $object->team_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
-$this->_datas['projectteam'][$object->id] = $object;	
+$this->_datas['projectteam'][$object->id] = $object;
+	
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'];
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'].'.Krog';
@@ -941,8 +942,9 @@ $object->round_id = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'];
 $object->match_number = $arrayelanska['zapisniki']['zapisnik'][$a]['tekma_id'];	
 $object->projectteam1_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
 $object->projectteam2_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
-	
-	
+$teile = explode(":", $arrayelanska['zapisniki']['zapisnik'][$a]['rezultat']);	
+$object->team1_result = trim($teile[0]);
+$object->team2_result = trim($teile[1]);
 $this->_datas['match'][$object->id] = $object;
 
 
