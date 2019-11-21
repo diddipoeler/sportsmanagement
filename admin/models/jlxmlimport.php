@@ -861,7 +861,7 @@ $this->_season_id = 0;
 			 
 $this->_datas['league'] = $arrayelanska['liga'];
 $this->_datas['season'] = $arrayelanska['sifra_lige'];
-			 
+$this->_datas['project'] = $arrayelanska['liga'];
 for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
 {
 	
