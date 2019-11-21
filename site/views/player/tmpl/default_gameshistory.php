@@ -152,7 +152,15 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
                 {
                     $this->overallconfig['person_events'] = NULL;
                 }
-                $timePlayed = $model->getTimePlayed($game->teamplayer_id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events'],$game->project_id);
+		    if ( $game->match_result_type )
+		    {
+			$game_regular_time = $this->project->game_regular_time + $this->project->add_time;    
+		    }
+		    else
+		    {
+			$game_regular_time = $this->project->game_regular_time;    
+		    }
+                $timePlayed = $model->getTimePlayed($game->teamplayer_id,$game_regular_time,$game->id,$this->overallconfig['person_events'],$game->project_id);
                 ?>
 				<tr class="">
 					<td class="">
