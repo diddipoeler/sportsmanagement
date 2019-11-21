@@ -261,6 +261,7 @@ $this->_season_id = 0;
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
         $this->pl_import = $app->getUserState($option.'pltree'); ;
         
+        $importelanska = $app->getUserState($option.'importelanska'); ;		
 
         libxml_use_internal_errors(true);
 		if ( !$xmlData = $this->_getXml() )
@@ -849,6 +850,12 @@ $this->_season_id = 0;
 			}
 
 			return $this->_datas;
+		}
+		elseif ( $importelanska )
+		{
+		$xmlData = $this->_getXml()
+		$array = json_decode(json_encode((array)$xmlData), TRUE);	
+		echo '<pre>'.print_r($array,true).'</pre>';	
 		}
 		else
 		{
