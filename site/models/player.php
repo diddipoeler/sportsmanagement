@@ -749,6 +749,7 @@ $displaystats[] = $stat;
  *              3. There is one or more event on his name for the match
  */
             $query->select('m.id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
+	$query->select('m.match_result_type');	
             $query->select('t1.id AS team1,t1.name AS home_name');
             $query->select('t2.id AS team2,t2.name AS away_name');
             $query->select('mp.teamplayer_id');
