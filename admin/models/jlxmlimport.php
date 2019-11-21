@@ -856,8 +856,14 @@ $this->_season_id = 0;
 		 if ( $importelanska )
 		{
 		$xmlData = $this->_getXml();
-		$array = json_decode(json_encode((array)$xmlData), TRUE);	
-		echo '<pre>'.print_r($array,true).'</pre>';	
+		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);	
+		echo '<pre>'.print_r($arrayelanska,true).'</pre>';	
+			 
+$this->_datas['league'] = $arrayelanska['liga'];
+$this->_datas['season'] = $arrayelanska['sifra_lige'];
+			 
+			 
+			 
 		}
 			else
 			{
