@@ -864,8 +864,27 @@ $this->_datas['season'] = $arrayelanska['sifra_lige'];
 $this->_datas['project'] = $arrayelanska['liga'];
 for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
 {
-	
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a][sifra_kluba_domaci];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a][domaci];
+$this->_datas['club'][$object->id] = $object;
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a][sifra_kluba_gosti];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a][gosti];
+$this->_datas['club'][$object->id] = $object;
+
+
+
+
+
+
+
+
+
+
+
 }
+$this->import_version = 'NEW';
 return $this->_datas;
 		}
 			else
