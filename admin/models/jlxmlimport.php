@@ -862,8 +862,11 @@ $this->_season_id = 0;
 $this->_datas['league'] = $arrayelanska['liga'];
 $this->_datas['season'] = $arrayelanska['sifra_lige'];
 			 
-			 
-			 
+foreach($a=0; $a < sizof($arrayelanska['zapisniki']['zapisnik']);$a++)
+{
+	
+}
+return $this->_datas;
 		}
 			else
 			{
