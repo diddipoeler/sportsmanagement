@@ -870,7 +870,8 @@ if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
 echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';    
 }        
 }        	
-		//echo '<pre>'.print_r($arrayelanska,true).'</pre>';
+
+echo 'season id <pre>'.print_r($season_id,true).'</pre>';
 			 
 $object = new stdClass();
 $object->id = 1;	
