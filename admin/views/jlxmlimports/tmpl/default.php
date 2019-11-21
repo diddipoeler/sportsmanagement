@@ -95,6 +95,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <td><?php echo $this->agegroup; ?></td>
 </tr>				
 <tr>
+<td><?php echo $this->seasons; ?></td>
+</tr>
+<tr>
 <td style='background-color:#EEEEEE'>
 <select name='copyTemplate' id='copyTemplate' style="display:none">
 <option value="0" selected><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>

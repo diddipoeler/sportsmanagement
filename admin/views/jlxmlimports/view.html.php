@@ -41,6 +41,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $app = Factory::getApplication();
 	    $lang = Factory::getLanguage();
         $jinput = $app->input;
+        $myoptions = array();
         $option = $jinput->getCmd('option');
         $filter_season = $jinput->getInt('filter_season', 0);
         $this->filter_season = $filter_season;
@@ -69,11 +70,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 		$this->country = $country;
 	    
 	    $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
-        $this->seasons = $mdl->getSeasons();
+        $seasons = $mdl->getSeasons();
 	    
      $countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries = $lists['countries'];
+        
+        unset($myoptions);
      $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ($res = $mdlagegroup->getAgeGroups('', 0)) {
@@ -81,7 +84,15 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         }
         $lists['agegroup'] = $myoptions;
 	$this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'] , 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);	
-	    
+	    unset($myoptions);
+        
+        $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'));
+        $myoptions = array_merge($myoptions, $seasons);
+        $lists['seasons'] = $myoptions;
+	$this->seasons = HTMLHelper::_('select.genericlist', $lists['seasons'] , 'seasons', 'class="inputbox" size="1"', 'value', 'text', 0);
+        
+        
+        
         switch ($this->getLayout()) {
             case 'form';
             case 'form_3';

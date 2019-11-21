@@ -122,6 +122,7 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 		$app->setUserState('com_sportsmanagement'.'importelanska',$post['importelanska'] );
 		$app->setUserState('com_sportsmanagement'.'country',$post['country'] );
 		$app->setUserState('com_sportsmanagement'.'agegroup',$post['agegroup'] );
+        $app->setUserState('com_sportsmanagement'.'seasons',$post['seasons'] );
 		
         if ( $projectid )
     {

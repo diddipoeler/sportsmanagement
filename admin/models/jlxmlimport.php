@@ -266,6 +266,7 @@ $this->_season_id = 0;
         $importelanska = $app->getUserState($option.'importelanska');		
 		$country = $app->getUserState($option.'country');
 		$agegroup = $app->getUserState($option.'agegroup');
+        $season_id = $app->getUserState($option.'seasons');
 
         libxml_use_internal_errors(true);
 		if ( !$xmlData = $this->_getXml() )
