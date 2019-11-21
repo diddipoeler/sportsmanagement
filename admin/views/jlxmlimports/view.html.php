@@ -39,6 +39,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      */
     public function init($tpl = null) {
         $app = Factory::getApplication();
+	    $lang = Factory::getLanguage();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $filter_season = $jinput->getInt('filter_season', 0);
@@ -63,6 +64,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->config = $config;
         $this->projektfussballineuropa = $model->getDataUpdateImportID();
 
+	    $teile = explode("-",$lang->getTag());
+		$country = JSMCountries::convertIso2to3($teile[1]);
+		$this->country = $country;
+	    
+	    
+	    
      $countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries = $lists['countries'];
@@ -73,6 +80,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         }
         $lists['agegroup'] = $myoptions;
 	$this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'] , 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);	
+	    
         switch ($this->getLayout()) {
             case 'form';
             case 'form_3';
