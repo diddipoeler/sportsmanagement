@@ -865,12 +865,12 @@ $this->_datas['project'] = $arrayelanska['liga'];
 for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
 {
 $object = new stdClass();
-$object->id = $arrayelanska['zapisniki']['zapisnik'][$a][sifra_kluba_domaci];	
-$object->name = $arrayelanska['zapisniki']['zapisnik'][$a][domaci];
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];
 $this->_datas['club'][$object->id] = $object;
 $object = new stdClass();
-$object->id = $arrayelanska['zapisniki']['zapisnik'][$a][sifra_kluba_gosti];	
-$object->name = $arrayelanska['zapisniki']['zapisnik'][$a][gosti];
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];
 $this->_datas['club'][$object->id] = $object;
 
 
