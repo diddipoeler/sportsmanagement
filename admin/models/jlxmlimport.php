@@ -915,12 +915,20 @@ $object->middle_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];
 $object->info = '';	
 $this->_datas['team'][$object->id] = $object;
 
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'];
+$object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'].'.Krog';
+$this->_datas['round'][$object->id] = $object;
 
-
-
-
-
-
+$object = new stdClass();
+$object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_zapisnika'];
+$object->round_id = $arrayelanska['zapisniki']['zapisnik'][$a]['krog'];	
+$object->match_number = $arrayelanska['zapisniki']['zapisnik'][$a]['tekma_id'];	
+$object->projectteam1_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
+$object->projectteam2_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
+	
+	
+$this->_datas['match'][$object->id] = $object;
 
 
 
