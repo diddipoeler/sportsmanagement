@@ -880,7 +880,7 @@ for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
 {
-echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
+//echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
 if ( !isset($this->_datas['league']) )
 {
 $object = new stdClass();
@@ -968,6 +968,8 @@ $object->team1_result = $arrayelanska['dataroot']['all_seasons'][$a]['home_goals
 $object->team2_result = $arrayelanska['dataroot']['all_seasons'][$a]['away_goals'];
 $object->crowd = $arrayelanska['dataroot']['all_seasons'][$a]['spectators'];
 $object->playground_id = 0;
+$teile = explode("T", $arrayelanska['dataroot']['all_seasons'][$a]['match_date']);
+$object->match_date = $teile[0];
 $this->_datas['match'][$object->id] = $object;
 
   
@@ -981,7 +983,7 @@ $object->exportDate = '2010-09-23';
 $object->exportTime = '2010-09-23';
 $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
-echo 'season id <pre>'.print_r($season_id,true).'</pre>';
+//echo 'season id <pre>'.print_r($season_id,true).'</pre>';
 			 
              
 }             
