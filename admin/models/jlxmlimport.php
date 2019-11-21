@@ -867,7 +867,7 @@ for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
 {
-echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a]['season'],true).'</pre>';    
+echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';    
 }        
 }        	
 		//echo '<pre>'.print_r($arrayelanska,true).'</pre>';
