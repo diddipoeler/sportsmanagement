@@ -238,7 +238,30 @@ class sportsmanagementModelSeasons extends JSMModelList
         } 
     }
         
-	
+	/**
+	 * sportsmanagementModelSeasons::getSeasonName()
+	 * 
+	 * @param integer $season_id
+	 * @return void
+	 */
+	function getSeasonName($season_id=0)
+    {
+    $this->jsmquery->clear();    
+    $this->jsmquery->select('name');    
+    $this->jsmquery->from('#__sportsmanagement_season');
+    $this->jsmquery->where('id = '.$season_id);
+    try{
+        $this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadResult();
+        return $result;   
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return false;
+        }    
+    }
+        
     /**
      * sportsmanagementModelSeasons::getSeasons()
      * 

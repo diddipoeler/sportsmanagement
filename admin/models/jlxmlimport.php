@@ -862,7 +862,9 @@ $this->_season_id = 0;
 		{
 		$xmlData = $this->_getXml();
 		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);
- 
+
+$mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
+$seasons_name = $mdl->getSeasonName($season_id); 
  
 if ( array_key_exists('all_seasons', $arrayelanska['dataroot']) ) 
 {        
@@ -870,9 +872,13 @@ $object = new stdClass();
 $object->id = 1;	
 $object->name = 'Soccer';			 
 $this->_datas['sportstype'] = $object;    
+$object = new stdClass();
+$object->id = $season_id;	
+$object->name = $seasons_name;			 
+$this->_datas['season'] = $object;
 for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
-if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
+if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
 {
 echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
 if ( !isset($this->_datas['league']) )
@@ -894,7 +900,7 @@ $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'].' '.$arra
 $object->agegroup_id = $agegroup;
 $object->master_template = 0;
 $object->league_id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];
-$object->season_id = 1;
+$object->season_id = $season_id;
 $object->sports_type_id = 1;
 $this->_datas['project'] = $object;
 }
@@ -934,6 +940,22 @@ $this->_datas['team'][$object->id] = $object;
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
 $object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
 $this->_datas['projectteam'][$object->id] = $object;
+
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['round'].'.Krog';
+$this->_datas['round'][$object->id] = $object;
+
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['match_id'];
+$object->round_id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];	
+$object->match_number = $arrayelanska['dataroot']['all_seasons'][$a]['ID'];	
+$object->projectteam1_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->projectteam2_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->team1_result = $arrayelanska['dataroot']['all_seasons'][$a]['home_goals'];
+$object->team2_result = $arrayelanska['dataroot']['all_seasons'][$a]['away_goals'];
+$object->crowd = $arrayelanska['dataroot']['all_seasons'][$a]['spectators'];
+$this->_datas['match'][$object->id] = $object;
 
   
 }    
