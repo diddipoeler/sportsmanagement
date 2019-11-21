@@ -268,7 +268,14 @@ class sportsmanagementModelSeasons extends JSMModelList
 
         foreach ($result as $season)
         {
+            if ( $selectoptions )
+        {
+            $season->text = Text::_($season->text);
+            }
+            else
+            {
             $season->name = Text::_($season->name);
+            }
         }
         return $result;
         }
