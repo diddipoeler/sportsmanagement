@@ -66,7 +66,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      $countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries = $lists['countries'];
-     
+     $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
+        if ($res = $mdlagegroup->getAgeGroups('', 0)) {
+            $myoptions = array_merge($myoptions, $res);
+        }
+        $lists['agegroup'] = $myoptions;
+	$this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'] , 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);	
         switch ($this->getLayout()) {
             case 'form';
             case 'form_3';
