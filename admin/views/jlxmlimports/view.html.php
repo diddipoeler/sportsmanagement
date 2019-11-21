@@ -63,6 +63,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->config = $config;
         $this->projektfussballineuropa = $model->getDataUpdateImportID();
 
+     $countries = JSMCountries::getCountryOptions();
+		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
+		$this->countries = $lists['countries'];
+     
         switch ($this->getLayout()) {
             case 'form';
             case 'form_3';
