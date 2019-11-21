@@ -851,16 +851,19 @@ $this->_season_id = 0;
 
 			return $this->_datas;
 		}
-		elseif ( $importelanska )
+		else
+		{
+		 if ( $importelanska )
 		{
 		$xmlData = $this->_getXml();
 		$array = json_decode(json_encode((array)$xmlData), TRUE);	
 		echo '<pre>'.print_r($array,true).'</pre>';	
 		}
-		else
-		{
-		  Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'), 'error');
+			else
+			{
+			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'), 'error');
 			return false;
+			}
 		}
 	}
 
