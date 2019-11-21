@@ -119,6 +119,7 @@ class sportsmanagementControllerJLXMLImport extends BaseController
         
         $projectid = Factory::getApplication()->input->getVar('projektfussballineuropa',null);
 
+		$app->setUserState('com_sportsmanagement'.'importelanska',$post['importelanska'] );
 		
         if ( $projectid )
     {
