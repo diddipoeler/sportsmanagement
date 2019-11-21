@@ -884,6 +884,11 @@ $object->id = 1;
 $object->name = $arrayelanska['liga'];	
 $object->agegroup_id = $agegroup;
 $object->master_template = 0;
+
+$object->league_id = 1;
+$object->season_id = 1;
+$object->sports_type_id = 1;
+
 $this->_datas['project'] = $object;
 $object = new stdClass();
 $object->version = '2.4.00';	
