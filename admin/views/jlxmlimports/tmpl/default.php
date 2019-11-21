@@ -76,6 +76,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			</fieldset>
             </td>
             </tr>
+<tr>
+      <td>
+      <fieldset style='text-align: center; '>
+      <legend>
+				<?php
+				echo Text::_( '1. Èlanska liga MNZ Maribor');
+				?>
+			</legend>      
+      <input class='input_box' type='checkbox' id='importelanska' name='importelanska'  /><?php echo Text::_('1. Èlanska liga MNZ Maribor'); ?>      
+      </fieldset>
+      </td>
+      </tr>
+				
             </tbody>
 		</table>
 		<input type='hidden' name='sent' value='1' />
