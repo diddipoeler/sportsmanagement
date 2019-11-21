@@ -853,7 +853,7 @@ $this->_season_id = 0;
 		}
 		elseif ( $importelanska )
 		{
-		$xmlData = $this->_getXml()
+		$xmlData = $this->_getXml();
 		$array = json_decode(json_encode((array)$xmlData), TRUE);	
 		echo '<pre>'.print_r($array,true).'</pre>';	
 		}
