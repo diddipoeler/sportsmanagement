@@ -253,8 +253,8 @@ break;
 $this->_season_id = 0;			
 		}
 
-  $post = Factory::getApplication()->input->post->getArray(array());
-  $country = $post['country'];		
+  //$post = Factory::getApplication()->input->post->getArray(array());
+  //$country = $post['country'];		
 //        $this->_agegroup_id = $post['agegroup_id'];
 //       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
        
@@ -263,7 +263,9 @@ $this->_season_id = 0;
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
         $this->pl_import = $app->getUserState($option.'pltree'); ;
         
-        $importelanska = $app->getUserState($option.'importelanska'); ;		
+        $importelanska = $app->getUserState($option.'importelanska');		
+		$country = $app->getUserState($option.'country');
+		$agegroup = $app->getUserState($option.'agegroup');
 
         libxml_use_internal_errors(true);
 		if ( !$xmlData = $this->_getXml() )
@@ -868,7 +870,10 @@ $this->_datas['sportstype'] = $object;
 $object = new stdClass();
 $object->id = 1;	
 $object->name = $arrayelanska['liga'];
-$object->country = $country;			 
+$object->country = $country;
+$object->agegroup_id = $agegroup;
+$object->short_name = $arrayelanska['liga'];	
+$object->middle_name = $arrayelanska['liga'];	
 $this->_datas['league'] = $object;
 $object = new stdClass();
 $object->id = 1;	
@@ -899,7 +904,8 @@ $object->club_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domac
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
 $object->short_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
 $object->middle_name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];	
-$object->info = '';	
+$object->info = '';
+$object->agegroup_id = $agegroup;
 $this->_datas['team'][$object->id] = $object;	
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
 $object->team_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
@@ -917,6 +923,7 @@ $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];
 $object->short_name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];	
 $object->middle_name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];	
 $object->info = '';	
+$object->agegroup_id = $agegroup;
 $this->_datas['team'][$object->id] = $object;
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
 $object->team_id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
