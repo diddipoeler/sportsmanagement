@@ -176,7 +176,7 @@ array(	"title" => Text::_($eventtype->name),
                         $this->overallconfig['person_events'] = NULL;
                     }
                     
-                    $timePlayed = $model->getTimePlayed($player_hist->tpid,$player_hist->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id);
+                    $timePlayed = $model->getTimePlayed($player_hist->tpid,$player_hist->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id,$player_hist->add_time);
                                     
                     $routeparameter = array();
        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
