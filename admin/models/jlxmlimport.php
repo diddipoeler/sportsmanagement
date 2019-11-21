@@ -875,28 +875,27 @@ for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
 {
 echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
-
+if ( !isset($this->_datas['league']) )
+{
+$object = new stdClass();
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];	
 $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
 $object->country = $country;
 $object->agegroup_id = $agegroup;
 $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];	
 $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
-if ( !isset($this->_datas['league']) )
-{	
 $this->_datas['league'] = $object;
 }
-
+if ( !isset($this->_datas['project']) )
+{
 $object = new stdClass();
 $object->id = 1;	
-$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'].' '.$arrayelanska['dataroot']['all_seasons'][$a]['season'];	
 $object->agegroup_id = $agegroup;
 $object->master_template = 0;
 $object->league_id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];
 $object->season_id = 1;
 $object->sports_type_id = 1;
-if ( !isset($this->_datas['project']) )
-{	
 $this->_datas['project'] = $object;
 }
 /** heim */
@@ -952,7 +951,8 @@ echo 'season id <pre>'.print_r($season_id,true).'</pre>';
              
 }             
 else
-{             
+{      
+    /*
 $object = new stdClass();
 $object->id = 1;	
 $object->name = 'Soccer';			 
@@ -1043,7 +1043,7 @@ $object->team2_result = trim($teile[1]);
 $this->_datas['match'][$object->id] = $object;
 
 }
-
+*/
 }
 
 $this->import_version = 'NEW';
