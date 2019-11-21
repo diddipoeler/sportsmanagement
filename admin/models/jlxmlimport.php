@@ -253,6 +253,8 @@ break;
 $this->_season_id = 0;			
 		}
 
+  $post = Factory::getApplication()->input->post->getArray(array());
+  $country = $post['country'];		
 //        $this->_agegroup_id = $post['agegroup_id'];
 //       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
        
@@ -861,6 +863,7 @@ $this->_season_id = 0;
 $object = new stdClass();
 $object->id = 1;	
 $object->name = $arrayelanska['liga'];
+$object->country = $country;			 
 $this->_datas['league'] = $object;
 $object = new stdClass();
 $object->id = 1;	
@@ -883,6 +886,7 @@ for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['domaci'];
+$object->country = $country;
 $this->_datas['club'][$object->id] = $object;
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
@@ -895,6 +899,7 @@ $this->_datas['team'][$object->id] = $object;
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_gosti'];	
 $object->name = $arrayelanska['zapisniki']['zapisnik'][$a]['gosti'];
+$object->country = $country;	
 $this->_datas['club'][$object->id] = $object;
 $object = new stdClass();
 $object->id = $arrayelanska['zapisniki']['zapisnik'][$a]['sifra_kluba_domaci'];	
