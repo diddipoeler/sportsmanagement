@@ -862,17 +862,97 @@ $this->_season_id = 0;
 		{
 		$xmlData = $this->_getXml();
 		$arrayelanska = json_decode(json_encode((array)$xmlData), TRUE);
-        
+ 
+ 
+if ( array_key_exists('all_seasons', $arrayelanska['dataroot']) ) 
+{        
+$object = new stdClass();
+$object->id = 1;	
+$object->name = 'Soccer';			 
+$this->_datas['sportstype'] = $object;    
 for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == '2018/19' )
 {
-echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';    
-}        
-}        	
+echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
 
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
+$object->country = $country;
+$object->agegroup_id = $agegroup;
+$object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];	
+$object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
+if ( !isset($this->_datas['league']) )
+{	
+$this->_datas['league'] = $object;
+}
+
+$object = new stdClass();
+$object->id = 1;	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];	
+$object->agegroup_id = $agegroup;
+$object->master_template = 0;
+$object->league_id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];
+$object->season_id = 1;
+$object->sports_type_id = 1;
+if ( !isset($this->_datas['project']) )
+{	
+$this->_datas['project'] = $object;
+}
+/** heim */
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];
+$object->country = $country;
+$this->_datas['club'][$object->id] = $object;
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];	
+$object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];	
+$object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];	
+$object->info = '';
+$object->agegroup_id = $agegroup;
+$this->_datas['team'][$object->id] = $object;	
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$this->_datas['projectteam'][$object->id] = $object;
+/** gast */
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];
+$object->country = $country;
+$this->_datas['club'][$object->id] = $object;
+$object = new stdClass();
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];	
+$object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];	
+$object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];	
+$object->info = '';
+$object->agegroup_id = $agegroup;
+$this->_datas['team'][$object->id] = $object;	
+$object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$this->_datas['projectteam'][$object->id] = $object;
+
+  
+}    
+
+}        	
+$object = new stdClass();
+$object->version = '2.4.00';	
+$object->exportRoutine = '2010-09-23 15:00:00';
+$object->exportDate = '2010-09-23';
+$object->exportTime = '2010-09-23';
+$object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
+$this->_datas['exportversion'] = $object;
 echo 'season id <pre>'.print_r($season_id,true).'</pre>';
 			 
+             
+}             
+else
+{             
 $object = new stdClass();
 $object->id = 1;	
 $object->name = 'Soccer';			 
@@ -962,9 +1042,10 @@ $object->team1_result = trim($teile[0]);
 $object->team2_result = trim($teile[1]);
 $this->_datas['match'][$object->id] = $object;
 
-
+}
 
 }
+
 $this->import_version = 'NEW';
 return $this->_datas;
 		}
