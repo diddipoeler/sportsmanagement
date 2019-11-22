@@ -190,12 +190,12 @@ $this->readonly = '';
             <?php echo $row->info; ?>
                     </td>
 
-                    <td class="center">
-                        <?php
-                        $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-                        echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype' . $row->id, $inputappend . 'class="form-control form-control-inline" style="max-width: 100px;" size="1"' . $append, 'id', 'name', $row->sports_type_id);
-                        ?>
-                    </td>
+<td class="center">
+<?php
+$append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype' . $row->id, $inputappend . 'class="form-control form-control-inline" style="max-width: 100px;" size="1"' . $append, 'id', 'name', $row->sports_type_id);
+?>
+</td>
                     <td class="center">
                         <?php
                         if ($row->picture == '') {
