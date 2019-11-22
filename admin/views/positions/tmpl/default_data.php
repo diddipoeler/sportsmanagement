@@ -14,8 +14,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-
-
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -163,11 +161,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                     </td>
 
-                    <td>
-                        <?php
-                        echo HTMLHelper::_('select.genericlist', $this->lists['parent_id'], 'parent_id' . $row->id, '' . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"', 'value', 'text', $row->parent_id);
-                        ?>
-                    </td>
+<td>
+<?php
+echo HTMLHelper::_('select.genericlist', $this->lists['parent_id'], 'parent_id' . $row->id, '' . 'style="background-color:#bbffff" class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"', 'value', 'text', $row->parent_id);
+?>
+</td>
                     <td class="center"><?php echo Text::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id)); ?></td>
                     <td class="center"><?php echo Text::_(sportsmanagementHelper::getPosPersonTypeName($row->persontype)); ?></td>
                     <td class="center">

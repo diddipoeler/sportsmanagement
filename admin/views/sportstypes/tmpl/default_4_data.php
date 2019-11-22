@@ -130,13 +130,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         }
                         ?>
                     </td>
-                    <td>
-                        <?php
-                        $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-                        echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $row->id, 'class="custom-select form-control" size="1"' . $append, 'value', 'text', $row->sportsart);
-                        //echo $row->sportsart; 
-                        ?>
-                    </td>
+<td>
+<?php
+$append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $row->id, 'class="custom-select form-control" size="1"' . $append, 'value', 'text', $row->sportsart);
+?>
+</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'sportstypes.', $canChange, 'cb'); ?>

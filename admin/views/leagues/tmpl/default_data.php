@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage leagues
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -128,8 +129,8 @@ use Joomla\CMS\Router\Route;
                 <td class="center">
                     <?php
                     echo JSMCountries::getCountryFlag($row->country);
-                    $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-                    echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $row->id, 'class="form-control form-control-inline" style="width:150px" size="1"' . $append, 'value', 'text', $row->country);
+                    $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="width:150px;background-color:#bbffff" size="1" ';
+                    echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $row->id, 'class="form-control form-control-inline" ' . $append, 'value', 'text', $row->country);
                     ?>
                 </td>
                 <td class="center"><?php echo Text::_($row->sportstype); ?></td>
@@ -145,7 +146,7 @@ use Joomla\CMS\Router\Route;
                     <?php
 
                     $imageTitle = '';
-                    $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+                    $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" style="background-color:#bbffff"';
                     if (isset($this->lists['association'][$row->country])) {
                         echo HTMLHelper::_('select.genericlist', $this->lists['association'][$row->country], 'association' . $row->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->associations);
                     } else {

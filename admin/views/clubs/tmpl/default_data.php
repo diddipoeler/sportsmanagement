@@ -249,13 +249,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$r
                         <br />
                         <?php echo $row->longitude; ?>
                         </td>
-                        <td class="center">
-                        <?php 
-                        $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                        echo HTMLHelper::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
-												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->country); 
-                        ?>
-                        </td>
+<td class="center">
+<?php 
+$append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" style="background-color:#bbffff"';
+echo HTMLHelper::_('select.genericlist',$this->lists['nation'],'country'.$row->id,
+	'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->country); 
+?>
+</td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center">
             <div class="btn-group">

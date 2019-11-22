@@ -452,7 +452,7 @@ catch (Exception $e)
         $cameinresult2 = $db->loadObject();
             //echo __LINE__.' totalresult2 <pre>'.print_r($cameinresult2,true).'</pre>';
         if ($cameinresult2) {
-          $result += ( $cameinresult->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult->totalin );
+          $result += ( $cameinresult2->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult2->totalin );
         }    
             
             
@@ -503,15 +503,10 @@ catch (Exception $e)
             //echo __LINE__.' totalresult2 <pre>'.print_r($cameautresult2,true).'</pre>';
         if ($cameautresult2) {
 
-          $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * ($game_regular_time + $add_time) );
+          $result += ( $cameautresult2->totalout ) - ( $cameautresult2->totalmatch * ($game_regular_time + $add_time) );
         }    
             
-            
           }
-      
-      
-      
-      
       
         if ($cameautresult) {
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
