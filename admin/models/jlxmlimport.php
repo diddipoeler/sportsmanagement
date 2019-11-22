@@ -870,7 +870,7 @@ if ( array_key_exists('all_seasons', $arrayelanska['dataroot']) )
 {        
 $object = new stdClass();
 $object->id = 1;	
-$object->name = 'Soccer';			 
+$object->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';			 
 $this->_datas['sportstype'] = $object;    
 $object = new stdClass();
 $object->id = $season_id;	
