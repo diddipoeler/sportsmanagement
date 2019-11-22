@@ -865,7 +865,7 @@ $this->_season_id = 0;
 
 $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
 $seasons_name = $mdl->getSeasonName($season_id); 
- 
+$firststep = TRUE; 
 if ( array_key_exists('all_seasons', $arrayelanska['dataroot']) ) 
 {        
 $object = new stdClass();
@@ -876,12 +876,13 @@ $object = new stdClass();
 $object->id = $season_id;	
 $object->name = $seasons_name;			 
 $this->_datas['season'] = $object;
+	
 for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
 {
-//echo '<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
-if ( !isset($this->_datas['league']) )
+echo __LINE__.'<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
+if ( $firststep )
 {
 $object = new stdClass();
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];	
@@ -892,7 +893,7 @@ $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
 $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
 $this->_datas['league'] = $object;
 }
-if ( !isset($this->_datas['project']) )
+if ( $firststep )
 {
 $object = new stdClass();
 $object->id = 1;	
@@ -972,7 +973,7 @@ $teile = explode("T", $arrayelanska['dataroot']['all_seasons'][$a]['match_date']
 $object->match_date = $teile[0];
 $this->_datas['match'][$object->id] = $object;
 
-  
+$firststep = FALSE;  
 }    
 
 }        	
@@ -983,7 +984,8 @@ $object->exportDate = '2010-09-23';
 $object->exportTime = '2010-09-23';
 $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
-//echo 'season id <pre>'.print_r($season_id,true).'</pre>';
+	
+echo __LINE__.' die daten <pre>'.print_r($this->_datas,true).'</pre>';
 			 
              
 }             
