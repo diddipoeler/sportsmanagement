@@ -876,7 +876,7 @@ $object = new stdClass();
 $object->id = $season_id;	
 $object->name = $seasons_name;			 
 $this->_datas['season'] = $object;
-	
+$this->_league_new_country = $country;	
 for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
