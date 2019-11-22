@@ -881,7 +881,7 @@ for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
 {
-echo __LINE__.'<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
+//echo __LINE__.'<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
 if ( $firststep )
 {
 $object = new stdClass();
@@ -926,6 +926,7 @@ $object->agegroup_id = $agegroup;
 $object->picture = ComponentHelper::getParams($option)->get('ph_team','');
 $this->_datas['team'][$object->id] = $object;	
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];	
+$object->project_id = 1;	
 $object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];
 $object->picture = ComponentHelper::getParams($option)->get('ph_team','');	
 $this->_datas['projectteam'][$object->id] = $object;
@@ -950,12 +951,15 @@ $object->agegroup_id = $agegroup;
 $object->picture = ComponentHelper::getParams($option)->get('ph_team','');
 $this->_datas['team'][$object->id] = $object;	
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];	
+$object->project_id = 1;	
 $object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];
 $object->picture = ComponentHelper::getParams($option)->get('ph_team','');	
 $this->_datas['projectteam'][$object->id] = $object;
 
 $object = new stdClass();
 $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];
+$object->project_id = 1;	
+$object->roundcode = $arrayelanska['dataroot']['all_seasons'][$a]['round'];	
 $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['round'].'.Krog';
 $this->_datas['round'][$object->id] = $object;
 
@@ -985,7 +989,7 @@ $object->exportTime = '2010-09-23';
 $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
 	
-echo __LINE__.' die daten <pre>'.print_r($this->_datas,true).'</pre>';
+//echo __LINE__.' die daten <pre>'.print_r($this->_datas,true).'</pre>';
 			 
              
 }             
