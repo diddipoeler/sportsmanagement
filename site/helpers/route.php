@@ -60,12 +60,12 @@ public static $views = array(
 'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'staff'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
 'stats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
-'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),
 'teaminfo'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'teamplan'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),	
 'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
-'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
 
 	
 'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
