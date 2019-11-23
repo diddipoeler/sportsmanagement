@@ -272,8 +272,6 @@ class SMStatisticDifference extends SMStatistic
 		
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-//        $query_num = $db->getQuery(true);
-//        $query_den = $db->getQuery(true);
         
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0,$sids['add'],'SUM(ms.value) AS num, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0,$sids['sub'],'SUM(ms.value) AS den, tp.person_id');

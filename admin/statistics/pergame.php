@@ -115,7 +115,7 @@ class SMStatisticPergame extends SMStatistic
 
 		$query_num = SMStatistic::getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id,$sids);
         $query_den = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
-        
+        $select = '';
 		$query_select_details = '(n.num / d.played) AS total, n.person_id, 1 as rank,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
@@ -123,7 +123,7 @@ class SMStatisticPergame extends SMStatistic
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
                               
 		$res = new stdclass;
-		$query_core = SMStatistic::getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den);
+		$query_core = SMStatistic::getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den,$select);
 try {
 		$db->setQuery($query_core);
 		$res->pagination_total = $db->loadResult();
