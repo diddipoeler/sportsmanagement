@@ -69,11 +69,11 @@ use Joomla\CMS\Factory;
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
         $routeparameter['p'] = $season->project_slug;
-        $routeparameter['division'] = $season->division_slug;
         $routeparameter['type'] = 0; 
         $routeparameter['r'] = $season->round_slug; 
         $routeparameter['from'] = 0; 
         $routeparameter['to'] = 0; 
+		$routeparameter['division'] = $season->division_slug;
 		$ranking_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 		
         $routeparameter = array();

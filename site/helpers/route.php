@@ -47,7 +47,8 @@ public static $views = array(
 	
 'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 'nextmatch'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
-'player'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
+'player'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+	
 'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 	
 'rankingalltime'   => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
@@ -79,7 +80,16 @@ public static $views = array(
  	); 
 	
 /*
-
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
@@ -229,18 +239,6 @@ $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
-
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['type'] = 0;
-$routeparameter['r'] = 0;
-$routeparameter['from'] = 0;
-$routeparameter['to'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 
 */  
 
