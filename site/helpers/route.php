@@ -41,7 +41,7 @@ public static $views = array(
 
 'editclub'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),	
 'editmatch'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
-'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
 
 'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
 	
@@ -55,7 +55,8 @@ public static $views = array(
 'referee'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
 'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
 'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
-'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+
 'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'staff'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
