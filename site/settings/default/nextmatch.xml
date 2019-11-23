@@ -7,24 +7,6 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-<field name="divclasscontainer" type="list" default="container-fluid" 
-class=""
-label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER" 
-description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
-<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_NON</option>
-<option value="container">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_CONTAINER</option>
-<option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
-</field>
-
-<field name="divclassrow" type="list" default="row-fluid" 
-class=""
-label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW" 
-description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
-<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_NON</option>
-<option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
-<option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
-</field>
-
 <field 	name="table_class" type="list" default="table" 
 		class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
