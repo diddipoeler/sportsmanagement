@@ -64,7 +64,7 @@ public static $views = array(
 'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),
 'teaminfo'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'teamplan'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),	
-'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),	
 'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
 
