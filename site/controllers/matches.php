@@ -101,7 +101,8 @@ class sportsmanagementControllermatches extends BaseController {
         $data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
 
         if (!$result = sportsmanagementModelMatch::savesubstitution($data)) {
-            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . sportsmanagementModelMatch::getError();
+            //$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . sportsmanagementModelMatch::getError();
+            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ';
         } else {
             $result = $result . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
         }
@@ -118,7 +119,8 @@ class sportsmanagementControllermatches extends BaseController {
         $substid = Factory::getApplication()->input->getInt('substid', 0);
 
         if (!$result = sportsmanagementModelMatch::removeSubstitution($substid)) {
-            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': ' . sportsmanagementModelMatch::getError();
+            //$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': ' . sportsmanagementModelMatch::getError();
+            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': ';
         } else {
             $result = "1" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST') . '&' . $substid;
         }
@@ -143,7 +145,8 @@ class sportsmanagementControllermatches extends BaseController {
 
 
         if (!$result = sportsmanagementModelMatch::savecomment($data)) {
-            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': ' . sportsmanagementModelMatch::getError();
+            //$result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': ' . sportsmanagementModelMatch::getError();
+            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': ';
         } else {
             $result = $result . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
         }
@@ -180,7 +183,8 @@ class sportsmanagementControllermatches extends BaseController {
         $event_id = Factory::getApplication()->input->getInt('event_id');
 
         if (!$result = sportsmanagementModelMatch::deletecommentary($event_id)) {
-            $result = '0' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': ' . sportsmanagementModelMatch::getError();
+            //$result = '0' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': ' . sportsmanagementModelMatch::getError();
+            $result = '0' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': ';
         } else {
             $result = '1' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY') . '&' . $event_id;
         }
