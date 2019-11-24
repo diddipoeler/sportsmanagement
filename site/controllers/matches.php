@@ -68,6 +68,7 @@ class sportsmanagementControllermatches extends BaseController {
         $data['event_sum'] = Factory::getApplication()->input->getVar('event_sum', '');
         $data['notice'] = Factory::getApplication()->input->getVar('notice', '');
         $data['notes'] = Factory::getApplication()->input->getVar('notes', '');
+        $data['useeventtime'] = Factory::getApplication()->input->getVar('useeventtime', '');
 
         // diddipoeler
         $data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');

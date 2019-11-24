@@ -2278,6 +2278,7 @@ if ( $data['id'] )
     {
         $date = Factory::getDate();
         $user = Factory::getUser();
+        $app = Factory::getApplication();
         if ( $data['useeventtime'] )
         {
         if (empty($data['event_time'])) {
@@ -2299,9 +2300,7 @@ if ( $data['id'] )
         }
         }
 
-        // Get a db connection.
         $db = Factory::getDbo();
-        // Create a new query object.
         $query = $db->getQuery(true);
 
         $query->clear();
@@ -2319,7 +2318,6 @@ if ( $data['id'] )
         }
 
         $temp = new stdClass();
-        //$object = new stdClass();
         $temp->match_id = $data['match_id'];
         $temp->projectteam_id = $data['projectteam_id'];
         $temp->teamplayer_id = $data['teamplayer_id'];
@@ -2388,6 +2386,8 @@ if ( $data['id'] )
             return $result;
         } catch (Exception $e) {
             $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
         }
