@@ -39,10 +39,10 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 		//version
 		$version = sportsmanagementHelper::getVersion();
 		$revision = explode('.', $version);
-		$about->version = '<a href="http://gitorious.org/joomleague/joomleague/commits/'.$revision[0].'.'.$revision[1].'.0/">' . $version . '</a>';
+		$about->version = '';
 		
 		//author
-		$about->author = '<a href="http://stats.joomleague.net/authors.html">Joomleague-Team</a>';
+		$about->author = '';
 
 		//page
 		$about->page = 'http://sportsmanagement.fussballineuropa.de/';
@@ -76,13 +76,13 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 		$about->icons .= ', Panel images (Kasi)';
 
 		//flash
-		$about->flash = '<a href="http://teethgrinder.co.uk/open-flash-chart-2/" target="_blank">Open Flash Chart 2.x</a>';
+		$about->flash = '';
 
 		//graphoc library
-		$about->graphic_library = '<a href="http://www.walterzorn.com" target="_blank">www.walterzorn.com</a>';
+		$about->graphic_library = '';
 		
 		//phpthumb class
-		$about->phpthumb = '<a href="http://phpthumb.gxdlabs.com/" target="_blank">phpthumb.gxdlabs.com</a>';
+		$about->phpthumb = '';
 
 
     //page
