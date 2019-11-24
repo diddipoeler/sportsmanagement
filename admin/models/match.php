@@ -2201,7 +2201,9 @@ if ( $data['id'] )
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return true;
         } catch (Exception $e) {
-            $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY'), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
         }
@@ -2223,24 +2225,22 @@ if ( $data['id'] )
         $user = Factory::getUser();
         // live kommentar speichern
         if (empty($data['event_time'])) {
-            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_TIME'));
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_TIME'), Log::ERROR, 'jsmerror');
             return false;
         }
 
 
         if (empty($data['notes'])) {
-            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'));
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'), Log::ERROR, 'jsmerror');
             return false;
         }
 
         if ((int)$data['event_time'] > (int)$data['projecttime']) {
-            $this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']));
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']), Log::ERROR, 'jsmerror');
             return false;
         }
 
-        // Get a db connection.
         $db = Factory::getDbo();
-        // Create a new query object.
         $query = $db->getQuery(true);
         $temp = new stdClass();
         $temp->event_time = $data['event_time'];
@@ -2259,7 +2259,9 @@ if ( $data['id'] )
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return $result;
         } catch (Exception $e) {
-            $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT'), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
         }
@@ -2283,20 +2285,20 @@ if ( $data['id'] )
         if ( $data['useeventtime'] )
         {
         if (empty($data['event_time'])) {
-            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME')), Log::ERROR, 'jsmerror');
             return false;
         }
         }
 
         if (empty($data['event_sum'])) {
-            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM'));
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_EVENT_SUM')), Log::ERROR, 'jsmerror');
             return false;
         }
 
         if ( $data['useeventtime'] )
         {
         if ((int)$data['event_time'] > (int)$data['projecttime']) {
-            $this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']));
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']) ), Log::ERROR, 'jsmerror');
             return false;
         }
         }
@@ -2386,9 +2388,9 @@ if ( $data['id'] )
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return $result;
         } catch (Exception $e) {
-            //$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
-            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT'), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
         }
@@ -2420,9 +2422,9 @@ try{
         $db->setQuery($query);
         return $db->loadObjectList();
                     } catch (Exception $e) {
-$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match id' . $match_id, 'error'); // commonly to still display that error	    
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.' match id' . $match_id), Log::ERROR, 'jsmerror');   
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
 	    return false;
                     }
 	    
