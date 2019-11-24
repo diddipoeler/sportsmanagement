@@ -1088,7 +1088,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				break;
 			
             case "rankingalltime":
-            $link = sportsmanagementHelperRoute::getRankingAllTimeRoute( $this->_league_id, $this->getParam('show_alltimetable_points'), $this->_project_slug);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['l'] = $this->_league_id;
+$routeparameter['points'] = $this->getParam('show_alltimetable_points');
+$routeparameter['type'] = '';
+$routeparameter['order'] = '';
+$routeparameter['dir'] = 0;
+$routeparameter['s'] = '';
+$routeparameter['p'] = $this->_project_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
  		         break;
                  
 			case "resultsrankingmatrix":
