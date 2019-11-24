@@ -35,218 +35,48 @@ static $view = 0;
 static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
 public static $views = array( 
-'clubinfo'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
-'clubplan'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
-'curve'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),
-
-'editclub'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),	
-'editmatch'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
-'eventsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
-
-'matchreport'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
-	
-'matrix'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
-'nextmatch'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
-'player'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
-	
-'ranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
-	
-'rankingalltime'   => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
-
-'referee'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
-'referees'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
-'results'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
-'resultsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => ''),
-
-'rivals'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
-'roster'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
-'staff'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
-'stats'   => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
-'statsranking'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),
-'teaminfo'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
-'teamplan'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),	
-'teams'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),	
-'teamstats'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
-'teamstree'   => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
-
-	
-'predictionentry'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
-'predictionresults'   => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
-'predictionranking'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '','type' => '', 'from' => '', 'to' => ''),	
-'predictionuser'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => '', 'layout' => 'edit'),		
-'predictionusers'   => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => ''),		
-'predictionrules'   => array('cfg_which_database' => '', 'prediction_id' => ''),			
+'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
+'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'curve' => array('cfg_which_database' => '', 's' => '', 'p' => ''),
+'editclub' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),	
+'editmatch' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
+'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
+'matchreport' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
+'matrix' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
+'nextmatch' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
+'player' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+'ranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
+'rankingalltime' => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
+'referee' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
+'referees' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
+'results' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+'resultsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+'rivals' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
+'roster' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
+'staff' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
+'stats' => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
+'statsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'tid' => '', 'sid' => '', 'order' => ''),
+'teaminfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
+'teamplan' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),	
+'teams' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),	
+'teamstats' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
+'teamstree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => ''),
+'predictionentry' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
+'predictionresults' => array('cfg_which_database' => '', 'prediction_id' => '', 'pggroup' => '', 'pj' => '', 'r' => '', 'uid' => ''),	
+'predictionranking' => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '', 'r' => '', 'pggrouprank' => '','type' => '', 'from' => '', 'to' => ''),	
+'predictionuser' => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => '', 'layout' => 'edit'),		
+'predictionusers' => array('cfg_which_database' => '', 'prediction_id' => '','pggroup' => '', 'pj' => '','r' => '', 'uid' => ''),		
+'predictionrules' => array('cfg_which_database' => '', 'prediction_id' => ''),			
 	
  	); 
-	
-/*
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['type'] = 0;
-$routeparameter['r'] = 0;
-$routeparameter['from'] = 0;
-$routeparameter['to'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['division'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['sid'] = 0;
-$routeparameter['order'] = '';
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking',$routeparameter);	
-        
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['r'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix',$routeparameter);				
-        
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('stats',$routeparameter);
-                
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['division'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['evid'] = 0;
-$routeparameter['mid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
-		
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid1'] = 0;
-$routeparameter['tid2'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve',$routeparameter);
-                    
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referees',$routeparameter);
-        
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['division'] = 0;
-$routeparameter['r'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['pgid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
-
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['pid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['pid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
-
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['pid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['division'] = 0;
-$routeparameter['mode'] = 0;
-$routeparameter['ptid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['ptid'] = 0;
-$routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['tid'] = 0;
-$routeparameter['ptid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['mid'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);  
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['mid'] = $0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = 0;
-$routeparameter['r'] = 0;
-$routeparameter['division'] = 0;
-$routeparameter['mode'] = 0;
-$routeparameter['order'] = '';
-$routeparameter['layout'] = '';
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
-
-*/  
-
+  
   /**
    * sportsmanagementHelperRoute::getSportsmanagementRoute()
    * 
    * @param string $view
    * @param mixed $parameter
+   * @param string $task
    * @return
    */
   public static function getSportsmanagementRoute($view='',$parameter = array(), $task='')
@@ -349,30 +179,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 
 	
 
-	/**
-	 * sportsmanagementHelperRoute::getRivalsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $teamid
-	 * @return
-	 */
-	public static function getRivalsRoute( $projectid, $teamid,$cfg_which_database = 0,$s=0,$divisionid=0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "rivals" );
-    $params["cfg_which_database"] = $cfg_which_database;    
-        $params["s"] = $s;
-    
-    $params["p"] = $projectid;
-    $params["tid"] = $teamid;
-    
-    
-//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = Route::_( 'index.php?' . $query, false );
-
-		return $link;
-	}	
 
 	/**
 	 * sportsmanagementHelperRoute::getClubInfoRoute()
@@ -447,43 +253,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
   
 	
   
-  /**
-   * sportsmanagementHelperRoute::getRankingAllTimeRoute()
-   * 
-   * @param mixed $leagueid
-   * @param mixed $points
-   * @param mixed $projectid
-   * @return
-   */
-  public static function getRankingAllTimeRoute( $leagueid, $points, $projectid,$cfg_which_database = 0,$s=0,$type=0,$order='points',$dir='DESC')
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "rankingalltime" );
-		
-        
-    $params["cfg_which_database"] = $cfg_which_database;
-    $params["l"] = $leagueid;
-    $params["points"] = $points;
-    
-    $params["type"] = $type;
-    $params["order"] = $order;
-    $params["dir"] = $dir;
-    
-    $params["s"] = $s;
-    $params["p"] = $projectid;
-    
-    
-        
-//        if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-        $query = self::buildQuery( $params );
-		$link = Route::_( 'index.php?' . $query, false );
-
-		return $link;			
-	}
-  				
-
-
-	
 	/**
 	 * sportsmanagementHelperRoute::getPlayersRouteAllTime()
 	 * 
@@ -622,79 +391,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	}
 
 
-    /**
-     * sportsmanagementHelperRoute::getClubsRoute()
-     *
-     * @param mixed $projectid
-     * @param mixed $divisionid
-     * @param int   $cfg_which_database
-     * @param int   $s
-     *
-     * @return string
-     */
-	public static function getClubsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s = 0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "clubs",
-					"p" => $projectid );
 
-		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = Route::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
-
-    /**
-     * sportsmanagementHelperRoute::getTeamsRoute()
-     *
-     * @param mixed $projectid
-     * @param mixed $divisionid
-     * @param int   $cfg_which_database
-     * @param int   $s
-     *
-     * @return string
-     */
-	public static function getTeamsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s = 0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "teams",
-					"p" => $projectid );
-
-		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = Route::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
-
-
-    /**
-     * sportsmanagementHelperRoute::getTeamStaffRoute()
-     *
-     * @param mixed $projectid
-     * @param mixed $playerid
-     * @param mixed $showType
-     * @param int   $cfg_which_database
-     * @param int   $s
-     *
-     * @return string
-     */
-	public static function getTeamStaffRoute( $projectid, $playerid, $showType ,$cfg_which_database = 0,$s = 0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "person",
-					"p" => $projectid,
-					"pid" => $playerid,
-					"pt" => $showType );
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = Route::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
 
 
     
@@ -716,19 +413,6 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      */
     public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00',$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
-//	   $params = array(	"option" => "com_sportsmanagement",
-//					"view" => "results",
-//                    "layout" => "editlineup",
-//					
-//                    "match_date" => $match_date,
-//                    "team" => $team,
-//					"p" => $projectid,
-//					"id" => $matchid );
-//
-//		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
-//		if ( ! is_null( $team ) ) { $params['team'] = $team; }
-//		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
-//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 
 $params = array("option" => "com_sportsmanagement",
 		"view" => "editmatch",

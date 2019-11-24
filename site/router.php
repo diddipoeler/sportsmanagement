@@ -44,9 +44,7 @@ class SportsmanagementRouter extends RouterBase
 	{
 		$segments = array();
 		
-//echo __METHOD__.' '.__LINE__.' query <pre>'.print_r($query,true).'</pre>';
-
-	// Get menu item
+	/** Get menu item */
 	$menuitem = null;
 
 	if (isset($query ['Itemid']))
@@ -60,7 +58,7 @@ class SportsmanagementRouter extends RouterBase
 
 			if (!$menuitems[$Itemid])
 			{
-				// Itemid doesn't exist or is invalid
+				/** Itemid doesn't exist or is invalid */
 				unset($query ['Itemid']);
 			}
 		}
@@ -68,55 +66,39 @@ class SportsmanagementRouter extends RouterBase
 		$menuitem = $menuitems[$Itemid];
 	}	
 		
-	// Safety check: we need view in order to create SEF URLs
+	/** Safety check: we need view in order to create SEF URLs */
 	if (!isset($menuitem->query['view']) && empty($query ['view']))
 	{
 		return $segments;
 	}	
 		
-	// Get view for later use (query wins menu item)
+	/** Get view for later use (query wins menu item) */
 	$view = isset($query ['view']) ? (string) preg_replace('/[^a-z]/', '', $query ['view']) : $menuitem->query ['view'];	
 
-// Get default values for URI variables 
+/** Get default values for URI variables */
  	if (isset(sportsmanagementHelperRoute::$views[$view])) 
  	{ 
  		$defaults = sportsmanagementHelperRoute::$views[$view]; 
  	} 
-//echo __METHOD__.' '.__LINE__.' defaults <pre>'.print_r($defaults,true).'</pre>';
-		
 		
 		$segments [] = $view;
 		unset($query['view']);
-	// Check all URI variables and remove those which aren't needed
+	/** Check all URI variables and remove those which aren't needed */
 	foreach ($query as $var => $value)
 	{
-		//if (isset($defaults [$var]) && !isset($menuitem->query [$var]) ) 
 		if (isset($defaults [$var]) ) 
  		{ 
         $segments [] = $value;
- 			// Remove URI variable which has default value 
+ 			/** Remove URI variable which has default value */ 
  			unset($query [$var]); 
  		} 
 		elseif (isset($menuitem->query [$var]) && $value == $menuitem->query [$var] && $var != 'Itemid' && $var != 'option')
 		{
-			// Remove URI variable which has the same value as menu item
+			/** Remove URI variable which has the same value as menu item */
 			unset($query [$var]);
 		}
 	}	
 	
-//echo __METHOD__.' '.__LINE__.' query <pre>'.print_r($query,true).'</pre>';
-		
-		/*
-		$segments [] = $view;
-		unset($query['view']);
-		$segments [] = (int) $query['cfg_which_database'];
-		unset($query['cfg_which_database']);
-		$segments [] = $query['s'];
-		unset($query['s']);
-		$segments [] = $query['p'];
-		unset($query['p']);
-		*/
-		
 //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' segments <pre>'.print_r($segments,true).'</pre>'), '');		
 		
 		return $segments;
@@ -134,20 +116,16 @@ class SportsmanagementRouter extends RouterBase
 	public function parse(&$segments)
 	{
 		
-	// Get current menu item and get query variables from it
+	/** Get current menu item and get query variables from it */
 	$active = Factory::getApplication()->getMenu()->getActive();
 	$vars   = isset($active->query) ? $active->query : array('view' => 'home');
-
-//echo __METHOD__.' '.__LINE__.' segments <pre>'.print_r($segments,true).'</pre>';
-//echo __METHOD__.' '.__LINE__.' query <pre>'.print_r($active->query,true).'</pre>';
-//echo __METHOD__.' '.__LINE__.' vars <pre>'.print_r($vars,true).'</pre>';		
-		
+	
 	if (empty($vars['view']) || $vars['view'] == 'home' || $vars['view'] == 'entrypage')
 	{
 		$vars['view'] = '';
 	}
 	
-// Get default values for URI variables 
+/** Get default values for URI variables */ 
  	if (isset(sportsmanagementHelperRoute::$views[$segments[0]])) 
  	{ 
  		$defaults = sportsmanagementHelperRoute::$views[$segments[0]]; 
@@ -171,49 +149,19 @@ class SportsmanagementRouter extends RouterBase
         {
 	if (  isset($segments[$count]) )
 	{
-      //  echo __METHOD__.' '.__LINE__.' key <pre>'.print_r($key,true).'</pre>';		
       $vars[$key] = $segments[$count];  
 	}
         }
       $count++;  
       }
         
-        
       }
       
-      
-      
-      
-	// Handle all segments
+	/** Handle all segments */
 		$count = 0;
 	while (($segment = array_shift($segments)) !== null)
 	{
-		/*
-		// Skip //
-		if (!$segment)
-		{
-			//continue;
-		}
 		
-//echo __METHOD__.' '.__LINE__.' segment <pre>'.print_r($segment,true).'</pre>';
-		
-		switch ($count)
-{
-case 0:
-$vars['view'] = $segment;
-break;
-case 1:
-$vars['cfg_which_database'] = $segment;
-break;
-case 2:
-$vars['s'] = $segment;
-break;
-case 3:
-$vars['p'] = $segment;
-break;			
-}
-		$count++;
-		*/
 	}
 		
 		
