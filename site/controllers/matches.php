@@ -164,7 +164,8 @@ class sportsmanagementControllermatches extends BaseController {
 		$event_id = Factory::getApplication()->input->getInt('event_id');
 		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
 		{
-			$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+			//$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+            $result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': ';
 		}
 		else
 		{
