@@ -75,7 +75,8 @@ class sportsmanagementControllermatches extends BaseController {
 
 
         if (!$result = sportsmanagementModelMatch::saveevent($data)) {
-            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . sportsmanagementModelMatch::getError();
+            //$result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . sportsmanagementModelMatch::getError();
+            $result = "0" . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ';
         } else {
             $result = $result . "&" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
         }
