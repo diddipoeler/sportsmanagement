@@ -2107,21 +2107,9 @@ $my_text .= __LINE__.' '.Text::sprintf('Seasonname: %1$s',$this->_season_new).'<
                 $p_eventtype = new stdClass();
 				$import_event = $this->_datas['event'][$key];
 				$oldID = $this->_getDataFromObject($import_event,'id');
-                
-foreach ($import_event as $import => $value )
-{
-switch ($import)
-{
-case 'id':
-break;
-case 'name':
-$p_eventtype->name = trim($this->_neweventsname[$key]);
-break;
-default:
-$p_eventtype->$import = $this->_getDataFromObject($import_event,$import);    
-break;    
-}   
-}                
+                $p_eventtype = $this->_importDataForSave($import_event,'eventtype');
+
+$p_eventtype->name = trim($this->_neweventsname[$key]);             
 $p_eventtype->sports_type_id = $this->_sportstype_id;				
 $p_eventtype->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_eventtype,'name'));
                 
@@ -3806,7 +3794,7 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 }                
             
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4432,7 +4420,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			$import_matchplayer = $this->_datas['matchplayer'][$key];
 			$oldID = $this->_getDataFromObject($import_matchplayer,'id');
 			
-            $p_matchplayer = new stdClass();
+            $p_matchplayer = $this->_importDataForSave($import_matchplayer,'match_player');
 			$oldMatchID = $this->_getDataFromObject($import_matchplayer,'match_id');
 			$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'teamplayer_id');
 			if (!isset($this->_convertMatchID[$oldMatchID]) ||
@@ -4448,13 +4436,11 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			$p_matchplayer->match_id = $this->_convertMatchID[$oldMatchID];
 			$p_matchplayer->teamplayer_id = $this->_convertTeamPlayerID[$oldTeamPlayerID];
             $newTeamPlayerID = $this->_convertTeamPlayerID[$oldTeamPlayerID];
-            
 			$oldPositionID = $this->_getDataFromObject($import_matchplayer,'project_position_id');
 			if (isset($this->_convertProjectPositionID[$oldPositionID]))
 			{
 				$p_matchplayer->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_matchplayer->came_in = $this->_getDataFromObject($import_matchplayer,'came_in');
 			if ($import_matchplayer->in_for > 0)
 			{
 				$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'in_for');
@@ -4463,9 +4449,6 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 					$p_matchplayer->in_for = $this->_convertTeamPlayerID[$oldTeamPlayerID];
 				}
 			}
-			$p_matchplayer->out = $this->_getDataFromObject($import_matchplayer,'out');
-			$p_matchplayer->in_out_time = $this->_getDataFromObject($import_matchplayer,'in_out_time');
-			$p_matchplayer->ordering = $this->_getDataFromObject($import_matchplayer,'ordering');
 
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_player', $p_matchplayer);
@@ -4526,8 +4509,8 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 		{
 			$import_matchstaff = $this->_datas['matchstaff'][$key];
 			$oldID = $this->_getDataFromObject($import_matchstaff,'id');
-            $p_matchstaff = new stdClass();
-            
+
+            $p_matchstaff = $this->_importDataForSave($import_matchstaff,'match_staff');
 			$oldMatchID = $this->_getDataFromObject($import_matchstaff,'match_id');
 			$oldTeamStaffID = $this->_getDataFromObject($import_matchstaff,'team_staff_id');
 			if (!isset($this->_convertMatchID[$oldMatchID]) ||
@@ -4547,7 +4530,6 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 			{
 				$p_matchstaff->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_matchstaff->ordering = $this->_getDataFromObject($import_matchstaff,'ordering');
             
 try {
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_staff', $p_matchstaff);
@@ -4609,8 +4591,7 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 			$import_matchreferee = $this->_datas['matchreferee'][$key];
 			$oldID = $this->_getDataFromObject($import_matchreferee,'id');
 			
-            $p_matchreferee = new stdClass();
-            
+            $p_matchreferee = $this->_importDataForSave($import_matchreferee,'match_referee');
 			$oldMatchID = $this->_getDataFromObject($import_matchreferee,'match_id');
 			$oldProjectRefereeID = $this->_getDataFromObject($import_matchreferee,'project_referee_id');
 			if (!isset($this->_convertMatchID[$oldMatchID]) ||
@@ -4630,7 +4611,6 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 			{
 				$p_matchreferee->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
 			}
-			$p_matchreferee->ordering = $this->_getDataFromObject($import_matchreferee,'ordering') ? $this->_getDataFromObject($import_matchreferee,'ordering') : 0;
             
 try
 {
