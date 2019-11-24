@@ -21,6 +21,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
