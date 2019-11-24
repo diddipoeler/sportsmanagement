@@ -2385,7 +2385,7 @@ if ( $data['id'] )
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return $result;
         } catch (Exception $e) {
-            $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');
+            //$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');
             $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
             $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
