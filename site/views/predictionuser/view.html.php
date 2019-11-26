@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionuser
@@ -151,9 +151,7 @@ if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') 
 				$lists['admintipp'] = HTMLHelper::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
 				$lists['approvedForGame'] = HTMLHelper::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
 				unset($dArray);
-                /**
-                 * schleife über die projekte
-                 */
+                /** schleife Ã¼ber die projekte */
 				foreach($this->predictionProjectS AS $predictionProject)
 				{
          
@@ -169,15 +167,11 @@ if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') 
           
 					$lists['fav_team'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
 
-		/**
-		 * kann champion ausgewaehlt werden ?
-		 */
+		/** kann champion ausgewaehlt werden ? */
 		if ( $predictionProject->champ )
           {
           $disabled = '';
-          /**
-           * ist überhaupt das startdatum gesetzt ?
-           */
+          /** ist Ã¼berhaupt das startdatum gesetzt ? */
           if ( $predictionProject->start_date == '0000-00-00' )
           {
           $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
@@ -185,9 +179,7 @@ if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') 
           }
           else
           {
-          /**
-           * ist die saison beendet ?
-           */  
+          /** ist die saison beendet ? */  
           $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
           $time = strtotime($predictionProject->start_date);
           $time += 86400; // Ein Tag in Sekunden
