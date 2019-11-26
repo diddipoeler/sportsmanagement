@@ -16,9 +16,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <button type="button" onclick="Joomla.submitform('projectteam.storechangeteams', this.form)">
 				<?php echo Text::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
-				<?php echo Text::_('JCANCEL');?></button>
-	
+<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
+<?php echo Text::_('JCANCEL');?></button>	
 
 		<legend>
 		<?php
