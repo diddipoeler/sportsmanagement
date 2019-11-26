@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+JFormHelper::loadFieldClass('radio');
 HTMLHelper::_('behavior.tooltip');
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
@@ -86,7 +86,14 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
 			?>
-			<td colspan='2'><?php echo $this->lists['approvedForGame']; ?></td>
+			<td colspan='2'><?php 
+$field = new JFormFieldRadio();
+$field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
+echo $field->renderField(array('hiddenLabel'=>true));				
+				
+//				echo $this->lists['approvedForGame']; ?>
+			
+			</td>
 		</tr>
         
         <tr>
