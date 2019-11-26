@@ -289,6 +289,9 @@ $db->setQuery($query);
                 $profile->project_position_id = $post['project_position_id'.$pks[$x]];
                 $profile->persontype = $this->persontype;
                 $profile->published = $post['project_published'.$pks[$x]];
+$profile->modified = $this->jsmdate->toSql();
+$profile->modified_by = $this->jsmuser->get('id');
+		    
                 // Insert the object into table.
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
                 
