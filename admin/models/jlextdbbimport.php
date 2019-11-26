@@ -883,7 +883,7 @@ $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
 // set the version of JoomLeague
-$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::__setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
@@ -1871,7 +1871,7 @@ if ( $whichfile == 'playerfile' )
 // open the project
 	$output .= "<project>\n";
 // set the version of JoomLeague
-	$output .= sportsmanagementHelper::_addToXml($this->_setJoomLeagueVersion());
+	$output .= sportsmanagementHelper::_addToXml($this->__setSportsManagementVersion());
 // set the person data
 	if ( isset($this->_datas['person']) )
 	{
@@ -1895,7 +1895,7 @@ $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
 // set the version of JoomLeague
-$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::__setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {

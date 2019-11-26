@@ -345,7 +345,7 @@ $this->_season_id = 0;
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
-				if ($xmlData->record[$i]['object'] == 'JoomLeague20')
+				if ( $xmlData->record[$i]['object'] == 'JoomLeague20' || $xmlData->record[$i]['object'] == 'SportsManagementVersion' )
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
@@ -2537,18 +2537,7 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
                 //$p_playground = new stdClass();
 				$import_playground = $this->_datas['playground'][$key];
 $p_playground = $this->_importDataForSave($import_playground,'playground');				
-//foreach ($import_playground as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//break;
-//default:
-//$p_playground->$import = $this->_getDataFromObject($import_playground,$import);    
-//break;    
-//}   
-//}
-				
+			
 $oldID = $this->_getDataFromObject($import_playground,'id');
 $p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
 $p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
@@ -2677,13 +2666,11 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 				}
 			}
 		}
-//To Be fixed: Falls Verein neu angelegt wird, muss auch das Team neu angelegt werden.
+
 		if (!empty($this->_newclubsid))
 		{
 			foreach ($this->_newclubsid AS $key => $id)
 			{
-//                $p_club = new stdClass();
-                
 				foreach ($this->_datas['club'] AS $dClub)
 				{
 					if ( $dClub->id == $id )
@@ -2695,19 +2682,9 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 
 				$oldID = $this->_getDataFromObject($import_club,'id');
 $p_club = $this->_importDataForSave($import_club,'club');
-//foreach ($import_club as $import => $value )
-//{
-//switch ($import)
-//{
-//case 'id':
-//break;
-//default:
-//$p_club->$import = $this->_getDataFromObject($import_club,$import);    
-//break;    
-//}   
-//}
+
 				$p_club->name = $this->_newclubs[$key];
-				$p_club->admin = $this->_joomleague_admin;
+				$p_club->admin = $this->_sportsmanagement_admin;
 				$p_club->country = $this->_newclubscountry[$key];
 
     /** geo coding */
@@ -3208,8 +3185,8 @@ $p_project = $this->_importDataForSave($import_project,'project');
 		$p_project->league_id = $this->_league_id;
         $p_project->import_project_id = $this->_import_project_id;
 		$p_project->season_id = $this->_season_id;
-		$p_project->admin = $this->_joomleague_admin;
-		$p_project->editor = $this->_joomleague_editor;
+		$p_project->admin = $this->_sportsmanagement_admin;
+		$p_project->editor = $this->_sportsmanagement_editor;
 		$p_project->master_template = $this->_template_id;
 		$p_project->sub_template_id = 0;
 		$p_project->sports_type_id = $this->_sportstype_id;
@@ -3706,7 +3683,7 @@ $p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
 			}
             }
 
-			$p_projectteam->admin = $this->_joomleague_admin;
+			$p_projectteam->admin = $this->_sportsmanagement_admin;
 			
 			if ((isset($projectteam->standard_playground)) && ($projectteam->standard_playground > 0))
 			{
@@ -5419,11 +5396,11 @@ $query->clear();
 
 			if (isset($post['admin']))
 			{
-				$this->_joomleague_admin=(int)$post['admin'];
+				$this->_sportsmanagement_admin=(int)$post['admin'];
 			}
 			else
 			{
-				$this->_joomleague_admin=62;
+				$this->_sportsmanagement_admin=62;
 			}
 
 			//check project name
@@ -5502,11 +5479,11 @@ $query->clear();
 
 				if ( isset($post['editor']))
 				{
-					$this->_joomleague_editor=(int)$post['editor'];
+					$this->_sportsmanagement_editor=(int)$post['editor'];
 				}
 				else
 				{
-					$this->_joomleague_editor=62;
+					$this->_sportsmanagement_editor=62;
 				}
 
 				if ( isset($post['publish']))

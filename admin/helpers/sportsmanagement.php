@@ -765,18 +765,13 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setJoomLeagueVersion
-     *
-     * set the version data and actual date, time and
-     * Joomla systemName from the joomleague_version table
-     *
-     * @access private
-     * @since  2010-08-26
-     *
-     * @return array
+     * sportsmanagementHelper::_setSportsManagementVersion()
+     * 
+     * @return
      */
-    function _setJoomLeagueVersion() {
+    function _setSportsManagementVersion() {
         $exportRoutine = '2010-09-23 15:00:00';
         $result[0]['exportRoutine'] = $exportRoutine;
         $result[0]['exportDate'] = date('Y-m-d');
@@ -787,7 +782,7 @@ abstract class sportsmanagementHelper {
         } else {
             $result[0]['exportSystem'] = Factory::getConfig()->getValue('config.sitename');
         }
-        $result[0]['object'] = 'JoomLeagueVersion';
+        $result[0]['object'] = 'SportsManagementVersion';
         return $result;
     }
 
@@ -824,7 +819,7 @@ abstract class sportsmanagementHelper {
     function _setProjectData($project) {
         if ($project) {
             $result[] = ArrayHelper::fromObject($project);
-            $result[0]['object'] = 'JoomLeague20';
+            $result[0]['object'] = 'SportsManagementVersion';
             return $result;
         }
         return false;

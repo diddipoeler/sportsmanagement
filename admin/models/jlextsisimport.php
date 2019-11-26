@@ -608,8 +608,8 @@ $this->_datas['match'] = array_merge($exportmatch);
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
-$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+// set the version of SportsManagement
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
