@@ -132,8 +132,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             }
             else
             {
-            // get the version of JoomLeague
-			$output .= $this->_addToXml($this->_getJoomLeagueVersion());
+            // get the version of SportsManagement
+			$output .= $this->_addToXml($this->_getSportsManagementVersion());
 			// get the project datas
 			$output .= $this->_addToXml($this->_getProjectData());
 			// get sportstype data of project
@@ -244,7 +244,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				Log::add(Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), Log::WARNING, 'jsmerror');
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'), Log::WARNING, 'jsmerror');
 			}
 			else {
 				// get the project datas
@@ -362,18 +362,13 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getJoomLeagueVersion
-	 *
-	 * Get the version data and actual date, time and
-	 * Joomla systemName from the joomleague_version table
-	 *
-	 * @access private
-	 * @since  2010-08-26
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSportsManagementVersion()
+	 * 
+	 * @return
 	 */
-	private function _getJoomLeagueVersion()
+	private function _getSportsManagementVersion()
 	{
 	   // Reference global application object
         $app = Factory::getApplication();
@@ -398,21 +393,17 @@ $xmlfile = $xmlfile.$output;
 			$result[0]['exportDate'] = date('Y-m-d');
 			$result[0]['exportTime'] = date('H:i:s');
 			$result[0]['exportSystem'] = Factory::getConfig()->getValue('config.sitename');
-			$result[0]['object'] = 'JoomLeagueVersion';
+			$result[0]['object'] = 'SportsManagementVersion';
 			return $result;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getProjectData
-	 *
-	 * Get the project data from the joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectData()
 	{
@@ -432,22 +423,18 @@ $xmlfile = $xmlfile.$output;
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
-			$result[0]['object'] = 'JoomLeague15';
+			$result[0]['object'] = 'SportsManagement15';
 			$this->_project = $result;
 			return $result;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getTemplateData
-	 *
-	 * Get the template data from the joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTemplateData()
+	 * 
+	 * @return
 	 */
 	private function _getTemplateData()
 	{
@@ -484,15 +471,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+
 	/**
-	 * _getLeagueData
-	 *
-	 * Get the league data from the joomleague_league table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getLeagueData()
+	 * 
+	 * @return
 	 */
 	private function _getLeagueData()
 	{
@@ -519,15 +502,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getSportsTypeData
-	 *
-	 * Get the sportstype data from the joomleague_sports_type table
-	 *
-	 * @access private
-	 * @since  1.5.5263
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSportsTypeData()
+	 * 
+	 * @return
 	 */
 	private function _getSportsTypeData()
 	{
@@ -554,15 +533,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getSeasonData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSeasonData()
+	 * 
+	 * @return
 	 */
 	private function _getSeasonData()
 	{
@@ -589,15 +564,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getDivisionData
-	 *
-	 * Get the division data from the joomleague_divisions table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getDivisionData()
+	 * 
+	 * @return
 	 */
 	private function _getDivisionData()
 	{
@@ -624,15 +595,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getprojectteamData
-	 *
-	 * Get the projectteam data from the joomleague_team_joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectTeamData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectTeamData()
 	{
@@ -681,15 +648,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getProjectPositionData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectPositionData()
 	{
@@ -716,15 +679,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getProjectRefereeData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectRefereeData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectRefereeData()
 	{
@@ -751,15 +710,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamData
-	 *
-	 * Get the team data from the joomleague_teams table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getTeamData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamData()
 	{
@@ -798,15 +753,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getClubData
-	 *
-	 * Get the club data from the joomleague_clubs table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getClubData()
+	 * 
+	 * @return
 	 */
 	private function _getClubData()
 	{
@@ -844,15 +795,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getRoundData
-	 *
-	 * Get the rounds data from the joomleague_rounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getRoundData()
+	 * 
+	 * @return
 	 */
 	private function _getRoundData()
 	{
@@ -879,15 +826,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchData
-	 *
-	 * Get the matches data from the joomleague_matches table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchData()
 	{
@@ -915,15 +858,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+
 	/**
-	 * _getPlaygroundData
-	 *
-	 * Get the playgrounds data from the joomleague_playgrounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPlaygroundData()
+	 * 
+	 * @return
 	 */
 	private function _getPlaygroundData()
 	{
@@ -965,15 +904,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+
 	/**
-	 * _getTeamPlayerData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamPlayerData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamPlayerData()
 	{
@@ -998,15 +933,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamTrainingData
-	 *
-	 * Get the projectteams training data from the joomleague_team_trainingdata table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamTrainingData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamTrainingData()
 	{
@@ -1030,15 +961,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamStaffData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamStaffData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamStaffData()
 	{
@@ -1063,15 +990,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchPlayerData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchPlayerData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchPlayerData()
 	{
@@ -1095,15 +1018,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStaffData
-	 *
-	 * Get the match staffs data from the joomleague_match_staff table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchStaffData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStaffData()
 	{
@@ -1127,15 +1046,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchRefereeData
-	 *
-	 * Get the match referees data from the joomleague_match_referee table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchRefereeData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchRefereeData()
 	{
@@ -1160,15 +1075,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getPositionData
-	 *
-	 * Get the positions data from the joomleague_playgrounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getPositionData()
 	{
@@ -1193,15 +1104,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getParentPositionData
-	 *
-	 * Get the parent positions data from the joomleague_positions table
-	 *
-	 * @access private
-	 * @since  1.5.5262
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getParentPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getParentPositionData()
 	{
@@ -1226,15 +1133,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * getPersonData
-	 *
-	 * Get the persons data from the joomleague_persons table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPersonData()
+	 * 
+	 * @return
 	 */
 	private function _getPersonData()
 	{
@@ -1267,15 +1170,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchEvent
-	 *
-	 * Get the match events data from the joomleague_match_events_new table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchEvent()
+	 * 
+	 * @return
 	 */
 	private function _getMatchEvent()
 	{
@@ -1300,15 +1199,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getEventType
-	 *
-	 * Get the event types data from the joomleague_eventtypes table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getEventType()
+	 * 
+	 * @return
 	 */
 	private function _getEventType()
 	{
@@ -1333,15 +1228,11 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+
 	/**
-	 * _getPositionEventType
-	 *
-	 * Get the position event types data from the joomleague_position_eventtype table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPositionEventType()
+	 * 
+	 * @return
 	 */
 	private function _getPositionEventType()
 	{

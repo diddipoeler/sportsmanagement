@@ -116,7 +116,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
   
        }
 		
-            $lists['rounds'] = HTMLHelper::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
+            $lists['rounds'] = HTMLHelper::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="sportsmanagement_changedoc(this);','value','text',$project->current_round);
 			$this->lists = $lists;
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}

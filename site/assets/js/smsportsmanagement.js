@@ -28,7 +28,7 @@ return documentHeight - 100 ;
 }
 
 
-function joomleague_changedoc(docid){
+function sportsmanagement_changedoc(docid){
   if (docid != "" && docid.options[docid.options.selectedIndex].value!="") {
     window.location.href = docid.options[docid.options.selectedIndex].value;
   }
@@ -39,12 +39,12 @@ function joomleague_changedoc(docid){
  * @param obj the object to show/hide
  */       
 function visibleMenu(obj) {
-	var joomleague_el = document.getElementById(obj);
-	if ( joomleague_el.style.visibility != "hidden" ) {
-		joomleague_el.style.visibility = 'hidden';
+	var sportsmanagement_el = document.getElementById(obj);
+	if ( sportsmanagement_el.style.visibility != "hidden" ) {
+		sportsmanagement_el.style.visibility = 'hidden';
 	}
 	else {
-		joomleague_el.style.visibility = 'visible';
+		sportsmanagement_el.style.visibility = 'visible';
 	}
 }
 

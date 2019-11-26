@@ -188,8 +188,8 @@ $this->project_id = $this->jinput->getint( "pj", 0 );
           $time=strtotime($predictionProject->start_date);
           $time += 86400; // Ein Tag in Sekunden
           $showDate=date("Y-m-d",$time);
-          $thisTimeDate = JoomleagueHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
-          $competitionStartTimeDate = JoomleagueHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
+          $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
+          $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
           $tippAllowed =	( ( $thisTimeDate < $competitionStartTimeDate ) ) ;
 					if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; }
           }

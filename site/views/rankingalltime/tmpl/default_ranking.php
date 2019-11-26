@@ -10,10 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );?>
-
-<!-- Main START -->
-<a name="jl_top" id="jl_top"></a>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive">
 <!-- content -->
 <?php
 foreach ( $this->currentRanking as $division => $cu_rk )
@@ -66,6 +63,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	}
 }
 	?>
+    </div>
 <!-- ranking END -->
 
 

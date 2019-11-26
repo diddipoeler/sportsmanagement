@@ -42,7 +42,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	
 		// Set page title
 		///TODO: treeto name, no project name
-		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_JOOMLEAGUE_TREETO_PAGE_TITLE'));
+		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_TREETO_PAGE_TITLE'));
 		if (!empty($this->project))
 		{
 			$titleInfo->projectName = $this->project->name;

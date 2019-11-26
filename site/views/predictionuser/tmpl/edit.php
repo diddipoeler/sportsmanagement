@@ -86,12 +86,12 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
 			?>
-			<td colspan='2'><?php 
+			<td colspan='2'>
+<?php 
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
 echo $field->renderField(array('hiddenLabel'=>true));				
-				
-//				echo $this->lists['approvedForGame']; ?>
+?>
 			
 			</td>
 		</tr>
@@ -149,11 +149,12 @@ echo $field->renderField(array('hiddenLabel'=>true));
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SHOW_PROFILE','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SHOW_PROFILE');
 			?>
-			<td colspan='2'><?php 
+			<td colspan='2'>
+<?php 
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="show_profile" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->show_profile);
 echo $field->renderField(array('hiddenLabel'=>true));															
-//				echo $this->lists['show_profile']; ?>
+?>
 			</td>
 		</tr>
 		<?php
@@ -164,11 +165,12 @@ echo $field->renderField(array('hiddenLabel'=>true));
 				<?php
 				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REMINDER','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REMINDER');
 				?>
-				<td colspan='2'><?php 
+				<td colspan='2'>
+<?php 
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="reminder" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->reminder);
 echo $field->renderField(array('hiddenLabel'=>true));											
-//			echo $this->lists['reminder']; ?>
+?>
 				</td>
 			</tr>
 			<?php
@@ -182,11 +184,12 @@ echo $field->renderField(array('hiddenLabel'=>true));
 				<?php
 				echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_RECEIPT','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_RECEIPT');
 				?>
-				<td colspan='2'><?php 
+				<td colspan='2'>
+<?php 
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="receipt" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->receipt);
 echo $field->renderField(array('hiddenLabel'=>true));								
-//			echo $this->lists['receipt']; ?>
+?>
 				</td>
 			</tr>
 			<?php
@@ -196,11 +199,12 @@ echo $field->renderField(array('hiddenLabel'=>true));
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALLOW_ADMIN','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALLOW_ADMIN');
 			?>
-			<td colspan='2'><?php 
+			<td colspan='2'>
+<?php 
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="admintipp" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->admintipp);
 echo $field->renderField(array('hiddenLabel'=>true));					
-//				echo $this->lists['admintipp']; ?>
+?>
 			</td>
 		</tr>
 		<?php

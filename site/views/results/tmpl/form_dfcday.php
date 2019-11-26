@@ -179,7 +179,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 <div class='pagenav'>
 <table width='96%' align='center' cellpadding='0' cellspacing='0'>
 	<tr>
-		<?php //echo JoomleaguePagination::pagenav($this->project); ?>
+		<?php 
+		?>
 	</tr>
 </table>
 <!-- matchdays pageNav END -->

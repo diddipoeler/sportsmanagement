@@ -87,7 +87,7 @@ if (!empty($memberPredictionPoints))
 											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->predictionMember->user_id,
 																									$this->predictionGame->id,
 																									$this->predictionMember->pmID);

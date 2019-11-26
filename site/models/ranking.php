@@ -43,7 +43,6 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	var $colors = array();
 	var $result = array();
 	var $pageNav = array();
-	var $pageNav2 = array();
 	static $current_round = 0;
 	static $viewName = '';
     static $selDivision = 0;

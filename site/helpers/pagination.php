@@ -203,58 +203,5 @@ $option = $app->input->getCmd('option');
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
 	}
 
-	/**
-	 * sportsmanagementModelPagination::pagenav2()
-	 * 
-	 * @param mixed $jl_task
-	 * @param mixed $rlimit
-	 * @param integer $currentRoundcode
-	 * @param string $user
-	 * @param string $mode
-	 * @return
-	 */
-	function pagenav2($jl_task,$rlimit,$currentRoundcode=0,$user='',$mode='')
-	{
-	   $app = Factory::getApplication();
-		$option = $app->input->getCmd('option');	    
-		$mytask = $app->input->getVar('task',false);
-		$divLevel = $app->input->getInt('divLevel',0);
-		$division = $app->input->getInt('division',0);
-
-		$pageNav2 = '<form action="" method="get" style="display:inline;">';
-		$pageNav2 .= '<select class="inputbox" onchange="joomleague_changedoc(this)">';
-
-		$params = array();
-		$params['option'] = $option;
-		$params['controller'] = $jl_task;
-		$params['p'] = $this->projectid;
-		if ($user){$params['uid'] = $user;}
-		if ($mode){$params['mode'] = $mode;}
-		if ($mytask){$params['task'] = $mytask;}
-		if ($division > 0){$params['division'] = $division;}
-		if ($divLevel > 0){$params['divLevel'] = $divLevel;}
-
-		for ($counter=1; $counter <= $rlimit; $counter++)
-		{
-			if ($counter< 10){$pagenumber="0" . $counter;}else{$pagenumber = $counter;}
-			if ($counter <= $rlimit)
-			{
-				$params['r'] = $counter;
-				$query = Uri::buildQuery($params);
-				$link  = Route::_('index.php?' . $query);
-
-				$pageNav2 .= "<option value='".$link."'";
-				if ($counter==$currentRoundcode)
-				{
-					$pageNav2 .= " selected='selected'";
-				}
-				$pageNav2 .= '>';
-			}
-			$pageNav2 .= $pagenumber . '</option>';
-		}
-		$pageNav2 .= '</select></form>';
-		return $pageNav2;
-	}
-
 }
 ?>

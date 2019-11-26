@@ -85,7 +85,7 @@ use Joomla\CMS\Factory;
 											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->person->user_id,
 																									$this->project->id,
 																									$this->person->id );

@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 	?>
 		<td><input type="submit" class="button" name="reload View"
-			value="<?php echo Text::_('COM_JOOMLEAGUE_RANKING_FILTER'); ?>"></td>
+			value="<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>"></td>
 	</tr>
 </table>
 	<?php echo HTMLHelper::_( 'form.token' ); ?></form>

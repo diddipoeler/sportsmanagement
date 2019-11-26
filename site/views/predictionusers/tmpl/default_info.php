@@ -82,12 +82,12 @@ if (!empty($memberPredictionPoints))
 							switch ( $this->config['show_user_profile'] )
 							{
 								case 1:	 // Link to Joomla Contact Page
-											$link = JoomleagueHelperRoute::getContactRoute($this->predictionMember->user_id);
+											$link = sportsmanagementHelperRoute::getContactRoute($this->predictionMember->user_id);
 											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
-											$link = JoomleagueHelperRoute::getUserProfileRouteCBE(	$this->predictionMember->user_id,
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
+											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->predictionMember->user_id,
 																									$this->predictionGame->id,
 																									$this->predictionMember->pmID);
 											$outputName = HTMLHelper::link($link, $outputName);

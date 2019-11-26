@@ -88,7 +88,7 @@ $this->overallconfig['use_jquery_modal']
 											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->referee->user_id,
 																									$this->project->id,
 																									$this->referee->id );

@@ -142,15 +142,6 @@ if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') 
 
 			if ( $this->getLayout() == 'edit' )
 			{
-				$dArray[] = HTMLHelper::_('select.option',0,Text::_('JNO'));
-				$dArray[] = HTMLHelper::_('select.option',1,Text::_('JYES'));
-
-				$lists['show_profile'] = HTMLHelper::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
-				$lists['reminder'] = HTMLHelper::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
-				$lists['receipt'] = HTMLHelper::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
-				$lists['admintipp'] = HTMLHelper::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
-				$lists['approvedForGame'] = HTMLHelper::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
-				unset($dArray);
                 /** schleife über die projekte */
 				foreach($this->predictionProjectS AS $predictionProject)
 				{

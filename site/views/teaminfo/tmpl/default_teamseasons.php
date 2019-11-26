@@ -58,10 +58,10 @@ if ($season->projectname)
 		$picture = $season->picture;
 
 		if ((@is_null($picture)) or
-		(strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png")) or
-		(strpos($picture, "/joomleague/placeholders/placeholder_450.png")))
+		(strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png"))
+		)
 		{
-			$picture = JoomleagueHelper::getDefaultPlaceholder("team");
+			$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
 		}
 
 		$picture_descr = Text::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";

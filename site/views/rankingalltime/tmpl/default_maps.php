@@ -11,7 +11,7 @@ $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.km
 <div style="width: 100%; float: left">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo Text::_('COM_JOOMLEAGUE_GMAP_DIRECTIONS'); ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 		</div>
 	</div>
 	<?php

@@ -87,7 +87,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			</h3>
 			<div class="jl_roster_persondetails">
 <?php 
-			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->row->suspension > 0 && $this->row->suspension_end > $joomleague->current_round ) )
+			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->row->suspension > 0 && $this->row->suspension_end > $this->project->current_round ) )
 			{
 ?>
 					<div>

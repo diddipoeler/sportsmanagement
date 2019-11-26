@@ -27,7 +27,7 @@ $column_names	= explode( ',', $config['ordered_columns_names'] );
 		{
 			if (empty($column_names[$k])){$column_names[$k]='???';}	
 			$c=strtoupper(trim($column));
-			$c="COM_JOOMLEAGUE_".$c;
+			$c="COM_SPORTSMANAGEMENT_".$c;
 			echo "<td class=\"col$d\">";
 			echo $column_names[$k] ." = ".Text::_($c) ;
 			echo "</td>";

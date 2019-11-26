@@ -404,55 +404,7 @@ foreach ($positioneventtypes AS $event => $eventid )
 		return $this->_all_time_players;
 	}
 
-	function getStaffList()
-	{
-		$projectteam =& $this->getprojectteam();
-		$query='	SELECT	pr.firstname, 
-							pr.nickname,
-							pr.lastname,
-							pr.country,
-							pr.birthday,
-							pr.deathday,
-							ts.id AS ptid,
-							ppos.position_id,
-							ppos.id AS pposid,
-							pr.id AS pid,
-							pr.picture AS ppic,
-							pos.name AS position,
-							ts.picture,
-							ts.notes AS description,
-							ts.injury AS injury,
-							ts.suspension AS suspension,
-							ts.away AS away,
-							pos.parent_id,
-							posparent.name AS parentname,				
-							CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug
-					FROM #__joomleague_team_staff ts
-					INNER JOIN #__joomleague_person AS pr ON ts.person_id=pr.id
-					INNER JOIN #__joomleague_project_position AS ppos ON ppos.id=ts.project_position_id
-					INNER JOIN #__joomleague_position AS pos ON pos.id=ppos.position_id
-					LEFT JOIN #__joomleague_position AS posparent ON pos.parent_id=posparent.id
-					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam->id).'
-					  AND pr.published = 1
-					  AND ts.published = 1
-					ORDER BY pos.parent_id, pos.ordering';
-		$this->_db->setQuery($query);
-		$stafflist=$this->_db->loadObjectList();
-		return $stafflist;
-	}
 
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
 
 }
 ?>
