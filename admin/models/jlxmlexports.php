@@ -244,9 +244,9 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
     public function __construct($config = array())
         {   
 
-                parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+        parent::__construct($config);
+        $getDBConnection = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($getDBConnection);
         $this->app = Factory::getApplication();
         $this->user	= Factory::getUser();     
         $this->jinput = $this->app->input;
@@ -591,21 +591,13 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getSportsManagementVersion()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		$exportRoutine = '2010-09-23 15:00:00';
-        
-        $query->select('manifest_cache');
-		$query->from('#__extensions');
-        $query->where('name LIKE '.Factory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
-        Factory::getDbo()->setQuery( $query );
-       $manifest_cache = json_decode( Factory::getDbo()->loadResult(), true );
+        $this->query->clear();
+        $this->query->select('manifest_cache');
+		$this->query->from('#__extensions');
+        $this->query->where('name LIKE '.$this->jsmdb->Quote(''.'com_sportsmanagement'.'') );
+        $this->jsmdb->setQuery( $this->query );
+       $manifest_cache = json_decode( $this->jsmdb->loadResult(), true );
        
 		if ( $manifest_cache['version'] )
 		{

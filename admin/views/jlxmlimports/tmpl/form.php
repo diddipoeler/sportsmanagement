@@ -324,6 +324,10 @@ if (isset($this->xml) && is_array($this->xml))
 								<p><?php
 									echo Text::_('This file was created by an older revision of JoomLeague 1.5.0a!').'<br />';
 									echo Text::_('As we can not guarantee a correct processing the import routine will STOP here!!!');
+                                    
+                                    echo Text::sprintf('This file was created using SportsManagement-Export-Routine dated: %1$s',$exportversion->exportRoutine).'<br />';
+									echo Text::sprintf('Date and time of this file is: %1$s - %2$s',$exportversion->exportDate,$exportversion->exportTime).'<br />';
+									echo Text::sprintf('The name of the Joomla-System where this file was created is: %1$s',$exportversion->exportSystem).'<br />';
 									?></p></td></tr></tbody></table></div><?php
 									return;
 							}

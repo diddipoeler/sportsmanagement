@@ -252,12 +252,7 @@ break;
 		{
 $this->_season_id = 0;			
 		}
-
-  //$post = Factory::getApplication()->input->post->getArray(array());
-  //$country = $post['country'];		
-//        $this->_agegroup_id = $post['agegroup_id'];
-//       Factory::getApplication()->enqueueMessage('altersgruppe '.$this->_agegroup_id, 'error');
-       
+      
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
