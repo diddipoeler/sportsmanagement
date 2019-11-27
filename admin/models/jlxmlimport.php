@@ -317,7 +317,7 @@ $this->_season_id = 0;
 			foreach ($xmlData->record as $value)
 			{
 				// collect the project data of a .jlg file of JoomLeague <1.5x
-				if ($xmlData->record[$i]['object'] == 'JoomLeagueVersion')
+				if ($xmlData->record[$i]['object'] == 'JoomLeagueVersion' || $xmlData->record[$i]['object'] == 'SportsManagementVersion' )
 				{
 					$this->_datas['exportversion'] = $xmlData->record[$i];
 				}
@@ -340,7 +340,7 @@ $this->_season_id = 0;
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
-				if ( $xmlData->record[$i]['object'] == 'JoomLeague20' || $xmlData->record[$i]['object'] == 'SportsManagementVersion' )
+				if ( $xmlData->record[$i]['object'] == 'JoomLeague20' || $xmlData->record[$i]['object'] == 'SportsManagement' )
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';

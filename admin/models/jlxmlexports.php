@@ -602,7 +602,7 @@ $xmlfile = $xmlfile.$output;
 		if ( $manifest_cache['version'] )
 		{
 			$result[0]['version'] = $manifest_cache['version'];
-            $result[0]['exportversion'] = $manifest_cache['exportversion'];
+            $result[0]['exportversion'] = $manifest_cache['version'];
 			$result[0]['exportRoutine'] = $exportRoutine;
 			$result[0]['exportDate'] = date('Y-m-d');
 			$result[0]['exportTime'] = date('H:i:s');
@@ -629,25 +629,17 @@ else
 	 */
 	private function _getProjectData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $this->query->clear();
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project');
+        $this->query->where('id = ' . $this->_project_id );
         
-        $query->select('*');
-        $query->from('#__sportsmanagement_project');
-        $query->where('id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
-			$result[0]['object'] = 'SportsManagementVersion';
+			$result = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'SportsManagement';
 			$this->_project = $result;
 			return $result;
 		}

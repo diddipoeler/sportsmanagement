@@ -819,7 +819,7 @@ abstract class sportsmanagementHelper {
     function _setProjectData($project) {
         if ($project) {
             $result[] = ArrayHelper::fromObject($project);
-            $result[0]['object'] = 'SportsManagementVersion';
+            $result[0]['object'] = 'SportsManagement';
             return $result;
         }
         return false;
