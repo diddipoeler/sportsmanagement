@@ -1082,19 +1082,20 @@ $routeparameter['p'] = $this->_project_slug;
 $routeparameter['r'] = $this->_round_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['mode'] = 0;
-$routeparameter['order'] = '';
-$routeparameter['layout'] = '';
+$routeparameter['order'] = 0;
+$routeparameter['layout'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 			
             case "rankingalltime":
+				$routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
 $routeparameter['l'] = $this->_league_id;
 $routeparameter['points'] = $this->getParam('show_alltimetable_points');
-$routeparameter['type'] = '';
-$routeparameter['order'] = '';
+$routeparameter['type'] = 0;
+$routeparameter['order'] = 0;
 $routeparameter['dir'] = 0;
-$routeparameter['s'] = '';
+$routeparameter['s'] = 0;
 $routeparameter['p'] = $this->_project_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
  		         break;
