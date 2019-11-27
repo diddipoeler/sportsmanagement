@@ -11,7 +11,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <!-- import the functions to move the events between selection lists  -->
 <?php
 //$version = urlencode(sportsmanagementHelper::getVersion());
-//echo HTMLHelper::script( 'administrator/components/com_joomleague/assets/js/sm_functions.js');
+
 ?>
 <script>
 Joomla.submitbutton = function(task)    {

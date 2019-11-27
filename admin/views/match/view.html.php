@@ -819,7 +819,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE'), 'events');
         ToolbarHelper::apply('match.saveeventbb');
         ToolbarHelper::divider();
-        ToolbarHelper::back('back', 'index.php?option=com_joomleague&view=matches&task=match.display');
+        ToolbarHelper::back('back', 'index.php?option=com_sportsmanagement&view=matches&task=match.display');
         //JLToolBarHelper::onlinehelp();
     }
 
