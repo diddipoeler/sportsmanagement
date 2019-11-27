@@ -1311,48 +1311,7 @@ try{
         $mstpid_array = array();
         $me_array = array();
         $metpid_array = array();
-        
 
-/*
-query mp
-SELECT DISTINCT m.id AS mid, tp.id AS tpid
-FROM j25_sportsmanagement_match_player AS md
-INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
-INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
-INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
-INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
-INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
-INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
-WHERE p.id = 81934
-AND st.team_id = 9
-AND (md.came_in = 0 OR md.came_in = 1)
-
-query ms
-SELECT DISTINCT m.id AS mid, tp.id AS tpid
-FROM j25_sportsmanagement_match_statistic AS md
-INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
-INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
-INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
-INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
-INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
-INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
-WHERE p.id = 81934
-AND st.team_id = 9
-
-query me
-SELECT DISTINCT m.id AS mid, tp.id AS tpid
-FROM j25_sportsmanagement_match_event AS md
-INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
-INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
-INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
-INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
-INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
-INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
-WHERE p.id = 81934
-AND st.team_id = 9
-
-
-*/
 		// Get the number of matches played per teamplayer of the projectteam.
 		// This is derived from three tables: match_player, match_statistic and match_event
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)

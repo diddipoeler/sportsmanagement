@@ -177,7 +177,7 @@ function parse_ini_file_ersatz($f)
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
+		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
 		{
@@ -806,13 +806,13 @@ $value = trim($value);
 		{
     
 $query = '	SELECT count(*) as total
-FROM #__joomleague_project_team
+FROM #__sportsmanagement_project_team
 WHERE project = ' . $project;
 
 $this->_db->setQuery( $query );
-$countjoomleagueteams = $this->_db->loadResult();
+$countteams = $this->_db->loadResult();
 
-if (  $countlmoteams != $countjoomleagueteams  )
+if (  $countlmoteams != $countteams  )
 {
 $app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
 }
@@ -830,7 +830,7 @@ $app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimm
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
+// set the version of SportsManagement
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )

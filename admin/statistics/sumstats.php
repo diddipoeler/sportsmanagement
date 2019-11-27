@@ -154,29 +154,7 @@ class SMStatisticSumstats extends SMStatistic
 								. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
 								. ' st.team_id, pt.picture AS projectteam_picture, t.picture AS team_picture,'
 								. ' t.name AS team_name, t.short_name AS team_short_name';
-
-//		$query_core	= ' FROM #__joomleague_team_player AS tp'
-//					. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
-//					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//					. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
-//					. ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id'
-//					. '   AND ms.statistic_id IN ('. implode(',', $sids) .')'
-//					. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-//					. '   AND m.published = 1'
-//					. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//					. '   AND p.published = 1 '
-//		;
-//		if ($division_id != 0)
-//		{
-//			$query .= ' AND pt.division_id = '. $db->Quote($division_id);
-//		}
-//		if ($team_id != 0)
-//		{
-//			$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
-//		}
-//		$query_end_details	= ' GROUP BY tp.id '
-//							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id';
-        
+       
         $query_core	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'statistic');
 
 		$res = new stdclass;
@@ -187,7 +165,6 @@ class SMStatisticSumstats extends SMStatistic
         
         $query_core->clear('select');
         $query_core->select($query_select_details);
-        //$query_core->group('tp.id');
 		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id');
 
 		$db->setQuery($query_core, $limitstart, $limit);
@@ -289,52 +266,75 @@ try{
 		return $this->formatValue($res, $this->getPrecision());
 	}
 	
+	/**
+	 * SMStatisticSumstats::getStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$sids = SMStatistic::getSids($this->_ids);
+		$sqids = SMStatistic::getQuotedSids($this->_ids);
+		$factors  = self::getFactors();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+		$db = sportsmanagementHelper::getDBConnection();
 		
-		$db = &sportsmanagementHelper::getDBConnection();
-		
-		$query = ' SELECT SUM(ms.value) AS value '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id IN ('. implode(',', $sids) .')'
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
-		$db->setQuery($query);
-		$res = $db->loadResult();
+        $select = 'ms.value, ms.statistic_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE);
 
-		return $this->formatValue($res, $this->getPrecision());
+		$db->setQuery($query);
+        
+        
+		$stats = $db->loadObjectList();
+		
+		$res = 0;
+		foreach ($stats as $stat)
+		{
+			$key = array_search($stat->statistic_id, $sids);
+			if ($key !== FALSE)	{
+				$res += $factors[$key]*$stat->value;
+			}
+		}
+		
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 	
+	/**
+	 * SMStatisticSumstats::getHistoryStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @return
+	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$sids = SMStatistic::getSids($this->_ids);
+		$sqids = SMStatistic::getQuotedSids($this->_ids);
+		$factors  = self::getFactors();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+		$db = sportsmanagementHelper::getDBConnection();
 		
-		$db = &sportsmanagementHelper::getDBConnection();
-		
-		$query = ' SELECT SUM(ms.value) AS value '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id IN ('. implode(',', $sids) .')'
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE  tp.person_id = '. $db->Quote($person_id)
-		       . '   AND p.published = 1 '
-		       . ' GROUP BY tp.id '
-		       ;
-		$db->setQuery($query);
-		$res = $db->loadResult();
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE);
 
-		return $this->formatValue($res, $this->getPrecision());
+		$db->setQuery($query);
+        
+        
+		$stats = $db->loadObjectList();
+		
+		$res = 0;
+		foreach ($stats as $stat)
+		{
+			$key = array_search($stat->statistic_id, $sids);
+			if ($key !== FALSE)	{
+				$res += $factors[$key]*$stat->value;
+			}
+		}
+		
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	/**

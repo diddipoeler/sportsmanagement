@@ -279,64 +279,10 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 			return false;
 		}
 	
-		// check if indivual belongs to project team already
-		$query = ' SELECT person_id FROM #__joomleague_team_player '
-		. ' WHERE projectteam_id = '. $this->_db->Quote($projectteam_id)
-		. '   AND person_id = '. $this->_db->Quote($personid);
-		$this->_db->setQuery($query);
-		$res = $this->_db->loadResult();
-		if (!$res)
-		{
-			$tblTeamplayer = Table::getInstance( 'Teamplayer', 'Table' );
-			$tblTeamplayer->person_id		= $personid;
-			$tblTeamplayer->projectteam_id	= $projectteam_id;
-				
-			$tblProjectTeam = Table::getInstance( 'Projectteam', 'Table' );
-			$tblProjectTeam->load($projectteam_id);
-	
-			if ( !$tblTeamplayer->check() )
-			{
-				$this->setError( $tblTeamplayer->getError() );
-				return false;
-			}
-			// Get data from player
-			$query = "	SELECT picture, position_id
-							FROM #__joomleague_person AS pl
-							WHERE pl.id=". $this->_db->Quote($personid) . "
-							AND pl.published = 1";
-	
-			$this->_db->setQuery( $query );
-			$person = $this->_db->loadObject();
-			if ( $person )
-			{
-				if ($person->position_id)
-				{
-					$query = "SELECT id FROM #__joomleague_project_position ";
-					$query.= " WHERE position_id = " . $person->position_id;
-					$query.= " AND project_id = " . $tblProjectTeam->project_id;
-					$this->_db->setQuery($query);
-					if ($resPrjPosition = $this->_db->loadObject())
-					{
-						$tblTeamplayer->project_position_id = $resPrjPosition->id;
-					}
-				}
-	
-				$tblTeamplayer->picture			= $person->picture;
-				$tblTeamplayer->projectteam_id	= $projectteam_id;
-	
-			}
-			$query = "	SELECT max(ordering) count
-								FROM #__joomleague_team_player";
-			$this->_db->setQuery( $query );
-			$tp = $this->_db->loadObject();
-			$tblTeamplayer->ordering = (int) $tp->count + 1;
-				
-			if ( !$tblTeamplayer->store() )
-			{
-				$this->setError( $tblTeamplayer->getError() );
-				return false;
-			}
-		}
+/**
+ * muss noch programmiert werden
+ */
+
 		return true;
 	}
 }

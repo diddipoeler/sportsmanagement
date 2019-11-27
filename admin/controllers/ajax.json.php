@@ -9,7 +9,6 @@
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Response\JsonResponse;
@@ -973,8 +972,20 @@ try
          */
         public function sportstypesoptions()
         {
-                echo json_encode((array) JoomleagueModelSportsTypes::getSportsTypes());
-                Factory::getApplication()->close();
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getsportstypes($this->jinput->get->getString('cfg_which_database'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug') );
+ 
+      echo new JsonResponse($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JsonResponse($e);
+    }
+
         }
 
 }

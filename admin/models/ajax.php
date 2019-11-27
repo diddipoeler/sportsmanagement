@@ -322,20 +322,19 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             return self::addGlobalSelectElement($sections, $required);     
         }
         
+        
         /**
          * sportsmanagementModelAjax::getseasons()
          * 
          * @param bool $dabse
          * @param bool $required
+         * @param bool $slug
          * @return
          */
         static function getseasons($dabse = false, $required = false, $slug = false)
         {
-        // Reference global application object
         $app = Factory::getApplication();
-        // JInput object
         $option = $app->input->getCmd('option');
-        // Get a db connection.
         if ( !$dabse )
         {
             $db = sportsmanagementHelper::getDBConnection();
@@ -345,7 +344,6 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
         }
         $query = $db->getQuery(true);
-        // Select some fields
         if ( $slug )
         {
         $query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
@@ -354,13 +352,47 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         {
         $query->select('id AS value,name AS text');
         }
-        // From 
 		$query->from('#__sportsmanagement_season');
         $query->order('name DESC'); 
-        
         $db->setQuery($query);
-                //return $db->loadObjectList();
-                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+            
+            
+        }
+        
+        /**
+         * sportsmanagementModelAjax::getsportstypes()
+         * 
+         * @param bool $dabse
+         * @param bool $required
+         * @param bool $slug
+         * @return
+         */
+        static function getsportstypes($dabse = false, $required = false, $slug = false)
+        {
+        $app = Factory::getApplication();
+        $option = $app->input->getCmd('option');
+        if ( !$dabse )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        $query = $db->getQuery(true);
+        if ( $slug )
+        {
+        $query->select('id AS value,name AS text');
+        }
+        else
+        {
+        $query->select('id AS value,name AS text');
+        }
+		$query->from('#__sportsmanagement_sports_type');
+        $query->order('name DESC'); 
+        $db->setQuery($query);
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);    
             
             
         }

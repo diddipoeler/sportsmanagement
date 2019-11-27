@@ -48,18 +48,22 @@ class SMStatisticBasic extends SMStatistic
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
+	/**
+	 * SMStatisticBasic::getMatchPlayersStats()
+	 * 
+	 * @param mixed $match_id
+	 * @return
+	 */
 	function getMatchPlayersStats($match_id)
 	{
-		$db = &sportsmanagementHelper::getDBConnection();
-		
-		$query = ' SELECT SUM(ms.value) AS value, tp.id '
-		       . ' FROM #__joomleague_team_player AS tp '
-		       . ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-		       . ' WHERE ms.statistic_id = '. $db->Quote($this->id)
-		       . '   AND ms.match_id = '. $db->Quote($match_id)
-		       . '   AND tp.published = 1 '
-		       . ' GROUP BY tp.id '
-		       ;
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        $query->select('SUM(ms.value) AS value, tp.id');
+        $query->from('#__sportsmanagement_match_statistic AS ms');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->where('ms.statistic_id = ' . $this->id);
+        $query->where('ms.match_id = ' . $match_id);
 		$db->setQuery($query);
 		$res = $db->loadObjectList('id');
 
