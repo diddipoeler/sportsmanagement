@@ -263,6 +263,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         $query->where('pr.id = ' . self::$personid);
         $query->where('p.published = 1');
+	$query->where('perpos.published = 1');
         $query->where('pr.published = 1');
         $query->where('tp.persontype = ' . $persontype);
         if ($sportstype > 0) {
