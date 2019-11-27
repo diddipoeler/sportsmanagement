@@ -602,6 +602,7 @@ $xmlfile = $xmlfile.$output;
 		if ( $manifest_cache['version'] )
 		{
 			$result[0]['version'] = $manifest_cache['version'];
+            $result[0]['exportversion'] = $manifest_cache['exportversion'];
 			$result[0]['exportRoutine'] = $exportRoutine;
 			$result[0]['exportDate'] = date('Y-m-d');
 			$result[0]['exportTime'] = date('H:i:s');
