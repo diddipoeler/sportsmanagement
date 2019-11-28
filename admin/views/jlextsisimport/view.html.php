@@ -118,7 +118,6 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$uri = Factory::getURI ();
 		$user = Factory::getUser ();
 		$model = $this->getModel ();
-		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
 		$config = ComponentHelper::getParams ( 'com_media' );
@@ -126,7 +125,6 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );
 		$whichfile = $app->getUserState ( $option . 'whichfile' );
-		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
 		$this->uploadArray	= $uploadArray;
 		

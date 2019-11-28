@@ -881,7 +881,7 @@ $this->_datas['playground'] = array_merge($exportplayground);
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
+// set the version of SportsManagement
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::__setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
@@ -1736,14 +1736,7 @@ $lfdnumberperson++;
   
   }
 // ende schleife csv file
-
-/* tabellen leer machen
-TRUNCATE TABLE `jos_joomleague_club`; 
-TRUNCATE TABLE `jos_joomleague_team`;
-TRUNCATE TABLE `jos_joomleague_person`;
-TRUNCATE TABLE `jos_joomleague_playground`;
-*/
-  
+ 
 foreach( $exportmatch as $rowmatch )
 {
 foreach( $exportteams as $rowteam )
@@ -1869,7 +1862,7 @@ if ( $whichfile == 'playerfile' )
 	$output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 	$output .= "<project>\n";
-// set the version of JoomLeague
+// set the version of SportsManagement
 	$output .= sportsmanagementHelper::_addToXml($this->__setSportsManagementVersion());
 // set the person data
 	if ( isset($this->_datas['person']) )
@@ -1893,7 +1886,7 @@ else
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
+// set the version of SportsManagement
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::__setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
@@ -2016,7 +2009,6 @@ if ( $this->debug_info )
 echo $this->pane->endPane();    
 }
 
-//$app->setUserState('com_joomleague'.'_datas',$this->_datas);
 return $this->_datas;
     
 }

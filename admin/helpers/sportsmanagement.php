@@ -786,15 +786,12 @@ abstract class sportsmanagementHelper {
         return $result;
     }
 
+    
     /**
-     * _setLeagueData
-     *
-     * set the league data from the joomleague_league table
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setLeagueData()
+     * 
+     * @param mixed $league
+     * @return
      */
     function _setLeagueData($league) {
 
@@ -806,15 +803,12 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setProjectData
-     *
-     * set the project data from the joomleague table
-     *
-     * @access private
-     * @since  1.5.0a
-     *
-     * @return array
+     * sportsmanagementHelper::_setProjectData()
+     * 
+     * @param mixed $project
+     * @return
      */
     function _setProjectData($project) {
         if ($project) {
@@ -825,15 +819,12 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setSeasonData
-     *
-     * set the season data from the joomleague_season table
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setSeasonData()
+     * 
+     * @param mixed $season
+     * @return
      */
     function _setSeasonData($season) {
         if ($season) {
@@ -844,15 +835,12 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setSportsType
-     *
-     * set the SportsType
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setSportsType()
+     * 
+     * @param mixed $sportstype
+     * @return
      */
     function _setSportsType($sportstype) {
 
@@ -864,15 +852,13 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setXMLData
-     *
+     * sportsmanagementHelper::_setXMLData()
      * 
-     *
-     * @access private
-     * @since  1.5.0a
-     *
-     * @return void
+     * @param mixed $data
+     * @param mixed $object
+     * @return
      */
     function _setXMLData($data, $object) {
         if ($data) {
@@ -896,10 +882,6 @@ abstract class sportsmanagementHelper {
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $document = Factory::getDocument();
-        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        // retrieve the value of the state variable. If no value is specified,
-        // the specified default value will be returned.
-        // function syntax is getUserState( $key, $default );
         $project_id = $app->getUserState("$option.pid", '0');
         $project_team_id = $app->getUserState("$option.project_team_id", '0');
         $team_id = $app->getUserState("$option.team_id", '0');
