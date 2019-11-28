@@ -281,24 +281,20 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		
 		if(empty($filename)) 
     {
-			//$this->_project_id = $app->getUserState($option.'project');
-            //$this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
 				Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else 
       {
-				// get the project datas
+				/** get the project datas */
 				$this->_getProjectData();
 				$filename = $this->_getIdFromData('name', $this->_project);
 				$filename[0] = $filename[0]."-".$table;
 			}
 		}			
     $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
-    //$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$l98filename.'.jlg';
     $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
-    
     $userpath = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username;
     if ( Folder::exists($userpath) )
     {
@@ -323,57 +319,58 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             else
             {
             // get the version of SportsManagement
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getSportsManagementVersion());
-
 			// get the project datas
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectData());
-
 			// get sportstype data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getSportsTypeData());
-
 			// get league data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getLeagueData());
-
 			// get season data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getSeasonData());
-
 			// get the template data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTemplateData());
-
 			// get divisions data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getDivisionData());
-
 			// get the projectteams data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectTeamData());
-
 			// get referee data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectRefereeData());
-
 			// get position data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectPositionData());
-
 			// get the teams data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamData());
-
 			// get the clubs data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getClubData());
-
 			// get the rounds data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getRoundData());
-
 			// get the matches data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchData());
-
 			// get the playground data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPlaygroundData());
-
 			// get the team player data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamPlayerData());
-
 			// get the team staff data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamStaffData());
-
 			// get the team training data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamTrainingData());
 
 /*
@@ -392,33 +389,34 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 */
 
 			// get the positions data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionData());
-
 			// get the positions parent data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getParentPositionData());
-
 			// get ALL persons data for Export
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPersonData());
-
 			// get the match events data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchEvent());
-
 			// get the event types data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getEventType());
-
 			// get the position eventtypes data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionEventType());
-
 			// get the match_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchStatistic());
-
 			// get the match_staff_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchStaffStatistic());
-
 			// get the position_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionStatistic());
-
 			// get the statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getStatistic());
             }
 
@@ -456,7 +454,7 @@ $xmlfile = $xmlfile.$output;
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $this->query = $this->jsmdb->getQuery(true);
         
 		jimport('joomla.filter.output');
 		$filename = $this->_getIdFromData('name', $this->_project);
@@ -592,7 +590,6 @@ $xmlfile = $xmlfile.$output;
 	private function _getSportsManagementVersion()
 	{
 		$exportRoutine = '2010-09-23 15:00:00';
-        $this->query->clear();
         $this->query->select('manifest_cache');
 		$this->query->from('#__extensions');
         $this->query->where('name LIKE '.$this->jsmdb->Quote(''.'com_sportsmanagement'.'') );
@@ -629,7 +626,6 @@ else
 	 */
 	private function _getProjectData()
 	{
-        $this->query->clear();
         $this->query->select('*');
         $this->query->from('#__sportsmanagement_project');
         $this->query->where('id = ' . $this->_project_id );
@@ -654,14 +650,6 @@ else
 	 */
 	private function _getTemplateData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		// this is the master template
 		if ( $this->_project[0]['master_template'] == 0 )
 		{
@@ -672,16 +660,14 @@ else
 			$master_template_id = $this->_project[0]['master_template'];
 		}
         
-        $query->select('*');
-        $query->from('#__sportsmanagement_template_config');
-        $query->where('project_id = ' . $master_template_id );
-
-		//$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_template_config');
+        $this->query->where('project_id = ' . $master_template_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Template';
 
 			return $result;
@@ -697,24 +683,14 @@ else
 	 */
 	private function _getLeagueData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_league');
-        $query->where('id = ' . $this->_project[0]['league_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_league');
+        $this->query->where('id = ' . $this->_project[0]['league_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'League';
 
 			return $result;
@@ -730,24 +706,14 @@ else
 	 */
 	private function _getSportsTypeData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_sports_type');
-        $query->where('id = ' . $this->_project[0]['sports_type_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($this->_db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_sports_type');
+        $this->query->where('id = ' . $this->_project[0]['sports_type_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'SportsType';
 
 			return $result;
@@ -763,24 +729,14 @@ else
 	 */
 	private function _getSeasonData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_season');
-        $query->where('id = ' . $this->_project[0]['season_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_season');
+        $this->query->where('id = ' . $this->_project[0]['season_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Season';
 
 			return $result;
@@ -796,24 +752,14 @@ else
 	 */
 	private function _getDivisionData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_division');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_division');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'LeagueDivision';
 
 			return $result;
@@ -829,15 +775,7 @@ else
 	 */
 	private function _getProjectTeamData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('pt.id,
+        $this->query->select('pt.id,
         pt.project_id,
         st.team_id,
         st.id as season_team_id,
@@ -859,16 +797,14 @@ else
   pt.reason,
   pt.checked_out,
   pt.checked_out_time');
-        $query->from('#__sportsmanagement_project_team as pt');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
-        $query->where('pt.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->from('#__sportsmanagement_project_team as pt');
+        $this->query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
+        $this->query->where('pt.project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -884,24 +820,14 @@ else
 	 */
 	private function _getProjectPositionData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_project_position');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project_position');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectPosition';
 			$this->_projectposition =& $result;
 			return $result;
@@ -917,24 +843,14 @@ else
 	 */
 	private function _getProjectRefereeData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_project_referee');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project_referee');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectReferee';
 			$this->_projectreferee =& $result;
 			return $result;
@@ -950,34 +866,23 @@ else
 	 */
 	private function _getTeamData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		$team_ids = $this->_getIdFromData('season_team_id', $this->_projectteam);
 
 		if (is_array($team_ids) && count($team_ids) > 0)
 		{
 			$ids = implode(",", array_unique($team_ids));
-            
-            $query->select('t.*');
-            $query->from('#__sportsmanagement_team as t');
-            $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-            $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-            $query->where('st.id IN (' . $ids .')' );
-            $query->where('pt.project_id = ' . $this->_project_id );
-            $query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
-			$db->setQuery($query);
-			$db->execute();
-			if ($db->getNumRows() > 0)
+            $this->query->select('t.*');
+            $this->query->from('#__sportsmanagement_team as t');
+            $this->query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $this->query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $this->query->where('st.id IN (' . $ids .')' );
+            $this->query->where('pt.project_id = ' . $this->_project_id );
+            $this->query->order('name');
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'JL_Team';
 				$this->_team =& $result;
 				return $result;
@@ -995,35 +900,20 @@ else
 	 */
 	private function _getClubData()
 	{
-	  // // Reference global application object
-//        $app = Factory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-        //$db	= $this->getDbo();
-       // $query = $db->getQuery(true);
-        
 		$cIDs = array();
-
 		$teamClub_ids = $this->_getIdFromData('club_id', $this->_team);
 		if (is_array($teamClub_ids))
         {
             $cIDs=array_merge($cIDs,$teamClub_ids);
             }
 
-		//$playgroundClub_ids = $this->_getIdFromData('club_id',$this->_teamstaff);
-		//if (is_array($playgroundClub_ids)){$cIDs=array_merge($cIDs,$playgroundClub_ids);}
-
 		if (is_array($cIDs) && count($cIDs) > 0)
 		{
 			$ids = implode(",", array_unique($cIDs));
-            $this->query->clear();
             $this->query->select('*');
             $this->query->from('#__sportsmanagement_club');
             $this->query->where('id IN (' . $ids .')' );
             $this->query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
 			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 			if ($this->jsmdb->getNumRows() > 0)
@@ -1046,24 +936,14 @@ else
 	 */
 	private function _getRoundData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_round');
-        $query->where('project_id = ' . $this->_project_id );
-            
-		//$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_round');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Round';
 
 			return $result;
@@ -1079,25 +959,15 @@ else
 	 */
 	private function _getMatchData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_match as m');
-        $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
-        $query->where('r.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_match as m');
+        $this->query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+        $this->query->where('r.project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Match';
 			$this->_match = $result;
 			return $result;
@@ -1113,15 +983,7 @@ else
 	 */
 	private function _getPlaygroundData()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-		$pgIDs=array();
+		$pgIDs = array();
 		$clubsPlayground_ids = $this->_getIdFromData('standard_playground',$this->_club);
 		if (is_array($clubsPlayground_ids)){$pgIDs=array_merge($pgIDs,$clubsPlayground_ids);}
 
@@ -1134,17 +996,14 @@ else
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-            
-            $query->select('*');
-            $query->from('#__sportsmanagement_playground');
-            $query->where('id IN (' . $ids .')' );
-            
-			//$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
-			$db->setQuery($query);
-			$db->execute();
-			if ($db->getNumRows() > 0)
+            $this->query->select('*');
+            $this->query->from('#__sportsmanagement_playground');
+            $this->query->where('id IN (' . $ids .')' );
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Playground';
 				$this->_playground = $result;
 				return $result;
@@ -1167,13 +1026,15 @@ else
 		if (is_array($teamplayer_ids) && count($teamplayer_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamplayer_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_team_player WHERE projectteam_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_player');
+            $this->query->where('projectteam_id IN (' . $ids .')' );
+            
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamPlayer';
 				$this->_teamplayer = $result;
 
@@ -1197,13 +1058,15 @@ else
 		if (is_array($teamtraining_ids) && count($teamtraining_ids) > 0)
 		{
 			$ids = implode(',',array_unique($teamtraining_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_trainingdata');
+            $this->query->where('project_team_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_team_trainingdata WHERE project_team_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamTraining';
 				$this->_teamtrainingdata = $result;
 				return $result;
@@ -1226,13 +1089,15 @@ else
 		if (is_array($teamstaff_ids) && count($teamstaff_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamstaff_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_staff');
+            $this->query->where('project_team_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_team_staff WHERE projectteam_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamStaff';
 				$this->_teamstaff = $result;
 
@@ -1256,14 +1121,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_player');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_player WHERE match_id IN ($ids)";
-
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchPlayer';
 				$this->_matchplayer = $result;
 
@@ -1287,13 +1153,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_staff');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_staff WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStaff';
 				$this->_matchstaff = $result;
 
@@ -1317,13 +1185,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_referee');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_referee WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchReferee';
 				$this->_matchreferee = $result;
 
@@ -1347,13 +1217,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_position');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Position';
 				$this->_position = $result;
 
@@ -1377,13 +1249,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_position');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'ParentPosition';
 				$this->_parentposition = $result;
 
@@ -1416,12 +1290,15 @@ else
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-			$query = "SELECT * FROM #__sportsmanagement_person WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+            $this->query->select('*');
+            $this->query->from('#__sportsmanagement_person');
+            $this->query->where('id IN (' . $ids .')' );
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Person';
 				$this->_person = $result;
 
@@ -1445,13 +1322,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_event');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_event WHERE	match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchEvent';
 				$this->_matchevent = $result;
 				return $result;
@@ -1474,13 +1353,15 @@ else
 		if (is_array($eventtype_ids) && count($eventtype_ids) > 0)
 		{
 			$ids = implode(",", array_unique($eventtype_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_eventtype');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_eventtype WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'EventType';
 				$this->_eventtype = $result;
 				return $result;
@@ -1505,13 +1386,16 @@ else
 		{
 			$event_ids		= implode(",", array_unique($eventtype_ids));
 			$position_ids	= implode(",", array_unique($position_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_position_eventtype WHERE eventtype_id IN ($event_ids) AND position_id IN ($position_ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_position_eventtype');
+            $this->query->where('eventtype_id IN (' . $event_ids .')' );
+            $this->query->where('position_id IN (' . $position_ids .')' );
+            
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'PositionEventType';
 				return $result;
 			}
@@ -1533,13 +1417,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_position_statistic');
+            $this->query->where('position_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position_statistic WHERE position_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'PositionStatistic';
 				$this->_positionstatistic = $result;
 				return $result;
@@ -1562,13 +1448,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_statistic');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 				return $result;
@@ -1591,13 +1479,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_staff_statistic');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_staff_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 				return $result;
@@ -1629,12 +1519,15 @@ else
 		if (is_array($sIDs) && count($sIDs) > 0)
 		{
 			$ids = implode(",",array_unique($sIDs));
-			$query = "SELECT * FROM #__sportsmanagement_statistic WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+            $this->query->select('*');
+                        $this->query->from('#__sportsmanagement_statistic');
+            $this->query->where('id IN (' . $ids .')' );
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
 
