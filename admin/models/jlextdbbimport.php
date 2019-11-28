@@ -84,7 +84,12 @@ function __construct( )
   {
   $this->debug_info = false;
   }
-
+$this->jsmdb = sportsmanagementHelper::getDBConnection();
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$this->jsmapp = Factory::getApplication();
+$this->jsmjinput = $this->jsmapp->input;
+$this->jsmoption = $this->jsmjinput->getCmd('option');
+        
 		parent::__construct( );
 	
 	}
@@ -191,7 +196,6 @@ function property_value_in_array($array, $property, $value)
  */
 function getUpdateData()
 	{
-  global $app, $option;
   $app = Factory::getApplication();
   $document	= Factory::getDocument();
 
@@ -221,14 +225,13 @@ function getUpdateData()
   if ( !$row->id )
   {
   // sicherheitshalber nachschauen ob die paarung schon da ist
-  $query = "SELECT ma.id
-from #__joomleague_match as ma
-where ma.round_id = '$row->round_id'
-and ma.projectteam1_id = '$row->projectteam1_id'
-and ma.projectteam2_id = '$row->projectteam2_id' 
-";
-$this->_db->setQuery( $query );
-$tempid = $this->_db->loadResult();
+  $this->jsmquery->select('m.id');
+  $this->jsmquery->from('#__sportsmanagement_match AS m');
+  $this->jsmquery->where('m.round_id = ' . $row->round_id);
+  $this->jsmquery->where('m.projectteam1_id = ' . $row->projectteam1_id);
+  $this->jsmquery->where('m.projectteam2_id = ' . $row->projectteam2_id);
+$this->jsmdb->setQuery( $this->jsmquery );
+$tempid = $this->jsmdb->loadResult();
 
   if ( $tempid )
   {
@@ -334,13 +337,13 @@ function getProjectUpdateData($csvdata,$project)
 $tempmatch = new stdClass();
 
 // round_id suchen
-$query = "SELECT r.id
+$this->jsmquery = "SELECT r.id
 from #__joomleague_round as r
 where r.project_id = '$project'
 and r.roundcode = '$row->round_id'
 ";
-$this->_db->setQuery( $query );
-$tempmatch->round_id = $this->_db->loadResult();
+$this->jsmdb->setQuery( $this->jsmquery );
+$tempmatch->round_id = $this->jsmdb->loadResult();
 
 $tempmatch->roundcode = $row->round_id;
 $tempmatch->match_date = $row->match_date;
@@ -354,39 +357,38 @@ $tempmatch->projectteam1_dfbnet = $row->projectteam1_dfbnet;
 $tempmatch->projectteam2_dfbnet = $row->projectteam2_dfbnet;
 
 // projectteam1_id suchen
-$query = "SELECT pt.id
+$this->jsmquery = "SELECT pt.id
 from #__joomleague_project_team as pt
 inner join #__joomleague_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam1_dfbnet' 
 ";
-$this->_db->setQuery( $query );
-$tempmatch->projectteam1_id = $this->_db->loadResult();
+$this->jsmdb->setQuery( $this->jsmquery );
+$tempmatch->projectteam1_id = $this->jsmdb->loadResult();
 
 // projectteam2_id suchen
-$query = "SELECT pt.id
+$this->jsmquery = "SELECT pt.id
 from #__joomleague_project_team as pt
 inner join #__joomleague_team as te
 on te.id = pt.team_id 
 where pt.project_id = '$project'
 and te.name like '$row->projectteam2_dfbnet' 
 ";
-$this->_db->setQuery( $query );
-$tempmatch->projectteam2_id = $this->_db->loadResult();
+$this->jsmdb->setQuery( $this->jsmquery );
+$tempmatch->projectteam2_id = $this->jsmdb->loadResult();
 
 $tempmatch->team1_result = $row->team1_result;
 $tempmatch->team2_result = $row->team2_result;
 $tempmatch->summary = '';
-
-$query = "SELECT ma.id
-from #__joomleague_match as ma
-where ma.round_id = '$tempmatch->round_id'
-and ma.projectteam1_id = '$tempmatch->projectteam1_id'
-and ma.projectteam2_id = '$tempmatch->projectteam2_id' 
-";
-$this->_db->setQuery( $query );
-$tempmatch->id = $this->_db->loadResult();
+$this->jsmquery->clear();
+$this->jsmquery->select('m.id');
+$this->jsmquery->from('#__sportsmanagement_match AS m');
+$this->jsmquery->where('m.round_id = ' . $tempmatch->round_id);
+$this->jsmquery->where('m.projectteam1_id = ' . $tempmatch->projectteam1_id);
+$this->jsmquery->where('m.projectteam2_id = ' . $tempmatch->projectteam2_id);
+$this->jsmdb->setQuery( $this->jsmquery );
+$tempmatch->id = $this->jsmdb->loadResult();
 
 $exportmatch[] = $tempmatch;
   
@@ -2022,23 +2024,7 @@ return $this->_datas;
     
 }
 
-
-
-
-
-    
-
-
-
-
-
-    
-
-    
-
-
 }
-
 
 ?>
 

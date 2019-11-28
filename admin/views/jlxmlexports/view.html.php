@@ -33,7 +33,7 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 	 */
 	function init()
 	{
-	   $this->exportSystem = Factory::getConfig()->get('config.sitename');
+	   $this->exportSystem = Factory::getConfig()->get('sitename');
 
 	}
 

@@ -605,11 +605,11 @@ $xmlfile = $xmlfile.$output;
 			$result[0]['exportTime'] = date('H:i:s');
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-			$result[0]['exportSystem'] = Factory::getConfig()->get('config.sitename');
+			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
 }
 else
 {
-			$result[0]['exportSystem'] = Factory::getConfig()->getValue('config.sitename');    
+			$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');    
 }            
 
 			$result[0]['object'] = 'SportsManagementVersion';
