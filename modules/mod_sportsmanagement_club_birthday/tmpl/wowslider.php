@@ -9,7 +9,7 @@
  * @subpackage mod_sportsmanagement_club_birthday
  */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 

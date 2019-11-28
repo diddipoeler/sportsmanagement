@@ -9,7 +9,6 @@
  * @subpackage specialextensions
  */
  
-// Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');

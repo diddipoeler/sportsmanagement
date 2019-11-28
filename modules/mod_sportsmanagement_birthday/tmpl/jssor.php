@@ -37,7 +37,7 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 <script>

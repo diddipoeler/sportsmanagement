@@ -4,7 +4,7 @@
  * @license		GNU General Public License version 3 or later; see LICENSE.txt
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');

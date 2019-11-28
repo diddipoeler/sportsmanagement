@@ -7,14 +7,11 @@
 * @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Factory;
-//use Joomla\CMS\Language\Text;
-//jimport('joomla.form.formfield');
 
 /**
  * FormFieldExtensionAuthor

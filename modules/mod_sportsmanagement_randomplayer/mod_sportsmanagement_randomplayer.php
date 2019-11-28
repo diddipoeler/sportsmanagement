@@ -9,7 +9,7 @@
  * @subpackage mod_sportsmanagement_randomplayer
  */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;

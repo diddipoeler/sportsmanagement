@@ -9,7 +9,7 @@
  * @subpackage imagehandler
  */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;

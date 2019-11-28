@@ -9,7 +9,7 @@
  * @subpackage fields
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;

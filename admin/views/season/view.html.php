@@ -9,7 +9,7 @@
  * @subpackage season
  */
 
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 

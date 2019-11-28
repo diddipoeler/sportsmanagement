@@ -9,8 +9,6 @@
  * @subpackage predictions
  */
 
-
-// Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>

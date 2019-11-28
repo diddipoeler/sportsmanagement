@@ -10,7 +10,7 @@
 * https://hotexamples.com/examples/-/FormFieldRadio/-/php-FormFieldradio-class-examples.html
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
 use Joomla\CMS\Form\Field\RadioField;
 
