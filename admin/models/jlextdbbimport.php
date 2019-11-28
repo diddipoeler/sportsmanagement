@@ -35,13 +35,10 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 jimport('joomla.html.pane');
 
-require_once( JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'csvhelper.php' );
-require_once( JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'ical.php' );
-require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'countries.php');
-
+JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 use Joomla\Utilities\ArrayHelper;
-
-// import JFile
 use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
 
@@ -337,11 +334,11 @@ function getProjectUpdateData($csvdata,$project)
 $tempmatch = new stdClass();
 
 // round_id suchen
-$this->jsmquery = "SELECT r.id
-from #__joomleague_round as r
-where r.project_id = '$project'
-and r.roundcode = '$row->round_id'
-";
+$this->jsmquery->clear();
+$this->jsmquery->select('r.id');
+$this->jsmquery->from('#__sportsmanagement_round AS r');
+$this->jsmquery->where('r.project_id = ' . $project);
+$this->jsmquery->where('r.roundcode = ' . $row->round_id);
 $this->jsmdb->setQuery( $this->jsmquery );
 $tempmatch->round_id = $this->jsmdb->loadResult();
 
@@ -357,24 +354,24 @@ $tempmatch->projectteam1_dfbnet = $row->projectteam1_dfbnet;
 $tempmatch->projectteam2_dfbnet = $row->projectteam2_dfbnet;
 
 // projectteam1_id suchen
-$this->jsmquery = "SELECT pt.id
-from #__joomleague_project_team as pt
-inner join #__joomleague_team as te
-on te.id = pt.team_id 
-where pt.project_id = '$project'
-and te.name like '$row->projectteam1_dfbnet' 
-";
+$this->jsmquery->clear();
+$this->jsmquery->select('pt.id');
+$this->jsmquery->from('#__sportsmanagement_project_team as pt');
+$this->jsmquery->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+$this->jsmquery->join('INNER',' #__sportsmanagement_team te ON te.id = st.team_id ');
+$this->jsmquery->where('pt.project_id = ' . $project);
+$this->jsmquery->where('te.name LIKE '.$this->jsmdb->Quote(''.$row->projectteam1_dfbnet.'') );
 $this->jsmdb->setQuery( $this->jsmquery );
 $tempmatch->projectteam1_id = $this->jsmdb->loadResult();
 
 // projectteam2_id suchen
-$this->jsmquery = "SELECT pt.id
-from #__joomleague_project_team as pt
-inner join #__joomleague_team as te
-on te.id = pt.team_id 
-where pt.project_id = '$project'
-and te.name like '$row->projectteam2_dfbnet' 
-";
+$this->jsmquery->clear();
+$this->jsmquery->select('pt.id');
+$this->jsmquery->from('#__sportsmanagement_project_team as pt');
+$this->jsmquery->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+$this->jsmquery->join('INNER',' #__sportsmanagement_team te ON te.id = st.team_id ');
+$this->jsmquery->where('pt.project_id = ' . $project);
+$this->jsmquery->where('te.name LIKE '.$this->jsmdb->Quote(''.$row->projectteam2_dfbnet.'') );
 $this->jsmdb->setQuery( $this->jsmquery );
 $tempmatch->projectteam2_id = $this->jsmdb->loadResult();
 
