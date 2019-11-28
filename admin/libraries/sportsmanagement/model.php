@@ -53,9 +53,7 @@ public function __construct($config = array())
         $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
-        // Reference global application object
         $this->jsmapp = Factory::getApplication();
-        // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview = $this->jsmjinput->getCmd('view');

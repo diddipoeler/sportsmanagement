@@ -81,20 +81,13 @@ class sportsmanagementModelMatch extends JSMModelAdmin
      */
     function getRoundMatches($round_id)
     {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection();
-        // Create a new query object.
-        $query = $db->getQuery(true);
-        $query->select('m.*');
-        $query->from('#__sportsmanagement_match AS m');
-        $query->where('m.round_id = ' . $round_id);
-        $query->order('m.match_number');
-
-
-        $db->setQuery($query);
-        return ($db->loadObjectList());
+        $this->jsmquery->clear();
+        $this->jsmquery->select('m.*');
+        $this->jsmquery->from('#__sportsmanagement_match AS m');
+        $this->jsmquery->where('m.round_id = ' . $round_id);
+        $this->jsmquery->order('m.match_number');
+        $this->jsmdb->setQuery($this->jsmquery);
+        return ($this->jsmdb->loadObjectList());
     }
 
 
@@ -106,31 +99,22 @@ class sportsmanagementModelMatch extends JSMModelAdmin
      */
     public static function getMatchEvents($match_id = 0)
     {
-        // Reference global application object
         $app = Factory::getApplication();
-        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $project_id = $app->getUserState("$option.pid", '0');
-        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
-        // Create a new query object.
         $query = $db->getQuery(true);
         $query->select('me.*,t.name AS team,et.name AS event,CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1');
-        //$query->select('CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2');
         $query->from('#__sportsmanagement_match_event AS me');
         $query->join('LEFT', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
         $query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id and st1.season_id = tp1.season_id');
-
         $query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
         $query->join('LEFT', '#__sportsmanagement_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
         $query->join('LEFT', '#__sportsmanagement_team AS t ON t.id = st1.team_id');
         $query->join('LEFT', '#__sportsmanagement_eventtype AS et ON et.id = me.event_type_id ');
-
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
-
         $query->where('pt1.project_id = ' . $project_id);
-
         $query->where('me.match_id = ' . $match_id);
         $query->order('me.event_time ASC');
         $db->setQuery($query);
@@ -146,33 +130,21 @@ class sportsmanagementModelMatch extends JSMModelAdmin
      */
     function count_result($count_result = 0)
     {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Get a db connection.
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true);
-        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = Factory::getApplication()->input->post->getArray(array());
+        $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+        $post = $this->jsmjinput->post->getArray(array());
         $result = true;
         for ($x = 0; $x < count($pks); $x++) {
-            // Create an object for the record we are going to update.
             $object = new stdClass();
-            // Must be a valid primary key value.
             $object->id = $pks[$x];
             $object->count_result = $count_result;
             try {
-                // Update their details in the table using id as the primary key.
-                $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+                $result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $object, 'id', true);
                 sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]);
-                $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
+                $this->jsmapp->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
             } catch (Exception $e) {
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 $result = false;
             }
-
 
         }
     }
@@ -185,21 +157,13 @@ class sportsmanagementModelMatch extends JSMModelAdmin
      */
     function getProjectRoundCodes($project_id)
     {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Get a db connection.
-        $db = Factory::getDbo();
-        $query = $db->getQuery(true);
-        $query->select('id,roundcode,round_date_first');
-        $query->from('#__sportsmanagement_round');
-        $query->where('project_id = ' . $project_id);
-        $query->order('roundcode,round_date_first ASC');
-
-        $db->setQuery($query);
-        return $db->loadObjectList();
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id,roundcode,round_date_first');
+        $this->jsmquery->from('#__sportsmanagement_round');
+        $this->jsmquery->where('project_id = ' . $project_id);
+        $this->jsmquery->order('roundcode,round_date_first ASC');
+        $this->jsmdb->setQuery($this->jsmquery);
+        return $this->jsmdb->loadObjectList();
     }
 
 
