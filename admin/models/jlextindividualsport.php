@@ -30,6 +30,22 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementModeljlextindividualsport extends AdminModel
 {
 
+/**
+ * sportsmanagementModeljlextindividualsport::__construct()
+ * 
+ * @param mixed $config
+ * @return void
+ */
+public function __construct($config = array())
+        {   
+ 
+        parent::__construct($config);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmapp = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        }
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -41,7 +57,6 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
 		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
@@ -69,8 +84,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 	 */
 	protected function loadFormData() 
 	{
-		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jlextindividualsport.data', array());
+		$data = Factory::getApplication()->getUserState($this->jsmoption.'.edit.jlextindividualsport.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -88,18 +102,12 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        
-        // Get the form.
+        $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
 		$form = $this->loadForm('com_sportsmanagement.jlextindividualsport', 'jlextindividualsport', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
-        
-
         
 		return $form;
 	}
@@ -112,27 +120,18 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
      */
     function saveshort()
     {
-        $app = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->clear();
-        // Get the input
+        $this->jsmquery->clear();
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
         $match_id = $post['match_id'];
         
         $result_tie_break = 0;
        
-        // select some fields
-		$query->select('use_tie_break,game_parts,sports_type_id');
-		// from table
-		$query->from('#__sportsmanagement_project');
-        // where
-        $query->where('id = '.(int) $post['project_id']);
-        $db->setQuery($query);
-        $use_tie_break = $db->loadObject();
+		$this->jsmquery->select('use_tie_break,game_parts,sports_type_id');
+		$this->jsmquery->from('#__sportsmanagement_project');
+        $this->jsmquery->where('id = '.(int) $post['project_id']);
+        $this->jsmdb->setQuery($this->jsmquery);
+        $use_tie_break = $this->jsmdb->loadObject();
         $result_tie_break = $use_tie_break->game_parts;
         
         if ( $use_tie_break->use_tie_break  )
@@ -140,16 +139,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             $result_tie_break = $result_tie_break - 1;
         }
       
-        $query = $db->getQuery(true);
-        $query->clear();
-        // select some fields
-		$query->select('name,id');
-		// from table
-		$query->from('#__sportsmanagement_eventtype');
-        // where
-        $query->where('sports_type_id = '.(int) $use_tie_break->sports_type_id);
-        $db->setQuery($query);
-        $event_list = $db->loadObjectList('name');
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmquery->clear();
+		$this->jsmquery->select('name,id');
+		$this->jsmquery->from('#__sportsmanagement_eventtype');
+        $this->jsmquery->where('sports_type_id = '.(int) $use_tie_break->sports_type_id);
+        $this->jsmdb->setQuery($this->jsmquery);
+        $event_list = $this->jsmdb->loadObjectList('name');
 
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
@@ -171,16 +167,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 			$tblMatch->id = $pks[$x];
 			$tblMatch->match_number	= $post['match_number'.$pks[$x]];
             $tblMatch->match_date = $post['match_date'.$pks[$x]];
-            //$tblMatch->match_time = $post['match_time'.$pks[$x]];
             $tblMatch->crowd = $post['crowd'.$pks[$x]];
             $tblMatch->round_id	= $post['round_id'.$pks[$x]];
             $tblMatch->division_id	= $post['division_id'.$pks[$x]];
             $tblMatch->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $tblMatch->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
-            
             $tblMatch->teamplayer1_id = $post['teamplayer1_id'.$pks[$x]];
             $tblMatch->teamplayer2_id = $post['teamplayer2_id'.$pks[$x]];
-            
             $tblMatch->double_team1_player1 = $post['double_team1_player1'.$pks[$x]];
             $tblMatch->double_team1_player2 = $post['double_team1_player2'.$pks[$x]];
             $tblMatch->double_team2_player1 = $post['double_team2_player1'.$pks[$x]];
@@ -216,10 +209,6 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 //                        $tblMatch->team2_result	= NULL;  
                     }
                 }
-
-            
-            
-            
             
             $tblMatch->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $tblMatch->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
@@ -338,16 +327,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         
         // alles ok
         // jetzt die einzelergebnisse zum hauptspiel addieren 
-        $query = $db->getQuery(true);
-        $query->clear();
-        // Select some fields
-		$query->select('mc.*');
-		// From the hello table
-		$query->from('#__sportsmanagement_match_single AS mc');
-        $query->where('mc.match_id = '.$match_id);
-        $db->setQuery($query);
+        $this->jsmquery->clear();
+		$this->jsmquery->select('mc.*');
+		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
+        $this->jsmquery->where('mc.match_id = '.$match_id);
+        $this->jsmdb->setQuery($this->jsmquery);
         
-		$result = $db->loadObjectList();
+		$result = $this->jsmdb->loadObjectList();
         $temp = new stdClass();
         foreach ( $result as $row )
         {
@@ -431,25 +417,24 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             }
         }
         
-        $rowmatch = Table::getInstance( 'match', 'sportsmanagementTable' );
-        $rowmatch->load($match_id);
+        $rowmatch = new stdClass();
+        $rowmatch->id = $match_id;
         $rowmatch->team1_result = $temp->team1_result;
         $rowmatch->team2_result = $temp->team2_result;
-        
         $rowmatch->team1_single_matchpoint = $temp->team1_result;
         $rowmatch->team2_single_matchpoint = $temp->team2_result;
-        
         $rowmatch->team1_single_sets = $temp->team1_single_sets;
         $rowmatch->team2_single_sets = $temp->team2_single_sets; 
-        
         $rowmatch->team1_single_games = $temp->team1_single_games;
         $rowmatch->team2_single_games = $temp->team2_single_games;
-        if(!$rowmatch->store()) 
-            {
-			}
-            else
-            {
-            }    
+try {
+                $result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $rowmatch, 'id', true);
+
+
+            } catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
+            }
        
         // Proceed with the save
 		//return parent::save($data);

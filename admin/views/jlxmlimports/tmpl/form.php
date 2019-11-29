@@ -83,44 +83,44 @@ if (isset($this->xml) && is_array($this->xml))
 		if (isset($teams))
 		{
 			$xmlImportType='teams';	// There shouldn't be any problems with import of teams-xml-export files
-			$xmlImportTitle='Standard XML-Import of JoomLeague Teams';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Teams';
 			$teamsClubs=$teams;
 		}
 		elseif (isset($clubs))
 		{
 			$xmlImportType='clubs';	// There shouldn't be any problems with import of clubs-xml-export files
-			$xmlImportTitle='Standard XML-Import of JoomLeague Clubs';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Clubs';
 			$teamsClubs=$clubs;
 		}
 		elseif (isset($events)) // There shouldn't be any problems with import of events-xml-export files
 		{
 			$xmlImportType='events';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Events';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Events';
 		}
 		elseif (isset($positions))	// There shouldn't be any problems with import of positions-xml-export files
 		{							// maybe the positions export routine should also export position_eventtype and events
 			$xmlImportType='positions';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Positions';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Positions';
 		}
 		elseif (isset($parentpositions))	// There shouldn't be any problems with import of positions-xml-export files
 		{									// maybe the positions export routine should also export position_eventtype and events
 			$xmlImportType='positions';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Positions';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Positions';
 		}
 		elseif (isset($persons))	// There shouldn't be any problems with import of persons-xml-export files
 		{
 			$xmlImportType='persons';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Persons';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Persons';
 		}
 		elseif (isset($playgrounds))	// There shouldn't be any problems with import of statistics-xml-export files
 		{
 			$xmlImportType='playgrounds';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Playgrounds';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Playgrounds';
 		}
 		elseif (isset($statistics)) // There shouldn't be any problems with import of statistics-xml-export files
 		{							// maybe the statistic export routine should also export position_statistic and positions
 			$xmlImportType='statistics';
-			$xmlImportTitle='Standard XML-Import of JoomLeague Statistics';
+			$xmlImportTitle='Standard XML-Import of SportsManagement Statistics';
 		}
         Log::add(Text::_($xmlImportTitle), Log::NOTICE, 'jsmerror');
 	}

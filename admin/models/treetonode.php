@@ -147,7 +147,7 @@ public function __construct($config = array())
 		$post = Factory::getApplication()->input->post->getArray(array());
 		$id = (int) $post['id'];
 		
-		$query = ' UPDATE #__joomleague_treeto_node AS ttn ';
+		$query = ' UPDATE #__sportsmanagement_treeto_node AS ttn ';
 		$query .= ' SET ';
 		$query .= ' ttn.published = 0 ';
 		$query .= ' WHERE ttn.id = ' . $id;

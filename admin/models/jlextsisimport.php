@@ -602,9 +602,7 @@ $this->_datas['projectreferee'] = array_merge($exportreferee);
 $this->_datas['round'] = array_merge($exportround);
 $this->_datas['match'] = array_merge($exportmatch);
 
-/**
- * das ganze für den standardimport aufbereiten
- */
+/** das ganze für den standardimport aufbereiten */
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
@@ -752,10 +750,10 @@ File::write($file, $xmlfile);
     {
         $option = Factory::getApplication()->input->getCmd('option');
   $app = Factory::getApplication();
-		// XML File
+		/** XML File */
 		$filepath='components/'.$option.'/sisdata/';
         
-		//File laden
+		/** File laden */
 		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		if (file_exists($datei)) 
         {
@@ -765,17 +763,14 @@ File::write($file, $xmlfile);
                     if (function_exists('curl_version'))
 {
     $curl = curl_init();
-    //Define header array for cURL requestes
+    /** Define header array for cURL requestes */
     $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
     curl_setopt($curl, CURLOPT_VERBOSE, 1);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
-    
-    
     $content = curl_exec($curl);
     curl_close($curl);
 }
@@ -785,31 +780,28 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 }
 else
 {
-    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
-					//Parsen
+					/** Parsen */
 					$doc = DOMDocument::loadXML($content);
-					//Altes File löschen
+					/** Altes File löschen */
 					unlink($datei);
-					//Speichern
+					/** Speichern */
 					$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
-				//}
 			}
 		} 
         else 
         {
-			//Laden
+			/** Laden */
             if (function_exists('curl_version'))
 {
     $curl = curl_init();
-    //Define header array for cURL requestes
+    /** Define header array for cURL requestes */
     $header = array('Contect-Type:application/xml');
     curl_setopt($curl, CURLOPT_URL, $linkresults);
     curl_setopt($curl, CURLOPT_VERBOSE, 1);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-    //curl_setopt($curl, CURLOPT_POST, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HTTPHEADER , $header);
     $content = curl_exec($curl);
@@ -821,16 +813,15 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 }
 else
 {
-    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
-			//Parsen
+			/** Parsen */
 			$doc = DOMDocument::loadXML($content);
-			//Speichern
+			/** Speichern */
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}
 		$result = simplexml_load_file($datei);
-		// XML File end
+		/** XML File end */
 		foreach ($result->Spiel as $temp) 
         {
 			$nummer = substr( $temp->Liga , -3);
@@ -844,9 +835,6 @@ else
 		}
 		return $result;
 	}
-    
-
-
 
 }
 

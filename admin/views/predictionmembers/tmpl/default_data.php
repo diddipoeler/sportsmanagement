@@ -152,7 +152,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 						?>
 							<?php /* ?>
 							<a  href="<?php echo $link; ?>"
-								title="<?php echo Text::_( 'Edit JoomLeague-Prediction User' ); ?>">
+								title="<?php echo Text::_( 'Edit SportsManagement-Prediction User' ); ?>">
 							<?php */ ?>
 								<?php
 								echo $row->realname;
