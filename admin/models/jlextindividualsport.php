@@ -57,7 +57,7 @@ public function __construct($config = array())
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', $this->jsmoption.'.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -103,7 +103,7 @@ public function __construct($config = array())
 	public function getForm($data = array(), $loadData = true) 
 	{
         $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
-		$form = $this->loadForm('com_sportsmanagement.jlextindividualsport', 'jlextindividualsport', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm($this->jsmoption.'.jlextindividualsport', 'jlextindividualsport', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;

@@ -65,8 +65,13 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
  */
 function __construct( )
 	{
-	   $option = Factory::getApplication()->input->getCmd('option');
-	$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0);
+	   parent::__construct($config);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmapp = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+	$show_debug_info = ComponentHelper::getParams($this->jsmoption)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
   $this->debug_info = true;
@@ -76,8 +81,7 @@ function __construct( )
   $this->debug_info = false;
   }
 
-		parent::__construct( );
-	
+
 	}
 
  /**
@@ -115,8 +119,7 @@ function __construct( )
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
+		$form = $this->loadForm($this->jsmoption.'.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
 		{
@@ -133,8 +136,7 @@ function __construct( )
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState($this->jsmoption.'.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
