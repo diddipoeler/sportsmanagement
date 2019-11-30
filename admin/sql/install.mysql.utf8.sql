@@ -937,6 +937,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
   KEY `division_id` (`division_id`),
+  KEY `import` (`import`),
   KEY `standard_playground` (`standard_playground`),
   UNIQUE INDEX `combi` (`project_id` ASC, `team_id` ASC)
   )
@@ -944,7 +945,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur f�r Tabelle `jos_sportsmanagement_rosterposition`
+-- Tabellenstruktur für Tabelle `jos_sportsmanagement_rosterposition`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (

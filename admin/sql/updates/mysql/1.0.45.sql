@@ -1,5 +1,3 @@
-ALTER TABLE  `#__sportsmanagement_club` CHANGE  `dissolved`  `dissolved` DATE NULL DEFAULT  '0000-00-00';
-
 ALTER TABLE  `#__sportsmanagement_team` ADD `standard_playground` INT(11) NULL DEFAULT NULL ;
 ALTER TABLE  `#__sportsmanagement_season_team_id` ADD `standard_playground` INT(11) NULL DEFAULT NULL ;
 
