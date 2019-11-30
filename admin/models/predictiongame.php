@@ -209,7 +209,7 @@ else
 
 		for ( $x = 0; $x < count( $peid ); $x++ )
 		{
-			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
+			$query = "INSERT IGNORE INTO #__sportsmanagement_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
 //echo $query . '<br />';
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )

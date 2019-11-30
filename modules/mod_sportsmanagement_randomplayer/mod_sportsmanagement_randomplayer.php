@@ -53,10 +53,6 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 
 $paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
-if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$paramscomponent->get( 'cfg_which_database_table' ) );
-}
 
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
 {

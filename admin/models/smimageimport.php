@@ -157,7 +157,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
                         $object->id = $value;
                         $object->published = 1;
                         // Update their details in the users table using id as the primary key.
-                        $result = Factory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $object, 'id');
+                        $result = Factory::getDbo()->updateObject('#__sportsmanagement_pictures', $object, 'id');
                     }
                 } else {
                     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');

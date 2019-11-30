@@ -59,11 +59,6 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-}
-
 if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );

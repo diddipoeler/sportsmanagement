@@ -291,7 +291,7 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 				$updateFiles[$i]['updateDescription']=$updateDescription;
 				$updateFiles[$i]['date']='';
 				$updateFiles[$i]['count']=0;
-				$query="SELECT date,count FROM #__".COM_SPORTSMANAGEMENT_TABLE."_version where file=".$this->_db->Quote($updateFile);
+				$query="SELECT date,count FROM #__sportsmanagement_version where file=".$this->_db->Quote($updateFile);
 				$this->_db->setQuery($query);
 				if (!$result=$this->_db->loadObject())
 				{

@@ -52,17 +52,8 @@ class JFormFieldprojectlist extends \JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('l.id AS value, l.name AS text');
-            if ( defined(COM_SPORTSMANAGEMENT_TABLE) )
-            {
             $query->from('#__sportsmanagement_project as l');    
-            }
-            else
-            {
-            $query->from('#__sportsmanagement_project as l');    
-            }
-			
 			$query->order('l.name');
-           
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     

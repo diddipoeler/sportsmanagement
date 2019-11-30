@@ -160,7 +160,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 
 		for ( $x = 0; $x < count($peid); $x++ )
 		{
-			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
+			$query = "UPDATE #__sportsmanagement_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
  			$this->_db->setQuery( $query );
 			if( !$this->_db->execute() )
 			{
@@ -170,7 +170,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 		}
 		for ( $x = 0; $x < count($peid); $x++ )
 		{
-			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
+			$query = "INSERT IGNORE INTO #__sportsmanagement_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )
 			{

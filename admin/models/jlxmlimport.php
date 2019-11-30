@@ -2201,7 +2201,7 @@ $my_text .= $e->getMessage().'<br />';
 				{
 					$p_statistic->set('alias',OutputFilter::stringURLSafe($this->_getDataFromObject($p_statistic,'name')));
 				}
-				$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_statistic WHERE name='".addslashes(stripslashes($p_statistic->name))."' AND class='".addslashes(stripslashes($p_statistic->class))."'";
+				$query="SELECT * FROM #__sportsmanagement_statistic WHERE name='".addslashes(stripslashes($p_statistic->name))."' AND class='".addslashes(stripslashes($p_statistic->class))."'";
 				Factory::getDbo()->setQuery($query);
 				sportsmanagementModeldatabasetool::runJoomlaQuery();
 				if ($object=Factory::getDbo()->loadObject())
@@ -2461,7 +2461,7 @@ $my_text .= __LINE__.' '.$e->getMessage().'<br />';
 			$p_positioneventtype->set('position_id',$this->_convertPositionID[$oldPositionID]);
 			$p_positioneventtype->set('eventtype_id',$this->_convertEventID[$oldEventID]);
 			$query ="SELECT id
-							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype
+							FROM #__sportsmanagement_position_eventtype
 							WHERE	position_id='$p_positioneventtype->position_id' AND
 									eventtype_id='$p_positioneventtype->eventtype_id'";
 			Factory::getDbo()->setQuery($query);
@@ -3313,7 +3313,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							
                             $defaultvalues = json_encode( $arrStandardSettings);
                             
-							$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_template_config (template,title,params,project_id)
+							$query="	INSERT INTO #__sportsmanagement_template_config (template,title,params,project_id)
 													VALUES ('$template','".$form->getName()."','$defaultvalues','$project_id')";
 							Factory::getDbo()->setQuery($query);
                             
@@ -3513,7 +3513,7 @@ $t_params = json_encode( $ini );
         // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
         
-//		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
+//		$query="UPDATE #__sportsmanagement_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
 //        Factory::getDbo()->setQuery($query);
 //		sportsmanagementModeldatabasetool::runJoomlaQuery();
         
@@ -5135,7 +5135,7 @@ $query->clear();
 			}
 			$t_fav_team=trim($t_fav_team,',');
 		}
-		$query="UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_project SET fav_team='$t_fav_team' WHERE id=$this->_project_id";
+		$query="UPDATE #__sportsmanagement_project SET fav_team='$t_fav_team' WHERE id=$this->_project_id";
 		Factory::getDbo()->setQuery($query);
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 	}
@@ -6413,7 +6413,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
         $db = Factory::getDbo();
         
         $query = "SELECT r.id as round_id
-FROM #__".COM_SPORTSMANAGEMENT_TABLE."_round AS r
+FROM #__sportsmanagement_round AS r
 WHERE r.project_id = " . $this->_project_id .' ORDER by roundcode DESC';
 
 Factory::getDbo()->setQuery( $query );
@@ -6430,7 +6430,7 @@ foreach( $rounds as $rounddate)
 $current_round_old = $rounddate->round_id;
     
 $query = "SELECT min(m.match_date)
-from #__".COM_SPORTSMANAGEMENT_TABLE."_match as m
+from #__sportsmanagement_match as m
 where m.round_id = '$rounddate->round_id'
 ";
 
@@ -6440,7 +6440,7 @@ $teile = explode(" ",$von);
 $von = $teile[0];
 
 $query = "SELECT max(m.match_date)
-from #__".COM_SPORTSMANAGEMENT_TABLE."_match as m
+from #__sportsmanagement_match as m
 where m.round_id = '$rounddate->round_id'
 ";
 

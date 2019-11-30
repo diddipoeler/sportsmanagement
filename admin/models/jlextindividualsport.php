@@ -526,9 +526,8 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 	 */
 	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
 	{
-		$option = 'com_sportsmanagement';
 		$app	= Factory::getApplication();
-		$datatable[0]='#__sportsmanagement_match_single';
+		$datatable[0] = '#__sportsmanagement_match_single';
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$fields = $this->_db->getTableColumns($datatable, true);
@@ -539,16 +538,16 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 			$fields = array_shift($fieldsArray);
 		}
 		
-    $sporttype = $app->getUserState( $option . 'sporttype' );
+    $sporttype = $app->getUserState( $this->jsmoption . 'sporttype' );
     $defaultvalues = array();
-    $game_parts = $app->getUserState( $option . 'game_parts' );
+    $game_parts = $app->getUserState( $this->jsmoption . 'game_parts' );
     
 // in abhängigkeit von der sportart wird das ergebnis gespeichert    
 switch(strtolower($sporttype))
 {
 case 'kegeln':
 
-$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomleague'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
+$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->jsmoption.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
 $file = 'kegelnresults.xml';
 $defaultconfig=array ();
 $out=simplexml_load_file($xmldir.DIRECTORY_SEPARATOR.$file,'SimpleXMLElement',LIBXML_NOCDATA);
@@ -612,7 +611,7 @@ $defaultvalues[] = $key . '=' . $value;
 }
 $temp = implode( "\n", $defaultvalues );
 
-$query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".$cid;
+$query="UPDATE #__sportsmanagement_match_single SET `extended`='".$temp."' WHERE id=".$cid;
 $this->_db->setQuery($query);
 if (!$this->_db->execute())
 		{
@@ -623,7 +622,7 @@ if (!$this->_db->execute())
 break;
 
 case 'tennis':
-$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomleague'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
+$xmldir = JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->jsmoption.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jlextindividualsport'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
 $file = 'tennisresults.xml';
 $defaultconfig=array ();
 $out=simplexml_load_file($xmldir.DIRECTORY_SEPARATOR.$file,'SimpleXMLElement',LIBXML_NOCDATA);
@@ -767,7 +766,7 @@ break;
 			}
 		}
 		$user =& Factory::getUser();
-		$query='UPDATE #__joomleague_match_single SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
+		$query='UPDATE #__sportsmanagement_match_single SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
 		$this->_db->setQuery($query);
 		$this->_db->query($query);
 		
@@ -790,13 +789,12 @@ break;
 	 */
 	function save_round_match_tennis()
 	{
-  $option = 'com_sportsmanagement';
 	$app	= Factory::getApplication();
 	$post=Factory::getApplication()->input->post->getArray(array());
   $cid=Factory::getApplication()->input->getVar('cid',array(),'post','array');
 	ArrayHelper::toInteger($cid);
 		
-  $sporttype = $app->getUserState( $option . 'sporttype' );
+  $sporttype = $app->getUserState( $this->jsmoption . 'sporttype' );
   $defaultvalues = array();
   
    
@@ -852,13 +850,12 @@ $temp = implode( "\n", $defaultvalues );
    */
   function save_round_match_kegeln()
 	{
-  $option = 'com_sportsmanagement';
 	$app	= Factory::getApplication();
 	$post = Factory::getApplication()->input->post->getArray(array());
   $cid = Factory::getApplication()->input->getVar('cid',array(),'post','array');
 	ArrayHelper::toInteger($cid);
 		
-  $sporttype = $app->getUserState( $option . 'sporttype' );
+  $sporttype = $app->getUserState( $this->jsmoption . 'sporttype' );
   $defaultvalues = array();
    
   $match_id = $post['match_id'];	

@@ -1077,7 +1077,7 @@ abstract class sportsmanagementHelper {
         $query = '	SELECT	id,
 							name
 
-					FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project
+					FROM #__sportsmanagement_project
 					ORDER BY ordering, name ASC';
 
         $db->setQuery($query);
@@ -1116,7 +1116,7 @@ abstract class sportsmanagementHelper {
      */
     function getTeamplayerProject($projectteam_id) {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT project_id FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project_team WHERE id=' . (int) $projectteam_id;
+        $query = 'SELECT project_id FROM #__sportsmanagement_project_team WHERE id=' . (int) $projectteam_id;
         $db->setQuery($query);
         if (!$result = $db->loadResult()) {
             //$this->setError($db->getErrorMsg());
@@ -1134,7 +1134,7 @@ abstract class sportsmanagementHelper {
      */
     public static function getSportsTypeName($sportsType) {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT name FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_sports_type WHERE id=' . (int) $sportsType;
+        $query = 'SELECT name FROM #__sportsmanagement_sports_type WHERE id=' . (int) $sportsType;
         $db->setQuery($query);
         if (!$result = $db->loadResult()) {
             //$this->setError($db->getErrorMsg());
@@ -1152,7 +1152,7 @@ abstract class sportsmanagementHelper {
      */
     function getSportsTypes() {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT id, name FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_sports_type ORDER BY name ASC ';
+        $query = 'SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
         $db->setQuery($query);
         if (!$result = $db->loadObjectList()) {
             $this->setError($db->getErrorMsg());
@@ -1204,7 +1204,7 @@ abstract class sportsmanagementHelper {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $query->select('extension');
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project');
+        $query->from('#__sportsmanagement_project');
         $query->where('id =' . $db->Quote((int) $project_id));
         $db->setQuery($query);
         $res = $db->loadResult();
@@ -1251,7 +1251,7 @@ abstract class sportsmanagementHelper {
         $excludeExtension = array();
         if ($project_id) {
             $db = sportsmanagementHelper::getDBConnection();
-            $query = 'SELECT extension FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project WHERE id=' . $db->Quote((int) $project_id);
+            $query = 'SELECT extension FROM #__sportsmanagement_project WHERE id=' . $db->Quote((int) $project_id);
 
             $db->setQuery($query);
             $res = $db->loadObject();
@@ -2625,7 +2625,7 @@ try{
                 $values = array($post['extra_id'][$p], $pid, '\'' . $post['extraf'][$p] . '\'');
                 // Prepare the insert query.
                 $query
-                        ->insert($db->quoteName('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields_values'))
+                        ->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
                         ->columns($db->quoteName($columns))
                         ->values(implode(',', $values));
                 try {
@@ -2820,7 +2820,7 @@ try{
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('logo_big'))
-                ->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_club')
+                ->from('#__sportsmanagement_club')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
@@ -2846,7 +2846,7 @@ try{
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('picture'))
-                ->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_playground')
+                ->from('#__sportsmanagement_playground')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();

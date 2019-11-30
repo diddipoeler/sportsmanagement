@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE  `#__sportsmanagement_confidential` CHANGE  `nummer`  `nummer` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
-ALTER TABLE  `#__sportsmanagement_user_extra_fields_values` CHANGE  `fieldvalue`  `fieldvalue` VARCHAR( 300 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 ALTER TABLE  `#__sportsmanagement_confidential` ADD UNIQUE  `schluessel2` (  `name` ( 150 ) ,  `nummer` ( 50 ) ) ;
 

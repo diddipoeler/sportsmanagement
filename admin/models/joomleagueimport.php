@@ -311,16 +311,7 @@ $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$exist
 $my_text .= '<br />';
                     
                 }
-//                // Create an object for the record we are going to joomleague update.
-//                $object = new stdClass();
-//                // Must be a valid primary key value.
-//                $object->id = $row->id;
-//                $object->import = $new_id;
-//                // Update their details in the users table using id as the primary key.
-//                $result_update = Factory::getDbo()->updateObject('#__joomleague_team_player', $object, 'id'); 
-                
                 // kein update, sondern den datensatz aus der importierten tabelle löschen
-                // delete all custom keys for user 1001.
 $query->clear();
 $conditions = array(
     $db->quoteName('id') . ' = '.$row->id

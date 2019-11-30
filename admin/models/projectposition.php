@@ -53,14 +53,14 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 		$peid = (isset($data['project_positionslist']));
 		if ($peid==null)
 		{
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id'];
+			$query="DELETE FROM #__sportsmanagement_project_position WHERE project_id=".$data['project_id'];
 		}
 		else
 		{
 			$pidArray=$data['project_positionslist'];
 			ArrayHelper::toInteger($pidArray);
 			$peids=implode(",",$pidArray);
-			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id']." AND position_id NOT IN ($peids)";
+			$query="DELETE FROM #__sportsmanagement_project_position WHERE project_id=".$data['project_id']." AND position_id NOT IN ($peids)";
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->execute())
@@ -70,7 +70,7 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 		}
 		for ($x=0; $x < count($data['project_positionslist']); $x++)
 		{
-			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['project_id']."','".$data['project_positionslist'][$x]."')";
+			$query="INSERT IGNORE INTO #__sportsmanagement_project_position (project_id,position_id) VALUES ('".$data['project_id']."','".$data['project_positionslist'][$x]."')";
 			$this->_db->setQuery($query);
 			if(!$this->_db->execute())
 			{

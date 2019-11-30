@@ -52,10 +52,7 @@ $paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
-if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-}
+
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );

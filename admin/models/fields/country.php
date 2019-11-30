@@ -8,13 +8,12 @@
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'countries.php');
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE); 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
