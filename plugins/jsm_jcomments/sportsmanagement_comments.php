@@ -1,16 +1,38 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagement_comments.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage plugins
+ */
 
-
-// no direct access
 defined('_JEXEC') or die;
-
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
 
+/**
+ * plgContentSportsmanagement_Comments
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class plgContentSportsmanagement_Comments extends JPlugin {
 
 	public $params = null;
 	
+	/**
+	 * plgContentSportsmanagement_Comments::__construct()
+	 * 
+	 * @param mixed $subject
+	 * @param mixed $config
+	 * @return
+	 */
 	public function __construct(&$subject, $config = array())
 	{
 		$app = Factory::getApplication();
@@ -22,7 +44,6 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 		
 		parent::__construct($subject);
 		
-		// Get the parameters.
 		if (isset($config['params']))
 		{
 			if ($config['params'] instanceof Registry)
@@ -36,7 +57,6 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 			}
 		}
 		
-		// load language file for frontend
 		JPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
 	}
 
@@ -48,7 +68,6 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	 */
 	public function onMatchReportComments(&$match, $title, &$html)
 	{
-		// load plugin params info
 		$separate_comments = $this->params->get('separate_comments', 0);
 
 		if ($separate_comments) {
@@ -71,7 +90,6 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	 */
 	public function onNextMatchComments(&$match, $title, &$html)
 	{
-		// load plugin params info
 		$separate_comments = $this->params->get('separate_comments', 0);
 
 		if ($separate_comments) {
@@ -94,7 +112,6 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	 */
 	public function onMatchComments(&$match, $title, &$html)
 	{
-		// load plugin params info
 		$separate_comments = $this->params->get('separate_comments',0);
 		
 		if ($separate_comments == 0) {
