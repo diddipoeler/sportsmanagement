@@ -98,8 +98,6 @@ class SportsmanagementRouter extends RouterBase
 			unset($query [$var]);
 		}
 	}	
-	
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' segments <pre>'.print_r($segments,true).'</pre>'), '');		
 		
 		return $segments;
 	}
@@ -130,9 +128,6 @@ class SportsmanagementRouter extends RouterBase
  	{ 
  		$defaults = sportsmanagementHelperRoute::$views[$segments[0]]; 
  	} 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' query <pre>'.print_r($active->query,true).'</pre>'), '');				
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' segments <pre>'.print_r($segments,true).'</pre>'), '');						
-		
       
       if ( $defaults )
       {
@@ -163,9 +158,6 @@ class SportsmanagementRouter extends RouterBase
 	{
 		
 	}
-		
-		
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' vars <pre>'.print_r($vars,true).'</pre>'), '');				
 		
 		return $vars;
 	}

@@ -356,16 +356,9 @@ catch (Exception $e)
         /** Create a new query object. */		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-//$game_regular_time = $game_regular_time + $add_time;
+
         $result = 0;
-      /*
-      if ( $add_time )
-      {
-      echo __LINE__.' player <pre>'.print_r($player_id,true).'</pre>';
-      echo __LINE__.' match_id <pre>'.print_r($match_id,true).'</pre>';
-      echo __LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>';
-      }
-      */
+
 /** startaufstellung ohne ein und auswechselung */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
@@ -402,7 +395,6 @@ catch (Exception $e)
             $query->where('m.match_result_type = 1');
             $db->setQuery($query);
         $totalresult2 = $db->loadObject();
-            //echo __LINE__.' totalresult2 <pre>'.print_r($totalresult2,true).'</pre>';
         if ($totalresult2) {
             $result += $totalresult2->totalmatch * ($game_regular_time + $add_time);
         }    
@@ -451,7 +443,6 @@ catch (Exception $e)
             $query->where('m.match_result_type = 1');
             $db->setQuery($query);
         $cameinresult2 = $db->loadObject();
-            //echo __LINE__.' totalresult2 <pre>'.print_r($cameinresult2,true).'</pre>';
         if ($cameinresult2) {
           $result += ( $cameinresult2->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult2->totalin );
         }    
@@ -501,7 +492,6 @@ catch (Exception $e)
             $query->where('m.match_result_type = 1');
             $db->setQuery($query);
         $cameautresult2 = $db->loadObject();
-            //echo __LINE__.' totalresult2 <pre>'.print_r($cameautresult2,true).'</pre>';
         if ($cameautresult2) {
 
           $result += ( $cameautresult2->totalout ) - ( $cameautresult2->totalmatch * ($game_regular_time + $add_time) );

@@ -555,7 +555,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .')' );
         $query->where('p.published = 1');
         $query->where('m.published = 1');
-        //$query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery( $query );
 		$result1 = $db->loadObjectList();
@@ -590,12 +589,10 @@ $query->clear();
         $query->where('(st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
         $query->where('m.published = 1');
-        //$query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
         $query->order('s.name DESC, m.match_date ASC');
 		$db->setQuery( $query );
 		$result2 = $db->loadObjectList();
-
-//echo 'result 1 <pre>'.print_r($result1,true).'</pre>';       
+   
       foreach ($result1 as $key => $val) {
         if ( !isset($not_used_project_id[$val->project_id])  )
         {
@@ -611,10 +608,7 @@ if ( !isset($not_used_project_id[$val->project_id])  )
         
       }
 
-//echo 'not_used_project_id <pre>'.print_r($not_used_project_id,true).'</pre>';      
 $not_used_project = implode(",",$not_used_project_id);   
-//echo 'not_used_project <pre>'.print_r($not_used_project,true).'</pre>';
-
    
      /**
       * schritt 3 
@@ -653,19 +647,7 @@ $not_used_project = implode(",",$not_used_project_id);
         $query->order('s.name DESC');
 		$db->setQuery( $query );
 		$result3 = $db->loadObjectList();
-//echo 'dump <pre>'.print_r($query->dump(),true).'</pre>'; 
-//echo 'result3 <pre>'.print_r($result3,true).'</pre>'; 
 
-  /*      
-      $result = array_merge($result1, $result2);
-      $result = array_merge($result, $result3);
-      foreach ($result as $key => $val) {
-    $seasonname[$key]  = $val->seasonname;
-    $match_date[$key]  = $val->match_date;
-    $project_name[$key]  = $val->project_name;    
-}
-      array_multisort($seasonname, SORT_DESC, $project_name, SORT_DESC,$match_date, SORT_ASC, $result);
-*/
 $result = array_merge($result1, $result2, $result3);		
 $prod = usort($result, function($a, $b) {
     $c = strcmp($b->seasonname , $a->seasonname);
@@ -673,9 +655,7 @@ $prod = usort($result, function($a, $b) {
   $c .= $a->roundcode - $b->roundcode;
     return $c;
 });
-      
-//echo 'result <pre>'.print_r($result,true).'</pre>'; 
-		
+	
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}

@@ -876,7 +876,7 @@ for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
 {        
 if ( $arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name )
 {
-//echo __LINE__.'<pre>'.print_r($arrayelanska['dataroot']['all_seasons'][$a],true).'</pre>';  
+ 
 if ( $firststep )
 {
 $object = new stdClass();
@@ -987,9 +987,7 @@ $object->exportDate = '2010-09-23';
 $object->exportTime = '2010-09-23';
 $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
 $this->_datas['exportversion'] = $object;
-	
-//echo __LINE__.' die daten <pre>'.print_r($this->_datas,true).'</pre>';
-			 
+
              
 }             
 else

@@ -178,8 +178,6 @@ $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;
 }
 }
           
-//echo 'gesamtspiele <pre>'.print_r($gesamtspiele,true).'</pre>'; 
-          
     }        
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
