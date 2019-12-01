@@ -54,18 +54,15 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 	{
 
 $app = Factory::getApplication();
-// JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
-// Create an instance of a default Http object.
 $http = JHttpFactory::getHttp();
-//$params = \ComponentHelper::getParams($option);
 
 //$google = new Google;
 $this->jsmdb = sportsmanagementHelper::getDBConnection();
 $this->jsmquery = $this->jsmdb->getQuery(true);
 
-// Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/).    
+/** Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/). */    
 $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid','');
 $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret','');
 $google_api_key = ComponentHelper::getParams($option)->get('google_api_developerkey','');
@@ -73,7 +70,7 @@ $google_api_redirecturi = ComponentHelper::getParams($option)->get('google_api_r
 $google_mail_account = ComponentHelper::getParams($option)->get('google_mail_account','');
 
       
-$session = JFactory::getSession(array(
+$session = Factory::getSession(array(
 				'expire' => 30
 		));    
 		if (! $app->input->get('code'))
@@ -170,7 +167,7 @@ $result_sel = $this->jsmdb->loadResult();
 
 if ( !$result_sel )
 {
-// wenn nichts gefunden wurde neu anlegen
+/** wenn nichts gefunden wurde neu anlegen */
 $newcalendar = new stdClass();
 $newcalendar->calendar_id = $calendarListEntry->getID();
 $newcalendar->name = $calendarListEntry->getSummary();
@@ -183,22 +180,17 @@ $newcalendar->created = Factory::getDate()->toSql();
 $newcalendar->created_by = Factory::getUser()->get('id');
 $newcalendar->modified = Factory::getDate()->toSql();
 $newcalendar->modified_by = Factory::getUser()->get('id');
-// Insert the object
 $result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_gcalendar', $newcalendar);
 }
 else
 {
-// Create an object for the record we are going to update.
 $object = new stdClass();
-// Must be a valid primary key value.
 $object->id = $result_sel;
 $object->params = $params->toString();
 $object->title = $calendarListEntry->getSummary();
 $object->alias = OutputFilter::stringURLSafe( $object->title );
-
 $object->modified = Factory::getDate()->toSql();
 $object->modified_by = Factory::getUser()->get('id');
-// Update their details in the table using id as the primary key.
 $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $object, 'id');     
     
     
