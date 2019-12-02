@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      class.roundrobin.php
  * @author    Felix Stiehler 
@@ -54,6 +54,7 @@
 
 // Have fun!
 
+defined('_JEXEC') or die('Restricted access');
 
 class roundrobin {
     
