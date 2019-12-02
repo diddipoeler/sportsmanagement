@@ -25,6 +25,9 @@
  * @package Prado\Util
  * @since 3.0
  */
+
+defined('_JEXEC') or die('Restricted access');
+
 class TVarDumper
 {
 	private static $_objects;
