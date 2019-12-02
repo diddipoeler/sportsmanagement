@@ -9,6 +9,8 @@
  * @subpackage helpers
  */
 
+defined('_JEXEC') or die('Restricted access');
+
 class JSMparseCSV {
 /*
 
