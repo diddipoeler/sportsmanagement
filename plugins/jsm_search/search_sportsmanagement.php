@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f¸r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung f√ºr alle Sportarten
  * @version   1.0.05
  * @file      search_sportsmanagement.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ¬© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage plugins
@@ -35,7 +35,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 jimport( 'joomla.plugin.plugin' );
 require_once(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'countries.php' );
 
-// pr¸ft vor Benutzung ob die gew¸nschte Klasse definiert ist
+// pr√ºft vor Benutzung ob die gew√ºnschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
@@ -342,7 +342,7 @@ $escape = 'getEscaped';
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ,\'&p=\', CONCAT_WS(\':\',p.id,p.alias) , \'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
 			
             $query->from('#__sportsmanagement_person AS pe');
@@ -377,7 +377,7 @@ $escape = 'getEscaped';
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ,\'&p=\', CONCAT_WS(\':\',p.id,p.alias) , \'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
 			
             $query->from('#__sportsmanagement_person AS pe');
@@ -428,7 +428,7 @@ $escape = 'getEscaped';
 		}
 
 /**
- * 		hier werden die sportst‰tten gesucht
+ * 		hier werden die sportst√§tten gesucht
  */
         if ( $search_playgrounds )
 		{
