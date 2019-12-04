@@ -17,6 +17,10 @@ Das Team
 Alle Übersetzungen in andere Sprachen werden nur hier https://www.transifex.com/jsm/sportsmanagement/
 vorgenommen und in die Komponente eingepflegt.
 
+Erweiterungen
+================
+Google APIs Client Library for PHP https://github.com/googleapis/google-api-php-client
+
 Import functions ?
 ---------------------
 * Joomleague
