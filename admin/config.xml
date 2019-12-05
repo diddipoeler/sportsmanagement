@@ -1182,7 +1182,16 @@ type="text"
 size="200" 
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY" 
-description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />	
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
+		
+<field name="google_api_datei" 
+type="text" 
+default="https://github.com/googleapis/google-api-php-client/releases/download/v2.4.0/google-api-php-client-2.4.0.zip"
+size="400"
+label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
+description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
+</field>		
+		
 	</fieldset>
 
 <!-- register 7 -->
