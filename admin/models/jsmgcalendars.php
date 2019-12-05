@@ -15,6 +15,8 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 if (! defined('JSM_PATH'))
 {
