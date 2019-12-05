@@ -64,6 +64,7 @@ Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');
 }
 else
 {
+Log::add(Text::_('Google API nicht vorhanden'), Log::ERROR, 'jsmerror');    
 $link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei',0);    
 /** set the target directory */
 $base_Dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR;
@@ -88,9 +89,7 @@ return false;
 try
 {
 $result = $http->get($link);
-$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
-$my_text .= '<br />';	
+Log::add(Text::_('Google API heruntergeladen'), Log::NOTICE, 'jsmerror');	
 }
 catch (RuntimeException $e)
 {
@@ -108,6 +107,7 @@ try
 {	
 /** Write the file to disk */
 File::write($filepath, $result->body);
+Log::add(Text::_('Google API in´s tmp Verzeicnis geladen'), Log::NOTICE, 'jsmerror');
 }
 catch (RuntimeException $e)
 {
@@ -141,10 +141,14 @@ $my_text .= '<br />';
 
 $extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
 $dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
-
+try {
 $archive = new Archive;
 $result = $archive->extract($dest, $extractdir);
-
+Log::add(Text::_('Google API entpackt'), Log::NOTICE, 'jsmerror');
+} catch (Exception $e) {
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+$result = false;
+}
 
 
 
