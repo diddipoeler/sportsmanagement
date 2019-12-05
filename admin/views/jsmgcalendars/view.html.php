@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jsmgcalendars
@@ -17,7 +17,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * sportsmanagementViewjsmgcalendars
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2015
  * @version $Id$
  * @access public
@@ -42,14 +42,10 @@ public function init ()
 	 */
 	protected function addToolbar() 
     {
-		$jinput = Factory::getApplication()->input;
-        $option = $jinput->getCmd('option');
-			ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
-			ToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
-       
+	ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
+	ToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
         $this->icon = 'google-calendar-48-icon.png';
-
-		parent::addToolbar();
+	parent::addToolbar();
 	}
 
 }
