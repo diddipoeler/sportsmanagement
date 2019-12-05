@@ -137,9 +137,9 @@ $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontyp
 
         // Set toolbar items for the page
         if ($this->_persontype == 1) {
-            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE').' '.$this->project_team->name;
         } elseif ($this->_persontype == 2) {
-            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE').' '.$this->project_team->name;
         }
 
         ToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
