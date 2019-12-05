@@ -32,7 +32,7 @@ class sportsmanagementViewjsmgcalendars extends sportsmanagementView
  */
 public function init ()
 	{
-
+$this->model->check_google_api();
         }
 
 	/**
