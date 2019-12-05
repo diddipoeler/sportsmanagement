@@ -38,9 +38,9 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 	function check_google_api()
 	{
 $importFile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/Google/autoload.php';
-Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$importFile.' ist vorhanden!'),'Notice');		
+//Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$importFile.' ist vorhanden!'),'Notice');		
 if (File::exists ( $importFile )) {
-//Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');		
+Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');		
 }
 		
 		
