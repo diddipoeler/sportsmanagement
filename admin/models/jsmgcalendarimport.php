@@ -18,7 +18,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filter\OutputFilter;
 
-JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
+JLoader::import('components.com_sportsmanagement.libraries.google-php.vendor.autoload', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementModeljsmgcalendarImport
