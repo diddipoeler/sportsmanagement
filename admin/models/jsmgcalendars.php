@@ -107,7 +107,7 @@ try
 {	
 /** Write the file to disk */
 File::write($filepath, $result->body);
-Log::add(Text::_('Google API in´s tmp Verzeicnis geladen'), Log::NOTICE, 'jsmerror');
+Log::add(Text::_('Google API in´s tmp Verzeichnis geladen'), Log::NOTICE, 'jsmerror');
 }
 catch (RuntimeException $e)
 {
