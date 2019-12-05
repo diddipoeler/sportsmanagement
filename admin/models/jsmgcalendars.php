@@ -153,7 +153,7 @@ $result = false;
 
 /** kopieren */
 try {
-Folder::copy(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp/google-api-php-client-2.4.0/src/Google', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/Google', '', true);
+Folder::copy(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp/google-api-php-client-2.4.0/', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/', '', true);
 Log::add(Text::_('Google API kopiert'), Log::NOTICE, 'jsmerror');
 } catch (Exception $e) {
 Log::add($e->getCode().' - '.$e->getMessage(), Log::ERROR, 'jsmerror'); 
