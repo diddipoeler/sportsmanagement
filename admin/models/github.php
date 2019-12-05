@@ -27,7 +27,6 @@ if( version_compare(JSM_JVERSION,'4','eq') )
 }
 else
 {    
-//use Joomla\Github\Github;
 JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
 }
 
@@ -55,10 +54,8 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
     public function __construct($config = array())
         {  
             parent::__construct($config);
-        // Reference global application object
         $this->app = Factory::getApplication();
         $this->user	= Factory::getUser();     
-        // JInput object
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
         $this->pks = $this->jinput->get('cid',array(),'array');

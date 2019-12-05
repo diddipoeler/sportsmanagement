@@ -17,6 +17,9 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Installer\InstallerHelper;
+use Joomla\Archive\Archive;
 
 if (! defined('JSM_PATH'))
 {
@@ -28,24 +31,137 @@ if (!class_exists('sportsmanagementHelper'))
 require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php');  
 }
 
-
+//if( version_compare(JSM_JVERSION,'3','eq') ) 
+//{
+//jimport('joomla.filesystem.archive');	
+//}
 
 Table::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'tables');
 
+/**
+ * sportsmanagementModeljsmGCalendars
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModeljsmGCalendars extends ListModel 
 {
 
+	/**
+	 * sportsmanagementModeljsmGCalendars::check_google_api()
+	 * 
+	 * @return void
+	 */
 	function check_google_api()
 	{
 $importFile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/Google/autoload.php';
-//Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$importFile.' ist vorhanden!'),'Notice');		
+
 if (File::exists ( $importFile )) {
 Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');		
 }
-		
+else
+{
+$link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei',0);    
+/** set the target directory */
+$base_Dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR;
+$file['name'] = basename($link);
+$filename = $file['name'];
+$filepath = $base_Dir . $filename;
+
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+/** Get the handler to download the package */
+try
+{
+$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+}
+catch (RuntimeException $e)
+{
+Log::add($e->getMessage(), Log::WARNING, 'jsmerror');    
+return false;
+}
+
+/** Download the package */
+try
+{
+$result = $http->get($link);
+$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
+$my_text .= '<br />';	
+}
+catch (RuntimeException $e)
+{
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
+$my_text .= '<br />';	
+return false;
+}
+if (!$result || ($result->code != 200 && $result->code != 310))
+{
+return false;
+}
+
+try
+{	
+/** Write the file to disk */
+File::write($filepath, $result->body);
+}
+catch (RuntimeException $e)
+{
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');	
+return false;
+}
+
+}
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{	
+/** Download the package at the URL given. */
+$p_file = InstallerHelper::downloadPackage($link);
+/** Was the package downloaded? */
+if (!$p_file)
+{
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$p_file."</strong>");
+$my_text .= '<br />';    
+Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+return false;
+}
+else
+{
+$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$p_file."</strong>");
+$my_text .= '<br />';	    
+}
+
+}
+
+$extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
+$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
+
+$archive = new Archive;
+$result = $archive->extract($dest, $extractdir);
+
+
+
+
+    
+    
+}		
 		
 	}
 	
+	/**
+	 * sportsmanagementModeljsmGCalendars::_getList()
+	 * 
+	 * @param mixed $query
+	 * @param integer $limitstart
+	 * @param integer $limit
+	 * @return
+	 */
 	protected function _getList($query, $limitstart = 0, $limit = 0) 
     {
 		$items = parent::_getList($query, $limitstart, $limit);
@@ -61,6 +177,11 @@ Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');
 		return $tmp;
 	}
 
+	/**
+	 * sportsmanagementModeljsmGCalendars::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery() 
     {
 		$db = sportsmanagementHelper::getDBConnection();
