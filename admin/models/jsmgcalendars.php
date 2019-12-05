@@ -31,6 +31,11 @@ Table::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY
 class sportsmanagementModeljsmGCalendars extends ListModel 
 {
 
+	function check_google_api()
+	{
+		
+	}
+	
 	protected function _getList($query, $limitstart = 0, $limit = 0) 
     {
 		$items = parent::_getList($query, $limitstart, $limit);
