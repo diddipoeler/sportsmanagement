@@ -139,6 +139,7 @@ $my_text .= '<br />';
 
 }
 
+/** zip entpacken */
 $extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
 $dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
 try {
@@ -150,8 +151,8 @@ $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessa
 $result = false;
 }
 
-
-
+/** kopieren */
+Folder::copy(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp/google-api-php-client-2.4.0/src/Google', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/Google');
     
     
 }		
