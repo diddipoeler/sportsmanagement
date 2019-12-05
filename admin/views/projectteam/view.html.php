@@ -106,7 +106,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 	{
         $this->jinput->set('hidemainmenu', true);
         $this->jinput->set('pid', $this->item->project_id);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT').' '.$this->project_team : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW').' '.$this->project_team;
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT').' '.$this->project_team->name : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_NEW').' '.$this->project_team->name;
         $this->icon = 'projectteam';
         parent::addToolbar();
 	}
