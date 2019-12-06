@@ -25,6 +25,7 @@
  * @version 1.0-dev
  */
 
+defined('_JEXEC') or die('Restricted access');
 
 class XMLParser{
 
