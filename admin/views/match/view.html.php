@@ -203,7 +203,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
             $newmatches = array_merge($newmatches, $res);
         }
         $lists ['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id);
-        $lists['count_result'] = HTMLHelper::_('select.booleanlist', 'count_result', 'class="radio btn-group btn-group-yesno"', $this->item->count_result);
+        //$lists['count_result'] = HTMLHelper::_('select.booleanlist', 'count_result', 'class="radio btn-group btn-group-yesno"', $this->item->count_result);
 
         // build the html select booleanlist which team got the won
         $myoptions = array();
