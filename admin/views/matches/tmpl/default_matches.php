@@ -272,7 +272,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     ?>
 
                     <?php
-                    $append = '';
+                    $append = 'style="background-color:white"';
                     $append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                     ?>
                     <td id="round_id" style="text-align:center; ">
@@ -291,7 +291,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                         }
 
 
-                        $append = '';
+                        $append = 'style="background-color:white"';
                         if ($row->projectteam1_id == 0) {
                             $append = ' ';
                         }
@@ -320,7 +320,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     </td>
                     <td id="projectteam2_id" class="left" nowrap="">
                         <?php
-                        $append = '';
+                        $append = 'style="background-color:white"';
                         if ($row->projectteam2_id == 0) {
                             $append = ' ';
                         }
