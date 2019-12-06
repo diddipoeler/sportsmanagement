@@ -115,11 +115,11 @@ class sportsmanagementControllerjlextindividualsport extends JController
 		$model=$this->getModel('jlextindividualsport');
 		if ($model->store($post))
 		{
-			$msg=Text::_('JL_ADMIN_MATCH_CTRL_ADD_SINGLE_MATCH');
+			$msg=Text::_('COM_SPORTSMANAGEMENT_MATCH_CTRL_ADD_SINGLE_MATCH');
 		}
 		else
 		{
-			$msg=Text::_('JL_ADMIN_MATCH_CTRL_ERROR_ADD_SINGLE_MATCH').$model->getError();
+			$msg=Text::_('COM_SPORTSMANAGEMENT_MATCH_CTRL_ERROR_ADD_SINGLE_MATCH').$model->getError();
 		}
 		$link='index.php?option=com_sportsmanagement&view=jlextindividualsportes';
 		$this->setRedirect($link,$msg);

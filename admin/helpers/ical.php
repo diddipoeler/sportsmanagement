@@ -36,6 +36,7 @@
  *  echo "</pre>";
  * @version 1.0
  * @internal get sort todo list
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');

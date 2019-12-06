@@ -6,6 +6,7 @@
  * @link https://github.com/pradosoft/prado
  * @license https://github.com/pradosoft/prado/blob/master/LICENSE
  * @package Prado\Util
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /**

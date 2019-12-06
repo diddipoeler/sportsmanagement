@@ -463,7 +463,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				Log::add( Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				Log::add( Text::_('COM_SPORTSMANAGEMENT_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else {
 				// get the project datas

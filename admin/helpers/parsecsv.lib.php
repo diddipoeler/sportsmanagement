@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 
 	Class: parseCSV v0.4.3 beta
 	http://code.google.com/p/parsecsv-for-php/
@@ -72,7 +72,7 @@
 	$csv->output (true, 'movies.csv', $array);
 	----------------
 	
-
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
 */
 
 defined('_JEXEC') or die;

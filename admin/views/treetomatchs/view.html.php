@@ -1,7 +1,15 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage treetomatches
+ */
 
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -9,9 +17,23 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
 
+/**
+ * sportsmanagementViewTreetomatchs
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewTreetomatchs::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 	   
@@ -31,6 +53,11 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		//parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewTreetomatchs::_displayEditlist()
+	 * 
+	 * @return void
+	 */
 	function _displayEditlist()
 	{
 //		$option = Factory::getApplication()->input->getCmd('option');
@@ -158,6 +185,11 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		//parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewTreetomatchs::_displayDefault()
+	 * 
+	 * @return void
+	 */
 	function _displayDefault()
 	{
 //		$option = Factory::getApplication()->input->getCmd('option');
@@ -192,6 +224,11 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		//parent::display($tpl);
 	}
 
+/**
+ * sportsmanagementViewTreetomatchs::addToolBarEditlist()
+ * 
+ * @return void
+ */
 protected function addToolBarEditlist()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
@@ -205,6 +242,11 @@ ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonod
        
        }
        
+/**
+ * sportsmanagementViewTreetomatchs::addToolBarDefault()
+ * 
+ * @return void
+ */
 protected function addToolBarDefault()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
