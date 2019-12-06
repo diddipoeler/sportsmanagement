@@ -203,9 +203,8 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
             $newmatches = array_merge($newmatches, $res);
         }
         $lists ['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id);
-        //$lists['count_result'] = HTMLHelper::_('select.booleanlist', 'count_result', 'class="radio btn-group btn-group-yesno"', $this->item->count_result);
 
-        // build the html select booleanlist which team got the won
+        /** build the html select booleanlist which team got the won */
         $myoptions = array();
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
         $myoptions[] = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
@@ -256,7 +255,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
             $this->csvstaff = $model->csv_staff;
         }
 
-        // build the html options for referee positions
+        /** build the html options for referee positions */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
         if ($res = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
             foreach ($res as $pos) {
@@ -268,7 +267,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $lists['referee_project_position_id'] = $position_id;
         unset($position_id);
 
-        //build the html options for player position
+        /** build the html options for player position*/
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
         if ($res = $model->getProjectPositionsOptions(0, 1, $this->project_id)) {
             foreach ($res as $pos) {
@@ -282,7 +281,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $lists['player_inout_project_position_id'] = $position_id;
         unset($position_id);
 
-        //build the html options for staff position
+        /** build the html options for staff position */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
         if ($res = $model->getProjectPositionsOptions(0, 2, $this->project_id)) {
             foreach ($res as $pos) {
@@ -294,7 +293,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $lists['staff_project_position_id'] = $position_id;
         unset($position_id);
 
-        // events
+        /** events */
         $events = $model->getEventsOptions($this->project_id);
         if (!$events) {
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), 'Error');
@@ -306,7 +305,7 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $lists['events'] = $eventlist;
         unset($eventlist);
 
-        // build the html select booleanlist
+        /** build the html select booleanlist */
         $myoptions = array();
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
         $myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
@@ -353,7 +352,6 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
         $stats = $model->getInputStats($this->project_id);
         if (!$stats) {
             Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
-            //return;
         }
         $playerstats = $model->getMatchStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
         $staffstats = $model->getMatchStaffStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);

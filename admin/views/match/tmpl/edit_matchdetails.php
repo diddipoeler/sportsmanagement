@@ -11,6 +11,10 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
+$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
+    
 ?>	
 <script type="text/javascript">
 <!--
