@@ -17,7 +17,7 @@ $this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompre
     
 ?>	
 <script type="text/javascript">
-<!--
+
 window.addEvent('domready', function() {
 	// altered decision fields management
 	toggle_altdecision();
@@ -39,7 +39,7 @@ function toggle_altdecision() {
 	}
 }
 
--->
+
 </script>
 	
 <fieldset class="adminform">
