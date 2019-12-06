@@ -196,7 +196,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
 
                     </td>
 
-                    <td class="center">
+                    <td id="match_number" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
                                value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="form-control form-control-inline"/>
                     </td>
@@ -249,7 +249,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>
 								</span>
                     </td>
-                    <td class="center">
+                    <td id="crowd" class="center">
                         <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="crowd<?php echo $row->id; ?>"
                                value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4" class="form-control form-control-inline"/>
                     </td>
@@ -275,14 +275,14 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     $append = '';
                     $append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                     ?>
-                    <td style="text-align:center; ">
+                    <td id="round_id" style="text-align:center; ">
                         <?php
                         echo HTMLHelper::_('select.genericlist', $this->lists['project_change_rounds'], 'round_id' . $row->id,
                             'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->round_id);
                         ?>
                     </td>
 
-                    <td class="right" nowrap="">
+                    <td id="projectteam1_id" class="right" nowrap="">
                         <?php
                         if ($row->homeplayers_count == 0 || $row->homestaff_count == 0) {
                             $image = 'players_add.png';
@@ -318,7 +318,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                         <!--	</a> -->
 
                     </td>
-                    <td class="left" nowrap="">
+                    <td id="projectteam2_id" class="left" nowrap="">
                         <?php
                         $append = '';
                         if ($row->projectteam2_id == 0) {
