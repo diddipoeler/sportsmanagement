@@ -20,7 +20,8 @@ use Joomla\CMS\Uri\Uri;
 (function() {
 	// altered decision fields management
 	toggle_altdecision();
-	jQuery('#jform_alt_decision').change(toggle_altdecision);
+	jQuery('#jform_alt_decision0').change(toggle_altdecision);
+    jQuery('#jform_alt_decision1').change(toggle_altdecision);
 });
 function toggle_altdecision() {
 	if (document.getElementById('jform_alt_decision0').value == 0) {
