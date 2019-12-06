@@ -26,6 +26,9 @@
  * @since 2.10.1 - 2011-07-16
  *
  */
+
+defined('_JEXEC') or die('Restricted access');
+
 class iCalUtilityFunctions {
   // Store the single instance of iCalUtilityFunctions
   private static $m_pInstance;
