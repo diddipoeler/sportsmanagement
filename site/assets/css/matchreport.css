@@ -1,0 +1,16 @@
+#timeline-top {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
+background-repeat: no-repeat;
+background-size: 100% 46px;
+height: 47px;
+
+}
+
+#timeline-bottom {
+background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
+background-repeat: no-repeat;
+background-size: 100% 46px;
+height: 47px;
+vertical-align: baseline;
+
+}
