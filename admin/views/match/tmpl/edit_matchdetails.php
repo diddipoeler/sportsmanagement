@@ -35,7 +35,7 @@ function toggle_altdecision() {
 	}
 }
 
-//-->
+-->
 </script>
 	
 <fieldset class="adminform">
