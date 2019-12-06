@@ -577,7 +577,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, U
                             if ($canChange) {
                                 HTMLHelper::_('actionsdropdown.' . ((int)$row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'matches');
                                 HTMLHelper::_('actionsdropdown.' . ((int)$row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'matches');
-                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
+                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->id));
                             }
                             ?>
                         </div>
