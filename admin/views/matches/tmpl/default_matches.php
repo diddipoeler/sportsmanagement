@@ -293,7 +293,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
 
                         $append = '';
                         if ($row->projectteam1_id == 0) {
-                            $append = ' style="background-color:#bbffff"';
+                            $append = ' ';
                         }
                         $append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                         echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'projectteam1_id' . $row->id,
@@ -322,7 +322,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                         <?php
                         $append = '';
                         if ($row->projectteam2_id == 0) {
-                            $append = ' style="background-color:#bbffff"';
+                            $append = ' ';
                         }
                         $append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                         echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'projectteam2_id' . $row->id,
