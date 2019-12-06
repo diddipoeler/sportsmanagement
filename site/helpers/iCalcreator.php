@@ -45,6 +45,7 @@ if ($pos   !== false) {
 */
 /*********************************************************************************/
 /*         version, do NOT remove!!                                              */
+defined('_JEXEC') or die('Restricted access');
 define( 'ICALCREATOR_VERSION', 'iCalcreator 2.18' );
 /*********************************************************************************/
 /*********************************************************************************/
@@ -3239,13 +3240,13 @@ class calendarComponent {
       $sign   = '+';
     else
       $sign   = ( 0.0 > $this->geo['value']['latitude'] ) ? '-' : '';
-    $content  = $sign.sprintf( "%09.6f", abs( $this->geo['value']['latitude'] ));       // sprintf && lpad && float && sign !"#¤%&/(
+    $content  = $sign.sprintf( "%09.6f", abs( $this->geo['value']['latitude'] ));       // sprintf && lpad && float && sign !"#Â¤%&/(
     $content  = rtrim( rtrim( $content, '0' ), '.' );
     if( 0.0 < $this->geo['value']['longitude'] )
       $sign   = '+';
     else
       $sign   = ( 0.0 > $this->geo['value']['longitude'] ) ? '-' : '';
-    $content .= ';'.$sign.sprintf( '%8.6f', abs( $this->geo['value']['longitude'] ));   // sprintf && lpad && float && sign !"#¤%&/(
+    $content .= ';'.$sign.sprintf( '%8.6f', abs( $this->geo['value']['longitude'] ));   // sprintf && lpad && float && sign !"#Â¤%&/(
     $content  = rtrim( rtrim( $content, '0' ), '.' );
     return $this->_createElement( 'GEO', $attributes, $content );
   }
@@ -5368,13 +5369,13 @@ class calendarComponent {
         $sign   = '+';
       else
         $sign   = ( 0.0 > $geo['latitude'] ) ? '-' : '';
-      $content .= $sign.sprintf( "%09.6f", abs( $geo['latitude'] ));   // sprintf && lpad && float && sign !"#¤%&/(
+      $content .= $sign.sprintf( "%09.6f", abs( $geo['latitude'] ));   // sprintf && lpad && float && sign !"#Â¤%&/(
       $content  = rtrim( rtrim( $content, '0' ), '.' );
       if( 0.0 < $geo['longitude'] )
         $sign   = '+';
       else
        $sign   = ( 0.0 > $geo['longitude'] ) ? '-' : '';
-      return $content.$sign.sprintf( '%8.6f', abs( $geo['longitude'] )).'/';   // sprintf && lpad && float && sign !"#¤%&/(
+      return $content.$sign.sprintf( '%8.6f', abs( $geo['longitude'] )).'/';   // sprintf && lpad && float && sign !"#Â¤%&/(
     }
     if( $this->_notExistProp( $propName )) return FALSE;
     $propName = ( $propName ) ? strtoupper( $propName ) : 'X-PROP';
@@ -7465,7 +7466,7 @@ class iCalUtilityFunctions {
         $offset = iCalUtilityFunctions::_tz2offset( $datetime['tz'] );
         try {
           $d    = new DateTime( $output, new DateTimeZone( 'UTC' ));
-          if( 0 != $offset ) // adjust för offset
+          if( 0 != $offset ) // adjust fÃ¶r offset
             $d->modify( "$offset seconds" );
           $output = $d->format( 'Ymd\THis' );
         }
@@ -8239,7 +8240,7 @@ class iCalUtilityFunctions {
             $bysetposarr1 = & $bysetposymd1;
             $bysetposarr2 = & $bysetposymd2;
           }
-// echo 'test före out startYMD (weekno)='.$wdateStart['year'].':'.$wdateStart['month'].':'.$wdateStart['day']." ($weekStart) "; // test ###
+// echo 'test fÃ¶re out startYMD (weekno)='.$wdateStart['year'].':'.$wdateStart['month'].':'.$wdateStart['day']." ($weekStart) "; // test ###
           foreach( $recur['BYSETPOS'] as $ix ) {
             if( 0 > $ix ) // both positive and negative BYSETPOS allowed
               $ix = ( count( $bysetposarr1 ) + $ix + 1);
