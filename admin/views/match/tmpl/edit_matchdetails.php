@@ -23,7 +23,7 @@ use Joomla\CMS\Uri\Uri;
 	jQuery('#jform_alt_decision').change(toggle_altdecision);
 });
 function toggle_altdecision() {
-	if (document.getElementById('jform_alt_decision').value == 0) {
+	if (document.getElementById('jform_alt_decision0').value == 0) {
 		document.getElementById'alt_decision_enter').style.display = 'none';
 		document.getElementById('team1_result_decision').disabled = true;
 		document.getElementById('team2_result_decision').disabled = true;
