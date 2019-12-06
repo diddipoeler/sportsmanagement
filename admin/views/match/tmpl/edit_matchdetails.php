@@ -12,33 +12,11 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
-$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
+//$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
+//$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
     
 ?>	
 <script type="text/javascript">
-
-window.addEvent('domready', function() {
-	// altered decision fields management
-	toggle_altdecision();
-	$('alt_decision').addEvent('change', toggle_altdecision);
-});
-
-function toggle_altdecision() {
-	if ($('alt_decision').value == 0) {
-	$('alt_decision_enter').style.display='none';
-	$('team1_result_decision').disabled=true;
-	$('team2_result_decision').disabled=true;
-	$('decision_info').disabled=true;
-	}
-	else {
-	$('alt_decision_enter').style.display='block';
-	$('team1_result_decision').disabled=false;
-	$('team2_result_decision').disabled=false;
-	$('decision_info').disabled=false;
-	}
-}
-
 
 </script>
 	

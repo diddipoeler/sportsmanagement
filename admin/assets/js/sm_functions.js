@@ -6,6 +6,13 @@ var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scro
 var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
 
+function change_alt_decision()
+{
+alert('hallo');	
+	
+}
+
+	
 function get_documentWidth()
 {
 var documentWidth = jQuery(document).width();
