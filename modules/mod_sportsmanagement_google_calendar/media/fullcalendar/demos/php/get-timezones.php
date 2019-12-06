@@ -5,5 +5,5 @@
 //
 // Requires PHP 5.2.0 or higher.
 //--------------------------------------------------------------------------------------------------
-
+defined('_JEXEC') or die('Restricted access');
 echo json_encode(DateTimeZone::listIdentifiers());
