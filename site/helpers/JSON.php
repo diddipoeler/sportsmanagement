@@ -57,7 +57,7 @@
 */
 
 
- 
+defined('_JEXEC') or die('Restricted access'); 
 
 if(!defined('SERVICES_JSON_SLICE')){
 
