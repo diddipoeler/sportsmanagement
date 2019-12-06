@@ -315,8 +315,6 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
 
                         echo '<sub>' . $row->homestaff_count . '</sub> ';
                         ?>
-                        <!--	</a> -->
-
                     </td>
                     <td id="projectteam2_id" class="left" nowrap="">
                         <?php
@@ -517,7 +515,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     <td class="center">
                         <?php
 
-                        $appendselect = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
+                        $appendselect = 'style="background-color:white" onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                         echo HTMLHelper::_('select.genericlist', $this->lists['articles'],
                             'content_id' . $row->id, 'class="form-control form-control-inline" size="1" ' . $appendselect, 'value', 'text',
                             $row->content_id);
