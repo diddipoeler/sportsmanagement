@@ -9,7 +9,7 @@
  * @subpackage listheader
  */
 
-
+defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="alert alert-success ">
 <?php 
