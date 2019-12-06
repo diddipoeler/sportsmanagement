@@ -19,7 +19,7 @@
  * 
  * beispielseite: http://www.bluestarsoftware.de/de/beitraege/sepa-lastschrift.html   
 */
-
+defined('_JEXEC') or die('Restricted access');
 namespace BlueStarSoftware\SEPA;
  
  
