@@ -60,12 +60,12 @@ function toggle_altdecision() {
 				</legend>
 				<table class='admintable'>
 				<?php 
-                    
+echo $this->form->renderField ( 'count_result' );
+                    echo $this->form->renderField ( 'alt_decision' );                    
                     foreach ($this->form->getFieldset('matchalternativ') as $field):
                     ?>
 					<tr>
-						<td class="key"><?php echo $field->label; ?></td>
-						<td><?php echo $field->input; ?></td>
+
 					</tr>					
 					<?php endforeach; ?>	
 					
