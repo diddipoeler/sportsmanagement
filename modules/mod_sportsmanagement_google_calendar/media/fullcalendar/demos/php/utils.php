@@ -1,11 +1,10 @@
 <?php
-
 //--------------------------------------------------------------------------------------------------
 // Utilities for our event-fetching scripts.
 //
 // Requires PHP 5.2.0 or higher.
 //--------------------------------------------------------------------------------------------------
-
+defined('_JEXEC') or die('Restricted access');
 // PHP will fatal error if we attempt to use the DateTime class without this being set.
 date_default_timezone_set('UTC');
 
