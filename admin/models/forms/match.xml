@@ -73,7 +73,7 @@
 				name="alt_decision"
 				type="extensionradiobutton"
 				default="0"	
-onclick="change_alt_decision();"				
+				
         class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC">
