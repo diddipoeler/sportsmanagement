@@ -37,6 +37,9 @@
  * @version 1.0
  * @internal get sort todo list
  */
+
+defined('_JEXEC') or die('Restricted access');
+
 class ical
 {
 	/**
