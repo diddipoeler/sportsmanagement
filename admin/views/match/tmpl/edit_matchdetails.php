@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
-$this->document->addScript(Uri::root() . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+//$this->document->addScript(Uri::root() . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
     
 ?>	
 <script type="text/javascript">
