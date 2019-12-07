@@ -18,10 +18,6 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-
-
-//$params = $this->form->getFieldsets('params');
-
 /**
  * Match Form
  *
