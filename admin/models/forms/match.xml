@@ -72,9 +72,10 @@
 	<field
 				name="alt_decision"
 				type="extensionradiobutton"
+				type="list"
 				default="0"	
 				onchange="javascript:toggle_altdecision();"
-        class="radio btn-group btn-group-yesno"		
+        	
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC">
 			<option value="0">JNO</option>

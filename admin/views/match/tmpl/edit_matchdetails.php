@@ -23,19 +23,7 @@ use Joomla\CMS\Uri\Uri;
 //	jQuery('#jform_alt_decision0').change(toggle_altdecision);
 //    jQuery('#jform_alt_decision1').change(toggle_altdecision);
 });
-function toggle_altdecision() {
-	if (document.getElementById('jform_alt_decision0').value == 0) {
-		document.getElementById'alt_decision_enter').style.display = 'none';
-		document.getElementById('team1_result_decision').disabled = true;
-		document.getElementById('team2_result_decision').disabled = true;
-		document.getElementById('decision_info').disabled = true;
-	} else {
-		document.getElementById('alt_decision_enter').style.display = 'block';
-		document.getElementById('team1_result_decision').disabled = false;
-		document.getElementById('team2_result_decision').disabled = false;
-		document.getElementById('decision_info').disabled = false;
-	}
-}
+
 </script>
 	
 <fieldset class="adminform">
