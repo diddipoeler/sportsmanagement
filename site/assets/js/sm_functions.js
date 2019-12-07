@@ -56,7 +56,19 @@ var top = (screen.height/2)-(Height/2);
 }
 
 
-
+function toggle_altdecision() {
+	if (document.getElementById('jform_alt_decision').value == 0) {
+		document.getElementById'alt_decision_enter').style.display = 'none';
+		document.getElementById('team1_result_decision').disabled = true;
+		document.getElementById('team2_result_decision').disabled = true;
+		document.getElementById('decision_info').disabled = true;
+	} else {
+		document.getElementById('alt_decision_enter').style.display = 'block';
+		document.getElementById('team1_result_decision').disabled = false;
+		document.getElementById('team2_result_decision').disabled = false;
+		document.getElementById('decision_info').disabled = false;
+	}
+}
 
 
 
