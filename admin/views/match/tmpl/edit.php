@@ -20,7 +20,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 
-$params = $this->form->getFieldsets('params');
+//$params = $this->form->getFieldsets('params');
 
 /**
  * Match Form
