@@ -71,7 +71,6 @@
 		</field>	  
 	<field
 				name="alt_decision"
-				type="extensionradiobutton"
 				type="list"
 				default="0"	
 				onchange="javascript:toggle_altdecision();"
