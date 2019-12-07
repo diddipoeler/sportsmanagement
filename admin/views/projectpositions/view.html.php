@@ -48,7 +48,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $starttime = microtime();
         $tpl = '';
 
-        if ($this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3') {
+        if ($this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' || $this->getLayout() == 'editlist_4' ) {
             $this->_displayEditlist($tpl);
             return;
         }
