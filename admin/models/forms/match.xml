@@ -84,7 +84,7 @@
 -->
 <field
 				name="alt_decision"
-				type="list"
+				type="extensionradiobutton"
 				default="0"	
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC">
