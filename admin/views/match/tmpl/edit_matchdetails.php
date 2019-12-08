@@ -63,6 +63,7 @@ echo $this->form->renderField ( 'count_result' );
 					
 					<tr>
 						<td colspan="4">
+                        <!--
 							<div id="alt_decision_enter" style="display:<?php echo ( $this->match->alt_decision == 0 ) ? 'none' : 'block'; ?>">
 								<table class='adminForm' cellpadding='0' cellspacing='7' border='0'>
 									<tr>
@@ -102,6 +103,7 @@ echo $this->form->renderField ( 'count_result' );
 									</tr>
 								</table>
 							</div>
+                            -->
 						</td>
 					</tr>
 				</table>
