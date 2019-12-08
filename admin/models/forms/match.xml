@@ -98,7 +98,19 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE"/>
 
-
+<field
+				name="team1_result_decision"
+				type="text"
+				showon="alt_decision:1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"/>
+				
+<field
+				name="team2_result_decision"
+				type="text"
+				showon="alt_decision:1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"/>				
 		
 		
 		

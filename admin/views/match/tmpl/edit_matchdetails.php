@@ -50,7 +50,12 @@ use Joomla\CMS\Uri\Uri;
 				<table class='admintable'>
 				<?php 
 echo $this->form->renderField ( 'count_result' );
-                    echo $this->form->renderField ( 'alt_decision' );                    
+echo $this->form->renderField ( 'alt_decision' );
+
+echo $this->form->renderField ( 'decision_info' );
+echo $this->form->renderField ( 'team1_result_decision' );
+echo $this->form->renderField ( 'team2_result_decision' );
+                    
                     foreach ($this->form->getFieldset('matchalternativ') as $field):
                     ?>
 					<tr>
