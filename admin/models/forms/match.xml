@@ -111,7 +111,19 @@
 				showon="alt_decision:1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"/>				
-		
+<field
+				name="team_won"
+				type="list"
+				default="0"	
+        	showon="alt_decision:1"
+				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON"
+				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON">
+			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM</option>
+			<option value="1">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM</option>
+			<option value="2">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM</option>
+			<option value="3">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS</option>
+			<option value="4">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS</option>
+		</field>		
 		
 		
 		
