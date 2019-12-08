@@ -55,6 +55,7 @@ echo $this->form->renderField ( 'alt_decision' );
 echo $this->form->renderField ( 'decision_info' );
 echo $this->form->renderField ( 'team1_result_decision' );
 echo $this->form->renderField ( 'team2_result_decision' );
+echo $this->form->renderField ( 'team_won' );
                     
                     foreach ($this->form->getFieldset('matchalternativ') as $field):
                     ?>
