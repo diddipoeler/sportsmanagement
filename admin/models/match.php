@@ -673,12 +673,12 @@ $query->where($conditions);
             $object->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
 
             try {
-                // Update their details in the table using id as the primary key.
+                /* Update their details in the table using id as the primary key. */
                 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
                 sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]);
-                $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
+                $this->jsmapp->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
             } catch (Exception $e) {
-                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 $result = false;
             }
 
