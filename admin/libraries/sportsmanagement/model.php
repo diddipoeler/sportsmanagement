@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\Log\Log;
 
@@ -106,7 +107,7 @@ if( $this->jsmapp->isClient('site') )
        $person_double = array();
        $parentsave = true;
 
-$input_options = JFilterInput::getInstance(
+$input_options = InputFilter::getInstance(
         array(
             'img','p','a','u','i','b','strong','span','div','ul','li','ol','h1','h2','h3','h4','h5',
             'table','tr','td','th','tbody','theader','tfooter','br'
