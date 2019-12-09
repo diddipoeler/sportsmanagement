@@ -53,8 +53,8 @@ readonly="true"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>	
+			format="%d-%m-%Y"
+       		/>	
 		<field
 			name="round_date_last"
 			size="10"
@@ -62,8 +62,8 @@ readonly="true"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>		
+			format="%d-%m-%Y"
+      		/>		
       
       <field
 			name="tournement"
