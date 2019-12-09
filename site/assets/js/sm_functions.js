@@ -55,7 +55,7 @@ var top = (screen.height/2)-(Height/2);
      in the event of another call of this function. */
 }
 
-
+/*
 function toggle_altdecision() {
 	if (document.getElementById('jform_alt_decision').value == 0) {
 		document.getElementById('alt_decision_enter').style.display = 'none';
@@ -69,7 +69,7 @@ function toggle_altdecision() {
 		document.getElementById('decision_info').disabled = false;
 	}
 }
-
+*/
 
 
 function get_documentWidth()
@@ -169,7 +169,7 @@ var url = 'index.php?option=com_sportsmanagement&task=ajax.personpositionoptions
 
 
 
-
+/*
 function EditshowPersons() 
 {
 //alert('hier bin ich');
@@ -192,7 +192,7 @@ if (selected == 2)
 }
 	
 }
-
+*/
 function StartEditshowPersons(selected) 
 {
 //alert('hier bin ich');
