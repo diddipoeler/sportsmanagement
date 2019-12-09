@@ -356,7 +356,15 @@ case 'teamperson':
             echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
-
+case 'injury':
+echo $this->form->renderFieldset('injury');
+break;
+case 'suspension':
+echo $this->form->renderFieldset('suspension');
+break;
+case 'away':
+echo $this->form->renderFieldset('away');
+break;        
 // das ist der standard
     default:
         ?>
