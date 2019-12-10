@@ -249,10 +249,10 @@ $link = Route::_('index.php?option=com_sportsmanagement&' .
 <td>
 <?php
 echo sportsmanagementHelper::getBootstrapModalImage('predproject'.$pred_project['id'],
-Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+$pred_project['project_name'],
 $pred_project['project_name'],
 '20',
-Uri::base().$link,
+$link,
 $this->modalwidth,
 $this->modalheight);						
 						
