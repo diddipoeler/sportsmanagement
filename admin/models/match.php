@@ -584,6 +584,23 @@ $query->where($conditions);
             $this->jsmquery->where('id = ' . $object->round_id);
             $this->jsmdb->setQuery($this->jsmquery);
             $tournement_round = $this->jsmdb->loadResult();
+            /** roundcode für die nächste runde*/
+            $this->jsmquery->clear();
+            $this->jsmquery->select('roundcode');
+            $this->jsmquery->from('#__sportsmanagement_round');
+            $this->jsmquery->where('id = ' . $object->round_id);
+            $this->jsmdb->setQuery($this->jsmquery);
+            $round_code = $this->jsmdb->loadResult();
+            $round_code--;
+            $this->jsmquery->clear();
+            $this->jsmquery->select('id');
+            $this->jsmquery->from('#__sportsmanagement_round');
+            $this->jsmquery->where('roundcode = ' . $round_code);
+            $this->jsmdb->setQuery($this->jsmquery);
+            $prev_round_id = $this->jsmdb->loadResult();
+
+            
+            
 
             if ($post['use_legs']) {
                 foreach ($post['team1_result_split' . $pks[$x]] as $key => $value) {
