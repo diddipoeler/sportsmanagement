@@ -59,7 +59,7 @@ function change_published () {
     document.adminForm.points_tipp_champ.disabled=deaktiviert;
 
   if (deaktiviert == false){
-  change_joker();
+//  change_joker();
   change_jokerlimit();
   change_champ();
 }
