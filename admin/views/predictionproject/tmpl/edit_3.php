@@ -179,7 +179,9 @@ echo HTMLHelper::_('bootstrap.endTab');
 
     ?>
 </form>
-<script type="text/javascript">change_published();</script>
+<script type="text/javascript">
+	//change_published();
+</script>
 <div>
 <?PHP
 echo $this->loadTemplate('footer');
