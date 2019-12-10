@@ -27,7 +27,7 @@ $fieldsets = $this->form->getFieldsets();
 
 ?>
 <script type="text/javascript">
-
+/*
 function change_published () {
   if (document.adminForm.published0.checked == true) {
     var deaktiviert=true;
@@ -64,7 +64,7 @@ function change_published () {
  // change_champ();
 }
 }
-
+*/
 //function change_joker () {
 //  if (document.adminForm.joker0.checked == true) {
 //    var deaktiviert=true;
