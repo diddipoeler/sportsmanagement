@@ -426,44 +426,44 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
 	</fieldset>
  
  
-  <fieldset name="injury" 
-  label="COM_SPORTSMANAGEMENT_TABS_INJURY"
-  description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
-  <field
-			name="injury"
-			type="extensionradiobutton"
-			default="0"
-      class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
-		<option value="0">JNO</option>
-		<option value="1">JYES</option>
-		</field>	
-  <field
-				name="injury_detail"
-				showon="injury:1"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE_DESC"
-				width="450" 
-				filter="safehtml"/>	
-  <field
-			name="injury_date_start"
-			showon="injury:1"
-			type="calendar"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
-			class="inputbox"
-			format="%d-%m-%Y"/>
-	<field
-			name="injury_date_end"
-			showon="injury:1"
-			type="calendar"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
-			class="inputbox"
-			format="%d-%m-%Y"/>		
-	</fieldset>
+<fieldset name="injury" 
+label="COM_SPORTSMANAGEMENT_TABS_INJURY"
+description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
+<field
+name="injury"
+type="radio"
+default="0"
+class="switcher"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>	
+<field
+name="injury_detail"
+showon="injury:1"
+type="editor"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_TYPE_DESC"
+width="450" 
+filter="safehtml"/>	
+<field
+name="injury_date_start"
+showon="injury:1"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>
+<field
+name="injury_date_end"
+showon="injury:1"
+type="calendar"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
+class="inputbox"
+format="%d-%m-%Y"/>		
+</fieldset>
  
    <fieldset name="suspension" 
   label="COM_SPORTSMANAGEMENT_TABS_SUSPENSION"
