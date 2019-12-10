@@ -95,14 +95,9 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	   
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
 		$this->icon = 'templates';
-
-		ToolbarHelper::deleteList('', 'predictiontemplates.delete');
-		ToolbarHelper::checkin('predictiontemplates.checkin');
 		parent::addToolbar();
-       
 	}   
 
 }
