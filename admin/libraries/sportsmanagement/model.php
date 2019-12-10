@@ -1276,6 +1276,10 @@ if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
 {
 $form->setFieldAttribute('injury', 'type', 'radio');				    
 $form->setFieldAttribute('injury', 'class', 'switcher');				    
+$form->setFieldAttribute('suspension', 'type', 'radio');				    
+$form->setFieldAttribute('suspension', 'class', 'switcher');				
+$form->setFieldAttribute('away', 'type', 'radio');				    
+$form->setFieldAttribute('away', 'class', 'switcher');				
 }
         /*
         // welche joomla version ?
