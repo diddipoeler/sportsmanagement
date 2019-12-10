@@ -67,59 +67,64 @@
 
 <!-- alles für die joker -->
 <field 
-			name="joker" 
-			type="extensionradiobutton" 
-			default="0"
-			onclick="change_joker();"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+name="joker" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
     
 <field 
-			name="joker_limit" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT_DESC"
-      />
+name="joker_limit" 
+showon="joker:1"       
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT_DESC"
+/>
 <field 
-			name="points_tipp_joker" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER_DESC"
-      />
+name="points_tipp_joker" 
+showon="joker:1"              
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER_DESC"
+/>
 <field 
-			name="points_correct_result_joker" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER_DESC"
-      />
+name="points_correct_result_joker" 
+showon="joker:1"              
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER_DESC"
+/>
 <field 
-			name="points_correct_diff_joker" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER_DESC"
-      />      
+name="points_correct_diff_joker" 
+showon="joker:1"              
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER_DESC"
+/>      
 <field 
-			name="points_correct_draw_joker" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
-      />
+name="points_correct_draw_joker" 
+showon="joker:1"              
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
+/>
 <field 
-			name="points_correct_tendence_joker" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
-      />
+name="points_correct_tendence_joker"
+showon="joker:1"              
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
+/>
       
       			
 <!-- alles für den meister -->    
