@@ -778,13 +778,14 @@ $option = $app->input->getCmd('option');
         if ( $person_art == 2 )
         {
         $query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-			$query->from('#__sportsmanagement_person ');
-			$query->order('lastname');
-			$db->setQuery($query);    
-            $result = $db->loadObjectList();
+	$query->from('#__sportsmanagement_person ');
+	$query->order('lastname');
+	$db->setQuery($query);    
+        $result = $db->loadObjectList();
+	return self::addGlobalSelectElement($result, $required);
         }
         
-        return self::addGlobalSelectElement($result, $required);
+        
         }
         
         /**
