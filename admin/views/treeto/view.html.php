@@ -115,7 +115,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
 		ToolbarHelper::save('treeto.save');
 		ToolbarHelper::apply('treeto.apply');
-		ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
 	}
 
 	/**
