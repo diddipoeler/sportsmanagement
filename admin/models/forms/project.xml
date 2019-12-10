@@ -464,47 +464,50 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			size="8" maxlength="20"
 			default="3,1,0"/>
 			
-		<field 
-			name="use_legs" 
-			type="extensionradiobutton" 
-			default="0"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+<field 
+name="use_legs" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 		
-		<field 
-			name="use_tie_break" 
-			type="extensionradiobutton" 
-			default="0"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+<field 
+name="use_tie_break" 
+showon="use_legs:1"
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 		
-    <field
-			name="tennis_single_matches"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
-			class="inputbox validate-numeric"
-			size="4" 
-      maxlength="6"
-			default="4"/>
+<field
+name="tennis_single_matches"
+showon="use_legs:1"       
+type="text"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
+class="inputbox validate-numeric"
+size="4" 
+maxlength="6"
+default="4"/>
       
-    <field
-			name="tennis_double_matches"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
-			class="inputbox validate-numeric"
-			size="4" 
-      maxlength="6"
-			default="2"/>
+<field
+name="tennis_double_matches"
+showon="use_legs:1"       
+type="text"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
+class="inputbox validate-numeric"
+size="4" 
+maxlength="6"
+default="2"/>
         
       	
 		<field 
