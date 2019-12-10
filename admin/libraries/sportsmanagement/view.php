@@ -661,6 +661,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
     
     case 'treetonodes';
     case 'treetos';
+    case 'treetomatchs';
             break;    
             default:    
 /**
