@@ -236,31 +236,43 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 				{
 					foreach ( $this->predictionProjects AS $pred_project )
 					{
-						$link = Route::_(	'index.php?option=com_sportsmanagement&' .
-											'' .
-											'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'].'&project_id='.$pred_project['project_id'] );
+$link = Route::_('index.php?option=com_sportsmanagement&' .
+	'' .
+	'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'].'&project_id='.$pred_project['project_id'] );
                                             
                                             
 						?>
-						<tr class='<?php echo "row$k"; ?>'>
-							<td style='text-align:right; '>&nbsp;</td>
-							<td style='text-align:center; '><?php echo $ii+1; ?></td>
-							<td style='text-align:center; '>&nbsp;</td>
-							<td>
-								<a class="modal"	
-                                rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
-                                href='<?php echo $link; ?>'
-									title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS' ); ?>' />
-									<?php echo $pred_project['project_name']; ?>
-								</a>
-							</td>
-							<td style='text-align:center; '><?php
-								if ( $pred_project['mode'] == '0' )
-								{
-									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD' );
-								}
-								else
-								{
+<tr class='<?php echo "row$k"; ?>'>
+<td style='text-align:right; '>&nbsp;</td>
+<td style='text-align:center; '><?php echo $ii+1; ?></td>
+<td style='text-align:center; '>&nbsp;</td>
+<td>
+<?php
+echo sportsmanagementHelper::getBootstrapModalImage('predproject'.$pred_project['id'],
+Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+$pred_project['project_name'],
+'20',
+Uri::base().$link,
+$this->modalwidth,
+$this->modalheight);						
+						
+?>
+<!--	
+<a class="modal"	
+rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
+href='<?php echo $link; ?>'
+title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS' ); ?>' />
+<?php echo $pred_project['project_name']; ?>
+</a>
+-->				
+</td>
+<td style='text-align:center; '><?php
+if ( $pred_project['mode'] == '0' )
+{
+echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD' );
+}
+else
+{
 									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO' );
 								}
 								?></td>
@@ -324,7 +336,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 								?>
 							</td>
 							<td style='text-align:center; ' nowrap='nowrap'><?php echo $pred_project['project_id']; ?></td>
-						</tr>
+</tr>
 						<?php
 						$k = 1 - $k;
 						$ii++;
