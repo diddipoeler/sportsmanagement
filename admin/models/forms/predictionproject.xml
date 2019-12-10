@@ -68,35 +68,7 @@
 
       
       			
-<!-- alles für den meister -->    
-<field 
-			name="champ" 
-			type="extensionradiobutton" 
-			default="0"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
-		<field
-			name="league_champ"
-			type="projectteamlist"
-			varname="cid"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
-			multiple="true"
-			size="10"
-			class="inputbox"/>	
-			
-<field 
-			name="points_tipp_champ" 
-			type="hidden" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP_DESC"
-      />    
+
 
 <!-- punkte  -->
 <field 
@@ -147,7 +119,43 @@
     label="COM_SPORTSMANAGEMENT_TABS_HELP"
   description="COM_SPORTSMANAGEMENT_TABS_HELP_DESC">  
   </fieldset>
-  
+
+<fieldset name="predchamp"
+label="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP"
+description="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP_DESC">  
+<!-- alles für den meister -->    
+<field 
+name="champ" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+		
+<field
+name="league_champ"
+showon="champ:1"        
+type="projectteamlist"
+varname="cid"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
+multiple="true"
+size="10"
+class="inputbox"/>	
+			
+<field 
+name="points_tipp_champ" 
+showon="champ:1"        
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP_DESC"
+/>    	
+</fieldset>
+	
 <fieldset name="predjoker"
 label="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER"
 description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">  
