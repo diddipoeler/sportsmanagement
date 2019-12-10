@@ -149,9 +149,13 @@ switch ($fieldset->name)
             </div>
     <?PHP
     break;
-		case 'predjoker':
+case 'predchamp':
+echo $this->form->renderFieldset('predchamp');		
+break;		
+case 'predjoker':
 echo $this->form->renderFieldset('predjoker');		
-		break;
+break;
+		
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets');
