@@ -1272,7 +1272,11 @@ catch (Exception $e) {
 //        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
 //        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-			
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('injury', 'type', 'radio');				    
+$form->setFieldAttribute('injury', 'class', 'switcher');				    
+}
         /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
