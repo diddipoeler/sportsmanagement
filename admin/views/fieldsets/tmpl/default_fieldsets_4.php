@@ -356,7 +356,9 @@ case 'teamperson':
             echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
-
+case 'request':
+echo $this->form->renderFieldset('request');	        
+        break;
 // das ist der standard
     default:
         ?>
