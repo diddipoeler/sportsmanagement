@@ -65,19 +65,19 @@ function change_published () {
 }
 }
 
-function change_joker () {
-  if (document.adminForm.joker0.checked == true) {
-    var deaktiviert=true;
-  } else {
-    var deaktiviert=false;
-  }
-  alert(deaktiviert);
-  document.adminForm.points_correct_result_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
-  document.adminForm.points_tipp_joker.disabled=deaktiviert;
-}
+//function change_joker () {
+//  if (document.adminForm.joker0.checked == true) {
+//    var deaktiviert=true;
+//  } else {
+//    var deaktiviert=false;
+//  }
+//  alert(deaktiviert);
+//  document.adminForm.points_correct_result_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
+//  document.adminForm.points_tipp_joker.disabled=deaktiviert;
+//}
 
 function change_jokerlimit () {
   if (document.adminForm.joker_limit_select0.checked == true) {
