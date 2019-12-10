@@ -125,13 +125,14 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	}
     
  	$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
-    
+/*    
  	$javascript = "\n";
  	$javascript .= "window.addEvent('domready', function() {";   
 	$javascript .= 'StartEditshowPersons('.$this->form->getValue('request_person_art').');' . "\n"; 
 	$javascript .= '});' . "\n"; 
 	$this->document->addScriptDeclaration( $javascript );
-    
+*/
+	
 /**
  * Load the language files for the contact integration
  */
