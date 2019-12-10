@@ -1016,7 +1016,12 @@ catch (Exception $e) {
         $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;  
-		case 'project':
+	case 'project':
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('use_legs', 'type', 'radio');				    
+$form->setFieldAttribute('use_legs', 'class', 'switcher');				    
+}						
         $sports_type_id = $form->getValue('sports_type_id');
         $this->jsmquery->clear();
         // select some fields
@@ -1027,7 +1032,7 @@ catch (Exception $e) {
         $this->jsmquery->where('id = '.(int) $sports_type_id);
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadResult();
-        
+        /*
         switch ($result)
         {
             case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
@@ -1038,7 +1043,7 @@ catch (Exception $e) {
             $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
             break;
         }
-        
+        */
         switch ( ComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
         {
         case 'com_content':
