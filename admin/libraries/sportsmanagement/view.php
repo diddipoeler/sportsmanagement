@@ -660,7 +660,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 	case 'jlxmlexports';
     
     case 'treetonodes';
-    case 'treeto';
+    case 'treetos';
             break;    
             default:    
 /**
