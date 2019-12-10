@@ -431,9 +431,9 @@ label="COM_SPORTSMANAGEMENT_TABS_INJURY"
 description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
 <field
 name="injury"
-type="radio"
+type="extensionradiobutton"
 default="0"
-class="switcher"
+class="radio btn-group btn-group-yesno"
 label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
 description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
 <option value="0">JNO</option>
