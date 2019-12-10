@@ -335,56 +335,47 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 		</field>
       
 <field
-			name="person_art"
-			type="list"
-			class="inputbox"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
-			<option
-				value="2">
-				COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
-		</field>	
+name="person_art"
+type="list"
+class="inputbox"
+default="1"
+size="1"
+label="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART"
+description="COM_SPORTSMANAGEMENT_GLOBAL_PERSON_ART_DESC">
+<option	value="1">COM_SPORTSMANAGEMENT_PERSON_SINGLE</option>
+<option	value="2">COM_SPORTSMANAGEMENT_PERSON_DOUBLE</option>
+</field>	
 
         
 <field
-			name="person_id1"
-			type="dependsql"
-			depends="person_art"
-			task="personlistoptions" 
-			class="inputbox"
-showon="person_art:1"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
-		</field>	
-
+name="person_id1"
+type="dependsql"
+depends="person_art"
+task="personlistoptions" 
+class="inputbox"
+showon="person_art:2"
+default="0"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_1_DESC"
+>
+<option	value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+</field>	
 		
 <field
-			name="person_id2"
-			type="dependsql"
-			depends="person_art"
-			task="personlistoptions"
-			class="inputbox"
-showon="person_art:1"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
-		</field>	
+name="person_id2"
+type="dependsql"
+depends="person_art"
+task="personlistoptions"
+class="inputbox"
+showon="person_art:2"
+default="0"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2"
+description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_2_DESC"
+>
+<option	value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
+</field>	
 </fieldset>
 
 
