@@ -61,7 +61,7 @@ function change_published () {
   if (deaktiviert == false){
 //  change_joker();
   change_jokerlimit();
-  change_champ();
+ // change_champ();
 }
 }
 
@@ -88,15 +88,15 @@ function change_jokerlimit () {
   document.adminForm.joker_limit.disabled=deaktiviert;
 }
 
-function change_champ () {
-  if (document.adminForm.champ0.checked == true) {
-    var deaktiviert=true;
-  } else {
-    var deaktiviert=false;
-  }
-  document.adminForm.points_tipp_champ.disabled=deaktiviert;
-  document.adminForm.league_champ.disabled=deaktiviert;
-}
+//function change_champ () {
+//  if (document.adminForm.champ0.checked == true) {
+//    var deaktiviert=true;
+//  } else {
+//    var deaktiviert=false;
+//  }
+//  document.adminForm.points_tipp_champ.disabled=deaktiviert;
+//  document.adminForm.league_champ.disabled=deaktiviert;
+//}
 
 </script>
 
