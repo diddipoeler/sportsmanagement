@@ -149,8 +149,8 @@ switch ($fieldset->name)
             </div>
     <?PHP
     break;
-		case 'joker':
-echo $this->form->renderFieldset('joker');		
+		case 'predjoker':
+echo $this->form->renderFieldset('predjoker');		
 		break;
     default:
     $this->fieldset = $fieldset->name;
