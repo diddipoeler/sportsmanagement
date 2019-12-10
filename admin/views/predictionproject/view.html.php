@@ -44,6 +44,12 @@ $this->form->setFieldAttribute('champ', 'type', 'radio');
 $this->form->setFieldAttribute('champ', 'class', 'switcher');				    
 $this->form->setFieldAttribute('joker', 'type', 'radio');				    
 $this->form->setFieldAttribute('joker', 'class', 'switcher');				
+$this->form->setFieldAttribute('published', 'type', 'radio');				    
+$this->form->setFieldAttribute('published', 'class', 'switcher');				
+$this->form->setFieldAttribute('mode', 'type', 'radio');				    
+$this->form->setFieldAttribute('mode', 'class', 'switcher');				
+$this->form->setFieldAttribute('overview', 'type', 'radio');				    
+$this->form->setFieldAttribute('overview', 'class', 'switcher');					
 }	
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
