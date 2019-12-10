@@ -1255,6 +1255,16 @@ catch (Exception $e) {
         //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
         break;
+	case 'predictionproject':		
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('champ', 'type', 'radio');				    
+$form->setFieldAttribute('champ', 'class', 'switcher');				    
+$form->setFieldAttribute('joker', 'type', 'radio');				    
+$form->setFieldAttribute('joker', 'class', 'switcher');				
+}			
+			
+			break;
         case 'person':
                 switch($form->getValue('person_art'))
         {
