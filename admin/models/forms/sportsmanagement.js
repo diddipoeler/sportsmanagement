@@ -1,3 +1,4 @@
+/*
 window.addEvent('domready', function() {
 	document.formvalidator.setHandler('greeting',
 		function (value) {
@@ -5,3 +6,4 @@ window.addEvent('domready', function() {
 			return regex.test(value);
 	});
 });
+*/
