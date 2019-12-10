@@ -368,6 +368,9 @@ break;
 case 'away':
 echo $this->form->renderFieldset('away');
 break;        
+case 'competition':
+echo $this->form->renderFieldset('competition');
+break;         
 // das ist der standard
     default:
         ?>
