@@ -38,7 +38,13 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->script = $this->get('Script');
-
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$this->form->setFieldAttribute('champ', 'type', 'radio');				    
+$this->form->setFieldAttribute('champ', 'class', 'switcher');				    
+$this->form->setFieldAttribute('joker', 'type', 'radio');				    
+$this->form->setFieldAttribute('joker', 'class', 'switcher');				
+}	
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
