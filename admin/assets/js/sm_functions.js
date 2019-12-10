@@ -104,10 +104,10 @@ var url = 'index.php?option=com_sportsmanagement&task=ajax.personpositionoptions
 	        
 }
 
-
+/*
 function toggle_altdecision() {
 	if (document.getElementById('jform_alt_decision').value == 0) {
-		document.getElementById'alt_decision_enter').style.display = 'none';
+		document.getElementById('alt_decision_enter').style.display = 'none';
 		document.getElementById('team1_result_decision').disabled = true;
 		document.getElementById('team2_result_decision').disabled = true;
 		document.getElementById('decision_info').disabled = true;
@@ -118,7 +118,7 @@ function toggle_altdecision() {
 		document.getElementById('decision_info').disabled = false;
 	}
 }
-
+*/
 
 
 
