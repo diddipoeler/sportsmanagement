@@ -584,6 +584,7 @@ $query->where($conditions);
             $this->jsmquery->where('id = ' . $object->round_id);
             $this->jsmdb->setQuery($this->jsmquery);
             $tournement_round = $this->jsmdb->loadResult();
+            if ($tournement_round) {
             /** roundcode für die nächste runde*/
             $this->jsmquery->clear();
             $this->jsmquery->select('roundcode');
@@ -598,7 +599,37 @@ $query->where($conditions);
             $this->jsmquery->where('roundcode = ' . $round_code);
             $this->jsmdb->setQuery($this->jsmquery);
             $prev_round_id = $this->jsmdb->loadResult();
-
+            /** update */
+            $this->jsmquery->clear();
+            $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
+            ->set('next_match_id = '.$object->id)
+            ->where('round_id = '.$prev_round_id.' AND ( projectteam1_id = '.$object->projectteam1_id.' OR projectteam2_id = '. $object->projectteam1_id .')' );
+            $this->jsmdb->setQuery($this->jsmquery);
+            try
+            {
+            $this->jsmdb->execute();
+            }
+            catch (RuntimeException $e)
+            {
+            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
+            $this->jsmquery->clear();
+            $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
+            ->set('next_match_id = '.$object->id)
+            ->where('round_id = '.$prev_round_id.' AND ( projectteam1_id = '.$object->projectteam2_id.' OR projectteam2_id = '. $object->projectteam2_id .')' );
+            $this->jsmdb->setQuery($this->jsmquery);
+            try
+            {
+            $this->jsmdb->execute();
+            }
+            catch (RuntimeException $e)
+            {
+            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
+            
+            
+            
+            }
             
             
 
