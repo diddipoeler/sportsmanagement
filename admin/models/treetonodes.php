@@ -44,7 +44,7 @@ function savenode($node = NULL)
 {
 $date = Factory::getDate();
 $user = Factory::getUser();
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($node ,true).'</pre>'  , 'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($node ,true).'</pre>'  , '');
 foreach($node as $key => $value)
 {
 /** update node */
@@ -75,7 +75,7 @@ $object->modified_by = $user->get('id');
 try {           
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object );            
 } catch (Exception $e) {
-// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), '');
 $result = false;
 }
 }
@@ -86,6 +86,16 @@ $result = false;
 	
 function getteamsprorunde($project_id=0,$treetows = NULL)
 {
+/** alle runden */	
+$this->jsmquery->clear();
+$this->jsmquery->select('*');	
+$this->jsmquery->from('#__sportsmanagement_round');
+$this->jsmquery->where('project_id = ' . $project_id);	
+$this->jsmquery->where('r.tournement = 1');
+$this->jsmdb->setQuery($this->jsmquery);
+$roundresult = $this->jsmdb->loadObjectList('id');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');	
+	
 $this->jsmquery->clear();
 $this->jsmquery->select('m.id,m.projectteam1_id,m.projectteam2_id,m.next_match_id,m.team_won,r.roundcode');
 $this->jsmquery->from('#__sportsmanagement_match AS m');
@@ -103,7 +113,7 @@ break;
 }
 	
 	
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , 'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
 
 foreach($result as $key => $value)
 {
@@ -172,7 +182,7 @@ break;
 }
 
 }
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , 'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , '');
 return $matches;
 }
 	
