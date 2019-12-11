@@ -87,7 +87,7 @@ $result = false;
 function getteamsprorunde($project_id=0,$treetows = NULL)
 {
 $this->jsmquery->clear();
-$this->jsmquery->select('m.id,m.projectteam1_id,m.projectteam2_id,m.next_match_id,r.roundcode');
+$this->jsmquery->select('m.id,m.projectteam1_id,m.projectteam2_id,m.next_match_id,m.team_won,r.roundcode');
 $this->jsmquery->from('#__sportsmanagement_match AS m');
 $this->jsmquery->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
 $this->jsmquery->where('r.project_id = ' . $project_id);
