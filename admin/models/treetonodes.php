@@ -49,6 +49,15 @@ $this->jsmquery->where('r.project_id = ' . $project_id);
 $this->jsmquery->where('r.tournement = 1');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList('id');
+	
+switch ($treetows->tree_i)
+{
+case 6:
+$start = 64;
+break;
+}
+	
+	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , 'Error');
 
 foreach($result as $key => $value)
