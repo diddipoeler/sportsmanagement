@@ -62,7 +62,17 @@ break;
 
 foreach($result as $key => $value)
 {
-$matches[$value->roundcode][] = $value;
+$resultmatches[$value->roundcode][] = $value;
+
+switch ($value->roundcode)
+{
+case 1:
+$matches[$start] = $value->projectteam1_id;
+$start++;
+$matches[$start] = $value->projectteam2_id;
+$start++;
+break;
+}
 
 }
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , 'Error');
