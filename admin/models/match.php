@@ -629,8 +629,8 @@ $query->where($conditions);
             }
             catch (RuntimeException $e)
             {
-            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-		    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
+//            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+//	    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
             }
             $this->jsmquery->clear();
             $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
@@ -643,8 +643,8 @@ $query->where($conditions);
             }
             catch (RuntimeException $e)
             {
-            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-		    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
+//            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+//	    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
             }
             
             
