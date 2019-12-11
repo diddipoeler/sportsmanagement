@@ -182,6 +182,16 @@ break;
 }
 
 }
+	
+foreach ( $roundresult as $roundkey => $roundvalue ) if ($roundvalue->roundcode > 1)
+{
+foreach ( $matches as $key => $value ) if ($value->roundcode == $roundvalue->roundcode )
+{
+echo $value->roundcode.'<br>';
+
+}
+}
+	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , '');
 return $matches;
 }
