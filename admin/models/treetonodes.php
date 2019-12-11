@@ -91,7 +91,7 @@ $this->jsmquery->clear();
 $this->jsmquery->select('*');	
 $this->jsmquery->from('#__sportsmanagement_round');
 $this->jsmquery->where('project_id = ' . $project_id);	
-$this->jsmquery->where('r.tournement = 1');
+$this->jsmquery->where('tournement = 1');
 $this->jsmdb->setQuery($this->jsmquery);
 $roundresult = $this->jsmdb->loadObjectList('id');
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');	
