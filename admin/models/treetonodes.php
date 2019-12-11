@@ -65,14 +65,14 @@ $result = false;
 }
             
 /** insert node mit spiel id */            
-	if ( $value->match_id )
-	{
+if ( $value->match_id )
+{
 $object = new stdClass();            
 $object->node_id = $value->id;            
 $object->match_id = $value->match_id;
 $object->modified = $date->toSql();
 $object->modified_by = $user->get('id');            
- try {           
+try {           
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object );            
 } catch (Exception $e) {
 // $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
@@ -124,6 +124,28 @@ $this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $object->team_name = $this->jsmdb->loadResult();		
 $matches[$start] = $object;
+		
+$startneu = $start / 2;
+if ($start % 2 != 0) {
+//echo "Die Zahl $zahl ist ungerade";
+} else {
+//echo "Die Zahl $zahl ist gerade";
+$startneu = $start / 2;
+$object = new stdClass();	
+$object->team_id = $value->team_won;
+$object->match_id = $value->next_match_id;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $value->team_won);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+
+$matches[$startneu ] = $object;
+}		
+		
 $start++;
 $object = new stdClass();		
 $object->team_id = $value->projectteam2_id;	
