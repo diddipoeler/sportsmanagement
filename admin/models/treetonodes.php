@@ -115,6 +115,7 @@ case 1:
 $object = new stdClass();	
 $object->team_id = $value->projectteam1_id;
 $object->match_id = $key;		
+$object->roundcode = $value->roundcode;		
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -142,14 +143,15 @@ $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team
 $this->jsmquery->where('pt.id = ' . $value->team_won);
 $this->jsmdb->setQuery($this->jsmquery);
 $object->team_name = $this->jsmdb->loadResult();		
-
+$object->roundcode = $value->roundcode + 1;
 $matches[$startneu ] = $object;
 }		
 		
 $start++;
 $object = new stdClass();		
 $object->team_id = $value->projectteam2_id;	
-$object->match_id = $key;				
+$object->match_id = $key;
+$object->roundcode = $value->roundcode;		
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
