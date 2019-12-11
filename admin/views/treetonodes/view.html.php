@@ -106,6 +106,8 @@ foreach($this->node as $key => $value)
 {
 $value->team_id = $this->matches[$value->node]->team_id;
 $value->team_name = $this->matches[$value->node]->team_name;
+$value->title = $this->matches[$value->node]->team_name;
+$value->content = $this->matches[$value->node]->team_name;	
 $value->match_id = $this->matches[$value->node]->match_id;	
 }
 $this->model->savenode($this->node);
