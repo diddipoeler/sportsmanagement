@@ -40,6 +40,11 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->setState('limit',$limit);
 	}
 
+function savenode($node = NULL)
+{
+	
+}
+	
 function getteamsprorunde($project_id=0,$treetows = NULL)
 {
 $this->jsmquery->clear();
