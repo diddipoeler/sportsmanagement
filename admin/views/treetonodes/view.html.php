@@ -104,7 +104,8 @@ $this->matches = $this->model->getteamsprorunde($this->project_id,$this->treetow
 //$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');		
 foreach($this->node as $key => $value)
 {
-$value->team_id = $this->matches[$value->node];
+$value->team_id = $this->matches[$value->node]->team_id;
+$value->team_name = $this->matches[$value->node]->team_name;	
 }
 		
 	}
