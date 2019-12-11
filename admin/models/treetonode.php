@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
  * sportsmanagementModelTreetonode
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -58,6 +58,7 @@ public function __construct($config = array())
          * @param mixed $data
          * @return
          */
+	/*
         public function save($data)
 	{
     
@@ -69,7 +70,8 @@ public function __construct($config = array())
        } 
        return true;   
        }
-	    
+	  */
+		  
     /**
      * sportsmanagementModelTreetonode::getNode()
      * 
