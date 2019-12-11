@@ -48,8 +48,15 @@ $this->jsmquery->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_
 $this->jsmquery->where('r.project_id = ' . $project_id);
 $this->jsmquery->where('r.tournement = 1');
 $this->jsmdb->setQuery($this->jsmquery);
-$result = $this->jsmdb->loadAssocList('r.roundcode');
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , 'Error');
+$result = $this->jsmdb->loadObjectList('id');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , 'Error');
+
+foreach($result as $key => $value)
+{
+$matches[$value->roundcode][] = $value;
+
+}
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , 'Error');
 
 }
 	
