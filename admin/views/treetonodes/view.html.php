@@ -36,7 +36,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	public function init ()
 	{
         
-		if ( $this->getLayout()=='default' || $this->getLayout()=='default_3' )
+		if ( $this->getLayout()=='default' || $this->getLayout()=='default_3' || $this->getLayout()=='default_4' )
 		{
 			$this->_displayDefault();
 			return;
@@ -101,6 +101,12 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$this->projectws = $projectws;
 		$this->treetows = $treetows;
 $this->matches = $this->model->getteamsprorunde($this->project_id,$this->treetows);
+//$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');		
+foreach($this->node as $key => $value)
+{
+$value->team_id = $this->matches[$value->node];
+}
+		
 	}
     
     
