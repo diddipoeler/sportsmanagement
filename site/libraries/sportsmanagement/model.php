@@ -120,12 +120,14 @@ class JSMModelLegacy extends BaseDatabaseModel
  */
 public function __construct($config = array())
 	{
-// Reference global application object
+/** Reference global application object */
 $this->jsmapp = Factory::getApplication('site');
 $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
 $this->jsmview = $this->jsmjinput->getCmd('view');
-
+$this->jsmdb = sportsmanagementHelper::getDBConnection();
+$this->jsmquery = $this->jsmdb->getQuery(true);
+	
 /**
  * alle fehlermeldungen online ausgeben
  * mit der kategorie: jsmerror    
