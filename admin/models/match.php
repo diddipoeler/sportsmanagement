@@ -591,12 +591,14 @@ $query->where($conditions);
             $this->jsmquery->from('#__sportsmanagement_round');
             $this->jsmquery->where('id = ' . $object->round_id);
             $this->jsmdb->setQuery($this->jsmquery);
-            $round_code = $this->jsmdb->loadResult();
+            $round_object = $this->jsmdb->loadObject();
+            $round_code = $round_object->roundcode;  
             $round_code--;
             $this->jsmquery->clear();
             $this->jsmquery->select('id');
             $this->jsmquery->from('#__sportsmanagement_round');
             $this->jsmquery->where('roundcode = ' . $round_code);
+            $this->jsmquery->where('project_id = ' . $round_object->project_id);
             $this->jsmdb->setQuery($this->jsmquery);
             $prev_round_id = $this->jsmdb->loadResult();
             /** update */
