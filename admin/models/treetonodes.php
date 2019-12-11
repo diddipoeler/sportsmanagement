@@ -42,6 +42,40 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
 function savenode($node = NULL)
 {
+$date = Factory::getDate();
+$user = Factory::getUser();
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($node ,true).'</pre>'  , 'Error');
+foreach($node as $key => $value)
+{
+/** update node */
+$object = new stdClass();
+$object->id = $value->id;
+$object->title = $this->jsmdb->quote($value->title);
+$object->content = $this->jsmdb->quote($value->content);
+$object->team_id = $value->team_id;
+$object->modified = $date->toSql();
+$object->modified_by = $user->get('id');
+try {
+$result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
+} catch (Exception $e) {
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+$result = false;
+}
+            
+/** insert node mit spiel id */            
+$object = new stdClass();            
+$object->node_id = $value->id;            
+$object->match_id = $value->match_id;
+$object->modified = $date->toSql();
+$object->modified_by = $user->get('id');            
+ try {           
+$result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object );            
+} catch (Exception $e) {
+// $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+$result = false;
+}
+                        
+}
 	
 }
 	
