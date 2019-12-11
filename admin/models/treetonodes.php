@@ -69,6 +69,7 @@ switch ($value->roundcode)
 case 1:
 $object = new stdClass();	
 $object->team_id = $value->projectteam1_id;
+$object->match_id = $key;		
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -81,6 +82,7 @@ $matches[$start] = $object;
 $start++;
 $object = new stdClass();		
 $object->team_id = $value->projectteam2_id;	
+$object->match_id = $key;				
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
