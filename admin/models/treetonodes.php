@@ -67,9 +67,29 @@ $resultmatches[$value->roundcode][] = $value;
 switch ($value->roundcode)
 {
 case 1:
-$matches[$start] = $value->projectteam1_id;
+$object = new stdClass();	
+$object->team_id = $value->projectteam1_id;
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$matches[$start] = $object;
 $start++;
-$matches[$start] = $value->projectteam2_id;
+$object = new stdClass();		
+$object->team_id = $value->projectteam2_id;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$matches[$start] = $object;
 $start++;
 break;
 }
