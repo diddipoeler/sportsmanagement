@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
@@ -20,7 +20,7 @@ use Joomla\CMS\Session\Session;
  * sportsmanagementControllerTreetonode
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2018
  * @version $Id$
  * @access public
@@ -71,6 +71,7 @@ $this->setRedirect($link,$msg);
  * @param mixed $urlVar
  * @return void
  */
+	/*
 function save($key = NULL, $urlVar = NULL)
 	{
        $data = $this->jsmjinput->post->getArray();
@@ -110,7 +111,7 @@ function save($key = NULL, $urlVar = NULL)
 		$this->setRedirect($link,$msg);
     
     }
-
+*/
 
 
 
