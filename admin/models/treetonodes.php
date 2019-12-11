@@ -116,6 +116,8 @@ $object = new stdClass();
 $object->team_id = $value->projectteam1_id;
 $object->match_id = $key;		
 $object->roundcode = $value->roundcode;		
+$object->next_match_id = $value->next_match_id;
+$object->team_won = $value->team_won;		
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -144,6 +146,8 @@ $this->jsmquery->where('pt.id = ' . $value->team_won);
 $this->jsmdb->setQuery($this->jsmquery);
 $object->team_name = $this->jsmdb->loadResult();		
 $object->roundcode = $value->roundcode + 1;
+$object->next_match_id = $result[$value->next_match_id]->next_match_id;
+$object->team_won = $result[$value->next_match_id]->team_won;			
 $matches[$startneu ] = $object;
 }		
 		
@@ -151,7 +155,9 @@ $start++;
 $object = new stdClass();		
 $object->team_id = $value->projectteam2_id;	
 $object->match_id = $key;
-$object->roundcode = $value->roundcode;		
+$object->roundcode = $value->roundcode;	
+$object->next_match_id = $value->next_match_id;
+$object->team_won = $value->team_won;				
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
