@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTreetonodes
@@ -426,9 +427,13 @@ $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $cid[$x];
 $object->team_id = $post['team_id'.$cid[$x]] ;
+			try {
 // Update their details in the users table using id as the primary key.
 $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object, 'id');
-            
+            } catch (Exception $e) {
+                $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
             
 		}
 		return $result;
