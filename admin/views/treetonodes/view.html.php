@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonodes
@@ -20,7 +20,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * sportsmanagementViewTreetonodes
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2018
  * @version $Id$
  * @access public
@@ -100,7 +100,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$this->path = $path;
 		$this->projectws = $projectws;
 		$this->treetows = $treetows;
-
+$this->matches = $this->model->getteamsprorunde($this->project_id);
 	}
     
     
