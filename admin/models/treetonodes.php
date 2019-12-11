@@ -63,6 +63,8 @@ $result = false;
 }
             
 /** insert node mit spiel id */            
+	if ( $value->match_id )
+	{
 $object = new stdClass();            
 $object->node_id = $value->id;            
 $object->match_id = $value->match_id;
@@ -74,7 +76,8 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object
 // $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
 $result = false;
 }
-                        
+}
+	
 }
 	
 }
