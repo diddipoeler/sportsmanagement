@@ -587,7 +587,7 @@ $query->where($conditions);
             if ($tournement_round) {
             /** roundcode für die nächste runde*/
             $this->jsmquery->clear();
-            $this->jsmquery->select('roundcode');
+            $this->jsmquery->select('roundcode,project_id');
             $this->jsmquery->from('#__sportsmanagement_round');
             $this->jsmquery->where('id = ' . $object->round_id);
             $this->jsmdb->setQuery($this->jsmquery);
