@@ -75,6 +75,15 @@ if( $this->treetows->leafed == 1 )
 	echo $this->node[$j-1]->node;
 	if($this->node[$j-1]->team_id)
 	{
+echo $checked;
+$marker = $j - 1;
+?>
+<script type="text/javascript">
+document.getElementById('cb<?php echo $marker;?>').checked=true;
+</script>
+<input type="hidden" id="team_id<?php echo $this->node[$j-1]->id;?>" name="team_id<?php echo $this->node[$j-1]->id;?>" value="<?php echo $this->node[$j-1]->team_id;?>" >
+<?php		
+		
 			$link = Route::_( 'index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
 			$ednode ='<a href='. $link . '>';
 			$ednode .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png','edit');
