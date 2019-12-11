@@ -39,7 +39,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->setState('limit',$limit);
 	}
 
-function getteamsprorunde($project_id=0)
+function getteamsprorunde($project_id=0,$treetows = NULL)
 {
 $this->jsmquery->clear();
 $this->jsmquery->select('m.id,m.projectteam1_id,m.projectteam2_id,m.next_match_id,r.roundcode');
