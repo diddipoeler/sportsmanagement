@@ -100,7 +100,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$this->path = $path;
 		$this->projectws = $projectws;
 		$this->treetows = $treetows;
-$this->matches = $this->model->getteamsprorunde($this->project_id);
+$this->matches = $this->model->getteamsprorunde($this->project_id,$this->treetows);
 	}
     
     
