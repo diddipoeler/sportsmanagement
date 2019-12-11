@@ -592,7 +592,14 @@ $query->where($conditions);
             $this->jsmquery->where('id = ' . $object->round_id);
             $this->jsmdb->setQuery($this->jsmquery);
             $round_object = $this->jsmdb->loadObject();
+		    try
+            {
             $round_code = $round_object->roundcode;  
+			    }
+            catch (RuntimeException $e)
+            {
+            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
             $round_code--;
             $this->jsmquery->clear();
             $this->jsmquery->select('id');
@@ -600,7 +607,14 @@ $query->where($conditions);
             $this->jsmquery->where('roundcode = ' . $round_code);
             $this->jsmquery->where('project_id = ' . $round_object->project_id);
             $this->jsmdb->setQuery($this->jsmquery);
+			    try
+            {
             $prev_round_id = $this->jsmdb->loadResult();
+				    }
+            catch (RuntimeException $e)
+            {
+            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
             /** update */
             $this->jsmquery->clear();
             $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
