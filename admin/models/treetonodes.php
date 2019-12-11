@@ -50,8 +50,10 @@ foreach($node as $key => $value)
 /** update node */
 $object = new stdClass();
 $object->id = $value->id;
-$object->title = $this->jsmdb->quote($value->title);
-$object->content = $this->jsmdb->quote($value->content);
+//$object->title = $this->jsmdb->quote($value->title);
+//$object->content = $this->jsmdb->quote($value->content);
+$object->title = $value->title;
+$object->content = $value->content;	
 $object->team_id = $value->team_id;
 $object->modified = $date->toSql();
 $object->modified_by = $user->get('id');
