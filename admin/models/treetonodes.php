@@ -418,7 +418,8 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	 */
 	function storeshort($cid,$post)
 	{
-		
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');		
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');				
 		for($x = 0;$x < count($cid);$x ++)
 		{
 		            
