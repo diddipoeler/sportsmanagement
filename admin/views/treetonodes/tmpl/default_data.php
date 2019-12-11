@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_data.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonodes
@@ -19,13 +19,9 @@ use Joomla\CMS\Language\Text;
 <div id="editcell">
 <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 <?php
-//$style = $this->style;
-//$path=$this->path;
-
 $attribs['width'] = '16px';
 $attribs['height'] = '18px';
 $dl = HTMLHelper::_('image', $this->path.'treedl.gif','', $attribs);
-
 $ul = HTMLHelper::_('image', $this->path.'treeul.gif','', $attribs);
 $cl = HTMLHelper::_('image', $this->path.'treecl.gif','', $attribs);
 $dr = HTMLHelper::_('image', $this->path.'treedr.gif','', $attribs);
@@ -38,7 +34,7 @@ $i = $this->treetows->tree_i;		//depth
 $r = 2*(pow(2,$i)); 			//rows
 $c = 2*$i+1;        			//columns
 $col_hide = $c-2*($this->treetows->hide);	//tournament with multiple winners
-echo '<table>';
+echo '<table class="table">';
 
 	for($j=1;$j<$r;$j++)
 	{
