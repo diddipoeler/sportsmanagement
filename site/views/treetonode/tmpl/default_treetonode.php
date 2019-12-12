@@ -62,7 +62,7 @@ $c = 2*$i+1;        			//columns
 $col_hide = $c-2*$hide;			//hiden col
 ?>
 
-<table class="table table-responsive">
+<table class="table ">
 <?php
 //headerline
 if( $this->config['show_treeheader'] == 1 )
