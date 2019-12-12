@@ -48,6 +48,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	static $_country_fed = array();
 	var $_club_id;
 	var $_division_id = 0;
+	var $_tnid = 0;
 	var $_round_id = null;
 	
 	protected $_teamoptions;
@@ -1195,7 +1196,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				break;    
 				
 			case "treetonode":
-				$link = sportsmanagementHelperRoute::getBracketsRoute( $this->_project_slug);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['tnid'] = $this->_tnid;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
 				break;
                 
             case "jltournamenttree":
