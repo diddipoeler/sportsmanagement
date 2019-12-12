@@ -119,6 +119,15 @@ $result = $this->jsmdb->loadObjectList('id');
 	
 switch ($treetows->tree_i)
 {
+case 7:
+$mannproroundcode[1] = 128;
+$mannproroundcode[2] = 64;
+$mannproroundcode[3] = 32;
+$mannproroundcode[4] = 16;
+$mannproroundcode[5] = 8;
+$mannproroundcode[6] = 4;
+$mannproroundcode[7] = 2;
+break;		
 case 6:
 $mannproroundcode[1] = 64;
 $mannproroundcode[2] = 32;
