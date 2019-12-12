@@ -86,6 +86,7 @@ $result = false;
 	
 function getteamsprorunde($project_id=0,$treetows = NULL)
 {
+$matches = array();
 /** alle runden */	
 $this->jsmquery->clear();
 $this->jsmquery->select('*');	
@@ -95,39 +96,45 @@ $this->jsmquery->where('tournement = 1');
 $this->jsmdb->setQuery($this->jsmquery);
 $roundresult = $this->jsmdb->loadObjectList('id');
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');	
-	
+
+$this->jsmquery->clear();
+$this->jsmquery->select('MAX(r.roundcode)');
+$this->jsmquery->from('#__sportsmanagement_match AS m');
+$this->jsmquery->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+$this->jsmquery->where('r.project_id = ' . $project_id);
+$this->jsmquery->where('r.tournement = 1');
+$this->jsmquery->order('r.roundcode DESC');
+$this->jsmdb->setQuery($this->jsmquery);
+$maxresult = $this->jsmdb->loadResult();
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult <pre>'.print_r($maxresult ,true).'</pre>'  , '');	
 $this->jsmquery->clear();
 $this->jsmquery->select('m.id,m.projectteam1_id,m.projectteam2_id,m.next_match_id,m.team_won,r.roundcode');
 $this->jsmquery->from('#__sportsmanagement_match AS m');
 $this->jsmquery->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
 $this->jsmquery->where('r.project_id = ' . $project_id);
 $this->jsmquery->where('r.tournement = 1');
+$this->jsmquery->order('r.roundcode DESC');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList('id');
 	
 switch ($treetows->tree_i)
 {
 case 6:
-$start = 64;
+$mannproroundcode[1] = 64;
+$mannproroundcode[2] = 32;
+$mannproroundcode[3] = 16;
+$mannproroundcode[4] = 8;
+$mannproroundcode[5] = 4;
+$mannproroundcode[6] = 2;
 break;
 }
 	
-	
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
-
-foreach($result as $key => $value)
+foreach ( $result as $key => $value ) if ($value->roundcode == $maxresult)
 {
-$resultmatches[$value->roundcode][] = $value;
-
-switch ($value->roundcode)
-{
-case 1:
+$startneu = $mannproroundcode[$value->roundcode];
 $object = new stdClass();	
 $object->team_id = $value->projectteam1_id;
-$object->match_id = $key;		
-$object->roundcode = $value->roundcode;		
-$object->next_match_id = $value->next_match_id;
-$object->team_won = $value->team_won;		
+$object->match_id = $key;	
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -136,38 +143,16 @@ $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team
 $this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $object->team_name = $this->jsmdb->loadResult();		
-$matches[$start] = $object;
-		
-$startneu = $start / 2;
-if ($start % 2 != 0) {
-//echo "Die Zahl $zahl ist ungerade";
-} else {
-//echo "Die Zahl $zahl ist gerade";
-$startneu = $start / 2;
-$object = new stdClass();	
-$object->team_id = $value->team_won;
-$object->match_id = $value->next_match_id;	
-$this->jsmquery->clear();
-$this->jsmquery->select('t.name');
-$this->jsmquery->from('#__sportsmanagement_team AS t');
-$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
-$this->jsmquery->where('pt.id = ' . $value->team_won);
-$this->jsmdb->setQuery($this->jsmquery);
-$object->team_name = $this->jsmdb->loadResult();		
-$object->roundcode = $value->roundcode + 1;
-$object->next_match_id = $result[$value->next_match_id]->next_match_id;
-$object->team_won = $result[$value->next_match_id]->team_won;			
-$matches[$startneu ] = $object;
-}		
-		
-$start++;
-$object = new stdClass();		
-$object->team_id = $value->projectteam2_id;	
-$object->match_id = $key;
-$object->roundcode = $value->roundcode;	
+$object->roundcode = $value->roundcode;
 $object->next_match_id = $value->next_match_id;
-$object->team_won = $value->team_won;				
+$object->team_won = $value->team_won;			
+$matches[$startneu ] = $object;
+$mannproroundcode[$value->roundcode] += 1;
+$startneu = $mannproroundcode[$value->roundcode];
+//$startneu++;
+$object = new stdClass();	
+$object->team_id = $value->projectteam2_id;
+$object->match_id = $key;	
 $this->jsmquery->clear();
 $this->jsmquery->select('t.name');
 $this->jsmquery->from('#__sportsmanagement_team AS t');
@@ -176,23 +161,74 @@ $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team
 $this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $object->team_name = $this->jsmdb->loadResult();		
-$matches[$start] = $object;
-$start++;
-break;
+$object->roundcode = $value->roundcode;
+$object->next_match_id = $value->next_match_id;
+$object->team_won = $value->team_won;			
+$matches[$startneu ] = $object;
+$mannproroundcode[$value->roundcode] += 1;
+}	
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
+
+for($i=$maxresult; $i > 0; $i--) {
+$startround = $i - 1;
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($i,true).'</pre>'  , '');
+foreach ( $matches as $keymatches => $valuematches ) if ($valuematches->roundcode == $i)
+{
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' valuematches->team_id<pre>'.print_r($valuematches->team_id,true).'</pre>'  , '');
+foreach ( $result as $key => $value ) if ( $value->team_won == $valuematches->team_id && $value->roundcode == $startround )
+{
+
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' value<pre>'.print_r($value,true).'</pre>'  , '');
+
+//if ( $value->roundcode == $startround )
+//{
+
+$startneu = $mannproroundcode[$value->roundcode];
+$object = new stdClass();	
+$object->team_id = $value->projectteam1_id;
+$object->match_id = $key;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$object->roundcode = $value->roundcode;
+$object->next_match_id = $value->next_match_id;
+$object->team_won = $value->team_won;			
+$matches[$startneu ] = $object;
+$mannproroundcode[$value->roundcode] += 1;
+$startneu = $mannproroundcode[$value->roundcode];
+//$startneu++;
+$object = new stdClass();	
+$object->team_id = $value->projectteam2_id;
+$object->match_id = $key;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$object->roundcode = $value->roundcode;
+$object->next_match_id = $value->next_match_id;
+$object->team_won = $value->team_won;			
+$matches[$startneu ] = $object;
+$mannproroundcode[$value->roundcode] += 1;
+//}
+
+	
 }
 
-}
 	
-foreach ( $roundresult as $roundkey => $roundvalue ) if ($roundvalue->roundcode > 1)
-{
-foreach ( $matches as $key => $value ) if ($value->roundcode == $roundvalue->roundcode )
-{
-//echo $value->roundcode.'<br>';
-
 }
 }
 	
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($matches,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' matches <pre>'.print_r($matches,true).'</pre>'  , '');
 return $matches;
 }
 	
