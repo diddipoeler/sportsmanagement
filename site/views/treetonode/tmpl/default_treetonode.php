@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      default_treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonode
@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+//echo '<pre>'.print_r($this->node,true).'</pre>';
 $style  = 'style="background-color: '.$this->config['tree_bg_colour'].';';
 $style .= 'border: 1px solid  '.$this->config['tree_border_colour'].';';
 $style .= 'font-weight: bold; white-space:nowrap;';
