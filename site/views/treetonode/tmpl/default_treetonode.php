@@ -210,8 +210,8 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 <a href='<?php echo $report_link ; ?>'>
 <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
 width='20'
-alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
-title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT' ); ?>'
+title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT' ); ?>'>
 </a>
 <?php					
 }					
