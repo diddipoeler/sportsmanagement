@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 //echo '<pre>'.print_r($this->node,true).'</pre>';
 $style  = 'style="background-color: '.$this->config['tree_bg_colour'].';';
 $style .= 'border: 1px solid  '.$this->config['tree_border_colour'].';';
@@ -196,6 +197,26 @@ if( $this->config['show_treeheader'] == 1 )
 			echo $this->node[$j-1]->team_name;
 		}
 	}
+					
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = Factory::getApplication()->input->getInt('p',0);
+$routeparameter['mid'] = $this->node[$j-1]->match_id;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+//echo $report_link ;
+?>    
+<a href='<?php echo $report_link ; ?>'>
+<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+width='20'
+alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+</a>
+<?php					
+					
+					
+					
+					
 	if(($this->config['show_overlib_seed']==0)&& $this->node[$j-1]->is_leaf )
     {
 		;
