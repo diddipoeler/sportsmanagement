@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonode
@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
  * sportsmanagementModelTreetonode
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
@@ -60,34 +60,35 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
         }
         $this->jsmquery->clear();
         
-		$this->jsmquery->select('ttn.* ');
-		$this->jsmquery->select('ttn.id AS ttnid');
-		$this->jsmquery->select('c.country AS country');
-		$this->jsmquery->select('c.logo_small AS logo_small');
+	$this->jsmquery->select('ttn.* ');
+	$this->jsmquery->select('ttn.id AS ttnid');
+	$this->jsmquery->select('ttm.match_id');
+	$this->jsmquery->select('c.country AS country');
+	$this->jsmquery->select('c.logo_small AS logo_small');
         $this->jsmquery->select('c.logo_middle AS logo_middle');
         $this->jsmquery->select('c.logo_big AS logo_big');
-		$this->jsmquery->select('t.name AS team_name ');
-		$this->jsmquery->select('t.middle_name AS middle_name ');
-		$this->jsmquery->select('t.short_name AS short_name ');
-		$this->jsmquery->select('t.id AS tid ');
-		$this->jsmquery->select('ttn.title AS title ');
-		$this->jsmquery->select('ttn.content AS content ');
-		$this->jsmquery->select('tt.tree_i AS tree_i ');
-		$this->jsmquery->select('tt.hide AS hide ');
+	$this->jsmquery->select('t.name AS team_name ');
+	$this->jsmquery->select('t.middle_name AS middle_name ');
+	$this->jsmquery->select('t.short_name AS short_name ');
+	$this->jsmquery->select('t.id AS tid ');
+	$this->jsmquery->select('ttn.title AS title ');
+	$this->jsmquery->select('ttn.content AS content ');
+	$this->jsmquery->select('tt.tree_i AS tree_i ');
+	$this->jsmquery->select('tt.hide AS hide ');
         $this->jsmquery->from('#__sportsmanagement_treeto_node AS ttn ');   
-        
-		$this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pt ON pt.id = ttn.team_id ');
+	$this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pt ON pt.id = ttn.team_id ');
         $this->jsmquery->join('LEFT','#__sportsmanagement_season_team_id AS st on pt.team_id = st.id ');
-		$this->jsmquery->join('LEFT','#__sportsmanagement_team AS t ON t.id = st.team_id ');
-		$this->jsmquery->join('LEFT','#__sportsmanagement_club AS c ON c.id = t.club_id ');
-		$this->jsmquery->join('LEFT','#__sportsmanagement_treeto AS tt ON tt.id = ttn.treeto_id ');
+	$this->jsmquery->join('LEFT','#__sportsmanagement_team AS t ON t.id = st.team_id ');
+	$this->jsmquery->join('LEFT','#__sportsmanagement_club AS c ON c.id = t.club_id ');
+	$this->jsmquery->join('LEFT','#__sportsmanagement_treeto AS tt ON tt.id = ttn.treeto_id ');
+	$this->jsmquery->join('LEFT','#__sportsmanagement_treeto_match AS ttm ON ttm.node_id = ttn.id ');
         $this->jsmquery->where('ttn.treeto_id = ' .  (int) $this->treetoid );
         $this->jsmquery->order('ttn.row');
         
-		$this->jsmdb->setQuery( $this->jsmquery );
-		$result = $this->jsmdb->loadObjectList();
+	$this->jsmdb->setQuery( $this->jsmquery );
+	$result = $this->jsmdb->loadObjectList();
 		
-		return $result;
+	return $result;
 	}
 	
     
