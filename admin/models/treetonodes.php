@@ -127,6 +127,28 @@ $mannproroundcode[4] = 8;
 $mannproroundcode[5] = 4;
 $mannproroundcode[6] = 2;
 break;
+case 5:
+$mannproroundcode[1] = 32;
+$mannproroundcode[2] = 16;
+$mannproroundcode[3] = 8;
+$mannproroundcode[4] = 4;
+$mannproroundcode[5] = 2;
+break;
+case 4:
+$mannproroundcode[1] = 16;
+$mannproroundcode[2] = 8;
+$mannproroundcode[3] = 4;
+$mannproroundcode[4] = 2;
+break;
+case 3:
+$mannproroundcode[1] = 8;
+$mannproroundcode[2] = 4;
+$mannproroundcode[3] = 2;
+break;
+case 2:
+$mannproroundcode[1] = 4;
+$mannproroundcode[2] = 2;
+break;		
 }
 	
 foreach ( $result as $key => $value ) if ($value->roundcode == $maxresult)
