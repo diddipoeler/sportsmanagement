@@ -197,14 +197,15 @@ if( $this->config['show_treeheader'] == 1 )
 			echo $this->node[$j-1]->team_name;
 		}
 	}
-					
+	
+if ( $this->node[$j-1]->match_id )
+{
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = Factory::getApplication()->input->getInt('p',0);
 $routeparameter['mid'] = $this->node[$j-1]->match_id;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
-//echo $report_link ;
 ?>    
 <a href='<?php echo $report_link ; ?>'>
 <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
@@ -213,7 +214,7 @@ alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
 title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
 </a>
 <?php					
-					
+}					
 					
 					
 					
