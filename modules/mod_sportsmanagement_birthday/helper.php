@@ -126,6 +126,7 @@ if ( $params->get('use_which') <= 1 ) {
     $subquery1->join('INNER', '#__sportsmanagement_person_project_position as pppos ON pppos.project_position_id = ppos.id ');
     $subquery1->where('pppos.person_id = p.id');
     $subquery1->where('pppos.project_id = pro.id');
+    $subquery1->setLimit(1);
     $query->select('(' . $subquery1 . ') AS position_name');
 
 
@@ -159,7 +160,7 @@ if ( $params->get('use_which') <= 1 ) {
  try{
     $players = $database->loadAssocList();
  } catch (Exception $e) {
-                $mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $mainframe->enqueueMessage(__FILE__.' '. __LINE__ . Text::_($e->getMessage()), 'Error');
              }
  
 }
