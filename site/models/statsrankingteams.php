@@ -8,7 +8,7 @@
  * @package   sportsmanagement
  * @subpackage statsranking
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;

@@ -9,7 +9,7 @@
  * @subpackage smquotes
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
