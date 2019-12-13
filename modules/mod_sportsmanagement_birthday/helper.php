@@ -79,7 +79,7 @@ if ( $params->get('use_fav') ) {
 
 $birthdaytext = '';
 
-// get player info, we have to make a function for this
+/** get player info, we have to make a function for this */
 $dateformat = "DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth";
 
 if ( $params->get('use_which') <= 1 ) {
@@ -164,7 +164,7 @@ if ( $params->get('use_which') <= 1 ) {
  
 }
 
-//get staff info, we have to make a function for this
+/** get staff info, we have to make a function for this */
 if ( $params->get('use_which') == 2 ) {
     $query = $database->getQuery(true);
     $query->clear();
@@ -195,7 +195,7 @@ if ( $params->get('use_which') == 2 ) {
     if ($params->get('agegrouplist')) {
         $query->where('p.agegroup_id = ' . $params->get('agegrouplist'));
     }
-    // Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
+    /** Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff) */
     if (count($players) > 0) {
         $ids = "0";
         foreach ($players AS $player) {
