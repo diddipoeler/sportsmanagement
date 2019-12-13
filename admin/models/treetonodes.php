@@ -187,7 +187,7 @@ break;
 	
 foreach ( $result as $key => $value ) if ($value->roundcode == $maxresult)
 {
-$startneu = $mannproroundcode[$value->roundcode];
+$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];// $projectroundcode[$value->roundcode]
 $object = new stdClass();	
 $object->team_id = $value->projectteam1_id;
 $object->match_id = $key;	
@@ -203,8 +203,8 @@ $object->roundcode = $value->roundcode;
 $object->next_match_id = $value->next_match_id;
 $object->team_won = $value->team_won;			
 $matches[$startneu ] = $object;
-$mannproroundcode[$value->roundcode] += 1;
-$startneu = $mannproroundcode[$value->roundcode];
+$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
+$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
 //$startneu++;
 $object = new stdClass();	
 $object->team_id = $value->projectteam2_id;
@@ -221,7 +221,7 @@ $object->roundcode = $value->roundcode;
 $object->next_match_id = $value->next_match_id;
 $object->team_won = $value->team_won;			
 $matches[$startneu ] = $object;
-$mannproroundcode[$value->roundcode] += 1;
+$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 }	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
 
@@ -240,7 +240,7 @@ foreach ( $result as $key => $value ) if ( $value->team_won == $valuematches->te
 //if ( $value->roundcode == $startround )
 //{
 
-$startneu = $mannproroundcode[$value->roundcode];
+$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
 $object = new stdClass();	
 $object->team_id = $value->projectteam1_id;
 $object->match_id = $key;	
@@ -256,8 +256,8 @@ $object->roundcode = $value->roundcode;
 $object->next_match_id = $value->next_match_id;
 $object->team_won = $value->team_won;			
 $matches[$startneu ] = $object;
-$mannproroundcode[$value->roundcode] += 1;
-$startneu = $mannproroundcode[$value->roundcode];
+$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
+$startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
 //$startneu++;
 $object = new stdClass();	
 $object->team_id = $value->projectteam2_id;
@@ -274,7 +274,7 @@ $object->roundcode = $value->roundcode;
 $object->next_match_id = $value->next_match_id;
 $object->team_won = $value->team_won;			
 $matches[$startneu ] = $object;
-$mannproroundcode[$value->roundcode] += 1;
+$mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 //}
 
 	
