@@ -282,13 +282,13 @@ else
         ?>
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
          <?php       
         echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
         

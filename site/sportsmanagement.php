@@ -260,7 +260,7 @@ $document->setMetaData('robots', 'index,follow');
  * 
  */
 $document->setMetaData('keywords', implode(",", $meta_keys));
-$document->setMetaData('generator', "JSM - Joomla Sports Management");
+$document->setMetaData('generator', "JSM - Sports Management");
 
 unset($meta_keys);
 
