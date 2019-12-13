@@ -74,7 +74,7 @@ SqueezeBox.open(url, {
 	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 <br />  
 <?php
-if ( $show_facebook_link )
+if ( $show_facebook_link == 3 )
 {	
 ?>
 <img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
@@ -85,7 +85,8 @@ if ( $show_facebook_link )
 ?>
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
-	echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
+	//echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
+    echo sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion());
 	?>
 	<br />    
       
