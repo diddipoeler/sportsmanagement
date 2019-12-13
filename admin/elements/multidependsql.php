@@ -37,12 +37,12 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-// welche joomla version
+// welche version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 HTMLHelper::_('behavior.framework', true);

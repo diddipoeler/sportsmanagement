@@ -2,7 +2,7 @@
 /**
  *  Copyright (c) Nicholas Mossor Rathmann <nicholas.rathmann@gmail.com> 2008. All Rights Reserved.
  *
- *  Modified by julien.vonthron@gmail.com to suit joomleague extension for joomla
+ *  Modified by julien.vonthron@gmail.com 
  * 
  *  Modified by gladiator.sp@gmail.com on 20-03-2009 to improve standard algorithm for round-robins  
  *  to more complex and better Porter-Berger Algorithm  
