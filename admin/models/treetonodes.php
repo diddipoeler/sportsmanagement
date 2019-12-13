@@ -126,7 +126,16 @@ $this->jsmquery->where('r.tournement = 1');
 $this->jsmquery->order('r.roundcode DESC');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList('id');
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' tree <pre>'.print_r($treetows->tree_i,true).'</pre>'  , '');	
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' tree <pre>'.print_r($treetows->tree_i,true).'</pre>'  , '');
+
+$start = 1;
+for($i=$minresult; $i <= $maxresult; $i++) {
+$projectroundcode[$i] = $start;
+$start++;
+}
+unset($start);
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' $projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
+	
 switch ($treetows->tree_i)
 {
 case 7:
