@@ -63,9 +63,12 @@ SqueezeBox.open(url, {
 </script>	
 
 <div class="<?php echo $this->divclassrow;?>" style="text-align:center; clear:both">
-<br />      
+<br />
+<!--      
 <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target="_blank" href="http://www.fussballineuropa.de">
-<img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            
+<img src= "<?php echo  Uri::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto">
+</a>
+-->            
 	<br />
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 	<br />      
