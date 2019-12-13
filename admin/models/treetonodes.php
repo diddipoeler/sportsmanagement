@@ -116,7 +116,7 @@ $this->jsmquery->where('r.tournement = 1');
 $this->jsmquery->order('r.roundcode DESC');
 $this->jsmdb->setQuery($this->jsmquery);
 $result = $this->jsmdb->loadObjectList('id');
-	
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' tree <pre>'.print_r($treetows->tree_i,true).'</pre>'  , '');	
 switch ($treetows->tree_i)
 {
 case 7:
@@ -127,6 +127,7 @@ $mannproroundcode[4] = 16;
 $mannproroundcode[5] = 8;
 $mannproroundcode[6] = 4;
 $mannproroundcode[7] = 2;
+$mannproroundcode[8] = 1;
 break;		
 case 6:
 $mannproroundcode[1] = 64;
@@ -135,6 +136,7 @@ $mannproroundcode[3] = 16;
 $mannproroundcode[4] = 8;
 $mannproroundcode[5] = 4;
 $mannproroundcode[6] = 2;
+$mannproroundcode[7] = 1;
 break;
 case 5:
 $mannproroundcode[1] = 32;
@@ -142,21 +144,25 @@ $mannproroundcode[2] = 16;
 $mannproroundcode[3] = 8;
 $mannproroundcode[4] = 4;
 $mannproroundcode[5] = 2;
+$mannproroundcode[6] = 1;
 break;
 case 4:
 $mannproroundcode[1] = 16;
 $mannproroundcode[2] = 8;
 $mannproroundcode[3] = 4;
 $mannproroundcode[4] = 2;
+$mannproroundcode[5] = 1;
 break;
 case 3:
 $mannproroundcode[1] = 8;
 $mannproroundcode[2] = 4;
 $mannproroundcode[3] = 2;
+$mannproroundcode[4] = 1;
 break;
 case 2:
 $mannproroundcode[1] = 4;
 $mannproroundcode[2] = 2;
+$mannproroundcode[3] = 1;
 break;		
 }
 	
