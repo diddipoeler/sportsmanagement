@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewjltournamenttree
@@ -24,15 +23,15 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjltournamenttree extends JViewLegacy {
+class sportsmanagementViewjltournamenttree extends sportsmanagementView {
 
+    
     /**
-     * sportsmanagementViewjltournamenttree::display()
+     * sportsmanagementViewjltournamenttree::init()
      * 
-     * @param mixed $tpl
      * @return void
      */
-    function display($tpl = null) {
+    function init() {
         $option = Factory::getApplication()->input->getCmd('option');
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
@@ -106,7 +105,7 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy {
         }
 
 
-        parent::display($tpl);
+        //parent::display($tpl);
     }
 
 }
