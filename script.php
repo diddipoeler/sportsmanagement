@@ -75,11 +75,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
-//if (! defined('DS'))
-//{
-//	define('DS', DIRECTORY_SEPARATOR);
-//}
-
 jimport('joomla.installer.installer');
  
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -103,7 +98,7 @@ class com_sportsmanagementInstallerScript
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
-    private $release = '2.4.00';
+    private $release = '3.0.00';
     //$language_update = '';
     
     /**

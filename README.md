@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   14-12-2019: **3.0.00** JED ready
 *   17-11-2019: **2.4.00** Datenbankanpassungen Joomla 4
 *   07-11-2019: **2.3.00** Datenbankanpassungen Joomla 4
 *   06-11-2019: **2.2.00** Anpassungen Joomla 4
