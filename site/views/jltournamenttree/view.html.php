@@ -49,6 +49,7 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView {
 //        $this->project = sportsmanagementModelProject::getProject();
 
         if ($this->project->project_type == 'TOURNAMENT_MODE') {
+$this->rounds = $this->model->getTournamentRounds();
 
 //            $model = $this->getModel();
 //            $bracket_request = Factory::getApplication()->input->get();

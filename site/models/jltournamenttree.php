@@ -64,7 +64,7 @@ var $jl_tree_jquery_version = '1.7.1';
 function __construct( )
 	{
 //        $menu =  Factory::getApplication()->getMenu();
-//		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
+		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
 // 		$this->from  = Factory::getApplication()->input->getInt( 'from', 0 );
 // 		$this->to	 = Factory::getApplication()->input->getInt( 'to', 0 );
 // 		$this->round = Factory::getApplication()->input->getVar( "r");
@@ -290,51 +290,48 @@ return $result->name;
  */
 function getTournamentRounds()
 {
-$option = Factory::getApplication()->input->getCmd('option');
-$app = Factory::getApplication();
-$user = Factory::getUser();
+//$option = Factory::getApplication()->input->getCmd('option');
+//$app = Factory::getApplication();
+//$user = Factory::getUser();
 $db = Factory::getDBO();
 $query = $db->getQuery(true);
 
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
-{
+//if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+//{
+//
+//}
+//
+//// wurden die wichtigen einstellungen �ben ?
+//if ( !array_key_exists('tree_name', $this->request) )
+//{
+//    $this->request['tree_name'] = 'middle_name';
+//}
+//if ( !array_key_exists('tree_logo', $this->request) )
+//{
+//    $this->request['tree_logo'] = '1';
+//}
 
-}
+///**
+// * als erstes lesen wir den roundcode der runde,
+// * damit wir danach alle runden selektieren, die zum turnier gehören
+// */
+//$query->clear();
+//$query->select("ro.roundcode");
+//$query->from('#__sportsmanagement_round as ro');
+//$query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
+//$query->where('ro.project_id = '.$this->projectid);
+//$query->where('ro.id = '. (int)$this->round);
+//$db->setQuery($query);
+//$result_roundcode = $db->loadResult();
 
-// wurden die wichtigen einstellungen �ben ?
-if ( !array_key_exists('tree_name', $this->request) )
-{
-    $this->request['tree_name'] = 'middle_name';
-}
-if ( !array_key_exists('tree_logo', $this->request) )
-{
-    $this->request['tree_logo'] = '1';
-}
 
-/**
- * als erstes lesen wir den roundcode der runde,
- * damit wir danach alle runden selektieren, die zum turnier gehören
- */
-$query->clear();
-$query->select("ro.roundcode");
-$query->from('#__sportsmanagement_round as ro');
-$query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
-$query->where('ro.project_id = '.$this->projectid);
-$query->where('ro.id = '. (int)$this->round);
-$db->setQuery($query);
-$result_roundcode = $db->loadResult();
-
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
-{
-
-}
 
 $query->clear();
 $query->select("ro.*");
 $query->from('#__sportsmanagement_round as ro');
 $query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
 $query->where('ro.project_id = '.$this->projectid);
-$query->where("ro.roundcode <= ".$result_roundcode);
+//$query->where("ro.roundcode <= ".$result_roundcode);
 
 /*
 // von bis runde gesetzt
@@ -367,14 +364,16 @@ $query->where("( ro.id between ".$this->request['to']." and ".$this->request['fr
 }
 */
 
-// array an runden gesetzt
-if ( array_key_exists('r', $this->request) && !empty($this->request['r'] ) )
-{
-//$temprounds = explode("|",$this->request['r']);
-//$selectrounds = implode(",",$temprounds);
-//$query->where("ro.id IN (".$selectrounds.")");
+//// array an runden gesetzt
+//if ( array_key_exists('r', $this->request) && !empty($this->request['r'] ) )
+//{
+////$temprounds = explode("|",$this->request['r']);
+////$selectrounds = implode(",",$temprounds);
+////$query->where("ro.id IN (".$selectrounds.")");
+//$query->where("ro.tournement = 1");
+//}
+
 $query->where("ro.tournement = 1");
-}
 
 //// keine runden gesetzt
 //if ( !array_key_exists('from', $this->request) 
@@ -389,10 +388,10 @@ $query->order("ro.roundcode DESC");
 
 $db->setQuery($query);
 
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
-{
-
-}
+//if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+//{
+//
+//}
 
 $this->count_tournament_round = count($db->loadObjectList());	
 $result = $db->loadObjectList();
