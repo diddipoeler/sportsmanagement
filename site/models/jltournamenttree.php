@@ -63,7 +63,7 @@ var $jl_tree_jquery_version = '1.7.1';
  */
 function __construct( )
 	{
-        $menu =  JSite::getMenu();
+        $menu =  Factory::getApplication()->getMenu();
 		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
  		$this->from  = Factory::getApplication()->input->getInt( 'from', 0 );
  		$this->to	 = Factory::getApplication()->input->getInt( 'to', 0 );
