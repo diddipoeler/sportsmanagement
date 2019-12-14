@@ -40,6 +40,12 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->setState('limit',$limit);
 	}
 
+/**
+ * sportsmanagementModelTreetonodes::savenode()
+ * 
+ * @param mixed $node
+ * @return void
+ */
 function savenode($node = NULL)
 {
 $date = Factory::getDate();
@@ -84,6 +90,13 @@ $result = false;
 	
 }
 	
+/**
+ * sportsmanagementModelTreetonodes::getteamsprorunde()
+ * 
+ * @param integer $project_id
+ * @param mixed $treetows
+ * @return
+ */
 function getteamsprorunde($project_id=0,$treetows = NULL)
 {
 $matches = array();
