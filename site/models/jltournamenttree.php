@@ -254,33 +254,33 @@ function getColorTo()
 return $this->color_to;    
 }
 
-/**
- * sportsmanagementModeljltournamenttree::getTournamentName()
- * 
- * @return
- */
-function getTournamentName()
-{
-$option = Factory::getApplication()->input->getCmd('option');
-$app = Factory::getApplication();
-$user = Factory::getUser();
-
-$db = Factory::getDBO();
-$query = $db->getQuery(true);
-//$subQuery = $db->getQuery(true);
-//$subQuery2 = $db->getQuery(true);
-
-$query->select("name,project_art_id");
-$query->from('#__sportsmanagement_project');
-$query->where('id = '.$this->projectid);
-    
-$db->setQuery($query);
-$result = $db->loadObject();
-$this->project_art_id = $result->project_art_id;
-$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-return $result->name;
-		
-}
+///**
+// * sportsmanagementModeljltournamenttree::getTournamentName()
+// * 
+// * @return
+// */
+//function getTournamentName()
+//{
+//$option = Factory::getApplication()->input->getCmd('option');
+//$app = Factory::getApplication();
+//$user = Factory::getUser();
+//
+//$db = Factory::getDBO();
+//$query = $db->getQuery(true);
+////$subQuery = $db->getQuery(true);
+////$subQuery2 = $db->getQuery(true);
+//
+//$query->select("name,project_art_id");
+//$query->from('#__sportsmanagement_project');
+//$query->where('id = '.$this->projectid);
+//    
+//$db->setQuery($query);
+//$result = $db->loadObject();
+//$this->project_art_id = $result->project_art_id;
+//$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+//return $result->name;
+//		
+//}
 
 	
 /**
