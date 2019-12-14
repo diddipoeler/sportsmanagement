@@ -18,6 +18,8 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
+JLoader::import('components.com_sportsmanagement.models.treetonode', JPATH_SITE);
+
 jimport( 'joomla.utilities.utility' );
 
 
@@ -423,17 +425,26 @@ return '['.implode(",",$temp_rounds).']';
 }
 
 
+
 /**
  * sportsmanagementModeljltournamenttree::getTournamentMatches()
  * 
  * @param mixed $rounds
  * @return
  */
-function getTournamentMatches($rounds)
+function getTournamentMatches($rounds=null)
 {
 $option = Factory::getApplication()->input->getCmd('option');
 $app = Factory::getApplication();
 $user = Factory::getUser();
+
+$mdl = BaseDatabaseModel::getInstance("Treetonode", "sportsmanagementModel");
+$mdl->projectid = $this->projectid;
+$result = $mdl->getTreetonode();
+
+
+
+
 
 /**
  * erst einmal nicht ausgeprägt
