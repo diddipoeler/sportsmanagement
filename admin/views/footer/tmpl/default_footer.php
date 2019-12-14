@@ -37,26 +37,5 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
     <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :       
 <?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?> 
     <br />
-<?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('tracker_content',
-'',
-'Bug-Tracker',
-'20',
-$cfg_bugtracker_server,
-$this->modalwidth,
-$this->modalheight,
-1);   
-?>  
-<br />
-<?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('help_content',
-'',
-'Online-Help',
-'20',
-$cfg_help_server,
-$this->modalwidth,
-$this->modalheight,
-1);   
-?>  
-<br />
+
 </div>        
