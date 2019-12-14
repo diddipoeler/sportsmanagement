@@ -63,84 +63,84 @@ var $jl_tree_jquery_version = '1.7.1';
  */
 function __construct( )
 	{
-        $menu =  Factory::getApplication()->getMenu();
-		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
- 		$this->from  = Factory::getApplication()->input->getInt( 'from', 0 );
- 		$this->to	 = Factory::getApplication()->input->getInt( 'to', 0 );
- 		$this->round = Factory::getApplication()->input->getVar( "r");
-        $this->request = Factory::getApplication()->input->get();
-        $this->menue_itemid = Factory::getApplication()->input->getInt( "Itemid", 0 );
-        
-        $this->request['r'] = (int) $this->request['r'];
-        if ( isset($this->request['from']) )
-        {
-        $this->request['from'] = (int) $this->request['from'];
-        }
-        else
-        {
-        $this->request['from'] = (int) $this->request['r'];
-        }
-        
-        if ( isset($this->request['to']) )
-        {
-        $this->request['to'] = (int) $this->request['to'];
-        }
-        else
-        {
-        $this->request['to'] = (int) $this->request['r'];
-        }
-        
-        $item = $menu->getItem($this->menue_itemid);
-        $this->menue_params = new Registry();
-        
-        if ( $this->menue_params->get('jl_tree_jquery_version') )
-        {
-        $this->jl_tree_jquery_version = $this->menue_params->get('jl_tree_jquery_version');    
-        }
-        
-        if ( $this->menue_params->get('jl_tree_color_from') )
-        {
-        $this->color_from = $this->menue_params->get('jl_tree_color_from');    
-        }
-        
-        if ( $this->menue_params->get('jl_tree_color_to') )
-        {
-        $this->color_to = $this->menue_params->get('jl_tree_color_to');    
-        }
-        
-        
-        if ( $this->menue_params->get('jl_tree_font_size') )
-        {
-        $this->font_size = $this->menue_params->get('jl_tree_font_size');    
-        }
-        
- 		
-        if ( $this->menue_params->get('jl_tree_bracket_round_width') )
-        {
-        $this->jl_tree_bracket_round_width = $this->menue_params->get('jl_tree_bracket_round_width');    
-        }
-        
-        
-        if ( $this->menue_params->get('which_first_round') )
-        {
-        $this->which_first_round = $this->menue_params->get('which_first_round');    
-        }
-        
-        
-  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-  {
-  $this->debug_info = true;
-  }
-  else
-  {
-  $this->debug_info = false;
-  }
- 
- // Reference global application object
-        $this->jsmapp = Factory::getApplication();
-        // JInput object
-        $this->jsmjinput = $this->jsmapp->input;
-        $this->jsmoption = $this->jsmjinput->getCmd('option');
+//        $menu =  Factory::getApplication()->getMenu();
+//		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
+// 		$this->from  = Factory::getApplication()->input->getInt( 'from', 0 );
+// 		$this->to	 = Factory::getApplication()->input->getInt( 'to', 0 );
+// 		$this->round = Factory::getApplication()->input->getVar( "r");
+//        $this->request = Factory::getApplication()->input->get();
+//        $this->menue_itemid = Factory::getApplication()->input->getInt( "Itemid", 0 );
+//        
+//        $this->request['r'] = (int) $this->request['r'];
+//        if ( isset($this->request['from']) )
+//        {
+//        $this->request['from'] = (int) $this->request['from'];
+//        }
+//        else
+//        {
+//        $this->request['from'] = (int) $this->request['r'];
+//        }
+//        
+//        if ( isset($this->request['to']) )
+//        {
+//        $this->request['to'] = (int) $this->request['to'];
+//        }
+//        else
+//        {
+//        $this->request['to'] = (int) $this->request['r'];
+//        }
+//        
+//        $item = $menu->getItem($this->menue_itemid);
+//        $this->menue_params = new Registry();
+//        
+//        if ( $this->menue_params->get('jl_tree_jquery_version') )
+//        {
+//        $this->jl_tree_jquery_version = $this->menue_params->get('jl_tree_jquery_version');    
+//        }
+//        
+//        if ( $this->menue_params->get('jl_tree_color_from') )
+//        {
+//        $this->color_from = $this->menue_params->get('jl_tree_color_from');    
+//        }
+//        
+//        if ( $this->menue_params->get('jl_tree_color_to') )
+//        {
+//        $this->color_to = $this->menue_params->get('jl_tree_color_to');    
+//        }
+//        
+//        
+//        if ( $this->menue_params->get('jl_tree_font_size') )
+//        {
+//        $this->font_size = $this->menue_params->get('jl_tree_font_size');    
+//        }
+//        
+// 		
+//        if ( $this->menue_params->get('jl_tree_bracket_round_width') )
+//        {
+//        $this->jl_tree_bracket_round_width = $this->menue_params->get('jl_tree_bracket_round_width');    
+//        }
+//        
+//        
+//        if ( $this->menue_params->get('which_first_round') )
+//        {
+//        $this->which_first_round = $this->menue_params->get('which_first_round');    
+//        }
+//        
+//        
+//  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//  {
+//  $this->debug_info = true;
+//  }
+//  else
+//  {
+//  $this->debug_info = false;
+//  }
+// 
+// // Reference global application object
+//        $this->jsmapp = Factory::getApplication();
+//        // JInput object
+//        $this->jsmjinput = $this->jsmapp->input;
+//        $this->jsmoption = $this->jsmjinput->getCmd('option');
 
 
 		parent::__construct( );
