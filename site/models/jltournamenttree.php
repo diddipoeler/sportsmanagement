@@ -512,13 +512,13 @@ if ( $value->team_id == $bracket->projectteam1_id )
 {
 $this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name;   
 $this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
-$this->bracket[$keybracket][$bracket->match_id]->firstlogo = $value->logo_big;    
+$this->bracket[$keybracket][$bracket->match_id]->firstlogo = Uri::base().$value->logo_big;    
 }    
 if ( $value->team_id == $bracket->projectteam2_id )
 {
 $this->bracket[$keybracket][$bracket->match_id]->secondname = $value->team_name;   
 $this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
-$this->bracket[$keybracket][$bracket->match_id]->secondlogo = $value->logo_big;    
+$this->bracket[$keybracket][$bracket->match_id]->secondlogo = Uri::base().$value->logo_big;    
 }    
 }    
 }
