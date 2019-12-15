@@ -442,7 +442,7 @@ $mdl = BaseDatabaseModel::getInstance("Treetonode", "sportsmanagementModel");
 $mdl->projectid = $this->projectid;
 $result = $mdl->getTreetonode();
 
-
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 
 
 
