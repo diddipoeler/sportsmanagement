@@ -445,7 +445,7 @@ $mdl = BaseDatabaseModel::getInstance("Treetonode", "sportsmanagementModel");
 $mdl->projectid = $this->projectid;
 $result = $mdl->getTreetonode();
 usort($result , function($a, $b) {return $a->node > $b->node ;});
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 
 foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 {
@@ -488,17 +488,26 @@ $this->bracket[$match->roundcode][$value->match_id] = $temp;
 
 foreach ( $this->bracket as $keybracket => $valuebracket  ) 
 {
-foreach ( $result as $key => $value  ) if ( $valuebracket == $value->match_id )
+foreach ( $valuebracket as $bracket  ) 
 {
-if ( $value->team_id == $valuebracket->projectteam1_id )
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket  <pre>'.print_r($bracket  ,true).'</pre>'  , '');
+foreach ( $result as $key => $value  ) if ( $bracket->match_id == $value->match_id )
 {
-$valuebracket->firstname = $value->team_name;   
-$valuebracket->firstcountry = $value->country;
-$valuebracket->firstlogo = $value->logo_big;    
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
+if ( $value->team_id == $bracket->projectteam1_id )
+{
+$this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name;   
+$this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
+$this->bracket[$keybracket][$bracket->match_id]->firstlogo = $value->logo_big;    
 }    
-    
+if ( $value->team_id == $bracket->projectteam2_id )
+{
+$this->bracket[$keybracket][$bracket->match_id]->secondname = $value->team_name;   
+$this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
+$this->bracket[$keybracket][$bracket->match_id]->secondlogo = $value->logo_big;    
 }    
-
+}    
+}
 }
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
