@@ -445,7 +445,7 @@ $mdl = BaseDatabaseModel::getInstance("Treetonode", "sportsmanagementModel");
 $mdl->projectid = $this->projectid;
 $result = $mdl->getTreetonode();
 usort($result , function($a, $b) {return $a->node > $b->node ;});
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 
 foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 {
@@ -464,29 +464,29 @@ foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 
 $match = sportsmanagementModelMatch::getMatchData($value->match_id,Factory::getApplication()->input->getInt( "cfg_which_database", 0 ));
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match <pre>'.print_r($match ,true).'</pre>'  , '');
-$this->allmatches[$value->match_id] = $match;
+//$this->allmatches[$value->match_id] = $match;
 
-/*
+
 $temp = new stdClass();
-$temp->projectteam1_id = '';
-$temp->projectteam2_id = $key->projectteam2_id;
-$temp->team1_result = $value->team1_result;
-$temp->team2_result = $value->team2_result;
-$temp->firstname = 'FREILOS';
-$temp->secondname = $key->secondname;
-$temp->firstcountry = 'DEU';
-$temp->secondcountry = $key->secondcountry;
-$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
-$temp->secondlogo = $key->secondlogo;
+$temp->projectteam1_id = $match->projectteam1_id;
+$temp->projectteam2_id = $match->projectteam2_id;
+$temp->team1_result = $match->team1_result;
+$temp->team2_result = $match->team2_result;
+//$temp->firstname = 'FREILOS';
+//$temp->secondname = $key->secondname;
+//$temp->firstcountry = 'DEU';
+//$temp->secondcountry = $key->secondcountry;
+//$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+//$temp->secondlogo = $key->secondlogo;
 $export[] = $temp;
-$this->bracket[$value->roundcode] = array_merge($export);
-*/
+$this->bracket[$match->roundcode] = array_merge($export);
+
 
     
 }
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' allmatches <pre>'.print_r($this->allmatches ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
 
 /*
 $temp = new stdClass();
