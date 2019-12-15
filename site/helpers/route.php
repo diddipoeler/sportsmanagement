@@ -42,7 +42,7 @@ public static $views = array(
 'editclub' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => '', 'id' => '', 'tmpl' => ''),	
 'editmatch' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => '', 'matchid' => '', 'tmpl' => '', 'oldlayout' => '', 'team' => '', 'pteam' => ''),
 'eventsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'evid' => '', 'mid' => ''),
-'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tnid' => ''),
+'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => ''),
 'matchreport' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
 'matrix' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 'nextmatch' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
