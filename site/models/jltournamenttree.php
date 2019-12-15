@@ -448,6 +448,7 @@ usort($result , function($a, $b) {return $a->node > $b->node ;});
 
 foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 {
+$query->clear();     
 $query->select('r.roundcode,m.team1_result,m.team2_result');   
 $query->from('#__sportsmanagement_match AS m');        
 $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');    
