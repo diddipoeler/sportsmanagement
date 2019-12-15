@@ -53,7 +53,7 @@ var $color_from = '#FFFFFF';
 var $color_to = '#0000FF';
 var $which_first_round = 'scrollLeft()';
 var $font_size = 14;
-var $jl_tree_bracket_round_width = 100;
+var $jl_tree_bracket_round_width = 300;
 var $jl_tree_bracket_teamb_width = 70;
 var $jl_tree_bracket_width = 140;
 var $jl_tree_jquery_version = '1.7.1';
@@ -525,8 +525,8 @@ $this->bracket[$keybracket][$bracket->match_id]->secondlogo = $value->logo_big;
 }
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($rounds ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($rounds ,true).'</pre>'  , '');
 
 /*
 $temp = new stdClass();
@@ -568,7 +568,7 @@ break;
 }
 //}
 
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
 return implode(",",$varteams);
 
 //
@@ -1364,7 +1364,7 @@ $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 ksort($varresults);
 
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
 
 return implode(",",$varresults);
 
