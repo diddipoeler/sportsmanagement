@@ -37,20 +37,20 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
      */
     public function init ()
 	{
-        $this->model->matchid = $this->jinput->getInt('mid',0);
-        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
-        $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+    $this->model->matchid = $this->jinput->getInt('mid',0);
+    sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
+    $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 	$this->match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
-        $this->matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
+    $this->matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
 	if ( $ret = sportsmanagementModelMatch::getMatchText($this->match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
-        {
+    {
 	$this->newmatchtext = $ret->text;
-        }
+    }
 	if ( $ret = sportsmanagementModelMatch::getMatchText($this->match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
-        {
+    {
 	$this->oldmatchtext = $ret->text;
-        }
+    }
         
 /**
  * hole den artikel zum spiel

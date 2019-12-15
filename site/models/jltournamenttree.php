@@ -459,6 +459,11 @@ $matchresult = $db->loadObject();
 $value->team1_result = $matchresult->team1_result;
 $value->team2_result = $matchresult->team2_result;
 $value->roundcode = $matchresult->roundcode;
+
+
+$match = sportsmanagementModelMatch::getMatchData($value->match_id,Factory::getApplication()->input->getInt( "cfg_which_database", 0 ));
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match <pre>'.print_r($match ,true).'</pre>'  , '');
+
 /*
 $temp = new stdClass();
 $temp->projectteam1_id = '';

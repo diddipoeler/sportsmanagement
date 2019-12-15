@@ -95,6 +95,7 @@ JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRA
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);	
 break;	
 case 'editmatch':   
+case 'jltournamenttree':
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);  
 break;	  
 case 'matchreport':
