@@ -74,11 +74,11 @@ $this->rounds = $this->model->getTournamentRounds();
             $this->projectname = $this->project->name;
             $this->bracket_rounds = $this->model->getTournamentBracketRounds($this->rounds);
             $this->bracket_teams = $this->model->getTournamentMatches($this->rounds);
-//            $this->bracket_results = $model->getTournamentResults($this->rounds);
-//            $this->which_first_round = $model->getWhichShowFirstRound();
-//            $this->jl_tree_bracket_round_width = $model->getTreeBracketRoundWidth();
-//            $this->jl_tree_bracket_teamb_width = $model->getTreeBracketTeambWidth();
-//            $this->jl_tree_bracket_width = $model->getTreeBracketWidth();
+            $this->bracket_results = $this->model->getTournamentResults($this->rounds);
+//            $this->which_first_round = $this->model->getWhichShowFirstRound();
+//            $this->jl_tree_bracket_round_width = $this->model->getTreeBracketRoundWidth();
+//            $this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
+//            $this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
 
             $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/jquery.json-2.3.min.js');
             $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/jquery.bracket-3.js');

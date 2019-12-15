@@ -1320,14 +1320,35 @@ return implode(",",$varteams);
 
 }
 
+
 /**
  * sportsmanagementModeljltournamenttree::getTournamentResults()
  * 
  * @param mixed $rounds
  * @return
  */
-function getTournamentResults($rounds)
+function getTournamentResults($rounds=NULL)
 {
+
+foreach ( $rounds as $round )
+{
+$vartempresults = array();
+
+foreach ( $this->bracket[$round->roundcode] as $key  )
+{
+$vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
+}
+
+$varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
+
+
+}
+$varresults[$roundcode] = '['.implode(",",$vartempresults).']';
+ksort($varresults);
+return implode(",",$varresults);
+
+
+
     
 $option = Factory::getApplication()->input->getCmd('option');
 $app = Factory::getApplication();
