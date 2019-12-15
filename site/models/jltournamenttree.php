@@ -468,6 +468,7 @@ $match = sportsmanagementModelMatch::getMatchData($value->match_id,Factory::getA
 
 
 $temp = new stdClass();
+$temp->match_id = $value->match_id;
 $temp->projectteam1_id = $match->projectteam1_id;
 $temp->projectteam2_id = $match->projectteam2_id;
 $temp->team1_result = $match->team1_result;
@@ -483,6 +484,12 @@ $this->bracket[$match->roundcode] = array_merge($export);
 
 
     
+}
+
+foreach ( $result as $key => $value  ) 
+{
+
+
 }
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
