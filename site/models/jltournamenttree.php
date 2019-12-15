@@ -490,10 +490,10 @@ foreach ( $this->bracket as $keybracket => $valuebracket  )
 {
 foreach ( $valuebracket as $bracket  ) 
 {
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket  <pre>'.print_r($bracket  ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket  <pre>'.print_r($bracket  ,true).'</pre>'  , '');
 foreach ( $result as $key => $value  ) if ( $bracket->match_id == $value->match_id )
 {
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
 if ( $value->team_id == $bracket->projectteam1_id )
 {
 $this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name;   
@@ -512,6 +512,7 @@ $this->bracket[$keybracket][$bracket->match_id]->secondlogo = $value->logo_big;
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($this->rounds ,true).'</pre>'  , '');
 
 /*
 $temp = new stdClass();
@@ -533,8 +534,10 @@ $varteams = array();
 $this->request['tree_logo'] = 1;
 //if ( $this->exist_result[$roundcode] )
 //{
+foreach ( $this->rounds as $keyround )
+{    
 /** die mannschaften */
-foreach ( $this->bracket[$roundcode] as $key  )
+foreach ( $this->bracket[$keyround->roundcode] as $key  )
 {
 switch ( $this->request['tree_logo'] )
 {
@@ -546,7 +549,7 @@ $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.Uri::base().'images/com_s
 break;
 }
 }
-
+}
 //}
 
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
