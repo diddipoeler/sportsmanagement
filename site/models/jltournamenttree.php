@@ -1343,7 +1343,7 @@ $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 
 
 }
-$varresults[$roundcode] = '['.implode(",",$vartempresults).']';
+$varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 ksort($varresults);
 
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
