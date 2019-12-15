@@ -447,6 +447,20 @@ $result = $mdl->getTreetonode();
 usort($result , function($a, $b) {return $a->node > $b->node ;});
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 
+$query->clear();
+$query->select('MIN(r.roundcode)');
+$query->from('#__sportsmanagement_match AS m');
+$query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+$query->where('r.project_id = ' . $this->projectid);
+$query->where('r.tournement = 1');
+$query->order('r.roundcode DESC');
+$db->setQuery($query);
+$minresult = $db->loadResult();
+
+
+
+
+
 foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 {
 //$query->clear();     
@@ -529,12 +543,14 @@ $temp->secondlogo = $key->secondlogo;
 $export[] = $temp;
 $this->bracket[$round->roundcode] = array_merge($export);
 */
+
+   
 /** jetzt die teams und ergebnisse zusammenstellen */
 $varteams = array();
 $this->request['tree_logo'] = 1;
 //if ( $this->exist_result[$roundcode] )
 //{
-foreach ( $rounds as $keyround )
+foreach ( $rounds as $keyround ) if ( $keyround->roundcode == $minresult )
 {    
 /** die mannschaften */
 foreach ( $this->bracket[$keyround->roundcode] as $key  )
