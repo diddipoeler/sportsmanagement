@@ -54,9 +54,9 @@ $this->rounds = $this->model->getTournamentRounds();
 //            $model = $this->getModel();
 //            $bracket_request = Factory::getApplication()->input->get();
 //            $this->logo = $bracket_request['tree_logo'];
-//            $this->color_from = $model->getColorFrom();
-//            $this->color_to = $model->getColorTo();
-//            $this->font_size = $model->getFontSize();
+            $this->color_from = $this->model->getColorFrom();
+            $this->color_to = $this->model->getColorTo();
+            $this->font_size = $this->model->getFontSize();
 //
 //            if (!$this->font_size) {
 //                $this->font_size = '14';
@@ -75,18 +75,18 @@ $this->rounds = $this->model->getTournamentRounds();
             $this->bracket_rounds = $this->model->getTournamentBracketRounds($this->rounds);
             $this->bracket_teams = $this->model->getTournamentMatches($this->rounds);
             $this->bracket_results = $this->model->getTournamentResults($this->rounds);
-//            $this->which_first_round = $this->model->getWhichShowFirstRound();
-//            $this->jl_tree_bracket_round_width = $this->model->getTreeBracketRoundWidth();
-//            $this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
-//            $this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
+            $this->which_first_round = $this->model->getWhichShowFirstRound();
+            $this->jl_tree_bracket_round_width = $this->model->getTreeBracketRoundWidth();
+            $this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
+            $this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
 
-            $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/jquery.json-2.3.min.js');
-            $this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/jquery.bracket-3.js');
+            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.json-2.3.min.js');
+            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.bracket-3.js');
 
 // Add customstyles
-            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $option . '/assets/css/jquery.bracket-3.css' . '" type="text/css" />' . "\n";
+            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-3.css' . '" type="text/css" />' . "\n";
             $this->document->addCustomTag($stylelink);
-            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $option . '/assets/css/jquery.bracket-site.css' . '" type="text/css" />' . "\n";
+            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-site.css' . '" type="text/css" />' . "\n";
             $this->document->addCustomTag($stylelink);
 
 

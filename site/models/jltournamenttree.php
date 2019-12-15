@@ -35,20 +35,20 @@ jimport( 'joomla.utilities.utility' );
 class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 {
 var $projectid = 0;
-var $project_art_id = 0;
-var $from = 0;
-var $to = 0;
-var $team_strlen = 0;
-var $round = 0;
+//var $project_art_id = 0;
+//var $from = 0;
+//var $to = 0;
+//var $team_strlen = 0;
+//var $round = 0;
 var $count_tournament_round = 0;
 var $menue_itemid = 0;
 var $request = array();
 var $allmatches = array();
 var $bracket = array();
-var $menue_params = array();
-var $exist_result = array();
-var $debug_info = false;
-var $club_logo = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+//var $menue_params = array();
+//var $exist_result = array();
+//var $debug_info = false;
+//var $club_logo = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 var $color_from = '#FFFFFF';
 var $color_to = '#0000FF';
 var $which_first_round = 'scrollLeft()';
@@ -176,25 +176,25 @@ return $this->which_first_round;
  */
 function getTreeBracketRoundWidth()
 {
-global $app;
-    
-//-- Einlesen der Feldnamen
-if ( $this->project_art_id == 3 )
-{
-$tableName = '#__sportsmanagement_person';    
-}
-else
-{
-$tableName = '#__sportsmanagement_team';    
-}
-
-$tFields = $this->_db->getTableFields($tableName, false);
-                    
-$this->jl_tree_bracket_round_width = 16 + ( $this->team_strlen * 4 ) + 25 + 100;  
-// laenge des zu selektierenden feldes
-
-$fieldName = $this->request['tree_name'];
-$fieldtype = $tFields[$tableName][$fieldName]->Type;
+//global $app;
+//    
+////-- Einlesen der Feldnamen
+//if ( $this->project_art_id == 3 )
+//{
+//$tableName = '#__sportsmanagement_person';    
+//}
+//else
+//{
+//$tableName = '#__sportsmanagement_team';    
+//}
+//
+//$tFields = $this->_db->getTableFields($tableName, false);
+//                    
+//$this->jl_tree_bracket_round_width = 16 + ( $this->team_strlen * 4 ) + 25 + 100;  
+//// laenge des zu selektierenden feldes
+//
+//$fieldName = $this->request['tree_name'];
+//$fieldtype = $tFields[$tableName][$fieldName]->Type;
   
 return $this->jl_tree_bracket_round_width;    
 }
@@ -1351,142 +1351,142 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varres
 return implode(",",$varresults);
 
 
-
-    
-$option = Factory::getApplication()->input->getCmd('option');
-$app = Factory::getApplication();
-$user = Factory::getUser();
-
-$db = Factory::getDBO();
-$query = $db->getQuery(true);
-//$query2 = $db->getQuery(true);
-$subQuery = $db->getQuery(true);
-$subQuery2 = $db->getQuery(true);
-    
-if ( $this->project_art_id == 3 )
-{
-// Select some fields
-$query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');   
-$query->select("concat(c1.lastname,' - ',c1.firstname,'' ) AS firstname,c1.country as firstcountry,c1.picture as firstlogo");
-$query->select("concat(c2.lastname,' - ',c2.firstname,'' ) AS secondname,c2.country as secondcountry,c2.picture as secondlogo");
-
-// From the table
-$query->from('#__sportsmanagement_match AS m');        
-$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
-
-$subQuery->select("tt1.id as team_id,c1.lastname,c1.firstname,c1.country,c1.picture");
-$subQuery->from('#__sportsmanagement_person AS c1');
-$subQuery->join('INNER','#__sportsmanagement_season_person_id AS tp1 ON c1.id = tp1.person_id');
-$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');
-$subQuery->where('tt1.project_id = '.$this->projectid);  
-$query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
-
-$subQuery2->select("tt2.id as team_id,c2.lastname,c2.firstname,c2.country,c2.picture");
-$subQuery2->from('#__sportsmanagement_person AS c2');
-$subQuery2->join('INNER','#__sportsmanagement_season_person_id AS tp2 ON c2.id = tp2.person_id');
-$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');
-$subQuery2->where('tt2.project_id = '.$this->projectid);  
-$query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
-
-//$query = $query2;        
-}
-else
-{
-// Select some fields
-$query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');   
-$query->select("c1.teamname AS firstname,c1.country as firstcountry,c1.logo_big as firstlogo");
-$query->select("c2.teamname AS secondname,c2.country as secondcountry,c2.logo_big as secondlogo");
-
-// From the table
-$query->from('#__sportsmanagement_match AS m');        
-$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
-
-$subQuery->select("tt1.id as team_id,t1.".$this->request['tree_name']." as teamname,c1.country,c1.logo_big");
-$subQuery->from('#__sportsmanagement_team AS t1');
-$subQuery->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
-$subQuery->join('INNER','#__sportsmanagement_season_team_id AS tp1 ON t1.id = tp1.team_id');
-$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');
-$subQuery->where('tt1.project_id = '.$this->projectid);  
-$query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
-
-$subQuery2->select("tt2.id as team_id,t2.".$this->request['tree_name']." as teamname,c2.country,c2.logo_big");
-$subQuery2->from('#__sportsmanagement_team AS t2');
-$subQuery2->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
-$subQuery2->join('INNER','#__sportsmanagement_season_team_id AS tp2 ON t2.id = tp2.team_id');
-$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
-$subQuery2->where('tt2.project_id = '.$this->projectid);
-$query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
-
-//$query = $query2;
-}
-
-
-$query->group('m.id ');  
-$query->order('m.match_date ASC,m.match_number ASC');
-    
-// die ergebnisse
-// ergebnisse
-// [[0,1], [2,0], [4,2], [2,4] ]
-foreach ( $rounds as $round )
-{
-$vartempresults = array();
-
-if ( $this->exist_result[$round->roundcode] )
-{
-
-foreach ( $this->bracket[$round->roundcode] as $key  )
-{
-$vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
-}
-
-
-
-$varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
-
-}
-else
-{
-
-if ( sizeof( $this->bracket[$round->roundcode] ) == 0 )
-{    
-// es wurde der dritte platz ausgespielt
-$query->where('m.published = 1 ');  
-$query->where('r.id = '.$round->id);
-$query->where('r.project_id = '.$this->projectid);
-
-$db->setQuery($query);
-$result = $db->loadObjectList();
-		
-
-
-foreach ( $result as $row )
-{
-$roundcode = $round->roundcode + 1;
-foreach ( $this->bracket[$roundcode] as $key  )
-{
-$vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
-$vartempresults[] = '['.$row->team1_result.','.$row->team2_result.']';
-}
-
-}
-
-if ( $vartempresults )
-{
-$varresults[$roundcode] = '['.implode(",",$vartempresults).']';
-}
-
-}
-
-}
-
-}
-
-ksort($varresults);
-
-
-
-
-return implode(",",$varresults);
+//
+//    
+//$option = Factory::getApplication()->input->getCmd('option');
+//$app = Factory::getApplication();
+//$user = Factory::getUser();
+//
+//$db = Factory::getDBO();
+//$query = $db->getQuery(true);
+////$query2 = $db->getQuery(true);
+//$subQuery = $db->getQuery(true);
+//$subQuery2 = $db->getQuery(true);
+//    
+//if ( $this->project_art_id == 3 )
+//{
+//// Select some fields
+//$query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');   
+//$query->select("concat(c1.lastname,' - ',c1.firstname,'' ) AS firstname,c1.country as firstcountry,c1.picture as firstlogo");
+//$query->select("concat(c2.lastname,' - ',c2.firstname,'' ) AS secondname,c2.country as secondcountry,c2.picture as secondlogo");
+//
+//// From the table
+//$query->from('#__sportsmanagement_match AS m');        
+//$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
+//
+//$subQuery->select("tt1.id as team_id,c1.lastname,c1.firstname,c1.country,c1.picture");
+//$subQuery->from('#__sportsmanagement_person AS c1');
+//$subQuery->join('INNER','#__sportsmanagement_season_person_id AS tp1 ON c1.id = tp1.person_id');
+//$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');
+//$subQuery->where('tt1.project_id = '.$this->projectid);  
+//$query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
+//
+//$subQuery2->select("tt2.id as team_id,c2.lastname,c2.firstname,c2.country,c2.picture");
+//$subQuery2->from('#__sportsmanagement_person AS c2');
+//$subQuery2->join('INNER','#__sportsmanagement_season_person_id AS tp2 ON c2.id = tp2.person_id');
+//$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');
+//$subQuery2->where('tt2.project_id = '.$this->projectid);  
+//$query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
+//
+////$query = $query2;        
+//}
+//else
+//{
+//// Select some fields
+//$query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');   
+//$query->select("c1.teamname AS firstname,c1.country as firstcountry,c1.logo_big as firstlogo");
+//$query->select("c2.teamname AS secondname,c2.country as secondcountry,c2.logo_big as secondlogo");
+//
+//// From the table
+//$query->from('#__sportsmanagement_match AS m');        
+//$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
+//
+//$subQuery->select("tt1.id as team_id,t1.".$this->request['tree_name']." as teamname,c1.country,c1.logo_big");
+//$subQuery->from('#__sportsmanagement_team AS t1');
+//$subQuery->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+//$subQuery->join('INNER','#__sportsmanagement_season_team_id AS tp1 ON t1.id = tp1.team_id');
+//$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');
+//$subQuery->where('tt1.project_id = '.$this->projectid);  
+//$query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
+//
+//$subQuery2->select("tt2.id as team_id,t2.".$this->request['tree_name']." as teamname,c2.country,c2.logo_big");
+//$subQuery2->from('#__sportsmanagement_team AS t2');
+//$subQuery2->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+//$subQuery2->join('INNER','#__sportsmanagement_season_team_id AS tp2 ON t2.id = tp2.team_id');
+//$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
+//$subQuery2->where('tt2.project_id = '.$this->projectid);
+//$query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
+//
+////$query = $query2;
+//}
+//
+//
+//$query->group('m.id ');  
+//$query->order('m.match_date ASC,m.match_number ASC');
+//    
+//// die ergebnisse
+//// ergebnisse
+//// [[0,1], [2,0], [4,2], [2,4] ]
+//foreach ( $rounds as $round )
+//{
+//$vartempresults = array();
+//
+//if ( $this->exist_result[$round->roundcode] )
+//{
+//
+//foreach ( $this->bracket[$round->roundcode] as $key  )
+//{
+//$vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
+//}
+//
+//
+//
+//$varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
+//
+//}
+//else
+//{
+//
+//if ( sizeof( $this->bracket[$round->roundcode] ) == 0 )
+//{    
+//// es wurde der dritte platz ausgespielt
+//$query->where('m.published = 1 ');  
+//$query->where('r.id = '.$round->id);
+//$query->where('r.project_id = '.$this->projectid);
+//
+//$db->setQuery($query);
+//$result = $db->loadObjectList();
+//		
+//
+//
+//foreach ( $result as $row )
+//{
+//$roundcode = $round->roundcode + 1;
+//foreach ( $this->bracket[$roundcode] as $key  )
+//{
+//$vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';
+//$vartempresults[] = '['.$row->team1_result.','.$row->team2_result.']';
+//}
+//
+//}
+//
+//if ( $vartempresults )
+//{
+//$varresults[$roundcode] = '['.implode(",",$vartempresults).']';
+//}
+//
+//}
+//
+//}
+//
+//}
+//
+//ksort($varresults);
+//
+//
+//
+//
+//return implode(",",$varresults);
 
 }
 
