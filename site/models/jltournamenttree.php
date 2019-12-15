@@ -43,6 +43,7 @@ var $round = 0;
 var $count_tournament_round = 0;
 var $menue_itemid = 0;
 var $request = array();
+var $allmatches = array();
 var $bracket = array();
 var $menue_params = array();
 var $exist_result = array();
@@ -448,21 +449,22 @@ usort($result , function($a, $b) {return $a->node > $b->node ;});
 
 foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
 {
-$query->clear();     
-$query->select('r.roundcode,m.team1_result,m.team2_result');   
-$query->from('#__sportsmanagement_match AS m');        
-$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');    
-$query->where('m.id = '.$value->match_id);
-$db->setQuery($query);
-$matchresult = $db->loadObject();    
-
-$value->team1_result = $matchresult->team1_result;
-$value->team2_result = $matchresult->team2_result;
-$value->roundcode = $matchresult->roundcode;
+//$query->clear();     
+//$query->select('r.roundcode,m.team1_result,m.team2_result');   
+//$query->from('#__sportsmanagement_match AS m');        
+//$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');    
+//$query->where('m.id = '.$value->match_id);
+//$db->setQuery($query);
+//$matchresult = $db->loadObject();    
+//
+//$value->team1_result = $matchresult->team1_result;
+//$value->team2_result = $matchresult->team2_result;
+//$value->roundcode = $matchresult->roundcode;
 
 
 $match = sportsmanagementModelMatch::getMatchData($value->match_id,Factory::getApplication()->input->getInt( "cfg_which_database", 0 ));
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match <pre>'.print_r($match ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match <pre>'.print_r($match ,true).'</pre>'  , '');
+$this->allmatches[$value->match_id] = $match;
 
 /*
 $temp = new stdClass();
@@ -483,7 +485,8 @@ $this->bracket[$value->roundcode] = array_merge($export);
     
 }
 
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' allmatches <pre>'.print_r($this->allmatches ,true).'</pre>'  , '');
 
 /*
 $temp = new stdClass();
