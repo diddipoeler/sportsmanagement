@@ -479,16 +479,25 @@ $temp->team2_result = $match->team2_result;
 //$temp->secondcountry = $key->secondcountry;
 //$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 //$temp->secondlogo = $key->secondlogo;
-$export[] = $temp;
-$this->bracket[$match->roundcode] = array_merge($export);
-
+//$export[] = $temp;
+//$this->bracket[$match->roundcode] = array_merge($export);
+$this->bracket[$match->roundcode][$value->match_id] = $temp;
 
     
 }
 
-foreach ( $result as $key => $value  ) 
+foreach ( $this->bracket as $keybracket => $valuebracket  ) 
 {
-
+foreach ( $result as $key => $value  ) if ( $valuebracket == $value->match_id )
+{
+if ( $value->team_id == $valuebracket->projectteam1_id )
+{
+$valuebracket->firstname = $value->team_name;   
+$valuebracket->firstcountry = $value->country;
+$valuebracket->firstlogo = $value->logo_big;    
+}    
+    
+}    
 
 }
 
