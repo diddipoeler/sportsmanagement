@@ -437,20 +437,91 @@ function getTournamentMatches($rounds=null)
 $option = Factory::getApplication()->input->getCmd('option');
 $app = Factory::getApplication();
 $user = Factory::getUser();
+$db = Factory::getDBO();
+$query = $db->getQuery(true);
 
 $mdl = BaseDatabaseModel::getInstance("Treetonode", "sportsmanagementModel");
 $mdl->projectid = $this->projectid;
 $result = $mdl->getTreetonode();
+usort($result , function($a, $b) {return $a->node > $b->node ;});
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
+
+foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
+{
+$query->select('r.roundcode,m.team1_result,m.team2_result');   
+$query->from('#__sportsmanagement_match AS m');        
+$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');    
+$query->where('m.id = '.$value->match_id);
+$db->setQuery($query);
+$matchresult = $db->loadObject();    
+
+$value->team1_result = $matchresult->team1_result;
+$value->team2_result = $matchresult->team2_result;
+$value->roundcode = $matchresult->roundcode;
+/*
+$temp = new stdClass();
+$temp->projectteam1_id = '';
+$temp->projectteam2_id = $key->projectteam2_id;
+$temp->team1_result = $value->team1_result;
+$temp->team2_result = $value->team2_result;
+$temp->firstname = 'FREILOS';
+$temp->secondname = $key->secondname;
+$temp->firstcountry = 'DEU';
+$temp->secondcountry = $key->secondcountry;
+$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+$temp->secondlogo = $key->secondlogo;
+$export[] = $temp;
+$this->bracket[$value->roundcode] = array_merge($export);
+*/
+
+    
+}
 
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 
+/*
+$temp = new stdClass();
+$temp->projectteam1_id = '';
+$temp->projectteam2_id = $key->projectteam2_id;
+$temp->team1_result = '0';
+$temp->team2_result = '1';
+$temp->firstname = 'FREILOS';
+$temp->secondname = $key->secondname;
+$temp->firstcountry = 'DEU';
+$temp->secondcountry = $key->secondcountry;
+$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+$temp->secondlogo = $key->secondlogo;
+$export[] = $temp;
+$this->bracket[$round->roundcode] = array_merge($export);
+*/
+/** jetzt die teams und ergebnisse zusammenstellen */
+$varteams = array();
+$this->request['tree_logo'] = 1;
+//if ( $this->exist_result[$roundcode] )
+//{
+/** die mannschaften */
+foreach ( $this->bracket[$roundcode] as $key  )
+{
+switch ( $this->request['tree_logo'] )
+{
+case 1:
+$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';
+break;
+case 2:
+$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+break;
+}
+}
 
+//}
 
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
+return implode(",",$varteams);
 /**
  * erst einmal nicht ausgeprägt
  * zu lange laufzeit
  */
-return false;
+//return false;
 	
 $db = Factory::getDBO();
 $query = $db->getQuery(true);
