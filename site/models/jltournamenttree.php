@@ -512,7 +512,7 @@ $this->bracket[$keybracket][$bracket->match_id]->secondlogo = $value->logo_big;
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($this->rounds ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($rounds ,true).'</pre>'  , '');
 
 /*
 $temp = new stdClass();
@@ -534,7 +534,7 @@ $varteams = array();
 $this->request['tree_logo'] = 1;
 //if ( $this->exist_result[$roundcode] )
 //{
-foreach ( $this->rounds as $keyround )
+foreach ( $rounds as $keyround )
 {    
 /** die mannschaften */
 foreach ( $this->bracket[$keyround->roundcode] as $key  )
