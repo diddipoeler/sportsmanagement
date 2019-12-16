@@ -107,6 +107,8 @@ if( $this->jsmapp->isClient('site') )
        $person_double = array();
        $parentsave = true;
 
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmjinput->get('task')), '');
+
 $input_options = InputFilter::getInstance(
         array(
             'img','p','a','u','i','b','strong','span','div','ul','li','ol','h1','h2','h3','h4','h5',
@@ -259,7 +261,7 @@ $data['notes'] = $html;
 /**
  * person 
  */       
-       case 'jsmperson': 
+       case 'player': 
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
        $data['person_id2'] = $data['request']['person_id2'];
@@ -619,7 +621,7 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
 /**
  * person 
  */		  
-		case 'person':
+		case 'player':
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		$message = '';  
