@@ -557,6 +557,8 @@ catch (Exception $e)
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $parentsave = false;
 }
+    
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
       
        if ( $parentsave )
        {

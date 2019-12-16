@@ -173,6 +173,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->js
 
         }
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' return '.$return), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getRedirectToItemAppend '.$this->getRedirectToItemAppend($id)), '');
         if ($return) {
             switch ($this->view_item) {
                 case 'club':
