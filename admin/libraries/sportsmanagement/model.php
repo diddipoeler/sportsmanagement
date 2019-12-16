@@ -319,12 +319,30 @@ $data['notes'] = $html;
        {
        $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
        }
+       if ( $data['injury_date_start'] != '0000-00-00' && $data['injury_date_start'] != '' )
+       {
        $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
+       }
+       if ( $data['injury_date_end'] != '0000-00-00' && $data['injury_date_end'] != '' )
+       {
        $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
+       }
+       if ( $data['susp_date_start'] != '0000-00-00' && $data['susp_date_start'] != '' )
+       {
        $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);
+       }
+       if ( $data['susp_date_end'] != '0000-00-00' && $data['susp_date_end'] != '' )
+       {
        $data['susp_date_end'] = sportsmanagementHelper::convertDate($data['susp_date_end'],0);
+       }
+       if ( $data['away_date_start'] != '0000-00-00' && $data['away_date_start'] != '' )
+       {
        $data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'],0);
+       }
+       if ( $data['away_date_end'] != '0000-00-00' && $data['away_date_end'] != '' )
+       {
        $data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'],0);
+       }
        break;
 /**
  * template 
@@ -792,6 +810,14 @@ $result = $this->jsmdb->execute();
 		}
 		else
 		{
+		$id = (int) $this->getState($this->getName().'.id');
+//        $isNew = $this->getState($this->getName() . '.new');
+//        $data['id'] = $id;
+        $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
+	    $this->jsmapp->setUserState( "$this->jsmoption.person_id", $id );   
+        $this->jsmjinput->set('insert_id', $id);
+	    $this->jsmjinput->set('person_id', $id);  
+          
 		return false;
 		}
 	}
