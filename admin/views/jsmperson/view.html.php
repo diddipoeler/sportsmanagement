@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage person
+ * @subpackage jsmperson
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -24,7 +24,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewPerson extends sportsmanagementView
+class sportsmanagementViewjsmPerson extends sportsmanagementView
 {
 	
 	/**

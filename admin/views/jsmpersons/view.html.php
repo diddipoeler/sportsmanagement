@@ -6,9 +6,8 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage persons
+ * @subpackage jsmpersons
  */
-
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
@@ -29,7 +28,7 @@ use Joomla\CMS\Uri\Uri;
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPersons extends sportsmanagementView
+class sportsmanagementViewjsmPersons extends sportsmanagementView
 {
 
 	/**
@@ -251,15 +250,15 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
-		ToolbarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
-		ToolbarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::publish('jsmpersons.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('jsmpersons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
 		
-		ToolbarHelper::apply('persons.saveshort');
-		ToolbarHelper::editList('person.edit');
-		ToolbarHelper::addNew('person.add');
-		ToolbarHelper::custom('person.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		ToolbarHelper::archiveList('person.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::apply('jsmpersons.saveshort');
+		ToolbarHelper::editList('jsmperson.edit');
+		ToolbarHelper::addNew('jsmperson.add');
+		ToolbarHelper::custom('jsmperson.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('jsmperson.export', Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}
