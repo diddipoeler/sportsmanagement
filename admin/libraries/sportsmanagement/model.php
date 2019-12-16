@@ -574,6 +574,13 @@ $data['notes'] = $html;
  */         
        try{   
        $parentsave = parent::save($data);
+       $table = $this->getTable();
+       foreach ($table->getErrors() as $error)
+	   {
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$error), 'error');	 
+       }
+       
+       
        }
 catch (Exception $e)
 {
