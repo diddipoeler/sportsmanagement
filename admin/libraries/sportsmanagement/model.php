@@ -107,7 +107,7 @@ if( $this->jsmapp->isClient('site') )
        $person_double = array();
        $parentsave = true;
 
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmjinput->get('task')), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
 
 $input_options = InputFilter::getInstance(
         array(

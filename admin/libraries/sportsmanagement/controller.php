@@ -151,7 +151,7 @@ var $team_club_id = 0;
     {
         // Check for request forgeries.
         Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmjinput->get('task')), '');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
         // Initialise variables.
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getVar('tmpl');
@@ -172,7 +172,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmjinp
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
 
         }
-
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' return '.$return), '');
         if ($return) {
             switch ($this->view_item) {
                 case 'club':
