@@ -142,10 +142,16 @@ $this->jsmquery->clear();
 			$tblPerson->firstname	= $post['firstname'.$pks[$x]];
 			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
 			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
+            if ( $post['birthday'.$pks[$x]] != '0000-00-00' && $post['birthday'.$pks[$x]] != '' )
+       {
 			$tblPerson->birthday	= sportsmanagementHelper::convertDate($post['birthday'.$pks[$x]],0);
-            $tblPerson->deathday	= sportsmanagementHelper::convertDate($post['deathday'.$pks[$x]],0);
             $tblPerson->birthday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->birthday);
+            }
+            if ( $post['deathday'.$pks[$x]] != '0000-00-00' && $post['deathday'.$pks[$x]] != '' )
+       {
+            $tblPerson->deathday	= sportsmanagementHelper::convertDate($post['deathday'.$pks[$x]],0);
             $tblPerson->deathday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->deathday);
+            }
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
             $tblPerson->agegroup_id	= $post['agegroup'.$pks[$x]];
