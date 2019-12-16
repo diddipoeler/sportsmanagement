@@ -259,7 +259,7 @@ $data['notes'] = $html;
 /**
  * person 
  */       
-       case 'person': 
+       case 'jsmperson': 
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
        $data['person_id2'] = $data['request']['person_id2'];
@@ -820,8 +820,6 @@ $result = $this->jsmdb->execute();
         switch ($this->getName())
 		{
 		case 'position':
-        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -1296,21 +1294,7 @@ $form->setFieldAttribute('suspension', 'class', 'switcher');
 $form->setFieldAttribute('away', 'type', 'radio');				    
 $form->setFieldAttribute('away', 'class', 'switcher');				
 }
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('contact_id', 'type', 'modal_contact');
-        $form->setFieldAttribute('birthday', 'type', 'calendar');
-        $form->setFieldAttribute('deathday', 'type', 'calendar'); 
-        }
-        else
-        {
-        $form->setFieldAttribute('contact_id', 'type', 'modal_contacts');  
-        $form->setFieldAttribute('birthday', 'type', 'customcalendar');
-        $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
-        }
-        */
+        
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 			$this->jsmquery->from('information_schema.columns');

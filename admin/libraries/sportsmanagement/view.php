@@ -315,7 +315,7 @@ else
         switch ($this->view)
         {
         case 'projects':
-        case 'persons':
+        case 'jsmpersons':
         case 'predictiongames':
         case 'jlextfederations':
         case 'jlextassociations':
@@ -640,30 +640,29 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 /**
  * zwischen den views unterscheiden 
  */            
-            switch ($this->view)
-            { 
-            case 'joomleagueimports':
-            case 'githubinstall':
-            case 'extensions':
+    switch ($this->view)
+    { 
+    case 'joomleagueimports':
+    case 'githubinstall':
+    case 'extensions':
 	case 'projectteams':
-		case 'cpanel':	    
+	case 'cpanel':	    
 	case 'jlxmlimports':	
-			    case 'jlextlmoimports':
-		    case 'projectpositions':
-            case 'predictionmembers':
+	case 'jlextlmoimports':
+	case 'projectpositions':
+    case 'predictionmembers':
 	case 'templates':
-            case 'predictiongroups':
-            case 'jlextdfbkeyimport':
+    case 'predictiongroups':
+    case 'jlextdfbkeyimport':
 	case 'transifex';
     case 'predictions';
     case 'specialextensions';
 	case 'jlxmlexports';
-    
     case 'treetonodes';
     case 'treetos';
     case 'treetomatchs';
-            break;    
-            default:    
+    break;    
+    default:    
 /**
  * es gibt nur noch die ablage in den papierkorb
  * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
@@ -679,11 +678,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         }
         
         }
-        
-        //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
-        //ToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout='.$this->layout.'&tmpl=component'.'&issueview='.$this->view,'github',false);
-        //sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		
+	
 		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
 		$layout = $this->jinput->get('layout');
         $view = ucfirst(strtolower($this->view));
@@ -692,7 +687,6 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         if ($canDo->get('core.admin'))
 		{
 			ToolbarHelper::preferences('com_sportsmanagement');
-            //ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
 			ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view);
 			ToolbarHelper::divider();
 		}
