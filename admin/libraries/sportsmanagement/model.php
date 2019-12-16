@@ -1270,7 +1270,7 @@ $form->setFieldAttribute('joker', 'class', 'switcher');
 }			
 			
 			break;
-        case 'person':
+        case 'player':
                 switch($form->getValue('person_art'))
         {
             case 1:
