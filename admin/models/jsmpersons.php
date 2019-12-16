@@ -1,37 +1,37 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      persons.php
+ * @file      jsmpersons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage persons
+ * @subpackage jsmpersons
  */
-
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * sportsmanagementModelPersons
+ * sportsmanagementModeljsmPersons
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
  * @access public
  */
-class sportsmanagementModelPersons extends JSMModelList
+class sportsmanagementModeljsmPersons extends JSMModelList
 {
 	var $_identifier = "persons";
     
+    
     /**
-     * sportsmanagementModelPersons::__construct()
+     * sportsmanagementModeljsmPersons::__construct()
      * 
      * @param mixed $config
-     * @return void
+     * @return
      */
     public function __construct($config = array())
         {   
@@ -58,12 +58,13 @@ class sportsmanagementModelPersons extends JSMModelList
                 parent::setDbo($this->jsmdb);
         }
         
-    /**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since	1.6
+    
+	/**
+	 * sportsmanagementModeljsmPersons::populateState()
+	 * 
+	 * @param mixed $ordering
+	 * @param mixed $direction
+	 * @return
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -73,7 +74,7 @@ class sportsmanagementModelPersons extends JSMModelList
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
-        // Load the filter state.
+        /** Load the filter state. */
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
@@ -85,10 +86,10 @@ class sportsmanagementModelPersons extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 
-		// List state information.
+		/** List state information. */
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);       
-		// Filter.order
+		/** Filter.order */
 		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -105,8 +106,9 @@ class sportsmanagementModelPersons extends JSMModelList
 	}
     
 
+	
 	/**
-	 * sportsmanagementModelPersons::getListQuery()
+	 * sportsmanagementModeljsmPersons::getListQuery()
 	 * 
 	 * @return
 	 */
@@ -118,17 +120,13 @@ class sportsmanagementModelPersons extends JSMModelList
         $this->_team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );
         $this->_season_id = $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
         $this->_project_team_id = $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' );
-	
-        // Create a new query object.		
+
 		$this->jsmquery->clear();
         $this->jsmsubquery1->clear();
-        // Select some fields
         $this->jsmquery->select('pl.*');
         $this->jsmquery->select('pl.id as id2');
-        // From table
 		$this->jsmquery->from('#__sportsmanagement_person as pl');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
-        // Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
         
@@ -228,11 +226,10 @@ class sportsmanagementModelPersons extends JSMModelList
         
 	}
 	
+	
 	/**
-	 * sportsmanagementModelPersons::getPersonsToAssign()
+	 * sportsmanagementModeljsmPersons::getPersonsToAssign()
 	 * 
-     * im augenblick keine verwendung
-     * 
 	 * @return
 	 */
 	function getPersonsToAssign()
@@ -261,12 +258,11 @@ class sportsmanagementModelPersons extends JSMModelList
 	}
 
 
+	
 	/**
-	 * return list of project teams for select options
-	 *
-     * im augenblick keine verwendung
-     * 
-	 * @return array
+	 * sportsmanagementModeljsmPersons::getProjectTeamList()
+	 * 
+	 * @return
 	 */
 	function getProjectTeamList()
 	{
@@ -290,11 +286,10 @@ class sportsmanagementModelPersons extends JSMModelList
 	}
 
 	
+	
 	/**
-	 * sportsmanagementModelPersons::getTeamName()
+	 * sportsmanagementModeljsmPersons::getTeamName()
 	 * 
-     * im augenblick keine verwendung
-     * 
 	 * @param mixed $team_id
 	 * @return
 	 */
@@ -319,10 +314,9 @@ class sportsmanagementModelPersons extends JSMModelList
         return false;
         }
 	}
-
 	
 	/**
-	 * sportsmanagementModelPersons::getProjectTeamName()
+	 * sportsmanagementModeljsmPersons::getProjectTeamName()
 	 * 
 	 * @param mixed $project_team_id
 	 * @return
@@ -351,14 +345,10 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         
 	}
-    
-    
 
 	/**
-	 * sportsmanagementModelPersons::getPersons()
+	 * sportsmanagementModeljsmPersons::getPersons()
 	 * 
-     * im augenblick keine verwendung
-     * 
 	 * @return
 	 */
 	function getPersons()
@@ -382,9 +372,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	}
     
     /**
-     * sportsmanagementModelPersons::getPersonListSelect()
-     * 
-     * wird beim xmlimport aufgerufen
+     * sportsmanagementModeljsmPersons::getPersonListSelect()
      * 
      * @return
      */
