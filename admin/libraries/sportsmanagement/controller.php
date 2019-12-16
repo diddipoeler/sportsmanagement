@@ -151,7 +151,7 @@ var $team_club_id = 0;
     {
         // Check for request forgeries.
         Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->jsmjinput->get('task')), '');
         // Initialise variables.
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getVar('tmpl');
