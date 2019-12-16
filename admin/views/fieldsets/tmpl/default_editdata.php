@@ -207,7 +207,7 @@ switch ($fieldset->name)
     {
     case 'club':
     case 'playground':
-    case 'person':
+    case 'player':
     ?>
     <div class="span6">
     <?php
@@ -304,7 +304,7 @@ switch ($fieldset->name)
     {
     case 'club':
     case 'playground':
-    case 'person':
+    case 'player':
     if ( !$this->item->latitude )
     {
         $this->item->latitude = '0.00000000';
