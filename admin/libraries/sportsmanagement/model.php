@@ -311,8 +311,14 @@ $data['notes'] = $html;
 	break;
 	}
        }
+       if ( $data['birthday'] != '0000-00-00' && $data['birthday'] != '' )
+       {
        $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
+       }
+       if ( $data['deathday'] != '0000-00-00' && $data['deathday'] != '' )
+       {
        $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
+       }
        $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
        $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
        $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);
