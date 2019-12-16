@@ -216,7 +216,7 @@ var $team_club_id = 0;
                             case 'club':
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->club_id) . $setRedirect, false), $message);
                                 break;
-                            case 'person':
+                            case 'player':
                                 $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->person_id) . $setRedirect, false), $message);
                                 break;
                             case 'team':
