@@ -103,7 +103,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             <?PHP
             if ($this->params->get('show_option_person', 1)) {
                 ?>
-                <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=persons">
+                <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=players">
                     <img src="components/com_sportsmanagement/assets/icons/personen.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS') ?></span>
                 </a>

@@ -14,23 +14,16 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
 
-/**
- * sportsmanagementModeljsmplayers
- * 
- * @package 
- * @author Dieter Plöger
- * @copyright 2019
- * @version $Id$
- * @access public
- */
-class sportsmanagementModeljsmplayers extends JSMModelList
+
+class sportsmanagementModelplayers extends JSMModelList
 {
 	var $_identifier = "players";
     
     
    
+    
     /**
-     * sportsmanagementModeljsmplayers::__construct()
+     * sportsmanagementModelplayers::__construct()
      * 
      * @param mixed $config
      * @return
@@ -62,8 +55,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
         
     
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::populateState()
+	 * sportsmanagementModelplayers::populateState()
 	 * 
 	 * @param mixed $ordering
 	 * @param mixed $direction
@@ -111,8 +105,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::getListQuery()
+	 * sportsmanagementModelplayers::getListQuery()
 	 * 
 	 * @return
 	 */
@@ -232,8 +227,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 	
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::getPersonsToAssign()
+	 * sportsmanagementModelplayers::getPersonsToAssign()
 	 * 
 	 * @return
 	 */
@@ -265,8 +261,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::getProjectTeamList()
+	 * sportsmanagementModelplayers::getProjectTeamList()
 	 * 
 	 * @return
 	 */
@@ -294,8 +291,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 	
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::getTeamName()
+	 * sportsmanagementModelplayers::getTeamName()
 	 * 
 	 * @param mixed $team_id
 	 * @return
@@ -323,8 +321,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 	}
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayers::getProjectTeamName()
+	 * sportsmanagementModelplayers::getProjectTeamName()
 	 * 
 	 * @param mixed $project_team_id
 	 * @return
@@ -355,8 +354,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 	}
 
 
+
 	/**
-	 * sportsmanagementModeljsmplayers::getPersons()
+	 * sportsmanagementModelplayers::getPersons()
 	 * 
 	 * @return
 	 */
@@ -381,8 +381,9 @@ class sportsmanagementModeljsmplayers extends JSMModelList
 	}
     
     
+    
     /**
-     * sportsmanagementModeljsmplayers::getPersonListSelect()
+     * sportsmanagementModelplayers::getPersonListSelect()
      * 
      * @return
      */
