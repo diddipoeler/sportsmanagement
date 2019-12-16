@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage jsmperson
+ * @subpackage player
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -15,22 +15,24 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory;
 
+
 /**
- * sportsmanagementViewPerson
+ * sportsmanagementViewplayer
  * 
  * @package 
- * @author diddi
- * @copyright 2014
+ * @author Dieter Plöger
+ * @copyright 2019
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjsmPerson extends sportsmanagementView
+class sportsmanagementViewplayer extends sportsmanagementView
 {
 	
+	
 	/**
-	 * sportsmanagementViewPerson::init()
+	 * sportsmanagementViewplayer::init()
 	 * 
-	 * @return
+	 * @return void
 	 */
 	public function init ()
 	{
@@ -102,9 +104,9 @@ class sportsmanagementViewjsmPerson extends sportsmanagementView
         $this->form->setValue('away_date_end','');
         }
 	
-        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
+        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'player');
 	$this->extended =  $extended;
-        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'person');		
+        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'player');		
 	$this->extendeduser = $extendeduser;
 	$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
 	$lists = array();
@@ -125,13 +127,6 @@ class sportsmanagementViewjsmPerson extends sportsmanagementView
 	}
     
  	$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
-/*    
- 	$javascript = "\n";
- 	$javascript .= "window.addEvent('domready', function() {";   
-	$javascript .= 'StartEditshowPersons('.$this->form->getValue('request_person_art').');' . "\n"; 
-	$javascript .= '});' . "\n"; 
-	$this->document->addScriptDeclaration( $javascript );
-*/
 	
 /**
  * Load the language files for the contact integration
@@ -148,8 +143,9 @@ $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/per
 	}
  
 	
+
 	/**
-	 * sportsmanagementViewPerson::addToolBar()
+	 * sportsmanagementViewplayer::addToolBar()
 	 * 
 	 * @return void
 	 */

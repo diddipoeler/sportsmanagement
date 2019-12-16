@@ -19,20 +19,22 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
+
 /**
- * sportsmanagementViewPersons
+ * sportsmanagementViewplayers
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
  * @access public
  */
-class sportsmanagementViewjsmPersons extends sportsmanagementView
+class sportsmanagementViewplayers extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewPersons::init()
+	 * sportsmanagementViewplayers::init()
 	 * 
 	 * @return
 	 */
@@ -56,7 +58,7 @@ class sportsmanagementViewjsmPersons extends sportsmanagementView
        break; 
        }
 
-		$this->table = Table::getInstance('person', 'sportsmanagementTable');
+		$this->table = Table::getInstance('player', 'sportsmanagementTable');
 		$this->app->setUserState($this->option.'task','');
 
 /**
@@ -112,11 +114,12 @@ class sportsmanagementViewjsmPersons extends sportsmanagementView
 
 	}
 
+	
 	/**
-	 * sportsmanagementViewPersons::_displayAssignPlayers()
+	 * sportsmanagementViewplayers::_displayAssignPlayers()
 	 * 
 	 * @param mixed $tpl
-	 * @return void
+	 * @return
 	 */
 	function _displayAssignPlayers($tpl=null)
 	{
@@ -135,7 +138,7 @@ class sportsmanagementViewjsmPersons extends sportsmanagementView
 		//$total = $this->get('Total');
 		//$pagination = $this->get('Pagination');
         
-        $this->table = Table::getInstance('person', 'sportsmanagementTable');
+        $this->table = Table::getInstance('player', 'sportsmanagementTable');
 //		$this->table	= $table;
 
 		//save icon should be replaced by the apply
@@ -211,15 +214,18 @@ class sportsmanagementViewjsmPersons extends sportsmanagementView
 
 	}
 
+	
 	/**
-	 * Displays a calendar control field with optional onupdate js handler
-	 *
-	 * @param	string	The date value
-	 * @param	string	The name of the text field
-	 * @param	string	The id of the text field
-	 * @param	string	The date format
-	 * @param	string	js function to call on date update
-	 * @param	array	Additional html attributes
+	 * sportsmanagementViewplayers::calendar()
+	 * 
+	 * @param mixed $value
+	 * @param mixed $name
+	 * @param mixed $id
+	 * @param string $format
+	 * @param mixed $attribs
+	 * @param mixed $onUpdate
+	 * @param mixed $i
+	 * @return
 	 */
 	function calendar($value,$name,$id,$format='%Y-%m-%d',$attribs=null,$onUpdate=null,$i=null)
 	{
@@ -241,24 +247,25 @@ class sportsmanagementViewjsmPersons extends sportsmanagementView
 		return $html;
 	}
 	
+	
 	/**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
+	 * sportsmanagementViewplayers::addToolbar()
+	 * 
+	 * @return
+	 */
 	protected function addToolbar()
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
-		ToolbarHelper::publish('jsmpersons.publish', 'JTOOLBAR_PUBLISH', true);
-		ToolbarHelper::unpublish('jsmpersons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::publish('players.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('players.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		ToolbarHelper::divider();
 		
-		ToolbarHelper::apply('jsmpersons.saveshort');
-		ToolbarHelper::editList('jsmperson.edit');
-		ToolbarHelper::addNew('jsmperson.add');
-		ToolbarHelper::custom('jsmperson.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		ToolbarHelper::archiveList('jsmperson.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::apply('players.saveshort');
+		ToolbarHelper::editList('player.edit');
+		ToolbarHelper::addNew('player.add');
+		ToolbarHelper::custom('player.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('player.export', Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

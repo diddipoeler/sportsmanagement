@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      jsmpersons.php
+ * @file      players.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -14,7 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
- 
 
 /**
  * sportsmanagementControllerjsmpersons
@@ -25,45 +24,42 @@ use Joomla\CMS\Router\Route;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmpersons extends JSMControllerAdmin
+class sportsmanagementControllerplayers extends JSMControllerAdmin
 {
    
+  
   /**
-   * sportsmanagementControllerjsmpersons::assign()
+   * sportsmanagementControllerplayers::assign()
    * 
    * @return
    */
   function assign()
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
-        // Check for request forgeries
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
         $model = $this->getModel();
        $msg = $model->storeAssign($post);
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
     
 
+    
     /**
-     * sportsmanagementControllerjsmpersons::close()
+     * sportsmanagementControllerplayers::close()
      * 
      * @return
      */
     function close()
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
-        // Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-
-//        $model = $this->getModel();
-//       $msg = $model->storeAssign($post);
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
     
 
+    
     /**
-     * sportsmanagementControllerjsmpersons::saveshort()
+     * sportsmanagementControllerplayers::saveshort()
      * 
      * @return
      */
@@ -74,15 +70,16 @@ class sportsmanagementControllerjsmpersons extends JSMControllerAdmin
        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
       
+	
 	/**
-	 * sportsmanagementControllerjsmpersons::getModel()
+	 * sportsmanagementControllerplayers::getModel()
 	 * 
 	 * @param string $name
 	 * @param string $prefix
 	 * @param mixed $config
 	 * @return
 	 */
-	public function getModel($name = 'jsmperson', $prefix = 'sportsmanagementModel', $config = Array() ) 
+	public function getModel($name = 'player', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

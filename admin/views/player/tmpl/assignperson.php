@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage person
+ * @subpackage player
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -58,8 +58,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 		</div>
 		<div style="clear"></div>
 		<input type="hidden" name="option" value="com_sportsmanagement" />
-		<input type="hidden" name="view" value="person" />
-		<input type="hidden" name="task" value="person.personassign" />
+		<input type="hidden" name="view" value="player" />
+		<input type="hidden" name="task" value="player.personassign" />
 		<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</form>
 </div>

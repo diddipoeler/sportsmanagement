@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage person
+ * @subpackage player
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -39,7 +39,7 @@ use Joomla\CMS\Language\Text;
 									<?php
 									//create the button code to use in form while selecting a project and team to assign a new person to
 									$button = '<a class="modal-button" title="Select" ';
-									$button .= 'href="index.php?option=com_sportsmanagement&view=person&task=person.personassign" ';
+									$button .= 'href="index.php?option=com_sportsmanagement&view=player&task=player.personassign" ';
 									$button .= 'rel="{handler: \'iframe\', size: {x: 600, y: 400}}">' . Text::_('Select') . '</a>';
 									#echo $this->button;
 									echo $button;

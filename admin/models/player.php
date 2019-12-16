@@ -1,12 +1,12 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      jsmperson.php
+ * @file      player.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage person
+ * @subpackage player
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -14,8 +14,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
+
 /**
- * sportsmanagementModeljsmperson
+ * sportsmanagementModeljsmplayer
  * 
  * @package 
  * @author Dieter Plöger
@@ -23,12 +24,13 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsmperson extends JSMModelAdmin
+class sportsmanagementModeljsmplayer extends JSMModelAdmin
 {
   
 	
+	
 	/**
-	 * sportsmanagementModeljsmperson::__construct()
+	 * sportsmanagementModeljsmplayer::__construct()
 	 * 
 	 * @param mixed $config
 	 * @return
@@ -40,8 +42,9 @@ class sportsmanagementModeljsmperson extends JSMModelAdmin
 	}	
   
  
+  
   /**
-   * sportsmanagementModeljsmperson::getAgeGroupID()
+   * sportsmanagementModeljsmplayer::getAgeGroupID()
    * 
    * @param mixed $age
    * @return
@@ -77,8 +80,9 @@ $this->jsmquery->clear();
 
     
 	
+	
 	/**
-	 * sportsmanagementModeljsmperson::getPerson()
+	 * sportsmanagementModeljsmplayer::getPerson()
 	 * 
 	 * @param integer $person_id
 	 * @param integer $season_person_id
@@ -115,8 +119,9 @@ $this->jsmquery->clear();
     
     
     
+	
 	/**
-	 * sportsmanagementModeljsmperson::saveshort()
+	 * sportsmanagementModeljsmplayer::saveshort()
 	 * 
 	 * @return
 	 */
@@ -153,8 +158,9 @@ $this->jsmquery->clear();
     
     
     
+    
     /**
-     * sportsmanagementModeljsmperson::storeAssign()
+     * sportsmanagementModeljsmplayer::storeAssign()
      * 
      * @param mixed $post
      * @return

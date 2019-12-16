@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
- * @file      jsmperson.php
+ * @file      player.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -12,8 +12,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Filter\OutputFilter;
 
+
 /**
- * sportsmanagementTablejsmPerson
+ * sportsmanagementTableplayer
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,11 +22,12 @@ use Joomla\CMS\Filter\OutputFilter;
  * @version $Id$
  * @access public
  */
-class sportsmanagementTablejsmPerson extends JSMTable
+class sportsmanagementTableplayer extends JSMTable
 {
 
+	
 	/**
-	 * sportsmanagementTablejsmPerson::__construct()
+	 * sportsmanagementTableplayer::__construct()
 	 * 
 	 * @param mixed $db
 	 * @return
@@ -37,8 +39,9 @@ class sportsmanagementTablejsmPerson extends JSMTable
 	}
 
 	
+	
 	/**
-	 * sportsmanagementTablejsmPerson::check()
+	 * sportsmanagementTableplayer::check()
 	 * 
 	 * @return
 	 */

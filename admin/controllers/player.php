@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      jsmperson.php
+ * @file      player.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 
 /**
- * sportsmanagementControllerjsmperson
+ * sportsmanagementControllerplayer
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,15 +21,15 @@ use Joomla\CMS\Router\Route;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmperson extends JSMControllerForm
+class sportsmanagementControllerplayer extends JSMControllerForm
 {
 
-    /**
-	 * Class Constructor
-	 *
-	 * @param	array	$config		An optional associative array of configuration settings.
-	 * @return	void
-	 * @since	1.5
+   
+	/**
+	 * sportsmanagementControllerplayer::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
 	 */
 	function __construct($config = array())
 	{

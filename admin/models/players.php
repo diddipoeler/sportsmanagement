@@ -1,20 +1,21 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      jsmpersons.php
+ * @file      players.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage jsmpersons
+ * @subpackage players
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
+
 /**
- * sportsmanagementModeljsmPersons
+ * sportsmanagementModeljsmplayers
  * 
  * @package 
  * @author Dieter Plöger
@@ -22,13 +23,14 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsmPersons extends JSMModelList
+class sportsmanagementModeljsmplayers extends JSMModelList
 {
-	var $_identifier = "persons";
+	var $_identifier = "players";
     
     
+   
     /**
-     * sportsmanagementModeljsmPersons::__construct()
+     * sportsmanagementModeljsmplayers::__construct()
      * 
      * @param mixed $config
      * @return
@@ -59,8 +61,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
         }
         
     
+	
 	/**
-	 * sportsmanagementModeljsmPersons::populateState()
+	 * sportsmanagementModeljsmplayers::populateState()
 	 * 
 	 * @param mixed $ordering
 	 * @param mixed $direction
@@ -107,8 +110,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
     
 
 	
+	
 	/**
-	 * sportsmanagementModeljsmPersons::getListQuery()
+	 * sportsmanagementModeljsmplayers::getListQuery()
 	 * 
 	 * @return
 	 */
@@ -227,8 +231,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
 	}
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmPersons::getPersonsToAssign()
+	 * sportsmanagementModeljsmplayers::getPersonsToAssign()
 	 * 
 	 * @return
 	 */
@@ -259,8 +264,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
 
 
 	
+	
 	/**
-	 * sportsmanagementModeljsmPersons::getProjectTeamList()
+	 * sportsmanagementModeljsmplayers::getProjectTeamList()
 	 * 
 	 * @return
 	 */
@@ -287,8 +293,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
 
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmPersons::getTeamName()
+	 * sportsmanagementModeljsmplayers::getTeamName()
 	 * 
 	 * @param mixed $team_id
 	 * @return
@@ -315,8 +322,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
         }
 	}
 	
+	
 	/**
-	 * sportsmanagementModeljsmPersons::getProjectTeamName()
+	 * sportsmanagementModeljsmplayers::getProjectTeamName()
 	 * 
 	 * @param mixed $project_team_id
 	 * @return
@@ -346,8 +354,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
         
 	}
 
+
 	/**
-	 * sportsmanagementModeljsmPersons::getPersons()
+	 * sportsmanagementModeljsmplayers::getPersons()
 	 * 
 	 * @return
 	 */
@@ -371,8 +380,9 @@ class sportsmanagementModeljsmPersons extends JSMModelList
         
 	}
     
+    
     /**
-     * sportsmanagementModeljsmPersons::getPersonListSelect()
+     * sportsmanagementModeljsmplayers::getPersonListSelect()
      * 
      * @return
      */
