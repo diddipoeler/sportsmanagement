@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
- * @subpackage persons
+ * @subpackage jsmpersons
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -104,11 +104,11 @@ $this->readonly = '';
 					$row = &$this->items[$i];
 					if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 					{
-						$link       = Route::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
+						$link       = Route::_('index.php?option=com_sportsmanagement&task=jsmperson.edit&id='.$row->id);
 						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin);
-                        $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.person.' . $row->id) && $canCheckin;
+                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jsmpersons.', $canCheckin);
+                        $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jsmperson.' . $row->id) && $canCheckin;
 
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -127,10 +127,10 @@ $this->readonly = '';
 								?>
 								<td class="center">
                                 <?php if ($row->checked_out) : ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'persons.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jsmpersons.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ( $canEdit && !$this->assign ) : ?>
-						<a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
+						<a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jsmperson.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?></a>
 					<?php elseif ( !$this->assign ) : ?>
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?>
@@ -246,8 +246,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
             <?php // Create dropdown items and render the dropdown list.
 		if ( $canChange && !$this->assign )
 		{
-		HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'persons');
-		HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'persons');
+		HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jsmpersons');
+		HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jsmpersons');
 		echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
 		}
 		?>
