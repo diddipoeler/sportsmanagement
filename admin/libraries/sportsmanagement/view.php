@@ -315,7 +315,7 @@ else
         switch ($this->view)
         {
         case 'projects':
-        case 'jsmpersons':
+        case 'players':
         case 'predictiongames':
         case 'jlextfederations':
         case 'jlextassociations':

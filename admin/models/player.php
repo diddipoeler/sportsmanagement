@@ -16,7 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 
 /**
- * sportsmanagementModeljsmplayer
+ * sportsmanagementModelplayer
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,13 +24,14 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsmplayer extends JSMModelAdmin
+class sportsmanagementModelplayer extends JSMModelAdmin
 {
   
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayer::__construct()
+	 * sportsmanagementModelplayer::__construct()
 	 * 
 	 * @param mixed $config
 	 * @return
@@ -43,8 +44,9 @@ class sportsmanagementModeljsmplayer extends JSMModelAdmin
   
  
   
+ 
   /**
-   * sportsmanagementModeljsmplayer::getAgeGroupID()
+   * sportsmanagementModelplayer::getAgeGroupID()
    * 
    * @param mixed $age
    * @return
@@ -81,8 +83,9 @@ $this->jsmquery->clear();
     
 	
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayer::getPerson()
+	 * sportsmanagementModelplayer::getPerson()
 	 * 
 	 * @param integer $person_id
 	 * @param integer $season_person_id
@@ -120,8 +123,9 @@ $this->jsmquery->clear();
     
     
 	
+	
 	/**
-	 * sportsmanagementModeljsmplayer::saveshort()
+	 * sportsmanagementModelplayer::saveshort()
 	 * 
 	 * @return
 	 */
@@ -159,8 +163,9 @@ $this->jsmquery->clear();
     
     
     
+   
     /**
-     * sportsmanagementModeljsmplayer::storeAssign()
+     * sportsmanagementModelplayer::storeAssign()
      * 
      * @param mixed $post
      * @return
