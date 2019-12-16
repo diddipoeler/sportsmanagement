@@ -811,7 +811,7 @@ $result = $this->jsmdb->execute();
 		}
 		else
 		{
-		$id = (int) $this->getState($this->getName().'.id');
+		$id = $this->jsmjinput->getInt('id');
 //        $isNew = $this->getState($this->getName() . '.new');
 //        $data['id'] = $id;
         $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
