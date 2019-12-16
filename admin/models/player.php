@@ -137,25 +137,32 @@ $this->jsmquery->clear();
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			$tblPerson = & $this->getTable();
+			$tblPerson = new stdClass();
 			$tblPerson->id			= $pks[$x];
 			$tblPerson->firstname	= $post['firstname'.$pks[$x]];
 			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
 			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
 			$tblPerson->birthday	= sportsmanagementHelper::convertDate($post['birthday'.$pks[$x]],0);
             $tblPerson->deathday	= sportsmanagementHelper::convertDate($post['deathday'.$pks[$x]],0);
-            
             $tblPerson->birthday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->birthday);
             $tblPerson->deathday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->deathday);
-            
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
             $tblPerson->agegroup_id	= $post['agegroup'.$pks[$x]];
-			if(!$tblPerson->store()) 
-            {
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
+            try{  
+                $result = Factory::getDbo()->updateObject('#__sportsmanagement_person', $tblPerson, 'id');
+}
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    return false;
+}            
+			//if(!$tblPerson->store()) 
+//            {
+//				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+//				$result = false;
+//			}
 		}
 		return $result;
 	}
