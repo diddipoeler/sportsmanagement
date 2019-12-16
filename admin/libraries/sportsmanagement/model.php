@@ -583,8 +583,8 @@ catch (Exception $e)
 }
     
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
-    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' id '.$this->getState($this->getName().'.id') ), '');
-      
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');  
        if ( $parentsave )
        {
 	$id = (int) $this->getState($this->getName().'.id');
