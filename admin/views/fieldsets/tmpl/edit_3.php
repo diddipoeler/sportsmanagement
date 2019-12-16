@@ -22,14 +22,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-
+try{ 
 $params = $this->form->getFieldsets('params');
-
+}
+catch (Exception $e)
+{
+    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
 /**
  * Get the form fieldsets.
  */
+try{  
 $fieldsets = $this->form->getFieldsets();
-
+}
+catch (Exception $e)
+{
+    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP
