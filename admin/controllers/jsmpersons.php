@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      persons.php
+ * @file      jsmpersons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -15,25 +15,24 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
  
+
 /**
- * sportsmanagementControllerpersons
+ * sportsmanagementControllerjsmpersons
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
  * @access public
  */
-class sportsmanagementControllerpersons extends JSMControllerAdmin
+class sportsmanagementControllerjsmpersons extends JSMControllerAdmin
 {
- 
-    /**
-	 * Method to assign persons
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
+   
+  /**
+   * sportsmanagementControllerjsmpersons::assign()
+   * 
+   * @return
+   */
   function assign()
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
@@ -45,10 +44,11 @@ class sportsmanagementControllerpersons extends JSMControllerAdmin
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
     
+
     /**
-     * sportsmanagementControllerpersons::close()
+     * sportsmanagementControllerjsmpersons::close()
      * 
-     * @return void
+     * @return
      */
     function close()
 	{
@@ -61,26 +61,28 @@ class sportsmanagementControllerpersons extends JSMControllerAdmin
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
     
+
     /**
-	 * Method to update checked persons
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
+     * sportsmanagementControllerjsmpersons::saveshort()
+     * 
+     * @return
+     */
     function saveshort()
 	{
 	   $model = $this->getModel();
        $model->saveshort();
        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
-    
       
 	/**
-	 * Proxy for getModel.
-	 * @since	1.6
+	 * sportsmanagementControllerjsmpersons::getModel()
+	 * 
+	 * @param string $name
+	 * @param string $prefix
+	 * @param mixed $config
+	 * @return
 	 */
-	public function getModel($name = 'Person', $prefix = 'sportsmanagementModel', $config = Array() ) 
+	public function getModel($name = 'jsmperson', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      person.php
+ * @file      jsmperson.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,31 +9,29 @@
  * @subpackage person
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
- * sportsmanagementModelperson
+ * sportsmanagementModeljsmperson
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
  * @access public
  */
-class sportsmanagementModelperson extends JSMModelAdmin
+class sportsmanagementModeljsmperson extends JSMModelAdmin
 {
   
+	
 	/**
-	 * Override parent constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see     BaseDatabaseModel
-	 * @since   3.2
+	 * sportsmanagementModeljsmperson::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return
 	 */
 	public function __construct($config = array())
 	{
@@ -41,8 +39,9 @@ class sportsmanagementModelperson extends JSMModelAdmin
     
 	}	
   
+ 
   /**
-   * sportsmanagementModelperson::getAgeGroupID()
+   * sportsmanagementModeljsmperson::getAgeGroupID()
    * 
    * @param mixed $age
    * @return
@@ -77,8 +76,9 @@ $this->jsmquery->clear();
   
 
     
+	
 	/**
-	 * sportsmanagementModelperson::getPerson()
+	 * sportsmanagementModeljsmperson::getPerson()
 	 * 
 	 * @param integer $person_id
 	 * @param integer $season_person_id
@@ -114,12 +114,11 @@ $this->jsmquery->clear();
 	}
     
     
-    /**
-	 * Method to update checked persons
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
+    
+	/**
+	 * sportsmanagementModeljsmperson::saveshort()
+	 * 
+	 * @return
 	 */
 	function saveshort()
 	{
@@ -153,13 +152,13 @@ $this->jsmquery->clear();
 	}
     
     
+    
     /**
-	 * Method to save assign persons
-	 *
-	 * @access	
-	 * @return	
-	 * @since	
-	 */
+     * sportsmanagementModeljsmperson::storeAssign()
+     * 
+     * @param mixed $post
+     * @return
+     */
     function storeAssign($post)
     {
     // Reference global application object
@@ -381,35 +380,18 @@ catch (Exception $e){
     $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
 }
 
-
-
-
-
-                 
-//                $mdlTable = $mdl->getTable();
-  
-                   
-                //if ($mdlTable->store()===false)
-//				{
-//				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-//				}
-//				else
-//				{
-				// Create and populate an object.
                 $profile = new stdClass();
                 $profile->project_id = $this->_project_id;
                 $profile->person_id = $season_person_id;
                 $profile->published = 1;
                 $profile->modified = $db->Quote(''.$modified.'');
                 $profile->modified_by = $modified_by;
- try{
-			// Insert the object into the user profile table.
+try{
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
 			}
 catch (Exception $e){
     $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
 }
-               // }
                 
                 }
                 break;

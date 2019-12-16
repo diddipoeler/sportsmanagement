@@ -96,7 +96,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
           </div>          
           <div class="icon-wrapper">            
             <div id="icon">              
-              <?php echo $this->addIcon('personen.png','index.php?option=com_sportsmanagement&view=persons', Text::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS'));?>            
+              <?php echo $this->addIcon('personen.png','index.php?option=com_sportsmanagement&view=jsmpersons', Text::_('COM_SPORTSMANAGEMENT_D_MENU_PERSONS'));?>            
             </div>          
           </div>          
           <div class="icon-wrapper">            
