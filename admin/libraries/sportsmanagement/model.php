@@ -262,9 +262,38 @@ $data['notes'] = $html;
  * person 
  */       
        case 'player': 
-   if ( $data['birthday'] == '' )
+       if ( $data['birthday'] == '' )
        {
        $data['birthday'] = '0000-00-00';
+       }
+		       
+       if ( $data['deathday'] == '' )
+       {
+       $data['deathday'] = '0000-00-00';
+       }
+       if ( $data['injury_date_start'] == '' )
+       {
+       $data['injury_date_start'] = '0000-00-00';
+       }
+       if ( $data['injury_date_end'] == '' )
+       {
+       $data['injury_date_end'] = '0000-00-00';
+       }
+       if ( $data['susp_date_start'] == '' )
+       {
+       $data['susp_date_start'] = '0000-00-00';
+       }
+       if ( $data['susp_date_end'] == '' )
+       {
+       $data['susp_date_end'] = '0000-00-00';
+       }
+       if ( $data['away_date_start'] == '' )
+       {
+       $data['away_date_start'] = '0000-00-00';
+       }
+       if ( $data['away_date_end'] == '' )
+       {
+       $data['away_date_end'] = '0000-00-00';
        }
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
