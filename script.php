@@ -275,9 +275,11 @@ else
         $j = new JVersion();
         echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
         ?>
+<!--
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
+-->
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png"
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
