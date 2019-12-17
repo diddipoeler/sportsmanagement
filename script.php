@@ -281,7 +281,7 @@ else
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
 -->
         <img
-			src="../media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png"
+			src="../media/com_sportsmanagement/jl_images/Compat_icon_3_9_long.png"
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png"
