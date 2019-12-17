@@ -262,6 +262,15 @@ $data['notes'] = $html;
  * person 
  */       
        case 'player': 
+       if ( $data['height'] == '' )
+       {
+       $data['height'] = NULL;
+       }
+       if ( $data['weight'] == '' )
+       {
+       $data['weight'] = NULL;
+       }
+		       
        if ( $data['birthday'] == '' )
        {
        $data['birthday'] = '0000-00-00';
