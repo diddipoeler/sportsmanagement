@@ -108,6 +108,11 @@ $this->jsmquery->where('project_id = ' . $project_id);
 $this->jsmquery->where('tournement = 1');
 $this->jsmdb->setQuery($this->jsmquery);
 $roundresult = $this->jsmdb->loadObjectList('id');
+	
+$roundresult2 = usort($roundresult, function($a, $b) {
+  $c = $a->roundcode - $b->roundcode;
+    return $c;
+});	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');	
 
 $this->jsmquery->clear();
@@ -142,7 +147,8 @@ $result = $this->jsmdb->loadObjectList('id');
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' tree <pre>'.print_r($treetows->tree_i,true).'</pre>'  , '');
 
 $start = 1;
-for($i=$minresult; $i <= $maxresult; $i++) {
+//for($i=$minresult; $i <= $maxresult; $i++) {
+foreach( $roundresult as $key => $value ) { 	
 $projectroundcode[$i] = $start;
 $start++;
 }
