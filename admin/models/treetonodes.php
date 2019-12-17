@@ -148,8 +148,9 @@ $result = $this->jsmdb->loadObjectList('id');
 
 $start = 1;
 //for($i=$minresult; $i <= $maxresult; $i++) {
-foreach( $roundresult as $key => $value ) { 	
-$projectroundcode[$i] = $start;
+foreach( $roundresult as $key => $value ) if ( $value->roundcode <= $maxresult  )
+{ 	
+$projectroundcode[$value->roundcode ] = $start;
 $start++;
 }
 unset($start);
