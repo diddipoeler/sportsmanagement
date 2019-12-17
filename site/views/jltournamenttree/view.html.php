@@ -33,7 +33,8 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView {
      */
     function init() {
 
-        if ($this->project->project_type == 'TOURNAMENT_MODE') {
+        if ( $this->project->project_type == 'TOURNAMENT_MODE' ||
+        $this->project->project_type == 'DIVISIONS_LEAGUE' ) {
 $this->rounds = $this->model->getTournamentRounds();
 
             $this->color_from = $this->model->getColorFrom();
