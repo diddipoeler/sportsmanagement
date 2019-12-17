@@ -154,7 +154,8 @@ $projectroundcode[$value->roundcode ] = $start;
 $start++;
 }
 unset($start);
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' $projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
+arsort($projectroundcode); 
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
 	
 switch ($treetows->tree_i)
 {
@@ -245,9 +246,10 @@ $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 }	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
 
-for($i=$maxresult; $i > 0; $i--) {
+//for($i=$maxresult; $i > 0; $i--) {
+foreach( $projectroundcode as $i => $value ) {     
 $startround = $i - 1;
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($i,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($i,true).'</pre>'. ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
 foreach ( $matches as $keymatches => $valuematches ) if ($valuematches->roundcode == $i)
 {
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
