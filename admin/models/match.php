@@ -605,7 +605,8 @@ $query->where($conditions);
             $this->jsmquery->clear();
             $this->jsmquery->select('id');
             $this->jsmquery->from('#__sportsmanagement_round');
-            $this->jsmquery->where('roundcode = ' . $round_code);
+            $this->jsmquery->where('roundcode <= ' . $round_code);
+            $this->jsmquery->where('tournement = 1');
             $this->jsmquery->where('project_id = ' . $round_object->project_id);
             $this->jsmdb->setQuery($this->jsmquery);
 	    try
@@ -741,7 +742,6 @@ $query->where($conditions);
             $object->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
 
             try {
-                /* Update their details in the table using id as the primary key. */
                 $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
                 sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]);
                 $this->jsmapp->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $pks[$x]), 'Notice');
