@@ -9,11 +9,9 @@
  * @subpackage smextxmleditors
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewsmextxmleditors
@@ -33,14 +31,7 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
         $this->files = $this->model->getXMLFiles();
-       
-       
-        $this->option = $option;
-
 	}
     
     /**
@@ -50,15 +41,10 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-        // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS');
         $this->icon = 'xml-edits';
-       
         parent::addToolbar();
-        
     }    
-    
-    
     
 }
 ?>
