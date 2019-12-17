@@ -262,6 +262,10 @@ $data['notes'] = $html;
  * person 
  */       
        case 'player': 
+   if ( $data['birthday'] == '' )
+       {
+       $data['birthday'] = '0000-00-00';
+       }
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
        $data['person_id2'] = $data['request']['person_id2'];
