@@ -270,7 +270,10 @@ $data['notes'] = $html;
        {
        $data['weight'] = NULL;
        }
-		       
+       if ( $data['contact_id'] == '' )
+       {
+       $data['contact_id'] = NULL;
+       }	       
        if ( $data['birthday'] == '' )
        {
        $data['birthday'] = '0000-00-00';
