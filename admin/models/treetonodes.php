@@ -151,11 +151,13 @@ $start = 1;
 foreach( $roundresult as $key => $value ) if ( $value->roundcode <= $maxresult  )
 { 	
 $projectroundcode[$value->roundcode ] = $start;
+$projectroundcodeschleife[$start ] = $value->roundcode;  
 $start++;
 }
 unset($start);
 arsort($projectroundcode); 
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
 	
 switch ($treetows->tree_i)
 {
@@ -247,10 +249,12 @@ $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
 
 //for($i=$maxresult; $i > 0; $i--) {
-foreach( $projectroundcode as $i => $value ) {     
-$startround = $i - 1;
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($i,true).'</pre>'. ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
-foreach ( $matches as $keymatches => $valuematches ) if ($valuematches->roundcode == $i)
+foreach( $projectroundcode as $i => $value ) {  
+$i = $value - 1;  
+$startround = $projectroundcodeschleife[$i];
+$actround = $projectroundcodeschleife[$value] ; 
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($actround,true).'</pre>'. ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
+foreach ( $matches as $keymatches => $valuematches ) if ($valuematches->roundcode == $actround)
 {
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' valuematches->team_id<pre>'.print_r($valuematches->team_id,true).'</pre>'  , '');
