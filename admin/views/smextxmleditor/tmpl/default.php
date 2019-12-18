@@ -50,8 +50,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<?php echo $this->form->getInput('filename'); ?>
 
 </form>
+<div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
 ?>  
+</div>	
