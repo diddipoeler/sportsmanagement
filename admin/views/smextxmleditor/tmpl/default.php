@@ -24,7 +24,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'source.cancel' || document.formvalidator.isValid(document.id('source-form'))) {
-			<?php echo $this->form->getField('source')->save(); ?>
+			<?php 
+			if (version_compare(JSM_JVERSION, '3', 'eq')) {
+			echo $this->form->getField('source')->save(); 
+			}
+			?>
 			Joomla.submitform(task, document.getElementById('source-form'));
 		} else {
 			alert('<?php echo $this->escape(Text::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
