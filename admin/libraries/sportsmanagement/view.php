@@ -662,6 +662,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
     case 'treetos';
     case 'treetomatchs';
     case 'smextxmleditors';
+	case 'smextxmleditor';
     break;    
     default:    
 /**
