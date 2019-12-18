@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelEditClub
@@ -74,26 +75,26 @@ class sportsmanagementModelEditClub extends AdminModel
 function updItem($data)
     {
         $app = Factory::getApplication();
-        
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data '.'<pre>'.print_r($data,true).'</pre>'  ), '');
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
         }
         
+ try{        
         /** Specify which columns are to be ignored. This can be a string or an array. */
         $ignore = '';
         /** Get the table object from the model. */
         $table = $this->getTable( 'club' );
         /** Bind the array to the table object. */
         $table->bind( $data, $ignore );
- try{       
-        $result = $table->store();
+        $table->store();
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
-    $result = false;
+Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
+Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+    //$result = false;
 }
         return $result;
         }

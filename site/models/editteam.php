@@ -18,6 +18,15 @@ use Joomla\CMS\Log\Log;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
+/**
+ * sportsmanagementModelEditteam
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEditteam extends AdminModel
 {
   
@@ -27,6 +36,12 @@ class sportsmanagementModelEditteam extends AdminModel
 	
 	
     
+    /**
+     * sportsmanagementModelEditteam::updItem()
+     * 
+     * @param mixed $data
+     * @return void
+     */
     function updItem($data)
     {
         $app = Factory::getApplication();
@@ -36,13 +51,13 @@ class sportsmanagementModelEditteam extends AdminModel
             $data[$key] = $value;
         }
         
-        // Specify which columns are to be ignored. This can be a string or an array.
+        /** Specify which columns are to be ignored. This can be a string or an array. */
         //$ignore = 'id';
         $ignore = '';
 		try{
-        // Get the table object from the model.
+        /** Get the table object from the model. */
         $table = $this->getTable( 'team' );
-        // Bind the array to the table object.
+        /** Bind the array to the table object. */
         $table->bind( $data, $ignore );
         $table->store();
         }
@@ -56,6 +71,11 @@ class sportsmanagementModelEditteam extends AdminModel
     
     
     
+	/**
+	 * sportsmanagementModelEditteam::getData()
+	 * 
+	 * @return
+	 */
 	function getData()
 	{
 	   $this->_id = Factory::getApplication()->input->getInt('tid',0);

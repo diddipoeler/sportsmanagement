@@ -113,7 +113,8 @@ class sportsmanagementControllerEditClub extends FormController {
         $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         
         
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.'<pre>'.print_r($post,true).'</pre>'  ), '');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post '.'<pre>'.print_r($post,true).'</pre>'  ), '');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cid '.'<pre>'.print_r($cid,true).'</pre>'  ), '');
         //$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
         
         $post['id'] = (int) $cid[0];
