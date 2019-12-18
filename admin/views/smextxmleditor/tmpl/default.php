@@ -9,12 +9,10 @@
  * @subpackage smextxmleditor
  */
 
-.
 defined('_JEXEC') or die;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
 
 HTMLHelper::_('behavior.keepalive');
 
