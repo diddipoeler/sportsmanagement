@@ -64,7 +64,8 @@ class sportsmanagementControllersmextxmleditor extends FormController
 
 		// Initialise variables.
 		$app		= Factory::getApplication();
-		$data		= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		//$data		= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$data  = Factory::getApplication()->input->post->get('jform', array(), 'array');
 		//$context	= 'com_templates.edit.source';
 		$task		= $this->getTask();
 		$model		= $this->getModel();
