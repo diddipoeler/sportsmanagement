@@ -96,7 +96,7 @@ Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
     //$result = false;
 }
-        return $result;
+        //return $result;
         }
         
   /**
