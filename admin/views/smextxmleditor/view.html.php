@@ -32,6 +32,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	public function init ()
 	{
         $this->file_name = $this->jinput->getString('file_name', "");
+		$this->form		= $this->get('Form');
         $this->source	= $this->get('Source');
 	}
     
