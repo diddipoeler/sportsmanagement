@@ -26,8 +26,8 @@ $fieldsets = $this->form->getFieldsets();
 <script type="text/javascript">
 Joomla.submitbutton = function(task)
 {
-if (document.formvalidator.isValid(document.id('editperson'))) {
-Joomla.submitform(task, document.getElementById('editperson'));
+if (document.formvalidator.isValid(document.id('editprojectteam'))) {
+Joomla.submitform(task, document.getElementById('editprojectteam'));
 }
 }
 </script>
@@ -36,16 +36,16 @@ Joomla.submitform(task, document.getElementById('editperson'));
 ?>
 <fieldset class="adminform">
 <div class="fltrt">
-<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
+<button type="button" onclick="Joomla.submitform('editprojectteam.apply', this.form);">
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
-<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
+<button type="button" onclick="Joomla.submitform('editprojectteam.save', this.form);">
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
-<button type="button" onclick="Joomla.submitform('editperson.cancel', this.form);">
+<button type="button" onclick="Joomla.submitform('editprojectteam.cancel', this.form);">
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 <legend>
 <?php 
-echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_EDIT').' '.$this->item->name;
 ?>
 </legend>
 </fieldset>
