@@ -29,9 +29,6 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 {
-
-    
-	
     
   /**
 	 * Method to store the source file contents.
@@ -43,15 +40,13 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-		// Reference global application object
-        $app = Factory::getApplication();
+        //$app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        jimport('joomla.filesystem.file');
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        //jimport('joomla.filesystem.file');
        
-        $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$data['filename'];
-        //$return = File::write($filePath, $data['source']);
+        $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->jsmoption.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$data['filename'];
         if ( !File::write($filePath, $data['source']) )
         {
         Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
@@ -70,33 +65,25 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 	 */
 	public function &getSource()
 	{
-		// Reference global application object
-        $app = Factory::getApplication();
+        //$app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
         $item = new stdClass;
-        
         $config = new stdClass;
         $configPath = JPATH_SITE.DIRECTORY_SEPARATOR.'configuration.php';
-        $config->source	= File::read($configPath);
-       
-			$file_name	= Factory::getApplication()->input->getVar('file_name');
-            $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file_name;
+        $config->source	= file_get_contents($configPath);
+	$file_name = Factory::getApplication()->input->getVar('file_name');
+        $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->jsmoption.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$file_name;
 
-			if (file_exists($filePath)) {
-				jimport('joomla.filesystem.file');
-				$item->filename		= Factory::getApplication()->input->getVar('file_name');
-				$item->source		= File::read($filePath);
-			} else {
-				$this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
-			}
-		//}
-
-		return $item;
+	if (file_exists($filePath)) {
+	jimport('joomla.filesystem.file');
+	$item->filename	= Factory::getApplication()->input->getVar('file_name');
+	$item->source = file_get_contents($filePath);
+	} else {
+	$this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 	}
-    
-
-    
+	return $item;
+	}
 
 }
