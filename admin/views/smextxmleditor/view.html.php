@@ -31,17 +31,8 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $model = $this->getModel();
-        $this->file_name = $jinput->getString('file_name', "");
-        // Initialise variables.
-		$this->form		= $this->get('Form');
+        $this->file_name = $this->jinput->getString('file_name', "");
         $this->source	= $this->get('Source');
-
-        $this->option = $option;
-
 	}
     
     /**
@@ -51,22 +42,14 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		$jinput = Factory::getApplication()->input;
-				$jinput->set('hidemainmenu', true);
-				parent::addToolbar();
+	$this->jinput->set('hidemainmenu', true);
+	parent::addToolbar();
 	ToolbarHelper::apply('smextxmleditor.apply');
 	ToolbarHelper::save('smextxmleditor.save');
 	ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
-
-
-//        // Set toolbar items for the page
 	$this->title = $this->file_name;
 	$this->icon = 'xml-edit';
-
-        
     }    
-    
-    
     
 }
 ?>
