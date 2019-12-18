@@ -111,6 +111,11 @@ class sportsmanagementControllerEditClub extends FormController {
         $post = Factory::getApplication()->input->post->getArray(array());
 
         $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+        
+        
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.'<pre>'.print_r($post,true).'</pre>'  ), '');
+        //$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
+        
         $post['id'] = (int) $cid[0];
         $model = $this->getModel('editclub');
 
@@ -150,25 +155,27 @@ class sportsmanagementControllerEditClub extends FormController {
         } else {
             $post['merge_teams'] = '';
         }
+        
+        $updateresult = $model->updItem($post);
 
-        if ($model->updItem($post)) {
-            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-            $createTeam = Factory::getApplication()->input->getVar('createTeam');
-            if ($createTeam) {
-                $team_name = Factory::getApplication()->input->getVar('name');
-                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
-                $teammodel = $this->getModel('team');
-                $tpost['id'] = "0";
-                $tpost['name'] = $team_name;
-                $tpost['short_name'] = $team_short_name;
-                $tpost['club_id'] = $teammodel->getDbo()->insertid();
-                $teammodel->save($tpost);
-            }
-            $type = 'message';
-        } else {
-            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
-            $type = 'error';
-        }
+//        if ($model->updItem($post)) {
+//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
+//            $createTeam = Factory::getApplication()->input->getVar('createTeam');
+//            if ($createTeam) {
+//                $team_name = Factory::getApplication()->input->getVar('name');
+//                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
+//                $teammodel = $this->getModel('team');
+//                $tpost['id'] = "0";
+//                $tpost['name'] = $team_name;
+//                $tpost['short_name'] = $team_short_name;
+//                $tpost['club_id'] = $teammodel->getDbo()->insertid();
+//                $teammodel->save($tpost);
+//            }
+//            $type = 'message';
+//        } else {
+//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
+//            $type = 'error';
+//        }
 
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');

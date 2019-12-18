@@ -9,12 +9,19 @@
  * @subpackage editclub
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-
+/**
+ * sportsmanagementViewEditteam
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewEditteam extends sportsmanagementView
 {
 

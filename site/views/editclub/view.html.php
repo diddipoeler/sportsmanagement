@@ -35,7 +35,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 	
 $this->item = $this->model->getData();
 		$lists = array();
-		/*
+		$this->form = $this->get('Form');
         if ( $this->item->id )
         {
             // alles ok
@@ -56,11 +56,11 @@ $this->item = $this->model->getData();
             $this->form->setValue('founded', '');
             $this->form->setValue('dissolved', '');
         }
-		*/
+		
     $this->item->merge_teams = explode(",", $this->item->merge_teams);
     
 
-		$this->form = $this->get('Form');	
+			
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended = $extended;
         $this->lists = $lists;
