@@ -365,7 +365,7 @@ $this->app->enqueueMessage('Landesverbände gefunden','Message');
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug'),
        $this->jinput->get->getString('dbase') );
-      
+$this->app->enqueueMessage(__METHOD__.' '.__LINE__.' saison '.$this->jinput->get->getString('s'),'');      
  if ( count($result) == 1 )
  {
  $this->app->enqueueMessage('Keine Projekte gefunden','Error');
@@ -717,6 +717,10 @@ try
       $this->jinput->get->getString('required'),
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
+        
+$this->app->enqueueMessage(__METHOD__.' '.__LINE__.' projekte '.$this->jinput->get->getString('p'),'');
+        
+        
  if ( count($result) == 1 )
  {
  $this->app->enqueueMessage('Keine Projektteams gefunden','Error');
