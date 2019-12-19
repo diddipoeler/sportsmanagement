@@ -717,7 +717,14 @@ try
       $this->jinput->get->getString('required'),
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
- 
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Projektteams gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Projektteams gefunden','Message');    
+ }
       echo new JsonResponse($result);
     }
     catch(Exception $e)
