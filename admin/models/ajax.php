@@ -1132,6 +1132,7 @@ $option = $app->input->getCmd('option');
         // Where
         if ( $project_id )
         {
+	$project_id = explode(",", $project_id);
         // ist es ein array ?   
         if ( is_array($project_id) )
         {
