@@ -1054,9 +1054,26 @@ $option = $app->input->getCmd('option');
         {
         $query->select('p.id AS value,p.name AS text');    
         }
-        // From 
-		$query->from('#__sportsmanagement_project as p');
-        // Where
+	$query->from('#__sportsmanagement_project as p');
+
+// ist es ein array ?   
+		if ( $season_id )
+        {
+        if ( is_array($season_id) )
+        {
+        $ids = implode(",",array_map('intval', $season_id));
+        $query->where('p.season_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('p.season_id = ' . (int)$season_id );
+        }
+	} 
+        else
+        {
+        $query->where('p.season_id = 0');    
+        } 	
+	/*	
         if ( $season_id )
         {
         $query->where('p.season_id = ' . (int)$season_id );
@@ -1064,7 +1081,8 @@ $option = $app->input->getCmd('option');
         else
         {
         $query->where('p.season_id = 0');    
-        }                       
+        }      
+		*/
         // order
         $query->order('p.name');
         
