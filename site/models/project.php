@@ -1190,8 +1190,9 @@ $query->where('p.id = '.(int)self::$projectid);
 
 $starttime = microtime(); 
 		$db->setQuery($query);
-
-		if (! $result = $db->loadResult() && $checktemplate )
+      if ( $checktemplate )
+      {
+		if (! $result = $db->loadResult() )
 		{
 			$project = self::getProject($cfg_which_database,__METHOD__);
            
@@ -1221,7 +1222,7 @@ $starttime = microtime();
 				return $arrStandardSettings;
 			}
 		}
-		
+	}
         $jRegistry = new Registry;
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
