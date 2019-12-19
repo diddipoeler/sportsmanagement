@@ -1059,7 +1059,10 @@ $option = $app->input->getCmd('option');
 // ist es ein array ?   
 		if ( $season_id )
         {
+			if ( !is_array( $season_id ) )
+        {
 	$season_id = explode(",", $season_id);		
+			}
         if ( is_array( $season_id ) )
         {
         $ids = implode(",",array_map('intval', $season_id));
@@ -1132,7 +1135,10 @@ $option = $app->input->getCmd('option');
         // Where
         if ( $project_id )
         {
+	if ( !is_array($project_id) )
+	{
 	$project_id = explode(",", $project_id);
+	}
         // ist es ein array ?   
         if ( is_array($project_id) )
         {
