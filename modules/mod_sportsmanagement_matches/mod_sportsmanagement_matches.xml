@@ -58,27 +58,27 @@
 			<option value="1">JYES</option>
 		</field>
 				
-      <field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+<field name="cfg_which_database" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 
 	
-    <field	name="s" 
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
-					description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
-					required="">
-			</field>
+<field name="s" 
+task="seasons" 
+type="dependsql"
+depends="cfg_which_database"
+value_field="cfg_which_database"
+key_field="season_id"
+label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
+description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
+required="">
+</field>
 		
 				<field 	name="template" type="templatelist" default="default_tableless"
 						addfieldpath="/modules/mod_sportsmanagement_matches/fields/"
@@ -93,17 +93,17 @@
 						directory="modules/mod_sportsmanagement_matches/assets/images" 
 						hide_default="1" hide_none="0" />
 
-        <field 	name="p" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-			size="10"
-			 multiple="multiple"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
+<field name="p" 
+task="projects" 
+type="dependsql"
+depends="s"
+key_field="season_id"
+value_field="s"
+required=""
+size="10"
+multiple="multiple"
+label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
+description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
 						
 		<field 	name="project_not_used" 
 			task="projects" 
@@ -145,18 +145,18 @@
 				</field>
 
 <field name="teams" 
-		type="dependsql" 
-		default="0" 
-		depends="p"
-		task="projectteamoptions" 
-		key_field="project_id"
-		value_field="p"
-		slug="true"
-		required="false"
-		size="10"
-		multiple="multiple"
-		label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
-		description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+type="dependsql" 
+default="0" 
+depends="p"
+task="projectteamoptions" 
+key_field="project_id"
+value_field="p"
+slug="true"
+required="false"
+size="10"
+multiple="multiple"
+label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
+description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_TITLE" 
