@@ -59,6 +59,7 @@
     <field name="s" 
     task="seasons" 
     type="dependsql"
+	   multiple="multiple"
     depends="cfg_which_database"
     value_field="cfg_which_database"
     key_field="season_id"
