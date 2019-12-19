@@ -68,7 +68,7 @@
 	required="">
 	</field>
 		
-	<field name="projects"
+	<field name="p"
     size="10"
 	multiple="multiple" 
 	task="projects" 
@@ -90,7 +90,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-        <field name="teams" type="dependsql" default="0" depends="projects"
+        <field name="teams" type="dependsql" default="0" depends="p"
 					task="projectteamoptions" 
 					key_field="project_id"
 			value_field="projects"
