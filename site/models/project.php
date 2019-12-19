@@ -1158,10 +1158,11 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	{
         $app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
+	$view = $app->input->getVar("view");
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
 	$checktemplate = FALSE;
-		switch ( $template )
+		switch ( $view )
 		{
 			case 'editprojectteam':
 			case 'editteam':
