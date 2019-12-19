@@ -132,7 +132,7 @@ $this->model->savenode($this->node);
 	   ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
        break;
        case 2:
-       ToolbarHelper::apply('treetonode.saveshortleaf',Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
+       ToolbarHelper::apply('treetonode.saveallleaf',Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
        ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break; 
        case 3:
