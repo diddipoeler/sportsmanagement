@@ -34,7 +34,27 @@ class sportsmanagementViewEditPerson extends sportsmanagementView {
        
 $this->item = $this->model->getData();
         $this->form = $this->get('Form');
-
+        if ( $this->item->id )
+        {
+            // alles ok
+            if ( $this->item->birthday == '0000-00-00' )
+            {
+                $this->item->birthday = '';
+                $this->form->setValue('birthday','');
+            }
+            if ( $this->item->deathday == '0000-00-00' )
+            {
+                $this->item->deathday = '';
+                $this->form->setValue('deathday','');
+            }
+            
+        }
+        else
+        {
+            $this->form->setValue('birthday', '');
+            $this->form->setValue('deathday', '');
+        }
+        
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
