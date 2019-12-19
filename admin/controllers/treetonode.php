@@ -114,7 +114,12 @@ function save($key = NULL, $urlVar = NULL)
 */
 
 
-
+public function saveallleaf()
+	{
+	
+	
+}
+	
 	/**
 	 * sportsmanagementControllerTreetonode::removenode()
 	 * 
