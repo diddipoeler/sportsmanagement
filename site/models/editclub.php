@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      editclub.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editclub
@@ -75,7 +75,6 @@ class sportsmanagementModelEditClub extends AdminModel
 function updItem($data)
     {
         $app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data '.'<pre>'.print_r($data,true).'</pre>'  ), '');
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
