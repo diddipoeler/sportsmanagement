@@ -44,7 +44,7 @@ $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC,
  
 }
 
-$usedp = $params->get('projects', '0');
+$usedp = $params->get('p', '0');
 $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
 
 $usedteams = "";
