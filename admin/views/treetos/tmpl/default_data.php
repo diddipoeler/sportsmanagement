@@ -23,16 +23,16 @@ use Joomla\CMS\HTML\HTMLHelper;
 			<table class="<?php echo $this->table_data_class; ?>" >
 				<thead>
 					<tr>
-						<th width="5" style="vertical-align: top; "><?php echo count($this->items).'/'.$this->pagination->total; ?></th>
-						<th width="20" style="vertical-align: top; ">
+						<th id="treetos-total" width="5" style="vertical-align: top; "><?php echo count($this->items).'/'.$this->pagination->total; ?></th>
+						<th id="treetos-checkall" width="20" style="vertical-align: top; ">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>
+						<th id="treetos-name" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>
 						<?php
 						if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 						{
 							$colspan++;
-							?><th class="title" style="vertical-align:top; " nowrap="nowrap">
+							?><th id="treetos-division" class="title" style="vertical-align:top; " nowrap="nowrap">
 								<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_DIVISION');
 									echo '<br>'.HTMLHelper::_(	'select.genericlist',
 														$this->lists['divisions'],
@@ -43,11 +43,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 							</th><?php
 						}
 						?>
-						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_DEPTH'); ?></th>
+						<th id="treetos-tiefe" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_DEPTH'); ?></th>
 			
-						<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_HIDE'); ?></th>
-						<th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JSTATUS'); ?></th>
-						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
+						<th id="treetos-hide" style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_HIDE'); ?></th>
+						<th id="treetos-status" width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JSTATUS'); ?></th>
+						<th id="treetos-id" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
 					</tr>
 				</thead>
 				<tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
