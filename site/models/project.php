@@ -18,12 +18,12 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
-
+/*
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
 }
-
+*/
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
@@ -1190,7 +1190,7 @@ $query->where('p.id = '.(int)self::$projectid);
 $starttime = microtime(); 
 		$db->setQuery($query);
 
-		if (! $result = $db->loadResult() && $template )
+		if (! $result = $db->loadResult() && $checktemplate )
 		{
 			$project = self::getProject($cfg_which_database,__METHOD__);
            
