@@ -23,16 +23,16 @@ use Joomla\CMS\HTML\HTMLHelper;
 			<table class="<?php echo $this->table_data_class; ?>" >
 				<thead>
 					<tr>
-						<th id="treetos-total" width="5" style="vertical-align: top; "><?php echo count($this->items).'/'.$this->pagination->total; ?></th>
-						<th id="treetos-checkall" width="20" style="vertical-align: top; ">
+						<th id="thtreetos-total" width="5" style="vertical-align: top; "><?php echo count($this->items).'/'.$this->pagination->total; ?></th>
+						<th id="thtreetos-checkall" width="20" style="vertical-align: top; ">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th id="treetos-name" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>
+						<th id="thtreetos-name" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>
 						<?php
 						if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 						{
 							$colspan++;
-							?><th id="treetos-division" class="title" style="vertical-align:top; " nowrap="nowrap">
+							?><th id="thtreetos-division" class="title" style="vertical-align:top; " nowrap="nowrap">
 								<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_DIVISION');
 									echo '<br>'.HTMLHelper::_(	'select.genericlist',
 														$this->lists['divisions'],
@@ -43,11 +43,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 							</th><?php
 						}
 						?>
-						<th id="treetos-tiefe" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_DEPTH'); ?></th>
-			
-						<th id="treetos-hide" style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_HIDE'); ?></th>
-						<th id="treetos-status" width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JSTATUS'); ?></th>
-						<th id="treetos-id" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
+						<th id="thtreetos-tiefe" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_DEPTH'); ?></th>
+						<th id="thtreetos-hide" style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_HIDE'); ?></th>
+						<th id="thtreetos-status" width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JSTATUS'); ?></th>
+						<th id="thtreetos-id" class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
 					</tr>
 				</thead>
 				<tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
@@ -61,12 +60,12 @@ use Joomla\CMS\HTML\HTMLHelper;
                         $published = HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','treetos.');
 					?>
 						<tr class="<?php echo "row$k"; ?>">
-							<td id="treetos-total" style="text-align:center; ">
+							<td id="tdtreetos-total" style="text-align:center; ">
 								<?php
 								echo $this->pagination->getRowOffset($i);
 								?>
 							</td>
-							<td id="treetos-checkall" style="text-align:center; ">
+							<td id="tdtreetos-checkall" style="text-align:center; ">
 								<?php
 								echo $checked;
 								?>
@@ -104,7 +103,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 								}
 								?>
 							</td>
-							<td id="treetos-name" style="text-align:center; ">
+							<td id="tdtreetos-name" style="text-align:center; ">
 								<?php
 								echo $row->name;
 								?>
@@ -113,7 +112,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 							if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 							{
 								?>
-								<td id="treetos-division" nowrap="nowrap" style="text-align:center;">
+								<td id="tdtreetos-division" nowrap="nowrap" style="text-align:center;">
 									<?php
 									$append='';
 									if ($row->division_id == 0)
@@ -131,23 +130,23 @@ use Joomla\CMS\HTML\HTMLHelper;
 								<?php
 							}
 							?>
-							<td id="treetos-tiefe" style="text-align:center; ">
+							<td id="tdtreetos-tiefe" style="text-align:center; ">
 								<?php
 								echo $row->tree_i;
 								?>
 							</td>
 					
-							<td id="treetos-hide" style="text-align:center; ">
+							<td id="tdtreetos-hide" style="text-align:center; ">
 								<?php
 								echo $row->hide;
 								?>
 							</td>
-							<td id="treetos-published" style="text-align:center; ">
+							<td id="tdtreetos-published" style="text-align:center; ">
 								<?php
 								echo $published;
 								?>
 							</td>
-							<td id="treetos-id" style="text-align:center; ">
+							<td id="tdtreetos-id" style="text-align:center; ">
 								<?php
 								echo $row->id;
 								?>
