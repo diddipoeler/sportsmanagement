@@ -68,7 +68,11 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             foreach($teile as $key => $value )
             {
             $teile2 = explode(",",$value);      
-            if ( array_key_exists('von', $colors_ranking[$count]) )
+            if ( array_key_exists('von', $colors_ranking[$count]) &&
+	       array_key_exists('bis', $colors_ranking[$count]) &&
+		array_key_exists('color', $colors_ranking[$count]) &&
+		array_key_exists('text', $colors_ranking[$count]) 
+	       )
             {
             list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
             }  
