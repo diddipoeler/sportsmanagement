@@ -1158,11 +1158,22 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	{
         $app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
-        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
+	$checktemplate = FALSE;
+		switch ( $template )
+		{
+			case 'editprojectteam':
+			case 'editteam':
+			case 'editperson':
+			case 'editclub':
+			break;
+			default:
+			$checktemplate = TRUE;
+			break;
+		}
         
-        //first load the default settings from the default <template>.xml file
+        /** first load the default settings from the default <template>.xml file */
 		$paramsdata = "";
 		$arrStandardSettings = array();
         
@@ -1179,7 +1190,7 @@ $query->where('p.id = '.(int)self::$projectid);
 $starttime = microtime(); 
 		$db->setQuery($query);
 
-		if (! $result = $db->loadResult())
+		if (! $result = $db->loadResult() && $template )
 		{
 			$project = self::getProject($cfg_which_database,__METHOD__);
            
