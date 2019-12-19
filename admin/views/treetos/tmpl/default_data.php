@@ -61,12 +61,12 @@ use Joomla\CMS\HTML\HTMLHelper;
                         $published = HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','treetos.');
 					?>
 						<tr class="<?php echo "row$k"; ?>">
-							<td style="text-align:center; ">
+							<td id="treetos-total" style="text-align:center; ">
 								<?php
 								echo $this->pagination->getRowOffset($i);
 								?>
 							</td>
-							<td style="text-align:center; ">
+							<td id="treetos-checkall" style="text-align:center; ">
 								<?php
 								echo $checked;
 								?>
@@ -104,7 +104,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 								}
 								?>
 							</td>
-							<td style="text-align:center; ">
+							<td id="treetos-name" style="text-align:center; ">
 								<?php
 								echo $row->name;
 								?>
@@ -113,7 +113,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 							if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
 							{
 								?>
-								<td nowrap="nowrap" style="text-align:center;">
+								<td id="treetos-division" nowrap="nowrap" style="text-align:center;">
 									<?php
 									$append='';
 									if ($row->division_id == 0)
@@ -131,23 +131,23 @@ use Joomla\CMS\HTML\HTMLHelper;
 								<?php
 							}
 							?>
-							<td style="text-align:center; ">
+							<td id="treetos-tiefe" style="text-align:center; ">
 								<?php
 								echo $row->tree_i;
 								?>
 							</td>
 					
-							<td style="text-align:center; ">
+							<td id="treetos-hide" style="text-align:center; ">
 								<?php
 								echo $row->hide;
 								?>
 							</td>
-							<td style="text-align:center; ">
+							<td id="treetos-published" style="text-align:center; ">
 								<?php
 								echo $published;
 								?>
 							</td>
-							<td style="text-align:center; ">
+							<td id="treetos-id" style="text-align:center; ">
 								<?php
 								echo $row->id;
 								?>
