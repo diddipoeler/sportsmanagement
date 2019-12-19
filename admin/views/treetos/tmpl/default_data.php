@@ -15,7 +15,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <div id="table-responsive">
-<!--	<fieldset class="adminform"> -->
 		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE','<i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 		
 			<?php
@@ -28,8 +27,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 						<th width="20" style="vertical-align: top; ">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-					<!--	<th width="20" style="vertical-align: top; ">&nbsp;</th>
-						<th width="20" style="vertical-align: top; ">&nbsp;</th> -->
 						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_NAME'); ?></th>
 						<?php
 						if ($this->projectws->project_type == 'DIVISIONS_LEAGUE')
@@ -73,8 +70,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 								<?php
 								echo $checked;
 								?>
-					<!--		</td>
-							<td style="text-align:center;"> -->
 								<a
 									href="index.php?option=com_sportsmanagement&task=treeto.edit&id=<?php echo $row->id; ?>&pid=<?php echo $this->project_id; ?>">
 									<?php
@@ -83,8 +78,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_EDIT_DETAILS').'"');
 									?>
 								</a>
-						<!--	</td>
-							<td style="text-align:center;"> -->
 								<?php
 								if( $row->leafed == 0)
 								{ ?>
@@ -166,8 +159,4 @@ use Joomla\CMS\HTML\HTMLHelper;
 					?>
 				</tbody>
 			</table>
-<!--	</fieldset> -->
 </div>
-			
-
-
