@@ -1059,7 +1059,8 @@ $option = $app->input->getCmd('option');
 // ist es ein array ?   
 		if ( $season_id )
         {
-        if ( is_array($season_id) )
+	$season_id = explode(",", $season_id);		
+        if ( is_array( $season_id )
         {
         $ids = implode(",",array_map('intval', $season_id));
         $query->where('p.season_id IN (' . $ids .')' );    
