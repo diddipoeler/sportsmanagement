@@ -1168,6 +1168,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			case 'editteam':
 			case 'editperson':
 			case 'editclub':
+			case 'jltournamenttree':
 			break;
 			default:
 			$checktemplate = TRUE;
