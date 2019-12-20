@@ -108,7 +108,8 @@ $value->team_id = $this->matches[$value->node]->team_id;
 $value->team_name = $this->matches[$value->node]->team_name;
 $value->title = $this->matches[$value->node]->team_name;
 $value->content = $this->matches[$value->node]->team_name;	
-$value->match_id = $this->matches[$value->node]->match_id;	
+$value->match_id = $this->matches[$value->node]->match_id;
+$value->roundcode = $this->matches[$value->node]->roundcode;	
 }
 $this->model->savenode($this->node);
 		
