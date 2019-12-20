@@ -36,6 +36,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   20-12-2019: **3.2.00** Turnierbaum automatisch erstellen
 *   14-12-2019: **3.1.00** JED ready Korrektur
 *   14-12-2019: **3.0.00** JED ready
 *   17-11-2019: **2.4.00** Datenbankanpassungen Joomla 4
