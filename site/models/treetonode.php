@@ -132,23 +132,6 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	}
 	
 	/**
-	 * sportsmanagementModelTreetonode::showNodeMatches()
-	 * 
-	 * @param mixed $nodes
-	 * @return void
-	 */
-	function showNodeMatches(&$nodes)
-	{
-		$matches = $this->model->getNodeMatches($nodes);
-		$lineinover = '';
-		foreach ($matches as $mat)
-		{
-			$lineinover .= $mat->text.'<br/>';
-		}
-		echo $lineinover;
-	}
-	
-	/**
 	 * sportsmanagementModelTreetonode::getRoundName()
 	 * 
 	 * @return
@@ -156,11 +139,11 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	function getRoundName()
 	{
 	$this->jsmquery->clear();
-        $this->jsmquery->select('*');
-        $this->jsmquery->from('#__sportsmanagement_round AS r');   
-        $this->jsmquery->where('r.project_id = ' . (int) $this->projectid );
+    $this->jsmquery->select('*');
+    $this->jsmquery->from('#__sportsmanagement_round AS r');   
+    $this->jsmquery->where('r.project_id = ' . (int) $this->projectid );
 	$this->jsmquery->where('r.tournement = 1');
-        $this->jsmquery->order('r.roundcode');
+    $this->jsmquery->order('r.roundcode');
 	$this->jsmdb->setQuery( $this->jsmquery );
 	$result = $this->jsmdb->loadObjectList();
 	return $result;
