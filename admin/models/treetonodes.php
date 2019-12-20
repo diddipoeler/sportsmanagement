@@ -543,8 +543,18 @@ $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id'
 	/**
 	 * UPDATE selected node as a leaf AND unpublish ALL children node
 	 */
+	/**
+	 * sportsmanagementModelTreetonodes::storeshortleaf()
+	 * 
+	 * @param mixed $cid
+	 * @param mixed $post
+	 * @return
+	 */
 	function storeshortleaf($cid,$post)
 	{
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');		
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
+	   
 		$result = true;
 		$project_id = $this->jsmjinput->get('pid');
 		$tree_i = $post['tree_i'];
@@ -647,6 +657,7 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	 */
 	function storefinishleaf($post)
 	{
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
 		
 		$treeto_id = $post['treeto_id'];
 
