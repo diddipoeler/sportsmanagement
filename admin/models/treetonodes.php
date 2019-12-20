@@ -124,7 +124,7 @@ $this->jsmquery->where('r.tournement = 1');
 $this->jsmquery->order('r.roundcode DESC');
 $this->jsmdb->setQuery($this->jsmquery);
 $maxresult = $this->jsmdb->loadResult();
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult <pre>'.print_r($maxresult ,true).'</pre>'  , '');	
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult <pre>'.print_r($maxresult ,true).'</pre>'  , '');	
 $this->jsmquery->clear();
 $this->jsmquery->select('MIN(r.roundcode)');
 $this->jsmquery->from('#__sportsmanagement_match AS m');
@@ -156,8 +156,8 @@ $start++;
 }
 unset($start);
 arsort($projectroundcode); 
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
 	
 switch ($treetows->tree_i)
 {
@@ -208,9 +208,8 @@ $mannproroundcode[3] = 1;
 break;		
 }
 
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
-  
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');  
   
 $starttree = $mannproroundcode[$projectroundcode[$maxresult]];
 $starttreeteamwon = array();  
@@ -259,7 +258,7 @@ $starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam2_id;
 $nextroundcode = $maxresult - 1;    
 for($i=$maxresult; $i > 0; $i--) {  
 foreach( $starttreeteamwon[$i] as $node => $value ) {   
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' node<pre>'.print_r($node,true).'</pre>'  , '');  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' node<pre>'.print_r($node,true).'</pre>'  , '');  
 
 foreach ( $result as $key => $valueresult ) if ($valueresult->roundcode == $nextroundcode)
 {
@@ -309,8 +308,9 @@ $nextroundcode--;
 }  
   
   
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' starttreeteamwon<pre>'.print_r($starttreeteamwon,true).'</pre>'  , '');  
-$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>'.print_r($result,true).'</pre>'  , '');
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' starttreeteamwon<pre>'.print_r($starttreeteamwon,true).'</pre>'  , '');  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>'.print_r($result,true).'</pre>'  , '');
+  
 /*
 //for($i=$maxresult; $i > 0; $i--) {
 foreach( $projectroundcode as $i => $value ) {  
@@ -374,6 +374,26 @@ $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 }
 }
 */	
+  
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');  
+  
+$startcheck = $mannproroundcode[1] * 2; 
+//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startcheck<pre>'.print_r($startcheck,true).'</pre>'  , '');  
+
+for($i=1; $i < $startcheck; $i++) {  
+if (!array_key_exists($i, $matches)) {
+$object = new stdClass();	
+$object->team_id = 0;
+$object->match_id = 0;	
+$object->team_name = '';		
+$object->roundcode = 0;
+$object->next_match_id = 0;
+$object->team_won = 0;			
+$matches[$i ] = $object;  
+}  
+}  
+  
+  
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' matches <pre>'.print_r($matches,true).'</pre>'  , '');
 return $matches;
 }
