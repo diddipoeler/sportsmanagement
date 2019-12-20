@@ -246,6 +246,17 @@ foreach ( $valuebracket as $bracket  )
 foreach ( $result as $key => $value  ) if ( $bracket->match_id == $value->match_id )
 {
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
+if ( $value->match_id < 0 )
+{
+$this->bracket[$keybracket][$bracket->match_id]->firstname = 'freilos'; 
+$this->bracket[$keybracket][$bracket->match_id]->secondname = 'freilos';
+$this->bracket[$keybracket][$bracket->match_id]->firstlogo = 'freilos'; 
+$this->bracket[$keybracket][$bracket->match_id]->secondlogo = 'freilos';
+$this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
+$this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
+$this->bracket[$keybracket][$bracket->match_id]->team1_result = 0;
+$this->bracket[$keybracket][$bracket->match_id]->team2_result = 1;
+}
 if ( $value->team_id == $bracket->projectteam1_id )
 {
 $this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name;   
