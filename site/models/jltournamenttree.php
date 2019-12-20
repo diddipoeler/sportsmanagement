@@ -17,11 +17,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Utility\Utility;
 JLoader::import('components.com_sportsmanagement.models.treetonode', JPATH_SITE);
-
-jimport( 'joomla.utilities.utility' );
-
 
 /**
  * sportsmanagementModeljltournamenttree
@@ -224,7 +221,7 @@ $query->order('r.roundcode DESC');
 $db->setQuery($query);
 $minresult = $db->loadResult();
 
-foreach ( $result as $key => $value  ) if ( $value->match_id > 0 )
+foreach ( $result as $key => $value  ) if ( $value->match_id != 0 )
 {
 $match = sportsmanagementModelMatch::getMatchData($value->match_id,Factory::getApplication()->input->getInt( "cfg_which_database", 0 ));
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match <pre>'.print_r($match ,true).'</pre>'  , '');
