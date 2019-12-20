@@ -114,6 +114,11 @@ function save($key = NULL, $urlVar = NULL)
 */
 
 
+/**
+ * sportsmanagementControllerTreetonode::saveallleaf()
+ * 
+ * @return void
+ */
 public function saveallleaf()
 {
 /** Check for token */
@@ -170,60 +175,60 @@ $this->setRedirect($link,$msg);
 		$this->setRedirect($link,$msg);
 	}
 
-	/**
-	 * sportsmanagementControllerTreetonode::saveshortleaf()
-	 * 
-	 * @return void
-	 */
-	public function saveshortleaf()
-	{
-		// Check for token
-		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-        $cid = $this->jsmjinput->get('cid',array(),'array');
-		ArrayHelper::toInteger($cid);
-		$post = $this->jsmjinput->post->getArray(array());
-        $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
-		$model = $this->getModel('treetonodes');
+//	/**
+//	 * sportsmanagementControllerTreetonode::saveshortleaf()
+//	 * 
+//	 * @return void
+//	 */
+//	public function saveshortleaf()
+//	{
+//		// Check for token
+//		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+//        $cid = $this->jsmjinput->get('cid',array(),'array');
+//		ArrayHelper::toInteger($cid);
+//		$post = $this->jsmjinput->post->getArray(array());
+//        $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
+//		$model = $this->getModel('treetonodes');
+//
+//		if($model->storeshortleaf($cid,$post))
+//		{
+//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_SAVED');
+//		}
+//		else
+//		{
+//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_SAVED') . $model->getError();
+//		}
+//		$link = 'index.php?option=com_sportsmanagement&view=treetonodes&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
+//		$this->setRedirect($link,$msg);
+//	}
 
-		if($model->storeshortleaf($cid,$post))
-		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_SAVED');
-		}
-		else
-		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_SAVED') . $model->getError();
-		}
-		$link = 'index.php?option=com_sportsmanagement&view=treetonodes&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
-		$this->setRedirect($link,$msg);
-	}
 
-
-	/**
-	 * sportsmanagementControllerTreetonode::savefinishleaf()
-	 * 
-	 * @return void
-	 */
-	public function savefinishleaf()
-	{
-		// Check for token
-		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		$cid = $this->jsmjinput->get('cid',array(),'array');
-		ArrayHelper::toInteger($cid);
-		$post = $this->jsmjinput->post->getArray(array());
-        $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
-
-		$model = $this->getModel('treetonodes');
-		if($model->storefinishleaf($post))
-		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_SAVED');
-		}
-		else
-		{
-			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_ERROR_SAVED');
-		}
-		$link = 'index.php?option=com_sportsmanagement&view=treetonodes&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
-		$this->setRedirect($link,$msg);
-	}
+//	/**
+//	 * sportsmanagementControllerTreetonode::savefinishleaf()
+//	 * 
+//	 * @return void
+//	 */
+//	public function savefinishleaf()
+//	{
+//		// Check for token
+//		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+//		$cid = $this->jsmjinput->get('cid',array(),'array');
+//		ArrayHelper::toInteger($cid);
+//		$post = $this->jsmjinput->post->getArray(array());
+//        $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
+//
+//		$model = $this->getModel('treetonodes');
+//		if($model->storefinishleaf($post))
+//		{
+//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_SAVED');
+//		}
+//		else
+//		{
+//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_ERROR_SAVED');
+//		}
+//		$link = 'index.php?option=com_sportsmanagement&view=treetonodes&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
+//		$this->setRedirect($link,$msg);
+//	}
 
 	
 	/**
