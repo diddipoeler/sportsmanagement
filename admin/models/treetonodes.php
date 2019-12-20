@@ -384,7 +384,7 @@ for($i=1; $i < $startcheck; $i++) {
 if (!array_key_exists($i, $matches)) {
 $object = new stdClass();	
 $object->team_id = 0;
-$object->match_id = 0;	
+$object->match_id = $i * -1;	
 $object->team_name = '';		
 $object->roundcode = 0;
 $object->next_match_id = 0;
