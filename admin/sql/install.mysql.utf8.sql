@@ -1424,7 +1424,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_treeto_node` (
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
-
+  `roundcode` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY  (`id`)
   )
 ENGINE=MyISAM
