@@ -211,6 +211,20 @@ break;
 
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');  
+
+foreach ( $projectroundcode as $key => $value ) 
+{
+$start = $mannproroundcode[$value];
+$ende = $mannproroundcode[$value - 1];
+if ( !$ende )
+{
+$ende = $start * 2;
+}
+for($i=$start; $i < $ende ; $i++) {  
+$nodeproround[$i] = $key;
+}
+
+}
   
 $starttree = $mannproroundcode[$projectroundcode[$maxresult]];
 $starttreeteamwon = array();  
@@ -387,7 +401,7 @@ $object = new stdClass();
 $object->team_id = 0;
 $object->match_id = $i * -1;	
 $object->team_name = '';		
-$object->roundcode = 0;
+$object->roundcode = $nodeproround[$i];
 $object->next_match_id = 0;
 $object->team_won = 0;			
 $matches[$i ] = $object;  
