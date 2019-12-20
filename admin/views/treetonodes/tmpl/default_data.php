@@ -14,7 +14,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-
 ?>
 <div id="editcell">
 <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
@@ -82,6 +81,7 @@ $marker = $j - 1;
 document.getElementById('cb<?php echo $marker;?>').checked=true;
 </script>
 <input type="hidden" id="team_id<?php echo $this->node[$j-1]->id;?>" name="team_id<?php echo $this->node[$j-1]->id;?>" value="<?php echo $this->node[$j-1]->team_id;?>" >
+<input type="hidden" id="roundcode<?php echo $this->node[$j-1]->id;?>" name="roundcode<?php echo $this->node[$j-1]->id;?>" value="<?php echo $this->node[$j-1]->roundcode;?>" >
 <?php		
 		
 			$link = Route::_( 'index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
