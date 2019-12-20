@@ -124,7 +124,7 @@ $this->jsmquery->where('r.tournement = 1');
 $this->jsmquery->order('r.roundcode DESC');
 $this->jsmdb->setQuery($this->jsmquery);
 $maxresult = $this->jsmdb->loadResult();
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult <pre>'.print_r($maxresult ,true).'</pre>'  , '');	
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult <pre>'.print_r($maxresult ,true).'</pre>'  , '');	
 $this->jsmquery->clear();
 $this->jsmquery->select('MIN(r.roundcode)');
 $this->jsmquery->from('#__sportsmanagement_match AS m');
@@ -156,8 +156,8 @@ $start++;
 }
 unset($start);
 arsort($projectroundcode); 
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
 	
 switch ($treetows->tree_i)
 {
@@ -207,7 +207,14 @@ $mannproroundcode[2] = 2;
 $mannproroundcode[3] = 1;
 break;		
 }
-	
+
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
+  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');  
+  
+$starttree = $mannproroundcode[$projectroundcode[$maxresult]];
+$starttreeteamwon = array();  
+  
 foreach ( $result as $key => $value ) if ($value->roundcode == $maxresult)
 {
 $startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];// $projectroundcode[$value->roundcode]
@@ -228,7 +235,8 @@ $object->team_won = $value->team_won;
 $matches[$startneu ] = $object;
 $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 $startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
-//$startneu++;
+$starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam1_id;  
+$starttree++;
 $object = new stdClass();	
 $object->team_id = $value->projectteam2_id;
 $object->match_id = $key;	
@@ -245,9 +253,65 @@ $object->next_match_id = $value->next_match_id;
 $object->team_won = $value->team_won;			
 $matches[$startneu ] = $object;
 $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
+$starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam2_id;  
 }	
-//$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($result,true).'</pre>'  , '');
+/** damit freilose auch berücksichtgt werden */
+$nextroundcode = $maxresult - 1;    
+for($i=$maxresult; $i > 0; $i--) {  
+foreach( $starttreeteamwon[$i] as $node => $value ) {   
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' node<pre>'.print_r($node,true).'</pre>'  , '');  
 
+foreach ( $result as $key => $valueresult ) if ($valueresult->roundcode == $nextroundcode)
+{
+if ( $valueresult->team_won == $value )
+{
+$nodeneu = $node * 2;
+$starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam1_id; 
+$object = new stdClass();	
+$object->team_id = $valueresult->projectteam1_id;
+$object->match_id = $valueresult->match_id;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $valueresult->projectteam1_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$object->roundcode = $valueresult->roundcode;
+$object->next_match_id = $valueresult->next_match_id;
+$object->team_won = $valueresult->team_won;			
+$matches[$nodeneu ] = $object;  
+$nodeneu++;
+$starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam2_id;  
+$object = new stdClass();	
+$object->team_id = $valueresult->projectteam2_id;
+$object->match_id = $valueresult->match_id;	
+$this->jsmquery->clear();
+$this->jsmquery->select('t.name');
+$this->jsmquery->from('#__sportsmanagement_team AS t');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+$this->jsmquery->where('pt.id = ' . $valueresult->projectteam2_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$object->team_name = $this->jsmdb->loadResult();		
+$object->roundcode = $valueresult->roundcode;
+$object->next_match_id = $valueresult->next_match_id;
+$object->team_won = $valueresult->team_won;			
+$matches[$nodeneu ] = $object;  
+  
+  
+}  
+}  
+ 
+}  
+$nextroundcode--;
+}  
+  
+  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' starttreeteamwon<pre>'.print_r($starttreeteamwon,true).'</pre>'  , '');  
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>'.print_r($result,true).'</pre>'  , '');
+/*
 //for($i=$maxresult; $i > 0; $i--) {
 foreach( $projectroundcode as $i => $value ) {  
 $i = $value - 1;  
@@ -309,7 +373,7 @@ $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
 	
 }
 }
-	
+*/	
 //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' matches <pre>'.print_r($matches,true).'</pre>'  , '');
 return $matches;
 }
