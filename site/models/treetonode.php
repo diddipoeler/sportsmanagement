@@ -166,14 +166,14 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	 */
 	function getRoundName()
 	{
-		$this->jsmquery->clear();
+	$this->jsmquery->clear();
         $this->jsmquery->select('*');
         $this->jsmquery->from('#__sportsmanagement_round AS r');   
         $this->jsmquery->where('r.project_id = ' . (int) $this->projectid );
+	$this->jsmquery->where('r.tournement = 1');
         $this->jsmquery->order('r.roundcode');
-		$this->jsmdb->setQuery( $this->jsmquery );
-		$result = $this->jsmdb->loadObjectList();
-
-		return $result;
+	$this->jsmdb->setQuery( $this->jsmquery );
+	$result = $this->jsmdb->loadObjectList();
+	return $result;
 	}
 }
