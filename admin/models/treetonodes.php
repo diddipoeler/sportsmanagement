@@ -61,6 +61,7 @@ $object->id = $value->id;
 $object->title = $value->title;
 $object->content = $value->content;	
 $object->team_id = $value->team_id;
+$object->roundcode = $value->roundcode;
 $object->modified = $date->toSql();
 $object->modified_by = $user->get('id');
 try {
@@ -602,7 +603,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery();
 				}
 			}
 		}
-		// 2, 4, 8, 16, 32, 64 teams, default leaf(ing)
+		// 2, 4, 8, 16, 32, 64, 128 teams, default leaf(ing)
 		for($k = pow(2,$tree_i);$k < pow(2,$tree_i + 1);$k ++)
 		{
 		$this->jsmquery->clear();
@@ -647,7 +648,7 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	function storefinishleaf($post)
 	{
 		
-		$treeto_id 		= $post['treeto_id'];
+		$treeto_id = $post['treeto_id'];
 
 // Create an object for the record we are going to update.
 $object = new stdClass();
