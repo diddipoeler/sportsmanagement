@@ -291,7 +291,10 @@ $this->bracket[$keybracket][$bracket->match_id]->secondlogo = Uri::base().$value
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' rounds <pre>'.print_r($rounds ,true).'</pre>'  , '');
-
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'.print_r($this->bracket[$minresult] ,true).'</pre>'  , '');
+}
 /** jetzt die teams und ergebnisse zusammenstellen */
 $varteams = array();
 $this->request['tree_logo'] = 1;
