@@ -55,6 +55,7 @@ var $jl_tree_jquery_version = '1.7.1';
 function __construct( )
 	{
 		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
+        $this->jsmoption = Factory::getApplication()->input->getCmd('option');
 		parent::__construct( );
 	}
 
@@ -310,7 +311,10 @@ break;
 }
 }
 
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
+}
 return implode(",",$varteams);
 
 }
@@ -341,8 +345,10 @@ $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 $varresults[$round->roundcode] = '['.implode(",",$vartempresults).']';
 ksort($varresults);
 
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
-
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
+}
 return implode(",",$varresults);
 }
 
