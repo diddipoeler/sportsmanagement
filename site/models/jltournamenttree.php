@@ -316,7 +316,10 @@ elseif ( $key->firstname && !$key->secondname )
 {
 $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, null]';    
 }
-
+elseif ( !$key->firstname && !$key->secondname )
+{
+$varteams[] = '[null,null]';    
+}
 
 
 break;
