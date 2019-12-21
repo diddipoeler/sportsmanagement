@@ -355,19 +355,19 @@ $vartempresults = array();
 
 foreach ( $this->bracket[$round->roundcode] as $key  )
 {
-if ( $key->team1_result && $key->team2_result )    
+if ( $key->team1_result != '' && $key->team2_result != '' )    
 {
 $vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';    
 }    
-elseif ( !$key->team1_result && $key->team2_result )    
+elseif ( $key->team1_result == '' && $key->team2_result )    
 {
 $vartempresults[] = '[null,'.$key->team2_result.']';    
 }    
-elseif ( $key->team1_result && !$key->team2_result )    
+elseif ( $key->team1_result && $key->team2_result == '' )    
 {
 $vartempresults[] = '['.$key->team1_result.',null]';    
 }    
-elseif ( !$key->team1_result && !$key->team2_result )    
+elseif ( $key->team1_result == '' && $key->team2_result == '' )    
 {
 $vartempresults[] = '[null,null]';    
 }        
