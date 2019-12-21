@@ -238,6 +238,7 @@ $temp->projectteam1_id = $match->projectteam1_id;
 $temp->projectteam2_id = $match->projectteam2_id;
 $temp->team1_result = $match->team1_result;
 $temp->team2_result = $match->team2_result;
+$temp->node = $value->node;
 $this->bracket[$match->roundcode][$value->match_id] = $temp;
 }
 else
@@ -248,11 +249,35 @@ $temp->projectteam1_id = 0;
 $temp->projectteam2_id = 0;
 $temp->team1_result = 0;
 $temp->team2_result = 1;
+$temp->node = $value->node;
 $this->bracket[$value->roundcode][$value->match_id] = $temp;    
 } 
     
 }
 
+usort($this->bracket[$minresult], function($a, $b) {return $a->node > $b->node ;});
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'.print_r($this->bracket[$minresult] ,true).'</pre>'  , '');
+
+
+foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  ) 
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectteam1_id  <pre>'.print_r($valuebracket->projectteam1_id ,true).'</pre>'  , '');
+$team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam1_id);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
+$valuebracket->firstname = $team->name;   
+$valuebracket->firstcountry = $team->country;
+$valuebracket->firstlogo = Uri::base().$team->logo_big;    
+$team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam2_id);
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
+$valuebracket->secondname = $team->name;   
+$valuebracket->secondcountry = $team->country;
+$valuebracket->secondlogo = Uri::base().$team->logo_big;    
+
+}
+
+
+
+/*
 foreach ( $this->bracket as $keybracket => $valuebracket  ) 
 {
 foreach ( $valuebracket as $bracket  ) 
@@ -287,6 +312,7 @@ $this->bracket[$keybracket][$bracket->match_id]->secondlogo = Uri::base().$value
 }    
 }
 }
+*/
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result <pre>'.print_r($result ,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket <pre>'.print_r($this->bracket ,true).'</pre>'  , '');
