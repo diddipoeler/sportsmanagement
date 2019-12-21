@@ -7,6 +7,8 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
+ * http://www.aropupu.fi/bracket/
+ * https://github.com/teijo/jquery-bracket
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -261,14 +263,14 @@ foreach ( $result as $key => $value  ) if ( $bracket->match_id == $value->match_
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
 if ( $value->match_id < 0 )
 {
-$this->bracket[$keybracket][$bracket->match_id]->firstname = 'freilos'; 
-$this->bracket[$keybracket][$bracket->match_id]->secondname = 'freilos';
+$this->bracket[$keybracket][$bracket->match_id]->firstname = null; 
+$this->bracket[$keybracket][$bracket->match_id]->secondname = null;
 $this->bracket[$keybracket][$bracket->match_id]->firstlogo = 'freilos'; 
 $this->bracket[$keybracket][$bracket->match_id]->secondlogo = 'freilos';
 $this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
 $this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
-$this->bracket[$keybracket][$bracket->match_id]->team1_result = 0;
-$this->bracket[$keybracket][$bracket->match_id]->team2_result = 1;
+$this->bracket[$keybracket][$bracket->match_id]->team1_result = null;
+$this->bracket[$keybracket][$bracket->match_id]->team2_result = null;
 }
 if ( $value->team_id == $bracket->projectteam1_id )
 {
@@ -314,6 +316,7 @@ break;
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r($varteams ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varteams <pre>'.print_r(implode(",",$varteams) ,true).'</pre>'  , '');
 }
 return implode(",",$varteams);
 
@@ -348,6 +351,7 @@ ksort($varresults);
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r($varresults ,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' varresults <pre>'.print_r(implode(",",$varresults) ,true).'</pre>'  , '');
 }
 return implode(",",$varresults);
 }

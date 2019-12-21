@@ -49,14 +49,17 @@ $this->rounds = $this->model->getTournamentRounds();
             $this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
             $this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
 
-            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.json-2.3.min.js');
-            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.bracket-3.js');
+//            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.json-2.3.min.js');
+//            $this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.bracket-3.js');
+$this->document->addScript(Uri::base() . 'components/' . $this->option . '/assets/js/jquery.bracket.min.js');
 
 // Add customstyles
-            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-3.css' . '" type="text/css" />' . "\n";
-            $this->document->addCustomTag($stylelink);
-            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-site.css' . '" type="text/css" />' . "\n";
-            $this->document->addCustomTag($stylelink);
+//            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-3.css' . '" type="text/css" />' . "\n";
+//            $this->document->addCustomTag($stylelink);
+//            $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket-site.css' . '" type="text/css" />' . "\n";
+//            $this->document->addCustomTag($stylelink);
+$stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket.min.css' . '" type="text/css" />' . "\n";
+$this->document->addCustomTag($stylelink);
         }
 
     }
