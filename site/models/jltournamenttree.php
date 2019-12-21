@@ -256,8 +256,10 @@ $this->bracket[$value->roundcode][$value->match_id] = $temp;
 }
 
 usort($this->bracket[$minresult], function($a, $b) {return $a->node > $b->node ;});
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+{
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'.print_r($this->bracket[$minresult] ,true).'</pre>'  , '');
-
+}
 
 foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  ) 
 {
