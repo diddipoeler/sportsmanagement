@@ -399,14 +399,16 @@ for($i=1; $i < $startcheck; $i++) {
 if (!array_key_exists($i, $matches)) {
 $object = new stdClass();	
 $object->team_id = 0;
+/*
 if ($i % 2 != 0) {
-/** Die Zahl $zahl ist ungerade */
 $object->match_id = ($i - 1) * -1;
 }
 else
 {
 $object->match_id = $i * -1;
 }	
+*/
+$object->match_id = $i * -1;
 $object->team_name = '';		
 $object->roundcode = $nodeproround[$i];
 $object->next_match_id = 0;
