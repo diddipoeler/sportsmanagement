@@ -335,19 +335,19 @@ foreach ( $this->bracket[$keyround->roundcode] as $key  )
 switch ( $this->request['tree_logo'] )
 {
 case 1:
-if ( $key->firstname && $key->secondname )
+if ( $key->firstname != '' && $key->secondname != '' )
 {
 $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';    
 }
-elseif ( !$key->firstname && $key->secondname )
+elseif ( $key->firstname == '' && $key->secondname != '' )
 {
 $varteams[] = '[null, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';    
 }
-elseif ( $key->firstname && !$key->secondname )
+elseif ( $key->firstname != '' && $key->secondname == '' )
 {
 $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, null]';    
 }
-elseif ( !$key->firstname && !$key->secondname )
+elseif ( $key->firstname == '' && $key->secondname == '' )
 {
 $varteams[] = '[null,null]';    
 }
