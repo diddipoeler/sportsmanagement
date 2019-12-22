@@ -263,9 +263,9 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracke
 
 foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  ) 
 {
-$valuebracket->firstname = '-';    
+$valuebracket->firstname = '';    
 $valuebracket->firstlogo = Uri::base().sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-$valuebracket->secondname = '-';
+$valuebracket->secondname = '';
 $valuebracket->secondlogo = Uri::base().sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectteam1_id  <pre>'.print_r($valuebracket->projectteam1_id ,true).'</pre>'  , '');
 $team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam1_id);
