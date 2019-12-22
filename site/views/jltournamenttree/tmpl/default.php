@@ -79,10 +79,10 @@ jQuery(document).ready(function() {
 
 
 <h3>Tournament Tree : <?PHP echo $this->projectname;?></h3>
-<label class="rangePicker">teamWidth: <span>60</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="100" step="1" value="60"/></label>
-  <label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">roundMargin: <span>50</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="50"/></label>
+<label class="rangePicker">teamWidth: <span>100</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="100" step="1" value="100"/></label>
+<label class="rangePicker">scoreWidth: <span>100</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="100"/></label>
+<label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
+<label class="rangePicker">roundMargin: <span>100</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="100"/></label>
 <div id="big">
 
   <script type="text/javascript">
@@ -148,10 +148,10 @@ function edit_fn(container, data, doneCb) {
 <script type="text/javascript">
 // These are modified by the sliders
 var resizeParameters = {
-  teamWidth: 60,
-  scoreWidth: 20,
+  teamWidth: 100,
+  scoreWidth: 100,
   matchMargin: 10,
-  roundMargin: 50,
+  roundMargin: 100,
   init: customData
 };
  
