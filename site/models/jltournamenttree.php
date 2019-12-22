@@ -245,10 +245,10 @@ else
 {
 $temp = new stdClass();
 $temp->match_id = $value->match_id;
-$temp->projectteam1_id = 0;
-$temp->projectteam2_id = 0;
-$temp->team1_result = 0;
-$temp->team2_result = 1;
+$temp->projectteam1_id = '';
+$temp->projectteam2_id = '';
+$temp->team1_result = '';
+$temp->team2_result = '';
 $temp->node = $value->node;
 $this->bracket[$value->roundcode][$value->match_id] = $temp;    
 } 
