@@ -79,8 +79,8 @@ jQuery(document).ready(function() {
 
 
 <h3>Tournament Tree : <?PHP echo $this->projectname;?></h3>
-<label class="rangePicker">teamWidth: <span>100</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="300" step="1" value="200"/></label>
-<label class="rangePicker">scoreWidth: <span>100</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
+<label class="rangePicker">teamWidth: <span>200</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="300" step="1" value="200"/></label>
+<label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
 <label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
 <label class="rangePicker">roundMargin: <span>100</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="300" step="1" value="100"/></label>
 <div id="big">
