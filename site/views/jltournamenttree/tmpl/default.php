@@ -84,19 +84,6 @@ jQuery(document).ready(function() {
 
   <script type="text/javascript">
   
-  
-// These are modified by the sliders
-var resizeParameters = {
-  teamWidth: 60,
-  scoreWidth: 20,
-  matchMargin: 10,
-  roundMargin: 50,
-  init: minimalData
-};
- 
-function updateResizeDemo() {
-  jQuery('#resize .demo').bracket(resizeParameters);
-}
   var customRounds = {
       roundsheader : [ 
       <?PHP echo $this->bracket_rounds;
@@ -150,6 +137,18 @@ function edit_fn(container, data, doneCb) {
 </div>
 
 <script type="text/javascript">
+// These are modified by the sliders
+var resizeParameters = {
+  teamWidth: 60,
+  scoreWidth: 20,
+  matchMargin: 10,
+  roundMargin: 50,
+  init: customData
+};
+ 
+function updateResizeDemo() {
+  jQuery('#resize .demo').bracket(resizeParameters);
+}
 
 jQuery(document).ready(function() {
     var big = jQuery('#big div.demo')
