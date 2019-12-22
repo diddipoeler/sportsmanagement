@@ -184,9 +184,9 @@ function edit_fn(container, data, doneCb) {
 <script type="text/javascript">
 // These are modified by the sliders
 var resizeParameters = {
-  teamWidth: 100,
-  scoreWidth: 100,
-  matchMargin: 10,
+  teamWidth: 200,
+  scoreWidth: 40,
+  matchMargin: 40,
   roundMargin: 100,
   init: customData
 };
