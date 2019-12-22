@@ -334,7 +334,7 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracke
 }
 /** jetzt die teams und ergebnisse zusammenstellen */
 $varteams = array();
-$this->request['tree_logo'] = 1;
+$this->request['tree_logo'] = 3;
 
 foreach ( $rounds as $keyround ) if ( $keyround->roundcode == $minresult )
 {    
@@ -360,11 +360,28 @@ elseif ( $key->firstname == '' && $key->secondname == '' )
 {
 $varteams[] = '[null,null]';    
 }
-
-
 break;
 case 2:
 $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+break;
+
+case 3:
+if ( $key->firstname != '' && $key->secondname != '' )
+{
+$varteams[] = '["'.$key->firstname.'", "'.$key->secondname.'"]';    
+}
+elseif ( $key->firstname == '' && $key->secondname != '' )
+{
+$varteams[] = '[null, "'.$key->secondname.'"]';    
+}
+elseif ( $key->firstname != '' && $key->secondname == '' )
+{
+$varteams[] = '["'.$key->firstname.'", null]';    
+}
+elseif ( $key->firstname == '' && $key->secondname == '' )
+{
+$varteams[] = '[null,null]';    
+}
 break;
 }
 }
