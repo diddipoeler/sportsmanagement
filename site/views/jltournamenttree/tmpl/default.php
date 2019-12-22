@@ -117,6 +117,10 @@ jQuery(document).ready(function() {
  * - entry-complete: Data and score available
  */
 function render_fn(container, data, score, state) {
+    
+console.log('state : ' + state );
+console.log('name : ' + data.name );
+console.log('flag : ' + data.flag );    
   switch(state) {
     case "empty-bye":
       container.append("No team")
@@ -128,7 +132,7 @@ function render_fn(container, data, score, state) {
     case "entry-no-score":
     case "entry-default-win":
     case "entry-complete":
-      //container.append('<img src="site/png/'+data.flag+'.png" /> ').append(data.name)
+      container.append('<img src="'+data.flag+'" /> ').append(data.name)
       return;
   }
 }
