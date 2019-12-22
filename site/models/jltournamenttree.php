@@ -263,18 +263,27 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracke
 
 foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  ) 
 {
+$valuebracket->firstname = '-';    
+$valuebracket->firstlogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+$valuebracket->secondname = '-';
+$valuebracket->secondlogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectteam1_id  <pre>'.print_r($valuebracket->projectteam1_id ,true).'</pre>'  , '');
 $team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam1_id);
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
+if ( $team )
+{
 $valuebracket->firstname = $team->name;   
 $valuebracket->firstcountry = $team->country;
-$valuebracket->firstlogo = Uri::base().$team->logo_big;    
+$valuebracket->firstlogo = Uri::base().$team->logo_big;
+}    
 $team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam2_id);
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
+if ( $team )
+{
 $valuebracket->secondname = $team->name;   
 $valuebracket->secondcountry = $team->country;
 $valuebracket->secondlogo = Uri::base().$team->logo_big;    
-
+}
 }
 
 
