@@ -184,11 +184,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
             </a>
-
+<!--
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default">
                 <img src="components/com_sportsmanagement/assets/icons/xmleditor.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?>" /><br />
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?></span>
-            </a>
+            </a> -->
 
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=smimageimports&layout=default">
                 <img src="components/com_sportsmanagement/assets/icons/imageimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_IMAGE_IMPORT') ?>" /><br />

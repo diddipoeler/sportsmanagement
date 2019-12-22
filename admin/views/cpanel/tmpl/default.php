@@ -152,9 +152,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </div>          
           </div>          
           <div class="icon-wrapper">            
-            <div id="icon">              
+           <!-- <div id="icon">              
               <?php echo $this->addIcon('xmleditor.png','index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR'));?>            
-            </div>          
+            </div>    -->      
           </div> 
           
           <div class="icon-wrapper">            
