@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjltournamenttree
@@ -60,6 +61,12 @@ $this->document->addScript(Uri::base() . 'components/' . $this->option . '/asset
 //            $this->document->addCustomTag($stylelink);
 $stylelink = '<link rel="stylesheet" href="' . Uri::base() . 'components/' . $this->option . '/assets/css/jquery.bracket.min.css' . '" type="text/css" />' . "\n";
 $this->document->addCustomTag($stylelink);
+
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' config <pre>'.print_r($this->config ,true).'</pre>'  , '');
+}
+
         }
 
     }
