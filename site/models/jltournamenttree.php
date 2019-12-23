@@ -368,15 +368,15 @@ break;
 case 3:
 if ( $key->firstname != '' && $key->secondname != '' )
 {
-$varteams[] = '["'.$key->firstname.'", "'.$key->secondname.'"]';    
+$varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';    
 }
 elseif ( $key->firstname == '' && $key->secondname != '' )
 {
-$varteams[] = '[null, "'.$key->secondname.'"]';    
+$varteams[] = '[null, "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';    
 }
 elseif ( $key->firstname != '' && $key->secondname == '' )
 {
-$varteams[] = '["'.$key->firstname.'", null]';    
+$varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", null]';    
 }
 elseif ( $key->firstname == '' && $key->secondname == '' )
 {
