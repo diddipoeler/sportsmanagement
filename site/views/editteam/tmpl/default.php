@@ -15,10 +15,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-// Load the tooltip behavior.
-HTMLHelper::_('behavior.tooltip');
-HTMLHelper::_('behavior.formvalidation');
-
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 

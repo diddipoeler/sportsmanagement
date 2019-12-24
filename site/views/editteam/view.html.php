@@ -24,7 +24,6 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewEditteam extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewEditClub::init()
@@ -33,19 +32,14 @@ class sportsmanagementViewEditteam extends sportsmanagementView
 	 */
 	function init()
 	{
-	
 $this->item = $this->model->getData();
 		$lists = array();
-
 		$this->form = $this->get('Form');	
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
 		$this->extended = $extended;
         $this->lists = $lists;
-
         $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
-	
 	}
-
 	
 }
 ?>

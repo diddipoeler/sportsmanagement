@@ -32,16 +32,16 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewEditMatch extends HtmlView 
+class sportsmanagementViewEditMatch extends sportsmanagementView 
 {
 
+
     /**
-     * sportsmanagementViewEditMatch::display()
+     * sportsmanagementViewEditMatch::init()
      * 
-     * @param mixed $tpl
      * @return void
      */
-    function display($tpl = null) {
+    function init() {
 
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -104,7 +104,7 @@ class sportsmanagementViewEditMatch extends HtmlView
                 break;
         }
 
-        parent::display($tpl);
+        //parent::display($tpl);
     }
 
     /**
