@@ -23,7 +23,7 @@
 				name="cancel"
 				type="extensionradiobutton"
 				default="0"
-        class="btn btn-primary"
+        class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL_DESC">
 			<option value="0">JNO</option>
