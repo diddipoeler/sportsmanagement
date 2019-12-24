@@ -349,10 +349,24 @@ function getTotal() {
 					}
 				}
                 $this->jsmquery->clear();
-                $this->jsmquery->select('c.id');
-                $this->jsmquery->from('#__content as c');
-                $this->jsmquery->where('xreference = '. $match->id );
-                $this->jsmquery->where('catid = '. $cat_id );
+                /** welche joomla version ? */
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$this->jsmquery->select('c.id');
+$this->jsmquery->from('#__content as c');
+$this->jsmquery->join('INNER','#__fields_values AS fv ON fv.item_id = c.id ');
+$this->jsmquery->join('INNER','#__fields AS f ON f.id = fv.field_id ');
+$this->jsmquery->where("f.title LIKE 'xreference' ");
+$this->jsmquery->where('fv.value = '. $match->id );
+$this->jsmquery->where('c.catid = '. $cat_id );
+}
+elseif(version_compare(substr(JVERSION, 0, 3),'3.0','ge')) 
+{
+$this->jsmquery->select('c.id');
+$this->jsmquery->from('#__content as c');
+$this->jsmquery->where('c.xreference = '. $match->id );
+$this->jsmquery->where('c.catid = '. $cat_id );
+}
 				try{
                 $this->jsmdb->setQuery($this->jsmquery); 
                 $this->_data[$k]->content_id = $this->jsmdb->loadResult();
@@ -484,9 +498,7 @@ if ( $project )
         $query->where('r.id = '.(int)$round);    
         }
         
-        // from 
 	$query->from('#__sportsmanagement_match AS m');
-        // join
         $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
         $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
@@ -501,7 +513,6 @@ if ( $project )
         $query->join('LEFT','#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
         $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 		
-        // where
 	if ( $team )
 	{
 	$query->where('(st1.team_id = '.$team . ' OR st2.team_id = '.$team.')' );	
@@ -510,10 +521,8 @@ if ( $project )
         $query->where('r.project_id = '.(int)$project->id);
         if(version_compare(JSM_JVERSION,'3','eq')) 
         {
-        // group
         $query->group('m.id ');
         }
-        // order
         $query->order('m.match_date ASC,m.match_number');    
 
 		if ( $division>0 )
