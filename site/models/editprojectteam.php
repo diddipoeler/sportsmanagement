@@ -18,15 +18,28 @@ use Joomla\CMS\Log\Log;
 
 JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
 
+/**
+ * sportsmanagementModelEditprojectteam
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEditprojectteam extends AdminModel
 {
   
-  /* interfaces */
+  /** interfaces */
 	var $latitude	= null;
 	var $longitude	= null;
-	
-	
     
+    /**
+     * sportsmanagementModelEditprojectteam::updItem()
+     * 
+     * @param mixed $data
+     * @return void
+     */
     function updItem($data)
     {
         $app = Factory::getApplication();
@@ -35,14 +48,10 @@ class sportsmanagementModelEditprojectteam extends AdminModel
         {
             $data[$key] = $value;
         }
-        
-        // Specify which columns are to be ignored. This can be a string or an array.
-        //$ignore = 'id';
+        /** Specify which columns are to be ignored. This can be a string or an array. */
         $ignore = '';
 		try{
-        // Get the table object from the model.
         $table = $this->getTable( 'projectteam' );
-        // Bind the array to the table object.
         $table->bind( $data, $ignore );
         $table->store();
         }
@@ -56,13 +65,17 @@ class sportsmanagementModelEditprojectteam extends AdminModel
     
     
     
+	/**
+	 * sportsmanagementModelEditprojectteam::getData()
+	 * 
+	 * @return
+	 */
 	function getData()
 	{
-	   $this->_id = Factory::getApplication()->input->getInt('ptid',0);
-
+    $this->_id = Factory::getApplication()->input->getInt('ptid',0);
     $this->_data = $this->getTable( 'projectteam', 'sportsmanagementTable' );
-			$this->_data->load( $this->_id );
-			return $this->_data;
+	$this->_data->load( $this->_id );
+	return $this->_data;
 	}
 
 

@@ -767,34 +767,32 @@ catch (Exception $e)
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getTeaminfo()
 	 * 
-	 * @param mixed $projectteamid
+	 * @param integer $projectteamid
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	public static function getTeaminfo($projectteamid,$cfg_which_database = 0)
+	public static function getTeaminfo($projectteamid=0,$cfg_which_database = 0)
 	{
 	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
         if ( $projectteamid )
         {
-        // Select some fields
         $query->select('t.*,t.id as team_id,t.picture,t.picture as team_picture,t.extended as teamextended ');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('pt.division_id,pt.picture AS projectteam_picture');
         $query->select('c.logo_small,c.logo_middle,c.logo_big,c.country');
-        // From 
 	$query->from('#__sportsmanagement_project_team AS pt ');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
         $query->join('INNER','#__sportsmanagement_club AS c ON t.club_id = c.id  ');
-        // Where
         $query->where('pt.id = '. (int)$projectteamid );
          
 	$db->setQuery($query);
