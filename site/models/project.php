@@ -1162,7 +1162,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	$checktemplate = FALSE;
 		switch ( $view )
 		{
-			case 'editprojectteam':
+			case 'editmatch':
+            case 'editprojectteam':
 			case 'editteam':
 			case 'editperson':
 			case 'editclub':
