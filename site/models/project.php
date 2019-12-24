@@ -1207,6 +1207,7 @@ $starttime = microtime();
 
                 $starttime = microtime(); 
 				$db->setQuery($query);
+                $result = $db->loadResult();
 
 				if ( !$result )
 				{
