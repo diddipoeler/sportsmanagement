@@ -56,13 +56,9 @@ static $oldlayout = '';
      */
     function __construct()
 	{
-		 // Reference global application object
         $app = Factory::getApplication();
-        // JInput object
         $jinput = $app->input;
-        
         parent::__construct();
-
 		self::$divisionid = $jinput->getVar('division','0');
 		self::$mode = $jinput->getVar('mode','0');
 		self::$order = $jinput->getVar('order','0');
@@ -71,9 +67,14 @@ static $oldlayout = '';
         self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
         self::$roundid = $jinput->getVar('r','0');
         self::$seasonid = $jinput->getVar('s','0');
-        
     }    
     
+/**
+ * sportsmanagementModelEditMatch::savestats()
+ * 
+ * @param mixed $data
+ * @return void
+ */
 function savestats($data)
 {
 $result = sportsmanagementModelMatch::savestats($data);	
@@ -91,7 +92,6 @@ function updateReferees($data)
 		$app = Factory::getApplication();
         $config = Factory::getConfig();
         $option = Factory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
@@ -121,11 +121,6 @@ $result = sportsmanagementModelMatch::updateStaff($data);
 return $result;
 }
 
-
-
-
-
-	
 /**
  * sportsmanagementModelEditMatch::updateRoster()
  * 
@@ -155,13 +150,10 @@ return $result;
             $data[$key] = $value;
         }
         
-        // Specify which columns are to be ignored. This can be a string or an array.
-        //$ignore = 'id';
+        /** Specify which columns are to be ignored. This can be a string or an array. */
         $ignore = '';
 		try{
-        // Get the table object from the model.
         $table = $this->getTable( 'match' );
-        // Bind the array to the table object.
         $table->bind( $data, $ignore );
         $table->store();
         }
@@ -170,9 +162,7 @@ return $result;
         Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
 		Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
         }
-       
     }
-    
     
     /**
 	 * Method to load content person data
@@ -183,11 +173,8 @@ return $result;
 	 */
 	function getData()
 	{
-	   // Reference global application object
         $app = Factory::getApplication();
-        // JInput object
         $jinput = $app->input;
-        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $jinput->getInt('cfg_which_database',0) );
         $query = $db->getQuery(true);
        
@@ -196,7 +183,6 @@ return $result;
         $query->select('m.*');
         $query->select('t1.name as hometeam ');
         $query->select('t2.name as awayteam ');
-        
         $query->from('#__sportsmanagement_match AS m');
         $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
@@ -204,19 +190,14 @@ return $result;
         $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
         $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
-        
         $query->where('m.id = '.(int)$this->_id);
         $db->setQuery($query);
         
         
-//        	$query='SELECT * FROM #__sportsmanagement_match WHERE id = '.(int) $this->_id;
-//			$this->_db->setQuery($query);
 			$this->_data = $db->loadObject();
             
             
 			return $this->_data;
-//		}
-//		return true;
 	}
 
 
@@ -246,13 +227,11 @@ return $result;
 	{
 		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
         $app = Factory::getApplication('site');
-        // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
 		if (empty($form))
 		{
 			return false;
 		}
-       
 		return $form;
 	}
 	
@@ -264,7 +243,6 @@ return $result;
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{

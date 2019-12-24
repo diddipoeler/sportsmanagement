@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 jimport('joomla.html.pane');
-HTMLHelper::_('behavior.tooltip');
+//HTMLHelper::_('behavior.tooltip');
 //HTMLHelper::_('behavior.formvalidation');
 
 // Get the form fieldsets.
