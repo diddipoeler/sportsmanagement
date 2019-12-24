@@ -1191,9 +1191,10 @@ $query->where('p.id = '.(int)self::$projectid);
 
 $starttime = microtime(); 
 		$db->setQuery($query);
+        $result = $db->loadResult();
       if ( $checktemplate )
       {
-		if (! $result = $db->loadResult() )
+		if ( !$result )
 		{
 			$project = self::getProject($cfg_which_database,__METHOD__);
            
@@ -1209,7 +1210,7 @@ $starttime = microtime();
                 $starttime = microtime(); 
 				$db->setQuery($query);
 
-				if (! $result = $db->loadResult())
+				if ( !$result )
 				{
 					Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template, Log::WARNING, 'jsmerror');
 					Log::add(Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template, Log::WARNING, 'jsmerror');
@@ -1219,7 +1220,7 @@ $starttime = microtime();
 			}
 			else
 			{
-				//there are no saved settings found, use the standard xml file default values
+				/** there are no saved settings found, use the standard xml file default values */
 				return $arrStandardSettings;
 			}
 		}
@@ -1236,7 +1237,7 @@ $starttime = microtime();
 
 		$configvalues = $jRegistry->toArray(); 
 
-		//merge and overwrite standard settings with individual view settings
+		/** merge and overwrite standard settings with individual view settings */
 		$settings = array_merge($arrStandardSettings,$configvalues);
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $settings;
