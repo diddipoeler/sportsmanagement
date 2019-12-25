@@ -47,78 +47,103 @@
 				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
 		</field>
 
-    <field
-			name="overview"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
-		</field>
-
-
-
-
-      
-      			
-
+<field
+name="overview"
+type="extensionradiobutton"
+class="radio btn-group btn-group-yesno"
+default="1"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW_DESC">
+<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON</option>
+<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON</option>
+</field>
 
 <!-- punkte  -->
 <field 
-			name="points_tipp" 
-			type="text" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_DESC"
-      />
-
-
-<field 
-			name="points_correct_result" 
-			type="text" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_DESC"
-      />
+name="points_tipp" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_DESC"
+/>
 
 <field 
-			name="points_correct_diff" 
-			type="text" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_DESC"
-      />
+name="points_correct_result" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_DESC"
+/>
 
 <field 
-			name="points_correct_draw" 
-			type="text" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_DESC"
-      />
+name="points_correct_diff" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_DESC"
+/>
 
 <field 
-			name="points_correct_tendence" 
-			type="text" 
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
-      />
+name="points_correct_draw" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_DESC"
+/>
 
+<field 
+name="points_correct_tendence" 
+type="text" 
+default="0"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
+/>
+
+<field
+name="use_cards"
+type="extensionradiobutton"
+class="radio btn-group btn-group-yesno"
+default="0"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS_DESC">
+<option	value="1">JYES</option>
+<option	value="0">JNO</option>
+</field>
+
+
+<field
+name="use_penalties"
+type="extensionradiobutton"
+class="radio btn-group btn-group-yesno"
+default="0"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES_DESC">
+<option	value="1">JYES</option>
+<option	value="0">JNO</option>
+</field>
+
+
+<field
+name="use_goals"
+type="extensionradiobutton"
+class="radio btn-group btn-group-yesno"
+default="0"
+size="1"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS_DESC">
+<option	value="1">JYES</option>
+<option	value="0">JNO</option>
+</field>
                                                                 		
-	</fieldset>
+</fieldset>
   
-	<fieldset name="help"
-    label="COM_SPORTSMANAGEMENT_TABS_HELP"
-  description="COM_SPORTSMANAGEMENT_TABS_HELP_DESC">  
-  </fieldset>
+<fieldset name="help"
+label="COM_SPORTSMANAGEMENT_TABS_HELP"
+description="COM_SPORTSMANAGEMENT_TABS_HELP_DESC">  
+</fieldset>
 
 <fieldset name="predchamp"
 label="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP"
