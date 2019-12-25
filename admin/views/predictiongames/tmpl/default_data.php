@@ -226,6 +226,11 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER' ); ?></th>
 						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP' ); ?></th>
 						<th class='title'><?php echo Text::_( 'JSTATUS' ); ?></th>
+                        
+                        <th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' ); ?></th>
+                        <th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES' ); ?></th>
+                        <th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' ); ?></th>
+                        
 						<th class='title'><?php echo Text::_( 'JGRID_HEADING_ID' ); ?></th>
 					</tr>
 				</thead>
@@ -335,6 +340,13 @@ else
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?>
 							</td>
+                            <td style="">
+                            </td>
+                            <td style="">
+                            </td>
+                            <td style="">
+                            </td>
+                            
 							<td style='text-align:center; ' nowrap='nowrap'><?php echo $pred_project['project_id']; ?></td>
 </tr>
 						<?php
