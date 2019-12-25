@@ -111,7 +111,30 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
-
+<field 
+name="points_correct_yellow_cards" 
+showon="use_cards:1"        
+type="text" 
+default="6"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS_DESC"
+/>  
+<field 
+name="points_correct_yellow_red_cards" 
+showon="use_cards:1"        
+type="text" 
+default="6"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS_DESC"
+/>
+<field 
+name="points_correct_red_cards" 
+showon="use_cards:1"        
+type="text" 
+default="6"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS_DESC"
+/>
 
 <field
 name="use_penalties"
