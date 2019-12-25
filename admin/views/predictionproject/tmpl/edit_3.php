@@ -124,32 +124,7 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fields
 switch ($fieldset->name)
 {
     case 'details':
-    ?>
-    <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-    <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
-    {
-        ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php
-
-    }
-    ?>
-    </div>
-				</div>
-			</div>
-            </div>
-    <?PHP
+    echo $this->form->renderFieldset('details');
     break;
 case 'predchamp':
 echo $this->form->renderFieldset('predchamp');		

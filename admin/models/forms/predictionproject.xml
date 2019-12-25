@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-    label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
+	
+<fieldset name="details"
+label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+<field
+name="id" 
+type="number" 
+label="JGLOBAL_FIELD_ID_LABEL"
+description="JGLOBAL_FIELD_ID_DESC" 
+class="readonly" 
+size="11" 
+default="0"
+readonly="true"
+/>
 	
 	<field
 			name="published"
@@ -147,7 +148,14 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
-
+<field 
+name="points_correct_penalties" 
+showon="use_penalties:1"        
+type="text" 
+default="6"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES_DESC"
+/>
 
 <field
 name="use_goals"
@@ -160,6 +168,14 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
+<field 
+name="points_correct_goals" 
+showon="use_goals:1"        
+type="text" 
+default="6"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
+/>
                                                                 		
 </fieldset>
   
