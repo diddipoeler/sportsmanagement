@@ -292,7 +292,7 @@ else
 								}
 								?></td>
 							<td style='text-align:center; '><?php
-								if ( $pred_project['joker'] == '1' )
+								if ( $pred_project['joker'] )
 								{
 									if ($pred_project['joker_limit']==0)
 										{
@@ -307,34 +307,34 @@ else
 								}
 								else
 								{
-									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_JOKER' );
+									$imageTitle = Text::_( 'JDISABLED' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
 								echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?></td>
 							<td style='text-align:center; '><?php
-								if ( $pred_project['champ'] == '1' )
+								if ( $pred_project['champ'] )
 								{
-									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PICK_CHAMP' );
+									$imageTitle = Text::_( 'JENABLED' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 								}
 								else
 								{
-									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PICK_CHAMP' );
+									$imageTitle = Text::_( 'JDISABLED' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
 								echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?></td>
 							<td style='text-align:center; ' >
 								<?php
-									if ( $pred_project['published'] == '1' )
+									if ( $pred_project['published'] )
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
+										$imageTitle = Text::_( 'JENABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
+										$imageTitle = Text::_( 'JDISABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
@@ -344,12 +344,12 @@ else
                             <td style=""><?php
 									if ( $pred_project['use_cards'] )
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' );
+										$imageTitle = Text::_( 'JENABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' );
+										$imageTitle = Text::_( 'JDISABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
@@ -360,12 +360,12 @@ else
                             <?php
 									if ( $pred_project['use_penalties'] )
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES' );
+										$imageTitle = Text::_( 'JENABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES' );
+										$imageTitle = Text::_( 'JDISABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
@@ -375,12 +375,12 @@ else
                             <?php
 									if ( $pred_project['use_goals'] )
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' );
+										$imageTitle = Text::_( 'JENABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' );
+										$imageTitle = Text::_( 'JDISABLED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
