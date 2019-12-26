@@ -207,7 +207,7 @@ $my_text .= '<br />';
 
 $this->_success_text['Komponente:'] = $my_text;
 
-$install_modules = Folder::folders($p_dir_modules , $filter = 'mod_sportsmanagement');
+$install_modules = Folder::folders($p_dir_modules , $filter = 'mod_sportsmanagement*');
 
 $my_text = '';
 
