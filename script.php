@@ -454,7 +454,8 @@ foreach($form->getFieldset() as $field)
     //self::installJoomlaExtensions($adapter);
     echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    self::setParams($newparams);    
+    self::setParams($newparams);   
+    self::deleteinstallfiles(); 
     break;
     case "update":
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
@@ -472,6 +473,7 @@ foreach($form->getFieldset() as $field)
     echo HTMLHelper::_('bootstrap.'.$this->endPanel);
     
     self::setParams($newparams);
+    self::deleteinstallfiles();
     break;
     case "discover_install":
     break;
@@ -480,7 +482,19 @@ foreach($form->getFieldset() as $field)
     echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
     }
     
-    /** dateien löschen */
+    
+    
+	}
+
+
+/**
+ * com_sportsmanagementInstallerScript::deleteinstallfiles()
+ * 
+ * @return void
+ */
+public function deleteinstallfiles()
+{
+/** dateien löschen */
     $file = '/tmp/master.zip';
     if (File::exists(JPATH_ROOT.$file) )
     {
@@ -490,9 +504,9 @@ foreach($form->getFieldset() as $field)
     if(Folder::exists(JPATH_ROOT.$folder))
 	{
 	Folder::delete(JPATH_ROOT.$folder);	  
-    }
+    }    
     
-	}
+}
 
     /**
      * com_sportsmanagementInstallerScript::createImagesFolder()
@@ -503,8 +517,6 @@ foreach($form->getFieldset() as $field)
 	{
 		$mainframe = Factory::getApplication();
   $db = Factory::getDBO();
-  
-        //echo Text::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = Folder::exists($dest);
 		$folders = array('agegroups',
