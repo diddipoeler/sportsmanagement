@@ -9,7 +9,6 @@
  * @subpackage githubinstall
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Component\ComponentHelper;
@@ -34,16 +33,12 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        $github_link = ComponentHelper::getParams($this->option)->get('cfg_update_server_file','');
-        $this->github_link = $github_link;
-       $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Github-Link - '.$this->github_link.''),'Notice');
-        $this->_success_text = $this->model->CopyGithubLink($github_link);
-
-		// Set the document
-		$this->setDocument();
+    $github_link = ComponentHelper::getParams($this->option)->get('cfg_update_server_file','');
+    $this->github_link = $github_link;
+    $this->_success_text = $this->model->CopyGithubLink($github_link);
+    $this->setDocument();
 	}
- 
-	
+ 	
 	/**
 	 * Method to set up the document properties
 	 *
