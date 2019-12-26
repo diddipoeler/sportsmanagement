@@ -146,22 +146,28 @@ $this->_success_text['Komponente:'] = $my_text;
 
 
 $extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
-$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
+//$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
+$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];    
 try {
-	$result = JArchive::extract($dest,$extractdir);
-	} catch (Exception $e) {
-                $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-                $result = false;
-            }
+$result = JArchive::extract($dest,$extractdir);
+} catch (Exception $e) {
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+$result = false;
+}
 }
 elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 {	
-
+$dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-'.$file['name'];
 $archive = new Archive;
+try {
 $result = $archive->extract($dest, $extractdir);
+} catch (Exception $e) {
+$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+$result = false;
+}
 }	
 	
 /** Get an installer instance */
