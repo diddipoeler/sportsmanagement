@@ -192,20 +192,17 @@ $package['type'] = $type;
 /** Install the package */
 
 if (!$installer->install($package['dir']))
-    {
-			
-        $my_text .= '<span style="color:'.$this->storeFailedColor.'">';
-		$my_text .= Text::sprintf('Die Komponente [ %1$s ] konnte nicht installiert werden!', "</span><strong>".strtoupper($package['type'])."</strong>");
-		$my_text .= '<br />';
-			
-	}
+{
+$my_text .= '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die Komponente [ %1$s ] konnte nicht installiert werden!', "</span><strong>".strtoupper($package['type'])."</strong>");
+$my_text .= '<br />';
+}
 else
-    {
-		$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-		$my_text .= Text::sprintf('Die Komponente [ %1$s ] wurde installiert!', "</span><strong>".strtoupper($package['type'])."</strong>");
-		$my_text .= '<br />';
-            
-	}
+{
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Die Komponente [ %1$s ] wurde installiert!', "</span><strong>".strtoupper($package['type'])."</strong>");
+$my_text .= '<br />';
+}
 
 $this->_success_text['Komponente:'] = $my_text;
 
@@ -213,12 +210,11 @@ $install_modules = Folder::folders($p_dir_modules , $filter = '.');
 
 $my_text = '';
 
-foreach( $install_modules as $key => $value)
+foreach( $install_modules as $key => $value) if ( $install_modules )
 {
-    $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-    $my_text .= Text::sprintf('Das Modul [ %1$s ] wurde installiert!', "</span><strong>".strtoupper($value)."</strong>");
-    $my_text .= '<br />';
-    
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Das Modul [ %1$s ] wurde installiert!', "</span><strong>".strtoupper($value)."</strong>");
+$my_text .= '<br />';
 }
 $this->_success_text['Module:'] = $my_text;
 
