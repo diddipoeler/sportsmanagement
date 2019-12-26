@@ -340,11 +340,51 @@ else
 									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?>
 							</td>
-                            <td style="">
+
+                            <td style=""><?php
+									if ( $pred_project['use_cards'] )
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+									}
+									else
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+									}
+									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								?>
+                                
                             </td>
                             <td style="">
+                            <?php
+									if ( $pred_project['use_penalties'] )
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+									}
+									else
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+									}
+									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								?>
                             </td>
                             <td style="">
+                            <?php
+									if ( $pred_project['use_goals'] )
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+									}
+									else
+									{
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+									}
+									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								?>
                             </td>
                             
 							<td style='text-align:center; ' nowrap='nowrap'><?php echo $pred_project['project_id']; ?></td>
