@@ -477,10 +477,21 @@ foreach($form->getFieldset() as $field)
     break;
         
     }
-            
-            
-            echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
-            }
+    echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
+    }
+    
+    /** dateien löschen */
+    $file = '/tmp/master.zip';
+    if (File::exists(JPATH_ROOT.$file) )
+    {
+	File::delete(JPATH_ROOT.$file);
+	}
+    $folder = '/tmp/sportsmanagement-master';
+    if(Folder::exists(JPATH_ROOT.$folder))
+	{
+	Folder::delete(JPATH_ROOT.$folder);	  
+    }
+    
 	}
 
     /**
