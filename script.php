@@ -500,6 +500,11 @@ public function deleteinstallfiles()
     {
 	File::delete(JPATH_ROOT.$file);
 	}
+    $file = '/tmp/sportsmanagement-master.zip';
+    if (File::exists(JPATH_ROOT.$file) )
+    {
+	File::delete(JPATH_ROOT.$file);
+	}
     $folder = '/tmp/sportsmanagement-master';
     if(Folder::exists(JPATH_ROOT.$folder))
 	{
