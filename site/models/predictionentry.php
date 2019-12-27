@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelPredictionEntry
@@ -370,7 +371,10 @@ try{
     $result	= true;
 
 		$post = $jinput->post->getArray();
-
+if ( ComponentHelper::getParams($option)->get('show_debug_info_frontend') )
+{
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <pre>'.print_r($post ,true).'</pre>'  , '');    
+}
 		//$pids = Factory::getApplication()->input->getVar('pids',array(),'post','array');
         $pids = $jinput->getVar('pids', null, 'post', 'array');
 		ArrayHelper::toInteger($pids);
