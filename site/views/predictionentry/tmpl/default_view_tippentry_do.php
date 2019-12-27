@@ -178,8 +178,18 @@ if ( $predictionProject->use_cards )
 {
 ?>
 <td>
-<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS' ); ?>
-<input type="text" id="cards_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="cards[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
+<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_YELLOW_CARDS' ); ?>
+<input type="text" id="yellowcards_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="yellowcards[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
+value="<?php echo 0; ?>" />
+</td>
+<td>
+<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_YELLOW_RED_CARDS' ); ?>
+<input type="text" id="yellowredcards_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="yellowredcards[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
+value="<?php echo 0; ?>" />
+</td>
+<td>
+<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_RED_CARDS' ); ?>
+<input type="text" id="redcards_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="redcards[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
 value="<?php echo 0; ?>" />
 </td>
 <?php        
