@@ -375,7 +375,7 @@ if ( ComponentHelper::getParams($option)->get('show_debug_info_frontend') )
 {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <pre>'.print_r($post ,true).'</pre>'  , '');    
 }
-		//$pids = Factory::getApplication()->input->getVar('pids',array(),'post','array');
+		
         $pids = $jinput->getVar('pids', null, 'post', 'array');
 		ArrayHelper::toInteger($pids);
 
@@ -385,6 +385,13 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <
 		$aways = $jinput->getVar('aways',array(),'post','array');
 		$tipps = $jinput->getVar('tipps',array(),'post','array');
 		$jokers	= $jinput->getVar('jokers',array(),'post','array');
+        
+        $goals	= $jinput->getVar('goals',array(),'post','array');
+        $penalties	= $jinput->getVar('penalties',array(),'post','array');
+        $yellowcards	= $jinput->getVar('yellowcards',array(),'post','array');
+        $yellowredcards	= $jinput->getVar('yellowredcards',array(),'post','array');
+        $redcards = $jinput->getVar('redcards',array(),'post','array');
+        
 		$mID = $jinput->get('memberID',0,'int');
 		$ptippmode = $jinput->getVar('ptippmode',array(),'post','array');
     $RoundID = $jinput->get('r',0,'int');
