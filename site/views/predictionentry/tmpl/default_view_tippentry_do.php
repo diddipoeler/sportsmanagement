@@ -155,8 +155,11 @@ function chkFormular()
 if ( $predictionProject->use_goals )
 {
 ?>
-<input type="text" id="goals_<?php echo sportsmanagementModelPrediction::$roundID; ?>" name="goals[<?php echo $predictionProject->project_id; ?>][<?php echo sportsmanagementModelPrediction::$roundID; ?>]"
-value="<?php echo 0; ?>" >
+<td>
+<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS' ); ?>
+<input type="text" id="goals_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="goals[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
+value="<?php echo 0; ?>" />
+</td>
 <?php        
 }
 ?>
