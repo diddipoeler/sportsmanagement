@@ -416,7 +416,8 @@ try{
 $resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result_round', $temp);
 }
 catch (Exception $e) {
-// catch any database errors.
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 }
 
 
