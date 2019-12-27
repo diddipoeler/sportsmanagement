@@ -403,9 +403,9 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <
 $temp = new stdClass();
 $temp->goals = $post['goals'][$ProjectID][$RoundID];
 $temp->penalties = $post['penalties'][$ProjectID][$RoundID];
-$temp->yellowcards = $post['yellowcards'][$ProjectID][$RoundID];
-$temp->yellowredcards = $post['yellowredcards'][$ProjectID][$RoundID];
-$temp->redcards = $post['redcards'][$ProjectID][$RoundID];
+$temp->yellow_cards = $post['yellowcards'][$ProjectID][$RoundID];
+$temp->yellow_red_cards = $post['yellowredcards'][$ProjectID][$RoundID];
+$temp->red_cards = $post['redcards'][$ProjectID][$RoundID];
 $temp->prediction_id = $predictionGameID;
 $temp->user_id = $joomlaUserID;
 $temp->project_id = $ProjectID;
