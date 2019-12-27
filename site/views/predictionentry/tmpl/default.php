@@ -10,12 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
 <div class="row-fluid">
 <?php
@@ -47,7 +43,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo $this->model->createHelptText($predictionProject->mode);
                 }
                 echo $this->loadTemplate('view_tippentry_do');
-                //echo $this->loadTemplate('matchday_nav');
             if (($this->config['show_help']==1)||($this->config['show_help']==2))
 			{
 				echo $this->model->createHelptText($predictionProject->mode);
@@ -62,9 +57,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 	echo $this->loadTemplate('jsminfo');
 ?>
-
-<?PHP
-
-?>
-
 </div>

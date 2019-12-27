@@ -8,10 +8,11 @@
  * @package   sportsmanagement
  * @subpackage predictionentry
  */
-    defined('_JEXEC') or die('Restricted access');
-	use Joomla\CMS\Language\Text;
-	use Joomla\CMS\HTML\HTMLHelper;
-	use Joomla\CMS\Factory;
+ 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 	
         $visible = 'hidden';
 
@@ -53,17 +54,17 @@
                 $match_ids = NULL;
                 $round_ids = NULL;
                 $proteams_ids = NULL;
-                // nur spiele zum tippen ?
+                /** nur spiele zum tippen ? */
                 if ( $this->config['use_pred_select_matches'] )
                 {
                     $match_ids = $this->config['predictionmatchid'];
                 }
-                // nur spieltage tippen ?
+                /** nur spieltage tippen ? */
                 if ( $this->config['use_pred_select_rounds'] )
                 {
                     $round_ids = $this->config['predictionroundid'];
                 }
-                // nur bestimmte mannschaften tippen ?
+                /** nur bestimmte mannschaften tippen ? */
                 if ( $this->config['use_pred_select_proteams'] )
                 {
                     $proteams_ids = $this->config['predictionproteamid'];
@@ -76,10 +77,7 @@ $roundResults = $this->model->getMatchesDataForPredictionEntry(    sportsmanagem
                 $match_ids,
                 $round_ids,
                 $proteams_ids);
-                
-                //            if (($this->config['show_help']==0)||($this->config['show_help']==2)){echo $this->model->createHelptText($predictionProject->mode);}
                 ?>
-<!--            <a name='jl_top' id='jl_top'></a> -->
 <form name='resultsRoundSelector' id='resultsRoundSelector' method='post' onsubmit="alert(1)">
 <input type='hidden' name='option' value='com_sportsmanagement' />
 <input type='hidden' name='task' value='predictionentry.selectprojectround' />
@@ -92,16 +90,9 @@ $roundResults = $this->model->getMatchesDataForPredictionEntry(    sportsmanagem
 <input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
 <input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
 <?php echo HTMLHelper::_('form.token'); ?>
-<!--
-Responsive tables
-Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
-When viewing on anything larger than 768px wide, you will not see any difference in these tables.
--->
 <div class="table-responsive">
 <table class="table table-responsive" >
 <tr>
-<!-- <td class=""><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td> -->
-<!--    <td class="" style='text-align:right; ' width='20%'  > -->
 <?php
     if ( $this->config['use_pred_select_rounds'] )
     {
@@ -116,18 +107,13 @@ When viewing on anything larger than 768px wide, you will not see any difference
                         '<tr><td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td></tr>',
                         '<tr> <td>'.$htmlRoundsOptions.'</td></tr>');
     ?>
-<!--    </td> -->
 </tr>
 </table>
 </div>
-<!-- br /> -->
 <?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?php $formName = 'predictionDoTipp'.(int)sportsmanagementModelPrediction::$pjID; ?>
-<form    name='<?php echo $formName; ?>'
-id='<?php echo $formName; ?>'
-method='post' onsubmit='return chkFormular()' >
-
+<form name='<?php echo $formName; ?>' id='<?php echo $formName; ?>' method='post' onsubmit='return chkFormular()' >
 <input type='hidden' name='task' value='predictionentry.addtipp' />
 <input type='hidden' name='option' value='com_sportsmanagement' />
 <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelPrediction::$cfg_which_database; ?>' />
@@ -161,42 +147,39 @@ function chkFormular()
     }
 }
 </script>
-<!--
-Responsive tables
-Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
-When viewing on anything larger than 768px wide, you will not see any difference in these tables.
--->
+
 <div class="table-responsive">
 <table class="<?PHP echo $this->config['table_class']; ?> table-responsive" >
 <tr>
-
-<!-- <th class="" style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th> -->
-<!-- <th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>  -->
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT'); ?></th> -->
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS'); ?></th> -->
+<?php
+if ( $predictionProject->use_goals )
+{
+?>
+<input type="text" id="goals_<?php echo sportsmanagementModelPrediction::$roundID; ?>" name="goals[<?php echo $predictionProject->project_id; ?>][<?php echo sportsmanagementModelPrediction::$roundID; ?>]"
+value="<?php echo 0; ?>" >
+<?php        
+}
+?>
+</tr>
+<tr>
 <th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th></th>
 <th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th></th>
 <th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th></th>
-
 <?php
     if (($predictionProject->joker) && ($predictionProject->mode==0))
     {
-        ?><!-- <th class='sectiontableheader' style='text-align:center; '> --><?php
             ?> <th style='text-align:left;color:white; background-color:teal; '> <?php
             if ($predictionProject->joker_limit > 0)
             {
-                //echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER_COUNT',$memberProjectJokersCount,$predictionProject->joker_limit);
                echo $memberProjectJokersCount."/".$predictionProject->joker_limit;
             }
             else
             {
-                //echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER');
                  echo "";
             }
             ?></th><?php
                 }
                 ?>
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS'); ?></th> -->
 </tr>
 <?php
     $k = 1;
