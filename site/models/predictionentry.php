@@ -386,11 +386,11 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <
 		$tipps = $jinput->getVar('tipps',array(),'post','array');
 		$jokers	= $jinput->getVar('jokers',array(),'post','array');
         
-        $goals	= $jinput->getVar('goals',array(),'post','array');
-        $penalties	= $jinput->getVar('penalties',array(),'post','array');
-        $yellowcards	= $jinput->getVar('yellowcards',array(),'post','array');
-        $yellowredcards	= $jinput->getVar('yellowredcards',array(),'post','array');
-        $redcards = $jinput->getVar('redcards',array(),'post','array');
+//        $goals	= $jinput->getVar('goals',array(),'post','array');
+//        $penalties	= $jinput->getVar('penalties',array(),'post','array');
+//        $yellowcards	= $jinput->getVar('yellowcards',array(),'post','array');
+//        $yellowredcards	= $jinput->getVar('yellowredcards',array(),'post','array');
+//        $redcards = $jinput->getVar('redcards',array(),'post','array');
         
 		$mID = $jinput->get('memberID',0,'int');
 		$ptippmode = $jinput->getVar('ptippmode',array(),'post','array');
@@ -400,6 +400,28 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' post <
 		$predictionGameID = $jinput->get('prediction_id',0,'int');
 		$joomlaUserID = $jinput->get('user_id',0,'int');
 
+$temp = new stdClass();
+$temp->goals = $post['goals'][$ProjectID][$RoundID];
+$temp->penalties = $post['penalties'][$ProjectID][$RoundID];
+$temp->yellowcards = $post['yellowcards'][$ProjectID][$RoundID];
+$temp->yellowredcards = $post['yellowredcards'][$ProjectID][$RoundID];
+$temp->redcards = $post['redcards'][$ProjectID][$RoundID];
+$temp->prediction_id = $predictionGameID;
+$temp->user_id = $joomlaUserID;
+$temp->project_id = $ProjectID;
+$temp->round_id = $RoundID;
+$temp->modified_by = $joomlaUserID;
+$temp->modified = Factory::getDate()->toSql();	
+try{
+$resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result_round', $temp);
+}
+catch (Exception $e) {
+// catch any database errors.
+}
+
+
+
+                        
     // _predictionMember
     $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
     $predictionMemberInfo = sportsmanagementModelPrediction::getPredictionMember($configavatar);
