@@ -117,6 +117,7 @@ class SportsmanagementRouter extends RouterBase
 	/** Get current menu item and get query variables from it */
 	$active = Factory::getApplication()->getMenu()->getActive();
 	$vars   = isset($active->query) ? $active->query : array('view' => 'home');
+    $defaults = array();
 	
 	if (empty($vars['view']) || $vars['view'] == 'home' || $vars['view'] == 'entrypage')
 	{
@@ -131,7 +132,7 @@ class SportsmanagementRouter extends RouterBase
       
       if ( $defaults )
       {
-        $vars['view'] = $segments[0];
+      $vars['view'] = $segments[0];
       $count = 1;  
       foreach ( $defaults as $key => $value )  
       {
