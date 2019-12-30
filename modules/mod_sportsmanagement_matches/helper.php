@@ -352,7 +352,7 @@ class modMatchesSportsmanagementHelper {
 			$defaultlogos = $this->getDefaultLogos();
             $matchpart_pic = !empty($team->$pt)  ? $team->$pt : $defaultlogos[$pt];
             
-			if ( File::exists(JPATH_ROOT.$matchpart_pic) )
+			if ( File::exists(JPATH_ROOT.DIRECTORY_SEPARATOR.$matchpart_pic) )
             {
 				$size = getimagesize($matchpart_pic);
 				$pic_width = $size[0];
