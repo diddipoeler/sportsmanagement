@@ -19,10 +19,15 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $app = Factory::getApplication();
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+$maxImportTime = 480;
+if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
+$maxImportMemory = '350M';
+if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
+
+//if (! defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 if ( !defined('JSM_PATH') )
 {
