@@ -227,17 +227,7 @@
 			<option value="joomleague">COM_SPORTSMANAGEMENT_JOOMLEAGUE_DATABASE_TABLE</option>
 			<option value="sportsmanagement">COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_DATABASE_TABLE</option>
 		</field>
-		<!--
-    <field name="show_debug_info" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		-->
+
 <field name="show_debug_info_backend" 
     type="extensionradiobutton" 
     default="0"

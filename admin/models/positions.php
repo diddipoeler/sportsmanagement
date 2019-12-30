@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelPositions
@@ -46,7 +47,6 @@ class sportsmanagementModelPositions extends JSMModelList
                         'po.modified_by',
                         'po.ordering'
                         );
-                //$config['dbo'] = sportsmanagementHelper::getDBConnection();        
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
@@ -61,8 +61,11 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+{
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
