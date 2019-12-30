@@ -1087,9 +1087,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 			$options['object_id']		= (int) $match->id;
 			$options['object_group']	= $joomleage_comments_object_group;
 			$options['published']		= 1;
-
+$count = 0;
+if (class_exists('JCommentsModel')) 
+{
 			$count = JCommentsModel::getCommentsCount($options);
-
+}
 			if ($count == 1) {
 				$imgTitle		= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {

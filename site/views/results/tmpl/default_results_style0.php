@@ -652,9 +652,11 @@ $this->overallconfig['use_jquery_modal']); ?>
 			$options['object_id']		= (int) $game->id;
 			$options['object_group']	= $sportsmanagement_comments_object_group;
 			$options['published']		= 1;
-
+			$count = 0;
+if (class_exists('JCommentsModel')) 
+{
 			$count = JCommentsModel::getCommentsCount($options);
-
+}
 			if ($count == 1) 
             {
 				$imgTitle = $count.' '.Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
