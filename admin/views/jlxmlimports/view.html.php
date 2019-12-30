@@ -222,7 +222,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         $mdl = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         // diddi
-        $mdl = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('players', 'sportsmanagementModel');
         $this->persons = $mdl->getPersonListSelect();
         // diddi
         $mdl = BaseDatabaseModel::getInstance('statistics', 'sportsmanagementModel');
