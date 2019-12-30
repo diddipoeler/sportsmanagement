@@ -16,10 +16,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filter\OutputFilter;
-jimport('joomla.filesystem.file');
-
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
-
 
 /**
  * sportsmanagementModelJLXMLExports
@@ -1061,7 +1059,7 @@ $this->query->from('#__sportsmanagement_team_player');
 $this->query->select('*');
 $this->query->from('#__sportsmanagement_team_trainingdata');
             $this->query->where('project_team_id IN (' . $ids .')' );
-
+try{ 
 			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 			if ($this->jsmdb->getNumRows() > 0)
@@ -1071,6 +1069,13 @@ $this->query->from('#__sportsmanagement_team_trainingdata');
 				$this->_teamtrainingdata = $result;
 				return $result;
 			}
+            }
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+
+}
 			return false;
 		}
 		return false;
@@ -1092,7 +1097,7 @@ $this->query->from('#__sportsmanagement_team_trainingdata');
 $this->query->select('*');
 $this->query->from('#__sportsmanagement_team_staff');
             $this->query->where('project_team_id IN (' . $ids .')' );
-
+try{
 			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 			if ($this->jsmdb->getNumRows() > 0)
@@ -1103,6 +1108,13 @@ $this->query->from('#__sportsmanagement_team_staff');
 
 				return $result;
 			}
+            }
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+
+}
 			return false;
 		}
 		return false;
