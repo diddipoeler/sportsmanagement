@@ -46,7 +46,7 @@ $this->setRedirect($link,$msg);
        $model->saveshortpersons();
        
        $msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=persons&layout=assignpersons&season_id='.$post['season_id'].'&team_id='.$post['team_id'].'&persontype='.$post['persontype'],$msg);
+        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id='.$post['season_id'].'&team_id='.$post['team_id'].'&persontype='.$post['persontype'],$msg);
         
     }
     

@@ -15,8 +15,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Router\Route;
 
+
 /**
- * sportsmanagementControllerjsmpersons
+ * sportsmanagementControllerplayers
  * 
  * @package 
  * @author Dieter Plöger
