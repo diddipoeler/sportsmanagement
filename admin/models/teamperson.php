@@ -250,7 +250,7 @@ $db->setQuery($query);
                 $tblprojectposition = Table::getInstance("projectposition", "sportsmanagementTable");
                 $tblprojectposition->load((int) $post['project_position_id'.$pks[$x]]);
                
-                $tblperson = Table::getInstance("person", "sportsmanagementTable");
+                $tblperson = Table::getInstance("player", "sportsmanagementTable");
                 $tblperson->load((int) $pks[$x]);
                 $tblperson->position_id = $tblprojectposition->position_id;
                 $tblperson->country = $post['country'.$pks[$x]];
