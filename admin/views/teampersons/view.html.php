@@ -59,19 +59,14 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $this->season_id = $project->season_id;
 $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontype);
         if (!$items) {
-            // fehlen im projekt die positionen ?
-            // wenn ja, dann fehlende positionen hinzufügen
-//        $this->restartpage = $model->checkProjectPositions($this->project_id, $this->_persontype, $this->team_id, $this->season_id);    
+            /**
+            fehlen im projekt die positionen ?
+            wenn ja, dann fehlende positionen hinzufügen */
         } else {
             $this->restartpage = FALSE;
         }
 
-//        $total = $this->get('Total');
-//        $pagination = $this->get('Pagination');
-
         $this->table = Table::getInstance('teamperson', 'sportsmanagementTable');
-//        $this->table = $table;
-
         $this->app->setUserState("$this->option.pid", $project->id);
         $this->app->setUserState("$this->option.season_id", $project->season_id);
         $this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
@@ -111,16 +106,9 @@ $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontyp
             }
 		
         $lists['nation'] = $nation;
-
-//        $this->user = Factory::getUser();
-//        $this->config = Factory::getConfig();
         $this->lists = $lists;
-//        $this->items = $items;
-//        $this->pagination = $pagination;
-
         $this->project = $project;
         $this->project_team = $project_team;
-
     }
 
     /**
@@ -135,7 +123,6 @@ $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontyp
         $this->app->setUserState("$this->option.persontype", $this->_persontype);
         $this->app->setUserState("$this->option.season_id", $this->season_id);
 
-        // Set toolbar items for the page
         if ($this->_persontype == 1) {
             $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE').' '.$this->project_team->name;
         } elseif ($this->_persontype == 2) {
@@ -144,13 +131,10 @@ $items = $this->model->PersonProjectPosition($this->project_id,$this->_persontyp
 
         ToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
         ToolbarHelper::divider();
-
         sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'players', 0);
-	ToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
+	    ToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         ToolbarHelper::divider();
-
         ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option='.$this->option.'&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
-
         parent::addToolbar();
     }
 

@@ -9,7 +9,6 @@
  * @subpackage projectreferee
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -47,7 +46,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $this->project	= $project;
         
         $person_id	= $this->item->person_id;
-        $mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
+        $mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson(0,$person_id);
 /**
  * name für den titel setzen

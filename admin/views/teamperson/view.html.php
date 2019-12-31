@@ -63,7 +63,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->project_team = $project_team;
 		}
         
-		$mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
+		$mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
 	 //build the html options for position

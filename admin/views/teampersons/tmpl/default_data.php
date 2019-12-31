@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage teampersons
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -287,12 +288,11 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 								{
 									$append=' style="background-color:#FFCCCC"';
 								
-// einen vorschlag generieren
-$mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
+/** einen vorschlag generieren */
+$mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 $project_person = $mdlPerson->getPerson($row->person_id);
 $position_id = $project_person->position_id;
-
-//build the html options for position
+/** build the html options for position */
 $position_ids = array();        
 $mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
