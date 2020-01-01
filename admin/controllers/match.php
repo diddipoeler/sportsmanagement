@@ -43,7 +43,6 @@ class sportsmanagementControllermatch extends FormController
 	function __construct($config = array())
 	{
 		parent::__construct($config);
-
 		/** Map the apply task to the save method. **/
 		$this->registerTask('apply', 'save');
 		$this->jsmuser = Factory::getUser(); 
@@ -60,7 +59,7 @@ class sportsmanagementControllermatch extends FormController
     function cancelmodal($key = NULL)
 	{
 	$msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
     
     
@@ -155,9 +154,7 @@ $round->roundcode = '';
 $round->name = $post['start_round_name'];
 $round->modified = $this->jsmdate->toSql();
 $round->modified_by = $this->jsmuser->get('id');	
-/**
- * Insert the object into the table.
- */
+/** Insert the object into the table. */
 try{
 $resultinsert = $db->insertObject('#__sportsmanagement_round', $round);
 $post['round_id'] = $db->insertid();
@@ -172,9 +169,8 @@ return false;
 				
 				foreach($matches as $match)
 				{
-					//aufpassen,was uebernommen werden soll und welche daten durch die aus der post ueberschrieben werden muessen
-					//manche daten muessen auf null gesetzt werden
-
+					/** aufpassen,was uebernommen werden soll und welche daten durch die aus der post ueberschrieben werden muessen
+					manche daten muessen auf null gesetzt werden */
  					$dmatch['match_date'] = $post['match_date'];
 					
 					if ($post['mirror'] == '1')
@@ -284,7 +280,6 @@ return false;
         $post['preview'] = '-';
 	$model = $this->getModel('match');
         
-        // store to the database
         if ($model->save($post))
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
@@ -305,34 +300,25 @@ return false;
      */
     function save($key = NULL, $urlVar = NULL)
 	{
-	// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
-		// Initialise variables.
 		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         $id	= Factory::getApplication()->input->getInt('id');
-//        $tmpl = Factory::getApplication()->input->getVar('tmpl');
 		$model = $this->getModel('match');
         $data = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-//        $createTeam = Factory::getApplication()->input->getVar('createTeam');
         $return = $model->save($data);   
        
-       // Set the redirect based on the task.
 		switch ($this->getTask())
 		{
 			case 'apply':
 			$message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
 			$this->setRedirect('index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id='.$id, $message);
 			break;
-
 			case 'save':
 			default:
 			$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 			break;
 		}
-        
-       
     }   
     
     
@@ -349,9 +335,7 @@ return false;
     $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
-	
     $this->setRedirect('index.php?option=com_sportsmanagement&view=matches');    
-        
    }
    
    
@@ -362,11 +346,9 @@ return false;
 	 */
 	function picture()
   {
-  //$cid = Factory::getApplication()->input->getVar('cid',array(0),'','array');
-	$match_id = Factory::getApplication()->input->getInt('id',0);
+$match_id = Factory::getApplication()->input->getInt('id',0);
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
-  //$this->setState('folder', $folder);
   if(Folder::exists($dest)) {
   }
   else
@@ -379,21 +361,7 @@ return false;
 	$this->setRedirect($link,$msg);
   
   }
-  
-//  /**
-//   * sportsmanagementControllermatch::readpressebericht()
-//   * 
-//   * @return void
-//   */
-//  function readpressebericht()
-//    {
-//    Factory::getApplication()->input->setVar('hidemainmenu',1);
-//		Factory::getApplication()->input->setVar('layout','readpressebericht');
-//		Factory::getApplication()->input->setVar('view','match');
-//		Factory::getApplication()->input->setVar('edit',true);
-//		parent::display();    
-//    }
-    
+
     /**
      * sportsmanagementControllermatch::savepressebericht()
      * 
@@ -401,7 +369,6 @@ return false;
      */
     function savepressebericht()
     {
-    	// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
 		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
@@ -495,8 +462,6 @@ Folder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_s
 		}
 		$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
 	    $this->setRedirect($link,$msg);    
-        
-        
     }
        
     /**
@@ -510,9 +475,7 @@ Folder::create(JPATH_SITE.DIRECTORY_SEPARATOR.'media'.DIRECTORY_SEPARATOR.'com_s
 	Factory::getApplication()->input->setVar('layout','pressebericht');
 	Factory::getApplication()->input->setVar('view','match');
 	Factory::getApplication()->input->setVar('edit',true);
-	
 	parent::display();    
-        
     }
     
     /**

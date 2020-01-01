@@ -879,8 +879,13 @@ if ( $data['id'] )
         $query->select('m.*');
         $query->from('#__sportsmanagement_match_single AS m');
         $query->where('m.match_id = ' . (int)$match_id);
+        try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
+        } catch (Exception $e) {
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            $result = false;
+        }
         return $result;
     }
 
