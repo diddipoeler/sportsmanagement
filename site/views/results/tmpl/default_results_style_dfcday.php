@@ -265,7 +265,7 @@ $link = "javascript:void(0);";
 		?>
 		<!-- show playground -->
 		<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($game); ?>
 		</td>
 		<?php
 		}
