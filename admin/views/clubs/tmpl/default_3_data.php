@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage clubs
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -159,6 +160,15 @@ $joomlaicon = $params->get('show_joomla_icons');
                 {
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
             }
+                
+if ( $row->facebook )
+                {
+    ?>
+                        <br>
+                        <?php
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/facebook.png', '', '');
+            }
+                
                         ?>    
                     </td>
                     <td>
