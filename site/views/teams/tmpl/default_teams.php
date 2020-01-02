@@ -212,7 +212,7 @@ if ( $this->config['show_club_fax'] )
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', 'width="16"');	
 echo $team->club_fax;
 }
-if ( $this->config['show_club_email'] ) 
+if ( $this->config['show_club_email'] && $team->club_email ) 
 { 
 ?>
 <br />
@@ -221,7 +221,7 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
 echo $team->club_email;
 }    
 
-if ( $this->config['show_club_facebook'] ) 
+if ( $this->config['show_club_facebook'] && $team->facebook ) 
 { 
 ?>
 <br />
@@ -231,14 +231,14 @@ echo HTMLHelper::link($googlelink,
 HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png',$team->facebook), array('target' => '_blank' ,'title' => $team->club_name ) );	
 }    
 
-if ( $this->config['show_club_twitter'] ) 
+if ( $this->config['show_club_twitter'] && $team->twitter ) 
 { 
 ?>
 <br />
 <?php
 $googlelink = $team->twitter;	
 echo HTMLHelper::link($googlelink,
-HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png',$team->twitter), array('target' => '_blank' ,'title' => $team->club_name ) );	
+HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/twitter.png',$team->twitter), array('target' => '_blank' ,'title' => $team->club_name ) );	
 }  		
 		
 if ( $this->config['show_googlemap_link'] ) 
