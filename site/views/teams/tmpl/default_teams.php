@@ -196,7 +196,7 @@ $team->club_zipcode,
 $team->club_location,
 $team->club_country,
 'COM_SPORTSMANAGEMENT_TEAMS_ADDRESS_FORM' );
-if ( $this->config['show_club_phone'] ) 
+if ( $this->config['show_club_phone'] && $team->club_phone ) 
 { 
 ?>
 <br />
@@ -204,7 +204,7 @@ if ( $this->config['show_club_phone'] )
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', 'width="16"');	
 echo $team->club_phone;
 }
-if ( $this->config['show_club_fax'] ) 
+if ( $this->config['show_club_fax'] && $team->club_fax ) 
 { 
 ?>
 <br />
