@@ -341,7 +341,7 @@ $this->overallconfig['use_jquery_modal']);
 		?>
 		<!-- show playground -->
 		<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($game,$this->config); ?>
 		</td>
 		<?php
 		}
