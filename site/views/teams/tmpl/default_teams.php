@@ -214,9 +214,6 @@ if ( $this->config['show_club_fax'] )
 <?php
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', 'width="16"');	
 echo $team->club_fax;
-?>
-<br />
-<?php	
 }
 if ( $this->config['show_club_email'] ) 
 { 
@@ -225,12 +222,24 @@ if ( $this->config['show_club_email'] )
 <?php
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
 echo $team->club_email;
+}    
+
+if ( $this->config['show_club_facebook'] ) 
+{ 
+?>
+<br />
+<?php
+$googlelink = $team->facebook;	
+echo HTMLHelper::link($googlelink,
+HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png',$team->facebook), array('target' => '_blank' ,'title' => $team->club_name ) );	
+}    
+		
+		
+if ( $this->config['show_googlemap_link'] ) 
+{
 ?>
 <br />
 <?php	
-}    
-if ( $this->config['show_googlemap_link'] ) 
-{
 $googlelink = 'http://maps.google.com/maps?f=q&hl=de&geocode=&q='.$team->club_address.', '.$team->club_zipcode.' '.$team->club_location;	
 echo HTMLHelper::link($googlelink,
 HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif',$team->club_name), array('target' => '_blank' ,'title' => $team->club_name ) );	
