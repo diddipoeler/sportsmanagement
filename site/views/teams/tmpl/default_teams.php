@@ -203,9 +203,6 @@ if ( $this->config['show_club_phone'] )
 <?php
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', 'width="16"');	
 echo $team->club_phone;
-?>
-<br />
-<?php	
 }
 if ( $this->config['show_club_fax'] ) 
 { 
