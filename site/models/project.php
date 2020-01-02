@@ -18,12 +18,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
-/*
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-*/
+
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
@@ -823,19 +818,17 @@ catch (Exception $e)
 	{
 	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
-        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
 
-	  // Select some fields
           $query->select('tl.id AS projectteamid,tl.division_id,tl.standard_playground,tl.admin,tl.start_points,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally');
           $query->select('tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally,tl.info,tl.reason,tl.team_id as project_team_team_id,tl.checked_out,tl.checked_out_time,tl.is_in_score,tl.picture AS projectteam_picture');
           $query->select('IF((ISNULL(tl.picture) OR (tl.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_small , t.picture)) , t.picture) as picture,tl.project_id');
           $query->select('t.picture as team_picture,t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
           $query->select('u.username,u.email');
           $query->select('st.team_id');
-          $query->select('c.email as club_email,c.phone as club_phone,c.fax as club_fax,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id');
+          $query->select('c.email as club_email,c.phone as club_phone,c.fax as club_fax,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id,c.facebook,c.twitter');
           $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
           $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
           $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
