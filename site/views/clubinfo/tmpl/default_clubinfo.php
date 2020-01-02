@@ -166,7 +166,7 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
             if ($this->club->twitter) {
                     ?>
                     <address>
-                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TWITTER'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER'); ?></strong>
 
                         <?php echo HTMLHelper::_('link', $this->club->twitter, $this->club->twitter, array("target" => "_blank")); ?>
 
@@ -176,7 +176,7 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
             if ($this->club->facebook) {
                     ?>
                     <address>
-                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FACEBOOK'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK'); ?></strong>
 
                         <?php echo HTMLHelper::_('link', $this->club->facebook, $this->club->facebook, array("target" => "_blank")); ?>
 
