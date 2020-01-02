@@ -52,6 +52,9 @@ public static $views = array(
 'matrix' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 'nextmatch' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),	
 'player' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),
+	
+'playground' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pgid' => ''),
+	
 'ranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'type' => '', 'r' => '', 'from' => '', 'to' => '', 'division' => ''),
 'rankingalltime' => array('cfg_which_database' => '', 'l' => '', 'points' => '', 'type' => '', 'order' => '', 'dir' => '', 's' => '', 'p' => ''),
 'referee' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
