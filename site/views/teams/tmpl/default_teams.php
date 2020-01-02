@@ -233,7 +233,16 @@ $googlelink = $team->facebook;
 echo HTMLHelper::link($googlelink,
 HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png',$team->facebook), array('target' => '_blank' ,'title' => $team->club_name ) );	
 }    
-		
+
+if ( $this->config['show_club_twitter'] ) 
+{ 
+?>
+<br />
+<?php
+$googlelink = $team->twitter;	
+echo HTMLHelper::link($googlelink,
+HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png',$team->twitter), array('target' => '_blank' ,'title' => $team->club_name ) );	
+}  		
 		
 if ( $this->config['show_googlemap_link'] ) 
 {
