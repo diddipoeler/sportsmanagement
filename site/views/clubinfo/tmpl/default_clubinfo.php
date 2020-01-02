@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage clubinfo
  */
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -157,6 +158,27 @@ $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
 
                         <?php echo HTMLHelper::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
+
+                    </address>
+                    <?php
+                }
+            
+            if ($this->club->twitter) {
+                    ?>
+                    <address>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TWITTER'); ?></strong>
+
+                        <?php echo HTMLHelper::_('link', $this->club->twitter, $this->club->twitter, array("target" => "_blank")); ?>
+
+                    </address>
+                    <?php
+                }
+            if ($this->club->facebook) {
+                    ?>
+                    <address>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FACEBOOK'); ?></strong>
+
+                        <?php echo HTMLHelper::_('link', $this->club->facebook, $this->club->facebook, array("target" => "_blank")); ?>
 
                     </address>
                     <?php
