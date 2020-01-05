@@ -86,6 +86,7 @@ $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile -> '.TVarDump
             
 if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 {
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile2 -> '.TVarDumper::dump($teile2,10,TRUE).''),'');    
 $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' count -> '.TVarDumper::dump($count,10,TRUE).''),'');    
 $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
 }            
