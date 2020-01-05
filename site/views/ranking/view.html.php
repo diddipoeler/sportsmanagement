@@ -14,8 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
-
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementViewRanking
@@ -243,6 +242,7 @@ $this->matchimages = $images;
       
         if ($this->config['show_ranking_maps']) {
 
+$this->mapconfig = array();
 /**
  * leaflet benutzen
  */            
