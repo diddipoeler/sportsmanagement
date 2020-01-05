@@ -75,7 +75,9 @@ $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile -> '.TVarDump
 
             foreach($teile as $key => $value ) if ( $colors )
             {
-            $teile2 = explode(",",$value);    
+            $teile2 = explode(",",$value);   
+            if ( sizeof($teile2) > 1 )
+            { 
             if ( !isset($colors_ranking[$count]) )
             {
             $colors_ranking[$count]['von'] = '';
@@ -91,15 +93,9 @@ $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' count -> '.TVarDump
 $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
 }            
               
-//            if ( array_key_exists('von', $colors_ranking[$count]) &&
-//	       array_key_exists('bis', $colors_ranking[$count]) &&
-//		array_key_exists('color', $colors_ranking[$count]) &&
-//		array_key_exists('text', $colors_ranking[$count]) 
-//	       )
-//            {
             list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
-            //}  
-            $count++;  
+            $count++;
+              }
             }
             $this->form->setValue('colors_ranking', null, $colors_ranking);
             
