@@ -63,9 +63,9 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
 
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
         }
         
             $count = 1;    
