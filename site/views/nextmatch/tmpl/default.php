@@ -41,6 +41,10 @@ if ( $this->config['show_preview'] ) {
 $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'] = 'preview';
 }
 
+if ( $this->config['show_comments'] ) {
+$this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTS'] = 'comments';
+}
+
 if ( $this->config['show_stats'] ) {
 $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'] = 'stats';
 }

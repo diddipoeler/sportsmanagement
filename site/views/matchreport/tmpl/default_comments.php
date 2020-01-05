@@ -10,46 +10,40 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
 
 ?>
 <!-- START of match summary -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 
-if (!empty($this->match->summary))
+/**
+ * workaround to support {jcomments (off|lock)} in match summary
+ * no comments are shown if {jcomments (off|lock)} is found in the match summary
+ */
+
+$commentsDisabled = 0;
+
+if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', $this->match->summary))
 {
-	?>
-	<table class="table ">
-		<tr>
-			<td class="contentheading">
-				<?php
-				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY' );
-				?>
-			</td>
-		</tr>
-	</table>
-	<table class="table ">
-		<tr>
-			<td>
-			<?php
-			$summary = $this->match->summary;
-			$summary = HTMLHelper::_('content.prepare', $summary);
-
-			if ($commentsDisabled) {
-				$summary = preg_replace('#{jcomments\s+(off|lock)}#is', '', $summary);
-			}
-			echo $summary;
-
-			?>
-			</td>
-		</tr>
-	</table>
-	<?php
+	$commentsDisabled = 1;
 }
 
-?>
+/**
+ * Comments integration
+ */
+if (!$commentsDisabled)
+{
+	$commmentsInstance = new sportsmanagementModelComments($this->config);
+	echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2);
+}
+
+	?>
 </div>
 <!-- END of match summary -->
 

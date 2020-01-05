@@ -89,6 +89,7 @@ JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTR
 JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);	  
 break;    
 case 'results':    
+JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE); 
 JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
@@ -99,6 +100,7 @@ case 'jltournamenttree':
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);  
 break;	  
 case 'matchreport':
+JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
@@ -122,9 +124,11 @@ break;
 case 'roster':
 JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
 break;
+case 'teamplan':
+JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
+break;
 case 'teams':
 case 'teamstats':
-case 'teamplan':
 case 'teamstree':    
 case 'matrix':
 case 'rankingalltime':
@@ -159,6 +163,7 @@ JLoader::import('components.com_sportsmanagement.models.teams', JPATH_ADMINISTRA
 JLoader::import('components.com_sportsmanagement.models.team', JPATH_ADMINISTRATOR);
 break;
 case 'nextmatch':
+JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
 JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);

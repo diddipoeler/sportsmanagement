@@ -47,6 +47,9 @@ $this->statgames = array();
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ":";
         }
+		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
+		$this->config['extended_cols'] = $this->overallconfig['extended_cols'];
+
         $this->match = $match;
 
         if ($match) {
