@@ -161,8 +161,6 @@ $this->matchimages = $images;
         }
     }
         $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . $this->jinput->getVar("view"), sportsmanagementModelProject::$cfg_which_database);
-
-        // mannschaften holen
         $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelProject::$cfg_which_database, __METHOD__);
 
         $no_ranking_reason = '';
@@ -254,7 +252,7 @@ $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->
 /**
  * kml file generieren
  */            
-if ( $this->mapconfig['map_kmlfile'] )
+if ( isset($this->mapconfig['map_kmlfile']) && $this->mapconfig['map_kmlfile'] )
 {    
             $this->geo = new JSMsimpleGMapGeocoder();
             $this->geo->genkml3($this->project->id, $this->allteams);
@@ -285,7 +283,6 @@ if ( $this->mapconfig['map_kmlfile'] )
         unset($tomatchday);
         unset($lists);
 
-        // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
         if (isset($this->project->name)) {
             $pageTitle .= ': ' . $this->project->name;
