@@ -109,13 +109,13 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' rankingteams -> '.TVarDum
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
                     
-//                if ( !isset($this->value[$a]) )
-//                {
-//                $this->value[$a]['von'] = '';
-//		$this->value[$a]['bis'] = '';
-//		$this->value[$a]['text'] = '';
-//		$this->value[$a]['color'] = '';
-//                }
+                if ( !isset($this->value[$a]) )
+                {
+                $this->value[$a]['von'] = '';
+		$this->value[$a]['bis'] = '';
+		$this->value[$a]['text'] = '';
+		$this->value[$a]['color'] = '';
+                }
  
                $html[] = '<tr>';
                 $html[] = '<td>';    
