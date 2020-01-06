@@ -163,7 +163,11 @@ if ( $this->config['show_summary'] && $this->match->summary )
 {
 $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY'] = 'summary';
 }
-    
+
+if ( $this->config['show_comments'] ) {
+$output['CCOM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTS'] = 'comments';
+}
+
 if ( $this->config['show_article'] )
 {
 $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE'] = 'article';

@@ -64,6 +64,13 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field name="show_comments" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
 		<field name="show_stats" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_STATS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_STATS">

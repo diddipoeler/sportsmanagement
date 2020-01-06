@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default_plan.php
@@ -14,38 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Registry\Registry;
 
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
-$dispatcher = JDispatcher::getInstance();
-$comments = '';
-if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
-{
-require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
-require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
-require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
 }
 
-/**
- * load sportsmanagement comments plugin files
- */
-PluginHelper::importPlugin('content','sportsmanagement_comments');
-
-/**
- * get sportsmanagement comments plugin params
- */
-$plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
-
-if (is_object($plugin)) {
-	$pluginParams = new Registry($plugin->params);
-}
-else {
-	$pluginParams = new Registry('');
-}
-$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
-}
 ?>
 
 <?php
@@ -1064,102 +1038,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 		<?php
 		if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 		{
-			?>
-		<td class="center"><?php
-
-
-			if ($separate_comments) {
-				// Comments integration trigger when separate_comments in plugin is set to yes/1
-				if (isset($match->team1_result))
-				{
-					$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
-				}
-				else {
-					$joomleage_comments_object_group = 'com_sportsmanagement_nextmatch';
-				}
-			}
-			else {
-				// Comments integration trigger when separate_comments in plugin is set to no/0
-				$joomleage_comments_object_group = 'com_sportsmanagement';
-			}
-
-			$options 					= array();
-			$options['object_id']		= (int) $match->id;
-			$options['object_group']	= $joomleage_comments_object_group;
-			$options['published']		= 1;
-$count = 0;
-if (class_exists('JCommentsModel')) 
-{
-			$count = JCommentsModel::getCommentsCount($options);
-}
-			if ($count == 1) {
-				$imgTitle		= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-	            if (isset($match->team1_result))
-	            {
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $match->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-					
-	            } else {
-					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
-	            }
-				$viewComment	= HTMLHelper::link($link, $href_text);
-				echo $viewComment;
-			}
-			elseif ($count > 1) {
-				$imgTitle	= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-	            if (isset($match->team1_result))
-	            {
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $match->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-					
-	            } else {
-					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
-	            }
-				$viewComment	= HTMLHelper::link($link, $href_text);
-				echo $viewComment;
-			}
-			else {
-				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-	            if (isset($match->team1_result))
-	            {
-	            $routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $match->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-					
-	            } else {
-					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
-	            }
-				$viewComment	= HTMLHelper::link($link, $href_text);
-				echo $viewComment;
-			}
-		?></td>
+		?>
+		<td class="center"><?php echo $commmentsInstance->showMatchCommentIcon($match, $hometeam, $guestteam, $this->config, $this->project); ?></td>
 		<?php
 		}
 		?>
