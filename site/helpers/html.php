@@ -455,7 +455,7 @@ catch (Exception $e)
             }
 
             if (!$config['show_playground'] && $config['show_playground_alert']) {
-                if ($this->teams[$game->projectteam1_id]->standard_playground == $game->playground_id) {
+                if (self::$teams[$game->projectteam1_id]->standard_playground == $game->playground_id) {
                     echo '-';
                     return '';
                 }

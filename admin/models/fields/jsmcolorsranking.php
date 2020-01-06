@@ -15,6 +15,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 //jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -96,17 +97,25 @@ class JFormFieldjsmcolorsranking extends FormField
             $html[] = 'text'; 
             $html[] = '</th>';
             $html[] = '</tr>';  
+
+if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
+{
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' this->name -> '.TVarDumper::dump($this->name,10,TRUE).''),'');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' this->value -> '.TVarDumper::dump($this->value,10,TRUE).''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' rankingteams -> '.TVarDumper::dump($rankingteams,10,TRUE).''),'');    
+}            
+
                 
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
                     
-//                if ( !isset($this->value[$a]) )
-//                {
-//                $this->value[$a]['von'] = '';
-//		$this->value[$a]['bis'] = '';
-//		$this->value[$a]['text'] = '';
-//		$this->value[$a]['color'] = '';
-//                }
+                if ( !isset($this->value[$a]) )
+                {
+                $this->value[$a]['von'] = '';
+		$this->value[$a]['bis'] = '';
+		$this->value[$a]['text'] = '';
+		$this->value[$a]['color'] = '';
+                }
  
                $html[] = '<tr>';
                 $html[] = '<td>';    

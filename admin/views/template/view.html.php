@@ -62,28 +62,46 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
-
-if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
-        {
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
-        }
         
             $count = 1;    
             $teile = explode(";", $colors);    
 
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+{
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors -> '.TVarDumper::dump($colors,10,TRUE).''),'');
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile -> '.TVarDumper::dump($teile,10,TRUE).''),'');
+}
+
             foreach($teile as $key => $value ) if ( $colors )
             {
-            $teile2 = explode(",",$value);      
-            if ( array_key_exists('von', $colors_ranking[$count]) &&
-	       array_key_exists('bis', $colors_ranking[$count]) &&
-		array_key_exists('color', $colors_ranking[$count]) &&
-		array_key_exists('text', $colors_ranking[$count]) 
-	       )
+            $teile2 = explode(",",$value);   
+            if ( sizeof($teile2) > 1 )
+            { 
+            if ( !isset($colors_ranking[$count]) )
             {
-            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
-            }  
-            $count++;  
+            $colors_ranking[$count]['von'] = '';
+            $colors_ranking[$count]['bis'] = '';
+            $colors_ranking[$count]['color'] = '';
+            $colors_ranking[$count]['text'] = '';
             }
+            
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+{
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile2 -> '.TVarDumper::dump($teile2,10,TRUE).''),'');    
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' count -> '.TVarDumper::dump($count,10,TRUE).''),'');    
+}            
+              
+            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
+            $count++;
+              }
+            }
+            
+if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+{
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
+}                        
+            
             $this->form->setValue('colors_ranking', null, $colors_ranking);
             
             break;
