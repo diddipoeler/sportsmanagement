@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementModeltemplate
@@ -168,7 +169,63 @@ $app = Factory::getApplication();
          
    } 
 
+	/**
+	 * Method to update one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return
+	 *
+	 * @since
+	 */
+	public function update(&$pks)
+	{
+		$dispatcher = \JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table_row = $this->getTable();
 
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table_row->load($pk))
+			{
+				// Make sure the item is valid
+				if (!$table_row->check())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
 
-    
+				$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+				$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$table_row->template.'.xml';
+
+				// create form containing ALL keys and their default values
+				$form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
+				// set current settings
+				$form->bind(json_decode($table_row->params));
+
+				// get all fields and build key => value pairs ...
+				$fieldsets = $form->getFieldset();
+				$params = array();
+				foreach ($fieldsets as $f)
+				{
+					$params[$f->fieldname] = $f->value;
+				}
+				// .. to generate new JSON setting
+				$table_row->params = json_encode($params);
+
+				// Store the item to the database
+				if (!$table_row->store())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
 }
