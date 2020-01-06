@@ -20,7 +20,7 @@ use Joomla\Registry\Registry;
 ?>
 <!-- START of match summary -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
-<?php
+	<?php
 
 /**
  * workaround to support {jcomments (off|lock)} in match summary
@@ -39,8 +39,8 @@ if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', 
  */
 if (!$commentsDisabled)
 {
-	$commmentsInstance = new sportsmanagementModelComments($this->config);
-	echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2);
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+	echo $commmentsInstance->showMatchComments($this->match, $this->team1, $this->team2, $this->config, $this->project);
 }
 
 	?>

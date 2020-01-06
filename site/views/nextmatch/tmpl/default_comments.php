@@ -28,10 +28,10 @@ if (!$commentsDisabled)
 { ?>
 	<!-- START of match comments -->
 	<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch-comments">
-	<?php	
-	$commmentsInstance = new sportsmanagementModelComments($this->config);
-	echo $commmentsInstance->showMatchComments($this->match, $this->teams[0], $this->teams[1]);
-	?>
+		<?php
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+	echo $commmentsInstance->showMatchComments($this->match, $this->teams[0], $this->teams[1], $this->config, $this->project);
+		?>
 	</div>
 	<?php
 }

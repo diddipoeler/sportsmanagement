@@ -49,6 +49,7 @@ $this->statgames = array();
         }
 		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
 		$this->config['extended_cols'] = $this->overallconfig['extended_cols'];
+		$this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
 
         $this->match = $match;
 

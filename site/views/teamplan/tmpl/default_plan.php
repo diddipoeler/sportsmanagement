@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
-	$commmentsInstance = new sportsmanagementModelComments($this->config);
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
 }
 
 ?>
@@ -1039,7 +1039,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 		if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 		{
 		?>
-		<td class="center"><?php echo $commmentsInstance->showMatchCommentIcon($match,$this->config, $this->project); ?></td>
+		<td class="center"><?php echo $commmentsInstance->showMatchCommentIcon($match, $hometeam, $guestteam, $this->config, $this->project); ?></td>
 		<?php
 		}
 		?>

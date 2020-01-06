@@ -44,7 +44,7 @@ if($this->config['result_style']==2){$nbcols++;}
 if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
 
 if ($this->config['show_comments_count'] > 0){
-	$commmentsInstance = new sportsmanagementModelComments($this->config);
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
 	$nbcols++;
 	$nbcols_header++;
 }
@@ -428,7 +428,7 @@ $link = "javascript:void(0);";
 			?>
 		<!-- show comments -->
 		<td class="center"><?php
-			echo $commmentsInstance->showMatchCommentIcon($game,$this->config, $this->project);
+			echo $commmentsInstance->showMatchCommentIcon($game,$team1, $team2,$this->config, $this->project);
 		?></td>
 		<?php
 		}
