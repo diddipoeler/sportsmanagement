@@ -573,13 +573,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	}
 
 	/**
-	 * sportsmanagementModelPrediction::getPredictionRoundSettings()
+	 * sportsmanagementModelPrediction::getPredictionTippRoundsRatingCharts()
 	 *
 	 * @param   object  $predictionProject
 	 *
-	 * @return array of predition rounds settings for requested preditionproject
+	 * @return array of predition rounds Rating Charts for requested preditionproject
 	 */
-	static function getPredictionRoundSettings($predictionProject)
+	static function getPredictionTippRoundsRatingCharts($predictionProject)
 	{
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
@@ -595,6 +595,74 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			$db->setQuery($query);
 			$result = $db->loadObjectList('round_id');
 
+			return $result;
+		}
+		return false;
+	}
+
+	/**
+	 * sportsmanagementModelPrediction::getPredictionTippRoundsRienNeVaPlusTimes()
+	 *
+	 * @param   object  $predictionProject
+	 * @param   int $timezone
+	 *
+	 * @return array of predition rounds latest times to change bets ("rien ne va plus") for requested preditionproject
+	 */
+	static function getPredictionTippRoundsRienNeVaPlusTimes($predictionProject, $timezone)
+	{
+		// Create a new query object.
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+
+		if ($predictionProject->prediction_id > 0)
+		{
+			$query->select('round_id, rien_ne_va_plus');
+			$query->from('#__sportsmanagement_prediction_tippround as ptr');
+			$query->where('ptr.prediction_id = ' . (int) $predictionProject->prediction_id);
+			$query->where('ptr.published = 1');
+
+			$db->setQuery($query);
+			$result = $db->loadObjectList('round_id');
+
+			// prepare special times to avoid to many db queries
+			if ($result && is_array($result))
+			{
+				foreach ($result AS $r)
+				{
+					switch ($r->rien_ne_va_plus)
+					{
+						case 'FIRSTMATCH_OF_TIPPGAME':
+							$query->clear();
+							$query->select('min(match_date)');
+							$query->from('#__sportsmanagement_match AS m');
+							$query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
+							$query->where('r.project_id = ' . (int) $predictionProject->project_id);
+							$query->where('m.published = 1');
+							$db->setQuery($query);
+
+							$proj_first_match_start_datetime = $db->loadResult();
+							$proj_first_match_start_time  = strtotime($proj_first_match_start_datetime);
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $proj_first_match_start_time), 1, $timezone);
+							break;
+						case 'FIRSTMATCH_OF_TIPPROUND':
+							$query->clear();
+							$query->select('min(match_date)');
+							$query->from('#__sportsmanagement_match');
+							$query->where('round_id = ' . (int) $r->round_id);
+							$query->where('published = 1');
+							$db->setQuery($query);
+
+							$round_first_match_start_datetime = $db->loadResult();
+							$round_first_match_start_time  = strtotime($round_first_match_start_datetime);
+							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $round_first_match_start_time), 1, $timezone);
+							break;
+						case 'BEGIN_OF_MATCH':
+						default:
+							// noting to change, we use match date as latestTimeToBet already
+							break;
+					}
+				}
+			}			
 			return $result;
 		}
 		return false;
@@ -1723,7 +1791,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	static function createRatingChart(&$predictionProject)
 	{
 		// setup predition points information
-		$ratingChart = sportsmanagementModelPrediction::getPredictionRoundSettings($predictionProject);
+		$ratingChart = sportsmanagementModelPrediction::getPredictionTippRoundsRatingCharts($predictionProject);
 		if (!$ratingChart) {
 			$ratingChart = array();
 		}
