@@ -115,11 +115,12 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $this->projectstats = $model->getPlayerStatsByProject($sportstype);
         }
 
-        $extended = '';
-        $extended = sportsmanagementHelper::getExtended($person->extended, 'person');
-        $this->extended = $extended;
+        $this->extended = sportsmanagementHelper::getExtended($person->extended, 'person');
         unset($form_value);
+        if ( $this->extended )
+        {
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
+        }
 
 /**
  * nebenposition vorhanden ?
@@ -127,7 +128,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $this->person_parent_positions = $form_value;
 
         unset($form_value);
+        if ( $this->extended )
+        {
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
+        }
 
         if ($form_value) {
         } else {
