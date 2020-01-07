@@ -115,7 +115,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $this->projectstats = $model->getPlayerStatsByProject($sportstype);
         }
 
-        $this->extended = sportsmanagementHelper::getExtended($person->extended, 'person');
+        $this->extended = sportsmanagementHelper::getExtended($person->extended, 'player');
         unset($form_value);
         if ( $this->extended )
         {
