@@ -182,11 +182,11 @@ $app = Factory::getApplication();
 	{
 		$dispatcher = \JEventDispatcher::getInstance();
 		$pks = (array) $pks;
-		$table_row = $this->getTable();
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
 		{
+			$table_row = $this->getTable();
 			if ($table_row->load($pk))
 			{
 				// Make sure the item is valid
@@ -196,16 +196,53 @@ $app = Factory::getApplication();
 					return false;
 				}
 
+				// TODO Loading Templates and merging current values sould be done in a central method
+				// Now it's done views\template\view.html.php and here:
+
 				$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
 				$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$table_row->template.'.xml';
 
 				// create form containing ALL keys and their default values
-				$form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
+				$form = Form::getInstance($table_row->template, $xmlfile, array('control'=> 'params'));
 				// set current settings
-				$form->bind(json_decode($table_row->params));
+				$form->bind(json_decode($table_row->params, TRUE));
+
+				switch ( $form->getName() )
+				{
+					case 'ranking':
+						$mdlProjecteams = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
+						$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
+						$this->teamscount = $iProjectTeamsCount;
+						$form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
+						$form->setFieldAttribute('colors','type' , 'hidden');
+
+						$colors = $form->getValue('colors');
+						$colors_ranking = $form->getValue('colors_ranking');
+
+						$count = 1;
+						$teile = explode(";", $colors);
+
+						foreach($teile as $key => $value ) if ( $colors )
+							{
+								$teile2 = explode(",",$value);
+								if ( array_key_exists('von', $colors_ranking[$count]) &&
+								     array_key_exists('bis', $colors_ranking[$count]) &&
+								     array_key_exists('color', $colors_ranking[$count]) &&
+								     array_key_exists('text', $colors_ranking[$count])
+								   )
+								{
+									list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
+								}
+								$count++;
+							}
+						$form->setValue('colors_ranking', null, $colors_ranking);
+
+						break;
+				}
 
 				// get all fields and build key => value pairs ...
 				$fieldsets = $form->getFieldset();
+
 				$params = array();
 				foreach ($fieldsets as $f)
 				{
@@ -220,6 +257,11 @@ $app = Factory::getApplication();
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
+				$form->reset();
+				unset($table_row);
+				unset($fieldsets);
+				unset($params);
+				unset($form);
 			}
 		}
 
