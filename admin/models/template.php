@@ -210,7 +210,15 @@ $app = Factory::getApplication();
 				$params = array();
 				foreach ($fieldsets as $f)
 				{
-					$params[$f->fieldname] = $f->value;
+					switch ($f->type) {
+					case  "Spacer":
+					case  "JSMMessage":
+						// Spacers and Message fields are no changeable parameters
+						break;
+					default:
+						$params[$f->fieldname] = $f->value;
+						break;
+					}
 				}
 				// .. to generate new JSON setting
 				$table_row->params = json_encode($params);
@@ -222,10 +230,6 @@ $app = Factory::getApplication();
 					return false;
 				}
 				$form->reset();
-				unset($table_row);
-				unset($fieldsets);
-				unset($params);
-				unset($form);
 			}
 		}
 
