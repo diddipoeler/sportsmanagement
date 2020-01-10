@@ -385,7 +385,7 @@ break;
                     <td>
                 <?PHP
                 //echo 'field_name -> '.$field->name;
-                $suchmuster = array("jform[", "]", "request[");
+                $suchmuster = array("params[", "]", "request[");
                 $ersetzen = array('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
 
@@ -395,7 +395,7 @@ break;
                     default:
                         ?>
                                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $var_onlinehelp; ?>"
+                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                    class="modal">
                     <?php
                     echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
