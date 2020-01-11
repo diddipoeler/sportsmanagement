@@ -242,7 +242,7 @@ switch ($fieldset->name)
                     default:
                 ?>
                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
 									 class="modal">
 									<?php
 									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',

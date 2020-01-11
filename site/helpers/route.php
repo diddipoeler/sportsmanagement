@@ -60,7 +60,7 @@ public static $views = array(
 'referee' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'pid' => ''),	
 'referees' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),	
 'results' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'division' => '', 'mode' => '', 'order' => '', 'layout' => ''),
-'resultsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => ''),
+'resultsranking' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'mode' => '', 'order' => '', 'layout' => '', 'division' => ''),
 'rivals' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => ''),	
 'roster' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'ptid' => ''),
 'staff' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => ''),	
