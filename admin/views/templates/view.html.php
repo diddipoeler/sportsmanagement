@@ -98,6 +98,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
                 ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
             } else {
                 ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+                ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
             }
 
         ToolbarHelper::checkin('templates.checkin');
