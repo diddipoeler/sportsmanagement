@@ -142,13 +142,24 @@ class sportsmanagementModelComments
 		if ($match_id > 0)
 		{
 			$database = JFactory::getDBO();
-			$query = sprintf("SELECT t1.name AS home,t2.name AS away
-									FROM `#__sportsmanagement_match` AS m
-									INNER JOIN #__sportsmanagement_project_team tj1 ON tj1.id=m.projectteam1_id
-									INNER JOIN #__sportsmanagement_team t1 ON t1.id=tj1.team_id
-									INNER JOIN #__sportsmanagement_project_team tj2 ON tj2.id=m.projectteam2_id
-									INNER JOIN #__sportsmanagement_team t2 ON t2.id=tj2.team_id
-									WHERE m.id= '%s'",$match_id);
+			$query = $database->getQuery(true);
+			$query->clear();
+			// Select some fields
+			$query->select(' t1.name AS home,t2.name AS away ');
+			// From
+			$query->from('#__sportsmanagement_match AS m');
+			// Join
+			$query->join('LEFT',' #__sportsmanagement_project_team as pt1 ON pt1.id = m.projectteam1_id ');
+			$query->join('LEFT',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+			$query->join('LEFT',' #__sportsmanagement_team as t1 ON st1.team_id = t1.id ');
+
+			$query->join('LEFT',' #__sportsmanagement_project_team as pt2 ON pt2.id = m.projectteam2_id ');
+			$query->join('LEFT',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+			$query->join('LEFT',' #__sportsmanagement_team as t2 ON st2.team_id = t2.id ');
+
+			// Where
+			$query->where('m.id= '.$match_id);
+
 			$database->setQuery($query);
 			$teamnames = $database->loadAssoc();
 			//echo"<pre>".print_r($teamnames)."</pre>";
@@ -254,8 +265,8 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 	 */
 	function showMatchComments(&$match, &$hometeam, &$guestteam, &$config, &$project)
 	{
-		// TODO: probably we can add an seamless preview her using the 
-		// KunenaForum::display('topics', $layout, null, $this->params); method 
+		// TODO: probably we can add an seamless preview her using the
+		// KunenaForum::display('topics', $layout, null, $this->params); method
 		// as done in kunenalatest module, but it wasn't a quick implementation
 
 		if (!isset($config['show_comments_count']))
