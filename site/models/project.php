@@ -242,9 +242,16 @@ $result = $db->execute();
         $query->from('#__sportsmanagement_sports_type');
         $query->where('id = ' . self::$_project->sports_type_id);
         $db->setQuery($query);
+		try{
         $useeventtime = $db->loadResult();
         self::$_project->useeventtime = $useeventtime;
-		
+		}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+	self::$_project->useeventtime = false;
+}
             if ( self::$_project)
             {
             self::$projectslug = self::$_project->slug;
