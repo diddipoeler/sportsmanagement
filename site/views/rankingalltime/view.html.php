@@ -34,6 +34,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView {
     function init() {
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->projectids = $this->model->getAllProject();
+     $this->projectnames = $this->model->getAllProjectNames();
         $project_ids = implode(",", $this->projectids);
         $this->project_ids = $project_ids;
         $this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
