@@ -688,7 +688,46 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 		}
 		return $colors;
 	}
-    
+
+	
+    function getAllProjectNames()
+    {
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $jinput = $app->input;
+        $league = $jinput->request->get('l', 0, 'INT');
+       
+	$db = Factory::getDBO();
+	$query = Factory::getDbo()->getQuery(true);
+
+        if (!$league) 
+        {
+        $projekt = $jinput->request->get('p', 0, 'INT');
+        $query->clear();
+	$query->select('league_id');
+	$query->from('#__sportsmanagement_project');
+        $query->where('id = ' . $projekt);
+        $query->order('name ');
+        $db->setQuery($query);
+        $league = $db->loadResult();
+
+        }
+
+$query->clear();
+$query->select('p.id,p.name');
+$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');	    
+$query->from('#__sportsmanagement_project as p');
+$query->where('p.league_id = ' . $league);
+$query->order('name ');
+$db->setQuery($query);
+$result = $db->loadObjectList();        
+       
+
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $result;
+
+    }
+	
     /**
      * sportsmanagementModelRankingAllTime::getAllProject()
      * 
