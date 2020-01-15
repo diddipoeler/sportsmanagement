@@ -138,7 +138,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 		$user	= Factory::getUser();
-
+$country = '';
 		// load plugin params info
 		$plugin			= JPluginHelper::getPlugin('search','search_sportsmanagement');
 		$search_clubs 		= $this->params->def('search_clubs', 		1 );
@@ -173,6 +173,11 @@ $escape = 'getEscaped';
 			case 'any':
 			default:
 				$words = explode( ' ', $text );
+            
+//echo '<pre>'.print_r($words,true).'</pre>';            
+            
+            
+            
 				$wheres = array();
 				$wheresteam = array();
 				$wheresperson = array();
@@ -183,6 +188,22 @@ $escape = 'getEscaped';
 				{
 					foreach ($words as $word)
 					{
+                      
+$suchpattern="/\[(.*)\]/";
+preg_match ($suchpattern, $word, $match); //Search-String
+//echo 'wort <pre>'.print_r($word,true).'</pre>';                      
+//echo 'treffer <pre>'.print_r($match,true).'</pre>';                      
+
+                      
+                      
+                      if ( $match[1] )
+                      {
+                      //$wheres[] 	= 'c.country LIKE '.$match[1]; 
+                        $country = $match[1];
+                        //$wheres[] 	= 'c.country LIKE '.$db->Quote(''.$match[1].'');
+                      }
+                      else
+                      {
 						$word		= $db->Quote( '%'.$db->$escape( $word, true ).'%', false );
 						$wheres2 	= array();
 						$wheres2[] 	= 'c.name LIKE '.$word;
@@ -191,7 +212,15 @@ $escape = 'getEscaped';
                         $wheres2[] 	= 'c.unique_id LIKE '.$word;
 
 						$wheres[] 	= implode( ' OR ', $wheres2 );
+                      }
+                      
 					}
+                  
+                  if ( $match[1] )
+                      {
+                    array_pop($words);
+                  }
+                  
 				}
 
 
@@ -281,6 +310,10 @@ $escape = 'getEscaped';
             $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
 
 			$query->where(" ( ".$where." ) ");
+          if ( $country )
+          {
+          $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
+          }
             $query->group('c.name');
             $query->order('c.name');
             
@@ -320,6 +353,10 @@ $escape = 'getEscaped';
             $query->join('INNER', '#__sportsmanagement_club AS c on c.id = t.club_id');
 
 			$query->where(" ( ".$whereteam." ) ");
+          if ( $country )
+          {
+          $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
+          }
             $query->group('t.name');
             $query->order('t.name');
             
