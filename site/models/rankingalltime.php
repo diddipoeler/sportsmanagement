@@ -714,11 +714,12 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
         }
 
 $query->clear();
-$query->select('p.id,p.name');
+$query->select('p.id,p.name,s.name as seasonname');
 $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');	    
 $query->from('#__sportsmanagement_project as p');
+$query->join('INNER','#__sportsmanagement_season AS s ON p.season_id = s.id '); 	    
 $query->where('p.league_id = ' . $league);
-$query->order('name ');
+$query->order('s.name DESC ');
 $db->setQuery($query);
 $result = $db->loadObjectList();        
        
