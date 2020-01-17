@@ -52,7 +52,7 @@ $results = $this->jsmdb->loadObjectList('projectteam1_id');
     $results = '';
 }
 	
-foreach ( $results as $key => $value )
+foreach ( $results as $key => $value ) if ($results )
 {
 $division_teams[$key] = $key;
 }
