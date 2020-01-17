@@ -452,7 +452,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			?>
 			<td width="10%" id="teamplan-spieldatum">
             <?php
-        if ( $this->config['show_date_image'] )
+        if ( $this->config['show_date_image'] && !strstr($match->match_date,"0000-00-00") )
         {
 $jdate = Factory::getDate($match->match_date);
 $jdate->setTimezone(new DateTimeZone($this->project->timezone));    
@@ -476,7 +476,7 @@ $temp3 = $jdate->format('D');
 			}
 			else
 			{
-				echo "&nbsp;";
+				echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
 			}    
         }    
             
