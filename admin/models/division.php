@@ -35,7 +35,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
  */
 function count_teams_division($division_id = 0)
 {
-$results = '';    
+$results = array();    
 $division_teams = array();
 try {	
 $this->jsmquery->clear();
@@ -49,10 +49,10 @@ $results = $this->jsmdb->loadObjectList('projectteam1_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    $results = '';
+    $results = array();
 }
 	
-foreach ( $results as $key => $value ) if ($results )
+foreach ( $results as $key => $value ) 
 {
 $division_teams[$key] = $key;
 }
@@ -69,7 +69,7 @@ $results = $this->jsmdb->loadObjectList('projectteam2_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    $results = '';
+    $results = array();
     //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 	
@@ -88,7 +88,7 @@ $results = $this->jsmdb->loadObjectList('id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    $results = '';
+    $results = array();
     //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 
