@@ -50,7 +50,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	protected function addToolbar()
 	{
 		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
-        if ( $this->user == 'admin' )
+        if ( $this->user->username == 'admin' )
         {
         ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);    
         }
