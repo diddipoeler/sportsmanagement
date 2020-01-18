@@ -9,7 +9,6 @@
  * @subpackage divisions
  */
 
-
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
@@ -35,15 +34,12 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-
         $lists = array();
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+	    $this->projectws = $mdlProject->getProject($this->project_id);
         $this->table = Table::getInstance('division', 'sportsmanagementTable');
-        $this->projectws = $project;
 		$this->lists = $lists;
-
 	}
 	
 	/**
@@ -53,9 +49,11 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-        // Set toolbar items for the page
 		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
-        
+        if ( $this->user == 'admin' )
+        {
+        ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);    
+        }
         ToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
 		ToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         ToolbarHelper::checkin('divisions.checkin');
