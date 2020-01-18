@@ -125,16 +125,6 @@ class sportsmanagementModelDivisions extends JSMModelList
 		return $this->jsmquery;
 	}
 
-
-function divisiontoproject()
-{
-$post = $this->jsmjinput->post->getArray(array());    
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
-    
-}
-
-
-	
 	/**
 	* Method to return a divisions array (id, name)
 	*

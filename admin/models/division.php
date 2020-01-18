@@ -26,6 +26,12 @@ use Joomla\CMS\Filter\OutputFilter;
 class sportsmanagementModeldivision extends JSMModelAdmin
 {
 
+function divisiontoproject()
+{
+$post = $this->jsmjinput->post->getArray(array());    
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+    
+}
 
 /**
  * sportsmanagementModeldivision::count_teams_division()

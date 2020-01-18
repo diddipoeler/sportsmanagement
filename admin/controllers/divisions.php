@@ -9,7 +9,6 @@
  * @subpackage controllers
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
  
@@ -41,6 +40,13 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 
 		//$this->registerTask('saveshort',	'saveshort');
 	}
+
+function divisiontoproject()
+{
+$model = $this->getModel();
+$result = $model->divisiontoproject();
+    
+}    
 
 	/**
 	 * sportsmanagementControllerdivisions::saveOrder()
