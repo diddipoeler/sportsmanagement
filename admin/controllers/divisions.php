@@ -44,8 +44,8 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 function divisiontoproject()
 {
 $model = $this->getModel();
-$result = $model->divisiontoproject();
-    
+$msg = $model->divisiontoproject();
+$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project_id,$msg);    
 }    
 
 	/**
