@@ -102,13 +102,11 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-        // Create a new query object.		
 		$this->jsmquery->clear();
         $this->jsmquery->select('dv.*,dvp.name AS parent_name,u.name AS editor');
         $this->jsmquery->from('#__sportsmanagement_division AS dv');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_division AS dvp ON dvp.id = dv.parent_id');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
-
         $this->jsmquery->where(' dv.project_id = ' . self::$_project_id);
         
         if ($this->getState('filter.search') )
@@ -128,6 +126,12 @@ class sportsmanagementModelDivisions extends JSMModelList
 	}
 
 
+function divisiontoproject()
+{
+$post = $this->jsmjinput->post->getArray(array());    
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+    
+}
 
 
 	
