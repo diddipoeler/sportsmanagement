@@ -61,6 +61,9 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> 
 //$orig_table = $this->getTable('project');
 $orig_table = clone $this->getTable('project');  
 $orig_table->load((int) $project_id);
+$orig_table->id = NULL;
+$orig_table->name = $reaulseasonname.' '.$reaulseasonname;
+$orig_table->alias = OutputFilter::stringURLSafe( $orig_table->name );
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
 
 
