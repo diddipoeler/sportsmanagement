@@ -39,6 +39,15 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.p
 $divisions = $post['cid'];
 $project_id = $post['pid'];
 
+$this->jsmquery->clear();
+$this->jsmquery->select('s.name');
+$this->jsmquery->from('#__sportsmanagement_season AS s');
+$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id = s.id');
+$this->jsmquery->where('p.id = ' . $project_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$reaulseasonname = $this->jsmdb->loadResult();
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
+
 foreach ($divisions as $key => $value ) {
 $this->jsmquery->clear();
 $this->jsmquery->select('dv.name');
@@ -49,15 +58,9 @@ $this->jsmdb->setQuery( $this->jsmquery );
 $resultdvname = $this->jsmdb->loadResult();
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
 
-$this->jsmquery->clear();
-$this->jsmquery->select('s.name');
-$this->jsmquery->from('#__sportsmanagement_season AS s');
-$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id = s.id');
-$this->jsmquery->where('p.id = ' . $project_id);
-$this->jsmdb->setQuery($this->jsmquery);
-$reaulseasonname = $this->jsmdb->loadResult();
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
-
+$orig_table = $this->getTable(); 
+$orig_table->load((int) $project_id);
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
 
 
 
