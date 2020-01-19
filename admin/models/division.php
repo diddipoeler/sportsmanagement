@@ -49,6 +49,19 @@ $this->jsmdb->setQuery( $this->jsmquery );
 $resultdvname = $this->jsmdb->loadResult();
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
 
+$this->jsmquery->clear();
+$this->jsmquery->select('s.name');
+$this->jsmquery->from('#__sportsmanagement_season AS s');
+$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id = s.id');
+$this->jsmquery->where('p.id = ' . $project_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$reaulseasonname = $this->jsmdb->loadResult();
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
+
+
+
+
+
 }
     
 }
