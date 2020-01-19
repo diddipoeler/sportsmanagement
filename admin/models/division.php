@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeldivision
@@ -64,7 +65,7 @@ $orig_table->load((int) $project_id);
 $orig_table->id = NULL;
 $orig_table->name = $resultdvname.' '.$reaulseasonname;
 $orig_table->alias = OutputFilter::stringURLSafe( $orig_table->name );
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
 
 try {
 $result = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
@@ -80,7 +81,12 @@ $conditions = array(
 );
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
+try{
 $result = $this->jsmdb->execute();
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                       
 
 // Conditions for which records should be updated.
 $conditions = array(
@@ -89,11 +95,17 @@ $conditions = array(
 );
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
+try{
 $result = $this->jsmdb->execute();
-
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                       
 
 
 } catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
 }                            
 
 
