@@ -99,7 +99,8 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 $this->jsmquery->clear();
 // Conditions for which records should be updated.
 $conditions = array(
-    $this->jsmdb->quoteName('division_id') . ' = '.$value, 
+    $this->jsmdb->quoteName('division_id') . ' = '.$value,
+    $this->jsmdb->quoteName('use_finally') . ' = 0',  
     $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
 );
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
