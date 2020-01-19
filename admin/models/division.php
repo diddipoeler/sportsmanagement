@@ -34,7 +34,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 function divisiontoproject()
 {
 $post = $this->jsmjinput->post->getArray(array());    
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
 
 $divisions = $post['cid'];
 $project_id = $post['pid'];
@@ -46,7 +46,7 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id 
 $this->jsmquery->where('p.id = ' . $project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $reaulseasonname = $this->jsmdb->loadResult();
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
 
 foreach ($divisions as $key => $value ) {
 $this->jsmquery->clear();
@@ -56,7 +56,7 @@ $this->jsmquery->where('dv.project_id = ' . $project_id);
 $this->jsmquery->where('dv.id = ' . $value);
 $this->jsmdb->setQuery( $this->jsmquery );
 $resultdvname = $this->jsmdb->loadResult();
-$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
 
 //$orig_table = $this->getTable('project');
 $orig_table = clone $this->getTable('project');  
@@ -68,6 +68,31 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <p
 
 try {
 $result = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
+$new_project_id = $this->jsmdb->insertid();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_id') . ' = ' . $new_project_id
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('id') . ' = '.$value, 
+    $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('division_id') . ' = '.$value, 
+    $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
+
+
+
 } catch (Exception $e) {
 }                            
 
