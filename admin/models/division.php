@@ -66,10 +66,19 @@ $orig_table->id = NULL;
 $orig_table->name = $resultdvname.' '.$reaulseasonname;
 $orig_table->alias = OutputFilter::stringURLSafe( $orig_table->name );
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
-
+$new_project_id = 0;
 try {
 $result = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
 $new_project_id = $this->jsmdb->insertid();
+
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                            
+
+if ( $new_project_id )
+{
+$this->jsmquery->clear();    
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('project_id') . ' = ' . $new_project_id
@@ -82,12 +91,12 @@ $conditions = array(
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
 try{
-$result = $this->jsmdb->execute();
+$resultupdate1 = $this->jsmdb->execute();
 } catch (Exception $e) {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
 }                       
-
+$this->jsmquery->clear();
 // Conditions for which records should be updated.
 $conditions = array(
     $this->jsmdb->quoteName('division_id') . ' = '.$value, 
@@ -96,18 +105,13 @@ $conditions = array(
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
 try{
-$result = $this->jsmdb->execute();
+$resultupdate2 = $this->jsmdb->execute();
 } catch (Exception $e) {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
 }                       
-
-
-} catch (Exception $e) {
-Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
-}                            
-
+    
+}
 
 }
     
