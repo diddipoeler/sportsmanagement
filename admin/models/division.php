@@ -26,10 +26,30 @@ use Joomla\CMS\Filter\OutputFilter;
 class sportsmanagementModeldivision extends JSMModelAdmin
 {
 
+/**
+ * sportsmanagementModeldivision::divisiontoproject()
+ * 
+ * @return void
+ */
 function divisiontoproject()
 {
 $post = $this->jsmjinput->post->getArray(array());    
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+
+$divisions = $post['cid'];
+$project_id = $post['pid'];
+
+foreach ($divisions as $key => $value ) {
+$this->jsmquery->clear();
+$this->jsmquery->select('dv.name');
+$this->jsmquery->from('#__sportsmanagement_division AS dv');
+$this->jsmquery->where('dv.project_id = ' . $project_id);
+$this->jsmquery->where('dv.id = ' . $value);
+$this->jsmdb->setQuery( $this->jsmquery );
+$resultdvname = $this->jsmdb->loadResult();
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
+
+}
     
 }
 
