@@ -58,7 +58,8 @@ $this->jsmdb->setQuery( $this->jsmquery );
 $resultdvname = $this->jsmdb->loadResult();
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
 
-$orig_table = $this->getTable('project'); 
+//$orig_table = $this->getTable('project');
+$orig_table = clone $this->getTable('project');  
 $orig_table->load((int) $project_id);
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
 
