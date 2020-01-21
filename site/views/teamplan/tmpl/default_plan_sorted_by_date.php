@@ -493,7 +493,7 @@ $routeparameter['mid'] = $match->match_slug;
         
             }
                 
-			$score = "<td align='center' id='teamplanresult'>".$result.'</td>';
+			$score = "<td align='center' id='teamplanresult'>".$result.' '.$history_link.'</td>';
 		}
 		else
 		{
