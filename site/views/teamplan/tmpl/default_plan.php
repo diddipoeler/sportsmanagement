@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+$history_link = '';
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
 	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
@@ -270,6 +270,17 @@ $nbcols = 0;
 
 	foreach( $this->matches as $match )
 	{
+		
+if ( $this->config['show_historylink'] ) 
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);	
+}
+		
 		$hometeam = $this->teams[$match->projectteam1_id];
 		$home_projectteam_id = $hometeam->projectteamid;
 
