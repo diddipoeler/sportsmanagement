@@ -889,6 +889,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				break;
 		}
+if ( $history_link )
+        {
+        ?>   
+		<td>
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+	</td>
+        <?php    
+        }		
+		
 		?>
 
 		<?php
