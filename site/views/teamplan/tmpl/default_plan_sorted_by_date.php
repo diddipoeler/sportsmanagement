@@ -493,7 +493,8 @@ $routeparameter['mid'] = $match->match_slug;
         
             }
                 
-			$score = "<td align='center' id='teamplanresult'>".$result.' '.$history_link.'</td>';
+			$score = "<td align='center' id='teamplanresult'>".$result;
+			$score .= '</td>';
 		}
 		else
 		{
@@ -529,6 +530,19 @@ $routeparameter['mid'] = $match->match_slug;
 				}
 				break;
 		}
+if ( $history_link )
+        {
+        ?>    
+		<td id ="teamplanhistory">
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+					</td>
+        <?php    
+        }				
 		?>
 
 		<?php
