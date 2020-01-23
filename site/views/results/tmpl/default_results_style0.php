@@ -70,14 +70,14 @@ if ( $this->config['show_comments_count'] )
     	?>
 	<!-- DATE HEADER -->
     <thead>
-	<tr id="" class="" >
+	<tr id="results-header" class="" >
 
 		<?php
         $timestamp = strtotime($date);
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
 		{
 			?>
-			<th colspan="<?php echo $nbcols-$nbcols_header; ?>">
+			<th id="results-header-head" colspan="<?php echo $nbcols-$nbcols_header; ?>">
             <?php 
             if ( !$timestamp )
     {
