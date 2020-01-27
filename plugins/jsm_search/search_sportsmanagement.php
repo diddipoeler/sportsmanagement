@@ -314,7 +314,7 @@ preg_match ($suchpattern, $word, $match); //Search-String
           {
           $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
           }
-            $query->group('c.name');
+            $query->group('c.name,c.country');
             $query->order('c.name');
             
             $db->setQuery( $query );
@@ -357,7 +357,7 @@ preg_match ($suchpattern, $word, $match); //Search-String
           {
           $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
           }
-            $query->group('t.name');
+            $query->group('t.name,c.country');
             $query->order('t.name');
             
             $db->setQuery( $query );
