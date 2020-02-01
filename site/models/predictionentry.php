@@ -249,18 +249,15 @@ public $_predictionGame	= null;
     public static function getTippCount($predictionProjectID,$matchID,$total=3)
 	{
     $app = Factory::getApplication();
-    // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-    // Create a new query object.		
-		$db = Factory::getDBO();
-		$query = $db->getQuery(true);
-        // Select some fields
-        $query->select('count(tipp)');
-        $query->from('#__sportsmanagement_prediction_result');
-		$query->where('prediction_id = ' . (int) sportsmanagementModelPrediction::$predictionGameID );
-        $query->where('project_id = ' . (int) $predictionProjectID  );
-        $query->where('match_id = ' . (int) $matchID  );
+    $jinput = $app->input;
+    $option = $jinput->getCmd('option');
+	$db = Factory::getDBO();
+	$query = $db->getQuery(true);
+    $query->select('count(tipp)');
+    $query->from('#__sportsmanagement_prediction_result');
+	$query->where('prediction_id = ' . (int) sportsmanagementModelPrediction::$predictionGameID );
+    $query->where('project_id = ' . (int) $predictionProjectID  );
+    $query->where('match_id = ' . (int) $matchID  );
         
         switch ($total)
         {

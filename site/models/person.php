@@ -123,21 +123,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
         self::updateHits(self::$personid,$inserthits); 
         
-       // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-		$query = $db->getQuery(true);
-
-		// Select some fields
-		$query->select('p.*');
-        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
-        $query->from('#__sportsmanagement_person AS p ');
-        $query->where('p.id = '.$db->Quote(self::$personid));
-
-		$db->setQuery($query);
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+	$query = $db->getQuery(true);
+	$query->select('p.*');
+    $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
+    $query->from('#__sportsmanagement_person AS p ');
+    $query->where('p.id = '.$db->Quote(self::$personid));
+	$db->setQuery($query);
                 
-		self::$person = $db->loadObject();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		return self::$person;
+	self::$person = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	return self::$person;
 	}
 
 
