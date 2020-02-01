@@ -79,9 +79,9 @@ if ( $this->config['show_comments_count'] )
 			?>
 			<th id="results-header-head-column-count" colspan="<?php echo $nbcols-$nbcols_header; ?>">
             <?php 
-            if ( !$timestamp )
+            if ( !$timestamp || $date = "0000-00-00" )
     {
-        echo '';
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
     else
     {
