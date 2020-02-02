@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+$history_link = '';
 if ( !isset($this->config['show_matchreport_column']) ) 
 {
     $this->config['show_matchreport_column'] = 0;
@@ -237,8 +237,18 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			$class1	= 'right';
 			$class2	= 'left';
 		}
+				
+if ( $this->config['show_historylink'] ) 
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);	
+}
+				
 		if ($this->config['show_teamplan_link']) {
-			
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
@@ -253,9 +263,6 @@ $routeparameter['division'] = $match->division_slug;
 $routeparameter['mode'] = 0;
 $routeparameter['ptid'] = 0;
 $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-			
-			
-
 		} else {
 			$homelink = null;
 			$awaylink = null;
@@ -486,7 +493,8 @@ $routeparameter['mid'] = $match->match_slug;
         
             }
                 
-			$score = "<td align='center'>".$result.'</td>';
+			$score = "<td align='center' id='teamplanresult'>".$result;
+			$score .= '</td>';
 		}
 		else
 		{
@@ -522,6 +530,19 @@ $routeparameter['mid'] = $match->match_slug;
 				}
 				break;
 		}
+if ( $history_link )
+        {
+        ?>    
+		<td id ="teamplanhistory">
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+					</td>
+        <?php    
+        }				
 		?>
 
 		<?php

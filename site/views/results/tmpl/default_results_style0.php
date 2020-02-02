@@ -70,18 +70,18 @@ if ( $this->config['show_comments_count'] )
     	?>
 	<!-- DATE HEADER -->
     <thead>
-	<tr id="" class="" >
+	<tr id="results-header" class="" >
 
 		<?php
         $timestamp = strtotime($date);
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
 		{
 			?>
-			<th colspan="<?php echo $nbcols-$nbcols_header; ?>">
+			<th id="results-header-head-column-count" colspan="<?php echo $nbcols-$nbcols_header; ?>">
             <?php 
-            if ( !$timestamp )
+            if ( !$timestamp || $date = "0000-00-00" )
     {
-        echo '';
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
     else
     {
@@ -96,22 +96,22 @@ if ( $this->config['show_comments_count'] )
             <?php
             if ($this->config['show_attendance_column']) {
 				?>
-				<th class="right"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
+				<th id="results-header-attendance" class="right"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
 			<?php
 			}
             if ($this->config['show_comments_count'] > 0) {
 				?>
-				<th class="center"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
+				<th id="results-header-comments" class="center"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
 			<?php
 			}
 
 		} else {
 			?>
-			<th colspan="<?php echo $nbcols; ?>">
+			<th id="results-header-head" colspan="<?php echo $nbcols; ?>">
             <?php 
-            if ( !$timestamp )
+            if ( !$timestamp || $date = "0000-00-00" )
     {
-        echo '';
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
     else
     {

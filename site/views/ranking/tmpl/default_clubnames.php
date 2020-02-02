@@ -18,6 +18,18 @@ use Joomla\CMS\Language\Text;
 <?php
 if ($this->clubnames) {
 ?>
+<div class="panel-group" id="countresult">  
+<div class="panel panel-default">
+<div class="panel-heading">  
+<h4 class="panel-title">  
+<a class="" data-toggle="collapse" data-parent="#countresult" href="#collapseprojectclubnames" >
+<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_CLUBNAMES'); ?>
+</a>
+</h4> 
+</div>
+<div class="collapse" id="collapseprojectclubnames">
+<div class="card card-body">
+  
 <table class="<?PHP echo $this->config['table_class']; ?>">    
 <?php    
 foreach ( $this->clubnames as $key => $value )
@@ -35,6 +47,10 @@ foreach ( $this->clubnames as $key => $value )
 }   
 ?>    
 </table>    
+</div>
+</div>  
+</div>  
+</div>  
 <?php    
 } else {
 ?>

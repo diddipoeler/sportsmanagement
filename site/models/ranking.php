@@ -525,22 +525,18 @@ self::$to = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementM
 	 */
 	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
-	   $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-		$query = $db->getQuery(true);
-        $starttime = microtime(); 
+    $app = Factory::getApplication();
+    $option = $app->input->getCmd('option');
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+	$query = $db->getQuery(true);
+    $starttime = microtime(); 
         
-        // Select some fields
-		$query->select('id');
-        $query->from('#__sportsmanagement_round');
-        $query->where('project_id = ' . self::$projectid);
-        $query->order('roundcode ASC');
+	$query->select('id');
+    $query->from('#__sportsmanagement_round');
+    $query->where('project_id = ' . self::$projectid);
+    $query->order('roundcode ASC');
 
-		$db->setQuery($query);
-        
-        
+	$db->setQuery($query);
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {

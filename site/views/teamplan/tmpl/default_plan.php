@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+$history_link = '';
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
 	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
@@ -270,6 +270,17 @@ $nbcols = 0;
 
 	foreach( $this->matches as $match )
 	{
+		
+if ( $this->config['show_historylink'] ) 
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);	
+}
+		
 		$hometeam = $this->teams[$match->projectteam1_id];
 		$home_projectteam_id = $hometeam->projectteamid;
 
@@ -490,7 +501,7 @@ $temp3 = $jdate->format('D');
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"id="teamplan-spieluhrzeit" ><?php echo sportsmanagementHelperHtml::showMatchTime($match,
+		<td width="10%" id="teamplan-spieluhrzeit" ><?php echo sportsmanagementHelperHtml::showMatchTime($match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>
@@ -562,7 +573,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		{
 			case 1 :
 				{
-					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
 					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
 						1,
 						0,
@@ -574,7 +585,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
-					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= '<td class="'.$class2.'"  id="teamplan-spielgastlogo">';
 					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
 						1,
 						0,
@@ -590,7 +601,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                 
             case 5 :
             {
-					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
 					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
 						1,
 						0,
@@ -602,7 +613,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
-					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= '<td class="'.$class2.'" id="teamplan-spielgastlogo">';
 					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
 						1,
 						0,
@@ -618,7 +629,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             
             case 6 :
             {
-					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
 					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
 						1,
 						0,
@@ -630,7 +641,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
-					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= '<td class="'.$class2.'" id="teamplan-spielgastlogo">';
 					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
 						1,
 						0,
@@ -646,11 +657,11 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 
 			case 2 :
 				{
-					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
 					$teamA .= JSMCountries::getCountryFlag($hometeam->country);
 					$teamA .= '</td>';
 
-					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= '<td class="'.$class2.'" id="teamplan-spielgastlogo">';
 					$teamB .= JSMCountries::getCountryFlag($guestteam->country);
 					$teamB .= '</td>';
 				}
@@ -658,7 +669,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 
 			case 3:
 				{
-					$teamA .= '<td class="'.$class1.'">';
+					$teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
 					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture,
 										$hometeam->name,
 										$this->config['team_picture_width'],
@@ -666,7 +677,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 
 					$teamA .= '</td>';
 
-					$teamB .= '<td class="'.$class2.'">';
+					$teamB .= '<td class="'.$class2.'" id="teamplan-spielgastlogo">';
 					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture,
 										$guestteam->name,
 										$this->config['team_picture_width'],
@@ -676,12 +687,12 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 				break;
 		}
 
-		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
+		$seperator ='<td width="10" id="teamplan-sepeator">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
 		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 		
-		$teamB .= '<td class="'.$class2.'">'.$away.'</td>';
+		$teamB .= '<td class="'.$class2.'" id="teamplan-spielgast">'.$away.'</td>';
 
 		if (!$match->cancel)
 		{
@@ -842,11 +853,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
             }
 
-			$score = "<td class='center'>".$result.'</td>';
+			$score = "<td class='center' id='teamplan-ergebnis'>".$result.'</td>';
 		}
 		else
 		{
-			$score='<td>'.Text::_($match->cancel_reason).'</td>';
+			$score='<td id="teamplan-ergebnis">'.Text::_($match->cancel_reason).'</td>';
 		}
 
 		switch ($this->config['result_style'])
@@ -878,6 +889,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				break;
 		}
+if ( $history_link )
+        {
+        ?>   
+		<td>
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+	</td>
+        <?php    
+        }		
+		
 		?>
 
 		<?php
