@@ -596,9 +596,9 @@ foreach ($computedMembersRanking AS $key => $value)
                             
                             if ( isset($champLogo->name) )
                             {
-                            $imgTitle = $champLogo->name;
-
-                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key,$champLogo->logo_big,$imgTitle,'20'); 
+                                $imgTitle = $champLogo->name;
+                                $champion_logo_size = $this->config['champion_logo_size'];
+                                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key,$champLogo->$champion_logo_size ,$imgTitle,'20'); 
                             }
                             else
                             {

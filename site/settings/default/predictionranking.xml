@@ -120,6 +120,14 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		<field 	name="champion_logo_size" type="list" default="logo_big"
+			label="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_LABEL_SHOW_TEAM_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_DESCR_SHOW_TEAM_PICTURE">
+			<option value="logo_small">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_SMALL</option>
+			<option value="logo_middle">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_MIDDLE</option>
+			<option value="logo_big">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_BIG</option>
+		</field>		
+
 		<field	name="show_average_points" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_AVERAGE_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_AVERAGE_POINTS">
