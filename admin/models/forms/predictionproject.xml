@@ -206,7 +206,7 @@ type="projectteamlist"
 varname="cid"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
-multiple="true"
+multiple="false"
 size="10"
 class="inputbox"/>	
 			
