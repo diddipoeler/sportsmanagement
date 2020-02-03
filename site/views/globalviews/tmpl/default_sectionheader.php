@@ -366,7 +366,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     <table class="table">
 	<tr>
 		<td class="contentheading"><?php
-        if ( $this->match->match_date = "0000-00-00" )
+        if ( $this->match->match_date == "0000-00-00" )
     {
         echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
