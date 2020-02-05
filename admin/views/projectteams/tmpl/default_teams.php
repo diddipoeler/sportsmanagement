@@ -28,10 +28,7 @@ var teampicture = new Array;
 <?php
 foreach ( $this->projectsbyleagueseason as $key => $value )
 {
-
-//$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
-
-echo 'teampicture['.($key).']=\''.$value."';\n";
+echo 'teampicture['.($value->value).']=\''.$value->picture."';\n";
 }
 ?>
 </script>
