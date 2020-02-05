@@ -67,7 +67,18 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$db->setQuery($query);
 		return $db->loadObject();
 	}
-    
+
+public static function getProjectsbyCurrentProjectLeagueSeason($project_id)
+{
+$app = Factory::getApplication();
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$db = sportsmanagementHelper::getDBConnection(); 
+$query = $db->getQuery(true);	
+	
+	
+}
+	
     /**
 	 * return 
 	 *
