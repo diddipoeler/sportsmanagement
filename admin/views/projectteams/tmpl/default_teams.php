@@ -23,6 +23,32 @@ $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;
 $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server','') ;
 
+// some CSS
+$this->document->addStyleDeclaration('
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}');
+// string $opt - second parameter of formbehavior2::select2
+// for details http://ivaynberg.github.io/select2/
+$opt = ' allowClear: true,
+   width: "50%",
+   formatResult: function format(state) 
+   {  
+   var originalOption = state.element;
+   var picture;
+   picture = teampicture[state.id];
+   if (!state.id) 
+   return state.text; 
+   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
+   },
+   
+   escapeMarkup: function(m) { return m; }
+';
+
 ?>
 
 	<div  class="table-responsive" id="editcell">
@@ -327,6 +353,7 @@ $this->modalheight);
 echo $row->name; ?>
 <br>
 <?
+HTMLHelper::_('formbehavior2.select2', '.test1', $opt);			
 echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id'.$row->id,
 'style="width:225px;" class="test1" size="1"'.'','value','text',$this->project_id);			
 ?>
