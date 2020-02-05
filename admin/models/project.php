@@ -80,6 +80,7 @@ $query->select('id as value,name as text,name as info,picture as picture');
 $query->from('#__sportsmanagement_project');
 $query->where('season_id = ' . $season_id);
 $query->where('league_id = ' . $league_id);	
+$query->order('name');	
 $db->setQuery($query);
 $result = $db->loadObjectList();	
 return $result;	
