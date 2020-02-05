@@ -75,8 +75,14 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $db = sportsmanagementHelper::getDBConnection(); 
 $query = $db->getQuery(true);	
-	
-	
+$query	= $db->getQuery(true);
+$query->select('id as value,name as text');
+$query->from('#__sportsmanagement_project');
+$query->where('season_id = ' . $season_id);
+$query->where('league_id = ' . $league_id);	
+$db->setQuery($query);
+$result = $db->loadObjectList();	
+return $result;	
 }
 	
     /**
