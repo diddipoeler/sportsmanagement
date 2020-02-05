@@ -355,7 +355,7 @@ echo $row->name; ?>
 <?
 HTMLHelper::_('formbehavior2.select2', '.test1', $opt);			
 echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id'.$row->id,
-'style="width:225px;" class="test1" size="1"'.'','value','text',$this->project_id);			
+'style="width:225px;" class="test1" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.'','value','text',$this->project_id);			
 ?>
 </td>
 <td class="center">
