@@ -68,7 +68,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		return $db->loadObject();
 	}
 
-public static function getProjectsbyCurrentProjectLeagueSeason($project_id)
+public static function getProjectsbyCurrentProjectLeagueSeason($season_id,$league_id)
 {
 $app = Factory::getApplication();
 $jinput = $app->input;
