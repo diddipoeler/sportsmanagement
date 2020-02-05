@@ -327,7 +327,7 @@ $this->modalheight);
 echo $row->name; ?>
 <br>
 <?
-echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id',
+echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id'.$row->id,
 'style="width:225px;" class="test1" size="1"'.'','value','text',$this->project_id);			
 ?>
 </td>
