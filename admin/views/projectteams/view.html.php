@@ -55,8 +55,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
        
 		$this->project_art_id = $project->project_art_id;
 		$this->season_id = $project->season_id;
+		$this->league_id = $project->league_id;
 		$this->sports_type_id = $project->sports_type_id;
-		
+		$this->projectsbyleagueseason = $mdlProject->getProjectsbyCurrentProjectLeagueSeason($this->season_id,$this->league_id);
 		$this->app->setUserState( "$this->option.pid", $project->id );
 		$this->app->setUserState( "$this->option.season_id", $project->season_id );
 		$this->app->setUserState( "$this->option.project_art_id", $project->project_art_id );
