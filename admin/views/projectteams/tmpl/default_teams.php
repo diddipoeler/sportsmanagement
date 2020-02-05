@@ -322,34 +322,35 @@ $this->modalheight);
                                 
                                 
                                                     
-								}
-							}
-                            echo $row->name; ?>
-                            </td>
-                            <td class="center">
-                            <?php
-                            echo JSMCountries::getCountryFlag($row->country);
-                            ?>
-                            <br>
-                            <?PHP
-                            echo $row->latitude;
-                            ?>
-                            <br>
-                            <?PHP
-                            echo $row->longitude;
-                            ?>
-                            <br>
-	<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
-	name="location<?php echo $row->id; ?>"
-	value="<?php echo $row->location; ?>"
-	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
-	<br>
-	<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
-	name="founded_year<?php echo $row->id; ?>"
-	value="<?php echo $row->founded_year; ?>"
-	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
-    
-    <br>
+}
+}
+echo $row->name; ?>
+<br>
+
+</td>
+<td class="center">
+<?php
+echo JSMCountries::getCountryFlag($row->country);
+?>
+<br>
+<?PHP
+echo $row->latitude;
+?>
+<br>
+<?PHP
+echo $row->longitude;
+?>
+<br>
+<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
+name="location<?php echo $row->id; ?>"
+value="<?php echo $row->location; ?>"
+onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+<br>
+<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
+name="founded_year<?php echo $row->id; ?>"
+value="<?php echo $row->founded_year; ?>"
+onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+<br>
 	<input<?php echo $inputappend; ?> type="text" size="20" class="form-control form-control-inline"
 	name="unique_id<?php echo $row->id; ?>"
 	value="<?php echo $row->unique_id; ?>"
