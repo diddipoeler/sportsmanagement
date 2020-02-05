@@ -22,7 +22,20 @@ $view = $this->jinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));
 $cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;
 $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server','') ;
+?>
+<script type="text/javascript">
+var teampicture = new Array;
+<?php
+foreach ( $this->projectsbyleagueseason as $key => $value )
+{
 
+//$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+
+echo 'teampicture['.($key).']=\''.$value."';\n";
+}
+?>
+</script>
+<?php
 // some CSS
 $this->document->addStyleDeclaration('
 img.item {
