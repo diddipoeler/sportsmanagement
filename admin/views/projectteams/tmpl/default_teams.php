@@ -44,7 +44,7 @@ img.car {
 }');
 // string $opt - second parameter of formbehavior2::select2
 // for details http://ivaynberg.github.io/select2/
-$opt = ' allowClear: true,
+$optteams = ' allowClear: true,
    width: "100%",
    formatResult: function format(state) 
    {  
@@ -363,9 +363,9 @@ $this->modalheight);
 echo $row->name; ?>
 <br>
 <?
-HTMLHelper::_('formbehavior2.select2', '.test1', $opt);			
+HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);			
 echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id'.$row->id,
-'style="width:225px;" class="test1" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.'','value','text',$this->project_id);			
+'style="width:225px;" class="optteams" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.'','value','text',$this->project_id);			
 ?>
 </td>
 <td class="center">
