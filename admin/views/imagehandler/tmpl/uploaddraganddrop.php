@@ -9,7 +9,6 @@
  * @subpackage imagehandler
  * http://plugins.krajee.com/file-input
  */
- 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
@@ -19,8 +18,6 @@ use Joomla\CMS\Language\LanguageHelper;
 $lang = Factory::getLanguage();
 $languages = LanguageHelper::getLanguages('lang_code');
 $languageCode = $languages[ $lang->getTag() ]->sef;
-//echo 'language is: ' . $languageCode;
-
 
 ?>
 
@@ -76,7 +73,7 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
   language: 'de',
         allowedFileExtensions: ['jpg', 'png', 'gif'],
         overwriteInitial: false,
-        maxFileSize: 2000,
+        maxFileSize: 4000,
         maxFilesNum: 10,
         //allowedFileTypes: ['image', 'video', 'flash'],
         slugCallback: function (filename) {
