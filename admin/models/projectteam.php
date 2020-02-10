@@ -120,6 +120,7 @@ $result = $this->jsmdb->execute();
         $post = Factory::getApplication()->input->post->getArray(array());
 
 $project_id = $post['pid'];
+$new_project_id = $post['all_project_id'];  		
 $this->jsmquery->clear();
 $this->jsmquery->select('l.associations');
 $this->jsmquery->from('#__sportsmanagement_league as l');
@@ -136,7 +137,15 @@ $associations = $this->jsmdb->loadResult();
             $tblProjectteam->division_id = $post['division_id' . $pks[$x]];
 			$tblProjectteam->start_points = $post['start_points' .$pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' .$pks[$x]];
+// alle umsetzen       
+      if ( $project_id != $new_project_id )
+      {
+      $tblProjectteam->project_id = $new_project_id;  
+      }
+          else
+          {
             $tblProjectteam->project_id = $post['new_project_id' .$pks[$x]];
+          }
             $tblProjectteam->is_in_score = $post['is_in_score' .$pks[$x]];
             $tblProjectteam->use_finally = $post['use_finally' .$pks[$x]];
             
