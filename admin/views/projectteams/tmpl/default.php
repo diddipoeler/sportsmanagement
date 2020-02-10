@@ -38,6 +38,14 @@ echo $this->loadTemplate('joomla2');
 </div>
 <div>
 <script type="text/javascript">
+var leaguepicture = new Array;
+<?php
+foreach ( $this->projectsbyleagueseason as $key => $value )
+{
+echo 'leaguepicture['.($value->value).']=\''.$value->picture."';\n";
+}
+?>
+    
 var teampicture = new Array;
 <?php
 foreach ( $this->lists['country_teams_picture'] as $key => $value )
@@ -72,10 +80,7 @@ $opt = ' allowClear: true,
    picture = teampicture[state.id];
    if (!state.id) 
    return state.text; 
-
-
-   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
-
+//   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
    },
    
    escapeMarkup: function(m) { return m; }
