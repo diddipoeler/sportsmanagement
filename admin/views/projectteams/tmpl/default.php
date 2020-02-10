@@ -80,7 +80,7 @@ $opt = ' allowClear: true,
    picture = teampicture[state.id];
    if (!state.id) 
    return state.text; 
-//   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
+   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
    },
    
    escapeMarkup: function(m) { return m; }
@@ -91,15 +91,16 @@ $optproject = ' allowClear: true,
 
    formatResult: function format(state) 
    {  
-   var originalOption = state.element;
-   var picture;
-   picture = leaguepicture[state.id];
+   var originalOption2 = state.element;
+   var picture2;
+   picture2 = leaguepicture[state.id];
    if (!state.id) 
    return state.text; 
+   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture2 + "\' />" + state.text;
    },
-   escapeMarkup: function(m) { return m; }
+   escapeMarkup: function(m1) { return m1; }
 ';
-    
+
 $append = '';
 HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
     if ( isset($this->lists['country_teams']) )
