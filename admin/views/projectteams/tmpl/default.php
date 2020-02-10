@@ -85,6 +85,21 @@ $opt = ' allowClear: true,
    
    escapeMarkup: function(m) { return m; }
 ';
+    
+$optproject = ' allowClear: true,
+   width: "100%",
+
+   formatResult: function format(state) 
+   {  
+   var originalOption = state.element;
+   var picture;
+   picture = leaguepicture[state.id];
+   if (!state.id) 
+   return state.text; 
+   },
+   escapeMarkup: function(m) { return m; }
+';
+    
 $append = '';
 HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
     if ( isset($this->lists['country_teams']) )
