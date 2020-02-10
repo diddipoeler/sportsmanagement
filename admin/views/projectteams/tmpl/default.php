@@ -114,7 +114,7 @@ echo HTMLHelper::_('select.genericlist',$this->lists['country_teams'],'team_id',
     }
     
 HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);			
-echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'all_project_id'.$this->project_id,
+echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'all_project_id',
 'style="width:225px;" class="optproject" size="1" '.'','value','text',$this->project_id);			    
     
     
