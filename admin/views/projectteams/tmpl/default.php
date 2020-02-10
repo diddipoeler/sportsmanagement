@@ -111,6 +111,13 @@ echo HTMLHelper::_('select.genericlist',$this->lists['country_teams'],'team_id',
 <input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
 <?php
     }
+    
+HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);			
+echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'all_project_id'.$this->project_id),
+'style="width:225px;" class="optproject" size="1" '.'','value','text',$this->project_id);			    
+    
+    
+    
 ?>
 </div>
 <?PHP
