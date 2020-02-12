@@ -363,9 +363,12 @@ $this->modalheight);
 echo $row->name; ?>
 <br>
 <?
+if ( ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change','')  )
+{
 HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);			
 echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'new_project_id'.$row->id,
 'style="width:225px;" class="optteams" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.'','value','text',$this->project_id);			
+}
 ?>
 </td>
 <td class="center">
