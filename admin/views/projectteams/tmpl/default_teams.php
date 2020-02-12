@@ -362,7 +362,7 @@ $this->modalheight);
 }
 echo $row->name; ?>
 <br>
-<?
+<?PHP
 if ( ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change','')  )
 {
 HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);			
