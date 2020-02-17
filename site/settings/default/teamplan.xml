@@ -154,7 +154,8 @@
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAYGROUND_ALERT" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_PLAYGROUND_ALERT">
 			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_SHOW_PLAYGROUND_ALERT</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_SHOW_PLAYGROUND_ALERT</option>
 		</field>
 
 		<field name="show_matchday" type="extensionradiobutton" default="1"
