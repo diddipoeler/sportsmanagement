@@ -11,6 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+jimport('joomla.html.html.bootstrap');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -29,7 +31,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <section class="content-block" role="main">
 
 <div class="row-fluid">
-<div class="span7">
+<div class="span9">
 <div class="well well-small">        
 <div id="dashboard-icons" class="btn-group">
 
@@ -86,36 +88,8 @@ break;
 </div>
 </div>
 
-<div class="span5">
-					<div class="well well-small">
-						<div class="center">
-							<img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
-						</div>
-						<hr class="hr-condensed">
-						<dl class="dl-horizontal">
-							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
-							<dd><?php echo Text::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
-                            
-							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
-							<dd><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
-
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
-							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
-							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
-							
-                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
-							<dd>GNU General Public License</dd>
-						</dl>
-					</div>
-
-					
-
-				</div>
-
-
+<div class="span3">
+    <?php sportsmanagementHelper::jsminfo(); ?>                                               
 </div>
 </section>
 
