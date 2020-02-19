@@ -1,17 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      curve.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage curve
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelCurve
@@ -22,7 +23,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelCurve extends JModelLegacy
+class sportsmanagementModelCurve extends BaseDatabaseModel
 {
 	var $project = null;
 	static $projectid = 0;
@@ -58,7 +59,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct( );
@@ -70,6 +71,12 @@ class sportsmanagementModelCurve extends JModelLegacy
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
 	self::$season_id = $jinput->get('s', 0, 'INT');	
+$post = $jinput->post->getArray(array());
+if ( $post )
+{
+self::$teamid1 = $post['tid1_'.$post['division']];
+self::$teamid2 = $post['tid2_'.$post['division']];    
+}
         
 		$this->determineTeam1And2();
 	}
@@ -81,8 +88,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function determineTeam1And2()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -159,14 +166,6 @@ class sportsmanagementModelCurve extends JModelLegacy
             $query->order('m.match_date');
             
 			$db->setQuery($query);
-            
-
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 			$match = $db->loadObject();
 
@@ -179,12 +178,6 @@ class sportsmanagementModelCurve extends JModelLegacy
                 $starttime = microtime(); 
                 
 				$db->setQuery($query);
-                
-                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 				$match = $db->loadObject();
 			}
@@ -281,14 +274,12 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDataByDivision($division=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database,FALSE);
 		$teams   = sportsmanagementModelProject::getTeamsIndexedByPtid($division,'name',self::$cfg_which_database);
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
         	
 		$rankinghelper = JSMRanking::getInstance($project,self::$cfg_which_database);
 		$rankinghelper->setProjectId( $project->id,self::$cfg_which_database );

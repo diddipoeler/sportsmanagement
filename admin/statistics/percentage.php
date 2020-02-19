@@ -4,15 +4,17 @@
  * @file      percentage.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticPercentage
@@ -51,21 +53,21 @@ class SMStatisticPercentage extends SMStatistic
 	 */
 	function getSids($id_field = 'numerator_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = SMStatistic::getParams();
 		
         //$numerator_ids = explode(',', $params->get('numerator_ids'));
         $numerator_ids = $params->get('numerator_ids');
 		if (!count($numerator_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 		//$denominator_ids = explode(',', $params->get('denominator_ids'));
         $denominator_ids = $params->get('denominator_ids');
 		if (!count($denominator_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -80,11 +82,6 @@ class SMStatisticPercentage extends SMStatistic
 			$ids['den'][] = (int)$s;
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids<br><pre>'.print_r($ids,true).'</pre>'),'');
-        }
-        
 		return $ids;
 	}
 
@@ -97,20 +94,20 @@ class SMStatisticPercentage extends SMStatistic
 	 */
 	function getQuotedSids($id_field = 'numerator_ids')
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $params = SMStatistic::getParams();
 
         $numerator_ids = $params->get('numerator_ids');
 		if (!count($numerator_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 
         $denominator_ids = $params->get('denominator_ids');
 		if (!count($denominator_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -247,13 +244,13 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = self::getQuotedSids();
 		
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $query_num = JFactory::getDbo()->getQuery(true);
-        $query_den = JFactory::getDbo()->getQuery(true);
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $query_num = Factory::getDbo()->getQuery(true);
+        $query_den = Factory::getDbo()->getQuery(true);
+        $query_core = Factory::getDbo()->getQuery(true);
         
         $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -273,7 +270,7 @@ class SMStatisticPercentage extends SMStatistic
 		}
         $query_num->group('tp.id');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),''); 
+
 		
         $query_den->select('SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
         $query_den->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -295,7 +292,6 @@ class SMStatisticPercentage extends SMStatistic
         $query_den->where('ms.value > 0');
         $query_den->group('tp.id');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_den<br><pre>'.print_r($query_den->dump(),true).'</pre>'),'');
         
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
  		$query_select_details	= '(n.num / d.den) AS total, 1 as rank,'
@@ -327,7 +323,6 @@ class SMStatisticPercentage extends SMStatistic
 		$res = new stdclass;
 		$db->setQuery($query_core);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
         
@@ -337,7 +332,6 @@ class SMStatisticPercentage extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->ranking = $db->loadObjectList();
 	
@@ -379,7 +373,7 @@ class SMStatisticPercentage extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{
 		$sids = self::getQuotedSids();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
         $query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids['num']);
@@ -395,7 +389,7 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 
 		if (!empty($res))

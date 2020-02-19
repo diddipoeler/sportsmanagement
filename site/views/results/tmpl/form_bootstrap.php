@@ -4,21 +4,25 @@
  * @file      form_bootstrap.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
-// No direct access to this file
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 $this->divclass = '';
 $this->divclassrest = '';
 $this->columns = 12;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
 <div class="container-fluid">
@@ -47,7 +51,7 @@ $this->divclass = "span".round((12 / 2));
 <div class="<?php echo $this->divclass; ?>" style="">
 <?PHP
 
-					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
+					sportsmanagementHelperHtml::showMatchdaysTitle(Text::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
 					if ( $this->showediticon ) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
@@ -60,10 +64,10 @@ $routeparameter['mode'] = sportsmanagementModelResults::$mode;
 $routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
-						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);
+						echo HTMLHelper::link($link, $desc);
 					}
 				}
 
@@ -105,23 +109,23 @@ $this->divclassrest = "span3";
 <div class="<?php echo $this->divclass; ?>" style="">
 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 </div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></div>
-<div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></div>
+<div class="<?php echo $this->divclass; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style="">
-<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?>
 <br/>	
-<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?>
 <br/>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?>
 <br/>	
 </div>
 	
-<div class="<?php echo $this->divclassrest; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>	
+<div class="<?php echo $this->divclassrest; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>	
 </div>	
 <!-- Start of the matches for the selected round -->
 			<?php
@@ -156,12 +160,12 @@ $this->divclassrest = "span3";
 <input type='hidden' name='layout' value='form' />
 <input type='hidden' name='task' value='results.saveshort' />
 <input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 <input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 <input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 <input type='hidden' name='save_data' value='1' class='button' />
-<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
-<?php echo JHtml::_('form.token'); ?>
+<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
+<?php echo HTMLHelper::_('form.token'); ?>
 <!-- Main END -->
 </form>
 

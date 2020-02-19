@@ -1,49 +1,22 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_matrix_russia.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage matrix
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultmatrixrussia">
  <?php
 	$division_id = $this->divisionid;
-	//$matrix = '<table class="matrix" border="2px">';
     $matrix = '<table class="'.$this->config['table_class'].'" border="2px">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
@@ -61,13 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 				$matrix .= '<th class="headerspacer">&nbsp;</th>';
 			} else {
 				//$matrix .= '<th class="teamheader">Команда</th>';
-                $matrix .= '<th class="teamheader">'.JText :: _('COM_SPORTSMANAGEMENT_MATRIX_TEAM_NAME') . '</th>';
+                $matrix .= '<th class="teamheader">'.Text :: _('COM_SPORTSMANAGEMENT_MATRIX_TEAM_NAME') . '</th>';
 			}
             
             $teamnumber = 1;
 			foreach ($this->teams as $team_row_header) 
             {
-				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
+				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug);
                 $name = $this->config['teamnames'];
                 $desc = $teamnumber;
@@ -79,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				if ($this->config['link_teams'] == 1) {
 					$header = '<th class="rotated_cell"><div class="rotate_text">';
-					$header .= JHTML :: link($link, $desc);
+					$header .= HTMLHelper::link($link, $desc);
 					$header .= '</div></th>';
 					$matrix .= $header;
 				} else {
@@ -102,10 +75,10 @@ defined('_JEXEC') or die('Restricted access');
         
             if ($k_c == 0) // Header columns
 				{
-				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
+				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $trow->team_slug;
        $routeparameter['ptid'] = 0;
@@ -128,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
                                                            
 				if ($this->config['link_teams'] == 1) {
 					$tValue = '<th class="teamsleft">';
-					$tValue .= JHTML :: link($link, $desc);
+					$tValue .= HTMLHelper::link($link, $desc);
 					$tValue .= '</th>';
 					$matrix .= $tValue;
 				} else {
@@ -176,12 +149,12 @@ defined('_JEXEC') or die('Restricted access');
                         {
 						switch ($team_row->first[$team_col_id]->rtype) {
 								case 1 : // Overtime
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                                     $ResultType .= ')';
 									break;
 
 								case 2 : // Shootout
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                                     $ResultType .= ')';
 									break;
 
@@ -227,8 +200,8 @@ defined('_JEXEC') or die('Restricted access');
 						$title = "";
 						$arrayString = array ();
 						$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $team_row->first[$team_col_id]->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -240,7 +213,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams))) {
 								#$resultStr = str_replace( "%TEAMHOME%",
 								#                           $this->teams[$result->projectteam1_id]->name,
-								#                           JText::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
+								#                           Text::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
 								#$title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
 								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
 								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams))) {
@@ -257,7 +230,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									"style" => $colorStr . $bgColorStr
 								);
 							}
-							$match_result = JHTML :: link($link, $resultStr, $arrayString);
+							$match_result = HTMLHelper::link($link, $resultStr, $arrayString);
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
@@ -265,12 +238,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
-									//                       JText::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
+									//                       Text::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
 								case 2 : // Link to Match report
-									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, JText :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
+									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, Text :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
@@ -282,19 +255,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$picture = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHTML::link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
 									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $team_row->first[$team_col_id]->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-									$new_match = JHTML::link($link, $desc);
+									$new_match = HTMLHelper::link($link, $desc);
 								} 
 								$match_result .= $new_match;
 							} else {
 								$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHTML :: link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 							}
 						}
 					}
@@ -314,7 +287,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
 						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $team_row->first[$team_col_id]->roundid);
-						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
+						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {
@@ -330,7 +303,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							$resultStr .= "</span>";
 							$resultStr .= "</span>";
 						}
-						$match_result = $spanStartStr . JHTML :: link($link, $desc) . $spanEndStr;
+						$match_result = $spanStartStr . HTMLHelper::link($link, $desc) . $spanEndStr;
 					}
 					//Don’t break, allow for multiple results
 					if ($Allresults == '') {
@@ -370,12 +343,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
                         {
 						switch ($team_row->first[$team_col_id]->rtype) {
 								case 1 : // Overtime
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                                     $ResultType .= ')';
 									break;
 
 								case 2 : // Shootout
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                                     $ResultType .= ')';
 									break;
 
@@ -417,8 +390,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$title = "";
 						$arrayString = array ();
 						$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $team_row->second[$team_col_id]->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -430,7 +403,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams))) {
 								#$resultStr = str_replace( "%TEAMHOME%",
 								#                           $this->teams[$result->projectteam1_id]->name,
-								#                           JText::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
+								#                           Text::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
 								#$title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
 								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
 								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams))) {
@@ -447,7 +420,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									"style" => $colorStr . $bgColorStr
 								);
 							}
-							$match_result = JHTML :: link($link, $resultStr, $arrayString);
+							$match_result = HTMLHelper::link($link, $resultStr, $arrayString);
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
@@ -455,12 +428,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
-									//                       JText::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
+									//                       Text::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
 								case 2 : // Link to Match report
-									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, JText :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
+									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, Text :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
@@ -472,19 +445,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$picture = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHTML::link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
 									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $team_row->second[$team_col_id]->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-									$new_match = JHTML::link($link, $desc);
+									$new_match = HTMLHelper::link($link, $desc);
 								} 
 								$match_result .= $new_match;
 							} else {
 								$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHTML :: link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 							}
 						}
 					}
@@ -504,7 +477,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
 						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $team_row->second[$team_col_id]->roundid);
-						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
+						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {
@@ -520,7 +493,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							$resultStr .= "</span>";
 							$resultStr .= "</span>";
 						}
-						$match_result = $spanStartStr . JHTML :: link($link, $desc) . $spanEndStr;
+						$match_result = $spanStartStr . HTMLHelper::link($link, $desc) . $spanEndStr;
 					}
 					//Don’t break, allow for multiple results
 					if ($Allresults == '') {
@@ -573,4 +546,4 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	$matrix .= '</table>';
 	echo $matrix;
 ?>
-
+</div>

@@ -4,24 +4,27 @@
  * @file      deafult_joomla_vier.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
-defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.switcher');
-JHtml::_('behavior.modal');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.switcher');
 
 $this->startPane = 'startTabSet';
 $this->endPane = 'endTabSet';
 $this->addPanel = 'addTab';
 $this->endPanel = 'endTab';
 $this->config['table_class'] = 'table table-striped';
+/*
 // Define tabs options for version of Joomla! 4.0
 $tabsOptions = array(
-    "active" => "tab1_id" // It is the ID of the active tab.
+    "active" => "tab1id" // It is the ID of the active tab.
 );
+*/
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -29,76 +32,86 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate('projectheading');
 
-echo JHtml::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', JText::_($this->config['table_text_1']));
-//echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_1') .'</h2>';
+echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
+if ($this->config['show_table_1']) {
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking');
         ?>
     </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.' . $this->endPanel);
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', JText::_($this->config['table_text_2']));
-//echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_2') .'</h2>';
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+if ($this->config['show_table_2']) {
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_home');
         ?>
     </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.' . $this->endPanel);
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', JText::_($this->config['table_text_3']));
-//echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_3') .'</h2>';
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+if ($this->config['show_table_3']) {
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_away');
         ?>
     </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.' . $this->endPanel);
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', JText::_($this->config['table_text_4']));
-//echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_4') .'</h2>';
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+if ($this->config['show_table_4']) {
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_first');
         ?>
     </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.' . $this->endPanel);
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', JText::_($this->config['table_text_5']));
-//echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_5') .'</h2>';
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+}
+if ($this->config['show_table_5']) {
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_second');
         ?>
     </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.' . $this->endPanel);
-echo JHtml::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
+}
+echo HTMLHelper::_('bootstrap.' . $this->endPanel);
+echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
+
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclassrow;?>">
 <?PHP
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
+echo $this->loadTemplate('jsminfo');
 ?>
-    </div>
+</div>
 </div>
 <?PHP
 ?>

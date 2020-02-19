@@ -4,23 +4,27 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage sishandball
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.modal'); 
-require_once('components'.DS.'com_sportsmanagement'.DS.'lib'.DS.'xshv2.lib.core.php');
-$modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
-$document =  JFactory::getDocument();
+HTMLHelper::_('behavior.modal'); 
+require_once('components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'xshv2.lib.core.php');
+$modal_popup_width = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
+$modal_popup_height = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
+
+$document =  Factory::getDocument();
 $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel="stylesheet" type="text/css" />' . "\n";
 //$app->addCustomHeadTag( $cssHTML );
 $document->addCustomTag( $cssHTML );
 
-echo JHtml::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
+echo HTMLHelper::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
 
 // Anzeige Titel
 if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>
@@ -35,9 +39,7 @@ if ($this->tabelle) {
 	$colspan = 9;
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->tabelle);
-		echo '</pre>';
+
 	}
 
 	echo '<table id="sistabelle">';
@@ -177,17 +179,7 @@ if ($this->spielplan) {
 		}
 		
 		if ( $this->params->get( 'sis_getxmldatei') ) {
-
-			/*
-			echo '<pre>';
-			print_r($this->spieltage);
-			echo '</pre>';
-			*/
-
-			echo '<pre>';
-			print_r($this->spielplan);
-			echo '</pre>';
-			
+		
 		}
 		
 
@@ -207,9 +199,6 @@ if ($this->spielplan) {
 		foreach ($this->spielplan->Spiel as $spiel) {
 			
 			if((string) $spiel->Mannschaft1 === $this->params->get( 'sis_clubnummer') || (string) $spiel->Mannschaft2 === $this->params->get( 'sis_clubnummer') || (string) $spiel->Mannschaft1 === $this->params->get( 'sis_clubnummer1') || (string) $spiel->Mannschaft2 === $this->params->get( 'sis_clubnummer1')) {
-				//$spdatum_exp = explode('.', (string) $spiel->Datum);
-				//print_r($spdatum_exp);
-				//Sun, 09. Oct. 2011 => date('D, d. M. Y', strtotime ($spiel->Datum))
 				$wtagsp = $wtag[date('D', strtotime ($spiel->Datum))];
 				$monatsp = $monat[date('M', strtotime ($spiel->Datum))];
 				$sdatum = mktime(0, 0, 0, date('m', strtotime ($spiel->Datum))  , date('d', strtotime ($spiel->Datum)), date('Y', strtotime ($spiel->Datum)));
@@ -226,7 +215,7 @@ if ($this->spielplan) {
 					echo ($this->params->get( 'sis_link1') && $this->params->get( 'sis_link2')) ? ' | ' : '';
 					echo ($this->params->get( 'sis_link2')) ? '<a href="'.$this->params->get( 'sis_link2').'" target="_top">'.$this->params->get( 'sis_link2name').'</a>' : '';
 					echo ($this->params->get( 'sis_link2') && $this->params->get( 'sis_linkhilfeics') || $this->params->get( 'sis_link1') && $this->params->get( 'sis_linkhilfeics')) ? ' | ' : '';
-					echo ($this->params->get( 'sis_ics_dir') && $this->params->get( 'sis_ics_vereinsnameshort') &&$this->params->get( 'sis_ics')) ? '<a href="'.$SERVER['SERVER_NAME'].DS.$this->params->get( 'sis_ics_dir').'/'.$this->params->get( 'sis_ics_vereinsnameshort').'-spiele_'.$this->params->get( 'sis_ics').'.ics" title="Bitte den Link kopieren, und in iCal oder Outlook f&uuml;r Kalender abonnieren verwenden" target="_blank">Spielplan abonnieren</a>' : '';
+					echo ($this->params->get( 'sis_ics_dir') && $this->params->get( 'sis_ics_vereinsnameshort') &&$this->params->get( 'sis_ics')) ? '<a href="'.$SERVER['SERVER_NAME'].DIRECTORY_SEPARATOR.$this->params->get( 'sis_ics_dir').'/'.$this->params->get( 'sis_ics_vereinsnameshort').'-spiele_'.$this->params->get( 'sis_ics').'.ics" title="Bitte den Link kopieren, und in iCal oder Outlook f&uuml;r Kalender abonnieren verwenden" target="_blank">Spielplan abonnieren</a>' : '';
 					echo ($this->params->get( 'sis_linkhilfeics')) ? ' (<a href="'.$this->params->get( 'sis_linkhilfeics').'" target="_top">Hilfe</a>)' : '';
 					echo '</span><span class="article_seperator">&nbsp;</span><br><br>';
 				}
@@ -276,9 +265,7 @@ if ($this->spielplan) {
 	}
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->spielplan);
-		echo '</pre>';
+
 }
 
 	if( $this->params->get( 'sis_ueberschrift') ) {
@@ -418,16 +405,12 @@ if ($this->statistik) {
 	$colspan = 5;
 
 	if ( $this->params->get( 'sis_getxmldatei') ) {
-		echo '<pre>';
-		print_r($this->statistik);
-		echo '</pre>';
 	}
 
 	echo '<table id="sistabelle">';
 
 	foreach ($this->statistik->Spielklasse as $klasse) {
 		echo '<tr>';
-		//echo '<th bgcolor="'.$this->params->get( 'backgroundcolorliganame').'" align="left" colspan="'.$colspan.'">'.'<font size="'.$this->params->get( 'schriftliganame').'" color="'.$this->params->get( 'colorschriftliganame').'">Liganame : ';
 		echo '<th align="left" colspan="'.$colspan.'">';
 		echo $klasse->Name;
 		if( $this->params->get( 'sis_ueberschrift') ) {

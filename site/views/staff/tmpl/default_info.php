@@ -1,53 +1,24 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_info.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage staff
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
-//echo ' config<pre>'.print_r($this->config,true).'</pre>';
-//echo ' person<pre>'.print_r($this->person,true).'</pre>';
-//echo ' inprojectinfo<pre>'.print_r($this->inprojectinfo,true).'</pre>';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 ?>
 <!-- person data START -->
-<h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
+<h4><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
 <div class="col-md-6">
 
 
@@ -57,8 +28,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 
 				<?php
-				$picturetext = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
-				$imgTitle = JText::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
+				$picturetext = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+				$imgTitle = Text::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
 				$picture = $this->inprojectinfo->season_picture;
 				if ((empty($picture))|| ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  ))
 				{
@@ -66,8 +37,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				}
 				
                 
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('staffinfo'.$this->person->id,$picture,$imgTitle,$this->config['picture_width']);        
-				
+ echo sportsmanagementHelperHtml::getBootstrapModalImage('staffinfo' . $this->person->id,
+            $picture,
+            $imgTitle,
+            $this->config['picture_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);				
         
         
         ?>
@@ -85,10 +62,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			
             
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
 			<?php
 					echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
-					JText::_( JSMCountries::getCountryName($this->person->country));
+					Text::_( JSMCountries::getCountryName($this->person->country));
 					?>
             </address>
 			<?php
@@ -98,21 +75,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 				
 						<?php
-						$outputName = JText::sprintf( '%1$s %2$s', $this->person->firstname, $this->person->lastname);
+						$outputName = Text::sprintf( '%1$s %2$s', $this->person->firstname, $this->person->lastname);
 						if ( $this->person->user_id )
 						{
 							switch ( $this->config['show_user_profile'] )
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute( $this->person->user_id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->person->user_id,
 																									$this->project->id,
 																									$this->person->id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								default:	break;
@@ -123,7 +100,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					
                 
                  <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
 			<?php echo $outputName; ?>
             </address>
                 
@@ -134,7 +111,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				    
 					?>
 				<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
 			<?php echo $this->person->nickname; ?>
             </address>
 				<?php
@@ -168,7 +145,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 														break;
 								}
-								//echo JText::_( $outputStr );
+								//echo Text::_( $outputStr );
 								?>
 
 						
@@ -177,13 +154,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -192,7 +169,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( '%Y' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -203,7 +180,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						
                     
                     <address>
-			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo $birthdateStr; ?>
             </address>
                     
@@ -212,16 +189,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					
 					<?php
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY';
-						//echo JText::_( $outputStr );
+						//echo Text::_( $outputStr );
 						?>
 						
 						<?php
 						$deathdateStr =	$this->person->deathday != "0000-00-00" ?
-							JHtml::date( $this->person->deathday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+							HTMLHelper::date( $this->person->deathday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 							echo '&dagger; '.$deathdateStr;
 						?>
 						<address>
-			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo '&dagger; '.$deathdateStr; ?>
             </address>
 					<?php
@@ -235,7 +212,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 				<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
             <?php
 						echo JSMCountries::convertAddressString(	'',
 																$this->person->address,
@@ -254,7 +231,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
 			<?php echo $this->person->phone; ?>
             </address>
 					<?php
@@ -264,7 +241,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
 			<?php echo $this->person->mobile; ?>
             </address>
 					<?php
@@ -274,9 +251,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php 
-            $user = JFactory::getUser();
+            $user = Factory::getUser();
 				if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
 				{
 					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
@@ -285,7 +262,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				}
 				else
 				{
-					echo JHtml::_('email.cloak', $this->person->email );
+					echo HTMLHelper::_('email.cloak', $this->person->email );
 				}
             ?>
             </address>
@@ -296,8 +273,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
-			<?php echo JHtml::_(	'link',
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<?php echo HTMLHelper::_(	'link',
 				$this->person->website,
 				$this->person->website,
 				array( 'target' => '_blank' ) );
@@ -310,8 +287,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
-			<?php echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->person->height, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -320,8 +297,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
-			<?php echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->person->weight, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
             </address>
 					<?php
 					}
@@ -331,8 +308,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					?>
 				
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
-			<?php echo JText::_( $this->inprojectinfo->position_name ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
+			<?php echo Text::_( $this->inprojectinfo->position_name ); ?>
             </address>
                 
                 
@@ -344,7 +321,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
 			<?php echo $this->person->knvbnr; ?>
             </address>
 					

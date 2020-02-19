@@ -4,18 +4,22 @@
  * @file      default_play_card.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 ?>
 
 <!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
 
 <?php
 foreach ($persons AS $person) {
-//echo '<pre>'.print_r($person,true).'</pre>';    
     $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
     switch ($person['days_to_birthday']) {
         case 0: $whenmessage = $params->get('todaymessage');
@@ -25,7 +29,7 @@ foreach ($persons AS $person) {
         default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
             break;
     }
-    $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
     $dayformat = htmlentities(trim($params->get('dayformat')));
     $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -39,24 +43,24 @@ foreach ($persons AS $person) {
     $person_type = $person['type'];
     if ($person_type == 1) {
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-        $routeparameter['s'] = JRequest::getInt('s', 0);
+        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+        $routeparameter['s'] = $person['season_slug'];
         $routeparameter['p'] = $person['project_slug'];
         $routeparameter['tid'] = $person['team_slug'];
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
     } else if ($person_type == 2) {
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-        $routeparameter['s'] = JRequest::getInt('s', 0);
+        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+        $routeparameter['s'] = $person['season_slug'];
         $routeparameter['p'] = $person['project_slug'];
         $routeparameter['tid'] = $person['team_slug'];
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
     } else if ($person_type == 3) {
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-        $routeparameter['s'] = JRequest::getInt('s', 0);
+        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+        $routeparameter['s'] = $person['season_slug'];
         $routeparameter['p'] = $person['project_slug'];
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
@@ -65,12 +69,10 @@ foreach ($persons AS $person) {
 $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
 $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 $usedname = $flag . $text;
-$params_com = JComponentHelper::getParams('com_sportsmanagement');
+$params_com = ComponentHelper::getParams('com_sportsmanagement');
 $usefontawesome = $params_com->get('use_fontawesome');
     
-    $showname = JHTML::link($person_link, $usedname);
-//echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
-//echo 'birthdayformat<pre>'.print_r($birthdayformat,true).'</pre>';
+    $showname = HTMLHelper::link($person_link, $usedname);
     ?>
     <div class="card">
         <?php
@@ -80,7 +82,7 @@ $usefontawesome = $params_com->get('use_fontawesome');
             } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
                 $thispic = $person['default_picture'];
             }
-            echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+            echo '<img class="photo" src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
             if ($params->get('picture_width') != '') {
                 echo ' width="' . $params->get('picture_width') . '"';
             }
@@ -99,7 +101,7 @@ $usefontawesome = $params_com->get('use_fontawesome');
         </div>
 
         <div class="position">
-            <?php echo JText::_($person['position_name']); ?> 
+            <?php echo Text::_($person['position_name']); ?> 
             <br />
             <?php echo $person['team_name']; ?></div>
         <div class="birthday-text">
@@ -109,9 +111,9 @@ $usefontawesome = $params_com->get('use_fontawesome');
         <div class="player-info">
             <a href="<?php echo $person_link; ?>" >
                 <?php if($usefontawesome){
-                    echo '<i aria-hidden class="fa fa-info-circle" title="'.JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
+                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
                 }?>
-                <?php echo JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
+                <?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
             </a>
         </div>
     </div>

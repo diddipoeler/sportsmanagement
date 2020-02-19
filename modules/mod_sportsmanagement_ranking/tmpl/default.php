@@ -1,49 +1,23 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_ranking
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 // check if any results returned
 $items = count($list['ranking']);
 if (!$items) {
-   echo '<p class="modjlgranking">' . JText::_('NO ITEMS') . '</p>';
+   echo '<p class="modjlgranking">' . Text::_('NO ITEMS') . '</p>';
    return;
 }
 
@@ -51,16 +25,13 @@ $columns     = explode(',', $params->get('columns', 'JL_PLAYED, JL_POINTS'));
 $column_names = explode(',', $params->get('column_names', 'MP, PTS'));
 
 if (count($columns) != count($column_names)) {
-	JError::raiseWarning(1, JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
+	Log::add( Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
 	$columns     = array();
 	$column_name = array();
 }
 
 $nametype = $params->get('nametype', 'short_name');
 $colors = $list['colors'];
-
-//echo ' colors<br><pre>'.print_r($colors,true).'</pre>';
-
 
 ?>
 
@@ -75,11 +46,11 @@ $colors = $list['colors'];
 	<thead>
 		<tr class="sectiontableheader">
 			<?php if( $params->get('showRankColumn') == 1 ) { ?>
-			<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_RANK')?></th>
+			<th class="rank"><?php echo Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_RANK')?></th>
 			<?php } ?>
-			<th class="team"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_TEAM')?></th>
+			<th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_TEAM')?></th>
 			<?php foreach ($column_names as $col): ?>
-			<th class="rankcolval"><?php echo JText::_(trim($col)); ?></th>
+			<th class="rankcolval"><?php echo Text::_(trim($col)); ?></th>
 			<?php endforeach; ?>
 		</tr>
 	</thead>
@@ -151,7 +122,7 @@ $colors = $list['colors'];
 				<?php endif; ?>
 				<?php if ($spanStyle != '') echo $spanStyle; ?>
 				<?php if ($params->get('teamlink', 'none') != 'none'): ?>
-				<?php echo JHtml::link(modJSMRankingHelper::getTeamLink($item, $params, $list['project']), $item->team->$nametype); ?>
+				<?php echo HTMLHelper::link(modJSMRankingHelper::getTeamLink($item, $params, $list['project']), $item->team->$nametype); ?>
 				<?php else: ?>
 				<?php echo $item->team->$nametype; ?>
 				<?php endif; ?>
@@ -182,7 +153,7 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $divisionid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
-	echo JHtml::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
+	echo HTMLHelper::link($link,Text::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
 </div>
 </div>

@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * JFormFieldAvatarFromComponent
@@ -67,7 +69,7 @@ class JFormFieldAvatarFromComponent extends JFormField
         
         
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 'com_users', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
+		$mitems[] = HTMLHelper::_('select.option', 'com_users', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
 		
         foreach( $sel_component as $key => $value )
         {
@@ -76,12 +78,12 @@ class JFormFieldAvatarFromComponent extends JFormField
             $db->setQuery($query);
             if ( $result = $db->loadResult() )
             {
-		$mitems[] = JHtml::_('select.option', $key , JText::_($value));
+		$mitems[] = HTMLHelper::_('select.option', $key , Text::_($value));
 	       }
         
         }
 
-		$output= JHtml::_('select.genericlist',  $mitems,
+		$output= HTMLHelper::_('select.genericlist',  $mitems,
 				$this->name,
 				'class="inputbox" size="1"',
 				'value', 'text', $this->value, $this->id);

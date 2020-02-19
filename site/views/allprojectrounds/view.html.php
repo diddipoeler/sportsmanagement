@@ -4,14 +4,15 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojectrounds
  */
  
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewallprojectrounds
@@ -22,7 +23,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallprojectrounds extends JViewLegacy {
+class sportsmanagementViewallprojectrounds extends sportsmanagementView {
 
     /**
      * sportsmanagementViewallprojectrounds::display()
@@ -30,18 +31,18 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
      * @param mixed $tpl
      * @return
      */
-    function display($tpl = null) {
+    function init() {
 
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
         $model = $this->getModel();
 
@@ -53,29 +54,15 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
         $project = sportsmanagementModelProject::getProject();
 
         $this->project = $project;
-
         $this->projectid = $this->project->id;
         $this->projectmatches = $model->getProjectMatches();
         $this->rounds = sportsmanagementModelProject::getRounds();
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         $this->config = array_merge($this->overallconfig, $model->_params);
-
-//     echo '<br />getRounds<pre>~'.print_r($this->rounds,true).'~</pre><br />';
-
         $this->favteams = sportsmanagementModelProject::getFavTeams($this->projectid);
-//     echo '<br />getFavTeams<pre>~'.print_r($this->favteams,true).'~</pre><br />';
-
         $this->projectteamid = $model->getProjectTeamID($this->favteams);
-
         $this->content = $model->getRoundsColumn($this->rounds, $this->config);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
-        //$this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2' );
-        $this->headertitle = JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
-        parent::display($tpl);
+        $this->headertitle = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
     }
 
 }

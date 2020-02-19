@@ -4,16 +4,15 @@
  * @file      round.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerround
@@ -49,7 +48,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 	$msgType = 'message';
 	$msg = '';
 	$model = $this->getModel('rounds');	
-	$post = JFactory::getApplication()->input->post->getArray(array());	
+	$post = Factory::getApplication()->input->post->getArray(array());	
 	$project_id = $post['project_id'];
 	$scheduling = $post['scheduling'];
 	$time       = $post['time'];
@@ -60,15 +59,14 @@ class sportsmanagementControllerround extends JSMControllerForm
 	
 	if ( !$teamsorder )
 	{
-	$msg = Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
+	$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
 	$msgType = 'error';
 	}
 	else
 	{
 	$res = $model->populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder);	
 	}
-//JFactory::getApplication()->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($post,true).'</pre>'),'');		
-		
+	
 	$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds', $msg, $msgType);	
 	}
  

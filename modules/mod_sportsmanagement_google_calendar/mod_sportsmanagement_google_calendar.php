@@ -4,12 +4,14 @@
  * @file      mod_sportsmanagement_google_calendar.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_google_calendar
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Factory;
 
 try
 {
@@ -20,7 +22,7 @@ try
 	$helper = new ModJSMGoogleCalendarHelper($params);
 
 	// Setup joomla cache
-	$cache = JFactory::getCache();
+	$cache = Factory::getCache();
 	$cache->setCaching(true);
 	$cache->setLifeTime($params->get('api_cache_time', 60));
 
@@ -31,11 +33,11 @@ try
 	);
 
 	// Get the Layout
-	require JModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+	require ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
 }
 catch(Exception $e)
 {
-	JFactory::getApplication()->enqueueMessage(
+	Factory::getApplication()->enqueueMessage(
 		'JSM Google Calendar error: ' . $e->getMessage(), 'error'
 	);
 }

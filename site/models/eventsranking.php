@@ -4,15 +4,15 @@
  * @file      eventsranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventsranking
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelEventsRanking
@@ -23,7 +23,7 @@ jimport('joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelEventsRanking extends JModelLegacy
+class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $divisionid = 0;
@@ -43,7 +43,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -55,8 +55,6 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		self::$matchid = $jinput->get('mid',0,'INT');
 		
 		self::$eventid = (is_array($jinput->get('evid'))) ? implode(",", array_map('intval', $jinput->get('evid')) ) : (int)$jinput->get('evid');
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$eventid,true).'</pre>'),'');
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($jinput->get('evid'),true).'</pre>'),'');
 		
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
@@ -84,7 +82,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getLimit()
+	public static function getLimit()
 	{
 		return self::$limit;
 	}
@@ -94,7 +92,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getLimitStart()
+	public static function getLimitStart()
 	{
 		return self::$limitstart;
 	}
@@ -136,10 +134,10 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getEventTypes()
+	public static function getEventTypes()
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
          //Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -151,30 +149,26 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
        $query->join('INNER','#__sportsmanagement_match as m ON m.id = me.match_id');
        $query->join('INNER','#__sportsmanagement_round as r ON m.round_id = r.id');
                 
-		if (self::$projectid > 0)
+		if ( self::$projectid )
 		{
-		$query->where('r.project_id = ' . self::$projectid );
+		$query->where('r.project_id IN (' . self::$projectid .')' );
         }
 		if (self::$eventid != 0)
 		{
-            $query->where("me.event_type_id IN (".self::$eventid.")");
+            $query->where("me.event_type_id IN (".self::$eventid.")" );
 		}
 
 		$query->order('et.ordering');
         
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+       
         try{
 		$result = $db->loadObjectList('etid');
 		return $result;
 		 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 	}
@@ -186,8 +180,8 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 */
 	function getTotal()
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -227,10 +221,6 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
             try{
 			$this->_total = $db->loadResult();
 		
@@ -238,7 +228,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		}
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
 		
@@ -246,6 +236,8 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $this->_total;
 	}
 
+	
+	
 	/**
 	 * sportsmanagementModelEventsRanking::_getEventsRanking()
 	 * 
@@ -253,33 +245,57 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 * @param string $order
 	 * @param integer $limit
 	 * @param integer $limitstart
+	 * @param bool $dart
+	 * @param string $directionspoint
+	 * @param string $directionscounter
+	 * @param integer $directionspointpos
 	 * @return
 	 */
-	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0)
+	public static function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC',$directionspointpos=1)
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
+if ( $dart )
+{
 
+switch ( $directionspointpos )
+{
+    case 1:
+    $query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler');
+    break;
+    case 2:
+    $query->select('me.event_sum as zaehler, COUNT(me.event_sum) as p');
+    break;
+}
+
+$query->select('pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');	
+
+}
+		else
+		{
         $query->select('SUM(me.event_sum) as p,pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');
-        $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS person_slug');
+		}
+	$query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS person_slug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
         $query->select('CONCAT_WS( \':\', pt.id, t.alias ) AS projectteam_slug');
         $query->from('#__sportsmanagement_match_event AS me ');
             $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');  
+            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');  
             $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $query->join('INNER','#__sportsmanagement_project AS p ON pt.project_id = p.id and p.season_id = st.season_id');
             $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
             $query->join('INNER','#__sportsmanagement_person AS pl ON tp.person_id = pl.id');
              
         $query->where('me.event_type_id = '.$eventtype_id );
         $query->where('pl.published = 1');
                     
-		if (self::$projectid > 0)
+		if ( self::$projectid )
 			{
-                $query->where('pt.project_id = ' . self::$projectid );
+                $query->where('pt.project_id IN (' . self::$projectid.')' );
+                $query->where('p.id IN (' . self::$projectid.')' );
 			}
 			if (self::$divisionid > 0)
 			{
@@ -288,25 +304,36 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			if (self::$teamid > 0)
 			{
                 $query->where('st.team_id = ' . self::$teamid );
+                $query->where('tp.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{
                 $query->where('me.match_id = ' . self::$matchid );
 			}
-            
-		$query->group('me.teamplayer_id');
-        $query->order('p '.$order);
-        
-        $db->setQuery($query, self::getlimitStart(), self::getlimit());
+if ( $dart )
+{
+$query->group('me.event_sum,me.teamplayer_id');	
+$query->order('p '.$directionspoint.' , zaehler '.$directionscounter);	
+}
+else
+{
+$query->group('me.teamplayer_id');
+$query->order('p '.$directionspoint);	
+}
 		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       try{
+        $db->setQuery($query, self::getlimitStart(), self::getlimit());
         $rows = $db->loadObjectList();
-
-		// get ranks
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$query->dump()), 'error');	
+        return false;
+        }
+/**
+ * 		get ranks
+ */
 		$previousval = 0;
 		$currentrank = 1 + $limitstart;
 		foreach ($rows as $k => $row) 
@@ -318,15 +345,17 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $rows;
 	}
 
+	
 	/**
 	 * sportsmanagementModelEventsRanking::getEventRankings()
 	 * 
-	 * @param mixed $limit
+	 * @param integer $limit
 	 * @param integer $limitstart
 	 * @param mixed $order
+	 * @param bool $dart
 	 * @return
 	 */
-	function getEventRankings($limit=0, $limitstart=0, $order=null)
+	function getEventRankings($limit=0, $limitstart=0, $order=null, $dart=FALSE)
 	{
 		$order = ($order ? $order : $this->order);
 		$eventtypes = self::getEventTypes();
@@ -334,7 +363,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart);
+				$eventrankings[$eventkey] = self::_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter,$eventtypes[$eventkey]->directionspointpos);
 			}
 		}
 

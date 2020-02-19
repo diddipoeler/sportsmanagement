@@ -20,8 +20,10 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldDatetimechooser extends JFormField
+class JFormFieldDatetimechooser extends FormField
 {
 
 	public $type = 'Datetimechooser';
@@ -60,20 +62,20 @@ class JFormFieldDatetimechooser extends JFormField
 
 		// Handle the special case for "now".
 		if(strtoupper($this->value) == 'NOW'){
-			$date = JFactory::getDate();
+			$date = Factory::getDate();
 			$date->setTime($date->format('H', true), 0, 0);
 			$this->value = $date->format('U');
 		}
 		if(strtoupper($this->value) == '+1 HOUR' || strtoupper($this->value) == '+2 MONTH'){
-			$date = JFactory::getDate();
+			$date = Factory::getDate();
 			$date->setTime($date->format('H', true), 0, 0);
 			$date->modify($this->value);
 			$this->value = $date->format('U');
 		}
 
 		// Get some system objects.
-		$config = JFactory::getConfig();
-		$user = JFactory::getUser();
+		$config = Factory::getConfig();
+		$user = Factory::getUser();
 
 		// If a known filter is given use it.
 		switch (strtoupper((string) $this->element['filter'])){
@@ -82,7 +84,7 @@ class JFormFieldDatetimechooser extends JFormField
 				if (intval($this->value))
 				{
 					// Get a date object based on the correct timezone.
-					$date = JFactory::getDate($this->value, 'UTC');
+					$date = Factory::getDate($this->value, 'UTC');
 					$date->setTimezone(new DateTimeZone($config->get('offset')));
 
 					// Transform the date string.
@@ -95,7 +97,7 @@ class JFormFieldDatetimechooser extends JFormField
 				if (intval($this->value))
 				{
 					// Get a date object based on the correct timezone.
-					$date = JFactory::getDate($this->value, 'UTC');
+					$date = Factory::getDate($this->value, 'UTC');
 					$date->setTimezone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
 
 					// Transform the date string.
@@ -107,6 +109,6 @@ class JFormFieldDatetimechooser extends JFormField
 				break;
 		}
 
-		return JHtml::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
+		return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
 	}
 }

@@ -4,15 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editclub
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewEditClub
@@ -23,39 +22,51 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewEditClub extends JViewLegacy
+class sportsmanagementViewEditClub extends sportsmanagementView
 {
-
+	
 	/**
-	 * sportsmanagementViewEditClub::display()
+	 * sportsmanagementViewEditClub::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-		$uri 	= JFactory::getURI();
-		$user 	= JFactory::getUser();
-        $document = JFactory::getDocument();
-		$model	= $this->getModel();
-        $this->club = $model->getClub();
-
+	
+$this->item = $this->model->getData();
 		$lists = array();
-
-    $this->club->merge_teams = explode(",", $this->club->merge_teams);
+		$this->form = $this->get('Form');
+        if ( $this->item->id )
+        {
+            // alles ok
+            if ( $this->item->founded == '0000-00-00' )
+            {
+                $this->item->founded = '';
+                $this->form->setValue('founded','');
+            }
+            if ( $this->item->dissolved == '0000-00-00' )
+            {
+                $this->item->dissolved = '';
+                $this->form->setValue('dissolved','');
+            }
+            
+        }
+        else
+        {
+            $this->form->setValue('founded', '');
+            $this->form->setValue('dissolved', '');
+        }
+		
+    $this->item->merge_teams = explode(",", $this->item->merge_teams);
     
 
-		$this->form = $this->get('Form');	
-		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
+			
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended = $extended;
         $this->lists = $lists;
 
-        $this->cfg_which_media_tool = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
-
-		
-		parent::display($tpl);	
+        $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
+	
 	}
 
 	

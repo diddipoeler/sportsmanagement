@@ -1,14 +1,24 @@
 <?php
-// No direct access to this file
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      smquotetxt.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
+ 
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\AdminModel;
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
- 
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log; 
 
-class sportsmanagementModelsmquotetxt extends JModelAdmin
+class sportsmanagementModelsmquotetxt extends AdminModel
 {
 
     /**
@@ -21,21 +31,17 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smquotetxt', 'smquotetxt', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
 		{
 			return false;
 		}
-        /*        
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/agegroups');
-        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        */
+
 		return $form;
 	}
     
@@ -48,8 +54,8 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		//$data = JFactory::getApplication()->getUserState('com_templates.edit.source.data', array());
-        $data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.source.data', array());
+		//$data = Factory::getApplication()->getUserState('com_templates.edit.source.data', array());
+        $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.source.data', array());
 
 		if (empty($data)) {
 			$data = $this->getSource();
@@ -69,22 +75,20 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         jimport('joomla.filesystem.file');
+       
+        $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$data['filename'];
+        //$return = File::write($filePath, $data['source']);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$data['filename'];
-        //$return = JFile::write($filePath, $data['source']);
-        
-        if ( !JFile::write($filePath, $data['source']) )
+        if ( !File::write($filePath, $data['source']) )
         {
-        JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
         else
         {
-        JError::raiseNotice(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
+        Log::add( 'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
         }
     }    
   
@@ -96,27 +100,27 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function &getSource()
 	{
-		$app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         $item = new stdClass;
 //		if (!$this->_template) {
 //			$this->getTemplate();
 //		}
 
 		//if ($this->_template) {
-			$file_name	= JFactory::getApplication()->input->getVar('file_name');
+			$file_name	= Factory::getApplication()->input->getVar('file_name');
 			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
 			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
-            $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$file_name;
+            $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$file_name;
 
 			if (file_exists($filePath)) {
 				jimport('joomla.filesystem.file');
 
 				//$item->extension_id	= $this->getState('extension.id');
-				$item->filename		= JFactory::getApplication()->input->getVar('file_name');
-				$item->source		= JFile::read($filePath);
+				$item->filename		= Factory::getApplication()->input->getVar('file_name');
+				$item->source		= File::read($filePath);
 			} else {
-				$this->setError(JText::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
+				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}
 		//}
 

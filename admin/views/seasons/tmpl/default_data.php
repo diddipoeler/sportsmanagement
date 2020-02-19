@@ -1,59 +1,23 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage seasons
  */
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 's.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-//// welche joomla version
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('behavior.framework', true);
-//}
-//else
-//{
-//JHtml::_( 'behavior.mootools' );    
-//}
-$modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+
+
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -62,28 +26,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
                 <th width="">&nbsp;</th>
                 <th>
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_NAME', 's.name', $this->sortDirection, $this->sortColumn); ?>
+<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_NAME', 's.name', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th width="" class="nowrap center">
 <?php
-echo JHtml::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
+echo HTMLHelper::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
 ?>
                 </th>
 
                 <th width="">
 <?php
-echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
-echo JHtml::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorder');
+echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
+echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorder');
 ?>
                 </th>
                 <th width="">
-<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
+<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -99,13 +63,13 @@ echo JHtml::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorder');
 $k = 0;
 for ($i = 0, $n = count($this->items); $i < $n; $i++) {
     $row = & $this->items[$i];
-    $link = JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $row->id);
+    $link = Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $row->id);
 
-    $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id=' . $row->id);
-    $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id=' . $row->id);
+    $assignteams = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id=' . $row->id);
+    $assignpersons = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=players&layout=assignpersons&season_id=' . $row->id);
     $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
     $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
+    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
     $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.season.' . $row->id) && $canCheckin;
     ?>
                 <tr class="<?php echo "row$k"; ?>">
@@ -116,7 +80,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                     </td>
                     <td class="center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
                         <?php
@@ -129,11 +93,11 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         <td class="center" nowrap="nowrap">
                         <?php
                         $image = 'teams.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignteams, $modalwidth, $modalheight);
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
+                        echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20',  $assignteams, $this->modalwidth, $this->modalheight);
                         $image = 'players.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignpersons, $modalwidth, $modalheight);
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
+                        echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', $assignpersons, $this->modalwidth, $this->modalheight);
                         ?>							
                         </td>
                             <?php
@@ -141,10 +105,10 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         ?>
                     <td>
                         <?php if ($row->checked_out) : ?>
-                        <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
+                        <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
+                            <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
                             <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                             <?php echo $this->escape($row->name); ?>
@@ -155,17 +119,17 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
 
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-    <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+    <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
                     </td>
                     <td class="center">
                         <div class="btn-group">
-                        <?php echo JHtml::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
+                        <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
                             <?php
                             // Create dropdown items and render the dropdown list.
                             if ($canChange) {
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
-                                echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
+                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
                             }
                             ?>
                         </div>

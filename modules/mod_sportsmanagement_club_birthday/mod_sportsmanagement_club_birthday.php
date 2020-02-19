@@ -4,12 +4,19 @@
  * @file      mod_sportsmanagement_club_birthday.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_club_birthday
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -38,49 +45,58 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
+ 
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
-//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
-
-require_once(dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modSportsmanagementClubBirthdayHelper', __DIR__ . '/helper.php');
 
 // Reference global application object
-$app = JFactory::getApplication();
-$document = JFactory::getDocument();
-$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
+$app = Factory::getApplication();
+$document = Factory::getDocument();
+$show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+if (ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || Factory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
 }
 else
 {
-$module->picture_server = JURI::root() ;
+$module->picture_server = Uri::root() ;
 }
 }
 
 //add css file
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 
 $mode = $params->def("mode");
 $results = $params->get('limit');
@@ -91,21 +107,10 @@ $height = $params->def("height");
 $width  = $params->def("width");
 $season_ids = $params->def("s");
 
-$futuremessage = htmlentities(trim(JText::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
+$futuremessage = htmlentities(trim(Text::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
 
 $clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit,$season_ids);
 if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jsm_birthday_sort($clubs,$params->def("sort_order"));
-
-if ( $show_debug_info )
-{
-$my_text = 'clubs <pre>'.print_r($clubs,true).'</pre>';
-$my_text .= 'params <pre>'.print_r($params,true).'</pre>';    
-sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,$module->module,__LINE__,$my_text);
-}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attribs<br><pre>'.print_r($attribs,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
-
 
 $k = 0;
 $counter = 0;
@@ -132,12 +137,12 @@ $scrollpause = $params->def("scrollpause");
 	{
 		case 'B':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-            //$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+            //$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
         case 'T':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-			include(dirname(__FILE__).DS.'js'.DS.'ticker.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+			include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'ticker.js');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
 		case 'V':
         
@@ -158,7 +163,7 @@ $html_li = '';
     $usedname = $flag.$text;
 	$club_link = "";
     $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,$club->id);
-	$showname = JHTML::link( $club_link, $usedname );
+	$showname = HTMLHelper::link( $club_link, $usedname );
     
     if ($params->get('show_picture')==1) 
         {
@@ -181,7 +186,7 @@ $html_li = '';
         
         if ( $club->founded != '0000-00-00' )
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
             $dayformat = htmlentities(trim($params->get('dayformat')));
 		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -191,7 +196,7 @@ $html_li = '';
         }
         else
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
             $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
         }
             
@@ -213,29 +218,29 @@ $html_li = '';
         //$wowslider_style = "fade";
         $wowslider_style = $params->def("wowsliderstyle");
         
-			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
-			//$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jquery.simplyscroll.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/wowslider/'.$wowslider_style.'/style.css');
+			//include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'qscrollerv.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
+			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/jquery.simplyscroll.js');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/wowslider/'.$wowslider_style.'/style.css');
             
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/'.$wowslider_style.'.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/'.$wowslider_style.'.js');
 
 			break;
 		case 'L':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
-			//$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+			//include(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'qscrollerh.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
+			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
             
        case 'J':
        $container = 'slider'.$module->id.'_container';
         $layout = isset($attribs['layout'])?$attribs['layout']:'jssor';
-        $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
+        $document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
 
 $html_li = '';
     $html_ahref = '';
@@ -251,7 +256,7 @@ $html_li = '';
     $usedname = $flag.$text;
 	$club_link = "";
     $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,$club->id);
-	$showname = JHTML::link( $club_link, $usedname );
+	$showname = HTMLHelper::link( $club_link, $usedname );
     
     if ($params->get('show_picture')==1) 
         {
@@ -274,7 +279,7 @@ $html_li = '';
         
         if ( $club->founded != '0000-00-00' )
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
             $dayformat = htmlentities(trim($params->get('dayformat')));
 		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -284,7 +289,7 @@ $html_li = '';
         }
         else
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
             $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
         }
             
@@ -308,7 +313,7 @@ $html_li .= '</div>';
     }    
         
 
-            $document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
+            $document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
 			break;     
 	}
     
@@ -316,6 +321,6 @@ $html_li .= '</div>';
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module,$layout));
+require(ModuleHelper::getLayoutPath($module->module,$layout));
 ?>
 </div>

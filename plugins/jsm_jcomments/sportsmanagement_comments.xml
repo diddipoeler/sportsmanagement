@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="content" method="upgrade">
+	<name>PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS</name>
+	<author>diddipoeler</author>
+	<creationDate>Juni 2018</creationDate>
+	<copyright>(C) 2018 diddipoeler</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>diddipoeler@arcor.det</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<version>1.0</version>
+	<description>PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS_XML_DESC</description>
+
+	<files>
+		<filename plugin="sportsmanagement_comments">sportsmanagement_comments.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+	</files>
+
+	<languages>
+        <language tag="de-DE">language/de-DE/de-DE.plg_content_sportsmanagement_comments.ini</language>
+		<language tag="en-GB">language/de-DE/de-DE.plg_content_sportsmanagement_comments.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_sportsmanagement_comments.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_sportsmanagement_comments.sys.ini</language>
+                
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="separate_comments" type="radio" default="0"
+					label="PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS_SEPARATE_COMMENTS_LABEL"
+					description="PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS_SEPARATE_COMMENTS_DESC"
+					class="btn-group btn-group-yesno"
+					>
+					<option value="0">PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS_NO</option>
+					<option value="1">PLG_CONTENT_SPORTSMANAGEMENT_COMMENTS_YES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

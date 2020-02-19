@@ -1,28 +1,23 @@
 <?php
-/**
- * @copyright	Copyright (C) 2007-2013 joomleague.at. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      nameformat.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
- 
-/** 
-* Modified by Sports Management Entwickler: diddipoeler, stony, svdoldie und  donclumsy
-* http://fussballineuropa.de/
-* Email: diddipoeler@gmx.de
-* Date: 2014
-* Release: 1.0.47
-* License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 
-*/
-
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 
 /**
- * JFormFieldNameFormat
+ * FormFieldNameFormat
  * 
  * @package 
  * @author diddi
@@ -30,17 +25,17 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class JFormFieldNameFormat extends JFormField
+class JFormFieldNameFormat extends FormField
 {
 	protected $type = 'nameformat';
 
 	/**
-	 * JFormFieldNameFormat::getInput()
+	 * FormFieldNameFormat::getInput()
 	 * 
 	 * @return
 	 */
 	function getInput() {
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
 		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
@@ -49,27 +44,27 @@ class JFormFieldNameFormat extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
-		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
-		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
-		$mitems[] = JHtml::_('select.option', 3, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST'));
-		$mitems[] = JHtml::_('select.option', 4, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST'));
-		$mitems[] = JHtml::_('select.option', 5, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_FIRST_LAST'));
-		$mitems[] = JHtml::_('select.option', 6, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_LAST_FIRST'));
-		$mitems[] = JHtml::_('select.option', 7, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST_NICK'));
-		$mitems[] = JHtml::_('select.option', 8, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST2'));
-		$mitems[] = JHtml::_('select.option', 9, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST2'));
-		$mitems[] = JHtml::_('select.option',10, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST'));
-		$mitems[] = JHtml::_('select.option',11, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST2'));
-		$mitems[] = JHtml::_('select.option',12, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK'));
-		$mitems[] = JHtml::_('select.option',13, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST3'));
-		$mitems[] = JHtml::_('select.option',14, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST2_FIRST'));
-		$mitems[] = JHtml::_('select.option',15, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NEWLINE_FIRST'));
-		$mitems[] = JHtml::_('select.option',16, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NEWLINE_LAST'));
-		$mitems[] = JHtml::_('select.option',17, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
-		$mitems[] = JHtml::_('select.option',18, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
+		$mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
+		$mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
+		$mitems[] = HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
+		$mitems[] = HTMLHelper::_('select.option', 3, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST'));
+		$mitems[] = HTMLHelper::_('select.option', 4, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST'));
+		$mitems[] = HTMLHelper::_('select.option', 5, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_FIRST_LAST'));
+		$mitems[] = HTMLHelper::_('select.option', 6, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_LAST_FIRST'));
+		$mitems[] = HTMLHelper::_('select.option', 7, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST_NICK'));
+		$mitems[] = HTMLHelper::_('select.option', 8, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST2'));
+		$mitems[] = HTMLHelper::_('select.option', 9, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST2'));
+		$mitems[] = HTMLHelper::_('select.option',10, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST'));
+		$mitems[] = HTMLHelper::_('select.option',11, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST2'));
+		$mitems[] = HTMLHelper::_('select.option',12, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK'));
+		$mitems[] = HTMLHelper::_('select.option',13, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST3'));
+		$mitems[] = HTMLHelper::_('select.option',14, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST2_FIRST'));
+		$mitems[] = HTMLHelper::_('select.option',15, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NEWLINE_FIRST'));
+		$mitems[] = HTMLHelper::_('select.option',16, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NEWLINE_LAST'));
+		$mitems[] = HTMLHelper::_('select.option',17, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
+		$mitems[] = HTMLHelper::_('select.option',18, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
 		
-		$output= JHtml::_('select.genericlist',  $mitems,
+		$output= HTMLHelper::_('select.genericlist',  $mitems,
 							$this->name,
 							'class="inputbox" size="1"', 
 							'value', 'text', $this->value, $this->id);

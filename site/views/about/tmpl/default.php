@@ -4,20 +4,21 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage about
  */
  
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 ?>
 <table class="table table-responsive about">
     <tr>
         <td align="center">
             <?PHP
             // Reference global application object
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             // JInput object
             $jinput = $app->input;
             $option = $jinput->getCmd('option');
@@ -32,33 +33,33 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 <br />
 <div class="componentheading">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT'); ?>
 </div>
 <table class="table table-responsive about">
     <tr>
-        <td><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT'); ?></td>
+        <td><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT'); ?></td>
     </tr>
 </table>
 <br />
 
 <div class="componentheading">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DIDDIPOELER'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DIDDIPOELER'); ?>
 </div>
 <table class="table table-responsive about">
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DIDDIPOELER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DIDDIPOELER'); ?>
             </b>
         </td>
         <td>
-            <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DESC_DIDDIPOELER'); ?>
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DESC_DIDDIPOELER'); ?>
         </td>
     </tr>
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_WEBSITE_DIDDIPOELER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_WEBSITE_DIDDIPOELER'); ?>
             </b>
         </td>
         <td>
@@ -70,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_FORUM_DIDDIPOELER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_FORUM_DIDDIPOELER'); ?>
             </b>
         </td>
         <td>
@@ -83,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?>
             </b>
         </td>
         <td>
@@ -96,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_EMAIL_DIDDIPOELER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_EMAIL_DIDDIPOELER'); ?>
             </b>
         </td>
         <td>
@@ -108,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <div class="componentheading">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DETAILS'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DETAILS'); ?>
 </div>
 
 <table class="table table-responsive about">
@@ -116,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DESIGNER'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DESIGNER'); ?>
             </b>
         </td>
         <td>
@@ -126,7 +127,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td>
             <b>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_DEVELOPERS'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DEVELOPERS'); ?>
             </b>
         </td>
         <td>
@@ -139,13 +140,13 @@ defined('_JEXEC') or die('Restricted access');
 <br />
 
 <div class="componentheading">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE'); ?>
 </div>
 
 <table class="table table-responsive about">
     <tr>
         <td>
-            <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE_TEXT'); ?>
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE_TEXT'); ?>
         </td>
     </tr>
 </table>

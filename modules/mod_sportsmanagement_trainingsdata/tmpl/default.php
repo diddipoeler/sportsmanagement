@@ -4,12 +4,13 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_trainingsdata
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 ?>    
 <div class="">
@@ -18,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if ( $params->get('show_training_modul_header') )
 {
-echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); 
+echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); 
 }
 ?>
 </strong>
@@ -31,15 +32,15 @@ echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
 <table class="<?php echo $params->get('table_class'); ?>" >
 <thead>
 	<tr class="sectiontableheader">
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
         <?PHP
         if ( $params->get('show_training_note') )
         {
         ?>
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
         <?PHP
         }
         ?>
@@ -120,11 +121,11 @@ echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
 <div class="alert alert-error">
 <h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
+echo Text::_('COM_SPORTSMANAGEMENT_ERROR');
 ?>
 </h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
+echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
 ?>
 </div>
   

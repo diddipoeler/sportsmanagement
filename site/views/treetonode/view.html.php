@@ -1,21 +1,23 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonode
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTreetonode
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
@@ -40,14 +42,14 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	
 		// Set page title
 		///TODO: treeto name, no project name
-		$titleInfo = sportsmanagementHelper::createTitleInfo(JText::_('COM_JOOMLEAGUE_TREETO_PAGE_TITLE'));
+		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_TREETO_PAGE_TITLE'));
 		if (!empty($this->project))
 		{
 			$titleInfo->projectName = $this->project->name;
 			$titleInfo->leagueName = $this->project->league_name;
 			$titleInfo->seasonName = $this->project->season_name;
 		}
-		$division = sportsmanagementModelProject::getDivision(JFactory::getApplication()->input->getInt('division',0));
+		$division = sportsmanagementModelProject::getDivision(Factory::getApplication()->input->getInt('division',0));
 		if (!empty( $division ) && $division->id != 0)
 		{
 			$titleInfo->divisionName = $division->name;
@@ -63,4 +65,5 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		$this->document->setTitle($this->pagetitle);
 		
 	}
+//$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');		
 }

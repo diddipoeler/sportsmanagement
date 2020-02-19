@@ -47,6 +47,9 @@ if ($pos   !== false) {
 /*         only for phpversion 5.1 and later,                                    */
 /*         date management, default timezone setting                             */
 /*         since 2.6.36 - 2010-12-31 */
+
+defined('_JEXEC') or die('Restricted access');
+
 if( substr( phpversion(), 0, 3 ) >= '5.1' )
   // && ( 'UTC' == date_default_timezone_get()))
   date_default_timezone_set( 'Europe/Stockholm' );
@@ -5588,7 +5591,7 @@ class calendarComponent {
       }
     }
     unset( $config );
-// echo $this->objName.'<br />'.var_export( $this->unparsed, TRUE )."<br />\n"; // test ###
+
             /* concatenate property values spread over several lines */
     $lastix    = -1;
     $propnames = array( 'action', 'attach', 'attendee', 'categories', 'comment', 'completed'

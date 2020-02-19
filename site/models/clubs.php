@@ -4,13 +4,15 @@
  * @file      clubs.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubs
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\Factory;
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelClubs
@@ -21,7 +23,7 @@ jimport( 'joomla.application.component.model' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelClubs extends JModelLegacy
+class sportsmanagementModelClubs extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $divisionid = 0;
@@ -35,7 +37,7 @@ class sportsmanagementModelClubs extends JModelLegacy
 	function __construct( )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 		parent::__construct( );
 
@@ -57,8 +59,8 @@ class sportsmanagementModelClubs extends JModelLegacy
 	 */
 	function getClubs( $ordering = null)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);	

@@ -1,63 +1,98 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_flashchart.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage stats
+ */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
-<!-- Flash Statistik Start -->
-<script	type="text/javascript" src="<?php echo JURI::base().'components/com_sportsmanagement/assets/js/json2.js'; ?>"></script>
-<script	type="text/javascript" src="<?php echo JURI::base().'components/com_sportsmanagement/assets/js/swfobject.js'; ?>"></script>
-<script type="text/javascript">
-	function get_stats_chart() {
-		var data_stats_chart = <?php echo $this->chartdata->toPrettyString(); ?>;
-		return JSON.stringify(data_stats_chart);
-	}
-	swfobject.embedSWF("<?php echo JURI::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
-			"stats_chart", "100%", "200", "9.0.0", false, {"get-data": "get_stats_chart"} );
+?>
+<script>
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
 </script>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="flashchart">
+<h4>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC'); ?>
+</h4>
+<canvas id="jsmchartcurve"></canvas>
+<script>
+var ctx = document.getElementById('jsmchartcurve').getContext('2d');
+var color = Chart.helpers.color;
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
 
+    // The data for our dataset
+    data: {
+        labels: [<?php echo implode(',', $this->round_labels); ?>],
 
-<table class="<?php echo $this->config['goals_table_class'];?>">
-	<tr class="sectiontableheader">
-		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_GOALS_STATISTIC'); ?></th>
-	</tr>
-</table>
+datasets: [{
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
+				backgroundColor: color('<?php echo $this->flashconfig['stats_home_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_home_color']; ?>',
+				borderWidth: 1,
+				data: [<?php echo implode(',', $this->homeSum); ?>
+				]
+			}, {
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
+				backgroundColor: color('<?php echo $this->flashconfig['stats_away_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_away_color']; ?>',
+				borderWidth: 1,
+				data: [<?php echo implode(',', $this->awaySum); ?>
+				]
+			}, {
+				label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
+				backgroundColor: color('<?php echo $this->flashconfig['stats_overall_color']; ?>').alpha(0.5).rgbString(),
+				borderColor: '<?php echo $this->flashconfig['stats_overall_color']; ?>',
+				borderWidth: 1,
+				data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
+				]
+			}
+            
+            ]
+},
 
-<div id="stats_chart"></div>
-<!-- Flash Statistik END -->
+    // Configuration options go here
+    options: {
+    responsive: true,
+    legend: {
+      display: true,
+      labels: {
+        padding: 20
+      },
+    },
+    tooltips: {
+      enabled: true,
+    },
+    scales: {
+yAxes: [{
+ticks: {
+suggestedMin: 0,   
+suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
+beginAtZero:false,
+reverse: false,
+stepSize:1,
+callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
+}
+}]
+}
+    }
+});
 
+</script>
+</div>

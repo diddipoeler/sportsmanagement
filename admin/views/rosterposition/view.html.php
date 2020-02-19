@@ -1,46 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage rosterposition
+ */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-JHtml::_('jquery.ui');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+HTMLHelper::_('jquery.ui');
 
 /**
  * sportsmanagementViewrosterposition
@@ -61,11 +36,7 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-        $document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
+        $this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         
         $bildpositionenhome = array();
 $bildpositionenhome['HOME_POS'][0]['heim']['oben'] = 5;
@@ -113,58 +84,28 @@ $bildpositionenaway['AWAY_POS'][9]['heim']['oben'] = 587;
 $bildpositionenaway['AWAY_POS'][9]['heim']['links'] = 179;
 $bildpositionenaway['AWAY_POS'][10]['heim']['oben'] = 587;
 $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
-
-/*
-        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
-        {
-            $app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
-            $this->jquery = true;
-        }
-        else
-        {
-            $app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
-            $this->jquery = false;
-        }
-*/        
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-        
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
+       
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'rosterposition');
 		$this->extended	= $extended;
 		
-		$mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
-        //$bildpositionenhome = $mdlRosterpositions->getRosterHome();
-//        $bildpositionenaway = $mdlRosterpositions->getRosterAway();
-     
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition extended<br><pre>'.print_r($this->item->extended,true).'</pre>'),'Notice');
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterHome<br><pre>'.print_r($bildpositionenhome,true).'</pre>'),'Notice');
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
-     
-     // position ist vorhanden
+		$mdlRosterpositions = BaseDatabaseModel::getInstance("rosterpositions", "sportsmanagementModel");
+    
+/**
+ * position ist vorhanden
+ */
 	if ( $this->item->id )  
 	{   
 		$count_players = $this->item->players;
         
-        // bearbeiten positionen übergeben
+/**
+ * bearbeiten positionen übergeben
+ */
 		$position = 1;
-    //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-		$jRegistry = new JRegistry;
-		//$jRegistry->loadString($this->item->extended, 'ini');
+		$jRegistry = new Registry;
         
-        // welche joomla version ?
+/**
+ * welche joomla version ?
+ */
         if(version_compare(JVERSION,'3.0.0','ge')) 
 		{
 			$jRegistry->loadString($this->item->extended);
@@ -204,41 +145,20 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	}
         
 	}
-    
-    
-//    for($a=$count_players; $a < 11; $a++)
-//    {
-//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,'');
-//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,'');
-//    $position++;
-//    }
-    
-    //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-    
+
 	for($a = 0; $a < $count_players; $a++)
     {
-    //if ( $a < $count_players )
-//    {    
 	$bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
 	$bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
-   // }
-//    else
-//    {
-//    $bildpositionen[$this->item->name][$a]['heim']['oben'] = '';
-//    $bildpositionen[$this->item->name][$a]['heim']['links'] = '';    
-//    }
 	$position++;
 	}
 	$this->bildpositionen = $bildpositionen;  
-    
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
-    
+   
 	}
 	else
 	{
         // neuanlage
-	$addposition	= $jinput->get('addposition');
+	$addposition	= $this->jinput->get('addposition');
 	$position = 1;
 	$object = new stdClass();
 	$object->id = 0;
@@ -246,16 +166,12 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$object->short_name = $addposition;
 	$object->country = 'DEU';
 	$object->picture = 'spielfeld_578x1050.png';
-	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'rosterposition.xml';
 	$extended = JForm::getInstance('extended', $xmlfile,array('control'=> 'extended'), 
 				false, '/config');
-	$jRegistry = new JRegistry;
+	$jRegistry = new Registry;
 	$jRegistry->loadString('' , 'ini');
 	$extended->bind($jRegistry);
-
-
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' addposition<br><pre>'.print_r($addposition,true).'</pre>'),'Notice');
-    
     
 	switch ($addposition)
 	{
@@ -287,11 +203,6 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     
 	$this->item = $object;   
 	}
-    
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
-        
-
         
 	$javascript = "\n";
 	$javascript .= 'jQuery(document).ready(function() {' . "\n";
@@ -311,18 +222,11 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$javascript .= '  });' . "\n";
 	$javascript .= "\n";
     
-	$document->addScriptDeclaration( $javascript );
+	$this->document->addScriptDeclaration( $javascript );
     
 	$this->form	= $this->form;
-	$this->option	= $option;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
-        
-	//$this->setLayout('edit');
+
 	}
-
-
-    
     
 	/**
 	 * sportsmanagementViewrosterposition::addToolBar()
@@ -331,19 +235,11 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	 */
 	protected function addToolBar() 
 	{
-	// Get a refrence of the page instance in joomla
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
+       
+		$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
+		$this->jinput->set('hidemainmenu', true);
         
-		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-		$jinput->set('hidemainmenu', true);
-        
-		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
 		$this->icon = 'rosterposition';
         			
     parent::addToolbar();

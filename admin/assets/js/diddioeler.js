@@ -13,9 +13,10 @@ $$(".button-delete-subst").addEvent('click', button_delete_subst);
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt
 $$(".button-delete-commentary").addEvent('click', button_delete_commentary);
+
 // hier wird die funktion für das löschen der
-// kommentare hinzugefügt
-$$(".button-delete-event").addEvent('click', button_delete_event);
+// ereignis hinzugefügt
+//$$(".button-delete-event").addEvent('click', button_delete_event);
 	
 });
 
@@ -50,6 +51,7 @@ var querystring = 'teamplayer_id=' + player +
 	'&event_type_id=' + event + 
 	'&event_time=' + time + 
 	'&match_id=' + matchid +
+	'&useeventtime=' + useeventtime +
     '&projecttime=' + projecttime + 
 	'&event_sum=' + event_sum +
 	'&notice=' + notice;
@@ -86,7 +88,7 @@ jQuery("#table-event").last().append('<tr id="rowevent-'
 	+ jQuery("#event_sum").val() + '</td><td>' 
     + jQuery("#event_time").val() + '</td><td>' 
     + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-event" value="' 
+    + '" type="button" onClick="deleteevent(' + resp[0] + ')" class="inputbox button-delete-event" value="' 
     + str_delete + '"</td></tr>');
 
 console.log("team : " + team);
@@ -110,11 +112,11 @@ jQuery("#ajaxresponse").text(resp[1]);
 	
 }
 
-function button_delete_event()
+function deleteevent(eventid)
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');	
-var eventid = this.id.substr(12);  
+//var eventid = this.id.substr(12);  
 var url = baseajaxurl + '&task=matches.removeEvent&tmpl=component';
 var querystring = '&event_id=' + eventid;
 

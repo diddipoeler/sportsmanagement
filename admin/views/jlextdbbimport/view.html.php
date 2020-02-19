@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlextdbbimport
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewjlextdbbimport
@@ -37,10 +42,10 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 			return;
 		}
 		
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 		
-		$uri = JFactory::getURI ();
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$uri = Factory::getURI ();
+		$config = ComponentHelper::getParams ( 'com_media' );
 		$files = $input->get('files');
 		$post = $input->post;
 		$this->request_url	= $uri->toString ();
@@ -62,12 +67,12 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	 */
 	function _displayDefault($tpl) 
     {
-		$app = JFactory::getApplication ();
+		$app = Factory::getApplication ();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = JFactory::getDBO ();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$db = Factory::getDBO ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		
 		// $model = $this->getModel('project') ;
 		// $projectdata = $this->get('Data');
@@ -76,7 +81,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$this->request_url	= $uri->toString ();
 		$this->config	= $config;
@@ -97,17 +102,17 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	 */
 	function _displayDefaultUpdate($tpl) 
     {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		$db = JFactory::getDBO ();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$db = Factory::getDBO ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );
@@ -135,18 +140,18 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	protected function addToolbar() 
     {
         // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $app = JFactory::getApplication();
+		$document	= Factory::getDocument();
+        $app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
 		
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
+		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
         
         parent::addToolbar();
 

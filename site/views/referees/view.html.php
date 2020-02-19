@@ -4,14 +4,13 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage referees
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewReferees
@@ -41,10 +40,10 @@ class sportsmanagementViewReferees extends sportsmanagementView
 		$this->rows = $this->model->getReferees();
 
 		// Set page title
-		$pagetitle=JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
-		$this->document->setTitle( JText::sprintf( $pagetitle, $this->project->name ) );
+		$pagetitle=Text::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
+		$this->document->setTitle( Text::sprintf( $pagetitle, $this->project->name ) );
         
-        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
+        $this->headertitle = Text::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
 
 	}
 

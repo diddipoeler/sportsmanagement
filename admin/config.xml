@@ -67,7 +67,7 @@
     
   <field name="cfg_bugtracker_server" 
   type="text" 
-  default="http://mantisbugtracker.fussballineuropa.de/my_view_page.php"
+  default="https://github.com/diddipoeler/sportsmanagement/issues"
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_BUGTRACKERSERVER_DESC">
@@ -105,6 +105,16 @@
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
 			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
 		</field>
+
+<field name="cfg_draganddrop" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		
 		<field name="cfg_load_bootstrap" 
     type="extensionradiobutton" 
@@ -137,6 +147,7 @@
 		<field
 			name="jsm_server_user"
 			type="text"
+		       default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_DESC"
 			filter="string"
@@ -146,6 +157,7 @@
 		<field
 			name="jsm_dbtype"
 			type="databaseconnection"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_TYPE_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_TYPE_DESC"
 			supported="mysql,mysqli,postgresql,sqlsrv,sqlazure"
@@ -154,6 +166,7 @@
 		<field
 			name="jsm_host"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_HOST_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_HOST_DESC"
 			filter="string"
@@ -162,6 +175,7 @@
 		<field
 			name="jsm_user"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_USERNAME_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_USERNAME_DESC"
 			filter="string"
@@ -170,6 +184,7 @@
 			<field
 			name="jsm_password"
 			type="password"
+			       default=""
 			label="JGLOBAL_PASSWORD"
 			description="COM_ADMIN_USER_FIELD_PASSWORD_DESC"
 			filter="string"
@@ -178,6 +193,7 @@
 		<field
 			name="jsm_db"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_NAME_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_NAME_DESC"
 			filter="string"
@@ -211,17 +227,7 @@
 			<option value="joomleague">COM_SPORTSMANAGEMENT_JOOMLEAGUE_DATABASE_TABLE</option>
 			<option value="sportsmanagement">COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_DATABASE_TABLE</option>
 		</field>
-		
-    <field name="show_debug_info" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
+
 <field name="show_debug_info_backend" 
     type="extensionradiobutton" 
     default="0"
@@ -361,6 +367,7 @@
 			<option value="tabletennis">COM_SPORTSMANAGEMENT_ST_TABLETENNIS</option>
 			<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
 			<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
+			<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
 		</field>
 	</fieldset>
   
@@ -448,6 +455,15 @@ filter="safehtml"/>
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
+	<field name="ph_project" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_PICTURE" 
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_PICTURE"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
+		
 		<field name="ph_flags" 
     type="media"
 			default="images/com_sportsmanagement/database/placeholders/placeholder_flags.png"
@@ -465,73 +481,80 @@ filter="safehtml"/>
 			directory="images/com_sportsmanagement/database/placeholders/"
 			preview="show">
 		</field>
-		
+		<field name="ph_trikot" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif" 
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">
+		</field>
 		<field name="ph_logo_small" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_small.gif"
+			default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_SMALL"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/clubs/small/"
 			preview="show">			
 		</field>
 		
 		<field name="ph_logo_medium" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_50.png" 
+			default="images/com_sportsmanagement/database/clubs/medium/placeholder_wappen_50.png" 
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_MEDIUM"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_MEDIUM"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/clubs/medium/"
 			preview="show">			
 		</field>
 		
 		<field name="ph_logo_big" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_150.png"
+			default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_LOGO_BIG" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_LOGO_BIG"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/clubs/large/"
 			preview="show">			
 		</field>
 		
 		<field name="ph_player" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
+			default="images/com_sportsmanagement/database/persons/placeholder_150_2.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>
 
 <field name="ph_player_men_large" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/men_large.png"
+			default="images/com_sportsmanagement/database/persons/men_large.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_MEN_LARGE" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_MEN_LARGE"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 <field name="ph_player_men_small" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/men_small.png"
+			default="images/com_sportsmanagement/database/persons/men_small.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_MEN_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_MEN_SMALL"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 <field name="ph_player_woman_large" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/woman_large.png"
+			default="images/com_sportsmanagement/database/persons/woman_large.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_WOMAN_LARGE" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_WOMAN_LARGE"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>
 <field name="ph_player_woman_small" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/woman_small.png"
+			default="images/com_sportsmanagement/database/persons/woman_small.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_WOMAN_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_WOMAN_SMALL"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 		
@@ -540,6 +563,15 @@ filter="safehtml"/>
 			default="images/com_sportsmanagement/database/placeholders/placeholder_450_2.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_TEAM" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_TEAM"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		
+		<field name="ph_stadium" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_stadium.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_STADIUM" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_STADIUM"
 			directory="images/com_sportsmanagement/database/placeholders/"
 			preview="show">			
 		</field>
@@ -588,7 +620,7 @@ class="radio btn-group btn-group-yesno"
 			<option value="1">JYES</option>
 		</field>
 
-<field name="boostrap_div_class" type="list" default=""
+<field name="boostrap_div_class" type="list" default="row"
 			label="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND" description="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND_DESC">
 			<option value="">JNO</option>
 			<option value="row">row</option>
@@ -600,10 +632,16 @@ class="radio btn-group btn-group-yesno"
       description="COM_SPORTSMANAGEMENT_SETTINGS_LOGO_PICTURE_WIDTH_DESC">
 		</field>
  
+	<field name="show_facebook_link" type="extensionradiobutton" default="0"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_FACEBOOK_LINK_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	
                 <field name="use_jsmflex" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -945,6 +983,17 @@ multiple="true"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+	
+<field name="show_option_projectteam_change" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAM_CHANGE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAM_CHANGE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
 
 <field name="show_edit_matches_matrix" 
     type="extensionradiobutton" 
@@ -958,7 +1007,7 @@ multiple="true"
 	
 <field name="show_option_federation" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION_DESC">
@@ -968,7 +1017,7 @@ multiple="true"
 		
 <field name="show_option_association" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION_DESC">
@@ -978,7 +1027,7 @@ multiple="true"
 		
 <field name="show_option_position" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION_DESC">
@@ -988,7 +1037,7 @@ multiple="true"
 		
 <field name="show_option_eventtypes" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES_DESC">
@@ -998,7 +1047,7 @@ multiple="true"
 		
 <field name="show_option_agegroup" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP_DESC">
@@ -1008,7 +1057,7 @@ multiple="true"
 
 <field name="show_option_person" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON_DESC">
@@ -1018,7 +1067,7 @@ multiple="true"
 		
 <field name="show_option_playground" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND_DESC">
@@ -1028,7 +1077,7 @@ multiple="true"
 		
 <field name="show_option_rosterposition" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION_DESC">
@@ -1038,7 +1087,7 @@ multiple="true"
 
 <field name="show_option_extrafields" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS_DESC">
@@ -1048,7 +1097,7 @@ multiple="true"
 		
 <field name="show_option_statistics" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS_DESC">
@@ -1058,7 +1107,7 @@ multiple="true"
 		
 <field name="show_option_clubnames" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES_DESC">
@@ -1068,7 +1117,7 @@ multiple="true"
 		
 <field name="show_option_github" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB_DESC">
@@ -1078,7 +1127,7 @@ multiple="true"
 
 <field name="show_option_smquotes" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES_DESC">
@@ -1134,153 +1183,32 @@ type="text"
 size="200" 
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY" 
-description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />	
+description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
+		
+<field name="google_api_datei" 
+type="text" 
+default="https://github.com/googleapis/google-api-php-client/releases/download/v2.4.0/google-api-php-client-2.4.0.zip"
+size="400"
+label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
+description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
+</field>		
+		
 	</fieldset>
 
-<!-- register 7 -->
-	<fieldset
-		name="gcalendar"
-		label="COM_SPORTSMANAGEMENT_SETTINGS_GCALENDAR"
-		description="COM_SPORTSMANAGEMENT_SETTINGS_GCALENDAR_DESC"
+<!-- register 9 --> 
+<fieldset
+		name="opencagedata"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_DESC"
 	>
+<field name="opencagedata_api_clientid" 
+type="text" 
+size="200" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />	
 
-<field name="google_apps_domain" type="text" default="" size="100"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_APPS_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_APPS_DESC" />
-		<field name="timezone" type="googletimezones" default=""
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_TIMEZONE_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_TIMEZONE_DESC" />
-		<field name="gc_cache" type="list" default="1"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_DESC">
-			<option value="2">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_GLOBAL
-			</option>
-			<option value="1">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_ALWAYS
-			</option>
-			<option value="0">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_NEVER
-			</option>
-		</field>
-		<field name="gc_cache_time" type="text" default="900"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_TIME" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_SETTINGS_CACHING_TIME_DESC" />
-			
-<field name="show_selection" type="list" default="1"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_CALENDARS_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_CALENDARS_DESC">
-			<option value="1">JYES</option>
-			<option value="3">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_CALENDARS_EXPAND</option>
-			<option value="2">JNO</option>
-		</field>
-		<field name="defaultView" type="list" default="month"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_DESC">
-			<option value="month">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_MONTH</option>
-			<option value="week">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_WEEK</option>
-			<option value="day">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_DAY</option>
-			<option value="list">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DEFAULT_VIEW_LIST</option>
-		</field>
-		<field name="weekstart" type="list" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_DESC">
-			<option value="0">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_SUNDAY</option>
-			<option value="1">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_MONDAY</option>
-			<option value="2">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_TUESDAY</option>
-			<option value="3">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_WEDNESDAY</option>
-			<option value="4">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_THURSDAY</option>
-			<option value="5">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_FRIDAY</option>
-			<option value="6">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_SATURDAY</option>
-		</field>
-		<field name="weekend" type="extensionradiobutton" default="1" 
-		class="radio btn-group btn-group-yesno"
-            label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_DESC"> 
-            <option value="1">JYES</option> 
-            <option value="0">JNO</option> 
-        </field>
-		<field name="week_numbers" type="extensionradiobutton" default="0" 
-		class="radio btn-group btn-group-yesno"
-            label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_DESC"> 
-            <option value="1">JYES</option> 
-            <option value="0">JNO</option> 
-        </field>
-        <field name="calendar_height" type="text" size="50" default="0"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_CALENDAR_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_CALENDAR_DESC" />
-		<field name="titleformat_month" type="text" default="F Y" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_MONTH_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_MONTH_DESC" size="50" />
-		<field name="titleformat_week" type="text" default="M j[ Y]{ '-'[ M] j o}" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_WEEK_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_WEEK_DESC" size="50" />
-		<field name="titleformat_day" type="text" default="l, M j, Y" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_DAY_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_DAY_DESC" size="50" />
-		<field name="titleformat_list" type="text" default="M j Y" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_LIST_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TITLE_FORMAT_LIST_DESC" size="50" />
-		<field name="timeformat_month" type="text" default="g:i a{ - g:i a}" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_MONTH_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_MONTH_DESC" size="50" />
-		<field name="timeformat_week" type="text" default="g:i a{ - g:i a}" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_WEEK_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_WEEK_DESC" size="50" />
-		<field name="timeformat_day" type="text" default="g:i a{ - g:i a}" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_DAY_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_DAY_DESC" size="50" />
-		<field name="timeformat_list" type="text" default="g:i a{ - g:i a}" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_LIST_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TIME_FORMAT_LIST_DESC" size="50" />
-		<field name="axisformat" type="text" default="g:i a" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_AXIS_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_AXIS_FORMAT_DESC" size="50" />
-		<field name="@spacer" type="spacer" default="" label=""
-			description="" />
-		<field name="description_date_format" type="text" size="50" default="m.d.Y"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_DATE_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_DATE_FORMAT_DESC" />
-		<field name="description_time_format" type="text" size="50" default="g:i a"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_TIME_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_TIME_FORMAT_DESC" />
-		<field name="description_format" type="textarea2" default="" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_DESC_FORMAT_DESC"
-			rows="5" cols="50" filter="raw">
-			<content><![CDATA[{{#events}}<p>{{date}}<br/>{{{description}}}</p>{{/events}}]]></content>
-			<description>COM_SPORTSMANAGEMENT_JSMGCALENDAR_MUSTACHE_DESC</description>
-		</field>
-		<field name="textbefore" type="textarea" default=""
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_BEFORE_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_BEFORE_DESC"
-			rows="5" cols="50" filter="raw"/>
-		<field name="textafter" type="textarea" default=""
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_DESC"
-			rows="5" cols="50" filter="raw"/>
-		<field name="show_event_as_popup" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_DESC">
-			<option value="1">JYES</option>
-			<option value="2">JNO</option>
-		</field>
-		<field name="popup_width" type="text" default="650" size="5" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_WIDTH_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_WIDTH_DESC" />
-		<field name="popup_height" type="text" default="500" size="5" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_HEIGHT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_HEIGHT_DESC" />
-		<field name="theme" type="text" size="50" default=""
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_THEME_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_THEME_DESC" />
-		<field name="first_hour" type="text" default="6" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_FIRST_HOUR_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_FIRST_HOUR_DESC" size="10" />
-		<field name="min_time" type="text" default="0" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_MIN_TIME_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_MIN_TIME_DESC" size="10" />
-		<field name="max_time" type="text" default="24" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_MAX_TIME_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_MAX_TIME_DESC" size="10" />			
-
-
-		<field name="event_description_format" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_DESC">
-			<option value="1">JYES</option>
-			<option value="2">JNO</option>
-		</field>
-		<field name="event_date_format" type="text" size="80" default="m.d.Y"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DATE_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DATE_FORMAT_DESC" />
-		<field name="event_time_format" type="text" size="80" default="g:i a"
-			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_TIME_FORMAT_LABEL"
-			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_TIME_FORMAT_DESC" />
-	
-	
 </fieldset>
-
-
-
-
-
-
-
 
           		
 <!-- register ende -->		

@@ -4,13 +4,15 @@
  * @file      allteams.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allteams
  */
 
 defined('_JEXEC') or die;
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallteams
@@ -21,7 +23,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallteams extends JModelList
+class sportsmanagementModelallteams extends ListModel
 {
 
 var $_identifier = "allteams";
@@ -37,7 +39,7 @@ var $_identifier = "allteams";
 	public function __construct($config = array())
         {   
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
@@ -65,7 +67,7 @@ var $_identifier = "allteams";
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -87,12 +89,6 @@ public function getStart()
         $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
     }
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
-
     // Add the total to the internal cache.
     $this->cache[$store] = $start;
 
@@ -109,25 +105,24 @@ public function getStart()
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'   ),'');
-        
+       
         
         // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = Factory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
-//		$value = JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int');
-//		$this->setState('list.start', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
+//		$value = Factory::getApplication()->input->getVar('limitstart', 0, '', 'int');
+//		$this->setState('list.start', Factory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
         
         //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
         
-//        $this->setState('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
+//        $this->setState('limitstart', Factory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
 //        // In case limit has been changed, adjust limitstart accordingly
 //        $this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 
@@ -140,14 +135,14 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
+        //$filter_order = Factory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.name';
 		}
         
-        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
+        //$filter_order_Dir = Factory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {
@@ -156,16 +151,8 @@ public function getStart()
 
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
-  
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ordering<br><pre>'.print_r($filter_order,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' direction<br><pre>'.print_r($filter_order_Dir,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' listOrder<br><pre>'.print_r($listOrder,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderCol<br><pre>'.print_r($orderCol,true).'</pre>'),'');
-
 
 //		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -181,7 +168,7 @@ public function getStart()
     function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -191,7 +178,7 @@ public function getStart()
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
 		
         // Select some fields
 		$query->select('v.id,v.name,v.picture,v.website');
@@ -222,19 +209,13 @@ public function getStart()
         }
         if ( $this->use_current_season )
         {
-        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $filter_season = ComponentHelper::getParams($option)->get('current_season',0);    
         $query->where('p.season_id IN ('.implode(',',$filter_season).')');
         }
         
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
         
 		return $query;
 

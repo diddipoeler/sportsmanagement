@@ -1,51 +1,51 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_show_help.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionresults
  */
 
 defined('_JEXEC') or die('Restricted access');
-//$component_text = 'COM_SPORTSMANAGEMENT_';
-//echo '<br /><pre>~' . print_r($this->predictionMember->pmID,true) . '~</pre><br />';
+use Joomla\CMS\Language\Text;
+
 if (!isset($this->config['show_scoring'])){$this->config['show_scoring']=1;}
-$gameModeStr = ($this->model->predictionProject->mode==0) ? JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_STANDARD_MODE') : JText::_('JL_PRED_RESULTS_TOTO_MODE');
-?><p style='font-weight: bold; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_NOTICE'); ?></p><p><ul><li><i><?php
-						echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_01');
+$gameModeStr = ($this->model->predictionProject->mode==0) ? Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_STANDARD_MODE') : Text::_('JL_PRED_RESULTS_TOTO_MODE');
+?><p style='font-weight: bold; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_NOTICE'); ?></p><p><ul><li><i><?php
+						echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_01');
 						if (!$this->config['show_all_user'])
 						{
 							?></i></li><li><i><?php
-							echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_02');
+							echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_02');
 							?></i></li><li><i><?php
 						}
 						else
 						{
 							echo ' ';
 						}
-						echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_03');
+						echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_03');
 						?></i></li><li><i><?php
-						echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_04');
+						echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_04');
 						?></i></li><li><i><?php
-						echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_05');
+						echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_05');
 						?></i></li><li><i><?php
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_06','<b>'.$gameModeStr.'</b>');
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_06','<b>'.$gameModeStr.'</b>');
 						?><?php
 						if (($this->config['show_scoring']) && ($this->predictionMember->pmID > 0))
 						{
-							?></i></li><li><i><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_07');
+							?></i></li><li><i><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOTICE_INFO_07');
 							?><table class='blog' cellpadding='0' cellspacing='0'>
 								<tr>
-									<td class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT'); ?></td>
-									<td class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_YOUR_PREDICTION'); ?></td>
-									<td class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_POINTS'); ?></td>
+									<td class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT'); ?></td>
+									<td class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_YOUR_PREDICTION'); ?></td>
+									<td class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_POINTS'); ?></td>
 									<?php
 									if (($this->model->predictionProject->joker) && ($this->model->predictionProject->mode==0))
 									{
-										?><td class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_JOKER_POINTS'); ?></td><?php
+										?><td class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_JOKER_POINTS'); ?></td><?php
 									}
 									?>
 								</tr>
@@ -144,6 +144,6 @@ $gameModeStr = ($this->model->predictionProject->mode==0) ? JText::_('COM_SPORTS
 						else
 						{
 							?></i></li><li><i><?php
-							echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_READ_RULES');
+							echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_READ_RULES');
 						}
 						?></i></li></ul></p>

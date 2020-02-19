@@ -4,21 +4,22 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage resultsranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php' );
-require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php' );
+require_once(JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'results' .DIRECTORY_SEPARATOR. 'view.html.php' );
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-//jimport('joomla.html.pane');
 
 /**
  * sportsmanagementViewResultsranking
@@ -40,35 +41,53 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 	function init()
 	{
         
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
-		// add the ranking model
+/**
+ * add the ranking model
+ */
 		$rankingmodel = new sportsmanagementModelRanking();
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0),__METHOD__,1);
-		// add the ranking config file
+/**
+ * add the ranking config file
+ */
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$this->jinput->getInt('cfg_which_database',0));
+		$rankingmodel::$from = 0;
+                $rankingmodel::$to = 0;
 		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database',0));
         
-        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
         
-		// add the results model		
+/**
+ * add the results model
+ */		
 		$resultsmodel	= new sportsmanagementModelResults();
-		// add the results config file
-
-		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+/**
+ * add the results config file
+ */
+		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$this->jinput->getInt('cfg_which_database',0));
         $this->paramconfig = $rankingmodel::$paramconfig;
-        $this->paramconfig['p'] = $project->slug;
-		
+        if ( $project )
+	{
+		$this->paramconfig['p'] = $project->slug;
+	}
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
 		if (!isset($resultsconfig['show_dnp_teams_icons'])){$resultsconfig['show_dnp_teams_icons']=0;}
 		if (!isset($resultsconfig['show_results_ranking'])){$resultsconfig['show_results_ranking']=0;}
 
-		// merge the 2 config files
+/**
+ * merge the 2 config files
+ */
 		$config = array_merge($rankingconfig, $resultsconfig);
 
 		$this->config = array_merge($this->overallconfig, $config);
+		
+	if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+        {
+
+        }
 		$this->tableconfig = $rankingconfig;
 		$this->showediticon = $resultsmodel->getShowEditIcon();
 		$this->division = $resultsmodel->getDivision();
@@ -86,8 +105,11 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
 $routeparameter['s'] = $this->jinput->getInt('s',0);
+		if ( $project )
+	{
 $routeparameter['p'] = $project->slug;
-$routeparameter['r'] = $this->roundid;
+		}
+$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = 0;
@@ -103,24 +125,54 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		$this->type = $rankingmodel::$type;
 		$this->from = $rankingmodel::$from;
 		$this->to = $rankingmodel::$to;
-		$this->currentRanking = $rankingmodel::$currentRanking;
-		$this->previousRanking = $rankingmodel::$previousRanking;
-		$this->homeRank = $rankingmodel::$homeRank;
-		$this->awayRank = $rankingmodel::$awayRank;
+		
+if ( $this->params->get('show_allranking', 0) ) 
+{
+$this->previousRanking = $rankingmodel::$previousRanking;
+if ($this->config['show_table_1']) {
+$this->currentRanking = $rankingmodel::$currentRanking;
+}	
+if ($this->config['show_table_2']) {
+$this->homeRank = $rankingmodel::$homeRank;
+}	
+if ($this->config['show_table_3']) {
+$this->awayRank = $rankingmodel::$awayRank;
+}
+if ($this->config['show_table_4']) {
+$rankingmodel::$part = 1;
+$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+$this->firstRank = $rankingmodel::$currentRanking;
+}
+if ($this->config['show_table_5']) {
+$rankingmodel::$part = 2;
+$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+$this->secondRank = $rankingmodel::$currentRanking;
+}	
+}
+else
+{
+$this->previousRanking = $rankingmodel::$previousRanking;
+$this->currentRanking = $rankingmodel::$currentRanking;	
+}
+
 		$this->current_round = $rankingmodel::$current_round;
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$this->jinput->getInt('cfg_which_database',0));
 		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database',0));
         
-		//rankingcolors
+/**
+ * rankingcolors
+ */
 		if (!isset ($this->config['colors'])) {
 			$this->config['colors'] = "";
 		}
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],$this->jinput->getInt('cfg_which_database',0));
         
-        // Set page title
+/**
+ * Set page title
+ */
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-			? JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
-			: JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
+			: Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
             
 		if ( isset( $this->project->name ) )
 		{
@@ -128,16 +180,22 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		}
 		$this->document->setTitle($pageTitle);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
-        // diddipoeler
+/**
+ * diddipoeler
+ */
+		if ( $project )
+		{
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));
-        
-        if ( $this->config['show_ranking_maps'] )
+		}
+      if ( $this->params->get('show_map', 0) )
 	  {
-	  $this->geo = new JSMsimpleGMapGeocoder();
-	  $this->geo->genkml3($project->id,$this->allteams);
+	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
+
+//	  $this->geo = new JSMsimpleGMapGeocoder();
+//	  $this->geo->genkml3($project->id,$this->allteams);
   
   foreach ( $this->allteams as $row )
     {
@@ -185,8 +243,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		foreach ($rounds as $r)
 		{
 		  $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $r->slug;
 $routeparameter['division'] = 0;
@@ -196,7 +254,7 @@ $routeparameter['layout'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
 
 
-			$options[] = JHTML::_('select.option', $link, $r->text);
+			$options[] = HTMLHelper::_('select.option', $link, $r->text);
 		}
 		return $options;
 	}

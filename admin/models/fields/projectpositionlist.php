@@ -4,19 +4,22 @@
  * @file      projectpositionlist.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
+FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldprojectpositionlist
+ * FormFieldprojectpositionlist
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,7 +27,7 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldprojectpositionlist extends JFormFieldList
+class JFormFieldprojectpositionlist extends \JFormFieldList
 {
     
 	/**
@@ -43,7 +46,7 @@ class JFormFieldprojectpositionlist extends JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -55,41 +58,28 @@ class JFormFieldprojectpositionlist extends JFormFieldList
         
         // Initialize variables.
 		$options = array();
-//    $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
-        $db = JFactory::getDbo();
+		$select_id = Factory::getApplication()->input->getVar('id');
+        $db = Factory::getDbo();
 			$query = $db->getQuery(true);
-			
 			$query->select('pp.id AS value, pos.name AS text');
             $query->from('#__sportsmanagement_position as pos');
             $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
-            
 			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
             $query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
-            
-            //$query->where('ppp.project_position_id = '.$select_id);
             $query->where('pp.project_id = '.$pid);
 			$query->order('pos.ordering,pos.name');
             $query->group('pos.id');
 			$db->setQuery($query);
-            
-        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
-        {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-            
+           
             try { 
 			$options = $db->loadObjectList();
             }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-JFactory::getApplication()->enqueueMessage($db->getErrorMsg());
+Factory::getApplication()->enqueueMessage($db->getErrorMsg());
 }
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

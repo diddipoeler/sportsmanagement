@@ -4,15 +4,18 @@
  * @file      default_stats_away.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
-	<table class="table table-responsive" >
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+	<table class="table " >
 		<?php
 		foreach ( $this->matchplayerpositions as $pos )
 		{
@@ -20,7 +23,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 				<tr>
 					<td colspan="2" class="positionid">
-						<?php echo JText::_( $pos->name ); ?>
+						<?php echo Text::_( $pos->name ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -29,7 +32,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<table class="playerstats">
 							<thead>
 								<tr>
-									<th class="playername"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
+									<th class="playername"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
 									<?php 
 									if(isset($this->stats[$pos->position_id])) :
 										foreach ($this->stats[$pos->position_id] as $stat): ?>
@@ -50,20 +53,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 										<td class="playername">
 										<?php
 $routeparameter = array();  
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);  
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);  
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);  
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);  
 $routeparameter['p'] = $this->project->slug;  
 $routeparameter['tid'] = $player->team_slug;  
 $routeparameter['pid'] = $player->person_slug;  
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  										
-										    //$player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
 										    $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
 										    $match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team)); 
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -88,19 +90,18 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										<td class="playername">
 										<?php
 $routeparameter = array();  
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);  
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);  
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);  
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);  
 $routeparameter['p'] = $this->project->slug;  
 $routeparameter['tid'] = $sub->team_slug;  
 $routeparameter['pid'] = $sub->person_slug;  
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 										
-										    //$player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
-										    $match_player = sportsmanagementHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
+$match_player = sportsmanagementHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team)); 
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -128,7 +129,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 			?>
 				<tr>
 					<td colspan="2" class="positionid">
-						<?php echo JText::_( $pos->name ); ?>
+						<?php echo Text::_( $pos->name ); ?>
 					</td>
 				</tr>
 				<tr>		
@@ -137,7 +138,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 						<table class="playerstats">
 							<thead>
 								<tr>
-									<th class="playername"><?php echo JText::_('Name'); ?></th>
+									<th class="playername"><?php echo Text::_('Name'); ?></th>
 									<?php foreach ($this->stats[$pos->position_id] as $stat): ?>
 										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport()):?>
 											<th><?php echo $stat->getImage(); ?></th>
@@ -152,8 +153,8 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										<td class="playername">
 										<?php
 										$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $player->team_slug;
        $routeparameter['pid'] = $player->person_slug;
@@ -164,7 +165,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -187,3 +188,4 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 		}
 		?>
 	</table>					
+</div>

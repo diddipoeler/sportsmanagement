@@ -6,6 +6,13 @@ var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scro
 var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
 
+function change_alt_decision()
+{
+alert('hallo');	
+	
+}
+
+	
 function get_documentWidth()
 {
 var documentWidth = jQuery(document).width();
@@ -31,13 +38,14 @@ var documentHeight = jQuery(window).height();
 return documentHeight - 100 ;
 }
 
+function selectallstatistic()
+{
+jQuery('select.position_statistic option').prop('selected', 'selected');	
+}	
 
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
-
-//alert(sourceid);
-//alert(destinationid);
 jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
 }
 
@@ -96,9 +104,21 @@ var url = 'index.php?option=com_sportsmanagement&task=ajax.personpositionoptions
 	        
 }
 
-
-
-
+/*
+function toggle_altdecision() {
+	if (document.getElementById('jform_alt_decision').value == 0) {
+		document.getElementById('alt_decision_enter').style.display = 'none';
+		document.getElementById('team1_result_decision').disabled = true;
+		document.getElementById('team2_result_decision').disabled = true;
+		document.getElementById('decision_info').disabled = true;
+	} else {
+		document.getElementById('alt_decision_enter').style.display = 'block';
+		document.getElementById('team1_result_decision').disabled = false;
+		document.getElementById('team2_result_decision').disabled = false;
+		document.getElementById('decision_info').disabled = false;
+	}
+}
+*/
 
 
 
@@ -154,6 +174,18 @@ function registerproject(homepage,project,homepagename,isadmin)
 var url='http://www.fussballineuropa.de/jsmprojectexport.php';		
 var data = 'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
 var url2='http://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var request = new Request({
+                        url: url2,
+                        method:'post',
+                        data: data
+                        }).send();
+                        		
+		}
+
+function register(homepage,notes,homepagename,isadmin)
+	{
+var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
 var request = new Request({
                         url: url2,
                         method:'post',

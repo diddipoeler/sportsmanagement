@@ -4,18 +4,14 @@
  * @file      positions.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
 /**
  * sportsmanagementControllerPositions
  * 
@@ -25,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPositions extends JControllerAdmin
+class sportsmanagementControllerPositions extends JSMControllerAdmin
 {
   
 	/**
@@ -39,7 +35,7 @@ class sportsmanagementControllerPositions extends JControllerAdmin
 	{
 	   $model = $this->getModel();
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
     
     /**

@@ -1,15 +1,30 @@
 <?php
-/**
- * @copyright	Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
- * @license		GNU General Public License version 3 or later; see LICENSE.txt
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      jsmsubtitle.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 
-jimport('joomla.form.formfield');
 
-class JFormFieldJSMSubtitle extends JFormField {
+/**
+ * FormFieldJSMSubtitle
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JFormFieldJSMSubtitle extends FormField {
 		
 	public $type = 'JSMSubtitle';
 
@@ -27,7 +42,7 @@ class JFormFieldJSMSubtitle extends JFormField {
 		$html .= '<div style="clear: both;"></div>';
 		$html .= '<div style="margin: 20px 0 20px 20px; font-weight: bold; padding: 5px; color: #444444; border-bottom: 1px solid #444444;">';
 		if ($value) {
-			$html .= JText::_($value);
+			$html .= Text::_($value);
 		}
 		$html .= '</div>';
 

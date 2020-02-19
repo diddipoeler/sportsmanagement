@@ -1,5 +1,18 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_roundselect.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage matches
+ */
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 ?>
 		<!-- round selector START -->
 		<div style="width: 75%; margin-bottom: 14px;">
@@ -9,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name='boxchecked' value="0" />
 			<div style="float: right; vertical-align: middle; line-height: 27px;">
-			<?php echo JHtml::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 
 				<?php
 				$lv=""; $nv=""; $sv=false;
@@ -20,13 +33,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				if ($lv != "")
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$lv;
-					$link=JRoute::_('index.php?'.$query);
-					$prevlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
+					$link=Route::_('index.php?'.$query);
+					$prevlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
 				}
 				else
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH');
+					echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH');
 				}
 				echo '</div>';
 				echo '<div style="float: left; text-align: center; margin-right: 10px; margin-left: 10px;">';
@@ -36,13 +49,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				if (($nv != "") && ($nv != $this->roundws->id))
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$nv;
-					$link=JRoute::_('index.php?'.$query);
-					$nextlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
+					$link=Route::_('index.php?'.$query);
+					$nextlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;
 				}
 				else
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH');
+					echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH');
 				}
 				echo '</div>';
 				?>

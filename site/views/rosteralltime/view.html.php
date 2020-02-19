@@ -4,13 +4,15 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage rosteralltime
  */
 
 defined('_JEXEC') or die('Restricted access');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');
+use Joomla\CMS\Factory;
+
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'player.php');
 
 jimport('joomla.application.component.view');
 
@@ -35,9 +37,9 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$model = $this->getModel();
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
         $state = $this->get('State');

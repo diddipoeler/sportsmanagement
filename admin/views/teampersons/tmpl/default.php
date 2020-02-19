@@ -4,13 +4,14 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teampersons
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 if ( $this->restartpage )
 {
@@ -23,18 +24,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //$ordering = ( $this->sortColumn == 'ppl.ordering' );
 $ordering = ( $this->sortColumn == 'ppl.ordering' );
 
-//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
+//$this->addTemplatePath( JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. 'adminmenu' );
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
-JHtml::_('behavior.modal');
+
 
 ?>
 <style>
@@ -64,7 +65,7 @@ JHtml::_('behavior.modal');
 </style>
 
 <script>
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
+	var quickaddsearchurl = '<?php echo Uri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
         var s= document.getElementById("filter_search");
@@ -85,6 +86,7 @@ echo $this->loadTemplate('joomla_version');
 <!--	</fieldset> -->
 <input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>" />
 <input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>" />
+<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />	
 <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
 <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>" />
 <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
@@ -92,7 +94,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?PHP
 echo "<div>";

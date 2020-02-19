@@ -4,14 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matrix
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewMatrix
@@ -120,14 +120,14 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 		}
 		
     // Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$this->document->setTitle( $pageTitle );
 		//$view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
         

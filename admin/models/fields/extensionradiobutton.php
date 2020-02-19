@@ -1,37 +1,37 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version 1.0.58
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
 * @copyright Copyright: 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+* @license GNU General Public License version 2 or later; see LICENSE.txt
 * 
 * https://docs.joomla.org/Creating_a_custom_form_field_type
-* https://hotexamples.com/examples/-/JFormFieldRadio/-/php-jformfieldradio-class-examples.html
+* https://hotexamples.com/examples/-/FormFieldRadio/-/php-FormFieldradio-class-examples.html
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
+use Joomla\CMS\Form\Field\RadioField;
 
 /**
 * welche joomla version ?
 */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-jimport('joomla.form.formfield');    
-class JSMFormField extends JFormFieldRadio {}	   
+class JSMFormField extends RadioField {}	   
 }
 else
 {
-require_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';    
+require_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';     
 class JSMFormField extends JFormFieldRadio {}        
 }    
 
 /**
- * JFormFieldExtensionRadioButton
+ * FormFieldExtensionRadioButton
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
@@ -41,7 +41,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
 	public $type = 'ExtensionRadioButton';
 
 	/**
-	 * JFormFieldExtensionRadioButton::getLabel()
+	 * FormFieldExtensionRadioButton::getLabel()
 	 * 
 	 * @return void
 	 */
@@ -53,24 +53,25 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
 
 
 	/**
-	 * JFormFieldExtensionRadioButton::getInput()
+	 * FormFieldExtensionRadioButton::getInput()
 	 * 
 	 * @return void
 	 */
 	protected function getInput() 
 	{
-	/**
+	
+		/**
      * welche joomla version ?
      */
     if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
     {
-	$this->class = "switcher";   
+	//$this->class = "switcher btn-group btn-group-yesno";  
+	    $this->type = "radio";
     }
     else
     {
     $this->class = "radio btn-group btn-group-yesno";    
     }	
-		
 
 	return parent::getInput();
 	}

@@ -4,7 +4,7 @@
   label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-			
+
 		<field 	name="show_projectheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PROJECTHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PROJECTHEADER">

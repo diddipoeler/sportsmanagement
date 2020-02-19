@@ -1,72 +1,34 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      edit_matchdetails.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+//$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
+//$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
+//$this->document->addScript(Uri::root() . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+    
 ?>	
 <script type="text/javascript">
-<!--
-window.addEvent('domready', function() {
+(function() {
 	// altered decision fields management
-	toggle_altdecision();
-	$('alt_decision').addEvent('change', toggle_altdecision);
+	//toggle_altdecision();
+//	jQuery('#jform_alt_decision0').change(toggle_altdecision);
+//    jQuery('#jform_alt_decision1').change(toggle_altdecision);
 });
 
-function toggle_altdecision() {
-	if ($('alt_decision').value == 0) {
-	$('alt_decision_enter').style.display='none';
-	$('team1_result_decision').disabled=true;
-	$('team2_result_decision').disabled=true;
-	$('decision_info').disabled=true;
-	}
-	else {
-	$('alt_decision_enter').style.display='block';
-	$('team1_result_decision').disabled=false;
-	$('team2_result_decision').disabled=false;
-	$('decision_info').disabled=false;
-	}
-}
-
-//-->
 </script>
 	
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
+	<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
 	</legend>
 	<table class="admintable">
 			<?php 
@@ -83,32 +45,35 @@ function toggle_altdecision() {
 
 		<!-- Alt decision table START -->
 			<fieldset class="adminform">
-				<legend><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD' );?>
+				<legend><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD' );?>
 				</legend>
 				<table class='admintable'>
+				<?php 
+echo $this->form->renderField ( 'count_result' );
+echo $this->form->renderField ( 'alt_decision' );
+
+echo $this->form->renderField ( 'decision_info' );
+echo $this->form->renderField ( 'team1_result_decision' );
+echo $this->form->renderField ( 'team2_result_decision' );
+echo $this->form->renderField ( 'team_won' );
+                    
+                    foreach ($this->form->getFieldset('matchalternativ') as $field):
+                    ?>
 					<tr>
-						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL' );?></td>
-						<td colspan="3"><?php echo $this->lists['count_result'];?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC' );?></td>
-						<td colspan="3">
-							<select	name="alt_decision" id="alt_decision" class="radio btn-group btn-group-yesno"		>
-								<option	value="0"<?php if ( $this->match->alt_decision == 0 ){echo ' selected="selected"'; } ?>>
-									<?php echo JText::_('JNO');?>
-								</option>
-								<option	value="1"<?php if ($this->match->alt_decision==1) echo ' selected="selected"' ?>>
-									<?php echo JText::_('JYES');?>
-								</option>
-							</select>
-						</td>
-					</tr>
+
+					</tr>					
+					<?php endforeach; ?>	
+					
+					
+					
+					
 					<tr>
 						<td colspan="4">
+                        <!--
 							<div id="alt_decision_enter" style="display:<?php echo ( $this->match->alt_decision == 0 ) ? 'none' : 'block'; ?>">
 								<table class='adminForm' cellpadding='0' cellspacing='7' border='0'>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->hometeam; ?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->hometeam; ?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team1_result_decision" name="team1_result_decision"
 													size="4"
@@ -116,7 +81,7 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->awayteam;?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->awayteam;?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team2_result_decision" name="team2_result_decision"
 													size="4" value="<?php
@@ -125,7 +90,7 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE' );?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE' );?></td>
 										<?php
 										if ( is_null( $this->match->team1_result ) or ( $this->match->alt_decision == 0 ) )
 										{
@@ -139,11 +104,12 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON' );?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON' );?></td>
 										<td><?php echo $this->lists['team_won']; ?></td>
 									</tr>
 								</table>
 							</div>
+                            -->
 						</td>
 					</tr>
 				</table>

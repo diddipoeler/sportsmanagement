@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <form>
-  
-
 	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 	name= "details"
+	label= "COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR"
 			description="COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR">
 
 		<field	name="show_sectionheader" type="extensionradiobutton" default="1" 
@@ -57,10 +56,5 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-
 	</fieldset>
-
-
-
 </form>

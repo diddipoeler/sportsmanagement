@@ -4,12 +4,18 @@
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_matches
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * modMatchesHelper
@@ -33,7 +39,7 @@ class modMatchesSportsmanagementHelper {
 	public function __construct(& $params, $id, $match_id = 0) {
 		$this->module_id = $id;
 		$this->params = $params;
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$itemid = $this->params->get('Itemid');
 		$this->itemid = (!empty ($itemid)) ? '&amp;Itemid=' . $itemid : '';
 		$this->id = $match_id;
@@ -57,7 +63,7 @@ class modMatchesSportsmanagementHelper {
 			return $string;
 		}
 		$ids = explode($sep, $string);
-		JArrayHelper :: toInteger($ids);
+		ArrayHelper :: toInteger($ids);
 		$string = implode($sep, $ids);
 		return $string;
 	}
@@ -238,11 +244,9 @@ class modMatchesSportsmanagementHelper {
             }
 		}
         
-        if ( JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+        if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
         {
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>'),'Notice');    
-        echo __METHOD__.' '.__LINE__.' projekte<br><pre>'.print_r($this->params->get('p'),true).'</pre>'; 
-        echo __METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>';      
+
         }    
 	}
 	
@@ -254,7 +258,24 @@ class modMatchesSportsmanagementHelper {
 	 * @return
 	 */
 	public function usedteamscheck($team_id, $project_id) {
-		return ((isset ($this->usedteams[0]) AND is_array($this->usedteams[0]) AND in_array($team_id, $this->usedteams[0])) OR (isset ($this->usedteams[$project_id]) AND is_array($this->usedteams[$project_id]) AND in_array($team_id, $this->usedteams[$project_id]))) ? 1 : 0;
+	$return = 0;
+	if ( !is_array($this->usedteams[$project_id]) )
+	{
+	$return = 1;	
+	}
+	else
+	{
+	foreach ( $this->usedteams[$project_id] AS $key => $value) 
+	{	
+	if ( $value == $team_id )
+	{
+	$return = 1;	
+	}
+	}
+	}
+		
+	//return ((isset ($this->usedteams[0]) AND is_array($this->usedteams[0]) AND in_array($team_id, $this->usedteams[0])) OR (isset ($this->usedteams[$project_id]) AND is_array($this->usedteams[$project_id]) AND in_array($team_id, $this->usedteams[$project_id]))) ? 1 : 0;
+	return $return;	
 	}
 	
 	/**
@@ -266,7 +287,7 @@ class modMatchesSportsmanagementHelper {
 	public function addteamicon($which) {
 		$path = ($this->iconpath) ? $this->iconpath . 'teamlinks/' : false;
 		if ($path) {
-			return JHtml :: _('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
+			return HTMLHelper::_('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
 		} else {
 			return $this->params->get($which . '_text') . '<br />';
 		}
@@ -329,12 +350,9 @@ class modMatchesSportsmanagementHelper {
         {
          
 			$defaultlogos = $this->getDefaultLogos();
-			//$matchpart_pic = (!empty ($team->$pt) AND curl_init($team->$pt)) ? $team->$pt : $defaultlogos[$pt];
-            $matchpart_pic = (!empty ($team->$pt) AND sportsmanagementHelper::existPicture($team->$pt)) ? $team->$pt : $defaultlogos[$pt];
-          
-
+            $matchpart_pic = !empty($team->$pt)  ? $team->$pt : $defaultlogos[$pt];
             
-			if ( JFile::exists(JPATH_ROOT.$matchpart_pic) )
+			if ( File::exists(JPATH_ROOT.DIRECTORY_SEPARATOR.$matchpart_pic) )
             {
 				$size = getimagesize($matchpart_pic);
 				$pic_width = $size[0];
@@ -348,7 +366,7 @@ class modMatchesSportsmanagementHelper {
 		{
 		$appendimage .= 'width="' . $this->params->get('xsize') . '"';	
 		}
-			$pic['src'] = (trim($matchpart_pic) != "" && curl_init(trim($matchpart_pic))) ? $matchpart_pic : $defaultlogos[$pt];
+			$pic['src'] = trim($matchpart_pic) != ""  ? $matchpart_pic : $defaultlogos[$pt];
 			$pic['alt'] = $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
 		}
 		$pic['append'] = $appendimage;
@@ -370,12 +388,12 @@ class modMatchesSportsmanagementHelper {
 		1 => ''
 		),
 		1 => array (
-		0 => JText :: _('AET'),
-		1 => JText :: _('IET')
+		0 => Text::_('AET'),
+		1 => Text::_('IET')
 		),
 		2 => array (
-		0 => JText :: _('ONP'),
-		1 => JText :: _('INP')
+		0 => Text::_('ONP'),
+		1 => Text::_('INP')
 		)
 		);
 		$partresults = '';
@@ -415,7 +433,7 @@ class modMatchesSportsmanagementHelper {
 				$partresults .= ' - ';
 				if (is_null($match->team1_result))
 				$partresults .= '<span class="jlml_livescore">';
-				$partresults .= JText :: _('IET') . ' ' . $match->team1_result_ot . ':' . $match->team2_result_ot;
+				$partresults .= Text::_('IET') . ' ' . $match->team1_result_ot . ':' . $match->team2_result_ot;
 				if (is_null($match->team1_result))
 				$partresults .= '</span>';
 			}
@@ -441,14 +459,14 @@ class modMatchesSportsmanagementHelper {
  */
         if ( $this->params->get('show_text_overtime') && $match->team1_result_ot ) 
         {
-        $row['resultovertime'] = JText :: _('IET') . ' ' .$match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
+        $row['resultovertime'] = Text::_('IET') . ' ' .$match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
         }
 /**
  * elfmeter/penalty
  */
         if ( $this->params->get('show_text_penalty') && $match->team1_result_so ) 
         {
-        $row['resultpenalty'] = JText :: _('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
+        $row['resultpenalty'] = Text::_('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
         }
         
         if ($live == 0)
@@ -466,22 +484,22 @@ class modMatchesSportsmanagementHelper {
 		$row['notice'] = ($match->match_result_detail != '' AND $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 		if ($this->params->get('show_referee', 1) == 1 AND $match->refname != '') {
 			$row['referee'] = '<span style="float:right;">';
-			$row['referee'] .= ($this->iconpath) ? JHtml :: _('image', $this->iconpath . 'referee.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array (
-				'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
+			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_('image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array (
+				'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
 				'height' => '16',
 				'width' => '16'
-				)) : JText::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE').': ';
+				)) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE').': ';
 				$row['referee'] .= $this->jl_utf8_convert($match->refname, 'iso-8859-1', 'utf-8') . '</span>';
 		} else {
 			$row['referee'] = '';
 		}
 		if ($this->params->get('show_spectators', 1) == 1 AND $match->crowd > 0) {
 			$row['spectators'] = '<span style="float:left;">';
-			$row['spectators'] .= ($this->iconpath) ? JHtml :: _('image', $this->iconpath . 'spectators.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'), array (
-				'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'),
+			$row['spectators'] .= ($this->iconpath) ? HTMLHelper::_('image', $this->iconpath . 'spectators.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'), array (
+				'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS'),
 				'height' => '16',
 				'width' => '16'
-				)) : JText::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS').': ';
+				)) : Text::_('MOD_SPORTSMANAGEMENT_MATCHES_SPECTATORS').': ';
 				$row['spectators'] .= number_format($match->crowd, 0, ',', '.') . '</span>';
 				;
 		} else {
@@ -498,9 +516,7 @@ class modMatchesSportsmanagementHelper {
 	public function formatMatches(& $matches) 
     {
         // Reference global application object
-        $app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' iconpath<br><pre>'.print_r($this->iconpath,true).'</pre>'),'Notice');
-        
+        $app = Factory::getApplication();
         
 		if ($this->params->get('lastsortorder') == 'desc') {
 			$matches = $this->sortObject($matches, 'desc', 'alreadyplayed');
@@ -515,50 +531,47 @@ class modMatchesSportsmanagementHelper {
 		$rows = array ();
 		$useicons = $this->iconpath;
         $cnt = $app->input->post->get('nr', 0);
-//		$cnt = JRequest :: getVar('nr', 0, 'default', 'POST');
 		$hteam = false;
 		$ateam = false;
 		foreach ((array) $matches AS $key => $match) {
-			//echo 'NOW(): '.JHtml::_('date', $match->currenttime, $this->params->get('dateformat').' '.$this->params->get('timeformat'),0).'<br />';
 			if ($match->projectteam1_id) {
 				$hteam = $teams[$match->projectteam1_id];
 			}
 			if ($match->projectteam2_id) {
 				$ateam = $teams[$match->projectteam2_id];
 			}
-			//$matches[$key]->live = false;
 			$rows[$match->match_id]['type'] = 'undefined';
-			if ($this->params->get('show_status_notice') == 1) {
-				if ($match->live != 'z') {
+			if ( $this->params->get('show_status_notice') ) {
+				if ($match->live == 1) {
 					$rows[$match->match_id]['type'] = 'live';
 				}
 				else {
 					$matches[$key]->live = false;
-					if ($match->actplaying != 'z') {
+					if ($match->actplaying == 1) {
 						$rows[$match->match_id]['type'] = 'actplaying';
 					}
-					elseif ($match->alreadyplayed != 0) {
+					elseif ($match->alreadyplayed == 1) {
 						$rows[$match->match_id]['type'] = 'alreadyplayed';
 					}
-					elseif ($match->upcoming != 'z') {
+					elseif ($match->upcoming == 1) {
 						$rows[$match->match_id]['type'] = 'upcoming';
 					}
 				}
 			}
-			$rows[$match->match_id]['date'] = JHtml::_('date', $match->match_date, $this->params->get('dateformat'), null);
+			$rows[$match->match_id]['date'] = HTMLHelper::_('date', $match->match_date, $this->params->get('dateformat'), null);
 			if ($useicons) {
-				$rows[$match->match_id]['date'] = JHtml::_('image', $this->iconpath . 'date.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array (
-						'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
+				$rows[$match->match_id]['date'] = HTMLHelper::_('image', $this->iconpath . 'date.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array (
+						'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
 						'height' => '16',
 						'width' => '16'
 				)) .
 				' ' . $rows[$match->match_id]['date'];
 			}
-			$rows[$match->match_id]['time'] = JHtml :: _('date', $match->match_date, $this->params->get('timeformat'), null);
+			$rows[$match->match_id]['time'] = HTMLHelper::_('date', $match->match_date, $this->params->get('timeformat'), null);
 
 			if ($useicons) {
-				$rows[$match->match_id]['time'] = JHtml :: _('image', $this->iconpath . 'time.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'), array (
-						'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'),
+				$rows[$match->match_id]['time'] = HTMLHelper::_('image', $this->iconpath . 'time.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'), array (
+						'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_TIME'),
 						'height' => '16',
 						'width' => '16'
 				)) .
@@ -566,10 +579,10 @@ class modMatchesSportsmanagementHelper {
 			}
 
 			if (isset ($match->meeting)) {
-				$rows[$match->match_id]['meeting'] = JHtml :: _('date', $match->meetingtime, $this->params->get('timeformat'), null);
+				$rows[$match->match_id]['meeting'] = HTMLHelper::_('date', $match->meetingtime, $this->params->get('timeformat'), null);
 				if ($useicons) {
-					$rows[$match->match_id]['meeting'] = JHtml :: _('image', $this->iconpath . 'time_go.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'), array (
-							'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'),
+					$rows[$match->match_id]['meeting'] = HTMLHelper::_('image', $this->iconpath . 'time_go.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'), array (
+							'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_MEETING'),
 							'height' => '16',
 							'width' => '16'
 					)) .
@@ -594,6 +607,10 @@ class modMatchesSportsmanagementHelper {
 			$rows[$match->match_id]['ajax'] = $match->ajax;
 			$cnt++;
 		}
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{		
+
+}			
 		return $rows;
 	}
 	
@@ -605,7 +622,6 @@ class modMatchesSportsmanagementHelper {
 	public function getTimeLimit() {
 		$livematchestime = "IF((p.allow_add_time > 0), ((p.game_regular_time+(p.game_parts * p.halftime)) + p.add_time), (p.game_regular_time+(p.game_parts * p.halftime)))";
 		$timeforfirstmatch = "DATE_SUB(" . $this->getDateString() . ", INTERVAL $livematchestime MINUTE) > NOW()";
-		//$timeforfirstmatch = $this->getDateString() . " > NOW()";
 		if ($this->params->get('show_played', 0) == 1 AND ($this->params->get('result_add_time', 0)) > 0) {
 			$timeforfirstmatch = $this->getDateString() . " > DATE_SUB(NOW(), INTERVAL " . intval($this->params->get('result_add_time', 0)) . " " . $this->params->get('result_add_unit') . ")";
 		}
@@ -626,19 +642,18 @@ class modMatchesSportsmanagementHelper {
 	 */
 	public function createAjaxMenu(& $row, $cnt) 
     {
-        $app = JFactory::getApplication();  
+        $app = Factory::getApplication();  
 		if ($this->params->get('next_last', 0) == 0) {
 			$row->ajax = false;
 			return false;
 		}
 		if ( $this->params->get('nextlast_from_same_project')== 0) {
-			$this->next_last2($row);
+		$this->next_last($row,TRUE);
 		}
 		else {
-		$this->next_last($row);
+		$this->next_last($row,FALSE);
 		}
         $origin = $app->input->post->get('origin', $row->match_id);
-		//$origin = JRequest :: getVar('origin', $row->match_id, 'default', 'POST');
 		$jsfunc = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
 		$options = array (
 			'height' => '16',
@@ -647,32 +662,31 @@ class modMatchesSportsmanagementHelper {
 			'style' => 'cursor:pointer;'
 			);
 			// start ajaxifying
-			$showhome = (($this->params->get('next_last') + $this->usedteamscheck($row->team1_id, $row->project_id)) >= 2);
-			$showaway = (($this->params->get('next_last') + $this->usedteamscheck($row->team2_id, $row->project_id)) >= 2);
-			
-//echo __METHOD__.' '.__LINE__.' showhome <pre>'.print_r($showhome,true).'</pre>';			
-//echo __METHOD__.' '.__LINE__.' showaway <pre>'.print_r($showaway,true).'</pre>';			
-		
+		if ( $this->params->get('next_last') )
+		{
+			$showhome = $this->usedteamscheck($row->team1_id, $row->project_id);
+			$showaway = $this->usedteamscheck($row->team2_id, $row->project_id);
+		}
 		$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';
 			if ($showhome AND ($row->lasthome OR $row->nexthome)) {
 				$temp .= '<span style="float:left">';
 				if ($row->lasthome) {
 					$tmp = $options;
-					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
+					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->lasthome, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHtml :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
+					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
 				if ($row->nexthome) {
 					$tmp = $options;
-					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
+					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->nexthome, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHtml :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
+					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -682,21 +696,21 @@ class modMatchesSportsmanagementHelper {
 				$temp .= '<span style="float:right">';
 				if ($row->lastaway) {
 					$tmp = $options;
-					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
+					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->lastaway, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHtml :: _('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
+					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
 				if ($row->nextaway) {
 					$tmp = $options;
-					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
+					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->nextaway, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-					$temp .= JHtml :: _('image', $this->iconpath . 'page_next.png', $alt, $tmp);
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
+					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				}
@@ -705,11 +719,11 @@ class modMatchesSportsmanagementHelper {
 			if ($this->params->get('reset_start_match') == 1 AND $origin != $row->id) {
 				$temp .= '<span style="float:none;">';
 				$tmp = $options;
-				$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
+				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, '0', $origin, $origin);
 				$alt = $tmp['title'];
-				if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
-				$temp .= JHtml :: _('image', $this->iconpath . 'page_reset.png', $alt, $tmp);
+				if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
+				$temp .= HTMLHelper::_('image', $this->iconpath . 'page_reset.png', $alt, $tmp);
 				else
 				$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('reset_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
 				$temp .= '</span>';

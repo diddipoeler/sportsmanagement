@@ -1,13 +1,35 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      dependsql_jl.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
+ 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+FormHelper::loadFieldClass('list');
 
-JFormHelper::loadFieldClass('list');
-
-JHtml::_( 'behavior.framework' );
+HTMLHelper::_( 'behavior.framework' );
 
 
-class JFormFieldDependSQL extends JFormFieldList
+/**
+ * FormFieldDependSQL
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JFormFieldDependSQL extends FormField
 {
 	/**
 	 * field name
@@ -17,6 +39,11 @@ class JFormFieldDependSQL extends JFormFieldList
 	 */
 	protected $type = 'dependsql';
 
+	/**
+	 * FormFieldDependSQL::getInput()
+	 * 
+	 * @return
+	 */
 	protected function getInput()
 	{
 		// elements
@@ -50,35 +77,30 @@ class JFormFieldDependSQL extends JFormFieldList
 			$attribs	.= '"';
 		}
 		$attribs	.= ' current="'.$this->value.'"';
-		
-	//	// language
-//		$lang = JFactory::getLanguage();
-//		$lang->load("com_joomleague", JPATH_ADMINISTRATOR);
-		
-		
+	
 		if ($required=='true') {
 			$options = array();
 		}
 		else {
-			// $options = array(JHtml::_('select.option', '', JText::_('Loading..'), $key, JText::_($val)));
+
 			$options = array();
 		}
 
 		$query = $this->element['query'];
 		if ($query!='')
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery($query);
 			$options = array_merge($options, $db->loadObjectList());
 		}
 		
 		if ($depends)
 		{
-			$doc = JFactory::getDocument();
-			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
+			$doc = Factory::getDocument();
+			$doc->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
-		return JHtml::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
 		
 	}
 }

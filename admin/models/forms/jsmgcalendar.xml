@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
     
-    <fieldset name="details">
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+>
         
         <field 
             name="id"
@@ -81,6 +85,8 @@
     
     <fieldset 
         name="acl"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
     >
         
         <field 

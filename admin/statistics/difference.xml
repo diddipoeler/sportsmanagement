@@ -13,6 +13,7 @@
       value_field="name"  
 					label="COM_SPORTSMANAGEMENT_STAT_DIFFERENCE_ADD_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_DIFFERENCE_ADD_IDS_DESC">
+					<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
 			</field>		
 			<field 	name="sub_ids" 
 			type="sql" 
@@ -23,6 +24,7 @@
       value_field="name" 
 					label="COM_SPORTSMANAGEMENT_STAT_DIFFERENCE_SUB_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_DIFFERENCE_SUB_IDS_DESC">
+					<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
 			</field>
 			<field 	name="precision" 
       type="text" 

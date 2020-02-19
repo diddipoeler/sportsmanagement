@@ -5,14 +5,13 @@
  * @file      jlxmlexports.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlxmlexports
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjlxmlexports
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @access public
  */
 
-class sportsmanagementControllerjlxmlexports extends JControllerLegacy {
+class sportsmanagementControllerjlxmlexports extends BaseController {
 
     /**
      * sportsmanagementControllerjlxmlexports::display()

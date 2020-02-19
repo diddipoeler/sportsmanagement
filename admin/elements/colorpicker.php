@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 /**
  * 
@@ -66,7 +66,7 @@ class JFormFieldColorpicker extends JFormField
 	function getInput() {
 			// add javascript
 		//$method = (stripos($node->_attributes['name'] , 'JL_EXT') !== false)? 'extended' : 'params';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addStylesheet(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.css');
 		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/color_functions.js');
 		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.js');

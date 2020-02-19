@@ -1,13 +1,21 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      smquotestxt.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 
 jimport('joomla.application.component.model');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 
 
@@ -26,12 +34,11 @@ class sportsmanagementModelsmquotestxt extends JModel
 
 function getTXTFiles()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $path = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes';
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $path = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes';
         // Get a list of files in the search path with the given filter.
-       //$files = JFolder::files($path, $filter);
-       $files = JFolder::files($path, '.txt$|.php$');
+       $files = Folder::files($path, '.txt$|.php$');
         
         return $files;
         

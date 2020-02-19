@@ -4,19 +4,22 @@
  * @file      deafult_teamseasons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teaminfo
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 if ($this->config['show_teams_seasons'] == "1")
 {
 	?>
 <table class="fixtures">
 	<tr class="sectiontableheader">
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE');?></td>
+		<td><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE');?></td>
 	</tr>
 </table>
 
@@ -35,7 +38,7 @@ if ($season->projectname)
 
 		?> <a href="javascript:void(0)"
 			onclick="switchMenu('tid<?php echo $this->team->id . $season->projectid; ?>');"
-			title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
+			title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
 		</a> 
         <?php
 
@@ -55,31 +58,31 @@ if ($season->projectname)
 		$picture = $season->picture;
 
 		if ((@is_null($picture)) or
-		(strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png")) or
-		(strpos($picture, "/joomleague/placeholders/placeholder_450.png")))
+		(strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png"))
+		)
 		{
-			$picture = JoomleagueHelper::getDefaultPlaceholder("team");
+			$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
 		}
 
-		$picture_descr = JText::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
-		echo JHtml::image($picture, $picture_descr, array("title" => $picture_descr));
+		$picture_descr = Text::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
+		echo HTMLHelper::image($picture, $picture_descr, array("title" => $picture_descr));
 	}
 	?> <br />
 	<?php
 	$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $season->team_slug;
        $routeparameter['ptid'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 	
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
+	echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
 	?> <br />
 	<?php
 	$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['r'] = 0;
        $routeparameter['division'] = 0;
@@ -88,12 +91,12 @@ if ($season->projectname)
        $routeparameter['layout'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
+	echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
 	?> <br />
 	<?php
 	$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['type'] = 0;
        $routeparameter['r'] = 0;
@@ -102,7 +105,7 @@ if ($season->projectname)
        $routeparameter['division'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 	
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
+	echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
 	?> <br />
 </div>
 	<?php

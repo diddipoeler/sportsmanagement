@@ -1,19 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      ajax.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.model' );
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelAjax
@@ -24,7 +25,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModelLegacy
+class sportsmanagementModelAjax extends BaseDatabaseModel
 {
         /**
          * sportsmanagementModelAjax::addGlobalSelectElement()
@@ -36,33 +37,23 @@ class sportsmanagementModelAjax extends JModelLegacy
         public static function addGlobalSelectElement($elements, $required=false) 
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $mitems = '';
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
-        
+       
                 if(!$required) 
                 {
-                $mitems = array(JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
-                
+                $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 return array_merge($mitems, $elements);
-                //return $elements;
                 }
                 else
                 {
-                $mitems = array(JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
-                
+                $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 if ( $elements )
                 {
                 return array_merge($mitems, $elements);
-                //return $elements;
                 }
                 else
                 {
@@ -70,7 +61,6 @@ class sportsmanagementModelAjax extends JModelLegacy
                 }
                 
                 }
-                //return $elements;
         }
         
         
@@ -85,7 +75,7 @@ class sportsmanagementModelAjax extends JModelLegacy
 static function getPredictionId($dabse = false, $required = false, $slug = false)
         {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         //$required = 0;
@@ -132,7 +122,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
   */
  public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	         $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -179,7 +169,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
  */
 public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -265,12 +255,10 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false,$dbase = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
-       
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-       
+      
        // Get a db connection.
         if ( !$dbase )
         {
@@ -282,11 +270,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         }
         $query = $db->getQuery(true);
         // Select some fields
-        //$query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,concat(a.name, \' - \',a.country) AS text');
         $query->select('a.id AS value,concat(a.name, \' - \',a.country) AS text');
         // From 
 		$query->from('#__sportsmanagement_agegroup AS a');
-        
         // Where
         if ( $club_id )
         {
@@ -301,12 +287,8 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         {
         $temp = new stdClass();
         $temp->value = 0;
-        //$temp->text = ''; 
-        $temp->text = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
+        $temp->text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
         $export[] = $temp;
-        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB
-        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_LEGEND
-        // COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB   
         return self::addGlobalSelectElement($export, $required);    
         }
             
@@ -325,48 +307,34 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getassociationsoptions($country = NULL, $required = false, $slug = false,$dabse = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 		$query = $db->getQuery(true);
-        
-        
 			
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->where("t.country LIKE " . $db->Quote(''.$country.'') );
-			//$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
-			//$options = $db->loadObjectList();
-			
 			$sections = $db->loadObjectList();
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'Notice');
-            
             return self::addGlobalSelectElement($sections, $required);     
-            
         }
+        
         
         /**
          * sportsmanagementModelAjax::getseasons()
          * 
          * @param bool $dabse
          * @param bool $required
+         * @param bool $slug
          * @return
          */
         static function getseasons($dabse = false, $required = false, $slug = false)
         {
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
-        //$required = 0;
-        
-        // Get a db connection.
         if ( !$dabse )
         {
             $db = sportsmanagementHelper::getDBConnection();
@@ -376,7 +344,6 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
         }
         $query = $db->getQuery(true);
-        // Select some fields
         if ( $slug )
         {
         $query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
@@ -385,13 +352,47 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         {
         $query->select('id AS value,name AS text');
         }
-        // From 
 		$query->from('#__sportsmanagement_season');
         $query->order('name DESC'); 
-        
         $db->setQuery($query);
-                //return $db->loadObjectList();
-                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+            
+            
+        }
+        
+        /**
+         * sportsmanagementModelAjax::getsportstypes()
+         * 
+         * @param bool $dabse
+         * @param bool $required
+         * @param bool $slug
+         * @return
+         */
+        static function getsportstypes($dabse = false, $required = false, $slug = false)
+        {
+        $app = Factory::getApplication();
+        $option = $app->input->getCmd('option');
+        if ( !$dabse )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        $query = $db->getQuery(true);
+        if ( $slug )
+        {
+        $query->select('id AS value,name AS text');
+        }
+        else
+        {
+        $query->select('id AS value,name AS text');
+        }
+		$query->from('#__sportsmanagement_sports_type');
+        $query->order('name DESC'); 
+        $db->setQuery($query);
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);    
             
             
         }
@@ -409,7 +410,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getlocationzipcodeoptions($zipcode, $required = false, $slug = false, $dabse = false, $country = NULL)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -443,18 +444,69 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $query->order('a.place_name'); 
         }
         
-        //$query->order('a.postal_code');    
         if ( $zipcode || $country )
         {            
         $db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
         $result = $db->loadObjectList();
         }
             
         return self::addGlobalSelectElement($result, $required); 
             
+        }
+        
+        static function getCcountryName($country)
+        {
+        // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $option = $app->input->getCmd('option');
+        
+        $result = array();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        $query->select('c.name AS text');
+        $query->from('#__sportsmanagement_countries as c');
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+                    
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        
+	foreach ($result as $row)
+        {
+            $row->text = Text::_($row->text);
+        }	
+		
+        return $result; 
+        
+        }
+	
+        /**
+         * sportsmanagementModelAjax::getCcountryAlpha2()
+         * 
+         * @param mixed $country
+         * @return void
+         */
+        static function getCcountryAlpha2($country)
+        {
+        // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $option = $app->input->getCmd('option');
+        
+        $result = array();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        $query->select('c.alpha2 AS text');
+        $query->from('#__sportsmanagement_countries as c');
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+                    
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+            
+        return $result; 
+        
         }
         
         /**
@@ -470,7 +522,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getcountryzipcodeoptions($country, $required = false, $slug = false, $dabse = false, $project_id = 0)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -493,11 +545,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
         $query->group('a.postal_code'); 
         $query->order('a.postal_code');    
-                    
         $db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
         $result = $db->loadObjectList();
             
         return self::addGlobalSelectElement($result, $required);    
@@ -515,7 +563,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC' , $round_ids = NULL,  $dabse = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
        
@@ -563,7 +611,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         
 //        foreach ($result as $row)
 //        {
-//            $row->name = JText::_($row->name);
+//            $row->name = Text::_($row->name);
 //        }
         
         return self::addGlobalSelectElement($result, $required);
@@ -579,7 +627,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 $option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dbase )
@@ -607,7 +655,7 @@ $option = $app->input->getCmd('option');
         
         foreach ($result as $row)
         {
-            $row->text = JText::_($row->text);
+            $row->text = Text::_($row->text);
         }
         
         return self::addGlobalSelectElement($result, $required);
@@ -623,7 +671,7 @@ $option = $app->input->getCmd('option');
         public static function getpersonagegroupoptions($sports_type_id=0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = '' )
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -664,16 +712,7 @@ $option = $app->input->getCmd('option');
 			$query->order('a.name');    
                     
         $db->setQuery($query);
-        
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-        
-//        foreach ($result as $row)
-//        {
-//            $row->name = JText::_($row->name);
-//        }
-           
         return self::addGlobalSelectElement($result, $required);
         }
         
@@ -690,7 +729,7 @@ $option = $app->input->getCmd('option');
         static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false)
         {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(); 
@@ -699,9 +738,18 @@ $option = $app->input->getCmd('option');
         $query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
 		$query->from('#__sportsmanagement_prediction_member as a');
         $query->join('LEFT', '#__users AS u ON u.id = a.user_id');   
-        $query->where('a.prediction_id = '.$prgame_id);
+        $query->where('a.prediction_id = '.(int)$prgame_id);
+		try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
+			} catch (Exception $e) {
+                //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+		//$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($query->dump()), 'Error');
+                $result = false;
+            }
+			
+			
+			
         return self::addGlobalSelectElement($result, $required);    
         }
         
@@ -715,7 +763,7 @@ $option = $app->input->getCmd('option');
         static function getpersonlistoptions($person_art, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -730,13 +778,14 @@ $option = $app->input->getCmd('option');
         if ( $person_art == 2 )
         {
         $query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
-			$query->from('#__sportsmanagement_person ');
-			$query->order('lastname');
-			$db->setQuery($query);    
-            $result = $db->loadObjectList();
+	$query->from('#__sportsmanagement_person ');
+	$query->order('lastname');
+	$db->setQuery($query);    
+        $result = $db->loadObjectList();
+	return self::addGlobalSelectElement($result, $required);
         }
         
-        return self::addGlobalSelectElement($result, $required);
+        
         }
         
         /**
@@ -749,7 +798,7 @@ $option = $app->input->getCmd('option');
         function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -786,12 +835,10 @@ $option = $app->input->getCmd('option');
         function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
-       
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-       
+      
        // Get a db connection.
         if ( !$dbase )
         {
@@ -830,7 +877,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
           
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dabse )
@@ -856,7 +903,18 @@ $option = $app->input->getCmd('option');
 		$query->from('#__sportsmanagement_division AS d');
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = d.project_id ');
         // Where
-        $query->where('d.project_id = ' . $db->Quote($project_id) );
+	// ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+        $ids = implode(",",array_map('intval', $project_id));
+        $query->where('d.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('d.project_id = ' . (int)$project_id );
+        }
+		
+        //$query->where('d.project_id = ' . $db->Quote($project_id) );
         // group
         //$query->group('d.id');
         // order
@@ -879,7 +937,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -926,7 +984,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -974,7 +1032,7 @@ $option = $app->input->getCmd('option');
         public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -996,9 +1054,30 @@ $option = $app->input->getCmd('option');
         {
         $query->select('p.id AS value,p.name AS text');    
         }
-        // From 
-		$query->from('#__sportsmanagement_project as p');
-        // Where
+	$query->from('#__sportsmanagement_project as p');
+
+// ist es ein array ?   
+		if ( $season_id )
+        {
+			if ( !is_array( $season_id ) )
+        {
+	$season_id = explode(",", $season_id);		
+			}
+        if ( is_array( $season_id ) )
+        {
+        $ids = implode(",",array_map('intval', $season_id));
+        $query->where('p.season_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('p.season_id = ' . (int)$season_id );
+        }
+	} 
+        else
+        {
+        $query->where('p.season_id = 0');    
+        } 	
+	/*	
         if ( $season_id )
         {
         $query->where('p.season_id = ' . (int)$season_id );
@@ -1006,7 +1085,8 @@ $option = $app->input->getCmd('option');
         else
         {
         $query->where('p.season_id = 0');    
-        }                       
+        }      
+		*/
         // order
         $query->order('p.name');
         
@@ -1024,7 +1104,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -1055,6 +1135,10 @@ $option = $app->input->getCmd('option');
         // Where
         if ( $project_id )
         {
+	if ( !is_array($project_id) )
+	{
+	$project_id = explode(",", $project_id);
+	}
         // ist es ein array ?   
         if ( is_array($project_id) )
         {
@@ -1091,7 +1175,7 @@ $option = $app->input->getCmd('option');
         function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1138,7 +1222,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1185,7 +1269,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectStaffOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1231,7 +1315,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1264,10 +1348,8 @@ $option = $app->input->getCmd('option');
         if ( $project_id )
         {
         // ist es ein array ? 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');  
         if ( is_array($project_id) )
         {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
         $ids = implode(",",array_map('intval', $project_id) ) ;
         $query->where('pt.project_id IN (' . $ids .')' );    
         } 
@@ -1300,7 +1382,7 @@ $db->setQuery($query);
         public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1332,7 +1414,7 @@ try{
 		 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
         }
@@ -1348,7 +1430,7 @@ try{
         public static function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1390,7 +1472,7 @@ try{
         public static function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1417,8 +1499,18 @@ try{
         $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
                                 
-                // Where
-        $query->where('pt1.project_id = ' . $db->Quote($project_id) );
+        // Where
+	// ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+        $ids = implode(",",array_map('intval', $project_id));
+        $query->where('pt1.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
+        $query->where('pt1.project_id = ' . (int)$project_id );
+        }
+        //$query->where('pt1.project_id = ' . $db->Quote($project_id) );
         
         // order
         $query->order('m.match_date, t1.short_name');
@@ -1438,7 +1530,7 @@ try{
         function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1477,7 +1569,7 @@ try{
         public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )

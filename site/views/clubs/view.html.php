@@ -4,14 +4,13 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubs
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewClubs
@@ -40,7 +39,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$this->clubs = $clubs;
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE' );
 		if ( isset( $this->project ) )
 		{
 			$pageTitle .= ' - ' . $this->project->name;

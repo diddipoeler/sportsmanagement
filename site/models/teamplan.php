@@ -4,13 +4,15 @@
  * @file      teamplan.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teamplan
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelTeamPlan
@@ -21,7 +23,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeamPlan extends JModelLegacy
+class sportsmanagementModelTeamPlan extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $teamid = 0;
@@ -41,7 +43,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -85,8 +87,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getDivision()
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -110,7 +112,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	  
             
@@ -126,8 +128,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getProjectTeamId()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -152,7 +154,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
             {
 	self::$pro_teamid = 0;
             return 0;	
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }
        
@@ -171,8 +173,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatchesPerRound($config,$rounds)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$rm=array();
 
 		$ordering='DESC';
@@ -196,23 +198,15 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatches($config)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
 			$ordering = $config['plan_order'];
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-		{
-		$my_text = 'pro_teamid -><pre>'.print_r(self::$pro_teamid,true).'</pre>';
-          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pro_teamid'.'<pre>'.print_r($this->pro_teamid,true).'</pre>' ),'');
-        }
-        
+       
 		return self::_getResultsPlan(self::$pro_teamid,$ordering,0,1,$config['show_referee']);
 	}
 
@@ -224,8 +218,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatchesRefering($config)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
@@ -246,8 +240,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -364,6 +358,7 @@ try{
 		if ($getplayground)
 		{
             $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
+	$query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');	
             $query->join('LEFT',' #__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
 		}
 		
@@ -374,7 +369,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 
@@ -399,8 +394,8 @@ try{
 	 */
 	public static function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -459,7 +454,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 
@@ -478,10 +473,10 @@ try{
 	 * @param mixed $projekt
 	 * @return
 	 */
-	function _getRefereesByMatch($matches,$projekt)
+	public static function _getRefereesByMatch($matches,$projekt)
 	{
-	   	$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	   	$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -536,7 +531,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
         
@@ -555,8 +550,8 @@ try{
 	 */
 	function getEventTypes($match_id)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -580,7 +575,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 		return $result;

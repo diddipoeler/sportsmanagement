@@ -1,18 +1,20 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubplan
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+JLoader::import('components.com_sportsmanagement.models.clubinfo', JPATH_SITE);
 
 /**
  * sportsmanagementViewClubPlan
@@ -34,7 +36,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 	function init()
 	{
 
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
         $js .= "hideclubplandate()".";\n";
@@ -62,7 +64,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         {
             sportsmanagementModelClubPlan::$project_id = 0;
         }
-        
         
         if ( $this->type == '' )
         {
@@ -103,31 +104,40 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $this->teamprojects = $this->model->getTeamsProjects();
         $this->teamseasons = $this->model->getTeamsSeasons();
         
-        $fromteamart[] = JHTML :: _('select.option', '', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+        $fromteamart[] = HTMLHelper::_('select.option', '', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+		if ( $this->teamart )
+		{
 		$fromteamart = array_merge($fromteamart, $this->teamart);
+		}
 		$lists['fromteamart'] = $fromteamart;
         
-        $fromteamprojects[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
+        $fromteamprojects[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
+		if ( $this->teamprojects )
+		{
 		$fromteamprojects = array_merge($fromteamprojects, $this->teamprojects);
+		}
 		$lists['fromteamprojects'] = $fromteamprojects;
         
-        $fromteamseasons[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
+        $fromteamseasons[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
+		if ( $this->teamseasons )
+		{
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
+		}
 		$lists['fromteamseasons'] = $fromteamseasons;
 
 /**
  * auswahl welche spiele
  */        
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
-	$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
-	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
+    $opp_arr[] = HTMLHelper::_('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
+	$opp_arr[] = HTMLHelper::_('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
+	$opp_arr[] = HTMLHelper::_('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
 
 	$lists['type'] = $opp_arr;
     $this->lists = $lists;
 
 		// Set page title
-		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
+		$pageTitle=Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
 		if (isset($this->club)){
 			$pageTitle .= ': '.$this->club->name;
 		}
@@ -139,22 +149,16 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$club_id = (!empty($this->club->id)) ? '&cid='.$this->club->id : '';
 		$rssVar = (!empty($this->club->id)) ? $club_id : $project_id;
 
-		//$feed='index.php?option=com_sportsmanagement&view=clubplan&cid='.$this->club->id.'&format=feed';
 		$feed = 'index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
-		$rss = array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
+		$rss = array('type' => 'application/rss+xml','title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
 		// add the links
-		$this->document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
-        
-/**
- *         das brauchen wir nicht mehr, da wir bootsrap benutzen
- *         $view = $jinput->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
-        
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
+		$this->document->addHeadLink(Route::_($feed.'&type=rss'),'alternate','rel',$rss);
+       
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
 
+$this->config['table_class'] = isset($this->config['table_class']) ? $this->config['table_class'] : 'table';
+        
 	}
 
 }

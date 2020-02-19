@@ -1,49 +1,17 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      project.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage tables
+ */
 
-// Check to ensure this file is included in Joomla!
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport( 'joomla.filter.input' );
-
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableProject
@@ -54,7 +22,7 @@ jimport( 'joomla.filter.input' );
  * @version 2014
  * @access public
  */
-class sportsmanagementTableProject extends JTable
+class sportsmanagementTableProject extends JSMTable
 {	
 	/**
 	 * Constructor
@@ -65,36 +33,10 @@ class sportsmanagementTableProject extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', 'id', $db );
+		parent::__construct( '#__sportsmanagement_project', 'id', $db );
 	}
 
-	/**
-	* Overloaded bind function
-	*
-	* @acces public
-	* @param array $hash named array
-	* @return null|string	null is operation was satisfactory, otherwise returns an error
-	* @see JTable:bind
-	* @since 1.5
-	*/
-	function bind( $array, $ignore = '' )
-	{
-		if ( key_exists( 'params', $array ) && is_array( $array['params'] ) )
-		{
-			$registry = new JRegistry();
-			$registry->loadArray( $array['params'] );
-			$array['params'] = $registry->toString();
-		}
-		if ( key_exists( 'comp_params', $array ) && is_array( $array['comp_params'] ) )
-		{
-			$registry = new JRegistry();
-			$registry->loadArray( $array['comp_params'] );
-			$array['comp_params'] = $registry->toString();
-		}
-    	//print_r( $array );exit;
-		return parent::bind( $array, $ignore );
-	}
-
+	
 	/**
 	 * Overloaded check method to ensure data integrity
 	 *
@@ -105,56 +47,11 @@ class sportsmanagementTableProject extends JTable
 	function check()
 	{
 		// setting alias
-        $this->alias = JFilterOutput::stringURLSafe( $this->name );
-//		if ( empty( $this->alias ) )
-//		{
-//			$this->alias = JFilterOutput::stringURLSafe( $this->name );
-//		}
-//		else {
-//			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
-//		}
+        $this->alias = OutputFilter::stringURLSafe( $this->name );
 
 		return true;
 	}
     
-    /**
-	 * Method to determine if a row is checked out and therefore uneditable by
-	 * a user. If the row is checked out by the same user, then it is considered
-	 * not checked out -- as the user can still edit it.
-	 *
-	 * @param   integer  $with     The userid to preform the match with, if an item is checked
-	 * out by this user the function will return false.
-	 * @param   integer  $against  The userid to perform the match against when the function
-	 * is used as a static function.
-	 *
-	 * @return  boolean  True if checked out.
-	 *
-	 * @link    http://docs.joomla.org/JTable/isCheckedOut
-	 * @since   11.1
-	 * @todo    This either needs to be static or not.
-	 */
-	public static function _isCheckedOut($with = 0, $against = null)
-    //static function isCheckedOut($with = 0, $against = null)
-	{
-		// Handle the non-static case.
-		if (isset($this) && ($this instanceof JTable) && is_null($against))
-		{
-			$against = $this->get('checked_out');
-		}
-
-		// The item is not checked out or is checked out by the same user.
-		if (!$against || ($against == $with))
-		{
-			return false;
-		}
-
-		$db = sportsmanagementHelper::getDBConnection();
-		$db->setQuery('SELECT COUNT(userid)' . ' FROM ' . $db->quoteName('#__session') . ' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $against);
-		$checkedOut = (boolean) $db->loadResult();
-
-		// If a session exists for the user then it is checked out.
-		return $checkedOut;
-	}
     
     
 }

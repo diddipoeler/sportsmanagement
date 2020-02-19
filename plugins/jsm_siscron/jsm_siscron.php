@@ -51,8 +51,8 @@
  */
 
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
@@ -80,9 +80,9 @@ var $_sis_art = 1;
     
 	public function onBeforeRender()
 	{
-		$db = JFactory::getDBO();
-        $app = JFactory::getApplication();
-        $projectid = JRequest::getInt('p',0);
+		$db = Factory::getDBO();
+        $app = Factory::getApplication();
+        $projectid = Factory::getApplication()->input->getInt('p',0);
         
         
         
@@ -103,11 +103,7 @@ var $_sis_art = 1;
         
         if ( $show_debug_info )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');    
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' country<br><pre>'.print_r($country,true).'</pre>'   ),'');
+
         }
         
         $query = $db->getQuery(true);
@@ -124,8 +120,7 @@ var $_sis_art = 1;
         
         if ( $show_debug_info )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' staffel_id<br><pre>'.print_r($result->staffel_id,true).'</pre>'   ),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
+
         }
         
         if ( $result->name == 'COM_SPORTSMANAGEMENT_ST_HANDBALL'  )
@@ -140,34 +135,22 @@ var $_sis_art = 1;
     
     public function onAfterRender()
 	{
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+
 	}
     
     public function onAfterRoute()
 	{
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+
 	}
     
     public function onAfterDispatch()
 	{
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+
 	}
     
     public function onAfterInitialise()
 	{
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+
 	}
     
     //get sis link
@@ -181,13 +164,11 @@ var $_sis_art = 1;
     //get sis spielplan
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JRequest::getCmd('option');
-  $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+  $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';
-        
-        //$app->enqueueMessage(JText::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
-        
+       
 		//File laden
 		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		if (file_exists($datei)) 
@@ -258,14 +239,11 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 }
 else
 {
-    //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
     $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
-            //$app->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
-            //$app->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}

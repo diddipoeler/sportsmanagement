@@ -24,10 +24,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_playgroundplan.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playgroundplan.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playgroundplan.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_playgroundplan.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_playgroundplan.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_playgroundplan.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_playgroundplan.sys.ini</language>
 	</languages>
 
 	<config>
@@ -41,7 +37,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Playgroundplan" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
@@ -78,14 +74,9 @@
 			value_field="s"
 			required=""
 			size="10"
-			
+			multiple="multiple"
 						label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
-<!--			
-				<field name="projects" type="projects" default="" required="true"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL"
-					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
--->
 					
 				<field name="playground" type="playgrounds" default=""
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
@@ -194,6 +185,23 @@
 			
 				<fieldset
 					name="advanced">
+<field name="divclasscontainer" type="list" default="container-fluid" 
+class=""
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER" 
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
+<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_NON</option>
+<option value="container">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_CONTAINER</option>
+<option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
+</field>
+
+<field name="divclassrow" type="list" default="row-fluid" 
+class=""
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW" 
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
+<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_NON</option>
+<option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
+<option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
+</field> 
 					
           <field 	name="table_class" type="list" default="table" 
 		class=""
@@ -209,6 +217,7 @@
           
      <field
 						name="moduleclass_sfx"
+						default="container-fluid"
 						type="text"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />     

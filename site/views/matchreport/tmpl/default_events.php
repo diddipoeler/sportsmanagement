@@ -4,18 +4,20 @@
  * @file      default_events.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match events -->
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <h2>
 <?php 
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
 ?>
 </h2>		
 
@@ -25,14 +27,14 @@ if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_resul
 echo $this->loadTemplate('timeline');
 }
 ?>
-<table class="table table-responsive" >
+<table class="table " >
 			<?php
 			foreach ( $this->eventtypes as $event )
 			{
 				?>
 				<tr>
 					<td colspan="2" class="eventid">
-						<?php echo JHtml::_( 'image', $event->icon, JText::_($event->icon ), NULL ) . JText::_($event->name); ?>
+						<?php echo HTMLHelper::_( 'image', $event->icon, Text::_($event->icon ), NULL ) . Text::_($event->name); ?>
 					</td>
 				</tr>
 				<tr>
@@ -52,4 +54,5 @@ echo $this->loadTemplate('timeline');
 			?>
 </table>
 <!-- END of match events -->
+</div>
 <br />

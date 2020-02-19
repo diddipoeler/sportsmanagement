@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage agegroups
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewagegroups
@@ -31,27 +36,18 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');		
-
-        $starttime = microtime(); 
-        $mdlSportsType = JModelLegacy::getInstance('SportsType', 'sportsmanagementModel');
+        $mdlSportsType = BaseDatabaseModel::getInstance('SportsType', 'sportsmanagementModel');
        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
-        $this->table = JTable::getInstance('agegroup', 'sportsmanagementTable');
+        $this->table = Table::getInstance('agegroup', 'sportsmanagementTable');
 		
         //build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
-		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
+		$sportstypes[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
         $this->sports_type = $allSportstypes;
 		
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList',
 							$sportstypes,
 							'filter_sports_type',
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -61,7 +57,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		unset($sportstypes);
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation,$res);
@@ -91,9 +87,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         
         if ( count($this->items)  == 0 )
         {
-            $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
+            $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
-        $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NO_RESULT'),'Error');
+        $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NO_RESULT'),'Error');
         }
 
 		$this->lists = $lists;
@@ -108,13 +104,12 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
-		JToolbarHelper::addNew('agegroup.add');
-		JToolbarHelper::editList('agegroup.edit');
-        JToolbarHelper::apply('agegroups.saveshort');
-		JToolbarHelper::custom('agegroups.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
-		
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
+		ToolbarHelper::addNew('agegroup.add');
+		ToolbarHelper::editList('agegroup.edit');
+        ToolbarHelper::apply('agegroups.saveshort');
+		ToolbarHelper::custom('agegroups.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('agegroup.export',Text::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
 	}
 }

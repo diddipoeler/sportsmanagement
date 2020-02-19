@@ -1,22 +1,27 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      editlist.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage treetomatchs
+ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_( 'behavior.tooltip' );
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<!-- import the functions to move the events between selection lists  -->
+
 <?php
-//$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHtml::script( 'administrator/components/com_joomleague/assets/js/sm_functions.js');
+
 ?>
 <script>
 Joomla.submitbutton = function(task)    {
-        
-        //alert(task);
 jQuery('select#node_matcheslist > option').prop('selected', 'selected');        
 //        if (task == "simplelistitem.cancel"){
 //           Joomla.submitform(task, thisForm );
@@ -29,31 +34,9 @@ jQuery('select#node_matcheslist > option').prop('selected', 'selected');
 //            }
 //        }
 Joomla.submitform(task);
- 
-            return true;
-    };
+return true;
+};
 
-//	function submitbutton(pressbutton)
-//	{
-//		var form = jQuery('adminForm');
-//        
-//        alert(form);
-//        
-//		if (pressbutton == 'cancel')
-//		{
-//			submitform( pressbutton );
-//			return;
-//		}
-//		var mylist = document.getElementById('node_matcheslist');
-//        
-//        jQuery('select#node_matcheslist > option').prop('selected', 'selected');
-//        
-//		for(var i=0; i<mylist.length; i++)
-//		{
-//			  mylist[i].selected = true;
-//		}
-//		submitform( pressbutton );
-//	}
 </script>
 
 <style type="text/css">
@@ -76,16 +59,13 @@ else
 {
 echo $this->loadTemplate('joomla2');    
 }
-
-
 echo $this->loadTemplate('data');
 ?>
 	
 <div class="clr"></div>
-
-<input type="hidden" name="matcheschanges_check"	value="0"	id="matcheschanges_check" />
-<input type="hidden" name="option"				value="com_sportsmanagement" />
-<input type="hidden" name="cid[]"				value="<?php echo $this->nodews->id; ?>" />
-<input type="hidden" name="task"				value="treetomatch.save_matcheslist" />
+<input type="hidden" name="matcheschanges_check" value="0" id="matcheschanges_check" />
+<input type="hidden" name="option" value="com_sportsmanagement" />
+<input type="hidden" name="cid[]" value="<?php echo $this->nodews->id; ?>" />
+<input type="hidden" name="task" value="treetomatch.save_matcheslist" />
 </div>
 </form>

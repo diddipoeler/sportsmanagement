@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<form>
+<form
+addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
+>	
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
@@ -86,7 +88,8 @@
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">
+			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS"
+		  addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field	name="highlight_fav" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_HIGHLIGHT_FAV"

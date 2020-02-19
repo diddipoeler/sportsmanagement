@@ -4,23 +4,19 @@
  * @file      predictionranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionranking
  */
  
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//jimport( 'joomla.application.component.model' );
-jimport('joomla.application.component.modelitem');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 jimport( 'joomla.utilities.utility' );
-
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionRanking
@@ -31,11 +27,13 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionRanking extends JModelLegacy
+class sportsmanagementModelPredictionRanking extends JSMModelList
 {
 	var $_roundNames = null;
-    var $predictionGameID = 0;
-    
+    static $predictionGameID = 0;
+static $limitstart = 0;
+static $limit = 0;
+	
    /**
    * Items total
    * @var integer
@@ -57,7 +55,7 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -65,10 +63,6 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 		parent::__construct();
                 
         $this->ranking_array = $jinput->getVar('ranking_array','');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' ranking_array<br><pre>'.print_r($this->ranking_array,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' pggroup<br><pre>'.print_r($this->pggroup,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' _REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
         
         $prediction = new sportsmanagementModelPrediction();  
 
@@ -92,25 +86,84 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
 
-if ( $jinput->getVar( "view") == 'predictionranking' )
-{
-	// Get pagination request variables
-	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-	$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-
-	// In case limit has been changed, adjust it
-	$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
- 
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
-}
-
-  
     $getDBConnection = sportsmanagementHelper::getDBConnection();
     parent::setDbo($getDBConnection);
     
 	}
 
+	
+/**
+ * sportsmanagementModelPredictionRanking::getStart()
+ * 
+ * @return
+ */
+public function getStart()
+{
+    // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', self::$limitstart );
+    
+    $store = $this->getStoreId('getstart');
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+    return $this->cache[$store];
+}	
+
+/**
+ * sportsmanagementModelPredictionRanking::populateState()
+ * 
+ * @param mixed $ordering
+ * @param mixed $direction
+ * @return void
+ */
+protected function populateState($ordering = null, $direction = null)
+	{
+$app = Factory::getApplication();
+$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+self::$limit = $value;
+$this->setState('list.limit', self::$limit);
+$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+$this->setState('list.start', self::$limitstart);
+	
+}
+	
+	
+	/**
+	 * sportsmanagementModelPredictionRanking::getLimit()
+	 * 
+	 * @return
+	 */
+	function getLimit()
+	{
+		return $this->getState('list.limit');
+	}
+	
+	/**
+	 * sportsmanagementModelPredictionRanking::getLimitStart()
+	 * 
+	 * @return
+	 */
+	function getLimitStart()
+	{
+		return $this->getState('list.start');
+	}
 /**
  * sportsmanagementModelPredictionRanking::_buildQuery()
  * 
@@ -118,8 +171,8 @@ if ( $jinput->getVar( "view") == 'predictionranking' )
  */
 function _buildQuery()
 {
-    $option = JFactory::getApplication()->input->getCmd('option');    
-    $app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');    
+    $app = Factory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -160,7 +213,8 @@ function getData()
      {
  	    $query = self::_buildQuery();
         //$query = $this->getPredictionMember();
- 	    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));	
+ 	    //$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));	
+	$this->_data = $this->_getList($query);		
  	}
  	return $this->_data;
   }
@@ -182,23 +236,7 @@ function getTotal()
  	return $this->_total;
   }
 
-/**
- * sportsmanagementModelPredictionRanking::getPagination()
- * 
- * @return
- */
-function getPagination()
-  {
- 	// Load the content if it doesn't already exist
- 	if (empty($this->_pagination)) 
-     {
- 	    jimport('joomla.html.pagination');
- 	    $this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
- 	}
- 	return $this->_pagination;
-  }    
- 
-	
+
     /**
      * sportsmanagementModelPredictionRanking::getChampLogo()
      * 
@@ -208,31 +246,33 @@ function getPagination()
      */
     function getChampLogo($ProjectID,$champ_tipp)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $projectteamid = 0;
     
     if ( $champ_tipp )
     {
     $sChampTeamsList = explode(';',$champ_tipp);
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList'.'<pre>'.print_r($sChampTeamsList,true).'</pre>' ),'');
-	foreach ($sChampTeamsList AS $key => $value)
+foreach ($sChampTeamsList AS $key => $value)
     {
     $dChampTeamsList[] = explode(',',$value);
     }
-	foreach ($dChampTeamsList AS $key => $value)
+foreach ($dChampTeamsList AS $key => $value)
     {
     $champTeamsList[$value[0]] = $value[1];
     }    
     
+if ( isset($champTeamsList[(int)$ProjectID]) )
+{
     $projectteamid = $champTeamsList[(int)$ProjectID];  
     if ( $projectteamid )
     {
     $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid,0);
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteamid'.'<pre>'.print_r($projectteamid,true).'</pre>' ),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teaminfo'.'<pre>'.print_r($teaminfo,true).'</pre>' ),'');
+
     return $teaminfo;
     }
+    }
+	    
     }
     else
     {
@@ -250,10 +290,10 @@ function getPagination()
 	 * @param mixed $round_ids
 	 * @return
 	 */
-	function createMatchdayList($project_id, $round_ids = NULL)
+	function createMatchdayList($project_id, $round_ids = NULL,$text = 'FROM')
 	{
 		$from_matchday = array();
-		$from_matchday[]= JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+		$from_matchday[]= HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_RANKING_'.$text.'_MATCHDAY'));
 		$from_matchday = array_merge($from_matchday,sportsmanagementModelPrediction::getRoundNames($project_id,'ASC', $round_ids));
 		return $from_matchday;
 	}

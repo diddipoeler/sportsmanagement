@@ -4,33 +4,48 @@
  * @file      default_projectheading.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage globalviews
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-//echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
+$document = Factory::getDocument();
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-//echo 'this->overallconfig<br /><pre>~' . print_r($this->overallconfig,true) . '~</pre><br />';
-//echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
-}
+?>
+<script>
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+	
+if( typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null ){
+console.log("bootstrap version ist nicht vorhanden");   
+<?php	
+$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
+$document->addCustomTag($stylelink);
+?>	
+}	
+	
+</script>
+<?php
 
 $nbcols = 2;
-if ( $this->overallconfig['show_project_sporttype_picture'] ) { $nbcols++; }
+if ( !empty($this->overallconfig) )
+{
+if ( $this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']) ) { $nbcols++; }
 if ( $this->overallconfig['show_project_kunena_link'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_picture'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_staffel_id'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 {
 	?>
-<!--	<div class="componentheading"> -->
-<!--		<div class="container"> -->
+<div class="<?php echo $this->divclassrow;?>" id="projectheading">
 		<table class="table">
-<!--				<tbody> -->
+
 				<?php
 				if ( $this->overallconfig['show_project_country'] )
 				{
@@ -62,7 +77,7 @@ $this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlacehold
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',
 $this->project->sport_type_picture,
-$this->project->sport_type_name,
+Text::_($this->project->sport_type_name),
 $this->overallconfig['picture_width'],
 '',
 $this->modalwidth,
@@ -79,7 +94,7 @@ $this->overallconfig['use_jquery_modal']
 				{
 				$picture = $this->project->picture;
 				$copyright = $this->project->cr_picture;
-                if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
+                if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png' || empty($picture) )
 				{
 				$picture = $this->project->leaguepicture;
 				$copyright = $this->project->cr_leaguepicture;
@@ -106,7 +121,7 @@ $this->overallconfig['use_jquery_modal']
 
 if ( $copyright )
 {
-echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
+echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
 }
 ?>
 
@@ -136,7 +151,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 				    	<td>
 						<?php
 						//echo $this->project->staffel_id;
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID','<i>'.$this->project->staffel_id.'</i>');
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID','<i>'.$this->project->staffel_id.'</i>');
 						?>
 						</td>
 					<?php	
@@ -145,7 +160,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 			    	?>
 					<td class="buttonheading" align="right">
 					<?php
-						if(JFactory::getApplication()->input->getVar('print') != 1) {
+						if(Factory::getApplication()->input->getVar('print') != 1) {
 							$overallconfig = $this->overallconfig;
 							echo sportsmanagementHelper::printbutton(null, $overallconfig);
 						}
@@ -158,10 +173,10 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					if ( $this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid )
                     {
 						$link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
-						$imgTitle = JText::_($this->project->name.' Forum');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
+						$imgTitle = Text::_($this->project->name.' Forum');
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);    
+						echo HTMLHelper::link($link, $desc);    
                     }
 					?>
 					&nbsp;
@@ -170,7 +185,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 				</tr>
 <!--				</tbody> -->
 		</table>
-<!--	</div> -->
+</div>
 <?php 
 }
 else
@@ -178,13 +193,13 @@ else
 	if ( $this->overallconfig['show_print_button'] )
 	{
 ?>
-		<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+		<div class="<?php echo $this->divclassrow;?>">
 			<table class="table">
 	<!--				<tbody> -->
 					<tr class="contentheading">
 						<td class="buttonheading" align="right">
 						<?php 
-							if(JFactory::getApplication()->input->getVar('print') != 1)
+							if(Factory::getApplication()->input->getVar('print') != 1)
 							{
 								echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
 							}
@@ -197,5 +212,6 @@ else
 		</div>
 <?php
 	}
+}
 }
 ?>

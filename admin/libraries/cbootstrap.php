@@ -4,7 +4,7 @@
  * @file                agegroup.php
  * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
+ * @license                GNU General Public License version 2 or later; see LICENSE.txt
  *
  * SportsManagement is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 /**
  * CBootstrap
@@ -80,20 +80,20 @@ class CBootstrap
      */
     public static function load()
     {
-        $doc = JFactory::getDocument();
+        $doc = Factory::getDocument();
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
-            JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-            //JFactory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-            JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-            JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
+            Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
+            //Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
+            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
+            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
         } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
-            JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-            //JFactory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-            JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-            JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
+            Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
+            //Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
+            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
+            Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
 
         } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
             // Joomla! 1.7 code here

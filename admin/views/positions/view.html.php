@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage positions
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPositions
@@ -30,38 +35,27 @@ class sportsmanagementViewPositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-			
 
-$starttime = microtime(); 
-		//$items = $this->get('Items');
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-		
-        
-		$this->table = JTable::getInstance('position', 'sportsmanagementTable');
-
-
+		$this->table = Table::getInstance('position', 'sportsmanagementTable');
 
 		//build the html options for parent position
-		$parent_id[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		if ($res = $this->model->getParentsPositions())
 		{
-			foreach ($res as $re){$re->text = JText::_($re->text);}
+			foreach ($res as $re){$re->text = Text::_($re->text);}
 			$parent_id = array_merge($parent_id, $res);
 		}
 		$lists['parent_id'] = $parent_id;
 		unset($parent_id);
 
 		//build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
-		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
+		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
         
         $this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList', 
 							$sportstypes, 
 							'filter_sports_type', 
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
@@ -84,17 +78,17 @@ $starttime = microtime();
 	{
 
 		// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE');
 
-		JToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
+		ToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
 
-		JToolbarHelper::apply('positions.saveshort');
-		JToolbarHelper::editList('position.edit');
-		JToolbarHelper::addNew('position.add');
-		JToolbarHelper::custom('position.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('position.export', JText::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::apply('positions.saveshort');
+		ToolbarHelper::editList('position.edit');
+		ToolbarHelper::addNew('position.add');
+		ToolbarHelper::custom('position.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('position.export', Text::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

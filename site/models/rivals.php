@@ -4,13 +4,15 @@
  * @file      rivals.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage rivals
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRivals
@@ -21,7 +23,7 @@ defined('_JEXEC') or die;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRivals extends JModelLegacy
+class sportsmanagementModelRivals extends BaseDatabaseModel
 {
 	var $project = null;
 	var $projectid = 0;
@@ -36,7 +38,7 @@ class sportsmanagementModelRivals extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -76,7 +78,7 @@ class sportsmanagementModelRivals extends JModelLegacy
 	 */
 	function getOpponents()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -152,15 +154,11 @@ class sportsmanagementModelRivals extends JModelLegacy
         $query->where('(m.cancel IS NULL OR m.cancel = 0)' );
         
         $query->order('m.id');   
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$db->setQuery($query);
 		$matches = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($matches,true).'</pre>'),'');
-
 		$opo = array();
 		foreach ($matches as $match)
 		{

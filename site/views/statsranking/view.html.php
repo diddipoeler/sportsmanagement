@@ -4,14 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statsranking
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewStatsRanking
@@ -22,34 +22,25 @@ jimport( 'joomla.application.component.view' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewStatsRanking extends JViewLegacy
+class sportsmanagementViewStatsRanking extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewStatsRanking::display()
+	 * sportsmanagementViewStatsRanking::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-
-		// read the config-data from template file
-		$model = $this->getModel();
-		//$config = $model->getTemplateConfig($this->getName());
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
+	$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->cfg_which_database);
+		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 		
-		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
-		$this->division = sportsmanagementModelProject::getDivision(0,$model::$cfg_which_database);
-		$this->teamid = $model->getTeamId();
+		//$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
+		$this->division = sportsmanagementModelProject::getDivision(0,$this->cfg_which_database);
+		$this->teamid = $this->model->getTeamId();
 		
-        $teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$model::$cfg_which_database);
+        $teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$this->cfg_which_database);
         //$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
         
 		if ( $this->teamid != 0 )
@@ -64,24 +55,19 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 		}
 
 		$this->teams = $teams;
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-		$this->config = $config;
-		$this->favteams = sportsmanagementModelProject::getFavTeams($model::$cfg_which_database);
-		$this->stats = $model->getProjectUniqueStats();
-		$this->playersstats = $model->getPlayersStats();
-		$this->limit = $model->getLimit();
-		$this->limitstart = $model->getLimitStart();
+		//$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		//$this->config = $config;
+		$this->favteams = sportsmanagementModelProject::getFavTeams($this->cfg_which_database);
+		$this->stats = $this->model->getProjectUniqueStats();
+		$this->playersstats = $this->model->getPlayersStats();
+		$this->limit = $this->model->getLimit();
+		$this->limitstart = $this->model->getLimitStart();
 		$this->multiple_stats = count($this->stats) > 1 ;
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');    
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersstats<br><pre>'.print_r($this->playersstats,true).'</pre>'),'');
-}
-		$prefix = JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
+		$prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
 		if ( $this->multiple_stats )
 		{
-			$prefix .= " - " . JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE' );
+			$prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE' );
 		}
 		else
 		{
@@ -104,11 +90,11 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 			$titleInfo->divisionName = $this->division->name;
 		}
 		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-		$document->setTitle($this->pagetitle);
+		$this->document->setTitle($this->pagetitle);
 		
         $this->headertitle = $this->pagetitle;
         
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 }
 ?>

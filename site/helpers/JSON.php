@@ -53,11 +53,11 @@
 * @copyright   2005 Michal Migurski
 * @version     CVS: $Id: JSON.php,v 1.31 2006/06/28 05:54:17 migurski Exp $
 * @license     http://www.opensource.org/licenses/bsd-license.php
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
 */
 
-
- 
+defined('_JEXEC') or die('Restricted access'); 
 
 if(!defined('SERVICES_JSON_SLICE')){
 
@@ -119,6 +119,7 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 */
 class JSMServices_JSON
 {
+ var $use = 0;
    /**
     * constructs a new JSON instance
     *
@@ -766,7 +767,7 @@ class JSMServices_JSON
     }
 
     /**
-     * @todo Ultimately, this should just call PEAR::isError()
+     * @internal Ultimately, this should just call PEAR::isError()
      */
     function isError($data, $code = null)
     {
@@ -795,7 +796,7 @@ if (class_exists('PEAR_Error')) {
 } else {
 
     /**
-     * @todo Ultimately, this class shall be descended from PEAR_Error
+     * @internal Ultimately, this class shall be descended from PEAR_Error
      */
     class JSMServices_JSON_Error
     {

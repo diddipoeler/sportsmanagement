@@ -4,16 +4,16 @@
  * @file      predictionresults.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage prediction
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionResults
@@ -24,7 +24,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionResults extends JControllerLegacy
+class sportsmanagementControllerPredictionResults extends BaseController
 {
 
 		/**
@@ -47,9 +47,9 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $pID = $jinput->getVar('prediction_id','0');
@@ -60,16 +60,7 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
         $set_pj = $jinput->getVar('set_pj','0');
         $set_r = $jinput->getVar('set_r','0');
         $cfg_which_database = $jinput->getVar('cfg_which_database','0');
-        
-//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />'; die();
-//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	null,	'post',	'int');
-//		// diddipoeler
-//        $pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');
-//		$pjID	= JFactory::getApplication()->input->getVar('pj',	null,	'post',	'int');
-//        $rID	= JFactory::getApplication()->input->getVar('r',				null,	'post',	'int');
-        
-        
-        
+
 		$link = JSMPredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup,$cfg_which_database);
 		$this->setRedirect($link);
 	}

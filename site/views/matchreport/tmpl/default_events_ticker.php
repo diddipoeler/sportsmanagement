@@ -4,31 +4,39 @@
  * @file      default_events_ticker.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
-
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
 {
 echo $this->loadTemplate('timeline');
 }
 
-
 ?>
 <!-- START of match events -->
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
 
-<table class="table" border="0">
+<table class="table" border="0" id="">
 
 		<thead>
 	        <tr class="sectiontableheader">
-	            <th style="text-align:center"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
-	            <th colspan=3><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_EVENTS_EVENT'); ?></th>
+	            <?php
+                if ( $this->config['show_event_minute'] )
+                {
+                ?>
+                <th style="text-align:center"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
+                <?php
+                }
+                ?>
+	            <th colspan=3><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_EVENTS_EVENT'); ?></th>
 	        </tr>
 	    </thead>
 			
@@ -47,7 +55,7 @@ echo $this->loadTemplate('timeline');
 	global $sortEventsDesc;
 	$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
 
-	if ($this->config['show_substitutions']==1) {
+	if ( $this->config['show_substitutions'] ) {
 	  $matchevents = array_merge($this->matchevents,$this->substitutes);
 	  usort($matchevents, "compareMatchEventsSubs");
 	} else {
@@ -65,11 +73,11 @@ echo $this->loadTemplate('timeline');
                     <?php
                     //Icon
                     $pic_tab=$IconArr[$me->event_type_id];
-                    $eventname=JText::_($TextArr[$me->event_type_id]);
+                    $eventname=Text::_($TextArr[$me->event_type_id]);
                     
                     //Time
                     $prefix = '';
-                    if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
+                    if ( $this->config['show_event_minute'] && $me->event_time > 0)
                     {
                         $prefix = str_pad($me->event_time, 2 ,'0', STR_PAD_LEFT);
                     }
@@ -86,7 +94,7 @@ echo $this->loadTemplate('timeline');
                         {
                             $imgTitle = $eventname;
                             $imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-                            $txt_tab = JHtml::image($pic_tab,$imgTitle,$imgTitle2);
+                            $txt_tab = HTMLHelper::image($pic_tab,$imgTitle,$imgTitle2);
                         }
                         echo  '<td class="ecenter">' . $txt_tab . '</td>';
                         
@@ -139,14 +147,13 @@ echo $this->loadTemplate('timeline');
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id;
 $routeparameter['pid'] = $me->playerid;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);                            
-            //                $player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
-                            $match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
                         }                         
                         
                         echo '<td>' . $eventname . $sum_notice . ' - ' . $match_player . $teamname . '</td>';
@@ -154,7 +161,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                     else
                     {
                         //EventType 0, therefore text comment
-                        $txt_tab = JHtml::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
+                        $txt_tab = HTMLHelper::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
                         echo '<td colspan="" style="text-align:center">'.$txt_tab.'</td>';
                         echo '<td colspan= style="text-align:center">...</td>';
                         
@@ -181,7 +188,6 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                 else
                 {
 		
-//echo ' me<br><pre>'.print_r($me,true).'</pre>';        
         ?>
                     
                     <tr class="" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
@@ -189,7 +195,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                     <?php
                     //Icon
                     //$pic_tab=$IconArr[$me->event_type_id];
-                    //$eventname=JText::_($TextArr[$me->event_type_id]);
+                    //$eventname=Text::_($TextArr[$me->event_type_id]);
 		    
 		    $pic_time = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
 		    $pic_out = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
@@ -204,12 +210,12 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                     echo '<td class="tcenter">' . $prefix . '</td>';
                     
                         
-		    $imgTitle_in = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
+		    $imgTitle_in = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 		    $imgTitle_in2 = array(' title' => $imgTitle_in);
-		    $imgTitle_out = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
+		    $imgTitle_out = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 		    $imgTitle_out2 = array(' title' => $imgTitle_out);
-		    $txt_tab_out = JHtml::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
-		    $txt_tab_in = JHtml::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
+		    $txt_tab_out = HTMLHelper::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
+		    $txt_tab_in = HTMLHelper::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
                         
 		    echo  '<td class="ecenter">' . $txt_tab_out . '</td>';
                         
@@ -242,19 +248,19 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->ptid;
 $routeparameter['pid'] = $me->out_person_id;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
-				    $outName = JHtml::link($player_link,$outName);
+				    $outName = HTMLHelper::link($player_link,$outName);
 				} else {
 				    $outName = $outName;
 				}
 
 				if($me->out_position!='') {
-					$outName .= '&nbsp;('.JText::_($me->out_position).')';
+					$outName .= '&nbsp;('.Text::_($me->out_position).')';
 				}
 			  }
 			}
@@ -278,19 +284,19 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->ptid;
 $routeparameter['pid'] = $me->out_person_id;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
-				    $inName = JHtml::link($player_link,$inName);
+				    $inName = HTMLHelper::link($player_link,$inName);
 				} else {
 				    $inName = $inName;
 				}
 
 				if($me->out_position!='') {
-					$inName .= '&nbsp;('.JText::_($me->in_position).')';
+					$inName .= '&nbsp;('.Text::_($me->in_position).')';
 				}
 			  }
 			}

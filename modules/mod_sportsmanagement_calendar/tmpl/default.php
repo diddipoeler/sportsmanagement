@@ -4,13 +4,15 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 
 ?>
@@ -18,9 +20,9 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 <script type="text/javascript">
 jlcinjectcontainer['<?php echo $module->id ?>'] = '<?php echo $inject_container ?>';
 jlcmodal['<?php echo $module->id ?>'] = '<?php echo $lightbox ?>';
-var calendar_baseurl = '<?php echo JUri::base() ?>';
+var calendar_baseurl = '<?php echo Uri::base() ?>';
 <?PHP
-if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
+if ( $lightbox == 1 && ( Factory::getApplication()->input->getVar('format') != 'pdf' ) ) 
 {
 ?>
       window.addEvent('domready', function() {
@@ -74,7 +76,7 @@ if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf')))
 
 <?php echo $calendar['calendar'] ?> <?php } ?> <?php if (count($calendar['teamslist']) > 0) { ?>
 <div style="margin: 0 auto;"><?php
-echo JHtml::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', JRequest::getVar('jlcteam',0,'default','POST'));
+echo HTMLHelper::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', Factory::getApplication()->input->getVar('jlcteam',0,'default','POST'));
 ?>
 </div>
 <?php
@@ -93,9 +95,7 @@ $cnt = 0;
 for ($x=0;$x < count($calendar['list']);$x++)
 {
 	$row = $calendar['list'][$x];
-    
-//echo 'row <pre>'.print_r($row,true).'</pre><br>';
-    
+   
 	if(isset($row['tag'])) 
     {
 		switch ($row['tag']) 
@@ -138,29 +138,10 @@ case 'headingrow':
 	}
 	else {
 		$sclass = ($cnt%2) ? 'sectiontableentry1' : 'sectiontableentry2';
-//		$date = JHtml::date ( $row['date'] .' UTC', $params->get('dateformat'), $params->get('time_zone'));
-//		$time = JHtml::date ( $row['date'] .' UTC', $params->get('timeformat'), $params->get('time_zone'));
-        
-        $date = JHtml::date($row['timestamp'] , $params->get('dateformat') );
-        //$time = JHtml::date($row['timestamp'] , $params->get('timeformat') );
-
-/**
-* testausgabe
-*/        
-//        $time2 = JHtml::date($row['date'] , $params->get('timeformat') );
-        
-//        echo 'strtotime   '.JFactory::getDate(strtotime($row['date'])).'<br>';
-//        echo 'getTimestamp   '.sportsmanagementHelper::getTimestamp(JFactory::getDate(strtotime($row['date'])));
-//        echo 'row timestamp '. $row['timestamp'].'<br>';
-        
+        $date = HTMLHelper::date($row['timestamp'] , $params->get('dateformat') );
         $uhrzeit = date("H:i",$row['timestamp']);
         $time = date("H:i",$row['timestamp']);
-//        echo " - ",$uhrzeit," Uhr".'<br>';
-//        echo 'row datum '. $row['date'].'<br>';
-//        echo 'datum '.$date.'<br>';
-//        echo 'uhrzeit '.$time.'<br>';
-//        echo 'uhrzeit-2 '.$time2.'<br>';
-        
+       
 		switch ($row['type']) {
 			case 'jevents':
 				$style = ($row['color'] != '') ? ' style="border-left:4px '.$row['color'].' solid;"' : '';
@@ -178,7 +159,6 @@ case 'headingrow':
 		<?php
 		break;
 
-		// joomleague birthday
 case 'jlb':
 	?>
 <tr class="<?php echo $sclass;?> jlcal_matchrow">

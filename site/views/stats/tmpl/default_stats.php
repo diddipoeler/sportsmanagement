@@ -1,80 +1,52 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_stats.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage stats
+ */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 
-<div id="jl_stats">
-
-<div class="jl_substats">
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="stats">
 <table class="<?php echo $this->config['stats_table_class'];?>">
 <thead>
 	<tr class="sectiontableheader">
-		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_GENERAL'); ?></th>
+		<th colspan="2"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_GENERAL'); ?></th>
 	</tr>
 </thead>
 <tbody>
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHDAYS'); ?>:</td>
+		<td class="statlabel"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHDAYS'); ?>:</td>
 		<td class="statvalue"><?php	echo $this->totalrounds; ?></td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_CURRENT_MATCHDAY');	?>:
+		<td class="statlabel"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_CURRENT_MATCHDAY');	?>:
 		</td>
 		<td class="statvalue"><?php	echo $this->actualround; ?></td>
 	</tr>
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PER_MATCHDAY'); ?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PER_MATCHDAY'); ?>:</td>
 		<td class="statvalue"><?php	echo ($this->totalrounds > 0 ? round (($this->totals->totalmatches / $this->totalrounds),2) : 0); ?>
 		</td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL');?>:</td>
 		<td class="statvalue"><?php	echo $this->totals->totalmatches;?></td>
 	</tr>
 	<tr  class="sectiontableentry1">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PLAYED');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PLAYED');?>:</td>
 		<td class="statvalue"><?php	echo $this->totals->playedmatches;?></td>
 	</tr>
 	
 	<?php	if ($this->config['home_away_stats']): ?>
 	<tr  class="sectiontableentry2">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_HOME');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_HOME');?>:</b>
 		<br />
 		<?php
 		if($this->totals->playedmatches>0 && $this->highest_home)
@@ -87,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		</td>
 	</tr>
 	<tr  class="sectiontableentry1">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_AWAY');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_AWAY');?>:</b>
 		<br />
 		<?php
 		if($this->totals->playedmatches>0 && $this->highest_away) {
@@ -116,7 +88,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		}
 		?>
 	<tr  class="sectiontableentry2">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WIN');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WIN');?>:</b>
 		<br />
 		<?php echo $this->highest->hometeam." - ".$this->highest->guestteam; ?>
 		</td>
@@ -127,6 +99,4 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	<?php endif; ?>
 </tbody>	
 </table>
-</div>
-
 </div>

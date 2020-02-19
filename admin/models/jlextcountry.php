@@ -4,15 +4,16 @@
  * @file      jlextcountry.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper; 
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
 
@@ -35,51 +36,45 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
      */
     function importplz()
     {
-    $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+    $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);    
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $base_Dir = JPATH_SITE . DS . 'tmp' . DS ;
-        $cfg_plz_server = JComponentHelper::getParams($option)->get('cfg_plz_server','');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DIRECTORY_SEPARATOR ;
+        $cfg_plz_server = ComponentHelper::getParams($option)->get('cfg_plz_server','');
+       
         for ($x=0; $x < count($pks); $x++)
 		{
 			$tblCountry = $this->getTable();
 			$tblCountry->load($pks[$x]);
-            
             $alpha2 = $tblCountry->alpha2;
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' alpha2<br><pre>'.print_r($alpha2, true).'</pre><br>','Notice');
-            
             $filename = $alpha2.'.zip';
             $linkaddress = $cfg_plz_server.$filename;
-            
             $filepath = $base_Dir . $filename;
 
 if ( !copy($linkaddress,$filepath) )
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ERROR'),'Error');
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ERROR'),'Error');
 }
 else
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'),'Notice'); 
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'),'Notice'); 
 $result = JArchive::extract($filepath,$base_Dir);  
 
 if ( $result )
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_SUCCESS'),'Notice'); 
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_SUCCESS'),'Notice'); 
 
 $file = $base_Dir.$alpha2.'.txt';
 
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file, true).'</pre><br>','Notice');
 
-$source	= JFile::read($file);
 
-//$app->enqueueMessage(JText::_('source <br><pre>'.print_r($source,true).'</pre>'   ),'');
+$source	= File::read($file);
+
+
 
 //# tab delimited, and encoding conversion
 	$csv = new JSMparseCSV();
@@ -97,7 +92,7 @@ $source	= JFile::read($file);
 	    
         if ( !$diddipoeler )
         {
-        //$app->enqueueMessage(JText::_('row <br><pre>'.print_r($row,true).'</pre>'   ),'');
+
         }
 		
         for ($a=0; $a < count($row); $a++)
@@ -136,40 +131,10 @@ $source	= JFile::read($file);
         }  
         }  
 
-        /*
-        foreach ($row as $value)
-		{
-//		$temp = new stdClass();
-//		$temp->value = $value;
-//        $exportplayer[] = $temp;
-        //    $app->enqueueMessage(JText::_('value <br><pre>'.print_r($value,true).'</pre>'   ),'');
-		}
-        */
 	    $exportplayer[] = $temp;
         
         $diddipoeler++;
 	}
-    
-    //# auto-detect delimiter character
-	//$csv = new parseCSV();
-	//$csv->auto($file);
-	//print_r($csv->data);
-    
-	//$app->enqueueMessage(JText::_('daten <br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
-    /*
-    // anfang schleife csv file
-	for($a=0; $a < sizeof($csv->data); $a++  )
-	{
-		$temp = new stdClass();
-		$temp->id = 0;
-		$temp->knvbnr = $csv->data[$a];
-        $exportplayer[] = $temp;
-
-//        $app->enqueueMessage(JText::_('daten <br><pre>'.print_r($csv->data[$a],true).'</pre>'   ),'');
-    }
-    */
-    
-    //$app->enqueueMessage(JText::_('daten <br><pre>'.print_r($exportplayer,true).'</pre>'   ),'');  
     
     foreach ($exportplayer as $value)
 		{
@@ -185,12 +150,12 @@ $source	= JFile::read($file);
             $profile->longitude = $value->longitude;
             $profile->accuracy = $value->accuracy;
         // Insert the object into the table.
-        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);  
+        $result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);  
         }  
 }
 else
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'),'Error');    
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'),'Error');    
 }
 
 

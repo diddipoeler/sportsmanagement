@@ -1,7 +1,16 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      jsmgcalendarcomment.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage tables
+ */
 
-
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
 
 JLoader::import('joomla.database.table');
 
@@ -36,7 +45,7 @@ class  sportsmanagementTablejsmgcalendarComment extends JTable {
 	public function bind($array, $ignore = '') {
 		if (isset($array['params']) && is_array($array['params'])) {
 			// Convert the params field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
 			$array['params'] = (string)$parameter;
 		}

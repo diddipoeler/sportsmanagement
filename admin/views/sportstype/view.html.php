@@ -4,14 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage sportstype
  */
 
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 
 /**
  * sportsmanagementViewSportsType
@@ -32,13 +32,6 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	 */
 	public function init ()
 	{
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
       
 	}
  
@@ -47,12 +40,9 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	
 		$this->jinput->set('hidemainmenu', true);
-        
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW');
         $this->icon = 'sportstype';
-            
 	parent::addToolbar();
 	}
 

@@ -4,12 +4,16 @@
  * @file      default_commentary.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <!-- START of match commentary -->
 <?php
@@ -21,7 +25,7 @@ if (!empty($this->matchcommentary))
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY' );
 				?>
 			</td>
 		</tr>
@@ -44,7 +48,7 @@ if (!empty($this->matchcommentary))
                     <td class="list">
 						<dl>
 							<?php 
-                            echo JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
+                            echo HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
                             ?>
 						</dl>
 					</td>

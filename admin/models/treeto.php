@@ -4,21 +4,14 @@
  * @file      treeto.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//jimport( 'joomla.application.component.model' );
-//require_once ( JPATH_COMPONENT . DS . 'models' . DS . 'item.php' );
-
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
-
-
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelTreeto
@@ -51,11 +44,11 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
         
         }    
     
@@ -89,24 +82,15 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
      */
     function setGenerateNode()
 	{
-		//$post	= 			JFactory::getApplication()->input->get( 'post' );
+		//$post	= 			Factory::getApplication()->input->get( 'post' );
 		$treeto_id = (int) $this->jsmjinput->post->get('id');
         // Get the form data
-        $formData = new JRegistry($this->jsmjinput->get('jform', '', 'array'));
+        $formData = new Registry($this->jsmjinput->get('jform', '', 'array'));
 		$tree_i = (int) $formData->get('tree_i', 0);;
 		$global_bestof = (int) $this->jsmjinput->post->get('global_bestof');
 		$global_matchday = (int) $this->jsmjinput->post->get('global_matchday');
 		$global_known = (int) $this->jsmjinput->post->get('global_known');
 		$global_fake = (int) $this->jsmjinput->post->get('global_fake');
-        
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->jsmjinput->post->get('jform'),true).'</pre>'),'Notice');        
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' treeto_id<br><pre>'.print_r($treeto_id,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tree_i<br><pre>'.print_r($tree_i,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_bestof<br><pre>'.print_r($global_bestof,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_matchday<br><pre>'.print_r($global_matchday,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_known<br><pre>'.print_r($global_known,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_fake<br><pre>'.print_r($global_fake,true).'</pre>'),'Notice');
-
         
 		if( $tree_i == 0 ) //nothing selected in dropdown
 		{

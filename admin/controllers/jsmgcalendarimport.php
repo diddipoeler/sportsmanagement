@@ -4,12 +4,15 @@
  * @file      jsmgcalendarimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jsmgcalendar
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjsmgcalendarImport
@@ -20,7 +23,7 @@ defined('_JEXEC') or die();
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy 
+class sportsmanagementControllerjsmgcalendarImport extends BaseController 
 {
 
 /**
@@ -32,11 +35,10 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 	 */
 	function __construct($config = array())
 	{
-	   // Initialise variables.
-		$app = JFactory::getApplication();
+	   /** Initialise variables. */
+		$app = Factory::getApplication();
 		parent::__construct($config);
 
-	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
 	}
     
 	/**
@@ -47,24 +49,21 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 	public function import() 
     {
 
-$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         $model = $this->getModel('jsmgcalendarImport');
         $result = $model->import();
         
         if ( $result )
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_YES');
         }
         else
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_NO');
         }
         
-//$link = $result;
         $link = 'index.php?option=com_sportsmanagement&view=jsmgcalendars';
-//$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=8534039&team=551305&prefill=';
-//http://www.fussballineuropa.de/administrator/index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=8534039&team=551305&prefill=
 
 		$this->setRedirect($link,$msg);
 

@@ -1,73 +1,43 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      jlextprofleagimport.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JFactory::getApplication()->input->getCmd('option');
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
+use Joomla\Utilities\ArrayHelper;
+
+$option = Factory::getApplication()->input->getCmd('option');
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
-	$maxImportMemory='350M';
+	$maxImportMemory = '350M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'XMLParser.class.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'crXml.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'SofeeXmlParser.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'xml_parser.php' );
-//require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'parser_php5.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'SofeeXmlParser.php' );
 
-jimport('joomla.application.component.model');
+
 jimport('joomla.html.pane');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper') ;
-// import JFile
-jimport('joomla.filesystem.file');
 jimport( 'joomla.utilities.utility' );
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
 
 /**
@@ -79,13 +49,13 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextprofleagimport extends JModelLegacy
+class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 {
-  var $_datas=array();
-	var $_league_id=0;
-	var $_season_id=0;
-	var $_sportstype_id=0;
-	var $import_version='';
+  var $_datas =array();
+	var $_league_id = 0;
+	var $_season_id = 0;
+	var $_sportstype_id = 0;
+	var $import_version = '';
   var $debug_info = false;
 
 /**
@@ -95,8 +65,13 @@ class sportsmanagementModeljlextprofleagimport extends JModelLegacy
  */
 function __construct( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
+	   parent::__construct($config);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmapp = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+	$show_debug_info = ComponentHelper::getParams($this->jsmoption)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
   $this->debug_info = true;
@@ -106,39 +81,8 @@ function __construct( )
   $this->debug_info = false;
   }
 
-		parent::__construct( );
-	
+
 	}
-
-/**
- * sportsmanagementModeljlextprofleagimport::dump_header()
- * 
- * @param mixed $text
- * @return void
- */
-private function dump_header($text)
-	{
-		echo "<h1>$text</h1>";
-	}
-
-	/**
-	 * sportsmanagementModeljlextprofleagimport::dump_variable()
-	 * 
-	 * @param mixed $description
-	 * @param mixed $variable
-	 * @return void
-	 */
-	private function dump_variable($description, $variable)
-	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
-	}
-    
-
-
-
-	
-
-
 
  /**
   * sportsmanagementModeljlextprofleagimport::_getXml()
@@ -147,21 +91,21 @@ private function dump_header($text)
   */
  function _getXml()
 	{
-		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
-				JError::raiseWarning(500,JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
+				Log::add( Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
 			}
 		}
 		else
 		{
-			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
-			echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
+			Log::add( Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
+			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
 
@@ -175,8 +119,7 @@ private function dump_header($text)
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
+		$form = $this->loadForm($this->jsmoption.'.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
 		{
@@ -193,8 +136,7 @@ private function dump_header($text)
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState($this->jsmoption.'.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
@@ -279,21 +221,21 @@ Function DumpStructure(&$structure,&$positions,$path)
  */
 function getData()
 	{
-$option = JFactory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->input->getCmd('option');
 
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
   
-  $lang = JFactory::getLanguage();
+  $lang = Factory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JFactory::getApplication()->input->post->getArray(array());
+  $post = Factory::getApplication()->input->post->getArray(array());
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
-  $app->enqueueMessage(JText::_('land '.$country.''),'');
+  $app->enqueueMessage(Text::_('land '.$country.''),'');
   
-  $option = JFactory::getApplication()->input->getCmd('option');
+  $option = Factory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
 	
 		
@@ -304,7 +246,7 @@ $option = JFactory::getApplication()->input->getCmd('option');
   $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
   $this->_datas['sportstype'] = $temp;
 
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml';
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml';
 
     
 
@@ -314,9 +256,6 @@ $xml = new SofeeXmlParser();
 $xml->parseFile($file); 
 $tree = $xml->getTree(); 
 unset($xml); 
-
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($tree[tournament][season][value],true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'tree -><pre>'.print_r($tree,true).'</pre>'),'');
 
 $app->setUserState( $option.'pltree', $tree );
 
@@ -1139,12 +1078,8 @@ $lfdnumbermatch++;
 
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'tree -><pre>'.print_r($tree,true).'</pre>'),'');
-//echo "tree -><pre>".print_r($tree,true)."</pre>";
-
 foreach ( $tempexportteamstaff as $key => $value )
 {
-// echo $key.'-'.$value.'<br>';
 $temp = new stdClass();
 $temp->id = $tempexportplayer[$value];
 $temp->projectteam_id = $exportprojectteamtemp[$key];
@@ -1155,49 +1090,14 @@ $temp->pro_person_id = $value;
 $exportteamstaff[] = $temp;
 }
 
-//$exportteamplayer $exportmatchstaff
-echo "tempexportteamstaff -><pre>".print_r($tempexportteamstaff,true)."</pre>";
-echo "exportteamstaff -><pre>".print_r($exportteamstaff,true)."</pre>";
-echo "exportmatchstaff -><pre>".print_r($exportmatchstaff,true)."</pre>";
-echo "exportplayer -><pre>".print_r($exportplayer,true)."</pre>";
-echo "exportteamplayer -><pre>".print_r($exportteamplayer,true)."</pre>";
-echo "tempexportteamplayer -><pre>".print_r($tempexportteamplayer,true)."</pre>";
-
 $app->setUserState( $option.'tempexportteamplayer',$tempexportteamplayer);
-
 $app->setUserState( $option.'exportplayer', $exportplayer );
 $app->setUserState( $option.'exportteamplayer', $exportteamplayer );
-
-
 $app->setUserState( $option.'exportteamstaff', $exportteamstaff );
 $app->setUserState( $option.'exportreferee', $exportreferee );
-
 $app->setUserState( $option.'exportmatchplayer', $exportmatchplayer );
-
 $app->setUserState( $option.'exportmatchstaff', $exportmatchstaff );
-
 $app->setUserState( $option.'exportmatchevent', $exportmatchevent );
-
-// print "exportmatchevent<pre>"; 
-// print_r($exportmatchevent); 
-// print "</pre>";
-
-// print "exportpositiontemp<pre>"; 
-// print_r($exportpositiontemp); 
-// print "</pre>";
-// print "exportplayerpositiontemp<pre>"; 
-// print_r($exportplayerpositiontemp); 
-// print "</pre>";
-// print "tempexportteamplayer<pre>"; 
-// print_r($tempexportteamplayer); 
-// print "</pre>";
-// print "tempexportplayer<pre>"; 
-// print_r($tempexportplayer); 
-// print "</pre>";
-// print "tempexportreferee<pre>"; 
-// print_r($tempexportreferee); 
-// print "</pre>";
-
 
 // parentposition
 $temp = new stdClass();
@@ -1413,62 +1313,62 @@ $this->_datas['positioneventtype'] = array_merge($exportpositioneventtype);
 
 
 /**
- * das ganze für den standardimport aufbereiten
+ * das ganze fÃ¼r den standardimport aufbereiten
  */
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
-$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+// set the version of SportsManagement
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$app->enqueueMessage(JText::_('project daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('project daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$app->enqueueMessage(JText::_('league daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('league daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$app->enqueueMessage(JText::_('season daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('season daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
-$app->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('sportstype daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$app->enqueueMessage(JText::_('round daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('round daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$app->enqueueMessage(JText::_('team daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 
 // set the teamplayer data
 if ( isset($this->_datas['teamplayer']) )
 {
-$app->enqueueMessage(JText::_('teamplayer daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('teamplayer daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamplayer'], 'TeamPlayer'));
 }
 // set the teamstaff data
 if ( isset($this->_datas['teamstaff']) )
 {
-$app->enqueueMessage(JText::_('teamstaff daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('teamstaff daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamstaff'], 'TeamStaff'));
 }
 
@@ -1476,52 +1376,52 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$app->enqueueMessage(JText::_('club daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('club daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$app->enqueueMessage(JText::_('match daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('match daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-$app->enqueueMessage(JText::_('position daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('position daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
-$app->enqueueMessage(JText::_('parentposition daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('parentposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
-$app->enqueueMessage(JText::_('projectposition daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('projectposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 
 // set event data of project
 if ( isset($this->_datas['event']) )
 {
-$app->enqueueMessage(JText::_('event daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('event daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['event'], 'EventType'));
 }
 
 // set positioneventtype data of project
 if ( isset($this->_datas['positioneventtype']) )
 {
-$app->enqueueMessage(JText::_('positioneventtype daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('positioneventtype daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['positioneventtype'], 'PositionEventType'));
 }
 
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
-$app->enqueueMessage(JText::_('matchreferee daten '.'generiert'),'');   
+$app->enqueueMessage(Text::_('matchreferee daten '.'generiert'),'');   
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 
@@ -1529,21 +1429,21 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the matchplayer data
 if ( isset($this->_datas['matchplayer']) )
 {
-$app->enqueueMessage(JText::_('matchplayer daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('matchplayer daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchplayer'], 'MatchPlayer'));
 }
 
 // set the matchstaff data
 if ( isset($this->_datas['matchstaff']) )
 {
-$app->enqueueMessage(JText::_('matchstaff daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('matchstaff daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchstaff'], 'MatchStaff'));
 }
 
 // set the matchevent data
 if ( isset($this->_datas['matchevent']) )
 {
-$app->enqueueMessage(JText::_('matchevent daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('matchevent daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchevent'], 'MatchEvent'));
 }
 
@@ -1551,25 +1451,25 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the person data
 if ( isset($this->_datas['person']) )
 {
-$app->enqueueMessage(JText::_('person daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('person daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
-$app->enqueueMessage(JText::_('projectreferee daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('projectreferee daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-$app->enqueueMessage(JText::_('projectteam daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('projectteam daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
-$app->enqueueMessage(JText::_('playground daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('playground daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
             
@@ -1577,8 +1477,8 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
+File::write($file, $xmlfile);
 
 
 if ( $this->debug_info )

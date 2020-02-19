@@ -4,7 +4,7 @@
  * @file      jlextdbbimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
@@ -20,10 +20,13 @@ http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=spo
 
 */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerjlextdbbimport
@@ -34,7 +37,7 @@ jimport( 'joomla.application.component.controller' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
+class sportsmanagementControllerjlextdbbimport extends BaseController
 {
 
 
@@ -44,38 +47,31 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 	 * @return
 	 */
 	function save() {
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-		$document = JFactory::getDocument ();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
-		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		Factory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
-		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdbbimport' );
-		$post = JFactory::getApplication()->input->get ( 'post' );
+		$post = Factory::getApplication()->input->get ( 'post' );
 		
-		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
-		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
-		
-		//$app->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
-		//$app->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
-		
+		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
+	
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
+		  Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE' ) );
-			
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE' ) );
+                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
 			}
 		}
 		
 		// first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
+			$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			
-			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
+			$lmoimportuseteams = Factory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
 			$app->setUserState ( $option . 'whichfile', $whichfile );
@@ -85,50 +81,50 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 			$app->setUserState ( $option . 'uploadArray', $upload );
 			$filename = '';
 			$msg = '';
-			$dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
-			$extractdir = JPATH_SITE . DS . 'tmp';
-			$importFile = JPATH_SITE . DS . 'tmp' . DS . 'joomleague_import.csv';
-			if (JFile::exists ( $importFile )) {
-				JFile::delete ( $importFile );
+			$dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
+			$extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
+			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement_import.csv';
+			if (File::exists ( $importFile )) {
+				File::delete ( $importFile );
 			}
-			if (JFile::exists ( $tempFilePath )) {
-				if (JFile::exists ( $dest )) {
-					JFile::delete ( $dest );
+			if (File::exists ( $tempFilePath )) {
+				if (File::exists ( $dest )) {
+					File::delete ( $dest );
 				}
-				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
+				if (! File::upload ( $tempFilePath, $dest )) {
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD'), Log::NOTICE, 'jsmerror');
 					return;
 				} else {
-					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
+					if (strtolower ( File::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
 							return false;
 						}
-						JFile::delete ( $dest );
-						$src = JFolder::files ( $extractdir, 'l98', false, true );
+						File::delete ( $dest );
+						$src = Folder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
-							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG' );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG'), Log::NOTICE, 'jsmerror');
 							// todo: delete every extracted file / directory
 							return false;
 						}
-						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
+						if (strtolower ( File::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED'), Log::NOTICE, 'jsmerror');
 							return;
 						}
 					} else {
-						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
+						if (strtolower ( File::getExt ( $dest ) ) == 'csv' || strtolower ( File::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
+                                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED'), Log::NOTICE, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION' ) );
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION'), Log::NOTICE, 'jsmerror');
 							return false;
 						}
 					}
@@ -148,16 +144,9 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
 			}
 		}
-		
-		
-		
+
 		$this->setRedirect ( $link, $msg );
 	}
-
-
-
-
-
     
 }  
 

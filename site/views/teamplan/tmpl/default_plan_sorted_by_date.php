@@ -4,12 +4,17 @@
  * @file      default_plan_sorted_by_date.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teamplan
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+$history_link = '';
 if ( !isset($this->config['show_matchreport_column']) ) 
 {
     $this->config['show_matchreport_column'] = 0;
@@ -19,7 +24,7 @@ if ( !isset($this->config['show_matchreport_column']) )
 <?php
 if (!empty($this->matches))
 {
-$teamid=JFactory::getApplication()->input->getInt('tid');
+$teamid=Factory::getApplication()->input->getInt('tid');
 ?>
 <!--	<thead> -->
 	<?php
@@ -32,7 +37,6 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		$k=0;
 
 usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
-//echo 'gamesByDate nachher <pre>'.print_r($this->matches,true).'</pre><br>';		
 
 		foreach ( $this->matches as $match )
 		{
@@ -47,11 +51,11 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				if ( substr( $match->match_date, 0, 10 ) != $pr_id)
 				{			
 				?>
-                <div class="table-responsive">   
-				<table class='table'>
+                <div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplansbd">   
+				<table class="<?php echo $this->config['table_class']; ?>">
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
-							<?php echo JHtml::date($match->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo HTMLHelper::date($match->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<h3><?php echo $match->name;?></h3>
@@ -162,10 +166,10 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+				$img = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+				$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
-				echo JHtml::link($link,$img,$params);
+				echo HTMLHelper::link($link,$img,$params);
 			}
 		?>
 		</td>
@@ -192,7 +196,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 		{
 		?>
 		    <td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
 		    </td>
 		<?php
 		}
@@ -233,11 +237,21 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			$class1	= 'right';
 			$class2	= 'left';
 		}
-		if ($this->config['show_teamplan_link']) {
-			
+				
+if ( $this->config['show_historylink'] ) 
+{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);	
+}
+				
+		if ($this->config['show_teamplan_link']) {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $hometeam->team_slug;
 $routeparameter['division'] = $match->division_slug;
@@ -249,15 +263,12 @@ $routeparameter['division'] = $match->division_slug;
 $routeparameter['mode'] = 0;
 $routeparameter['ptid'] = 0;
 $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-			
-			
-
 		} else {
 			$homelink = null;
 			$awaylink = null;
 		}
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
-		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
+		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
 		$teamA .= '<td width="30%" class="'.$class1.'">'.$home.'</td>';
 
@@ -270,7 +281,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,
 						0,
 						'logo_small',
-						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						Factory::getApplication()->input->getInt('cfg_which_database',0),
 						$match->id,
 						$this->modalwidth,
 						$this->modalheight,
@@ -281,7 +292,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,
 						0,
 						'logo_small',
-						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						Factory::getApplication()->input->getInt('cfg_which_database',0),
 						$match->id,
 						$this->modalwidth,
 						$this->modalheight,
@@ -325,7 +336,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
-		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
+		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 		
 		$teamB .= '<td width="30%" class="'.$class2.'">'.$away.'</td>';
 		
@@ -379,19 +390,19 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                         } else {
                             $result .= ' ';
                         }
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                         $result .= ')';
                         
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS;
                             }
                         if (isset($leftResultSO))
                             {
                                         $SOresultS = $leftResultSO . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultSO;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
                                         $SOTtolltip = ' | ' . $SOresultS;
                             }
                     }
@@ -405,13 +416,13 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                             $result .= ' ';
                         }
                         
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                         $result .= ')';
                         
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS ;
                             }
                     }
@@ -420,8 +431,8 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             
             //Link
             $routeparameter = array();                    
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->match_slug; 
             if (isset($match->team1_result))
@@ -432,7 +443,7 @@ $routeparameter['mid'] = $match->match_slug;
                 }
             
             $ResultsTooltipTitle = $result;
-            $result = JHtml::link($link,$result);
+            $result = HTMLHelper::link($link,$result);
             
             $ResultsTooltipTp = '( ';
             $PartResult = '';
@@ -449,7 +460,7 @@ $routeparameter['mid'] = $match->match_slug;
                     {
                                 $resultS = $part_results_left[$i] . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $part_results_right[$i];
                                 $whichPeriod = $i + 1;
-                                $PartResult .= '<br /><span class="hasTip" title="' . JText::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
+                                $PartResult .= '<br /><span class="hasTip" title="' . Text::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
                                 if ($i != 0) {
                                 $ResultsTooltipTp .= ' | ' . $resultS;
                                 } else {
@@ -482,11 +493,12 @@ $routeparameter['mid'] = $match->match_slug;
         
             }
                 
-			$score = "<td align='center'>".$result.'</td>';
+			$score = "<td align='center' id='teamplanresult'>".$result;
+			$score .= '</td>';
 		}
 		else
 		{
-			$score='<td>'.JText::_($match->cancel_reason).'</td>';
+			$score='<td>'.Text::_($match->cancel_reason).'</td>';
 		}
 		
 		switch ($this->config['result_style'])
@@ -518,6 +530,19 @@ $routeparameter['mid'] = $match->match_slug;
 				}
 				break;
 		}
+if ( $history_link )
+        {
+        ?>    
+		<td id ="teamplanhistory">
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+					</td>
+        <?php    
+        }				
 		?>
 
 		<?php
@@ -530,7 +555,7 @@ $routeparameter['mid'] = $match->match_slug;
 			if ($this->project->teams_as_referees)
 			{
 				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle=Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText='';
 
 				for ($i=0; $i<count($match->referees); $i++)
@@ -554,27 +579,33 @@ $routeparameter['mid'] = $match->match_slug;
 				{
 				?> 
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
+					<img src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
 				<?php
 				}
 			}
 			else
 			{
 				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle=Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText='';
 
 				for ($i=0; $i<count($match->referees); $i++)
 				{
 					if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
 					{
-						$output .= '<span class="hasTip" title="'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
+						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
 						$ref=$match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
 						{
-							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=JHtml::link($link,$ref);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pid'] = $match->referees[$i]->referee_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);	
+//$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
+$ref = HTMLHelper::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
@@ -599,7 +630,7 @@ $routeparameter['mid'] = $match->match_slug;
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
 		<img
-			src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
+			src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
 			alt='' title='' /> </span> <?php
 				}
 			}
@@ -624,31 +655,31 @@ $routeparameter['mid'] = $match->match_slug;
 		<td><?php
 		if (!$match->cancel) {
 $routeparameter = array();                    
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->match_slug;   			
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = HTMLHelper::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-				$viewReport=JHtml::link($link, $href_text);
+				$viewReport=HTMLHelper::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
 			{	
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = HTMLHelper::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-				$viewPreview=JHtml::link($link, $href_text);
+				$viewPreview=HTMLHelper::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}
@@ -664,18 +695,20 @@ $routeparameter['mid'] = $match->match_slug;
 	<!-- Show icon for editing events in edit mode -->
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
-		<div id="info<?php echo $match->id; ?>" style="display: none;">
+		<div id="info<?php echo $match->id; ?>" class="jsmeventsshowhide" style="display: none;">
 		<table class='matchreport' border='0'>
-			<tr>
-				<td><?php
-				echo $this->showEventsContainerInResults(	
-												$match,
-												$this->projectevents,
-												$events,
-												$subs,
-												$this->config );
-				?></td>
-			</tr>
+		<tr>
+		<td>
+		<?php
+		echo $this->showEventsContainerInResults(	
+		$match,
+		$this->projectevents,
+		$events,
+		$subs,
+		$this->config );
+		?>
+		</td>
+		</tr>
 		</table>
 		</div>
 		</td>
@@ -695,7 +728,7 @@ $routeparameter['mid'] = $match->match_slug;
 else
 {
 	?>
-<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
 	<?php
 }
 ?>

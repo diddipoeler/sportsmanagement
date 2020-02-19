@@ -1,44 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      defaul_players.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage rosteralltime
+ */
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 // Show team-players as defined
 if (!empty($this->rows))
@@ -115,7 +90,7 @@ foreach ($this->playerposition as $position_id )
 	<thead>
 	<tr class="sectiontableheader rosterheader">
 		<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-			<?php echo '&nbsp;'.JText::_($position_id->name); ?>
+			<?php echo '&nbsp;'.Text::_($position_id->name); ?>
 		</th>
 		<?php
 		if ($this->config['show_birthday'] > 0)
@@ -141,7 +116,7 @@ foreach ($this->playerposition as $position_id )
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 						break;
 				}
-				echo JText::_( $outputStr );
+				echo Text::_( $outputStr );
 				?>
 		</th>
 		<?php
@@ -150,8 +125,8 @@ foreach ($this->playerposition as $position_id )
         if ($this->config['show_games_played'])
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php 
@@ -159,18 +134,18 @@ foreach ($this->playerposition as $position_id )
 			if ($this->config['show_substitution_stats'])
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
+				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
+				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
+				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php
@@ -189,7 +164,7 @@ foreach ($this->playerposition as $position_id )
 					{
 						if (empty($eventtype->icon))
 						{
-							$eventtype_header = JText::_($eventtype->name);
+							$eventtype_header = Text::_($eventtype->name);
 						}
 						else
 						{
@@ -198,9 +173,9 @@ foreach ($this->playerposition as $position_id )
 							{
 								$iconPath='images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-							$eventtype_header = JHTML::image(	$iconPath,
-																JText::_($eventtype->name),
-																array(	'title'=> JText::_($eventtype->name),
+							$eventtype_header = HTMLHelper::image(	$iconPath,
+																Text::_($eventtype->name),
+																array(	'title'=> Text::_($eventtype->name),
 																		  'align'=> 'top',
 																		  'hspace'=> '2'));
 						}
@@ -271,14 +246,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 		if ( $this->config['link_player'] )
 		{
 		  $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $players->team_slug;
        $routeparameter['pid'] = $players->person_slug;
 		
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-			echo JHTML::link($link,'<span class="playername">'.$playerName.'</span>');
+			echo HTMLHelper::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else
 		{
@@ -297,17 +272,17 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 				switch ($this->config['show_birthday'])
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr = JHTML::date($players->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($players->birthday,$players->deathday).")";
 						break;
 					case 2:	 // show Only Birthday
-						$birthdateStr = JHTML::date($players->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						break;
 					case 3:	 // show Only Age
 						$birthdateStr = "(".sportsmanagementHelper::getAge($players->birthday,$players->deathday).")";
 						break;
 					case 4:	 // show Only Year of birth
-						$birthdateStr = JHTML::date($players->birthday, 'Y');
+						$birthdateStr = HTMLHelper::date($players->birthday, 'Y');
 						break;
 					default:
 						$birthdateStr = "";
@@ -325,7 +300,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 			// deathday
 			if ( $players->deathday !="0000-00-00" )
 			{
-				$birthdateStr .= ' [&dagger; '.JHTML::date($players->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+				$birthdateStr .= ' [&dagger; '.HTMLHelper::date($players->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}
 					
 			echo $birthdateStr;
@@ -397,8 +372,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
     
     ?>
 	<tr class="">
-    <td class="td_r" colspan="3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
-		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?></b></td>
+    <td class="td_r" colspan="3"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
+		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?></b></td>
 		<?php
         if ($this->config['show_events_stats'])
 		{

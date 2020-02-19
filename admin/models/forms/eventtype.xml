@@ -73,15 +73,37 @@
         </field>
 
         <field
-            name="directions"
+            name="directionspoint"
             type="list"
-            label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING"
-            description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_DESC"
+            label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_POINT"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_POINT_DESC"
             class="inputbox"			
             default="0">
-            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
-            <option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
-        </field>		
+            <option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+            <option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+        </field>
+	    
+		<field
+            name="directionspointpos"
+            type="extensionradiobutton"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_POINTPOS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_POINTPOS_DESC"
+            default="1">
+            <option value="1">1 Position</option>
+            <option value="2">2 Position</option>			
+        </field>
+		
+	<field
+            name="directionscounter"
+            type="list"
+            label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_COUNT"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_COUNT_DESC"
+            class="inputbox"			
+            default="0">
+            <option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+            <option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+        </field>    
 
         <field
             name="double"

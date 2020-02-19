@@ -4,18 +4,21 @@
  * @file      deafult_history_leagues.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teaminfo
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 $this->columns = 4;
 $this->divclass = '';
 ?>
 
 <h4>
 
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
 
 </h4>
 <?php
@@ -29,17 +32,17 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
         <thead>
             <tr class="sectiontableheader">
                 <th class="" nowrap="" style="background:#BDBDBD;">
-                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?>
+                    <?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?>
                 </th>
                 <th class="" nowrap="" style="background:#BDBDBD;">
-                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?>
+                    <?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?>
                 </th>
                 <th class="" nowrap="" style="background:#BDBDBD;">
-                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?>
+                    <?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?>
                 </th>
 
                 <th class="" nowrap="" style="background:#BDBDBD;">
-                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?>
+                    <?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?>
                 </th>
 
             </tr>
@@ -77,7 +80,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     /**
      * welche bootstrap version
      */
-    $params = JComponentHelper::getParams('com_sportsmanagement');
+    $params = ComponentHelper::getParams('com_sportsmanagement');
 
     if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         $this->divclass = 'col p-2';
@@ -93,10 +96,10 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     ?>
 <!--    <div class="container-fluid no-gutters">-->
         <div class="row no-gutters">
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
         </div>
         <?php
         foreach ($this->leaguerankoverviewdetail as $league => $summary) {

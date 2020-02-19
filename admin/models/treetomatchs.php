@@ -4,7 +4,7 @@
  * @file      treetomatchs.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
-
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelTreetomatchs
@@ -57,8 +57,6 @@ protected function getListQuery()
        
     $this->jsmquery->order('r.roundcode');   
        
-      // $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-
 		return $this->jsmquery;
     }   
     
@@ -83,7 +81,7 @@ $conditions = array(
         }
 		else
 		{
-			JArrayHelper::toInteger( $peid );
+			ArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
 $conditions = array(
     $this->jsmdb->quoteName('node_id') . ' = ' . $this->jsmdb->quote($data['id']),
@@ -128,8 +126,6 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $profil
 	 */
 	function getMatches()
 	{
-	//	$option = $this->input->getCmd('option');
-//		$app	= JFactory::getApplication();
 		$node_id = $this->jsmjinput->get('nid');
 		$treeto_id = $this->jsmjinput->get('tid');
 		$project_id = $this->jsmjinput->get('pid');
@@ -163,10 +159,6 @@ $this->jsmsubquery1->clear();
        $this->jsmquery->where('NOT mc.projectteam1_id IN ( ' . $this->jsmsubquery1 .' )' );
 $this->jsmquery->where('NOT mc.projectteam2_id IN ( ' . $this->jsmsubquery1 .' )' );
     $this->jsmquery->order('r.id');   
-       
-       		//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-            
-
 		
 		$this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
@@ -211,8 +203,7 @@ $this->jsmquery->clear();
        
     $this->jsmquery->order('mc.id');           
         
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
+       
         $this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{

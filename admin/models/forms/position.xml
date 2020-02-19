@@ -80,20 +80,31 @@ description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" >
 		</field>
     		
 	</fieldset>	
-  
-  <fieldset name="picture"
+
+<fieldset name="events"
+  label="COM_SPORTSMANAGEMENT_TABS_EVENTS"
+  description="COM_SPORTSMANAGEMENT_TABS_EVENTS">
+</fieldset>	 
+ <fieldset name="statistics"
+  label="COM_SPORTSMANAGEMENT_TABS_STATISTICS"
+  description="COM_SPORTSMANAGEMENT_TABS_STATISTICS">
+</fieldset>
+	
+<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-			<field
-				name="picture"
-				type="media"
-				default=""				
-				label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"
-				class="inputbox"
-				preview="show"	
-        targetfolder="positions"			
-				directory=""/>
+<field
+name="picture"
+type="media"
+default="images/com_sportsmanagement/database/positions/placeholder_150_3.png"				
+label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
+description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"
+class="inputbox"
+preview="show"	
+targetfolder="positions"			
+showon="show_info:1[AND]show_image:1"		
+directory="images/com_sportsmanagement/database/positions"
+/>
 				
 		<field
 			name="cr_picture"
@@ -103,5 +114,5 @@ description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" >
 			class="inputbox"/>
       		
 	</fieldset>
-  			
+	 
 </form>

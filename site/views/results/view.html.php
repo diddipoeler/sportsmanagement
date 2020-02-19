@@ -4,15 +4,19 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.view');
-jimport( 'joomla.filesystem.file' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementViewResults
@@ -33,37 +37,33 @@ class sportsmanagementViewResults extends sportsmanagementView
 	 */
 	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $this->layout = $jinput->getCmd('layout');
+        $this->layout = $this->jinput->getCmd('layout');
         $roundcode = 0;
         $default_name_format = '';
 
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-		
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 
-        //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
-        /*
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
-        */
-        //$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
-
-		$model	= $this->getModel();
+		$model = $this->getModel();
 		
-		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
+		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
-        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
-        
+        $this->limit = $this->model->getLimit();
+$this->limitstart = $this->model->getLimitStart();
+$this->ausgabestart = $this->limitstart + 1;
+$this->ausgabeende = $this->limitstart + $this->limit;
+	$this->state = $this->get('State');
+		
+if ( !$config['show_pagenav'] )		
+{		
+sportsmanagementModelResults::$limit = 0; 
+}		
+		
+	$matches = $this->get('Data');
+	$this->pagination = $this->get('Pagination');
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
-		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
+		$mdlPagination = BaseDatabaseModel::getInstance("Pagination","sportsmanagementModel");
         
         $roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid,$model::$cfg_which_database);
 		
@@ -96,7 +96,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 if ( $this->overallconfig['use_squeezebox_modal'] ) 
 {
-$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+$this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/jquery.popdown.js' );	
 }	
 			
 			
@@ -113,16 +113,10 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $this->rssfeeditems = $rssfeeditems;
     }
-    //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
-    
   
        }
-      
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon'.'<pre>'.print_r($this->showediticon,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
-            
-            $lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
+		
+            $lists['rounds'] = HTMLHelper::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="sportsmanagement_changedoc(this);','value','text',$project->current_round);
 			$this->lists = $lists;
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}
@@ -130,55 +124,61 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			if (!isset($this->config['show_results_ranking'])){$this->config['show_results_ranking']=0;}
 		}
 	
-		// Set page title
-		$pageTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+		/**
+ * Set page title
+ */
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;
 		}
-		$document->setTitle($pageTitle);
+		$this->document->setTitle($pageTitle);
 
-		//build feed links
-		$feed = 'index.php?option='.$option.'&view=results&p='.$this->project->id.'&format=feed';
-		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
+		/**
+ * build feed links
+ */
+		$feed = 'index.php?option='.$this->option.'&view=results&p='.$this->project->id.'&format=feed';
+		$rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
-		// add the links
-		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-        $view = $jinput->getVar( "view") ;
-        //$stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
+		/**
+ * add the links
+ */
+		$this->document->addHeadLink(Route::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
+        $view = $this->jinput->getVar( "view") ;
         
-//        $stylelink = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
 
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
-
-	$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+	$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 		
         switch ($this->layout)
         {
             case 'form':
-        // projekt positionen                                                    
-  		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+        /**
+                                                     * projekt positionen
+                                                     */                                                    
+  		$selectpositions[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 		if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$this->project->id))
 		{
 			$selectpositions = array_merge($selectpositions,$projectpositions);
 		}
-		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
+		$this->lists['projectpositions'] = HTMLHelper::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
         $this->positions = $projectpositions;   
+			
+			if ( !isset($this->config['club_link_logo']) )
+			{
+				$this->config['club_link_logo'] = 1;
+			}
 if ( $this->overallconfig['use_table_or_bootstrap'] )
 {
 $this->setLayout('form');
@@ -191,8 +191,6 @@ $this->setLayout('form_bootstrap');
             break;
         }
         
-        
-        //parent::display($tpl);
 	}
 
 	/**
@@ -217,7 +215,7 @@ $this->setLayout('form_bootstrap');
 		$not_playing = count($teams) - count($playing_teams);
 		if ($not_playing > 0)
 		{
-			$output .= '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';
+			$output .= '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';
 			foreach ($teams AS $id => $team)
 			{
 				if (isset($team->projectteamid) && in_array($team->projectteamid,$playing_teams))
@@ -269,35 +267,29 @@ $this->setLayout('form_bootstrap');
 	public static function getTeamClubIcon($team, $type=1, $attribs=array(),$modalwidth = '100',$modalheight = '200',$use_jquery_modal = 0 )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
-        
-    if ( !sportsmanagementHelper::existPicture($team->logo_small) )
+        $app = Factory::getApplication();
+       if ( $team ) {
+    if ( !File::exists($team->logo_small) )
     {
     $team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');    
     }
-    if ( !sportsmanagementHelper::existPicture($team->logo_middle) )
+    if ( !File::exists($team->logo_middle) )
     {
     $team->logo_middle = sportsmanagementHelper::getDefaultPlaceholder('logo_middle');    
     }
-    if ( !sportsmanagementHelper::existPicture($team->logo_big) )
+    if ( !File::exists($team->logo_big) )
     {
-    $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');   
     }
-        
         
 		if(!isset($team->name)) return "";
 		$title = $team->name;
        
 		$attribs = array_merge(array('title' => $title,$attribs));
-		if ($type==1)
+		if ( $type == 1 )
 		{
 			$attribs = array_merge(array('width' => '20',$attribs));
 
-            if ( !empty($team->logo_small) )
-			{
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
@@ -306,25 +298,13 @@ $this->setLayout('form_bootstrap');
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
-        elseif ($type==5)
+        elseif ( $type == 5 )
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
           
-            if ( !empty($team->logo_middle) )
-			{
+            
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_middle,
                 $title,
@@ -333,25 +313,12 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
-        elseif ($type==6)
+        elseif ( $type == 6)
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
-
-            if ( !empty($team->logo_big) )
-			{
+            
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
 			$team->logo_big,
 			$title,
@@ -360,42 +327,17 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
-		elseif ($type==2 && !empty($team->country))
+		elseif ( $type == 2 )
 		{
 			$image = JSMCountries::getCountryFlag($team->country);
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
         
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && curl_init($team->logo_big) )
+        elseif ( $type == 7 )
 		{
-
-			if (empty($image))
-			{
-				$attribs = array_merge(array('width' => '20',$attribs));
-                
+		$attribs = array_merge(array('width' => '20',$attribs));
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_big,
                 $title,
@@ -405,13 +347,13 @@ $modalwidth,
 $modalheight,
 $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+			
 		}
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !curl_init($team->logo_big) )
+        elseif ( $type == 8 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+		$attribs = array_merge(array('width' => '20',$attribs));
+		$image = JSMCountries::getCountryFlag($team->country).' ';
+                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_big,
                 $title,
                 $attribs['width'],
@@ -419,15 +361,13 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-                $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+                
+			
 		}
-        
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
+        elseif ( $type == 3 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+		$attribs = array_merge(array('width' => '20',$attribs));	
+		$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
                 $attribs['width'],
@@ -436,28 +376,12 @@ $modalwidth,
 $modalheight,
 $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+			
 		}
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
+    elseif ( $type == 4 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-                $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
-		}
-    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
-		{
-			if (empty($image))
-			{
-				$image = JSMCountries::getCountryFlag($team->country).' ';
+	    $attribs = array_merge(array('width' => '20',$attribs));
+		$image = JSMCountries::getCountryFlag($team->country).' ';
                 $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
@@ -466,31 +390,17 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-		}
-        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
-		{
-			if (empty($image))
-			{
-				$image = JSMCountries::getCountryFlag($team->country).' ';
-                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
 		else
 		{
 			$image = '';
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' image<br><pre>'.print_r($image,true).'</pre>'),'');
-
 		return $image;
+	}
+	return false;	
+		
 	}
 	
 
@@ -529,10 +439,10 @@ $use_jquery_modal);
 	{
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
-		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
-		$desc=JHtml::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
+		$imgTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
+		$desc=HTMLHelper::image(	Uri::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
-		echo JHtml::link($link,$desc,$params);
+		echo HTMLHelper::link($link,$desc,$params);
 
 		echo '<span id="part'.$match->id.'" style="display:none">';
 		echo '<br />';
@@ -589,7 +499,7 @@ $use_jquery_modal);
 		if ($this->project->allow_add_time)
 		{
 			if($match->match_result_type >0){
-				echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').':';
+				echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').':';
 				echo '<input type="text" style="font-size:9px;"';
 				echo ' name="team1_result_ot'.$match->id.'"';
 				echo ' value="';
@@ -606,7 +516,7 @@ $use_jquery_modal);
 			}
 			if($match->match_result_type == 2){
 				echo '<br />';
-				echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').':';
+				echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').':';
 				echo '<input type="text" style="font-size:9px;"';
 				echo ' name="team1_result_so'.$match->id.'"';
 				echo ' value="';
@@ -675,7 +585,7 @@ $use_jquery_modal);
             {
                 $result .= ' ';
 			}
-			$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').' ';
+			$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').' ';
 			$result .= $homeResultSO.'&nbsp;'.$config['seperator'].'&nbsp;'.$awayResultSO;
 			$result .= ')';
 		}
@@ -691,7 +601,7 @@ $use_jquery_modal);
                 {
                     $result .= ' ';
 				}
-				$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+				$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
 				$result .= ')';
 			}
 		}
@@ -705,7 +615,7 @@ $use_jquery_modal);
             {
                 $result .= ' ';
 			}
-			$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').' ';
+			$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').' ';
 			$result .= $homeResultOT.'&nbsp;'.$config['seperator'].'&nbsp;'.$awayResultOT;
 			$result .= ')';
 		}
@@ -721,7 +631,7 @@ $use_jquery_modal);
                 {
                     $result .= ' ';
 				}
-				$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+				$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
 				$result .= ')';
 			}
 		}
@@ -781,7 +691,7 @@ $use_jquery_modal);
 	 */
 	public static function showMatchRefereesAsTooltip(&$game,$project=array(),$config=array())
 	{
-		if ($config['show_referee'])
+		if ( $config['show_referee'] )
 		{
 			if ($project->teams_as_referees)
 			{
@@ -794,7 +704,7 @@ $use_jquery_modal);
 
 			if (!empty($referees))
 			{
-				$toolTipTitle	= JText::_('COM_SPORTSMANAGEMENT_RESULTS_REF_TOOLTIP');
+				$toolTipTitle	= Text::_('COM_SPORTSMANAGEMENT_RESULTS_REF_TOOLTIP');
 				$toolTipText	= '';
 
 				foreach ($referees as $ref)
@@ -809,14 +719,30 @@ $use_jquery_modal);
 					}
 				}
 
-				?>
+				switch ( $config['show_referee'] )
+                {
+                case 1:
+                ?>
+			<!-- Referee tooltip -->
+			<span class="hasTip"
+				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> 
+                <?php
+                echo $ref->firstname.' '.$ref->lastname.' ('.$ref->position_name.')';
+                ?>
+                </span>
+				<?php
+                break;
+                case 2:    
+                ?>
 			<!-- Referee tooltip -->
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
-				src="<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
+				src="<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
 				alt="" title="" /> </span>
 			
 				<?php
+                break;
+                }
 			}
 			else
 			{
@@ -833,12 +759,10 @@ $use_jquery_modal);
 	 */
 	public static function showReportDecisionIcons(&$game)
 	{
-		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
-
 		$output = '';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_id;
 $routeparameter['mid'] = $game->id;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 		
@@ -848,17 +772,17 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 		{
 			if ($game->alt_decision)
 			{
-				$imgTitle = JText::_($game->decision_info);
+				$imgTitle = Text::_($game->decision_info);
 				$img = 'media/com_sportsmanagement/jl_images/court.gif';
 			}
 			else
 			{
-				$imgTitle = JText::_('Has match summary');
+				$imgTitle = Text::_('Has match summary');
 				$img = 'media/com_sportsmanagement/jl_images/zoom.png';
 			}
-			$output .= JHtml::_(	'link',
+			$output .= HTMLHelper::_(	'link',
 			$report_link,
-			JHtml::image(JURI::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
+			HTMLHelper::image(Uri::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
 			array("title" => $imgTitle));
 		}
 		else
@@ -884,15 +808,14 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	 */
 	public static function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array(),$project=array() )
 	{
-	   $app = JFactory::getApplication();
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchInfo'.'<pre>'.print_r($matchInfo,true).'</pre>' ),'');
+	   $app = Factory::getApplication();
        
 		$output = '';
 		$result = '';
 
 		if ($config['use_tabs_events'])
 		{
-			
+/** joomla 3 anfang ------------------------------------------------------------------------ */			
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             
@@ -901,7 +824,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			{	    
 		 if ( $start == 1 )
 		{
-		// Define tabs options for version of Joomla! 3.0
+		/**
+ * Define tabs options for version of Joomla! 3.0
+ */
         $tabsOptions = array(
             "active" => 'tab'.$event->id.'_id'.$matchInfo->id // It is the ID of the active tab.
 	);
@@ -911,25 +836,26 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 		
           
         
-        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
+        $output .= HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
         
             }
-            else
-            {
-            // Make event tabs with JPane integrated function in Joomla 1.5 API
-			$result	= JPane::getInstance('tabs',array('startOffset'=>0));
-			$output .= $result->startPane('pane');
-            }
+/** joomla 3 ende ------------------------------------------------------------------------ */            
 
-			// Size of the event icons in the tabs (when used)
+			/**
+ * Size of the event icons in the tabs (when used)
+ */
 			$width = 20; $height = 20; $type = 4;
-			// Never show event text or icon for each event list item (info already available in tab)
+			/**
+ * Never show event text or icon for each event list item (info already available in tab)
+ */
 			$showEventInfo = 0;
 
 			$cnt = 0;
 			foreach ($projectevents AS $event)
 			{
-				//display only tabs with events
+				/**
+ * display only tabs with events
+ */
 				foreach ($matchevents AS $me)
 				{
 					$cnt=0;
@@ -943,18 +869,20 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				
 				if ( $config['show_events_with_icons'] )
 				{
-					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = JText::_($event->name);
+					/**
+ * Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
+ */
+					$imgTitle = Text::_($event->name);
 					$tab_content = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
-					$tab_content = JText::_($event->name);
+					$tab_content = Text::_($event->name);
 				}
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,$tab_content ); 
+            $output .=  HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,$tab_content ); 
             }
             else
             {
@@ -964,7 +892,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				$output .= '<table class="table table-striped" border="0">';
 				$output .= '<tr>';
 
-				// Home team events
+				/**
+ * Home team events
+ */
 				$output .= '<td class="list">';
 				$output .= '<ul>';
 				foreach ($matchevents AS $me)
@@ -974,7 +904,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				$output .= '</ul>';
 				$output .= '</td>';
 
-				// Away team events
+				/**
+ * Away team events
+ */
 				$output .= '<td class="list">';
 				$output .= '<ul>';
 				foreach ($matchevents AS $me)
@@ -988,7 +920,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .= JHtml::_('bootstrap.endTab');
+            $output .= HTMLHelper::_('bootstrap.endTab');
             }
             else
             {
@@ -1000,27 +932,28 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			{
 				if ($config['show_events_with_icons'] == 1)
 				{
-					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					/**
+ * Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
+ */
+					$imgTitle = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/subst.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
-					$tab_content = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/in.png';
-				$imgTime = JHtml::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut  = JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn   = JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$pic_time	= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/out.png';
+				$pic_in		= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/in.png';
+				$imgTime = HTMLHelper::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut  = HTMLHelper::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn   = HTMLHelper::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            //$output .= JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab1_id','COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'); 
-            $output .= JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab0_id','COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
+            $output .= HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab0_id','COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
             }
             else
             {
@@ -1050,7 +983,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .= JHtml::_('bootstrap.endTab');
+            $output .= HTMLHelper::_('bootstrap.endTab');
             }
             else
             {
@@ -1061,7 +994,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
             
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .= JHtml::_('bootstrap.endTabSet', 'ID-Tabs-Group');
+            $output .= HTMLHelper::_('bootstrap.endTabSet', 'ID-Tabs-Group');
             }
             else
             {
@@ -1074,7 +1007,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			$output .= '<table class="table table-striped" border="0">';
 			$output .= '<tr>';
 
-			// Home team events
+			/**
+ * Home team events
+ */
 			$output .= '<td class="list-left">';
 			$output .= '<ul>';
 			foreach ((array) $matchevents AS $me)
@@ -1087,7 +1022,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			$output .= '</ul>';
 			$output .= '</td>';
 
-			// Away team events
+			/**
+ * Away team events
+ */
 			$output .= '<td class="list-right">';
 			$output .= '<ul>';
 			foreach ($matchevents AS $me)
@@ -1103,8 +1040,6 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			$output .= '</table>';
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
-
 		return $output;
 	}
 	
@@ -1120,34 +1055,30 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	public static function formatResult(&$team1,&$team2,&$game,&$reportLink,&$config)
 	{
 		$output	= '';
-		// check home and away team for favorite team
+/**
+ * check home and away team for favorite team
+ */
 		$fav = isset($team1->id) && in_array($team1->id,sportsmanagementModelProject::$favteams) ? 1 : 0;
 		if(!$fav)
 		{
 			$fav = isset($team2->id) && in_array($team2->id,sportsmanagementModelProject::$favteams) ? 1 : 0;
 		}
-		// 0=no links
-		// 1=For all teams
-		// 2=For favorite team(s) only
-		if($config['show_link_matchreport'] == 1 || ($config['show_link_matchreport'] == 2 && $fav))
+/**
+ * 		0=no links
+ * 		1=For all teams
+ * 		2=For favorite team(s) only
+ */
+		if( $config['show_link_matchreport'] == 1 || ($config['show_link_matchreport'] == 2 && $fav) )
 		{
-			$output = JHtml::_(	'link', $reportLink,
-					'<span class="score0">'.sportsmanagementViewResults::showMatchState($game,$config).'</span>',
-			array("title" => JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
+		$output = HTMLHelper::_('link', $reportLink,
+		'<span class="score0">'.sportsmanagementViewResults::showMatchState($game,$config).'</span>',
+		array("title" => Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
 		}
 		else
 		{
-			$output = sportsmanagementViewResults::showMatchState($game,$config);
+		$output = sportsmanagementViewResults::showMatchState($game,$config);
 		}
-
-//		//added by stony - Ausgabe der Halbzeitresultate, wenn im Template freigeschaltet
-//		$slhr = array(";", "NULL");
-//		if($config['show_part_results'] && ((str_replace($slhr, '', $game->team1_result_split) != "") && (str_replace($slhr, '', $game->team2_result_split) != "")) )
-//		{
-//			$output .= '&nbsp;(' . str_replace(";","",$game->team1_result_split) . '&nbsp;'. ($config['seperator']) .'&nbsp;' . str_replace(";","",$game->team2_result_split) . ')';
-//		}
-        
-        // verbessert diddipoeler
+       
         $part_results_left = explode(";", $game->team1_result_split);
         $part_results_right = explode(";", $game->team2_result_split);
         if( $config['show_part_results'] )
@@ -1158,18 +1089,15 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                     {
                                 $resultS = $part_results_left[$i] . '&nbsp;' . $config['seperator'] . '&nbsp;' . $part_results_right[$i];
                                 $whichPeriod = $i + 1;
-                                $output .= '<br /><span class="hasTip" title="' . JText::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
-                                //if ($i != 0) {
-                                //$ResultsTooltipTp .= ' | ' . $resultS;
-                                //} else {
-                                //$ResultsTooltipTp .= $resultS;
-                                //}
+                                $output .= '<br /><span class="hasTip" title="' . Text::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
                     }
             }
         }
-        
-        
-        
+		if ( $game->team1_legs )
+		{
+		$resultS = '<br /><span>'.$game->team1_legs . '&nbsp;' . $config['seperator'] . '&nbsp;' . $game->team2_legs. '</span>';
+		$output .= $resultS;	
+		}
 
 		return $output;
 
@@ -1186,19 +1114,23 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	 */
 	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config=array())
 	{
-		// Meaning of $showEventInfo:
-		// 0 : do not show event as text or as icon in a list item
-		// 1 : show event as icon in a list item (before the time)
-		// 2 : show event as text in a list item (after the time)
+/**
+ * 		Meaning of $showEventInfo:
+ * 		0 : do not show event as text or as icon in a list item
+ * 		1 : show event as icon in a list item (before the time)
+ * 		2 : show event as text in a list item (after the time)
+ */
 		$output='';
 		if ($matchevent->event_type_id == $event->id && $matchevent->ptid == $projectteamId)
 		{
 			$output .= '<li class="events">';
 			if ($showEventInfo == 1)
 			{
-				// Size of the event icons in the tabs
+				/**
+ * Size of the event icons in the tabs
+ */
 				$width = 20; $height = 20; $type = 4;
-				$imgTitle = JText::_($event->name);
+				$imgTitle = Text::_($event->name);
 				$icon = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 
 				$output .= $icon;
@@ -1212,7 +1144,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 
 			if ($showEventInfo == 2)
 			{
-				$output .= JText::_($event->name).' ';
+				$output .= Text::_($event->name).' ';
 			}
 
 			if (strlen($matchevent->firstname1.$matchevent->lastname1) > 0)
@@ -1221,10 +1153,12 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			}
 			else
 			{
-				$output .= JText :: _('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
+				$output .= Text :: _('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
 			}
 			
-			// only show event sum and match notice when set to on in template cofig
+			/**
+ * only show event sum and match notice when set to on in template cofig
+ */
 			if($config['show_event_sum'] == 1 || $config['show_event_notice'] == 1)
 			{
 				if (($config['show_event_sum'] == 1 && $matchevent->event_sum > 0) || ($config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
@@ -1267,18 +1201,15 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 		if ($subs->ptid == $projectteamId)
 		{
 			$output .= '<li class="events">';
-			// $output .= $imgTime;
-			$output .= '&nbsp;'.$subs->in_out_time.'. '.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
+			$output .= '&nbsp;'.$subs->in_out_time.'. '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
-
 			$output .= $imgOut;
 			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $config["name_format"]);
-			$output .= '&nbsp;('.JText :: _($subs->out_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->out_position).')';
 			$output .= '<br />';
-
 			$output .= $imgIn;
 			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $config["name_format"]);
-			$output .= '&nbsp;('.JText :: _($subs->in_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->in_position).')';
 			$output .= '<br /><br />';
 			$output .= '</li>';
 		}

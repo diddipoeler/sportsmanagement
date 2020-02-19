@@ -4,13 +4,15 @@
  * @file      staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage staff
  */
  
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelStaff
@@ -21,7 +23,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelStaff extends JModelLegacy
+class sportsmanagementModelStaff extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $personid = 0;
@@ -47,10 +49,10 @@ class sportsmanagementModelStaff extends JModelLegacy
  	function __construct()
  	{
  		
- 		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
- 		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
- 		self::$teamid = JFactory::getApplication()->input->getInt('tid',0);
-        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+ 		self::$projectid = Factory::getApplication()->input->getInt('p',0);
+ 		self::$personid = Factory::getApplication()->input->getInt('pid',0);
+ 		self::$teamid = Factory::getApplication()->input->getInt('tid',0);
+        self::$cfg_which_database = Factory::getApplication()->input->getInt( 'cfg_which_database', 0 );
         parent::__construct();
  	}
 
@@ -62,8 +64,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getTeamStaff()
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -100,54 +102,42 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getStaffHistory($order='ASC')
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_('getStaffHistory personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
-        
-        //if (empty($this->_history))
-		//{
-			$personid = self::$personid;
+		$personid = self::$personid;
             
-            // Select some fields
-		    $query->select('pr.id AS pid,pr.firstname,pr.lastname');
-            $query->select('o.person_id,o.picture as season_picture');
-            $query->select('tt.project_id,tt.id AS ptid');
-            $query->select('t.id AS team_id,t.name AS team_name,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-            $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-            $query->select('s.name AS season_name');
-            $query->select('ppos.position_id');
-            $query->select('pos.name AS position_name,pos.id AS posID');
-            //$query->from('#__sportsmanagement_person AS pr ');
-            //$query->join('INNER','#__sportsmanagement_season_team_person_id AS o ON o.person_id = pr.id');
-            $query->from('#__sportsmanagement_season_team_person_id AS o');
-            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = o.team_id AND st.season_id = o.season_id');
-            $query->join('INNER','#__sportsmanagement_person AS pr ON o.person_id = pr.id');
-            $query->join('INNER','#__sportsmanagement_project_team AS tt ON tt.team_id = st.id');
-            $query->join('INNER','#__sportsmanagement_team AS t ON t.id = o.team_id');
-            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = tt.project_id');
-            $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
-            $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
-            $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = o.project_position_id');
-            $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
-            //$query->where('pr.id = '.self::$personid );
-            $query->where('o.person_id = '.self::$personid );
-            $query->where('pr.published = 1');
-            $query->where('o.published = 1');
-            $query->where('p.published = 1');
-            $query->where('o.persontype = 2');
-            $query->order('s.ordering '.$order.', l.ordering ASC, p.name ASC ');
-            $db->setQuery($query);
-			self::$_history = $db->loadObjectList();
-   
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+	    $query->select('pr.id AS pid,pr.firstname,pr.lastname');
+        $query->select('o.person_id,o.picture as season_picture');
+        $query->select('tt.project_id,tt.id AS ptid');
+        $query->select('t.id AS team_id,t.name AS team_name,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+        $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+        $query->select('s.name AS season_name');
+        $query->select('ppos.position_id');
+        $query->select('pos.name AS position_name,pos.id AS posID');
+        $query->from('#__sportsmanagement_season_team_person_id AS o');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = o.team_id AND st.season_id = o.season_id');
+        $query->join('INNER','#__sportsmanagement_person AS pr ON o.person_id = pr.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS tt ON tt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_team AS t ON t.id = o.team_id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = tt.project_id');
+        $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
+        $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = o.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
+        $query->where('o.person_id = '.self::$personid );
+        $query->where('pr.published = 1');
+        $query->where('o.published = 1');
+        $query->where('p.published = 1');
+        $query->where('o.persontype = 2');
+        $query->order('s.ordering '.$order.', l.ordering ASC, p.name ASC ');
+        $db->setQuery($query);
+		self::$_history = $db->loadObjectList();
+       
         if ( !self::$_history )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            
         }
         
 		return self::$_history;
@@ -162,8 +152,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

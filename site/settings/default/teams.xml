@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <form>
+<!-- reiter 1 -->
 <fieldset name= "details" 
 label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-		
+
 		<field 	name="show_sectionheader" type="extensionradiobutton" default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
@@ -21,11 +22,19 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		</field>	
 		
 </fieldset>
-
+<!-- reiter 2 -->
 <fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
 label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
+	<field 	name="show_googlemap_link" type="extensionradiobutton" default="1" 
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_LABEL_SHOW_GOOGLEMAP_LINK" 
+				description="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_DESCR_SHOW_GOOGLEMAP_LINK">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
 		<field 	name="show_small_logo" type="extensionradiobutton" default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_LABEL_SHOW_SMALL_LOGO" 
@@ -47,12 +56,10 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
         <field name="team_picture_width" type="text" default="150"
                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
         </field>
-
-<!--
-        <field name="team_picture_height" type="text" default="0"
-               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+		
+		<field name="team_logo_width" type="text" default="150"
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_LOGO_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_LOGO_WIDTH">
         </field>
--->
 
         <field type="spacer">
         </field>
@@ -75,6 +82,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PROVIDER">
 			<option value="thumbshots">thumbshots</option>
 			<option value="thumbsniper">thumbsniper</option>
+			<option value="pagepeeker">pagepeeker</option>
 		</field>
     
     <field name="internetadress_picture_thumbsniper_preview" 
@@ -87,6 +95,18 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="1">normal</option>
 		</field>
     
+<field name="pagepeeker_size" 
+    type="extensionradiobutton" 
+    default="m"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE">
+			<option value="x">eXtra large</option>
+			<option value="l">Large</option>
+	<option value="m">Medium</option>
+	<option value="s">Small</option>
+	<option value="t">Tiny</option>
+		</field>	
     
 		<field name="show_club_number" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
@@ -95,6 +115,64 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_club_phone" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_club_fax" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_club_email" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_club_facebook" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK"
+description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+<field name="show_club_twitter" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER"
+description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+	
+	<field name="show_club_playground" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_STADIUM"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_STADIUM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
+<field name="show_playground_picture" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_VENUE_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_VENUE_PICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field name="playground_picture_width" type="text" default="100"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYGROUND_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
+</field>
+	
     
     <field 	name="show_medium_logo" type="extensionradiobutton" default="1"
     class="radio btn-group btn-group-yesno"
@@ -121,7 +199,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		</field>			
 		
 	</fieldset>
-
+<!-- reiter 3 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
@@ -138,17 +216,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			
 		</field>	
 		
-<!--		
-		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
+
 					
 	</fieldset>	
 	

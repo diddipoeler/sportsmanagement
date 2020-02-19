@@ -4,17 +4,31 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage imagehandler
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\View\HtmlView;
 
-jimport('joomla.application.component.view');
-
-class sportsmanagementViewImagehandler extends JViewLegacy {
+/**
+ * sportsmanagementViewImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewImagehandler extends HtmlView {
 
     /**
      * Image selection List
@@ -22,12 +36,12 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
      * @since 0.9
      */
     function display($tpl = null) {
-        $app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
 
 
@@ -36,24 +50,20 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             return;
         }
 
-        //get vars
-        $type = JFactory::getApplication()->input->getVar('type');
+        /** get vars */
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $fieldid = JFactory::getApplication()->input->getVar('fieldid');
+        $field = Factory::getApplication()->input->getVar('field');
+        $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $search = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
-        $search = trim(JString::strtolower($search));
+        $search = trim(StringHelper::strtolower($search));
 
-        //add css
-        //$version = urlencode(sportsmanagementHelper::getVersion());
-        //$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
+        Factory::getApplication()->input->setVar('folder', $folder);
 
-        JFactory::getApplication()->input->setVar('folder', $folder);
-
-        // Do not allow cache
+        /** Do not allow cache */
         JResponse::allowCache(false);
 
-        //get images
+        /** get images */
         $images = $this->get('Images');
         $pageNav = $this->get('Pagination');
 
@@ -70,8 +80,8 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
             $this->fieldid = $fieldid;
             parent::display($tpl);
         } else {
-            //no images in the folder, redirect to uploadscreen and raise notice
-            JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
+            /** no images in the folder, redirect to uploadscreen and raise notice */
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), Log::INFO, 'jsmerror');
             $this->setLayout('upload');
             $this->form = $this->get('form');
             $this->_displayupload($tpl);
@@ -95,25 +105,25 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
      * @since 0.9
      */
     function _displayupload($tpl = null) {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 
-        //initialise variables
-        $document = JFactory::getDocument();
-        $uri = JFactory::getURI();
-        $params = JComponentHelper::getParams($option);
-        $type = JFactory::getApplication()->input->getVar('type');
+        /** initialise variables */
+        $document = Factory::getDocument();
+        $uri = Factory::getURI();
+        $params = ComponentHelper::getParams($option);
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $fieldid = JFactory::getApplication()->input->getVar('fieldid');
-        $menu = JFactory::getApplication()->input->setVar('hidemainmenu', 1);
-        //get vars
-        $task = JFactory::getApplication()->input->getVar('task');
+        $field = Factory::getApplication()->input->getVar('field');
+        $fieldid = Factory::getApplication()->input->getVar('fieldid');
+        $menu = Factory::getApplication()->input->setVar('hidemainmenu', 1);
+        /** get vars */
+        $task = Factory::getApplication()->input->getVar('task');
 
         jimport('joomla.client.helper');
-        $ftp = JClientHelper::setCredentialsFromRequest('ftp');
+        $ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
-        //assign data to template
+        /** assign data to template */
         $this->params = $params;
         $this->request_url = $uri->toString();
         $this->ftp = $ftp;

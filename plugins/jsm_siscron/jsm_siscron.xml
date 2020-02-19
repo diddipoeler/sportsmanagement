@@ -5,10 +5,10 @@
 	<creationDate>Januar 2014</creationDate>
 	<copyright>(C) 2014 diddipoeler</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>diddipoeler@arcor.det</authorEmail>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<version>1.0</version>
-	<description>PLUGIN_JSM_SIS_CRONJOB</description>
+	<description>PLUGIN_JSM_SIS_CRONJOB_XML_DESCRIPTION</description>
 	
 	<files>
         <filename plugin="jsm_siscron">jsm_siscron.php</filename>

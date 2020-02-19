@@ -1,46 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      ajax.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelAjax
@@ -51,8 +26,308 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModelLegacy
+class sportsmanagementModelAjax extends BaseDatabaseModel
 {
+
+
+
+/**
+ * sportsmanagementModelAjax::getLink()
+ * 
+ * @param string $view
+ * @param integer $project_id
+ * @param integer $round_id
+ * @param integer $division_id
+ * @return void
+ */
+public function getLink($view='',$project_id=0,$round_id=0,$division_id=0,$season_id=0)
+{
+$app = Factory::getApplication();	   
+$link = '';
+
+if ( $view )
+{
+switch ($view)
+{
+case "ranking":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = $round_id;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);		  
+break;
+
+case "results":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['r'] = $round_id;
+$routeparameter['division'] = $division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
+break;
+
+case "resultsranking":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['r'] = $round_id;
+$routeparameter['division'] = $division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
+break;
+
+case "teams":
+case "teamstree":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['division'] = $division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
+break;  
+          
+}   
+return $link;       
+}
+}
+
+
+/**
+ * sportsmanagementModelAjax::getProjectTeams()
+ * 
+ * @param mixed $project_id
+ * @return
+ */
+public function getProjectTeams($project_id)
+	{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+
+$query->select('t.id AS value,t.name AS text'); 
+// From 
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
+$query->where('pt.project_id = ' . (int)$project_id );
+$query->group('t.id,t.alias,t.name');
+        // order
+        $query->order('t.name');
+$db->setQuery($query);
+      
+		$res = $db->loadObjectList();
+
+if ($res) 
+		{
+$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Team selektieren --')));
+					$options = array_merge($options, $res);
+		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Teams -- ')));    
+        }
+
+        return $options;
+}
+
+
+/**
+ * sportsmanagementModelAjax::getProjectSelect()
+ * 
+ * @param mixed $league_id
+ * @return
+ */
+public function getProjectSelect($league_id)
+	{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        
+        $query->select('p.id AS value, p.name AS text');
+            $query->from('#__sportsmanagement_project AS p');
+            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
+            $query->where('p.published = 1');
+            $query->where('p.league_id = '. $league_id);
+            $query->order('s.name DESC, p.name ASC');
+
+		$db->setQuery($query);
+      
+		$res = $db->loadObjectList();
+		
+		if ($res) 
+		{
+$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Projekt selektieren --')));
+					$options = array_merge($options, $res);
+		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Projekte -- ')));    
+        }
+
+        return $options;		
+	}
+    
+    
+/**
+ * sportsmanagementModelAjax::getAssocLeagueSelect()
+ * 
+ * @param mixed $country_id
+ * @param mixed $associd
+ * @return
+ */
+public function getAssocLeagueSelect($country_id,$associd)
+	{		
+//$app = Factory::getApplication();
+        $this->_db = sportsmanagementHelper::getDBConnection(); 
+        $this->_query = $this->_db->getQuery(true);
+        $this->_query->clear();
+        $this->_query->select('l.id AS value, l.name AS text');
+            $this->_query->from('#__sportsmanagement_league AS l');
+            $this->_query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
+            $this->_query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            if ( $associd )
+            {
+            $this->_query->where('l.associations = ' . $associd );
+            }
+            $this->_query->where('l.country = \'' . $country_id. '\'' );
+            $this->_query->group('l.name');
+            $this->_query->order('l.name');
+
+		$this->_db->setQuery($this->_query);
+        
+		$res = $this->_db->loadObjectList();
+		if ($res) 
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Liga selektieren --')));
+		$options = array_merge($options, $res);
+		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Ligen -- ')));    
+        }
+
+		return $options;
+	}
+        
+    /**
+     * sportsmanagementModelAjax::getCountrySubSubAssocSelect()
+     * 
+     * @param mixed $subassoc_id
+     * @return
+     */
+    public function getCountrySubSubAssocSelect($subassoc_id)
+{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+
+        $query->select('s.id AS value, s.name AS text');
+$query->from('#__sportsmanagement_associations AS s');
+$query->where('s.parent_id = '.$subassoc_id);
+$query->where('s.published = 1');
+$query->order('s.name');
+                
+		$db->setQuery($query);
+       
+		$res = $db->loadObjectList();
+		if ($res) 
+        {
+		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- KreisverbÃ¤nde -- ')));
+			$options = array_merge($options, $res);
+		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine KreisverbÃ¤nde -- ')));    
+        }
+
+		return $options;
+
+}
+
+    /**
+     * sportsmanagementModelAjax::getCountrySubAssocSelect()
+     * 
+     * @param mixed $assoc_id
+     * @return
+     */
+    public function getCountrySubAssocSelect($assoc_id)
+{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        $options = '';
+        
+        $query->select('s.id AS value, s.name AS text');
+$query->from('#__sportsmanagement_associations AS s');
+$query->where('s.parent_id = '.$assoc_id);
+$query->order('s.name');
+
+		$db->setQuery($query);
+       
+		$res = $db->loadObjectList();
+        if ($res) 
+        {
+		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- LandesverbÃ¤nde -- ')));
+			$options = array_merge($options, $res);
+		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine LandesverbÃ¤nde -- ')));    
+        }
+
+		return $options;
+        }
+        
+    /**
+     * sportsmanagementModelAjax::getCountryAssocSelect()
+     * 
+     * @param mixed $country
+     * @return
+     */
+    public function getCountryAssocSelect($country)
+	{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        $options = '';
+        
+        $query->select('s.id AS value, s.name AS text');
+$query->from('#__sportsmanagement_associations AS s');
+$query->where('s.country = \''.$country.'\'');
+$query->where('s.parent_id = 0');
+$query->order('s.name');
+
+		$db->setQuery($query);
+       
+		$res = $db->loadObjectList();
+		if ($res) {
+		  $options = array(HTMLHelper::_('select.option', 0, Text::_('-- RegionalverbÃ¤nde -- ')));
+			$options = array_merge($options, $res);
+		}
+else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine RegionalverbÃ¤nde -- ')));    
+        }
+
+		return $options;
+	}
+    
+    
+    
     /**
      * sportsmanagementModelAjax::getProjectsOptions()
      * 
@@ -63,9 +338,9 @@ class sportsmanagementModelAjax extends JModelLegacy
      */
     function getProjectsOptions($season_id = 0, $league_id = 0, $ordering = 0)
     {
-        $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
-        //$option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
+        //$option = Factory::getApplication()->input->getCmd('option');
         // Select some fields
         $query = $db->getQuery(true);
         $query->select('p.id AS value, p.name AS text, s.name AS season_name, l.name AS league_name');

@@ -4,13 +4,15 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionrules
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 jimport('joomla.application.component.view');
 
 /**
@@ -33,15 +35,15 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		$model		= $this->getModel();
-    $option = JFactory::getApplication()->input->getCmd('option');
+    $option = Factory::getApplication()->input->getCmd('option');
     
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
 
 		if (isset($this->predictionGame))
 		{
@@ -54,9 +56,9 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
       $this->configavatar = $configavatar;
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 
 			$document->setTitle($pageTitle);
 
@@ -64,7 +66,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
 		}
         
 	}

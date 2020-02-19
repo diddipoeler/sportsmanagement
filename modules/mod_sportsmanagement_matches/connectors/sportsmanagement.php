@@ -4,12 +4,16 @@
  * @file      sportsmanagement.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_matches
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * MatchesSportsmanagementConnector
@@ -89,8 +93,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
      */
     static function getCountGames($projectid,$ishd_update_hour)
     {
-    $db = JFactory::getDBO();
-    $app = JFactory::getApplication();
+    $db = Factory::getDBO();
+    $app = Factory::getApplication();
     $query = $db->getQuery(true);      
     $date = time();    // aktuelles Datum     
     $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
@@ -129,11 +133,11 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	public function getMatches() 
     {
 		 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -221,8 +225,6 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         $db->setQuery($query);
         $fav = $db->loadObjectList();
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'fav <br><pre>'.print_r($fav,true).'</pre>'),'');
         
 		}
         
@@ -256,7 +258,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
-        
+        $query->select('playground.name as pg_name, playground.short_name as pg_shortname');
         // from
         $query->from('#__sportsmanagement_match AS m ');
         // join
@@ -350,6 +352,37 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         try {
         $db->setQuery($query,0,$limit);
         $matches = $db->loadObjectList();
+
+foreach ( $matches AS $key => $match )
+{	
+$match->live = 'z';
+$match->actplaying = 'z';
+$match->alreadyplayed = 'z';
+$match->upcoming = 'z';	
+$match->match_enddate = strtotime($match->match_date.' + '.$match->totaltime.' minute');
+$match->currenttimestamp = sportsmanagementHelper::getTimestamp();	
+	
+if (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate)))
+{
+$match->live = true;	
+$match->actplaying = true;	
+}
+elseif ( $match->currenttimestamp <= $match->match_enddate )
+{
+$match->upcoming = true;	
+}	
+elseif ( $match->match_timestamp <= $match->currenttimestamp )
+{
+$match->alreadyplayed = true;	
+}	
+	
+}
+		
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{		
+
+}		
+		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->formatMatches($matches);
 }
@@ -525,7 +558,7 @@ return false;
 		if ($this->params->get('show_act_report_link', 0) == 1 AND $match->show_report == 1) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['report']) . $this->itemid;
 			$row['reportlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
-			$row['reportlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array (
+			$row['reportlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array (
 				'title' => $this->params->get('show_act_report_text'),
 				'height' => '16',
 				'width' => '16'
@@ -535,7 +568,7 @@ return false;
 		if ($this->params->get('show_statistic_link', 0) == 1 && ($match->team1_result || $match->team2_result)) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['statistic']) . $this->itemid;
 			$row['statisticlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['statisticlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array (
+			$row['statisticlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array (
 				'title' => $this->params->get('statistic_link_text'),
 				'height' => '16',
 				'width' => '16'
@@ -545,7 +578,7 @@ return false;
 		if ($this->params->get('show_nextmatch_link', 0) == 1 && !($match->team1_result || $match->team2_result)) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['nextmatch']) . $this->itemid;
 			$row['nextmatchlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['nextmatchlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array (
+			$row['nextmatchlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array (
 				'title' => $this->params->get('nextmatch_link_text'),
 				'height' => '16',
 				'width' => '16'
@@ -599,18 +632,21 @@ return false;
 					$linkstructure = array (
 						'venue' => array (
 							'view' => 'playground',
-							'pgid' => $venue['id'],
-							'p' => $match->project_id
+                            'cfg_which_database' => $this->params->get('cfg_which_database'),
+                            's' => $this->params->get('s'),
+                            'p' => $match->project_id,
+							'pgid' => $venue['id']
+							
 						)
 					);
-					$venuelink = JRoute :: _('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
+					$venuelink = Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
 					$venuetext = '<a href="' . $venuelink . '" title="%s">%s</a>';					
 					$thisvenue = sprintf($venuetext, $venuetip, $venuename);
 				} else {
 					$thisvenue = sprintf($venuetext, $venuename);
 				}
 				if ($this->iconpath) {
-					$thisvenue = JHTML :: _('image', $this->iconpath . 'house.png', $venuetip, array (
+					$thisvenue = HTMLHelper::_('image', $this->iconpath . 'house.png', $venuetip, array (
 						'title' => $venuetip,
 						'height' => '16',
 						'width' => '16'
@@ -620,6 +656,12 @@ return false;
 				}
 			}
 		}
+
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{		
+	
+}
+		
 		$row['location'] = $thisvenue;
 	}
 
@@ -630,110 +672,49 @@ return false;
 	 */
 	public function getDefaultLogos() {
 		return array (
-			"club_big" 		=> sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
-			"club_middle" 	=> sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'), 
-			"club_small" 	=> sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'), 
-			"team_picture" 	=> sportsmanagementHelper::getDefaultPlaceholder('team'), 
-			"country" 		=> sportsmanagementHelper::getDefaultPlaceholder('icon'), 
+			"club_big" => sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
+			"club_middle" => sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'), 
+			"club_small" => sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'), 
+			"team_picture" => sportsmanagementHelper::getDefaultPlaceholder('team'), 
+			"country" => sportsmanagementHelper::getDefaultPlaceholder('icon'), 
 		);
 	}
 
-	/**
-	 * MatchesSportsmanagementConnector::next_last()
-	 * 
-	 * @param mixed $match
-	 * @return void
-	 */
-	public function next_last(& $match) 
-    {
-		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
-        
-        // select some fields
-        $query->select('m.id');
-        // from
-        $query->from('#__sportsmanagement_match AS m ');
-        // join
-        $query->join('LEFT','#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('LEFT','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id ');
-        $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
-        
-        $query->where("m.match_timestamp < " . $match->match_timestamp  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date DESC');
-         
-		$db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->lasthome = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("m.match_timestamp > " . $match->match_timestamp  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date ASC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->nexthome = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date DESC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->lastaway = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date ASC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->nextaway = $temp[0]->id;
-		}
-        
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-	}
-
+	
 	/**
 	 * MatchesSportsmanagementConnector::next_last2()
 	 * 
 	 * @param mixed $match
 	 * @return void
 	 */
-	public function next_last2(& $match) 
+	public function next_last(& $match,$allprojects = FALSE) 
     {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$p = $this->params->get('p');
-//		if (!empty ($p)) {
-//			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
-//		}
+	$currenttimestamp = sportsmanagementHelper::getTimestamp();	
+        $result_add_time = $this->params->get('result_add_time');
+        $period_int = $this->params->get('period_int');
+        $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
+        $datebis = strtotime($currentdate.' + '.$period_int.' '.$this->params->get('period_string') );
+        $datevon = strtotime($currentdate.' - '.$result_add_time .' '.$this->params->get('result_add_unit') );
+	
+		if ( $allprojects )
+		{
+	$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
+	$p = $this->params->get('p');
         $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
-//echo __METHOD__.' '.__LINE__.' projectstring <pre>'.print_r($projectstring,true).'</pre>';
+		}
+		else
+		{
+		$projectstring = $match->project_id;	
+		}
 		
+        $match->lasthome = 0;
+        $match->nexthome = 0;
+        $match->lastaway = 0;
+        $match->nextaway = 0;
+        
         // select some fields
         $query->select('m.id');
         // from
@@ -749,7 +730,7 @@ return false;
         
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
@@ -761,7 +742,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
@@ -773,7 +754,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
@@ -785,7 +766,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
@@ -795,7 +776,6 @@ return false;
 			$match->nextaway = $temp[0]->id;
 		}
 
-//echo __METHOD__.' '.__LINE__.' dump <pre>'.print_r($query->dump(),true).'</pre>';
 		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}

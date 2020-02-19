@@ -1,44 +1,17 @@
 <?php
-/** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.26
-* @file		administrator/components/sportsmanagement/models/divisions.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of Joomla Sports Management.
-*
-* Joomla Sports Management is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Joomla Sports Management is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Joomla Sports Management. If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von Joomla Sports Management.
-*
-* Joomla Sports Management ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* Joomla Sports Management wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      divisions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelDivisions
@@ -90,10 +63,10 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -129,13 +102,11 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-        // Create a new query object.		
 		$this->jsmquery->clear();
         $this->jsmquery->select('dv.*,dvp.name AS parent_name,u.name AS editor');
         $this->jsmquery->from('#__sportsmanagement_division AS dv');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_division AS dvp ON dvp.id = dv.parent_id');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
-
         $this->jsmquery->where(' dv.project_id = ' . self::$_project_id);
         
         if ($this->getState('filter.search') )
@@ -151,19 +122,9 @@ class sportsmanagementModelDivisions extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'dv.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-
 		return $this->jsmquery;
 	}
 
-
-
-
-	
 	/**
 	* Method to return a divisions array (id, name)
 	*
@@ -174,28 +135,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-	   //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
-        $starttime = microtime(); 
-        // Create a new query object.		
-	//	$db = sportsmanagementHelper::getDBConnection();
-	//	$query = $db->getQuery(true);
+        $starttime = microtime();
+        $this->jsmquery->clear(); 
         $this->jsmquery->select('id AS value,name AS text');
         $this->jsmquery->from('#__sportsmanagement_division');
         $this->jsmquery->where('project_id = ' . $project_id);
         $this->jsmquery->order('name ASC');
-        
 		$this->jsmdb->setQuery( $this->jsmquery );
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		if ( !$result = $this->jsmdb->loadObjectList("value") )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -213,26 +162,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-	   //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_division AS d');
-        $query->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
-        $query->where('p.id = ' . $project_id);
-                
-		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-        
-		return $db->loadResult();
+        $this->jsmquery->clear();
+        $this->jsmquery->select('count(*) AS count');
+        $this->jsmquery->from('#__sportsmanagement_division AS d');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
+        $this->jsmquery->where('p.id = ' . $project_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadResult();
 	}
 	
 }

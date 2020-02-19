@@ -21,10 +21,8 @@
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.sys.ini</language>
-        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.sys.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_top_tipper.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_top_tipper.sys.ini</language>
     </languages>
 
     <config>
@@ -37,7 +35,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Top_Tipper" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
@@ -266,6 +264,7 @@
 
                 <field
                         name="moduleclass_sfx"
+						default="container-fluid"
                         type="text"
                         label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                         description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>

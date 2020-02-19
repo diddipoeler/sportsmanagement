@@ -4,12 +4,14 @@
  * @file      deafult_rankingheading.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 $columns = explode(',', $this->config['ordered_columns']);
 $column_names = explode(',', $this->config['ordered_columns_names']);
@@ -17,7 +19,7 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 <thead>
     <tr class="sectiontableheader">
         <th class="rankheader" colspan="3">
-            <?php sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_RANKING_POSITION'), "rank", $this->config, "ASC", $this->paramconfig); ?>
+            <?php sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_RANKING_POSITION'), "rank", $this->config, "ASC", $this->paramconfig); ?>
         </th>
 
         <?php
@@ -27,7 +29,7 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
         ?>
 
         <th class="teamheader">	
-<?php sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_RANKING_TEAM'), "name", $this->config, "ASC", $this->paramconfig); ?>
+<?php sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_RANKING_TEAM'), "name", $this->config, "ASC", $this->paramconfig); ?>
         </th>
 
 <?php
@@ -40,69 +42,69 @@ foreach ($columns as $k => $column) {
     $c = "COM_SPORTSMANAGEMENT_" . $c;
 
     $toolTipTitle = $column_names[$k];
-    $toolTipText = JText::_($c);
+    $toolTipText = Text::_($c);
 
     switch (trim(strtoupper($column))) {
         case 'PLAYED':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "played", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "played", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'WINS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "won", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "won", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'TIES':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "draw", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "draw", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'LOSSES':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "loss", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "loss", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'WOT':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "wot", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "wot", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'WSO':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "wso", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "wso", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'LOT':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "lot", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "lot", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'LSO':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "lso", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "lso", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'WINPCT':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "winpct", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "winpct", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
@@ -123,28 +125,28 @@ foreach ($columns as $k => $column) {
         case 'LEGS_DIFF':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "legsdiff", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "legsdiff", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'LEGS_RATIO':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "legsratio", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "legsratio", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'SCOREFOR':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsfor", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsfor", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'SCOREAGAINST':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsagainst", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsagainst", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
@@ -158,70 +160,70 @@ foreach ($columns as $k => $column) {
         case 'RESULTS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsp", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "goalsp", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'DIFF':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "diff", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "diff", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'POINTS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "points", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "points", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'PENALTYPOINTS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "penaltypoints", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "penaltypoints", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'NEGPOINTS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "negpoints", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "negpoints", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'OLDNEGPOINTS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "negpoints", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "negpoints", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'POINTS_RATIO':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "pointsratio", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "pointsratio", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'BONUS':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "bonus", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "bonus", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'START':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "start", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "start", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
         case 'QUOT':
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "quot", $this->config, JFactory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
+            sportsmanagementHelperHtml::printColumnHeadingSort($column_names[$k], "quot", $this->config, Factory::getApplication()->input->getVar('dir', ''), $this->paramconfig);
             echo '</span></th>';
             break;
 
@@ -270,7 +272,7 @@ foreach ($columns as $k => $column) {
         default:
             echo '<th class="headers">';
             echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-            echo JText::_($column);
+            echo Text::_($column);
             echo '</span></th>';
             break;
     }

@@ -1,44 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      seasons.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage seasons
+ */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelSeasons
@@ -63,14 +37,12 @@ class sportsmanagementModelSeasons extends JSMModelList
     public function __construct($config = array())
         {   
         // Reference global application object
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
                 
                 $layout = $this->jinput->getVar('layout');
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
-                
+               
                 switch ($layout)
         {
             case 'assignteams':
@@ -113,13 +85,13 @@ class sportsmanagementModelSeasons extends JSMModelList
 		
         $layout = $this->jsmjinput->getVar('layout');
         // Initialise variables.
-		//$app = JFactory::getApplication('administrator');
+		//$app = Factory::getApplication('administrator');
         $order = '';
         
-        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 
 		// Load the filter state.
@@ -234,30 +206,12 @@ class sportsmanagementModelSeasons extends JSMModelList
 		    }
             break;
         }
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.ordering<br><pre>'.print_r($this->getState('list.ordering', $this->_order),true).'</pre>'),'Notice');
-        
+       
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', $this->_order)).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
- 
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
- 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 
         return $this->jsmquery;
 	}
-	
-  
-  
-
-
 
 	/**
 	 * sportsmanagementModelSeasons::getSeasonTeams()
@@ -268,9 +222,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	public function getSeasonTeams($season_id=0)
     {
     $this->jsmquery->clear();
-        // Select some fields
 		    $this->jsmquery->select('t.id as value, t.name as text');
-        // From the seasons table
 		    $this->jsmquery->from('#__sportsmanagement_team as t');
         $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $this->jsmquery->where('st.season_id = '.$season_id);
@@ -281,24 +233,57 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         } 
     }
         
 	/**
-     * Method to return a seasons array (id,name)
-     *
-     * @access	public
-     * @return	array seasons
-     * @since	1.5.0a
+	 * sportsmanagementModelSeasons::getSeasonName()
+	 * 
+	 * @param integer $season_id
+	 * @return void
+	 */
+	function getSeasonName($season_id=0)
+    {
+    $this->jsmquery->clear();    
+    $this->jsmquery->select('name');    
+    $this->jsmquery->from('#__sportsmanagement_season');
+    $this->jsmquery->where('id = '.$season_id);
+    try{
+        $this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadResult();
+        return $result;   
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return false;
+        }    
+    }
+        
+    /**
+     * sportsmanagementModelSeasons::getSeasons()
+     * 
+     * @param bool $selectoptions
+     * @return
      */
-    function getSeasons()
+    function getSeasons($selectoptions = false)
     {
         $this->jsmquery->clear();
+        
+        if ( $selectoptions )
+        {
+        $this->jsmquery->select(array('id as value', 'name as text'))
+        ->from('#__sportsmanagement_season')
+        ->order('name DESC');    
+        }
+        else
+        {
         $this->jsmquery->select(array('id', 'name'))
         ->from('#__sportsmanagement_season')
         ->order('name DESC');
+        }
 
         try{
         $this->jsmdb->setQuery($this->jsmquery);
@@ -306,13 +291,20 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
         foreach ($result as $season)
         {
-            $season->name = JText::_($season->name);
+            if ( $selectoptions )
+        {
+            $season->text = Text::_($season->text);
+            }
+            else
+            {
+            $season->name = Text::_($season->name);
+            }
         }
         return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
     }

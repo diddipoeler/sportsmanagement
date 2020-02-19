@@ -4,13 +4,15 @@
  * @file      teampersons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teampersons
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelTeamPersons
@@ -64,10 +66,10 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	 */
 	protected function populateState($ordering = 'ppl.lastname', $direction = 'asc')
 	{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 
 		// Load the filter state.
@@ -77,27 +79,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         
-        if ( JFactory::getApplication()->input->getVar('team_id') )
+        if ( Factory::getApplication()->input->getVar('team_id') )
         {
-        $this->setState('filter.team_id', JFactory::getApplication()->input->getVar('team_id') );    
+        $this->setState('filter.team_id', Factory::getApplication()->input->getVar('team_id') );    
         }
         else
         {
 		$this->setState('filter.team_id', $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' ) );
         }
         
-        if ( JFactory::getApplication()->input->getVar('persontype') )
+        if ( Factory::getApplication()->input->getVar('persontype') )
         {
-        $this->setState('filter.persontype', JFactory::getApplication()->input->getVar('persontype') );    
+        $this->setState('filter.persontype', Factory::getApplication()->input->getVar('persontype') );    
         }
         else
         {
         $this->setState('filter.persontype', $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' ) );
         }
         
-        if ( JFactory::getApplication()->input->getVar('project_team_id') )
+        if ( Factory::getApplication()->input->getVar('project_team_id') )
         {
-        $this->setState('filter.project_team_id', JFactory::getApplication()->input->getVar('project_team_id') );    
+        $this->setState('filter.project_team_id', Factory::getApplication()->input->getVar('project_team_id') );    
         }
         else
         {
@@ -141,32 +143,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.		
-		$this->jsmquery->clear();
+	// Create a new query object.		
+	$this->jsmquery->clear();
 		        
-        $this->_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
             
         $this->jsmquery->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
-		$this->jsmquery->select('ppl.position_id as person_position_id');
+	$this->jsmquery->select('ppl.position_id as person_position_id');
         $this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
-		$this->jsmquery->select('u.name AS editor');
+	$this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
-        //$this->jsmquery->select('ppos.id as project_position_id');
+        $this->jsmquery->select('ppl.country');
 
         $this->jsmquery->from('#__sportsmanagement_person AS ppl');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        //$this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
-        //$this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         $this->jsmquery->join('LEFT','#__users AS u ON u.id = tp.checked_out');
-
         $this->jsmquery->where('ppl.published = 1');
         $this->jsmquery->where('st.team_id = '.$this->getState('filter.team_id') );
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.persontype = '.$this->getState('filter.persontype') );
-        //$this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
-        //$this->jsmquery->where('ppp.project_id = '.$this->_project_id );
         
 	$this->jsmsubquery1->clear();
         $this->jsmsubquery1->select('ppos.id');
@@ -176,8 +173,14 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id );
         $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype') );
 	$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
-
 		
+	$this->jsmsubquery2->clear();
+        $this->jsmsubquery2->select('ppp.published');
+        $this->jsmsubquery2->from('#__sportsmanagement_person_project_position AS ppp');
+        $this->jsmsubquery2->where('ppp.person_id = ppl.id');
+        $this->jsmsubquery2->where('ppp.project_id = '.$this->_project_id );
+        $this->jsmsubquery2->where('ppp.persontype = '.$this->getState('filter.persontype') );
+	$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS project_published');
 		
         if (is_numeric($this->getState('filter.state')) )
 		{
@@ -193,20 +196,6 @@ class sportsmanagementModelTeamPersons extends JSMModelList
             
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-                
-             
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-        $my_text = 'dump<pre>'.print_r($this->jsmquery->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
        
         return $this->jsmquery;
 	}
@@ -220,7 +209,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
     function PersonProjectPosition($project_id,$_persontype)
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -261,7 +250,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
     function checkProjectPositions($project_id,$persontype,$team_id,$season_id,$insert=1)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -269,8 +258,8 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		//$db	= sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        $date = JFactory::getDate();
-	    $user = JFactory::getUser();
+        $date = Factory::getDate();
+	    $user = Factory::getUser();
         $modified = $date->toSql();
 	    $modified_by = $user->get('id');
        
@@ -306,14 +295,18 @@ catch (Exception $e) {
         $query->where('stp.season_id = '.$season_id);
         $query->where('stp.persontype = '.$persontype);
         $query->where('ppos.project_id = '.$project_id);
-        $db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+try { 
+	$db->setQuery($query);
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+        }
+catch (Exception $e) {
+    // catch any database errors.
+	$result = false;
+
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+       
         if ( $result )
         {
             foreach( $result as $row )
@@ -343,20 +336,14 @@ catch (Exception $e) {
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
-                
+               
                 if ( $insert )
                 {
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
                 {
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
-                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
                 }
                 else
                 {
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 }
                 }
                 
@@ -383,20 +370,17 @@ catch (Exception $e) {
 	function getProjectTeamplayers($team_id = 0,$season_id = 0)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
-		
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id -> '.$project_team_id.'<br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id -> '.$season_id.'<br>','Notice');
-        
+		$user	= Factory::getUser(); 
+       
         // Select some fields
-		$query->select('ppl.*');
+	$query->select('ppl.*');
         // From table
         $query->from('#__sportsmanagement_person AS ppl');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
@@ -404,66 +388,22 @@ catch (Exception $e) {
         $query->where('st.team_id IN ('.$team_id.')');
         $query->where('st.season_id = '.$season_id);
         $query->where('tp.team_id = '.$season_id);
-        
+        try {
         $db->setQuery($query);
-        //$db->query();
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
+         }
+catch (Exception $e) {
+    // catch any database errors.
+	$result = false;
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
                 
-		if (!$result)
-		{
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
-			return false;
-		}
+		
 		return $result;
     }
 	
-	/**
-	 * remove specified players from team
-	 * @param $cids player ids
-	 * @return int count of removed
-	 */
-	function remove($cids)
-	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $post = $jinput->post->getArray(array());
-        $option = $jinput->getCmd('option');
-        
-        $project_team_id = $post['project_team_id'];
-        $team_id = $post['team_id'];
-        $pid = $post['pid'];
-        $persontype = $post['persontype'];
-        
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-        
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' cids<br><pre>'.print_r($cids, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        /*
-        $count = 0;
-		foreach($cids as $cid)
-		{
-			$object=&$this->getTable('teamplayer');
-			if ($object->canDelete($cid) && $object->delete($cid))
-			{
-				$count++;
-			}
-			else
-			{
-				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
-			}
-		}
-		return $count;
-        */
-	}
+
 
 }
 ?>

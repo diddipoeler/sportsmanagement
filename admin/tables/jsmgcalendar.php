@@ -1,10 +1,21 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      jsmgcalendar.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage tables
+ */
 
-
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Crypt\Crypt;
 
 JLoader::import('joomla.database.table');
-JLoader::import('joomla.utilities.simplecrypt');
+
 
 /**
  * sportsmanagementTablejsmGCalendar
@@ -40,7 +51,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			// Convert the params field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
 			$array['params'] = (string)$parameter;
 		}
@@ -60,7 +71,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 		$result = parent::load($keys, $reset);
 
 		if(isset($this->password) && !empty($this->password)){
-			$cryptor = new JSimpleCrypt();
+			$cryptor = new Crypt();
 			$this->password = $cryptor->decrypt($this->password);
 		}
 
@@ -77,7 +88,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 	{
 		$oldPassword = $this->password;
 		if(!empty($oldPassword)){
-			$cryptor = new JSimpleCrypt();
+			$cryptor = new Crypt();
 			$this->password = $cryptor->encrypt($oldPassword);
 		}
 		$result = parent::store($updateNulls);

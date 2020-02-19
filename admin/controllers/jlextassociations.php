@@ -4,16 +4,13 @@
  * @file      jlextassociations.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementControllerjlextassociations
@@ -24,8 +21,22 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextassociations extends JControllerAdmin
+class sportsmanagementControllerjlextassociations extends JSMControllerAdmin
 {
+
+/**
+ * sportsmanagementControllerjlextassociations::import()
+ * 
+ * @return void
+ */
+function import()
+{
+       $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+       $model = $this->getModel();
+       $msg = $databasetool->checkAssociations();
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=jlextassociations',$msg);
+    
+}  
   
 	/**
 	 * Proxy for getModel.

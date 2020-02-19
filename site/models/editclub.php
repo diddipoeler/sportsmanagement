@@ -1,54 +1,22 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      editclub.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage editclub
+ */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//jimport('joomla.application.component.model');
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
-//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'jltoolbar.php');
-
-// Include dependancy of the main model form
-jimport('joomla.application.component.modelform');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelEditClub
@@ -59,10 +27,10 @@ jimport('joomla.application.component.modelform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelEditClub extends JModelForm
+class sportsmanagementModelEditClub extends AdminModel
 {
 	
-  /* interfaces */
+  /** interfaces */
 	var $latitude	= null;
 	var $longitude	= null;
 	var $projectid = 0;
@@ -76,23 +44,67 @@ class sportsmanagementModelEditClub extends JModelForm
    */
   function __construct()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		parent::__construct();
-
-		$this->projectid = JFactory::getApplication()->input->getInt( 'p', 0 );
-		$this->clubid = JFactory::getApplication()->input->getInt( 'cid', 0 );
+		$this->projectid = Factory::getApplication()->input->getInt( 'p', 0 );
+		$this->clubid = Factory::getApplication()->input->getInt( 'cid', 0 );
         $this->name = 'club';
         
 	}
-    
+
+/**
+	 * Returns a Table object, always creating it
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	Table	A database object
+	 * @since	1.6
+	 */
+	public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = array())
+	{
+		return Table::getInstance($type, $prefix, $config);
+	}
+        
+/**
+ * sportsmanagementModelEditClub::updItem()
+ * 
+ * @param mixed $data
+ * @return void
+ */
+function updItem($data)
+    {
+        $app = Factory::getApplication();
+        foreach( $data['request'] as $key => $value)
+        {
+            $data[$key] = $value;
+        }
+        
+ try{        
+        /** Specify which columns are to be ignored. This can be a string or an array. */
+        $ignore = '';
+        /** Get the table object from the model. */
+        $table = $this->getTable( 'club' );
+        /** Bind the array to the table object. */
+        $table->bind( $data, $ignore );
+        $table->store();
+        }
+catch (Exception $e)
+{
+Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
+Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+    //$result = false;
+}
+        //return $result;
+        }
+        
   /**
-   * sportsmanagementModelEditClub::getClub()
+   * sportsmanagementModelEditClub::getData()
    * 
    * @return
    */
-  function getClub()
+  function getData()
 	{
-	   $app = JFactory::getApplication();
 		if ( is_null( $this->club  ) )
 		{
 			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
@@ -102,22 +114,26 @@ class sportsmanagementModelEditClub extends JModelForm
 	}  
 
 
-/**
-         * Get the data for a new qualification
+
+        /**
+         * sportsmanagementModelEditClub::getForm()
+         * 
+         * @param mixed $data
+         * @param bool $loadData
+         * @return
          */
         public function getForm($data = array(), $loadData = true)
         {
-            $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
+            $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $show_team_community = ComponentHelper::getParams($option)->get('show_team_community',0);
  
-        $app = JFactory::getApplication('site');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
+        $app = Factory::getApplication('site');
  
-        // Get the form.
-        JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
-        JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
+        /** Get the form. */
+        Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
+        Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
@@ -130,23 +146,23 @@ class sportsmanagementModelEditClub extends JModelForm
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
         
-        $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($option)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_middle', 'default', JComponentHelper::getParams($option)->get('ph_logo_medium',''));
+        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($option)->get('ph_logo_medium',''));
         $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
         $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_big', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
+        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($option)->get('ph_logo_big',''));
         $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
         $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($option)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot_home');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($option)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         
@@ -162,12 +178,12 @@ class sportsmanagementModelEditClub extends JModelForm
 	 */
 	protected function loadFormData()
 	{
-	   $app = JFactory::getApplication();
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
+	   $app = Factory::getApplication();
+		/**  Check the session for previously entered form data. */
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
-			$data = $this->getClub();
+			$data = $this->getData();
 		}
 		return $data;
 	}		

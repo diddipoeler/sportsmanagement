@@ -4,14 +4,16 @@
  * @file      default_rankingrows.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage rankingalltime
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 $current  = &$this->current;
 $previous = &$this->previousRanking[$this->division];
@@ -154,13 +156,13 @@ foreach( $current as $ptid => $team )
             switch ($pic)
             {
                 case 'logo_small';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 case 'logo_middle';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 case 'logo_big';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 
             }
@@ -180,7 +182,7 @@ foreach( $current as $ptid => $team )
 	$isFavTeam = in_array( $team->team->id, explode(",",$this->project->fav_team) );
 	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
-	echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
+	echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam, NULL, $this->cfg_which_database );
 	echo ' ('.$team->team->unique_id.')';
 	echo '</td>';
 	echo "\n";
@@ -212,7 +214,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 1;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 1);
-					echo JHTML::link($teamplan_link, $team->cnt_won);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
 				}
 				else
 				{
@@ -233,7 +235,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 2;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 2);
-					echo JHTML::link($teamplan_link, $team->cnt_draw);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
 				}
 				else
 				{
@@ -254,7 +256,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 3;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 3);
-					echo JHTML::link($teamplan_link, $team->cnt_lost);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
 				}
 				else
 				{
@@ -492,7 +494,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if ((($team->team->start_points)!=0) AND (( $config['show_manipulations'])==1))
 				{
-					$toolTipTitle	= JText::_('COM_JOOMLEAGUE_START');
+					$toolTipTitle	= Text::_('COM_SPORTSMANAGEMENT_START');
 					$toolTipText	= $team->team->reason;
 					echo '<span class="hasTip" title="'.$toolTipTitle.' :: '.$toolTipText.'">'. printf( $format, $team->team->start_points ). '</span>';
 				}
@@ -605,8 +607,8 @@ foreach( $current as $ptid => $team )
 							break;
 					}
 
-					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
-					echo JHTML::link($url, $img, $attr);
+					$url = Route::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
+					echo HTMLHelper::link($url, $img, $attr);
 				}
 				echo '</td>';
 				echo "\n";

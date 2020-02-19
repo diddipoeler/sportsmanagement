@@ -23,8 +23,6 @@
 	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_gcalendar.sys.ini</language>
 	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_gcalendar.ini</language>
 	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_gcalendar.sys.ini</language>
-	<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_gcalendar.ini</language>
-	<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_gcalendar.sys.ini</language>
 	</languages>
 	
 	
@@ -61,6 +59,7 @@
 				<field name="@spacer" type="spacer" default="" label=""
 					description="" />
 				<field name="moduleclass_sfx" type="text"
+				default="container-fluid"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			</fieldset>
 		</fields>

@@ -1,4 +1,16 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      xml_parser.php
+ * @author    
+ * @copyright 
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
+ 
+defined('_JEXEC') or die('Restricted access');
+
 /*
  * xml_parser.php
  *
@@ -162,7 +174,7 @@ class xml_parser_handler_class
 	<package>net.manuellemos.xmlparser</package>
 
 	<version>@(#) $Id: xml_parser.php,v 1.35 2012/09/22 06:01:56 mlemos Exp $</version>
-	<copyright>Copyright � (C) Manuel Lemos 1999-2012</copyright>
+	<copyright>Copyright © (C) Manuel Lemos 1999-2012</copyright>
 	<title>XML document parser</title>
 	<author>Manuel Lemos</author>
 	<authoraddress>mlemos@acm.org</authoraddress>

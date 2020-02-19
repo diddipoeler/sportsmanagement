@@ -4,27 +4,25 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojects
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.framework');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.framework');
+HTMLHelper::_('behavior.modal');
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
-} else {
-    $uri = JFactory::getURI();
-}
 ?>
 <script language="javascript" type="text/javascript">
 function tableOrdering( order, dir, task )
@@ -36,48 +34,38 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 </script>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
-	<fieldset class="filters">
-	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
-	<div class="filter-search">
+<div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
+<fieldset class="filters">
+<legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
+<div class="filter-search">
 
-<!--label class="filter_search-lbl" for="filter_search"><!--?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
-		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
+<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
-		<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
-		<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-		<!--button type="submit" class="button"><!--?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button-->
-		
-        <!--button class="button" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<!--?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
-					?>
-				</button-->
-        <?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
-        <?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?>
-        <?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?>
+<button type="submit" class="btn" title=""><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
+<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
+
+<?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
+<?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?>
+<?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?>
         
-	</div>
-
+</div>
 	
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />
         
-    <div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
         
-	</fieldset>
+</fieldset>
 
-	<?php echo $this->loadTemplate('items'); 
-    echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-    ?>
+<?php 
+echo $this->loadTemplate('items'); 
+echo $this->loadTemplate('jsminfo');
+?>
 </form>
 </div>
 

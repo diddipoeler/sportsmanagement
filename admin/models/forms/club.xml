@@ -111,6 +111,7 @@
 
         <field
             name="latitude"
+	       default="0.00000000"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
@@ -119,6 +120,7 @@
         
         <field
             name="longitude"
+	       default="0.00000000"
             type="text"
             label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
             description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
@@ -315,56 +317,17 @@
         label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
         description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
     >
-        <field
-            name="logo_small"
-            type="media"
-            default=""				
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_small"
-            directory=""
-        />	
-				
-        <field
-            name="cr_logo_small"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
-            class="inputbox"
-        />  
-			
-        <field
-            name="logo_middle"
-            type="media"
-            default="" 
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_medium"
-            directory=""
-        />	
-      
-        <field
-            name="cr_logo_middle"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
-            class="inputbox"
-        />
-        			
-        <field
+	    <field
             name="logo_big"
             type="media"
-            default=""
+            default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
             class="inputbox"
             preview="show"
             targetfolder="clubs_large"
-            directory=""
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/large"
         />				
 		  
         <field
@@ -374,29 +337,71 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
             class="inputbox"
         />
+	  <field
+            name="logo_middle"
+            type="media"
+            default="images/com_sportsmanagement/database/clubs/medium/placeholder_wappen_50.png" 
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_medium"
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/medium"
+        />	
+      
+        <field
+            name="cr_logo_middle"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
+            class="inputbox"
+        />   
+        <field
+            name="logo_small"
+            type="media"
+            default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.png"				
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_small"
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/small"
+        />	
+				
+        <field
+            name="cr_logo_small"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
+            class="inputbox"
+        />  
        
         <field
             name="trikot_home"
             type="media"
-            default="" 
+            default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" 
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
             class="inputbox"
             preview="show"
             targetfolder="clubs_trikot_home"
-            directory=""
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/trikot_home"
         />		
         		
         <field
             name="trikot_away"
             type="media"
-            default=""
+            default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif"
             label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"
             class="inputbox"
             preview="show"
             targetfolder="clubs_trikot_away"
-            directory=""
+			showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/trikot_away"
         />	
         
     </fieldset>	
@@ -417,4 +422,34 @@
   
     </fieldset>
 
+<fieldset 
+        name="special_fields"
+        label="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS"
+        description="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS_DESC"
+    >
+<field 
+            name="use_jl" 
+            type="extensionradiobutton" 
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+	
+<field 
+            name="use_jsm" 
+            type="extensionradiobutton" 
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>	
+    </fieldset>	
+	
+	
+	
 </form>

@@ -4,11 +4,15 @@
  * @file      default_played_matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage playground
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 ?>
 
 <?php
@@ -17,8 +21,8 @@ if ( $this->playedgames )
 {
 	?>
 	<!-- Playground played games -->
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
-		<div class="row-fluid">
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_played_matches">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
 						//sort games by dates
@@ -38,7 +42,7 @@ if ( $this->playedgames )
 							<tr>
 								<td align="left" colspan="<?php echo $colspan; ?>" class="">
 									<?php
-									echo JHtml::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+									echo HTMLHelper::date($date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>
 								</td>
 							</tr>
@@ -64,7 +68,7 @@ if ( $this->playedgames )
 										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
 										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
-										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml( $home_logo[0], 1 );
+										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml($home_logo[0],1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal']  );
 										$teamA .= '</td>';
 										echo $teamA;
 									}
@@ -82,7 +86,7 @@ if ( $this->playedgames )
 									<?php
 									if ( $this->config['show_logo'] ) {
 										$teamB = '<td align="right" valign="top" class="nowrap">';
-										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml( $away_logo[0], 1 );
+										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml($away_logo[0],1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal']  );
 										$teamB .= '</td>';
 										echo $teamB;
 									}

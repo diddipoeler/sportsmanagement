@@ -1,18 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      predictionuser.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionuser
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
 
 // Include dependancy of the main model form
 jimport('joomla.application.component.modelform');
@@ -20,8 +18,6 @@ jimport('joomla.application.component.modelform');
 jimport('joomla.application.component.modelitem');
 // Include dependancy of the dispatcher
 jimport('joomla.event.dispatcher');
-
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'predictionusers.php' );
 
 /**
  * sportsmanagementModelPredictionUser
@@ -36,7 +32,8 @@ class sportsmanagementModelPredictionUser extends JModelForm
 {
   var $predictionGameID = 0;
 	var $predictionMemberID = 0;
-	
+	var $edit_modus = 0;
+  var $cfg_which_database = 0;
 	/**
 	 * sportsmanagementModelPredictionUser::__construct()
 	 * 
@@ -45,18 +42,18 @@ class sportsmanagementModelPredictionUser extends JModelForm
 	function __construct()
 	{
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
         $prediction = new sportsmanagementModelPrediction();  
-      
+      $this->edit_modus = $jinput->getInt('edit_modus',0);
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
        sportsmanagementModelPrediction::$to = $jinput->getVar('to',$jinput->getVar('r','0'));
-       
+       $this->cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
         sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id','0');
         
         sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid',0);
@@ -70,14 +67,34 @@ class sportsmanagementModelPredictionUser extends JModelForm
         
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'');
-        
+       
+      if ( $this->edit_modus && !$jinput->getInt('uid',0) )
+      {
+      $user = Factory::getUser();
+        sportsmanagementModelPrediction::$joomlaUserID = $user->id;
+        $predictionMemberID = $this->getpredictionmemberid($user->id,$jinput->getVar('prediction_id','0')); 
+        $redirect = JSMPredictionHelperRoute::getPredictionMemberRoute((int)sportsmanagementModelPrediction::$predictionGameID,$predictionMemberID,'edit',sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$pggroup,$roundID,$this->cfg_which_database);
+        Factory::getApplication()->redirect($redirect);
+      }
 		parent::__construct();
 	}
 
 
-
+function getpredictionmemberid($user_id=0,$prediction_id=0) 
+{
+$db = Factory::getDbo();
+$query = $db->getQuery(true);  
+$query->select('pm.id');  
+$query->from('#__sportsmanagement_prediction_member AS pm');
+$query->where('pm.prediction_id = '.(int)$prediction_id);  
+$query->where('pm.user_id = '.$user_id);  
+$db->setQuery($query,0,1);  
+$result = $db->loadResult();  
+ 
+return $result;  
+}  
+  
+  
   
   /**
 	 * Method to get the record form.
@@ -89,7 +106,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
     // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );

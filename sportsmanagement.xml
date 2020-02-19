@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
- 
 	<name>COM_SPORTSMANAGEMENT</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
 	<creationDate>2013-04-01</creationDate>
@@ -8,9 +7,9 @@
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<copyright>Copyright Info</copyright>
-	<license>License Info</license>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.63</version>
+	<version>3.3.00</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -62,8 +61,6 @@
 	<languages folder="site">
 		<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
 	</languages>
 
 	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
@@ -147,6 +144,7 @@
 			<folder>sisdata</folder>
 			<folder>modules</folder>
 			<folder>libraries</folder>
+			<folder>layouts</folder>
 		</files>
  
 		<languages folder="admin">
@@ -154,10 +152,6 @@
 			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.sys.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
-			<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.ini</language>
-			<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.sys.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.sys.ini</language>
 			</languages>
 		
 	</administration>
@@ -184,7 +178,7 @@
 <module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
-
+<module module="mod_sportsmanagement_eventsranking" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_act_season" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
@@ -199,26 +193,27 @@
 <module module="mod_sportsmanagement_calendar" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_trainingsdata" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_teamstatistics_counter" client="site"  position="" published=""/>
 </modules>
 
 <plugins>
-<plugin plugin="jqueryeasy" group="system" />	
-<plugin plugin="jw_ts" group="content" />
-<plugin plugin="jcemediabox" group="system" />
-<plugin plugin="jsm_siscron" group="system" />	
-<plugin plugin="jsm_bootstrap" group="system" />
-<plugin plugin="jsm_ishupdate" group="system" />
+<plugin plugin="jsm_jcomments" group="content" />
 <plugin plugin="jsm_search" group="search" />
 <plugin plugin="jsm_userprofile" group="user" />		
+<plugin plugin="jsm_bootstrap" group="system" />
+<plugin plugin="jsm_ishupdate" group="system" />
+<plugin plugin="jcemediabox" group="system" />
+<plugin plugin="jsm_siscron" group="system" />	
 </plugins>
 
 <plugins3>
-<plugin plugin="jqueryeasy" group="system" />	
+<plugin plugin="jsm_jcomments" group="content" />
 <plugin plugin="jsm_search" group="search" />
 <plugin plugin="jsm_userprofile" group="user" />
 <plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_ishupdate" group="system" />
 <plugin plugin="jcemediabox" group="system" />
+<plugin plugin="jsm_siscron" group="system" />	
 </plugins3>
      
 </extension>

@@ -2,7 +2,9 @@
 <form>
   <fields name="jsmprofile">
     <fieldset name="jsmprofile"
-      label="PLG_USER_JSMPROFILE_SLIDER_LABEL">
+      label="PLG_USER_JSMPROFILE_SLIDER_LABEL"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"      
+	      >
       <field
         name="databaseaccess"
         type="radio" 
@@ -31,7 +33,7 @@
 					class="text"
 				/>
 
-<field name="serialnumber" type="text" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_DESC" size="25" />
+<field name="serialnumber" type="serialnumber" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_DESC" size="25" />
 <field name="access_from" type="calendar" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS_FROM" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_FROM_DESC" format="%d-%m-%Y" />
 <field name="access_to" type="calendar" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS_TO" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_TO_DESC" format="%d-%m-%Y" />
 	    

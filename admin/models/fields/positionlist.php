@@ -4,20 +4,21 @@
  * @file      positionlist.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
-
+FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldpositionlist
+ * FormFieldpositionlist
  * 
  * @package   
  * @author 
@@ -25,7 +26,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldpositionlist extends JFormFieldList
+class JFormFieldpositionlist extends \JFormFieldList
 {
     
 	/**
@@ -44,15 +45,15 @@ class JFormFieldpositionlist extends JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
-    $db = JFactory::getDbo();
+		$select_id = Factory::getApplication()->input->getVar('id');
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');
@@ -74,7 +75,7 @@ catch (Exception $e) {
             
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

@@ -4,13 +4,16 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage extrafields
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewextrafields
@@ -31,15 +34,8 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        $starttime = microtime(); 
-       
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-       
-        $table = JTable::getInstance('club', 'sportsmanagementTable');
-		$this->table	= $table;
+              
+        $this->table = Table::getInstance('club', 'sportsmanagementTable');
 		
 	}
 	
@@ -51,11 +47,11 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
-		JToolbarHelper::addNew('extrafield.add');
-		JToolbarHelper::editList('extrafield.edit');
-		JToolbarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
+		ToolbarHelper::addNew('extrafield.add');
+		ToolbarHelper::editList('extrafield.edit');
+		ToolbarHelper::custom('extrafield.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('extrafield.export',Text::_('JTOOLBAR_EXPORT'));
 	
         parent::addToolbar();
 	}

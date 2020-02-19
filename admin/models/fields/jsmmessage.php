@@ -1,16 +1,31 @@
 <?php
-/**
- * @copyright	Copyright (C) 2011 Simplify Your Web, Inc. All rights reserved.
- * @license		GNU General Public License version 3 or later; see LICENSE.txt
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      jsmmessage.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
 
-// no direct access
-defined('_JEXEC') or die ;
 
+defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.formfield');
 jimport('joomla.version');
 
-class JFormFieldJSMMessage extends JFormField {
+/**
+ * FormFieldJSMMessage
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JFormFieldJSMMessage extends FormField {
 		
 	public $type = 'JSMMessage';
 
@@ -51,9 +66,6 @@ class JFormFieldJSMMessage extends JFormField {
 		
 		$html = '';
 		
-		//$lang = JFactory::getLanguage();
-		//$lang->load('lib_syw.sys', JPATH_SITE);
-			
 		$version = new JVersion();
 		$jversion = explode('.', $version->getShortVersion());
 		
@@ -61,7 +73,7 @@ class JFormFieldJSMMessage extends JFormField {
 		$message_type = trim($this->element['style']);
 		$message_label = '';
 		if ($this->element['label']) {
-			$message_label = JText::_(trim($this->element['label']));	
+			$message_label = Text::_(trim($this->element['label']));	
 		}
 			
 		if ($message_type == 'example') {
@@ -78,7 +90,7 @@ class JFormFieldJSMMessage extends JFormField {
 				}
 			}
 			if ($message) {
-				$html .= JText::_($message);
+				$html .= Text::_($message);
 			}
 			$html .= '</span>';
 			if (intval($jversion[0]) < 3) {
@@ -139,7 +151,7 @@ class JFormFieldJSMMessage extends JFormField {
 			}
 			$html .= '<span>';
 			if ($message) {
-				$html .= JText::_($message);
+				$html .= Text::_($message);
 			}
 			$html .= '</span>';
 			$html .= '</div>';

@@ -4,16 +4,15 @@
  * @file      deafult_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<!-- <div style="direction: <?php echo $rssrtl ? 'rtl' : 'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' : 'left'; ?>"> -->
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="row" id="rssfeed">
     <?php
     $rssitems_colums = $this->overallconfig['rssitems_colums'];
 

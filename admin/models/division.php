@@ -1,47 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-// No direct access to this file
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      division.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage division
+ */
+
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeldivision
@@ -55,6 +27,95 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModeldivision extends JSMModelAdmin
 {
 
+/**
+ * sportsmanagementModeldivision::divisiontoproject()
+ * 
+ * @return void
+ */
+function divisiontoproject()
+{
+$post = $this->jsmjinput->post->getArray(array());    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+
+$divisions = $post['cid'];
+$project_id = $post['pid'];
+
+$this->jsmquery->clear();
+$this->jsmquery->select('s.name');
+$this->jsmquery->from('#__sportsmanagement_season AS s');
+$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.season_id = s.id');
+$this->jsmquery->where('p.id = ' . $project_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$reaulseasonname = $this->jsmdb->loadResult();
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' reaulseasonname -> <pre>'.print_r($reaulseasonname,true).'</pre>'),'');
+
+foreach ($divisions as $key => $value ) {
+$this->jsmquery->clear();
+$this->jsmquery->select('dv.name');
+$this->jsmquery->from('#__sportsmanagement_division AS dv');
+$this->jsmquery->where('dv.project_id = ' . $project_id);
+$this->jsmquery->where('dv.id = ' . $value);
+$this->jsmdb->setQuery( $this->jsmquery );
+$resultdvname = $this->jsmdb->loadResult();
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
+
+//$orig_table = $this->getTable('project');
+$orig_table = clone $this->getTable('project');  
+$orig_table->load((int) $project_id);
+$orig_table->id = NULL;
+$orig_table->name = $resultdvname.' '.$reaulseasonname;
+$orig_table->alias = OutputFilter::stringURLSafe( $orig_table->name );
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' orig_table -> <pre>'.print_r($orig_table,true).'</pre>'),'');
+$new_project_id = 0;
+try {
+$result = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
+$new_project_id = $this->jsmdb->insertid();
+
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                            
+
+if ( $new_project_id )
+{
+$this->jsmquery->clear();    
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_id') . ' = ' . $new_project_id
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('id') . ' = '.$value, 
+    $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+try{
+$resultupdate1 = $this->jsmdb->execute();
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                       
+$this->jsmquery->clear();
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('division_id') . ' = '.$value,
+    $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+try{
+$resultupdate2 = $this->jsmdb->execute();
+} catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
+}                       
+    
+}
+
+}
+    
+}
 
 /**
  * sportsmanagementModeldivision::count_teams_division()
@@ -64,6 +125,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
  */
 function count_teams_division($division_id = 0)
 {
+$results = array();    
 $division_teams = array();
 try {	
 $this->jsmquery->clear();
@@ -77,14 +139,14 @@ $results = $this->jsmdb->loadObjectList('projectteam1_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $results = array();
 }
 	
-foreach ( $results as $key => $value )
+foreach ( $results as $key => $value ) 
 {
 $division_teams[$key] = $key;
 }
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
+
 try {
 $this->jsmquery->clear();
 $this->jsmquery->select('m.projectteam2_id');
@@ -97,17 +159,34 @@ $results = $this->jsmdb->loadObjectList('projectteam2_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $results = array();
+    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 	
 foreach ( $results as $key => $value )
 {
 $division_teams[$key] = $key;
 }
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
 
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($division_teams, true).'</pre><br>','Notice');
+try {
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_project_team');
+$this->jsmquery->where('division_id = '.$division_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$results = $this->jsmdb->loadObjectList('id');
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    $results = array();
+    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 
+foreach ( $results as $key => $value )
+{
+$division_teams[$key] = $key;
+}
+	
 return count($division_teams);
 
 }
@@ -120,42 +199,31 @@ return count($division_teams);
     	public function saveshort()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+       
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
         }
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
-        
-        //$result=true;
+        $post = Factory::getApplication()->input->post->getArray(array());
+
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblRound = & $this->getTable();
 			$tblRound->id = $pks[$x];
 			$tblRound->name	= $post['name'.$pks[$x]];
             
-            $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
+            $tblRound->alias = OutputFilter::stringURLSafe( $post['name'.$pks[$x]] );
             // Set the values
 		    $tblRound->modified = $date->toSql();
 		    $tblRound->modified_by = $user->get('id');
-        
-            
 
 			if(!$tblRound->store()) 
             {
@@ -163,7 +231,7 @@ return count($division_teams);
 				return false;
 			}
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
 	}
     
     
@@ -176,8 +244,7 @@ return count($division_teams);
 	 */
 	public function delete(&$pks)
 	{
-	$app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app = Factory::getApplication();
     
     return parent::delete($pks);
     

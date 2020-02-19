@@ -4,17 +4,14 @@
  * @file      divisions.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllerdivisions
  * 
@@ -24,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerdivisions extends JControllerAdmin
+class sportsmanagementControllerdivisions extends JSMControllerAdmin
 {
 
 /**
@@ -37,12 +34,19 @@ class sportsmanagementControllerdivisions extends JControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
 		//$this->registerTask('saveshort',	'saveshort');
 	}
+
+function divisiontoproject()
+{
+$model = $this->getModel();
+$msg = $model->divisiontoproject();
+$this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project_id,$msg);    
+}    
 
 	/**
 	 * sportsmanagementControllerdivisions::saveOrder()
@@ -54,8 +58,8 @@ class sportsmanagementControllerdivisions extends JControllerAdmin
 	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 
 	$model = $this->getModel();
-    //$pks = JFactory::getApplication()->input->getInt( 'cid', array() );	//is sanitized
-//	$order = JFactory::getApplication()->input->getInt('order', array() );   
+    //$pks = Factory::getApplication()->input->getInt( 'cid', array() );	//is sanitized
+//	$order = Factory::getApplication()->input->getInt('order', array() );   
     
     $pks = $this->jinput->get('cid',array(),'array');
     $order = $this->jinput->get('order',array(),'array');

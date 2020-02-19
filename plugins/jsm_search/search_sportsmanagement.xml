@@ -21,12 +21,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.plg_search_search_sportsmanagement.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_search_search_sportsmanagement.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_search_search_sportsmanagement.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_search_search_sportsmanagement.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_search_search_sportsmanagement.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.plg_search_search_sportsmanagement.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.plg_search_search_sportsmanagement.sys.ini</language>
-		
-		
 	</languages>
 
 	<config>

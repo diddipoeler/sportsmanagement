@@ -4,17 +4,17 @@
  * @file      project.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
  
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
 /**
  * sportsmanagementModelProject
  * 
@@ -34,16 +34,13 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-    
+   
 	}	   
     
     /**
@@ -54,7 +51,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	function getProjectTeam($projectteam_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -70,7 +67,25 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$db->setQuery($query);
 		return $db->loadObject();
 	}
-    
+
+public static function getProjectsbyCurrentProjectLeagueSeason($season_id,$league_id)
+{
+$app = Factory::getApplication();
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$db = sportsmanagementHelper::getDBConnection(); 
+$query = $db->getQuery(true);	
+$query	= $db->getQuery(true);
+$query->select('id as value,name as text,name as info,picture as picture');
+$query->from('#__sportsmanagement_project');
+$query->where('season_id = ' . $season_id);
+$query->where('league_id = ' . $league_id);	
+$query->order('name');	
+$db->setQuery($query);
+$result = $db->loadObjectList();	
+return $result;	
+}
+	
     /**
 	 * return 
 	 *
@@ -79,7 +94,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	public static function getProject($project_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -89,9 +104,17 @@ class sportsmanagementModelProject extends JSMModelAdmin
         $query->select('*');
         $query->from('#__sportsmanagement_project');
         $query->where('id = ' . $project_id);
-		
         $db->setQuery($query);
-		return $db->loadObject();
+        $result = $db->loadObject();
+        $query->clear();
+        $query->select('eventtime');
+        $query->from('#__sportsmanagement_sports_type');
+        $query->where('id = ' . $result->sports_type_id);
+        $db->setQuery($query);
+        $useeventtime = $db->loadResult();
+        $result->useeventtime = $useeventtime;
+        //sports_type_id
+		return $result;
 	}
    
     
@@ -102,17 +125,14 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	function getProjectTeamsOptions($project_id,$iDivisionId=0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$db	= $this->getDbo();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
-        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
-        
-		//$project_id = $app->getUserState($option . 'project');
-        
+        $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
+       
         if ( $this->project_art_id == 3 )
         {
             // Select some fields
@@ -145,7 +165,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, $db->getErrorMsg());
+			Log::add( $db->getErrorMsg());
 			return false;
 		}
 		else
@@ -164,7 +184,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -187,7 +207,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	function deleteProjectsData($pk=array())
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -204,8 +224,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $query->select('r.id');
             $query->from('#__sportsmanagement_round as r');
             $query->where('r.project_id IN ('.implode(",",$pk).')');
-            JFactory::getDBO()->setQuery($query);
-            $rounds = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $rounds = Factory::getDbo()->loadColumn();
             
             // matches 
             if ( $rounds )
@@ -214,8 +234,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $query->select('m.id');
             $query->from('#__sportsmanagement_match as m');
             $query->where('m.round_id IN ('.implode(",",$rounds).')');
-            JFactory::getDBO()->setQuery($query);
-            $matches = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $matches = Factory::getDbo()->loadColumn();
             }
             
             // project_teams 
@@ -223,24 +243,24 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $query->select('p.id');
             $query->from('#__sportsmanagement_project_team as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
-            JFactory::getDBO()->setQuery($query);
-            $project_teams = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $project_teams = Factory::getDbo()->loadColumn();
             
             // project_referee 
             $query->clear();
             $query->select('p.id');
             $query->from('#__sportsmanagement_project_referee as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
-            JFactory::getDBO()->setQuery($query);
-            $project_referee = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $project_referee = Factory::getDbo()->loadColumn();
             
             // project_position 
             $query->clear();
             $query->select('p.id');
             $query->from('#__sportsmanagement_project_position as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
-            JFactory::getDBO()->setQuery($query);
-            $project_position = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $project_position = Factory::getDbo()->loadColumn();
             
             // zu löschende tabellen
             $field = 'project_id';
@@ -332,10 +352,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $temp->id = $id;
             $export[] = $temp;
             }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
+    
             $this->_tables_to_delete = array_merge($export);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
-            
             // jetzt starten wir das löschen
             foreach( $this->_tables_to_delete as $row_to_delete )
             {
@@ -345,7 +363,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
             }    
             }
             
@@ -366,39 +384,55 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 */
 	public function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $date = JFactory::getDate();
-              
+		$app = Factory::getApplication();
+        $date = Factory::getDate();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);        
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+       
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        //$result=true;
+        $post = Factory::getApplication()->input->post->getArray(array());
+
+$query->select('id');
+$query->from('#__sportsmanagement_user_extra_fields');
+$query->where('template_backend  LIKE '.$this->jsmdb->Quote(''.'project'.'').' ' );
+$db->setQuery($query);
+$result = $db->loadObjectList();        
+		
+for ($x=0; $x < count($pks); $x++)
+{
+foreach ($result as $id => $value)
+{
+$temp = new stdClass();
+$temp->field_id = $value->id;
+$temp->jl_id = $pks[$x];
+/**
+ * Insert the object into the table.
+ */
+try{
+$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $temp);
+}
+catch (Exception $e)
+{
+
+}		
+}
+}
+
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblProject = & $this->getTable();
 			$tblProject->id = $pks[$x];
             $tblProject->project_type	= $post['project_type'.$pks[$x]];
             $tblProject->agegroup_id	= $post['agegroup'.$pks[$x]];
+	$tblProject->master_template	= $post['master_template'.$pks[$x]];		
             
             if ( $post['league'.$pks[$x]] )
             {
@@ -423,11 +457,11 @@ $object = new stdClass();
 $object->id = $post['user_field_id'.$pks[$x]];
 $object->fieldvalue = $post['user_field'.$pks[$x]];
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');			
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');			
 }	
 
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}
 
 	

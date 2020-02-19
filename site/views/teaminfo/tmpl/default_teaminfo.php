@@ -4,19 +4,27 @@
  * @file      deafult_teaminfo.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teaminfo
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 ?>
 <?PHP
 if (!isset($this->team)) {
-    JError::raiseWarning('ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'));
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), Log::WARNING, 'jsmerror');
 } else {
     ?>
-    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="default_teaminfo">
+	<!-- anfang default_teaminfo -->
+    <div class="<?php echo $this->divclasscontainer;?>" id="default_teaminfo">
+	<div class="<?php echo $this->divclassrow;?>" id="default_teaminfo_row">
+	<!-- anfang default_teaminfo_left -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo-left">
             <?PHP
             ?>
@@ -25,7 +33,10 @@ if (!isset($this->team)) {
             //dynamic object property string
             $pic = $this->config['show_picture'];
             $picture = $this->team->$pic;
-
+if ( empty($picture) )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+}
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo' . $this->team->id,
 $picture,
 $this->team->name,
@@ -36,10 +47,12 @@ $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
 
             if ($this->team->cr_projectteam_picture) {
-                echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO', '<i>' . $this->team->cr_projectteam_picture . '</i>');
+                echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO', '<i>' . $this->team->cr_projectteam_picture . '</i>');
             }
             ?>
         </div>
+		<!-- ende default_teaminfo_left -->
+		<!-- anfang default_teaminfo_right -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo_right">
             <?php
             if ($this->config['show_club_info'] || $this->config['show_team_info']) {
@@ -49,7 +62,7 @@ $this->overallconfig['use_jquery_modal']);
                         <div class="jl_parentContainer">
                             <address>
                                 <strong>
-                                    <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS'); ?>
+                                    <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS'); ?>
                                 </strong>
                                 <?php
                                 $addressString = JSMCountries::convertAddressString($this->club->name, $this->club->address, $this->club->state, $this->club->zipcode, $this->club->location, $this->club->country, 'COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS_FORM');
@@ -62,7 +75,7 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->phone) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_PHONE'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_PHONE'); ?></strong>
                                 <?php echo $this->club->phone; ?>
                             </address>
                             <?php
@@ -70,7 +83,7 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->fax) {
                             ?>
                             <div class="jl_parentContainer">
-                                <span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_FAX'); ?></span>
+                                <span class="clubinfo_listing_item"><strong> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_FAX'); ?></strong></span>
                                 <span class="clubinfo_listing_value"> <?php echo $this->club->fax; ?></span>
                             </div>
                             <?php
@@ -78,13 +91,13 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->email) {
                             ?>
                             <div class="jl_parentContainer">
-                                <span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></span>
+                                <span class="clubinfo_listing_item"><strong> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></strong></span>
                                 <span class="clubinfo_listing_value"> <?php
-                                    $user = JFactory::getUser();
+                                    $user = Factory::getUser();
                                     if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
-                                        echo JHtml::link('mailto:' . $this->club->email, $this->club->email);
+                                        echo HTMLHelper::link('mailto:' . $this->club->email, $this->club->email);
                                     } else {
-                                        echo JHtml::_('email.cloak', $this->club->email);
+                                        echo HTMLHelper::_('email.cloak', $this->club->email);
                                     }
                                     ?>
                                 </span>
@@ -94,10 +107,10 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></strong>
                                 <?php
                                 $link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $this->club->slug);
-                                echo JHtml::link($link, $this->club->name);
+                                echo HTMLHelper::link($link, $this->club->name);
                                 ?>
                             </address>
                             <?php
@@ -105,10 +118,10 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->website) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_SITE'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_SITE'); ?></strong>
                                 <?php
                                 if($this->club->website){
-                                echo JHtml::link($this->club->website, $this->club->website, array("target" => "_blank"));
+                                echo HTMLHelper::link($this->club->website, $this->club->website, array("target" => "_blank"));
                                 }
                                 ?>
                             </address>
@@ -120,16 +133,16 @@ $this->overallconfig['use_jquery_modal']);
                                 <fieldset class="adminform">
                                     <legend>
                                         <?php
-                                        echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_MERGE_CLUBS');
+                                        echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_MERGE_CLUBS');
                                         ?>
                                     </legend>
                                     <?PHP
                                     foreach ($this->merge_clubs as $merge_clubs) {
                                         ?>
-                                        <span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
+                                        <span class="clubinfo_listing_item"> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
                                         <span class="clubinfo_listing_value"> <?php
                                             $link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $merge_clubs->slug);
-                                            echo JHtml::link($link, $merge_clubs->name);
+                                            echo HTMLHelper::link($link, $merge_clubs->name);
                                             ?>
                                         </span>
                                         <?PHP
@@ -144,36 +157,36 @@ $this->overallconfig['use_jquery_modal']);
                     if ($this->config['show_team_info']) {
                         ?>
                         <address>
-                            <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></strong>
+                            <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></strong>
                             <?php
                             $routeparameter = array();
-                            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                             $routeparameter['p'] = $this->project->slug;
                             $routeparameter['tid'] = $this->team->slug;
-                            $routeparameter['ptid'] = JFactory::getApplication()->input->getInt('ptid', 0);
+                            $routeparameter['ptid'] = Factory::getApplication()->input->getInt('ptid', 0);
                             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-                            echo JHtml::link($link, $this->team->tname);
+                            echo HTMLHelper::link($link, $this->team->tname);
                             ?>
                         </address>
                         <address>
-                            <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></strong>
+                            <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></strong>
                             <?php
                             $routeparameter = array();
-                            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                             $routeparameter['p'] = $this->project->slug;
                             $routeparameter['tid'] = $this->team->slug;
 
                             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
-                            echo JHtml::link($link, $this->team->short_name);
+                            echo HTMLHelper::link($link, $this->team->short_name);
                             ?>
                         </address>
                         <?php
                         if ($this->team->info) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_INFO'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_INFO'); ?></strong>
                                 <?php
                                 echo $this->team->info;
                                 ?>
@@ -183,10 +196,10 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->team->team_website) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE'); ?></strong>
                                 <?php
                                 if($this->team->team_website){
-                                echo JHtml::link($this->team->team_website, $this->team->team_website, array("target" => "_blank"));
+                                echo HTMLHelper::link($this->team->team_website, $this->team->team_website, array("target" => "_blank"));
                                 }
                                 ?>
                             </address>
@@ -195,13 +208,13 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->team->team_email) {
                             ?>
                             <address>
-                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_EMAIL'); ?></strong>
+                                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_EMAIL'); ?></strong>
                                 <?php
-                                    $user = JFactory::getUser();
+                                    $user = Factory::getUser();
                                     if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
-                                        echo JHtml::link('mailto:' . $this->team->team_email, $this->team->team_email);
+                                        echo HTMLHelper::link('mailto:' . $this->team->team_email, $this->team->team_email);
                                     } else {
-                                        echo JHtml::_('email.cloak', $this->team->team_email);
+                                        echo HTMLHelper::_('email.cloak', $this->team->team_email);
                                     }
                                     ?>
                             </address>
@@ -219,3 +232,5 @@ $this->overallconfig['use_jquery_modal']);
     </div>
     <!-- ende default_teaminfo -->
 </div>
+</div>
+<!-- ende default_teaminfo -->

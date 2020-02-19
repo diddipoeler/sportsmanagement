@@ -4,13 +4,14 @@
  * @file      eventtypes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * Sportsmanagement Component Events Model
@@ -54,10 +55,10 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
 		// Load the filter state.
@@ -127,12 +128,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 		return $this->jsmquery;
         
 	}
@@ -145,8 +140,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	 */
 	public static function getEvents($sports_type_id  = 0)
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-		//$app = JFactory::getApplication();
         $jsmdb = sportsmanagementHelper::getDBConnection();
         $jsmquery = $jsmdb->getQuery(true);
         // Select some fields
@@ -166,13 +159,11 @@ class sportsmanagementModelEventtypes extends JSMModelList
 		$jsmdb->setQuery($jsmquery);
 		if ( !$result = $jsmdb->loadObjectList() )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $position)
         {
-            //$position->text = JText::_($position->text);
-            $position->text = JText::_($position->posname).' ('.JText::_($position->stname).')';
+            $position->text = Text::_($position->posname).' ('.Text::_($position->stname).')';
         }
 		return $result;
 	}
@@ -207,13 +198,13 @@ class sportsmanagementModelEventtypes extends JSMModelList
         $result = $this->jsmdb->loadObjectList();
 		foreach ($result as $event)
         {
-            $event->text = JText::_($event->posname).' ('.JText::_($event->stname).')';
+            $event->text = Text::_($event->posname).' ('.Text::_($event->stname).')';
         }
 		return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -225,7 +216,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
      */
     public function getEventList()
 	{
-		$query='SELECT *,id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype ORDER BY name';
+		$query='SELECT *,id AS value,name AS text FROM #__sportsmanagement_eventtype ORDER BY name';
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}

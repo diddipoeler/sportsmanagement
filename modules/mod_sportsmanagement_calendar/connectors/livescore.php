@@ -4,25 +4,51 @@
  * @file      livescore.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
-class LivescoreConnector extends JLCalendar{
-  //var $database = JFactory::getDbo();
+/**
+ * LivescoreConnector
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
+class LivescoreConnector extends JSMCalendar{
+
   var $xparams;
   var $prefix;
+  
+  /**
+   * LivescoreConnector::getMatches()
+   * 
+   * @param mixed $caldates
+   * @param mixed $params
+   * @param mixed $matches
+   * @return
+   */
   function getMatches ( &$caldates, &$params, &$matches ) {
     $this->xparams = $params;
     $this->prefix = $params->prefix;
     $rows = LivescoreConnector::getRows($caldates);
     $output = LivescoreConnector::formatRows($rows, $matches);
-    //print_r($output);
     return $output;
   }
+  
+  /**
+   * LivescoreConnector::formatRows()
+   * 
+   * @param mixed $rows
+   * @param mixed $matches
+   * @return
+   */
   function formatRows( $rows, &$matches ) {
     $newrows = array();
     
@@ -41,8 +67,16 @@ class LivescoreConnector extends JLCalendar{
 		}
 		return $newrows;
   }
+  
+  /**
+   * LivescoreConnector::getRows()
+   * 
+   * @param mixed $caldates
+   * @param string $ordering
+   * @return
+   */
   function getRows($caldates, $ordering='ASC'){
-    $database = JFactory::getDbo();
+    $database = Factory::getDbo();
       $query = "SELECT  * FROM #__livescore_games";
       $where = ' WHERE ';
       $where .= " mdate >= '".$caldates['start']."'";
@@ -56,6 +90,12 @@ class LivescoreConnector extends JLCalendar{
       return $result;
   }
   
+  /**
+   * LivescoreConnector::build_url()
+   * 
+   * @param mixed $row
+   * @return void
+   */
   function build_url( &$row ) {
     
   }

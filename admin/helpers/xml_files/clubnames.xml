@@ -9,7 +9,7 @@
 <clubnames><clubname country="DEU" name="ATS" >Allgemeine Turnerschaft </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BC" >Ball Club/Ballspielclub </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BSC/BSK" >Ballspielc(k)lub</clubname></clubnames>
-<clubnames><clubname country="DEU" name="BSG " >Betriebsportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="BSG" >Betriebsportgemeinschaft</clubname></clubnames>
 <clubnames><clubname country="DEU" name="BSV" >Ballsportverein</clubname></clubnames>
 <clubnames><clubname country="DEU" name="BuEV" >Ballspiel- und Eislauf-Verein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="BV" >Ball-Verein</clubname></clubnames>
@@ -107,6 +107,10 @@
 <clubnames><clubname country="DEU" name="WSV" >Winter Sportverein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="ZSG" >Zentrale Sportgemeinschaft </clubname></clubnames>
 
+<clubnames><clubname country="DDR" name="KVP" >Kasernierte Volkspolizei</clubname></clubnames>  
+<clubnames><clubname country="DDR" name="BSG" >Betriebssportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DDR" name="HSG" >Hochschulsportgemeinschaft</clubname></clubnames>
+  
 <clubnames><clubname country="ITA" name="AS" >Associazione Sportiva</clubname></clubnames>  
 <clubnames><clubname country="ITA" name="ASD" >Associazione Sportiva Dilettantistica</clubname></clubnames> 
 <clubnames><clubname country="ITA" name="US" >Unione Sportiva</clubname></clubnames>  
@@ -118,7 +122,29 @@
 
 
 <clubnames><clubname country="POL" name="AF" >Akademia Futbolu</clubname></clubnames>  
-
+<clubnames><clubname country="POL" name="KS" >Klub Sportowy</clubname></clubnames>
+<clubnames><clubname country="POL" name="AP" >Akademia Piłkarska</clubname></clubnames>  
+<clubnames><clubname country="POL" name="MKP" >Miejski Klub Piłkarski</clubname></clubnames>
+<clubnames><clubname country="POL" name="KP" >Klub Piłkarski</clubname></clubnames>
+<clubnames><clubname country="POL" name="LKS" >Ludowy Klub Sportowy</clubname></clubnames>
+<clubnames><clubname country="POL" name="GKP" >Gminny Klub Piłkarski</clubname></clubnames>  
+<clubnames><clubname country="POL" name="ITS" >Iławskie Towarzystwo Sportowe</clubname></clubnames>  
+<clubnames><clubname country="POL" name="ITR" >Iławskie Towarzystwo Rekreacyjne</clubname></clubnames>    
+<clubnames><clubname country="POL" name="HALO" >Hyżneńska Amatorska Liga Orlikowa</clubname></clubnames>
+  
+  
+  
 <clubnames><clubname country="ESP" name="CDC" >Club Deportivo y Cultural</clubname></clubnames> 
+  
+<clubnames><clubname country="FRA" name="USVO" >Unité Sportive Village Olympique</clubname></clubnames>  
+
+
+<clubnames><clubname country="ROU" name="CS" >Clubul Sportiv</clubname></clubnames>
+<clubnames><clubname country="ROU" name="CAM" >Clubul Atletic Muncitoresc</clubname></clubnames> 
+<clubnames><clubname country="ROU" name="CFR" >Căile Ferate Române</clubname></clubnames>
+<clubnames><clubname country="ROU" name="ACFR" >Atelierele Căile Ferate Române</clubname></clubnames>
+  
+  
+  
   
 </structur> 

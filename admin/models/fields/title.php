@@ -1,19 +1,22 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.58
-* @file 
-* @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
-* @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      title.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
 
-// no direct access
-defined('_JEXEC') or die ;
 
+defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldTitle
+ * FormFieldTitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +24,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldTitle extends JFormField
+class JFormFieldTitle extends FormField
 {
 	public $type = 'Title';
 
 	/**
-	 * JFormFieldTitle::getLabel()
+	 * FormFieldTitle::getLabel()
 	 * 
 	 * @return
 	 */
@@ -64,20 +67,20 @@ class JFormFieldTitle extends JFormField
 		} 
         else if ($icon) 
         {
-			JHtml::_('stylesheet', 'syw/fonts-min.css', false, true);
+			HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
 			$html .= '<i style="font-size: inherit; vertical-align: baseline" class="SYWicon-'.$icon.'">&nbsp;</i>';
 		}
 
 		if ($value) 
         {
-			$html .= JText::_($value);
+			$html .= Text::_($value);
 		}
 
 		return $html;
 	}
 
 	/**
-	 * JFormFieldTitle::getInput()
+	 * FormFieldTitle::getInput()
 	 * 
 	 * @return
 	 */

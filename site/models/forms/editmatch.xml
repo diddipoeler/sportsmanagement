@@ -23,15 +23,13 @@
 				name="cancel"
 				type="extensionradiobutton"
 				default="0"
-        class="btn btn-primary"
+        class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-    <!--
-        class="radio btn-group btn-group-yesno"
-        -->		
+    
 		<field
 				name="cancel_reason"
 				type="text"
@@ -64,7 +62,7 @@
 				name="show_report"
 				type="extensionradiobutton"
 				default="0"			
-        class="btn btn-primary"	
+        class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW_DESC">
 			<option value="0">JNO</option>
@@ -84,7 +82,7 @@
 				name="count_result"
 				type="extensionradiobutton"
 				default="0"			
-        class="btn btn-primary"	
+        class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL">
 			<option value="0">JNO</option>

@@ -4,13 +4,14 @@
  * @file      script.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage installation
  */
 
 /**
  * Joomla 4
+ * Potential backward compatibility issues in Joomla 4
  * https://docs.joomla.org/Potential_backward_compatibility_issues_in_Joomla_4
  * Class 'JToolBarHelper' not found #14330
  * https://github.com/joomla/joomla-cms/issues/14330
@@ -57,17 +58,22 @@
  * https://stackoverflow.com/questions/40330156/timestampdiff-how-to-use-it-in-php-mysql-to-calculate-difference-between-date
  * http://php.net/manual/de/datetime.diff.php
  * 
+ * protokollierung von fehlern
+ * http://eddify.me/posts/logging-in-joomla-with-jlog.html
+ * 
  * 
  * 
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 jimport('joomla.installer.installer');
  
@@ -92,8 +98,8 @@ class com_sportsmanagementInstallerScript
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
-    private $release = '1.0.63';
-    
+    private $release = '3.3.00';
+    //$language_update = '';
     
     /**
 	 * Constructor
@@ -144,7 +150,7 @@ $this->endPanel = 'endPanel';
 	 */
 	function uninstall( $adapter) 
 	{
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
+		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 	}
  
 	/**
@@ -156,7 +162,7 @@ $this->endPanel = 'endPanel';
 	 */
 	function update( $adapter) 
 	{
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
+		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
 	}
  
 
@@ -179,7 +185,7 @@ $this->endPanel = 'endPanel';
             try {
             //Repair table #__schema which was not used before
             //Just create a dataset with extension id and old version (before update).
-            $db = JFactory::getDbo();
+            $db = Factory::getDbo();
             $query = $db->getQuery(true);
             $query->select($db->quoteName('extension_id'))
                 ->from('#__extensions')
@@ -204,7 +210,7 @@ else
             } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+            Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
             }
         }
     }
@@ -227,57 +233,61 @@ else
             <!-- This is a list with tabs names. -->
     	<ul class="nav nav-tabs" id="ID-Tabs-Group">
         	<li class="active">
-        		<a data-toggle="tab" href="#tab1_id"><?php echo $image1.JText::_(' Component'); ?></a>
+        		<a data-toggle="tab" href="#tab1_id"><?php echo $image1.Text::_(' Component'); ?></a>
         	</li>
         	<li>
-        		<a data-toggle="tab" href="#tab2_id"><?php echo $image2.JText::_(' Modules'); ?></a>
+        		<a data-toggle="tab" href="#tab2_id"><?php echo $image2.Text::_(' Modules'); ?></a>
     		</li>
             <li>
-        		<a data-toggle="tab" href="#tab3_id"><?php echo $image3.JText::_(' Plugins'); ?></a>
+        		<a data-toggle="tab" href="#tab3_id"><?php echo $image3.Text::_(' Plugins'); ?></a>
     		</li>
             <li>
-        		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.JText::_(' Create/Update Images Folders'); ?></a>
+        		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.Text::_(' Create/Update Images Folders'); ?></a>
     		</li>
             
         </ul>
             
             <?PHP
-            echo JHtml::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
-            echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',JText::_(' Component')); 
-            echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
-            echo JHtml::_('bootstrap.'.$this->endPanel);
+            echo HTMLHelper::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
+            echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component')); 
+            echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+            echo HTMLHelper::_('bootstrap.'.$this->endPanel);
  
              
             }
             else
             {
-	   echo JHtml::_('sliders.start','steps',array(
+	   echo HTMLHelper::_('sliders.start','steps',array(
 						'allowAllClose' => true,
 						'startTransition' => true,
 						true));
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
-		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
-        echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+		echo HTMLHelper::_('sliders.panel', $image.' Component', 'panel-component');
+        echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
         }                      
         
         ?>
 		
 		<img
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
-			alt="JoomLeague" title="JoomLeague" width="180"/>
+			alt="SportsManagement" title="SportsManagement" width="180"/>
 		<?php
         $j = new JVersion();
-        echo '<h1>' . sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
+        echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
         ?>
+<!--
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
+-->
         <img
-			src="../media/com_sportsmanagement/jl_images/compat_30.png"
-			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
-        
+			src="../media/com_sportsmanagement/jl_images/Compat_icon_3_9_long.png"
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
+        <img
+			src="../media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png"
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
          <?php       
-        echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
         
         
         
@@ -293,7 +303,7 @@ else
 	 * @return
 	 */
 	function getParam( $name ) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement" ');
 		$manifest = json_decode( $db->loadResult(), true );
 		return $manifest[ $name ];
@@ -309,8 +319,8 @@ else
 	 */
 	function postflight($route,  $adapter) 
 	{
-	$mainframe = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	$mainframe = Factory::getApplication();
+    $db = Factory::getDbo();
     
     // sicherheitshalber dateien löschen, die ich falsch angelegt habe.
     // aber nur wenn sie vorhanden sind
@@ -398,9 +408,9 @@ $files = array(
             
 foreach ($files as $file)
 		{
-			if (JFile::exists(JPATH_ROOT . $file) && !JFile::delete(JPATH_ROOT . $file))
+			if (File::exists(JPATH_ROOT . $file) && !File::delete(JPATH_ROOT . $file))
 			{
-				echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
+				echo Text::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
 			}
 		}
 
@@ -410,11 +420,11 @@ foreach ($files as $file)
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
 
-            echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+            echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
-$jRegistry = new JRegistry;
+$params = ComponentHelper::getParams('com_sportsmanagement');
+$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
+$jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 $newparams = array();
@@ -427,202 +437,82 @@ foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
-//$mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
-
-
     switch ($route)        
     {
     case "install":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules')); 
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules')); 
     self::installModules($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
-    self::installJoomlaExtensions($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    /** führt zu fehlern */
+    //self::installJoomlaExtensions($adapter);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    self::setParams($newparams);    
+    self::setParams($newparams);   
+    self::deleteinstallfiles(); 
     break;
     case "update":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
     self::installModules($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
-    self::installJoomlaExtensions($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel);
+    /** führt zu fehlern */
+    //self::installJoomlaExtensions($adapter);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
     
     self::setParams($newparams);
+    self::deleteinstallfiles();
     break;
     case "discover_install":
     break;
         
     }
-            
-            
-            echo JHtml::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
-            }
-            else
-            {
-                   
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+    echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
+    }
+    
+    
+    
+	}
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
-$jRegistry = new JRegistry;
-$jRegistry->loadString($params->toString('ini'), 'ini');
-////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
-$form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
-$form->bind($jRegistry);
-$newparams = array();
-foreach($form->getFieldset() as $field)
-        {
-        $newparams[$field->name] = $field->value;
-        }
 
-switch ($route)        
+/**
+ * com_sportsmanagementInstallerScript::deleteinstallfiles()
+ * 
+ * @return void
+ */
+public function deleteinstallfiles()
+{
+/** dateien löschen */
+    $file = '/tmp/master.zip';
+    if (File::exists(JPATH_ROOT.$file) )
     {
-    case "install":
-    self::setParams($newparams);
-//    self::installComponentLanguages();
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-    self::createImagesFolder();
-//    self::migratePicturePath();
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
-    break;
-    case "update":
-//    self::installComponentLanguages();
-$image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($adapter);
-    $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
-    self::createImagesFolder();
-//    self::migratePicturePath();
-      self::setParams($newparams);
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
-    break;
-    case "discover_install":
-    break;
-        
-    }
-
-echo JHtml::_('sliders.end');
-echo self::getFxInitJSCode('steps');
-
+	File::delete(JPATH_ROOT.$file);
+	}
+    $file = '/tmp/sportsmanagement-master.zip';
+    if (File::exists(JPATH_ROOT.$file) )
+    {
+	File::delete(JPATH_ROOT.$file);
+	}
+    $folder = '/tmp/sportsmanagement-master';
+    if(Folder::exists(JPATH_ROOT.$folder))
+	{
+	Folder::delete(JPATH_ROOT.$folder);	  
+    }    
+    
 }
 
-	}
-    
-    
-    
-    /**
-     * com_sportsmanagementInstallerScript::deleteFolders()
-     * 
-     * @param mixed $adapter
-     * @return void
-     */
-    public function deleteFolders( $adapter)
-    {
-    $mainframe = JFactory::getApplication();
-    $excludeExtension = array();
-    $excludeExtension[] = 'extensions';    
-    $excludeExtension[] = 'sisdata';
-    $folderAdmin  = JFolder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
-													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderAdmin<br><pre>'.print_r($folderAdmin,true).'</pre>'),'');                                                    
-    
-    foreach ($folderAdmin as $key => $value )
-    {
-        if( JFolder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
-        {
-        //echo 'Der Ordner wurde gelöscht';
-        }
-    }
-    $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
-													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderSite<br><pre>'.print_r($folderSite,true).'</pre>'),'');
-    
-    foreach ($folderSite as $key => $value )
-    {
-        if( JFolder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
-        {
-        //echo 'Der Ordner wurde gelöscht';
-        }
-    }
-    
-    }
-    
-    /**
-     * com_sportsmanagementInstallerScript::getFxInitJSCode()
-     * 
-     * @param mixed $group
-     * @return
-     */
-    private function getFxInitJSCode ($group) 
-    {
-		$params = array();
-		$params['allowAllClose'] = 'true';
-		$display = (isset($params['startOffset']) && isset($params['startTransition']) && $params['startTransition'])
-		? (int) $params['startOffset'] : null;
-		$show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
-		? (int) $params['startOffset'] : null;
-		$options = '{';
-		$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
-				"toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_"
-				. $group . "',$$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
-		$opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
-				"toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($$('div#"
-				. $group . ".pane-sliders > .panel > h3').length==$$('div#" . $group
-				. ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
-		$opt['duration'] = (isset($params['duration'])) ? (int) $params['duration'] : 300;
-		$opt['display'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $display, 'cookie')
-		: $display;
-		$opt['show'] = (isset($params['useCookie']) && $params['useCookie']) ? JRequest::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
-		$opt['opacity'] = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
-		$opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';
-		foreach ($opt as $k => $v)
-		{
-			if ($v)
-			{
-				$options .= $k . ': ' . $v . ',';
-			}
-		}
-		if (substr($options, -1) == ',')
-		{
-			$options = substr($options, 0, -1);
-		}
-		$options .= '}';
-		
-		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#" . $group
-		. ".pane-sliders > .panel > h3.pane-toggler'), $$('div#" . $group . ".pane-sliders > .panel > div.pane-slider'), " . $options
-		. "); });";
-		
-		return '<script>'.$js.'</script>';
-	}
-    
     /**
      * com_sportsmanagementInstallerScript::createImagesFolder()
      * 
@@ -630,12 +520,10 @@ echo self::getFxInitJSCode('steps');
      */
     public function createImagesFolder()
 	{
-		$mainframe = JFactory::getApplication();
-  $db = JFactory::getDBO();
-  
-        //echo JText::_('Creating new Image Folder structure');
+		$mainframe = Factory::getApplication();
+  $db = Factory::getDBO();
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
-		$update = JFolder::exists($dest);
+		$update = Folder::exists($dest);
 		$folders = array('agegroups',
 		'clubs',
 		'clubs/large',
@@ -657,6 +545,7 @@ echo self::getFxInitJSCode('steps');
 		'predictionusers',
 		'playgrounds',
 		'projects',
+		'projectimages',
 		'projectreferees',
 		'projectteams',
 		'projectteams/trikot_home',
@@ -674,35 +563,110 @@ echo self::getFxInitJSCode('steps');
 		'venues',
         'jl_images',
 		'statistics');
-		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
-		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
-		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
-		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement'))
+		{
+			try{
+		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement');
+		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
+		} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
+		}
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'))
+		{
+		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
+		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
+		}
 		
         foreach ($folders as $folder) 
         {
-			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
-			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
-            
-            echo '<p>' . JText::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
-            
-            //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
-            
+		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'.$folder))
+		{	
+	try{
+			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
+			File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
+            echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
+			} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
+		}
+		else
+		{
+		echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' vorhanden!</p>';	
+		}
 		}
         
 		foreach ($folders as $folder) {
-			$from = JPath::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
-			if(JFolder::exists($from)) {
-				$to = JPath::clean($dest.'/database/'.$folder);
-				if(!JFolder::exists($to)) {
-					$ret = JFolder::move($from, $to);
+			$from = Path::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
+			if(Folder::exists($from)) {
+				$to = Path::clean($dest.'/database/'.$folder);
+				if(!Folder::exists($to)) {
+					$ret = Folder::move($from, $to);
 				} else {
-					$ret = JFolder::copy($from, $to, '', true);
-					//$ret = JFolder::delete($from);
+					$ret = Folder::copy($from, $to, '', true);
 				}
 			}
 		}
-		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+        
+        foreach ($folders as $folder) {
+			try{
+		switch ( $folder )
+	    {
+		case 'persons':
+        case 'projectreferees':
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_small.png');
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
+		break;
+        case 'flags_associations':
+        case 'flags':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_flags.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_flags.png');
+        break;
+        case 'positions':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_3.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_3.png');
+        break;
+        case 'teams':
+        case 'projectteams':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_450_3.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_450_3.png');
+        break;
+        case 'projects':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_450_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_450_2.png');
+        break;
+        case 'playgrounds':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_stadium.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_stadium.png');
+        break;
+		case 'agegroups':
+        case 'leagues':
+        case 'sport_types':
+        File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_21.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_21.png');
+        break;
+        case 'clubs/trikot_home':
+        case 'clubs/trikot_away':
+        case 'projectteams/trikot_home':
+        case 'projectteams/trikot_away':
+        case 'clubs/trikot':
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
+		break;
+		case 'clubs/small':
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_20.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_20.png');				
+		break;
+		case 'clubs/medium':
+        case 'associations':
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_50.png');
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_50.png');				
+		break;
+		case 'clubs/large':
+		File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
+File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_wappen_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_wappen_150.png');				
+		break;
+	    }
+		} catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+            }
+		}
+
 	}
     
     
@@ -715,29 +679,22 @@ echo self::getFxInitJSCode('steps');
     function setParams($param_array) 
     {
         
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
-        
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         
                 if ( count($param_array) > 0 ) 
                 {
                         try{
                         // read the existing component value(s)
-                        $db = JFactory::getDbo();
+                        $db = Factory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
-                        
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        
+                       
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
                         }
-                        
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        
+                       
                         // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $params );
                         $db->setQuery('UPDATE #__extensions SET params = ' .
@@ -755,7 +712,7 @@ else
                         } catch (Exception $e) {
                         $msg = $e->getMessage(); // Returns "Normally you would have other code...
                         $code = $e->getCode(); // Returns '500';
-                        JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+                        Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                         }
                 }
                 
@@ -764,22 +721,22 @@ else
 
     
     
-    /**
-     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
-     * 
-     * @param mixed $adapter
-     * @return void
-     */
-    public function installJoomlaExtensions( $adapter)
-	{
-  $mainframe = JFactory::getApplication();
-  $src = $adapter->getParent()->getPath('source');
-  $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
-  
-  JFolder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
-  
-  }
+//    /**
+//     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
+//     * 
+//     * @param mixed $adapter
+//     * @return void
+//     */
+//    public function installJoomlaExtensions( $adapter)
+//	{
+//  $mainframe = Factory::getApplication();
+//  $src = $adapter->getParent()->getPath('source');
+//  $manifest = $adapter->getParent()->manifest;
+//  $db = Factory::getDBO();
+//  
+//  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
+//  
+//  }
   
   
 	
@@ -791,16 +748,11 @@ else
 	 */
 	public function installPlugins( $adapter)
 	{
-  $mainframe = JFactory::getApplication();
+  $mainframe = Factory::getApplication();
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
-  //$j = new JVersion();
-//  $joomla_version = $j->RELEASE;
-  
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
-  
+  $db = Factory::getDBO();
+
   $plugins = $manifest->xpath('plugins/plugin');
   $plugins3 = $manifest->xpath('plugins3/plugin');
   
@@ -811,11 +763,8 @@ else
         $name = (string)$plugin->attributes()->plugin;
         $group = (string)$plugin->attributes()->group;
         
-        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
-        
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
-        
+        echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
+       
         // Select some fields
         $query = $db->getQuery(true);
         $query->clear();
@@ -840,13 +789,13 @@ else
         {
             // plugin ist nicht vorhanden
             // also installieren
-            $path = $src.DS.'plugins'.DS.$name.'_3';
+            $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name.'_3';
             $installer = new JInstaller;
             $result = $installer->install($path);    
         }    
         break;
         default:    
-        $path = $src.DS.'plugins'.DS.$name;
+        $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
         $installer = new JInstaller;
         $result = $installer->install($path);
         break;
@@ -863,78 +812,11 @@ else
         $object->extension_id = $plugin_id;
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
+        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         */
         }
   }
-  else
-  {
-  
-  foreach ($plugins as $plugin)
-        {
-        $name = (string)$plugin->attributes()->plugin;
-        $group = (string)$plugin->attributes()->group;
-        
-        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
-        
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
-        
-        // Select some fields
-        $query = $db->getQuery(true);
-        $query->clear();
-		$query->select('extension_id');
-        // From table
-        $query->from('#__extensions');
-        $query->where("type = 'plugin' ");
-        $query->where("element = '".$name."' ");
-        $query->where("folder = '".$group."' ");
-        $db->setQuery($query);
-        $plugin_id = $db->loadResult();
-
-        switch ( $name )
-        {
-        case 'jqueryeasy';
-        case 'jw_ts';
-        case 'plugin_googlemap3';
-        if ( $plugin_id )
-        {
-            // plugin ist vorhanden
-            // wurde vielleicht schon aktualisiert
-        }
-        else
-        {
-            // plugin ist nicht vorhanden
-            // also installieren
-            $path = $src.DS.'plugins'.DS.$name;
-            $installer = new JInstaller;
-            $result = $installer->install($path);    
-        }    
-        break;
-        default:    
-        $path = $src.DS.'plugins'.DS.$name;
-        $installer = new JInstaller;
-        $result = $installer->install($path);
-        break;
-        }
-
-/**
- * das ein- und ausschalten den anwendern überlassen
- */
-        /*
-        // auf alle faelle erst mal nicht einschalten        
-        // Create an object for the record we are going to update.
-        $object = new stdClass();
-        // Must be a valid primary key value.
-        $object->extension_id = $plugin_id;
-        $object->enabled = 0;
-        // Update their details in the users table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
-        */
-        }
-        
-        }
-        
+       
         
 
     
@@ -951,15 +833,11 @@ else
 	 */
 	public function installModules( $adapter)
 	{
-  $mainframe = JFactory::getApplication();
+  $mainframe = Factory::getApplication();
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
-  
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
-  
-  
+  $db = Factory::getDBO();
+
   $modules = $manifest->xpath('modules/module');
         foreach ($modules as $module)
         {
@@ -969,16 +847,13 @@ else
             $position = (string)$module->attributes()->position;
             $published = (string)$module->attributes()->published;
             
-            echo '<p>' . JText::_('Modul : ' ) . $name . ' installiert!</p>';
-            
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
+            echo '<p>' . Text::_('Modul : ' ) . $name . ' installiert!</p>';
             
             if (is_null($client))
             {
                 $client = 'site';
             }
-            $path = $client == 'administrator' ? $src.DS.'admin'.DS.'modules'.DS.$name : $src.DS.'modules'.DS.$name;
+            $path = $client == 'administrator' ? $src.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name : $src.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name;
             $installer = new JInstaller;
             $result = $installer->install($path);
             $ordering = '99';
@@ -1031,7 +906,7 @@ else
                 } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns '500';
-                JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+                Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                 }   
                 
             }

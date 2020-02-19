@@ -4,17 +4,15 @@
  * @file      template.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementModeltemplate
@@ -38,8 +36,8 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
     function getAllTemplatesList($project_id,$master_id)
 	{
 		
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db	= $this->getDbo();
 		$query1	= $db->getQuery(true);
@@ -66,14 +64,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$current = $db->loadResultArray();
 }
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         if ( $current )
         {
         $current = implode("','",$current);
         }
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
-        
         
         // Select some fields
 		$query2->select('id as value, title as text');
@@ -89,7 +83,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         foreach ($result1 as $template)
         {
-			$template->text = JText::_($template->text);
+			$template->text = Text::_($template->text);
 		}
         
         
@@ -104,11 +98,9 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         foreach ($result2 as $template)
         {
-			$template->text = JText::_($template->text);
+			$template->text = Text::_($template->text);
 		}
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result1<br><pre>'.print_r($result1,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result2<br><pre>'.print_r($result2,true).'</pre>'),'Notice');
         
         if ( $result1 )
         {
@@ -169,15 +161,81 @@ return true;
 	 */
 	public function delete(&$pks)
 {
-$app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+$app = Factory::getApplication();
+    
     
     return parent::delete($pks);
     
          
    } 
 
+	/**
+	 * Method to update one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return
+	 *
+	 * @since
+	 */
+	public function update(&$pks)
+	{
+		$dispatcher = \JEventDispatcher::getInstance();
+		$pks = (array) $pks;
 
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+			$table_row = $this->getTable();
+			if ($table_row->load($pk))
+			{
+				// Make sure the item is valid
+				if (!$table_row->check())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
 
-    
+				$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+				$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$table_row->template.'.xml';
+
+				// create form containing ALL keys and their default values
+				$form = Form::getInstance($table_row->template, $xmlfile, array('control'=> 'params'));
+				// set current settings
+				$form->bind(json_decode($table_row->params, TRUE));
+
+				// get all fields and build key => value pairs ...
+				$fieldsets = $form->getFieldset();
+
+				$params = array();
+				foreach ($fieldsets as $f)
+				{
+					switch ($f->type) {
+					case  "Spacer":
+					case  "JSMMessage":
+						// Spacers and Message fields are no changeable parameters
+						break;
+					default:
+						$params[$f->fieldname] = $f->value;
+						break;
+					}
+				}
+				// .. to generate new JSON setting
+				$table_row->params = json_encode($params);
+
+				// Store the item to the database
+				if (!$table_row->store())
+				{
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+				$form->reset();
+			}
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}
 }

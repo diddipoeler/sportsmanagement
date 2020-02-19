@@ -4,20 +4,23 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionuser
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class="row-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultpredictionuser">
 <?php
 	echo $this->loadTemplate('predictionheading');
 	if ($this->predictionMember->pmID > 0)
@@ -36,18 +39,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 		else
 		{
-			echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_MEMBER_NO_PROFILE_SHOW');
+			echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_MEMBER_NO_PROFILE_SHOW');
 		}
 	}
 	else
 	{
-		?><h3><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_EXISTING_MEMBER'); ?></h3><?php
+		?><h3><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_EXISTING_MEMBER'); ?></h3><?php
 	}
-?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
+	echo $this->loadTemplate('jsminfo');
+	?>
+
 </div>

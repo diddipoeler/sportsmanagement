@@ -4,15 +4,15 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage roster
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewRoster
  * 
@@ -24,7 +24,6 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewRoster extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewRoster::init()
@@ -63,7 +62,16 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			if ($this->config['show_events_stats'])
 			{
 				$this->positioneventtypes = $this->model->getPositionEventTypes();
-				$this->playereventstats = $this->model->getPlayerEventStats();
+				
+				if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+				{
+				$this->playereventstats = $this->model->getPlayerEventStats(true,true);
+				$this->playereventstatsdart = $this->model->getPlayerEventStats(true,false);	
+				}
+				else
+				{
+				$this->playereventstats = $this->model->getPlayerEventStats(false,false);	
+				}
 			}
 			//stats
 			if ($this->config['show_stats'])
@@ -75,30 +83,30 @@ class sportsmanagementViewRoster extends sportsmanagementView
             $this->stafflist = $this->model->getTeamPlayers(2);
 
 			// Set page title
-			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
 		}
 		else
 		{
 			// Set page title
-			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM') ));
 		}
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
 
     // select roster view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "player_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+    $opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "player_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "player_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
 
 	$lists['type'] = $opp_arr;
   // select staff view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "staff_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+    $opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "staff_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
 
 	$lists['typestaff'] = $opp_arr;
 	$this->lists = $lists;

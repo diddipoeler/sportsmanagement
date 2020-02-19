@@ -156,6 +156,18 @@ JARCHIVED</option>
 			<option value="1">JYES</option>
 		</field>
 				
+				
+		<field 
+			name="use_nation" 
+			type="extensionradiobutton" 
+			default="1"   
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field
 			name="admin"
 			type="user"
@@ -185,7 +197,18 @@ JARCHIVED</option>
 	label="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR"
 	description="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR_DESC" >
 		 </field>
-     
+
+<field 
+			name="use_approved" 
+			type="extensionradiobutton" 
+			default="0"   
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_APPROVED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field
 			name="master_template"
 			type="templatelist"
@@ -235,14 +258,18 @@ JARCHIVED</option>
       extension="" 
       label="JCATEGORIES" 
       description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
-      
+
 <field name="gcalendar_id" 
 type="gcalendar" 
 default="" 
 multiple=""
 size="10"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS" 
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
+label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_LABEL" 
+description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_DESC" >
+<option
+				value="0">
+				COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SELECT_CALENDARS_LABEL</option>
+		</field>
 
 <field 
 			name="approved_gcalendar" 
@@ -437,47 +464,50 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			size="8" maxlength="20"
 			default="3,1,0"/>
 			
-		<field 
-			name="use_legs" 
-			type="extensionradiobutton" 
-			default="0"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+<field 
+name="use_legs" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 		
-		<field 
-			name="use_tie_break" 
-			type="extensionradiobutton" 
-			default="0"
-			class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+<field 
+name="use_tie_break" 
+showon="use_legs:1"
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 		
-    <field
-			name="tennis_single_matches"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
-			class="inputbox validate-numeric"
-			size="4" 
-      maxlength="6"
-			default="4"/>
+<field
+name="tennis_single_matches"
+showon="use_legs:1"       
+type="text"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_SINGLE_MATCHES_DESC"
+class="inputbox validate-numeric"
+size="4" 
+maxlength="6"
+default="4"/>
       
-    <field
-			name="tennis_double_matches"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
-			class="inputbox validate-numeric"
-			size="4" 
-      maxlength="6"
-			default="2"/>
+<field
+name="tennis_double_matches"
+showon="use_legs:1"       
+type="text"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TENNIS_DOUBLE_MATCHES_DESC"
+class="inputbox validate-numeric"
+size="4" 
+maxlength="6"
+default="2"/>
         
       	
 		<field 
@@ -573,16 +603,18 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 		<fieldset name="picture"
     label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-			<field
-				name="picture"
-				type="media"
-				default=""				
-				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"	
-        targetfolder="projects"				
-				directory=""/>
+<field
+name="picture"
+type="media"
+default="images/com_sportsmanagement/database/projects/"				
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
+class="inputbox"
+preview="show"	
+targetfolder="projects"				
+directory="images/com_sportsmanagement/database/projects"
+showon="show_info:1[AND]show_image:1"
+/>
 				
 			<field
 			name="cr_picture"

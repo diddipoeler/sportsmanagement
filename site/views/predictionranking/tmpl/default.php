@@ -4,27 +4,29 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <?php
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-//$kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
-
-$this->kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$this->kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->predictionGame->id.'-prediction.kml';
 $this->kmlfile = $this->predictionGame->id.'-prediction.kml';
 
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultpredictionranking">
 <?php
 
 echo $this->loadTemplate('predictionheading');
@@ -42,16 +44,6 @@ if ($this->config['show_help'])
     echo $this->loadTemplate('show_help');
 }
 
-?>
-<div>
-<?PHP
-//backbutton
-echo $this->loadTemplate('backbutton');
-// footer
-echo $this->loadTemplate('footer');
-?>
-</div>
-<?PHP
-
+echo $this->loadTemplate('jsminfo');
 ?>
 </div>

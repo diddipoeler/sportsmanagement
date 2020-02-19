@@ -7,6 +7,18 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
+<field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+</field> 
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -48,6 +60,13 @@
 		<field name="show_preview" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_PREVIEW" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_PREVIEW">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_comments" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -282,6 +301,7 @@
 	</fieldset>
   		
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 
 		<field 	name="expiry_time" type="text" default="0"

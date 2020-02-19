@@ -1,16 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      base.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Log\Log;
 
 /**
  * SMStatistic
@@ -93,18 +98,20 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticNumQuery($project_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, pt.id');
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id ');
     $query_num->where('pt.project_id = ' . $project_id);
+    $query_num->where('m.published = 1');
+    $query_num->where('m.team1_result IS NOT NULL' );
     $query_num->group('pt.id');
     
     return $query_num;
@@ -119,18 +126,20 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticDenQuery($project_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_den = JFactory::getDbo()->getQuery(true);
+    $query_den = Factory::getDbo()->getQuery(true);
     
     $query_den->select('SUM(ms.value) AS den, pt.id');
     $query_den->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_den->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_den->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_den->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_den->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_den->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id ');
     $query_den->where('pt.project_id = ' . $project_id);
+    $query_num->where('m.published = 1');
+    $query_num->where('m.team1_result IS NOT NULL' );
     $query_den->where('value > 0');
     $query_den->group('pt.id');
     
@@ -149,10 +158,10 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticCoreQuery($project_id, $query_num,$query_den)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_core = JFactory::getDbo()->getQuery(true);
+    $query_core = Factory::getDbo()->getQuery(true);
     
     $query_core->select('(n.num / d.den) AS total, pt.team_id');
     $query_core->from('#__sportsmanagement_project_team AS pt');
@@ -179,8 +188,8 @@ class SMStatistic extends JObject
      */
     function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false,$table = 'match_staff_statistic')
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = $db->getQuery(true);
     
@@ -240,10 +249,10 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select,$which='statistic')
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select($select);
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -289,17 +298,19 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id ');
+    $query_num->where('m.published = 1');
+    $query_num->where('m.team1_result IS NOT NULL' );
     $query_num->where('pt.project_id = ' . $project_id);
     if ($division_id != 0)
 	{
@@ -330,10 +341,10 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den,$select)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_core = JFactory::getDbo()->getQuery(true);
+    $query_core = Factory::getDbo()->getQuery(true);
     
     $query_core->select($select);
     $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -368,16 +379,15 @@ class SMStatistic extends JObject
      */
     function getSids($id_field='stat_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = self::getParams();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-        
+       
         $stat_ids = $params->get($id_field);
        
 		if (!count($stat_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -398,24 +408,14 @@ class SMStatistic extends JObject
      */
     function getQuotedSids($id_field='stat_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = self::getParams();
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id_field<br><pre>'.print_r($id_field,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' get<br><pre>'.print_r($params->get($id_field),true).'</pre>'),'');
-        
-		//$event_ids = explode(',', $params->get($id_field));
         $event_ids = $params->get($id_field);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' event_ids<br><pre>'.print_r($event_ids,true).'</pre>'),'');
- }
         
 		if (!count($event_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -427,11 +427,6 @@ class SMStatistic extends JObject
 		}		
 		return $ids;
 	}
-    
-    
-    
-    
-    
 
 	/**
 	 * get an instance of class corresponding to type
@@ -444,11 +439,16 @@ class SMStatistic extends JObject
 
 		if (!class_exists($classname))
 		{
-			$file = JPATH_COMPONENT_ADMINISTRATOR .DS . 'statistics' . DS .$class.'.php';
-			if (!file_exists($file)) {
-				JError::raiseError(0, $classname .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
+			$file = JPATH_SITE .'/administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'statistics'.DIRECTORY_SEPARATOR.$class.'.php';
+			if (!File::exists($file)) {
+				Log::add( $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'), Log::ERROR, 'jsmerror');
 			}
-			require_once($file);
+            try {
+JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMINISTRATOR);			
+            } catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
 		}
 		$stat = new $classname();
 		return $stat;
@@ -493,27 +493,23 @@ class SMStatistic extends JObject
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
 	 */
 	function getBaseParams()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' baseparams<br><pre>'.print_r($this->baseparams,true).'</pre>'),'');
- }
        
 		$paramsdata = $this->baseparams;
-		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics' . DS . 'base.xml';
-		$params = new JRegistry( $paramsdata, $paramsdefs );
+		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'statistics' .DIRECTORY_SEPARATOR. 'base.xml';
+		$params = new Registry( $paramsdata, $paramsdefs );
   
         return $params;
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
 	 */
 	function getClassParams()
@@ -522,8 +518,8 @@ class SMStatistic extends JObject
 		$rc = new ReflectionClass(get_class($this));
 		$currentdir = dirname($rc->getFileName());
 		$paramsdata = $this->params;
-		$paramsdefs = $currentdir. DS . $this->_name .'.xml';
-		$params = new JRegistry( $paramsdata, $paramsdefs );
+		$paramsdefs = $currentdir.DIRECTORY_SEPARATOR. $this->_name .'.xml';
+		$params = new Registry( $paramsdata, $paramsdefs );
         return $params;
 	}
 	
@@ -536,23 +532,23 @@ class SMStatistic extends JObject
 		// cannot use __FILE__ because extensions can have their own stats
 		$rc = new ReflectionClass(get_class($this));
 		$currentdir = dirname($rc->getFileName());
-		return $currentdir. DS . $this->_name .'.xml';
+		return $currentdir.DIRECTORY_SEPARATOR. $this->_name .'.xml';
 	}
 	
 	/**
-	 * return Statistic params as JParameter objet
+	 * return Statistic params as objet
 	 * @return object
      * https://docs.joomla.org/J2.5:Developing_a_MVC_Component/Adding_configuration
      * merge params
 	 */
 	function getParams()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		if (empty($this->_params))
 		{
-		  $params = new JRegistry;
+		  $params = new Registry;
           $params = self::getBaseParams();
           // Merge global params with item params
           $classparams = self::getClassParams();
@@ -562,14 +558,7 @@ class SMStatistic extends JObject
             //$this->_params = self::getClassParams();
           $this->_params = $params;  
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($this->_params,true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
- }
-        
+       
 		return $this->_params;
 	}
 	
@@ -627,7 +616,7 @@ class SMStatistic extends JObject
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -650,7 +639,7 @@ class SMStatistic extends JObject
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) 
         {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -675,7 +664,7 @@ class SMStatistic extends JObject
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			Log::add( get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -702,9 +691,9 @@ class SMStatistic extends JObject
 			{
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
-			return JHtml::image($iconPath, JText::_($this->name),	array( "title" => JText::_($this->name) ));
+			return HTMLHelper::image($iconPath, Text::_($this->name),array( "title" => Text::_($this->name),"width" => 30 ));
 		}
-		return '<span class="stat-alternate hasTip" title="'.JText::_($this->name).'">'.JText::_($this->short).'</span>';
+		return '<span class="stat-alternate hasTip" title="'.Text::_($this->name).'">'.Text::_($this->short).'</span>';
 	}
 
 	/**
@@ -715,7 +704,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -726,7 +715,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayersStats($match_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -737,7 +726,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByGame($teamplayer_id, $project_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -748,7 +737,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -761,7 +750,7 @@ class SMStatistic extends JObject
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -775,7 +764,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return array();
 	}
 
@@ -788,7 +777,7 @@ class SMStatistic extends JObject
 	 */
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->getQuery(true);
 		
@@ -796,19 +785,20 @@ class SMStatistic extends JObject
         {
             case 'basic':
             case 'complexsum':
+            case 'sumstats':
             $query_core->select($select);
             $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
             $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
             $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
             $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
             $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
-            $query_core->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ( '. $statistic_id );
+            $query_core->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ( '. $statistic_id .' )' );
             $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
             $query_core->where('pt.project_id = ' . $project_id);
             return $query_core;
             break;
             default:
-            JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+            Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
             return array();
             break;
         }
@@ -823,7 +813,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{		
-		JError::raiseWarning(0,$this->_name .': '.  JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add($this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 	
@@ -835,7 +825,7 @@ class SMStatistic extends JObject
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		JError::raiseWarning(0,$this->_name .': '.  JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add($this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -847,7 +837,7 @@ class SMStatistic extends JObject
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		Log::add( $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'), Log::WARNING, 'jsmerror');
 		return 0;
 	}
 
@@ -862,9 +852,9 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -898,10 +888,6 @@ class SMStatistic extends JObject
         $query->where('p.published = 1');
         $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
 
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         
         if (isset($factors))
 		{
@@ -911,7 +897,7 @@ try{
             } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 			// Apply weighting using factors
 			$res = array();
@@ -938,7 +924,7 @@ try{
             } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 		}
 
@@ -970,9 +956,9 @@ try{
 	 */
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1008,16 +994,14 @@ try{
 		if ($project_id)
 		{
             $query->where('p.id = ' . $project_id);
+            $query->where('pt.project_id = ' . $project_id);
+            $query->where('ppos.project_id = ' . $project_id);
 		}
 		if ($sports_type_id)
 		{
             $query->where('p.sports_type_id = '.$sports_type_id);
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         
 		if (isset($factors))
 		{
@@ -1055,43 +1039,38 @@ try{
 	protected function getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
 
-		// To be robust against partly filled in information for a match (match player, statistic, event)
-		// we determine if a player was contributing to a match, by checking for the following conditions:
-		// 1. the player is registered as a player for the match
-		// 2. the player has a statistic registered for the match
-		// 3. the player has an event registered for the match
-		// If any of these conditions are met, we assume the player was part of the match
-		
-
-        
+/**
+ * 		 To be robust against partly filled in information for a match (match player, statistic, event)
+ * 		 we determine if a player was contributing to a match, by checking for the following conditions:
+ * 		 1. the player is registered as a player for the match
+ * 		 2. the player has a statistic registered for the match
+ * 		 3. the player has an event registered for the match
+ * 		 If any of these conditions are met, we assume the player was part of the match
+ */
         
         if ($projectteam_id)
 		{
             $query_mp->where('pt.id = ' . $projectteam_id);
-            $query_ms->where('pt.id = ' . $projectteam_id);
-            $query_me->where('pt.id = ' . $projectteam_id);
 		}
 		if ($project_id)
 		{
             $query_mp->where('p.id = ' . $project_id);
-            $query_ms->where('p.id = ' . $project_id);
-            $query_me->where('p.id = ' . $project_id);
 		}
 		if ($sports_type_id)
 		{
             $query_mp->where('p.sports_type_id = ' . $sports_type_id);
-            $query_ms->where('p.sports_type_id = ' . $sports_type_id);
-            $query_me->where('p.sports_type_id = ' . $sports_type_id);
 		}
 
-		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
-		// All of them have a match_id and teamplayer_id.
+/**
+ * 		 Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
+ * 		 All of them have a match_id and teamplayer_id.
+ */
        
         $query_mp->select('m.id AS mid, tp.person_id');
         $query_mp->from('#__sportsmanagement_match_player AS md');
@@ -1102,47 +1081,18 @@ try{
         $query_mp->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query_mp->where('tp.person_id = '.$person_id);
         $query_mp->where('(md.came_in = 0 OR md.came_in = 1)');
+        $query_mp->where('m.published = 1');
+        $query_mp->where('m.team1_result IS NOT NULL' );
         $query_mp->group('m.id');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
- }       
- 
-        $query_ms->select('m.id AS mid, tp.person_id');
-        $query_ms->from('#__sportsmanagement_match_statistic AS md');
-        $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-        $query_ms->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-        $query_ms->where('tp.person_id = '.$person_id);
-        $query_ms->group('m.id');
-
-		$query_me->select('m.id AS mid, tp.person_id');
-        $query_me->from('#__sportsmanagement_match_event AS md');
-        $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-        $query_me->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-        $query_me->where('tp.person_id = '.$person_id);
-        $query_me->group('m.id');
 		
         $query->select('COUNT(m.id)');
         $query->from('#__sportsmanagement_match AS m');
         $query->join('LEFT','('.$query_mp.') AS mp ON mp.mid = m.id');
-        $query->join('LEFT','('.$query_ms.') AS ms ON mp.mid = m.id');
-        $query->join('LEFT','('.$query_me.') AS me ON mp.mid = m.id');
-        $query->where('mp.person_id = '.$person_id.' OR ms.person_id = '.$person_id . ' OR me.person_id = '.$person_id);
+
+        $query->where('mp.person_id = '.$person_id);
         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }
-        
+
 		$res = $db->loadResult();
 		return $res;
 	}
@@ -1159,20 +1109,11 @@ try{
 	 */
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
-        }
-
 		if ( $sids )
         {
         $quoted_sids = array();
@@ -1214,17 +1155,11 @@ $res = $db->loadResult();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }        
         }
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }       
-        
+       
         
 		if (!isset($res))
 		{
@@ -1244,8 +1179,8 @@ $res = $db->loadResult();
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = NULL)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1271,26 +1206,24 @@ $res = $db->loadResult();
         $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
         $query->join('INNER','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
         $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+	$query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id AND r.project_id = pt.project_id ');
         $query->where('st.team_id = '. $team_id);
         $query->where('pt.project_id = ' . $project_id);
         $query->where('ppos.position_id = '. $position_id);
+	$query->where('r.project_id = ' . $project_id);
 
 
 		if (isset($factors))
 		{
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
-            
+           
 try {
 $stats = $db->loadObjectList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
             
 			// Apply weighting using factors
@@ -1323,19 +1256,13 @@ $stats = $db->loadObjectList();
             $query->group('tp.person_id');
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        //sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
             
 try{
 			$res = $db->loadObjectList('person_id');
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 			// Determine the total statistics for the position_id of the project team
             $query->clear('select');
@@ -1343,12 +1270,6 @@ try{
             $query->select('SUM(ms.value) AS value');
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-    $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            }
 
 try{            
 			$res['totals'] = new stdclass;
@@ -1356,7 +1277,7 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }            
             
 			if (!isset($res['totals']->value))
@@ -1377,88 +1298,146 @@ try{
 	{
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $subquery = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
-
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $subquery = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
+        
+        $mp_array = array();
+        $mptpid_array = array();
+        $ms_array = array();
+        $mstpid_array = array();
+        $me_array = array();
+        $metpid_array = array();
 
 		// Get the number of matches played per teamplayer of the projectteam.
 		// This is derived from three tables: match_player, match_statistic and match_event
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
 		// All of them have a match_id and teamplayer_id.
+        $query_mp->clear();
         $query_mp->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_mp->from('#__sportsmanagement_match_player AS md');
         $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query_mp->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_mp->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+
         $query_mp->where('pt.project_id = ' . $project_id);
+        $query_mp->where('p.id = ' . $project_id);
         $query_mp->where('st.team_id = ' . $team_id);
         $query_mp->where('(md.came_in = 0 OR md.came_in = 1)');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
- }
+        $db->setQuery($query_mp);
+		$res_mp = $db->loadObjectList();
+        
+        foreach ($res_mp as $mp) 
+        {
+			$mp_array[] = $mp->mid;
+            $mptpid_array[] = $mp->tpid;
+		}
+        $comma_separated_mp = implode(",", $mp_array);
+        $comma_separated_mptpid = implode(",", $mptpid_array);
+        
 
-		$query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
+		$query_ms->clear();
+        $query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_ms->from('#__sportsmanagement_match_statistic AS md');
         $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        $query_ms->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_ms->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+        
+       
         $query_ms->where('pt.project_id = ' . $project_id);
         $query_ms->where('st.team_id = ' . $team_id);
- 
- if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{       
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
- }
         
+        $db->setQuery($query_ms);
+		$res_ms = $db->loadObjectList();
+        
+        foreach ($res_ms as $ms) 
+        {
+			$ms_array[] = $ms->mid;
+            $mstpid_array[] = $ms->tpid;
+		}
+        $comma_separated_ms = implode(",", $ms_array);
+        $comma_separated_mstpid = implode(",", $mstpid_array);
+ 
+        $query_me->clear();
 		$query_me->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_me->from('#__sportsmanagement_match_event AS md');
         $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        $query_me->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_me->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+        
+        
         $query_me->where('pt.project_id = ' . $project_id);
         $query_me->where('st.team_id = ' . $team_id);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
- }
+        $db->setQuery($query_me);
+		$res_me = $db->loadObjectList();
         
-
+        foreach ($res_me as $me) 
+        {
+			$me_array[] = $me->mid;
+            $metpid_array[] = $me->tpid;
+		}
+        $comma_separated_me = implode(",", $me_array);
+        $comma_separated_metpid = implode(",", $metpid_array);
+       
         $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
         $subquery->from('#__sportsmanagement_match AS m');
         $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
         $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
-        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
-        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
-        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
-        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
+        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ');
         $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        if ( !$comma_separated_mptpid )
+        {
+            $comma_separated_mptpid = 0;
+        }
+        if ( !$comma_separated_mstpid )
+        {
+            $comma_separated_mstpid = 0;
+        }
+        if ( !$comma_separated_metpid )
+        {
+            $comma_separated_metpid = 0;
+        }
+        $subquery->where('( tp.id IN ('.$comma_separated_mptpid.') OR tp.id IN ('.$comma_separated_mstpid.') OR tp.id IN ('.$comma_separated_metpid.') )');
+        
+        if ( $comma_separated_mp )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_mp.')');    
+        }
+        if ( $comma_separated_ms )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_ms.')');    
+        }
+        if ( $comma_separated_me )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_me.')');    
+        }
         $subquery->where('st.team_id = '.$team_id);
         $subquery->where('p.id = ' . $project_id);
         $subquery->where('p.published = 1');
         $subquery->where('m.published = 1');
-        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
-        
         
         $query->select('pse.person_id, COUNT(pse.mid) AS value');
         $query->from('( '.$subquery.' ) AS pse');
         $query->group('pse.tpid');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }       
                 
 		$db->setQuery($query);
 		$res = $db->loadObjectList('person_id');
@@ -1486,8 +1465,8 @@ try{
 	protected function getRosterStatsForEvents($team_id, $project_id, $position_id, $sids)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
-        $app = JFactory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1514,10 +1493,6 @@ try{
                
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }
         
 		$res = $db->loadObjectList('person_id');
 
@@ -1528,10 +1503,7 @@ try{
         
 		$db->setQuery($query);
  
- if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{       
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }
+ 
         
 		$res['totals'] = new stdclass;
 		$res['totals']->value = $db->loadResult();
@@ -1550,35 +1522,26 @@ try{
 	protected function getGamesPlayedQuery($project_id, $division_id, $team_id)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $subquery = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $subquery = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
 
+/**
+ * 		To be robust against partly filled in information for a match (match player, statistic, event)
+ * 		we determine if a player was contributing to a match, by checking for the following conditions:
+ * 		1. the player is registered as a player for the match
+ * 		2. the player has a statistic registered for the match
+ * 		3. the player has an event registered for the match
+ * 		If any of these conditions are met, we assume the player was part of the match
+ */
 
-		// To be robust against partly filled in information for a match (match player, statistic, event)
-		// we determine if a player was contributing to a match, by checking for the following conditions:
-		// 1. the player is registered as a player for the match
-		// 2. the player has a statistic registered for the match
-		// 3. the player has an event registered for the match
-		// If any of these conditions are met, we assume the player was part of the match
-//		$common_query_part 	= ' INNER JOIN #__joomleague_match AS m ON m.id = md.match_id'
-//							. ' INNER JOIN #__joomleague_team_player AS tp ON tp.id = md.teamplayer_id'
-//							. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//							. ' WHERE pt.project_id=' . $db->Quote($project_id);
-//		if ($division_id)
-//		{
-//			$common_query_part .= ' AND pt.division_id=' . $db->Quote($division_id);
-//		}
-//		if ($team_id)
-//		{
-//			$common_query_part .= ' AND pt.team_id=' . $db->Quote($team_id);
-//		}
-
-		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
-		// All of them have a match_id and teamplayer_id.
+/**
+ * 		Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
+ * 		All of them have a match_id and teamplayer_id.
+ */
 		$query_mp->select('m.id AS mid, tp.id AS tpid');
         $query_mp->from('#__sportsmanagement_match_player AS md');
         $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
@@ -1586,6 +1549,8 @@ try{
         $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_mp->where('pt.project_id = ' . $project_id);
+        $query_mp->where('m.published = 1');
+        $query_mp->where('m.team1_result IS NOT NULL' );
         if ($division_id)
 		{
             $query_mp->where('pt.division_id = ' . $division_id);
@@ -1604,7 +1569,8 @@ try{
         $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_ms->where('pt.project_id = ' . $project_id);
-        
+        $query_ms->where('m.published = 1');
+        $query_ms->where('m.team1_result IS NOT NULL' );
         if ($division_id)
 		{
             $query_ms->where('pt.division_id = ' . $division_id);
@@ -1613,7 +1579,6 @@ try{
 		{
             $query_ms->where('st.team_id = ' . $team_id);
 		}
-        //$query_ms->where('(md.came_in = 0 OR md.came_in = 1)');
         $query_ms->group('m.id, tp.id');
 		$query_me->select('m.id AS mid, tp.id AS tpid');
         $query_me->from('#__sportsmanagement_match_event AS md');
@@ -1622,6 +1587,8 @@ try{
         $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_me->where('pt.project_id = ' . $project_id);
+        $query_me->where('m.published = 1');
+        $query_me->where('m.team1_result IS NOT NULL' );
 
         if ($division_id)
 		{

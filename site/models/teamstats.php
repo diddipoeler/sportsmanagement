@@ -4,13 +4,17 @@
  * @file      teamstats.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teamstats
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelTeamStats
@@ -21,7 +25,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeamStats extends JModelLegacy
+class sportsmanagementModelTeamStats extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $teamid = 0;
@@ -50,14 +54,14 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	{
 		parent::__construct();
 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
-		self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
-        self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
+		self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT');
+		self::$teamid = Factory::getApplication()->input->get('tid', 0, 'INT');
+        self::$projectteamid = Factory::getApplication()->input->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		//preload the team;
 		self::getTeam();
 	}
@@ -69,15 +73,12 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getTeam( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamid<br><pre>'.print_r($this->teamid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
-        
+       
 		# it should be checked if any tid is given in the params of the url
 		# if ( is_null( $this->team ) )
 		if ( !isset( self::$team ) )
@@ -87,16 +88,21 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 			 $query->select('*');
              $query->from('#__sportsmanagement_team');
              $query->where('id = '. self::$teamid );
+				try{
              $db->setQuery($query);
              self::$team = $db->loadObject();
-//				$this->team = $this->getTable( 'Team', 'sportsmanagementTable' );
-//				$this->team->load( $this->teamid );
+} catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                self::$team = false;
+            }
+				
 			}
 		}
         
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$team;
 	}
 
@@ -107,8 +113,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getHighest($homeaway, $which)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -191,27 +197,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             break;
         }
 
+		try{
             $db->setQuery($query, 0, 1);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
-        $result= $db->loadObject( );
-        
-        if ( !$result )
-        {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        
+        $result = $db->loadObject( );
+        } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                $result = false;
+            }
+       
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
         
         
@@ -226,8 +222,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getNoGoalsAgainst( )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -252,16 +248,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->where('alt_decision = 0');
            $query->where('( (t1.id = '.self::$team->id.' AND team2_result=0 ) OR (t2.id = '.self::$team->id.' AND team1_result=0 ) ) ');
            $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
-                   
+                 try{  
     		$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
     		self::$nogoals_against = $db->loadObject( );
+		} catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                self::$nogoals_against = false;
+            }
     	}
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
     	return self::$nogoals_against;
     }
     
@@ -274,8 +271,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getSeasonTotals($which)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -307,34 +304,15 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->where('matches.published = 1');
         $query->where('t.id = '.self::$team->id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        
+        try{
         $db->setQuery($query, 0, 1);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-    	//$this->totalshome = $db->loadObject();
-    	
-        if ( !$db->loadObject() )
-        {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
         switch ($which)
         {
             case 'HOME':
             if ( is_null( self::$totalshome ) )
     	    {
     	       self::$totalshome = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                return self::$totalshome;
     	    }   
             break;
@@ -342,11 +320,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             if ( is_null( self::$totalsaway ) )
     	    {
     	       self::$totalsaway = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                return self::$totalsaway;
     	    }
             break;
         }
-        
+        } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+                return false;
+            }
     	
         
     }
@@ -358,8 +342,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		 */
 		function getChartData( )
 		{
-		  $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+		  $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -388,24 +372,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->group('rounds.roundcode');   
 
 
-                   
+                try{   
     		$db->setQuery( $query );
     		self::$matchdaytotals = $db->loadObjectList();
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+           } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                self::$matchdaytotals = false;
             }
             
-            if ( !self::$matchdaytotals )
-        {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-            
-            
-            
+   $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect         
     		return self::$matchdaytotals;
     }
     
@@ -416,8 +393,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getMatchDayTotals( )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -447,26 +424,18 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
            $query->group('rounds.roundcode');
         
-            
+            try{
     		$db->setQuery( $query );
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-         }
-            
     		self::$matchdaytotals = $db->loadObjectList();
-            
-            if ( !self::$matchdaytotals )
-        {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-            
-            
+            } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                self::$matchdaytotals = false;
+            }
             
     	}
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
     	return self::$matchdaytotals;
     }
 
@@ -477,8 +446,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getTotalRounds( )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -489,27 +458,14 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             $query->select('COUNT(id)');
            $query->from('#__sportsmanagement_round ');
            $query->where('project_id = '.self::$projectid);
-                    
             $db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
             self::$totalrounds = $db->loadResult();
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
         }
         
         if ( !self::$totalrounds )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), Log::INFO, 'jsmerror');	 
         }
         
         return self::$totalrounds;
@@ -523,8 +479,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function _getAttendance( )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -543,14 +499,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->where('st1.team_id = '.self::$teamid);
         $query->where('matches.crowd > 0 ');
         $query->where('matches.published = 1');
-
-                       
-    		$db->setQuery( $query );
-        
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+                 try{     
+	$db->setQuery( $query );
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         // Joomla! 3.0 code here
@@ -561,23 +511,18 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         // Joomla! 2.5 code here
         self::$attendanceranking = $db->loadResultArray();
         } 
-
+ } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                self::$attendanceranking = false;
+            }
+		
+		
+		
     	}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-            
-    	         
-        if ( !self::$attendanceranking )
-        {
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        }
-        
+
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     	return self::$attendanceranking;
     }
 
@@ -644,8 +589,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getLogo( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -655,7 +600,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('LEFT',' #__sportsmanagement_team AS teams ON clubs.id = teams.club_id ');
         $query->where('teams.id = '.self::$teamid);
     	$db->setQuery( $query );
-    	$logo = JURI::root().$db->loadResult();
+    	$logo = Uri::root().$db->loadResult();
 
 		return $logo;
 	}
@@ -667,8 +612,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getResults()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -698,25 +643,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
         $matches = $db->loadObjectList();
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-            
-    	         
         if ( !$matches )
         {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
         }
 		
 		$results = array(	'win' => array(), 'tie' => array(), 'loss' => array(), 'forfeit' => array(),

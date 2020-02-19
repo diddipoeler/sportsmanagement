@@ -1,24 +1,23 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      allprojectrounds.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojectrounds
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
-
-
-//require_once( JLG_PATH_SITE . DS . 'extensions' .DS . 'jlallprojectrounds' .DS . 'helpers' . DS . 'jlallprojectrounds.php' );
-//require_once( JLG_PATH_SITE . DS . 'models' . DS .'project.php' );
 
 /**
  * sportsmanagementModelallprojectrounds
@@ -29,7 +28,7 @@ jimport('joomla.utilities.arrayhelper') ;
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallprojectrounds extends JModelLegacy
+class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 {
 	var $projectid = 0;
 	var $project_ids = 0;
@@ -66,34 +65,12 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 	function __construct( )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-    //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
     $this->projectid = $jinput->request->get('p', 0, 'INT');
     sportsmanagementModelProject::$projectid = $this->projectid;
     sportsmanagementModelProject::$projectslug = $this->projectid;
-
-//    $menu = JMenu::getInstance('site');
-//        $item = $menu->getActive();
-//        $params = $menu->getParams($item->id);
-//       $registry = new JRegistry();
-//$registry->loadArray($params);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'item->id<pre>'.print_r($item->id,true).'</pre>' ),'Error');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($params,true).'</pre>' ),'Error');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'request<pre>'.print_r($_REQUEST,true).'</pre>' ),'Error');
-
-//$newparams = $registry->toString('ini');
-//$newparams = $registry->toArray();
-//echo "<b>menue newparams</b><pre>" . print_r($newparams, true) . "</pre>";  
-
-
-//foreach ($_REQUEST as $key => $value ) {
-//            
-//            //$this->_params[$key] = $value;
-//        }
 
 $this->_params['Itemid'] = $jinput->request->get('Itemid', 0, 'INT');
 $this->_params['show_columns'] = $jinput->request->get('show_columns', 0, 'INT');
@@ -113,17 +90,6 @@ $this->_params['table_class'] = $jinput->request->get('table_class', 'table', 'S
 $this->_params['view'] = $jinput->request->get('view', 'allprojectrounds', 'STR');
 $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement', 'STR');
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
-
-// 		$this->round = JFactory::getApplication()->input->getInt( "r", $this->current_round);
-// 		$this->part  = JFactory::getApplication()->input->getInt( "part", 0);
-// 		$this->from  = JFactory::getApplication()->input->getInt( 'from', $this->round );
-// 		$this->to	 = JFactory::getApplication()->input->getInt( 'to', $this->round);
-// 		$this->type  = JFactory::getApplication()->input->getInt( 'type', 0 );
-// 		$this->last  = JFactory::getApplication()->input->getInt( 'last', 0 );
-
-// 		$this->selDivision = JFactory::getApplication()->input->getInt( 'division', 0 );
-
 		parent::__construct( );
 	}
 
@@ -136,9 +102,9 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
    */
   function getProjectMatches()
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
   
   $result = array();
@@ -175,7 +141,7 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
 		$db->setQuery($query);
     if (!$result = $db->loadObjectList()) 
     {
-			JError::raiseWarning(0, $db->getErrorMsg());
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::INFO, 'jsmerror');
 		}
 
 		$this->result = $result;
@@ -191,9 +157,9 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
    */
   function getProjectTeamID($favteams)
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
   
   foreach ( $favteams as $key => $value )
@@ -203,10 +169,14 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
     $query->from('#__sportsmanagement_project_team ');
     $query->where('project_id ='. $this->projectid);
     $query->where('team_id ='. $value);
-
+try{
 $db->setQuery( $query );
 $this->ProjectTeams[$value] = $db->loadResult();
-  
+   }
+catch (Exception $e){
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_FAVTEAM'), Log::INFO, 'jsmerror');
+}
+	  
   }
   
   return $this->ProjectTeams;
@@ -219,9 +189,9 @@ $this->ProjectTeams[$value] = $db->loadResult();
    */
   function getSubstitutes()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$projectteamplayer = array();
@@ -268,14 +238,10 @@ $this->ProjectTeams[$value] = $db->loadResult();
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-        
+       
         if ( !$result )
         {
-        JError::raiseWarning(0, 'Keine Auswechselungen vorhanden');      
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+        Log::add(Text::_('Keine Auswechselungen vorhanden'), Log::WARNING, 'jsmerror');  
         }
      else
      {   
@@ -295,9 +261,9 @@ $this->ProjectTeams[$value] = $db->loadResult();
 	 */
 	function getPlayersEvents()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$playersevents = array();
@@ -321,14 +287,12 @@ $this->ProjectTeams[$value] = $db->loadResult();
 
 if ( !$res )
         {
-        JError::raiseWarning(0, 'Keine Ereignisse vorhanden');     
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+        Log::add(Text::_('Keine Ereignisse vorhanden'), Log::WARNING, 'jsmerror');
         }
         
 		foreach ( $res as $row )
 		{
-    $playersevents[] = JHTML::_( 'image', $row->eticon, JText::_($row->eticon ), NULL ) . JText::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
+    $playersevents[] = HTMLHelper::_( 'image', $row->eticon, Text::_($row->eticon ), NULL ) . Text::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
     }
     
 // 			$this->_playersevents = $events;
@@ -344,9 +308,9 @@ if ( !$res )
    */
   function getMatchPlayers()
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$projectteamplayer = array();
@@ -383,13 +347,10 @@ if ( !$res )
 		$matchplayers = $db->loadObjectList();
         
             
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 
         if ( !$matchplayers )
         {
-        JError::raiseWarning(0, 'Keine Spieler vorhanden');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+        Log::add(Text::_('Keine Spieler vorhanden'), Log::WARNING, 'jsmerror');
         }
 		
 	
@@ -438,14 +399,8 @@ if ( !$res )
    */
   function getRoundsColumn($rounds,$config)
   {
-  $app = JFactory::getApplication();
-  
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'Error');
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
-  
-  //$countrows = count($rounds) %2;
-  //echo 'countrows -> '.$countrows.'<br>';
-  
+  $app = Factory::getApplication();
+ 
   if ( count($rounds) %2 ) 
   { 
 //   echo "Zahl ist ungrade<br>"; 
@@ -505,8 +460,7 @@ if ( !$res )
   
   if ( $config['show_firstroster'] )
   {
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' show_firstroster'.''.$config['show_firstroster'].'' ),'');  
-  $htmlcontent[$a]['firstroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['firstroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstroster'] .= implode(",",self::getMatchPlayers());
@@ -514,7 +468,7 @@ if ( !$res )
   }
   if ( $config['show_firstsubst'] )
   {
-  $htmlcontent[$a]['firstsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['firstsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstsubst'] .= implode(",",self::getSubstitutes());
@@ -522,7 +476,7 @@ if ( !$res )
   }
   if ( $config['show_firstevents'] )
   {
-  $htmlcontent[$a]['firstevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['firstevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstevents'] .= implode(",",self::getPlayersEvents());
@@ -550,7 +504,7 @@ if ( !$res )
   {
   if ( $config['show_secondroster'] )
   {
-  $htmlcontent[$a]['secondroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['secondroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondroster'] .= implode(",",$this->getMatchPlayers());
@@ -558,7 +512,7 @@ if ( !$res )
   }
   if ( $config['show_secondsubst'] )
   {
-  $htmlcontent[$a]['secondsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['secondsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondsubst'] .= implode(",",$this->getSubstitutes());
@@ -566,7 +520,7 @@ if ( !$res )
   }
   if ( $config['show_secondevents'] )
   {
-  $htmlcontent[$a]['secondevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['secondevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondevents'] .= implode(",",$this->getPlayersEvents());
@@ -609,19 +563,19 @@ if ( !$res )
   {
   
   
-  $htmlcontent[$a]['firstroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['firstroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstroster'] .= implode(",",$this->getMatchPlayers());
   $htmlcontent[$a]['firstroster'] .= '';
   
-  $htmlcontent[$a]['firstsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['firstsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstsubst'] .= implode(",",$this->getSubstitutes());
   $htmlcontent[$a]['firstsubst'] .= '';
   
-  $htmlcontent[$a]['firstevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['firstevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstevents'] .= implode(",",$this->getPlayersEvents());

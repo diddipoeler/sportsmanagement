@@ -33,51 +33,34 @@
 			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM</option>	
 			<option value="1">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE</option>	
 			</field>
+			
+			<field name="eventtime" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_USE_EVENTTIME"
+			description="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_USE_EVENTTIME_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+</field>
+			
+			
 	</fieldset>			
 
 	<fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">			
-		<field 	
-			name="icon" 
-			type="media" 
-			default=""				
-			label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
-			description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
-			class="inputbox"
-			directory=""
-			preview="show"
-			targetfolder="sport_types"
-			>
-		</field>
-	</fieldset>
-
-<!--  
-  <fieldset name="imageselect">			
-		<field 	
-			name="icon" 
-			type="imageselect" 
-			default="com_sportsmanagement/database/placeholders/placeholder_21.png"				
-			label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
-			description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
-			class="inputbox"
-			directory="com_sportsmanagement/database/sport_types"
-			targetfolder="sport_types"
-			preview="show"
-			>
-		</field>
-	</fieldset>
--->
-
-<!--  
-  <fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
+<field 	
+name="icon" 
+type="media" 
+default="images/com_sportsmanagement/database/sport_types/placeholder_21.png"				
+label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
+class="inputbox"
+directory="images/com_sportsmanagement/database/sport_types"
+preview="show"
+showon="show_info:1[AND]show_image:1"
+targetfolder="sport_types"
+>
+</field>
 		
-		</fieldset>
-	</fields>	
--->  
-  			
+	</fieldset>
+ 			
 </form>

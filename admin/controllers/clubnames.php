@@ -4,17 +4,16 @@
  * @file      clubnames.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+ 
 /**
  * sportsmanagementControllerclubnames
  * 
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerclubnames extends JControllerAdmin
+class sportsmanagementControllerclubnames extends JSMControllerAdmin
 {
   
   /**
@@ -35,13 +34,13 @@ class sportsmanagementControllerclubnames extends JControllerAdmin
   public function import()
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;    
         
       $model = $this->getModel();
        $model->import();  
-      $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));  
+      $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));  
         
     } 
  

@@ -4,23 +4,24 @@
  * @file      editlineup_players.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editmatch
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_START_LU'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_START_LU'); ?></legend>
 			<table class='adminlist'>
 			<thead>
 				<tr>
 					<th>
-					<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ROSTER'); ?>
+					<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ROSTER'); ?>
 					</th>
 					<th>
-					<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ASSIGNED'); ?>
+					<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ASSIGNED'); ?>
 					</th>					
 				</tr>
 			</thead>
@@ -32,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
                         {
                         if($this->preFillSuccess) 
                         {
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_DONE') . '<br /><br />';
+							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_DONE') . '<br /><br />';
 						}
                         }
 						?>
@@ -43,7 +44,14 @@ defined('_JEXEC') or die('Restricted access');
 					<td style="text-align:center; vertical-align:middle; ">					
 						<?php
 						// echo select list of non assigned players from team roster
+						if ( isset($this->lists['team_players']) )
+						{
 						echo $this->lists['team_players'];
+						}
+						else
+						{
+						echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
+						}
 						?>
 					</td>
 					<td style="text-align:center; vertical-align:top; ">
@@ -60,22 +68,22 @@ defined('_JEXEC') or die('Restricted access');
 										<br />
 										
                                         
-<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $position_id;?>');" />
-<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $position_id;?>','roster');" />
+<input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $position_id;?>');" />
+<input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $position_id;?>','roster');" />
                                         
 									</td>
 									<td>
 										<!-- player affected to this position -->
-										<b><?php echo JText::_($pos->text);?></b><br />
+										<b><?php echo Text::_($pos->text);?></b><br />
 										<?php echo $this->lists['team_players'.$position_id];?>
 									</td>
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- up/down buttons -->
 										<br />
 										<input	type="button" onclick="move_up('position<?php echo $position_id;?>');" class="inputbox move-up"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
+												value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
 										<input	type="button" onclick="move_down('position<?php echo $position_id;?>');" class="inputbox move-down"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
+												value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>
 								<?php

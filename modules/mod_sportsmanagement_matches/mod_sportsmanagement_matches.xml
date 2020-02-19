@@ -26,10 +26,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_matches.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_matches.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_matches.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_matches.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_matches.sys.ini</language>	
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_matches.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_matches.sys.ini</language>
 	</languages>
 
 	<config>
@@ -45,34 +41,44 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Matches" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
 <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-						 
-      <field name="cfg_which_database" 
+
+<field name="mootools" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+	label="MOD_SPORTSMANAGEMENT_MOOTOOLS_TITLE" 
+      description="MOD_SPORTSMANAGEMENT_MOOTOOLS_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+				
+<field name="cfg_which_database" 
+type="extensionradiobutton" 
+default="0"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
 
 	
-    <field	name="s" 
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
-					description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
-					required="">
-			</field>
+<field name="s" 
+task="seasons" 
+type="dependsql"
+depends="cfg_which_database"
+value_field="cfg_which_database"
+key_field="season_id"
+label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
+description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
+required="">
+</field>
 		
 				<field 	name="template" type="templatelist" default="default_tableless"
 						addfieldpath="/modules/mod_sportsmanagement_matches/fields/"
@@ -87,17 +93,17 @@
 						directory="modules/mod_sportsmanagement_matches/assets/images" 
 						hide_default="1" hide_none="0" />
 
-        <field 	name="p" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-			size="10"
-			 multiple="multiple"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
+<field name="p" 
+task="projects" 
+type="dependsql"
+depends="s"
+key_field="season_id"
+value_field="s"
+required=""
+size="10"
+multiple="multiple"
+label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
+description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
 						
 		<field 	name="project_not_used" 
 			task="projects" 
@@ -111,16 +117,6 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
             				
-<!--
-				<field	name="project" type="projects" default="" required="false"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
-
-				<field 	name="project_not_used" type="projects" default="" required="false"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
-
--->
 
 				<field 	name="order_by_project" type="extensionradiobutton" default="0" 
 				class="radio btn-group btn-group-yesno"
@@ -147,33 +143,25 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-<!--
-				<field 	name="teams" type="teams" default="" 
-						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
--->
+
 <field name="teams" 
-		type="dependsql" 
-		default="0" 
-		depends="p"
-		task="projectteamoptions" 
-		key_field="project_id"
-		value_field="p"
-		slug="true"
-		required="false"
-		size="10"
-		multiple="multiple"
-		label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
-		description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+type="dependsql" 
+default="0" 
+depends="p"
+task="projectteamoptions" 
+key_field="project_id"
+value_field="p"
+slug="true"
+required="false"
+size="10"
+multiple="multiple"
+label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
+description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_DESCR" />
-<!--
-				<field 	name="Itemid" type="jlmlitemid" default=""
-						label="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_DESCR" />
--->
+
 				<field 	name="show_no_matches_notice" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_TITLE"
@@ -215,10 +203,7 @@
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
-					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
-					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
--->          
+          
 				</field>
 
 				<field 	name="upcoming_first" type="extensionradiobutton" default="1"
@@ -281,10 +266,7 @@
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
-					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
-					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
--->          
+          
 				</field>
 
 				<field 	name="team_separator" type="text" default=":"
@@ -693,11 +675,11 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_RESET_LINK_STYLE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_RESET_LINK_STYLE_DESCR" />
 
-				<field 	name="next_text" type="text" default="&gt;&gt;"
+				<field 	name="next_text" type="text" default="&gt;&gt;" filter="raw"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_MATCH_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_MATCH_LINK_TEXT_DESCR" />
 
-				<field 	name="last_text" type="text" default="&lt;&lt;"
+				<field 	name="last_text" type="text" default="&lt;&lt;" filter="raw"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" />
 
@@ -747,7 +729,7 @@
 			
 		</field>
 		
-				<field 	name="moduleclass_sfx" type="text" default="" 
+				<field 	name="moduleclass_sfx" type="text" default="container-fluid" 
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 

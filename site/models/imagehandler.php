@@ -1,14 +1,32 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      imagehandler.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage imagehandler
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.model');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 
-
-class sportsmanagementModelImagehandler extends JModelLegacy
+/**
+ * sportsmanagementModelImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementModelImagehandler extends BaseDatabaseModel
 {
 	/**
 	 * Pagination object
@@ -25,27 +43,30 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	function __construct()
 	{
 		parent::__construct();
-
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
-
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
 		$search 	= $app->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
-
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
-
 	}
 
+	/**
+	 * sportsmanagementModelImagehandler::getState()
+	 * 
+	 * @param mixed $property
+	 * @param mixed $default
+	 * @return
+	 */
 	function getState($property = null, $default = NULL)
 	{
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->getVar( 'folder' );
+			$folder = Factory::getApplication()->input->getVar( 'folder' );
 			$this->setState('folder', $folder);
 
 			$set = true;
@@ -78,8 +99,6 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 					$info = @getimagesize($list[$i]->path);
 					$list[$i]->width		= @$info[0];
 					$list[$i]->height	= @$info[1];
-					//$list[$i]->type		= @$info[2];
-					//$list[$i]->mime		= @$info['mime'];
 
 					if (($info[0] > 60) || ($info[1] > 60)) {
 						$dimensions = $this->_imageResize($info[0], $info[1], 60);
@@ -106,32 +125,32 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function getList()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
         static $list;
 
-		// Only process the list once per request
+		/** Only process the list once per request */
 		if (is_array($list)) {
 			return $list;
 		}
 
-		// Get folder from request
+		/** Get folder from request */
 		$folder = $this->getState('folder');
 		$search = $this->getState('search');
 
-		// Initialize variables
-		$basePath = JPATH_SITE.DS.'images'.DS.$option.DS.'database'.DS.$folder;
+		/** Initialize variables */
+		$basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
 		$images 	= array ();
 
-		// Get the list of files and folders from the given folder
-		$fileList 	= JFolder::files($basePath);
+		/** Get the list of files and folders from the given folder */
+		$fileList 	= Folder::files($basePath);
 
-		// Iterate over the files if they exist
+		/** Iterate over the files if they exist */
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.DS.$file) && substr($file, 0, 1) != '.'
+				if (is_file($basePath.DIRECTORY_SEPARATOR.$file) && substr($file, 0, 1) != '.'
 					&& strtolower($file) !== 'index.html'
 					&& strtolower($file) !== 'thumbs.db'
 					&& strtolower($file) !== 'readme.txt'
@@ -142,14 +161,14 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 					if ( $search == '') {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
 					} elseif(stristr( $file, $search)) {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
@@ -192,16 +211,18 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function _imageResize($width, $height, $target)
 	{
-		//takes the larger size of the width and height and applies the
-		//formula accordingly...this is so this script will work
-		//dynamically with any size image
+/**
+ * 		takes the larger size of the width and height and applies the
+ * 		formula accordingly...this is so this script will work
+ * 		dynamically with any size image
+ */
 		if ($width > $height) {
 			$percentage = ($target / $width);
 		} else {
 			$percentage = ($target / $height);
 		}
 
-		//gets the new value and applies the percentage, then rounds the value
+		/** gets the new value and applies the percentage, then rounds the value */
 		$width = round($width * $percentage);
 		$height = round($height * $percentage);
 
@@ -228,61 +249,6 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 			}
 		}
 	}
-	
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.7
-	 */
-	/*
-    public function getForm($data = array(), $loadData = true)
-	{
-		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
-				array('load_data' => $loadData) );
-		if (empty($form))
-		{
-			return false;
-		}
-		return $form;
-	}
-	*/
-    
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.7
-	 */
-     /*
-	protected function loadFormData()
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
-		if (empty($data))
-		{
-			$data = $this->getData();
-		}
-		return $data;
-	}
-    /*
-	/**
-	 * Returns a Table object, always creating it
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-     /*
-	public function getTable($type = 'club', $prefix = 'table', $config = array())
-	{
-		return JTable::getInstance($type, $prefix, $config);
-	}
-    */
+
 }
 ?>

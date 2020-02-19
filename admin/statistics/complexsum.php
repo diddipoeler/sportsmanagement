@@ -1,18 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      complexsum.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticComplexsum
@@ -59,7 +61,7 @@ class SMStatisticComplexsum extends SMStatistic
 		
 		if (count($stat_ids) != count($factors)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 		
@@ -178,7 +180,7 @@ class SMStatisticComplexsum extends SMStatistic
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
 		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		
@@ -254,7 +256,6 @@ class SMStatisticComplexsum extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$details = $db->loadObjectList('teamplayer_id');
 
@@ -318,7 +319,7 @@ $stats = $db->loadObjectList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }		
 		// now calculate per player
 		$teams = array();
@@ -410,8 +411,8 @@ $stats = $db->loadObjectList();
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'ms.value, ms.statistic_id ';
@@ -419,7 +420,6 @@ $stats = $db->loadObjectList();
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		
@@ -446,15 +446,14 @@ $stats = $db->loadObjectList();
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE);
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		

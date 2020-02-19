@@ -4,7 +4,7 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionrules
  */
@@ -22,11 +22,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('predictionheading');
 echo $this->loadTemplate('sectionheader');
 echo $this->loadTemplate('info');
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,10 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JFormFieldEvent
@@ -60,9 +64,9 @@ class JFormFieldEvent extends JFormField
 	 */
 	function getInput() {
 		$db = &sportsmanagementHelper::getDBConnection();
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
-        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params =& ComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "com_sportsmanagement";
@@ -76,13 +80,13 @@ class JFormFieldEvent extends JFormField
 		$query = 'SELECT e.id, e.name FROM #__'.$database_table.'_eventtype e WHERE published=1 ORDER BY name';
 		$db->setQuery( $query );
 		$events = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $events as $event ) {
-			$mitems[] = JHtml::_('select.option',  $event->id, '&nbsp;'.JText::_($event->name). ' ('.$event->id.')' );
+			$mitems[] = HTMLHelper::_('select.option',  $event->id, '&nbsp;'.Text::_($event->name). ' ('.$event->id.')' );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id );
+		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

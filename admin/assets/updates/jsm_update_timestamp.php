@@ -1,39 +1,35 @@
 <?php
-// Check to ensure this file is included in Joomla!
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsm_update_timestamp.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage updates
+ */
+ 
 defined('_JEXEC') or die('Restricted access');
-// Include library dependencies
-//jimport('joomla.filter.input');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.filter.output');
-
 
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$uri	= JFactory::getUri();
+$uri	= Factory::getUri();
 
-//$link = $uri->toString();
-//$link = $uri->current();
-
-$table = JFactory::getApplication()->input->getVar('table');
+$table = Factory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
-//$request = JFactory::getApplication()->input->get();
-
-//echo '<br>table<pre>',print_r($table,true),'</pre>';
-
-//echo '<br>post<pre>',print_r($_POST,true),'</pre>';
-//echo '<br>request<pre>',print_r($_REQUEST,true),'</pre>';
-//echo '<br>request<pre>',print_r($request,true),'</pre>';
-//echo '<br>uri<pre>',print_r($uri,true),'</pre>';
-
-//echo '<br>link<pre>',print_r($link ,true),'</pre>';
 
 ?>
 <script type="text/javascript">
@@ -52,14 +48,14 @@ $updateFileTime		= '00:05';
 $updateDescription	='<span style="color:orange">Update Timestamp Fields.</span>';
 $excludeFile		='false';
 
-$maxImportTime=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
+$maxImportTime=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=880;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
+$maxImportMemory=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';
@@ -98,7 +94,7 @@ $object->modified_timestamp = $projekt->modified_timestamp;
 
 //echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
 }
 
 }
@@ -126,7 +122,7 @@ $object = new stdClass();
 $object->id = $match->id;
 $object->match_timestamp = $match->match_timestamp;
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
 }
 
 }

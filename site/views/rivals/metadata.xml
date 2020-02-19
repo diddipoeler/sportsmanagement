@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 
-	<view title="COM_JOOMLEAGUE_XML_RIVALS_VIEW_TITLE">
+	<view title="COM_SPORTSMANAGEMENT_XML_RIVALS_VIEW_TITLE">
 		<message>
-			<![CDATA[COM_JOOMLEAGUE_XML_RIVALS_VIEW_DESCR]]>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_RIVALS_VIEW_DESCR]]>
 		</message>
 	</view>
 

@@ -5,24 +5,19 @@
  * @file      smimageimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla modelform library
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
-
-jimport('joomla.application.component.model');
-
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.archive');
-
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelsmimageimport
@@ -43,7 +38,7 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmimageimport extends JModelLegacy {
+class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
 
     /**
      * Method override to check if you can edit an existing record.
@@ -56,7 +51,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      */
     protected function allowEdit($data = array(), $key = 'id') {
         // Check specific edit permission then general edit permission.
-        return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+        return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
 
     /**
@@ -70,7 +65,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      */
     public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array()) {
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
-        return JTable::getInstance($type, $prefix, $config);
+        return Table::getInstance($type, $prefix, $config);
     }
 
     /**
@@ -98,7 +93,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      */
     protected function loadFormData() {
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
+        $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
         if (empty($data)) {
             $data = $this->getItem();
         }
@@ -111,18 +106,15 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      * @return
      */
     function import() {
-        $app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
-        //$post = JFactory::getApplication()->input->post->getArray(array());
+        $app = Factory::getApplication();
+        //$option = Factory::getApplication()->input->getCmd('option');
+        //$post = Factory::getApplication()->input->post->getArray(array());
         $option = $app->input->getCmd('option');
         $post = $app->input->post->getArray(array());
 
         $server = 'http://sportsmanagement.fussballineuropa.de/jdownloads/';
 
         $cid = $post['cid'];
-
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
 
         foreach ($cid as $key => $value) {
             $name = $post['picture'][$value];
@@ -134,13 +126,8 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
 
             $servercopy = $server . $folder . '/' . $file;
 
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($servercopy,true).'</pre>'),'Notice');
             //set the target directory
-            $base_Dir = JPATH_SITE . DS . 'tmp' . DS;
+            $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' . DS;
             //$file['name'] = basename($servercopy);
             //$filename = $file['name'];
             //$filepath = $base_Dir . $filename;
@@ -148,21 +135,13 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
             $filename = $file;
             $filepath = $base_Dir . $filename;
 
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'filename<br><pre>'.print_r($filename,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'filepath<br><pre>'.print_r($filepath,true).'</pre>'),'Notice');
-
             if (!copy($servercopy, $filepath)) {
-                $app->enqueueMessage(JText::_(get_class($this) . ' ' . __FUNCTION__ . 'file<br><pre>' . print_r($servercopy, true) . '</pre>'), 'Error');
+
             } else {
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
+                $extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $directory;
+                $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $filename;
 
-                $extractdir = JPATH_SITE . DS . 'images' . DS . 'com_sportsmanagement' . DS . 'database' . DS . $directory;
-                $dest = JPATH_SITE . DS . 'tmp' . DS . $filename;
-
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
-
-                if (strtolower(JFile::getExt($dest)) == 'zip') {
+                if (strtolower(File::getExt($dest)) == 'zip') {
                     if (version_compare(JSM_JVERSION, '4', 'eq')) {
                         $archive = new Archive;
                         $result = $archive->extract($dest, $extractdir);
@@ -170,18 +149,18 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
                         $result = JArchive::extract($dest, $extractdir);
                     }
                     if ($result === false) {
-                        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), 'error');
+                        $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), 'error');
                         return false;
                     } else {
-                        $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), 'notice');
+                        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), 'notice');
                         // Must be a valid primary key value.
                         $object->id = $value;
                         $object->published = 1;
                         // Update their details in the users table using id as the primary key.
-                        $result = JFactory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $object, 'id');
+                        $result = Factory::getDbo()->updateObject('#__sportsmanagement_pictures', $object, 'id');
                     }
                 } else {
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');
+                    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');
                     return false;
                 }
             }

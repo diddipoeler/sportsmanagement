@@ -52,16 +52,6 @@
 					required="false">
 			</field>
 
-<!--
-			<field	name="tid" 
-      type="dependsql" 
-      depends="p" 
-      task="projectteamsbydivisionoptions"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
-					required="false">
-			</field>
--->
 						<field	name="tid" 
       type="dependsql" 
       depends="p" 
@@ -89,8 +79,8 @@
       default="desc"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_DESC">
-				<option value="asc">Ascending</option>
-				<option value="desc">Descending</option>
+				<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+				<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
 			</field>
 
 		</fieldset>

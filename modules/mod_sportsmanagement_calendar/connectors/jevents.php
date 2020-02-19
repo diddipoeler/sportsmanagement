@@ -1,5 +1,17 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jevents.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   mod_sportsmanagement_calendar
+ * @subpackage rules
+ */
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 class JEventsConnector extends JLCalendar{
   var $xparams;
@@ -38,13 +50,9 @@ class JEventsConnector extends JLCalendar{
       
         foreach($row['events'] AS $event) {
           $newrow = array();
-          $user = JFactory::getUser();
+          $user = Factory::getUser();
           if ($user->id == 62) {
-            /*
-            echo '<pre>';
-            print_r ($row);
-            echo '</pre>';
-            */
+
           }
           $newrow['link'] = JEventsConnector::buildLink ($event, $row['year'], $row['month']);
           $newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']). ' '.strftime('%H:%M', $event->_dtstart);
@@ -72,13 +80,13 @@ class JEventsConnector extends JLCalendar{
   }
   private function _checkJEvents() {
 
-    if (file_exists(JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'mod.defines.php')
+    if (file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php')
         AND 
-        file_exists(JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'libraries'.DS.'datamodel.php')
+        file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php')
         )
     {
-      require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'mod.defines.php';
-      require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'libraries'.DS.'datamodel.php';
+      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php';
+      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php';
     }
     else { 
       JEventsConnector::_raiseError('Required files not found! This connector needs JEvents 1.5.2 to be installed');
@@ -99,11 +107,11 @@ class JEventsConnector extends JLCalendar{
     return true;
   }
   function buildLink (&$event, $year, $month) {
-    require_once JPATH_SITE.DS.'components'.DS.'com_jevents'.DS.'router.php';
+    require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'router.php';
     $link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
     .$event->_eventdetail_id.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='
     .$event->_dup.'&amp;uid='.$event->_uid;
-    return JRoute::_($link);
+    return Route::_($link);
   }
 } 
 

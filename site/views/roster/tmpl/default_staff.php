@@ -4,14 +4,15 @@
  * @file      default_staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage roster
  */
  
 defined('_JEXEC') or die('Restricted access');
-
-//echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -61,28 +62,29 @@ if (count($this->stafflist) > 0)
 				echo '&nbsp;';
 				if ($this->config['show_team_shortform'] == 1)
 				{
-					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
+					echo Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
 				}
 				else
 				{
-					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF',$this->team->name);
+					echo Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF',$this->team->name);
 				}
 				?>
 			</td>
 		</tr>
 	</table>
 	<br />
+    <div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultstaff"> 
 	<table class="<?php echo $this->config['table_class'];?>">
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-					<?php echo JText::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF").'&nbsp;'; ?>
+					<?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_STAFF").'&nbsp;'; ?>
 				</th>
 				<?php
 				if ($this->config['show_birthday_staff'] > 0)
 				{ ?>
 				<th class="td_c">
-				  <?php echo JText::_("COM_SPORTSMANAGEMENT_ROSTER_BIRTHDAY").'&nbsp;'; ?>
+				  <?php echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_BIRTHDAY").'&nbsp;'; ?>
 				</th><?php
 				}
 				elseif ($this->config['show_birthday'] > 0)
@@ -91,7 +93,7 @@ if (count($this->stafflist) > 0)
 					?>
 				<th class="td_c">&nbsp;</th><?php
 				} ?>
-				<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION'); ?></th>
+				<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION'); ?></th>
 			</tr>
 		</thead>
 		<?php
@@ -99,9 +101,7 @@ if (count($this->stafflist) > 0)
 			for ($i=0, $n=count($this->stafflist); $i < $n; $i++)
 			{
 				$row =& $this->stafflist[$i];
-                
-                //echo 'getTeamPlayers stafflist<br><pre>'.print_r($row,true).'</pre><br>';
-                
+               
 				?>
 			<tr class="">
 				<?php
@@ -171,14 +171,14 @@ $this->overallconfig['use_jquery_modal']
 				if ($this->config['link_staff']==1)
 				{
 				$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['pid'] = $row->person_slug;
        
 					$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
-					echo JHtml::link($link, '<span class="staffname">'. $playerName.'</span>');
+					echo HTMLHelper::link($link, '<span class="staffname">'. $playerName.'</span>');
 				}
 				else
 				{
@@ -195,17 +195,17 @@ $this->overallconfig['use_jquery_modal']
 						switch ($this->config['show_birthday_staff'])
 						{
 							case 1:	 // show Birthday and Age
-								$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 2:	 // show Only Birthday
-								$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								break;
 							case 3:	 // show Only Age
 								$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 4:	 // show Only Year of birth
-								$birthdateStr = JHtml::date($row->birthday, 'Y');
+								$birthdateStr = HTMLHelper::date($row->birthday, 'Y');
 								break;
 							default:
 								$birthdateStr = "";
@@ -219,7 +219,7 @@ $this->overallconfig['use_jquery_modal']
 					// deathday
 					if ( $row->deathday !="0000-00-00" )
 					{
-						$birthdateStr .= ' [ &dagger; '.JHtml::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+						$birthdateStr .= ' [ &dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 					}
 							
 					echo $birthdateStr;
@@ -236,25 +236,25 @@ $this->overallconfig['use_jquery_modal']
 				switch ($this->config['staff_position_format'])
 				{
 					case 2:	 // show member with text
-								$staff_position = JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($row->parentname));
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
 								break;
 
 					case 3:	 // show function with text
-								$staff_position .= JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',JText::_($row->position));
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
 								break;
 
 					case 4:	 // show only function
-								$staff_position = JText::_($row->parentname);
+								$staff_position = Text::_($row->parentname);
 								break;
 
 					case 5:	 // show only position
-								$staff_position = JText::_($row->position);
+								$staff_position = Text::_($row->position);
 								break;
 
 					default: // show member+function with text
-								$staff_position = JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($row->parentname));
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
 								$staff_position .= '<br />';
-								$staff_position .= JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',JText::_($row->position));
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
 								break;
 				}
 				echo $staff_position;
@@ -266,6 +266,7 @@ $this->overallconfig['use_jquery_modal']
 			}
 			?>
 	</table>
+    </div>
 	<?php
 }
 ?>

@@ -1,19 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.58
-* @file 
-* @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
-* @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      subtitle.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
 
-// no direct access
-defined('_JEXEC') or die ;
 
+defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldSubtitle
+ * FormFieldSubtitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +23,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldSubtitle extends JFormField
+class JFormFieldSubtitle extends FormField
 {
 	public $type = 'Subtitle';
 
 	/**
-	 * JFormFieldSubtitle::getLabel()
+	 * FormFieldSubtitle::getLabel()
 	 * 
 	 * @return
 	 */
@@ -68,14 +70,14 @@ class JFormFieldSubtitle extends JFormField
 			$style[] = 'left: 20px; ';
 			$style[] = 'top: -6px; ';
 				
-			$html .= '<div style=\''.implode($style).'\'>'.JText::_($value).'</div>';
+			$html .= '<div style=\''.implode($style).'\'>'.Text::_($value).'</div>';
 		}
 
 		return $html;
 	}
 
 	/**
-	 * JFormFieldSubtitle::getInput()
+	 * FormFieldSubtitle::getInput()
 	 * 
 	 * @return
 	 */

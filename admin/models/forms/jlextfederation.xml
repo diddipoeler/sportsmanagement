@@ -94,29 +94,33 @@
         description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
     >
 				
-        <field 	
-            name="assocflag"
-            type="media" 
-            default=""
-            directory=""
-            preview="show"
-            targetfolder="flags_associations"
-            label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
-            description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC"
-        >
-        </field>
+<field 	
+name="assocflag"
+type="media" 
+default="images/com_sportsmanagement/database/associations/placeholder_flags.png"
+preview="show"
+class="inputbox"
+targetfolder="flags_associations"
+label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC"
+showon="show_info:1[AND]show_image:1"		
+directory="images/com_sportsmanagement/database/flags_associations"
+>
+</field>
         
-        <field 	
-            name="picture" 
-            type="media"     
-            default=""    
-            directory=""
-            preview="show"
-            targetfolder="associations"	
-            label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
-            description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
-        >
-        </field>
+<field 	
+name="picture" 
+type="media"     
+default="images/com_sportsmanagement/database/associations/placeholder_wappen_50.png"     
+preview="show"
+class="inputbox"
+targetfolder="associations"	
+label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
+showon="show_info:1[AND]show_image:1"		
+directory="images/com_sportsmanagement/database/associations"
+>
+</field>
 		
         <field
             name="cr_picture"

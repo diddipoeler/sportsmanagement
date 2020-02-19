@@ -1,21 +1,20 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      editclub.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editclubs
  */
-// Check to ensure this file is included in Joomla!
+ 
 defined('_JEXEC') or die('Restricted access');
-
-
-
-// Include dependancy of the main controllerform class
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerEditClub
@@ -26,7 +25,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerEditClub extends JControllerForm {
+class sportsmanagementControllerEditClub extends FormController {
 
     /**
      * Class Constructor
@@ -38,7 +37,7 @@ class sportsmanagementControllerEditClub extends JControllerForm {
     function __construct($config = array()) {
         parent::__construct($config);
 
-        // Map the apply task to the save method.
+        /** Map the apply task to the save method. */
         $this->registerTask('apply', 'save');
     }
 
@@ -54,75 +53,69 @@ class sportsmanagementControllerEditClub extends JControllerForm {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+         /**
+          * sportsmanagementControllerEditClub::cancel()
+          * 
+          * @param mixed $key
+          * @return
+          */
+         public function cancel($key = NULL)
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+                 return true;
+        }
+ 
+     
     /**
      * sportsmanagementControllerEditClub::load()
      * 
      * @return void
      */
     function load() {
-        $cid = JFactory::getApplication()->input->getInt('cid', 0);
+        $cid = Factory::getApplication()->input->getInt('cid', 0);
 
-        $club = & JTable::getInstance('Club', 'sportsmanagementTable');
+        $club = Table::getInstance('Club', 'sportsmanagementTable');
         $club->load($cid);
         $club->checkout($user->id);
 
         $this->display();
     }
 
+    
     /**
      * sportsmanagementControllerEditClub::display()
      * 
+     * @param bool $cachable
+     * @param mixed $urlparams
      * @return void
      */
-    function display() {
-        /*
-          switch($this->getTask())
-          {
-          case 'add'     :
-          {
-          JFactory::getApplication()->input->setVar('hidemainmenu',0);
-          JFactory::getApplication()->input->setVar('layout','form');
-          JFactory::getApplication()->input->setVar('view','club');
-          JFactory::getApplication()->input->setVar('edit',false);
+    function display($cachable = false, $urlparams = Array() ) {
 
-          // Checkout the club
-          $model=$this->getModel('club');
-          $model->checkout();
-          } break;
-          case 'edit'    :
-          {
-          JFactory::getApplication()->input->setVar('hidemainmenu',0);
-          JFactory::getApplication()->input->setVar('layout','form');
-          JFactory::getApplication()->input->setVar('view','club');
-          JFactory::getApplication()->input->setVar('edit',true);
-
-          // Checkout the club
-          $model=$this->getModel('club');
-          $model->checkout();
-          } break;
-          }
-          parent::display();
-         */
     }
 
+   
     /**
      * sportsmanagementControllerEditClub::save()
      * 
+     * @param mixed $key
+     * @param mixed $urlVar
      * @return void
      */
-    function save() {
-        $app = JFactory::getApplication();
+    function save($key = NULL, $urlVar = NULL) {
+        $app = Factory::getApplication();
         // Check for request forgeries
-        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         $msg = '';
         $address_parts = array();
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $post = Factory::getApplication()->input->post->getArray(array());
 
-        //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-
-        $cid = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-        $post['id'] = (int) $cid[0];
-        $model = $this->getModel('club');
+        //$cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post '.'<pre>'.print_r($post,true).'</pre>'  ), '');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cid '.'<pre>'.print_r($cid,true).'</pre>'  ), '');
+        //$this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
+        //$post['id'] = (int) $cid[0];
+        $model = $this->getModel('editclub');
 
         if (!empty($post['address'])) {
             $address_parts[] = $post['address'];
@@ -141,10 +134,7 @@ class sportsmanagementControllerEditClub extends JControllerForm {
             $address_parts[] = JSMCountries::getShortCountryName($post['country']);
         }
         $address = implode(', ', $address_parts);
-        //$coords = $model->resolveLocation($address);
         $coords = sportsmanagementHelper::resolveLocation($address);
-
-        //$app->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
 
         foreach ($coords as $key => $value) {
             $post['extended'][$key] = $value;
@@ -163,36 +153,32 @@ class sportsmanagementControllerEditClub extends JControllerForm {
         } else {
             $post['merge_teams'] = '';
         }
+        
+        $updateresult = $model->updItem($post);
 
-        //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-
-        if ($model->save($post)) {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-            $createTeam = JFactory::getApplication()->input->getVar('createTeam');
-            if ($createTeam) {
-                $team_name = JFactory::getApplication()->input->getVar('name');
-                $team_short_name = strtoupper(substr(ereg_replace("[^a-zA-Z]", "", $team_name), 0, 3));
-                $teammodel = $this->getModel('team');
-                $tpost['id'] = "0";
-                $tpost['name'] = $team_name;
-                $tpost['short_name'] = $team_short_name;
-                $tpost['club_id'] = $teammodel->getDbo()->insertid();
-                $teammodel->save($tpost);
-            }
-            $type = 'message';
-        } else {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
-            $type = 'error';
-        }
-
-        // Check the table in so it can be edited.... we are done with it anyway
-        $model->checkin();
-
+//        if ($model->updItem($post)) {
+//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
+//            $createTeam = Factory::getApplication()->input->getVar('createTeam');
+//            if ($createTeam) {
+//                $team_name = Factory::getApplication()->input->getVar('name');
+//                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
+//                $teammodel = $this->getModel('team');
+//                $tpost['id'] = "0";
+//                $tpost['name'] = $team_name;
+//                $tpost['short_name'] = $team_short_name;
+//                $tpost['club_id'] = $teammodel->getDbo()->insertid();
+//                $teammodel->save($tpost);
+//            }
+//            $type = 'message';
+//        } else {
+//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
+//            $type = 'error';
+//        }
 
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
         } else {
-            $this->setRedirect('index.php?option=com_sportsmanagement&close=' . JFactory::getApplication()->input->getString('close', 0) . '&tmpl=component&view=editclub&cid=' . $post['id'], $msg, $type);
+            $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
         }
     }
 

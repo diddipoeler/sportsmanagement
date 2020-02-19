@@ -4,13 +4,17 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage seasons
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewSeasons
@@ -33,22 +37,14 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	{
 		
         $season_id = $this->jinput->getVar('id');
-		
-$starttime = microtime(); 
 
+		$this->table = Table::getInstance('season', 'sportsmanagementTable');
+        $lists = array();
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-
-        
-
-		$this->table = JTable::getInstance('season', 'sportsmanagementTable');
-        
-        //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+/**
+ * build the html options for nation
+ */
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
 		{
             $nation = array_merge($nation, $res);
@@ -62,28 +58,28 @@ $starttime = microtime();
 						'value', 
 						'text', 
 						$this->state->get('filter.search_nation'));
-
-
-
 		
 		$this->lists = $lists;
         $this->season_id = $season_id;
-        
-        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' || $this->getLayout() == 'assignteams_4')
-		{
-		$this->setLayout('assignteams');  
-        }  
-        
-        if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' || $this->getLayout() == 'assignpersons_4')
-		{
-		$season_teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+        switch ( $this->getLayout() )
+        {
+            case 'assignteams':
+            case 'assignteams_3':
+            case 'assignteams_4':
+            $this->setLayout('assignteams'); 
+            break;
+            case 'assignpersons':
+            case 'assignpersons_3':
+            case 'assignpersons_4':
+            $season_teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
         $res = $this->model->getSeasonTeams($season_id); 
         $season_teams = array_merge($season_teams,$res); 
         $lists['season_teams'] = $season_teams;
-        $this->lists	= $lists;
-		$this->setLayout('assignpersons');  
+        $this->lists = $lists;
+            $this->setLayout('assignpersons'); 
+            break;
+            
         }
-        
 		
 	}
 	
@@ -94,34 +90,20 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{ 
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-               
+              
         $canDo = sportsmanagementHelper::getActions();
-    // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
+/**
+ * Set toolbar items for the page
+ */
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
-			JToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
+			ToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
+			ToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
 		}
-//		if ($canDo->get('core.delete')) 
-//		{
-//			if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-//            {
-//		    JToolbarHelper::trash('seasons.trash');
-//            }
-//            else
-//            {
-//            JToolbarHelper::trash('seasons.trash');
-//            JToolbarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
-//            }
-//            
-//		}
 
         parent::addToolbar();
         

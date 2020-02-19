@@ -4,16 +4,20 @@
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
 * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+* @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined('_JEXEC') or die ;
 
-jimport('joomla.form.formfield');
+defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
+//jimport('joomla.form.formfield');
 
 /**
- * JFormFieldExtensionTranslators
+ * FormFieldExtensionTranslators
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,18 +25,18 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionTranslators extends JFormField {
+class JFormFieldExtensionTranslators extends FormField {
 		
 	public $type = 'ExtensionTranslators';
 	
 	/**
-	 * JFormFieldExtensionTranslators::getLabel()
+	 * FormFieldExtensionTranslators::getLabel()
 	 * 
 	 * @return
 	 */
 	protected function getLabel() 
 	{		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();
@@ -43,7 +47,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 		
 		$html .= '<div style="clear: both;">';
 		if (!empty($this->translators)) {
-			$html .= JText::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL');
+			$html .= Text::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL');
 		}
 		$html .= '</div>';
 		
@@ -51,7 +55,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 	}
 
 	/**
-	 * JFormFieldExtensionTranslators::getInput()
+	 * FormFieldExtensionTranslators::getInput()
 	 * 
 	 * @return
 	 */
@@ -61,7 +65,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 		
 		if (!empty($this->translators)) {
 			$html .= '<div style="padding-top: 5px; overflow: inherit">';
-			$html .= JText::_($this->translators);
+			$html .= Text::_($this->translators);
 			$html .= '</div>';
 		}
 		
@@ -69,7 +73,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 	}
 	
 	/**
-	 * JFormFieldExtensionTranslators::setup()
+	 * FormFieldExtensionTranslators::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value
@@ -81,7 +85,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 		$return = parent::setup($element, $value, $group);
 	
 		if ($return) {
-			$this->translators = isset($this->element['translators']) ? JText::_($this->element['translators']) : NULL;
+			$this->translators = isset($this->element['translators']) ? Text::_($this->element['translators']) : NULL;
 		}
 	
 		return $return;

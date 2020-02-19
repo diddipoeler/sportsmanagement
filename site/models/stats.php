@@ -4,13 +4,15 @@
  * @file      stats.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage stats
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelStats
@@ -21,7 +23,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelStats extends JModelLegacy
+class sportsmanagementModelStats extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $divisionid = 0;
@@ -42,7 +44,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct();
@@ -61,7 +63,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getHighest($which = 'HOME' )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -70,8 +72,6 @@ class sportsmanagementModelStats extends JModelLegacy
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         
-//		if ( is_null( $this->highest_home ) )
-//		{
 			$query->select('t1.name AS hometeam');
             $query->select('t2.name AS guestteam');
             $query->select('t1.id AS hometeam_id');
@@ -94,7 +94,7 @@ class sportsmanagementModelStats extends JModelLegacy
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
@@ -115,33 +115,20 @@ class sportsmanagementModelStats extends JModelLegacy
             }
             
 			$db->setQuery($query, 0, 1);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+
             switch ($which)
             {
                 case 'HOME':
                 $this->highest_home = $db->loadObject();
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
                 return $this->highest_home;
                 break;
                 case 'AWAY':
                 $this->highest_away = $db->loadObject();
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         		return $this->highest_away;
                 break;
                 
             }
             
-			//echo($this->_db->getQuery());
-			//$this->highest_home = $db->loadObject();
-		//}
-		//return $this->highest_home;
 	}
 
 	/**
@@ -151,7 +138,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getSeasonTotals( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -164,9 +151,9 @@ class sportsmanagementModelStats extends JModelLegacy
         
 		if ( is_null( $this->totals ) )
 		{
-			$query->select('COUNT(matches.id) AS totalmatches');
-          $query->select('COUNT(matches.team1_result) as playedmatches');
-          $query->select('SUM(matches.team1_result) AS homegoals');
+		$query->select('COUNT(matches.id) AS totalmatches');
+        $query->select('COUNT(matches.team1_result) as playedmatches');
+        $query->select('SUM(matches.team1_result) AS homegoals');
           $query->select('SUM(matches.team2_result) AS guestgoals');
           $query->select('SUM(team1_result + team2_result) AS sumgoals');
           $query->select('SUM(crowd) AS sumspectators');
@@ -189,7 +176,7 @@ class sportsmanagementModelStats extends JModelLegacy
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
@@ -197,13 +184,6 @@ class sportsmanagementModelStats extends JModelLegacy
             
             
 			$db->setQuery($query, 0, 1);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
             
 			$this->totals = $db->loadObject();
 		}
@@ -217,8 +197,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getChartData( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -253,12 +233,6 @@ class sportsmanagementModelStats extends JModelLegacy
             
 			$db->setQuery( $query );
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
-            
 			$this->matchdaytotals = $db->loadObjectList();
 		}
 		return $this->matchdaytotals;
@@ -271,8 +245,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getTotalRounds( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -287,12 +261,7 @@ class sportsmanagementModelStats extends JModelLegacy
 			$db->setQuery($query);
 			$this->totalrounds = $db->loadResult();
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		return $this->totalrounds;
 	}
 
@@ -303,8 +272,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getAttendanceRanking( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -328,7 +297,7 @@ class sportsmanagementModelStats extends JModelLegacy
            
 			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.self::$divisionid);
+			$query->where('pt1.division_id = '.self::$divisionid);
 			}
             
             $query->where('matches.published = 1');
@@ -336,12 +305,7 @@ class sportsmanagementModelStats extends JModelLegacy
             $query->order('avgspectatorspt DESC');
             
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
+           
 			$this->attendanceranking = $db->loadObjectList();
 		}
 		return $this->attendanceranking;

@@ -4,14 +4,12 @@
  * @file      jsmgcalendars.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jsmgcalendar
  */
 
 defined('_JEXEC') or die();
-
-JLoader::import('joomla.application.component.controlleradmin');
 
 /**
  * sportsmanagementControllerjsmGCalendars
@@ -22,7 +20,7 @@ JLoader::import('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmGCalendars extends JControllerAdmin {
+class sportsmanagementControllerjsmGCalendars extends JSMControllerAdmin {
 
 	/**
 	 * sportsmanagementControllerjsmGCalendars::getModel()

@@ -1,22 +1,31 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage treetomatchs
+ */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 			$colspan= 9;
 			?>
-            <legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->nodews->node.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
+            <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->nodews->node.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
 						<th width="5" style="vertical-align: top; "><?php echo count($this->match).'/'.$this->pagination->total; ?></th>
-						<th width="20" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
-						<th width="20" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR'); ?></th>
-						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
-						<th style="text-align: center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
-						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
-						<th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('JSTATUS'); ?></th>
-						<th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('JGRID_HEADING_ID'); ?></th>
+						<th width="20" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
+						<th width="20" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR'); ?></th>
+						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
+						<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
+						<th class="title" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
+						<th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JSTATUS'); ?></th>
+						<th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
 					</tr>
 				</thead>
 				<tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>				
@@ -26,8 +35,8 @@ defined('_JEXEC') or die('Restricted access');
 					for ($i=0,$n=count($this->match); $i < $n; $i++)
 					{
 						$row		= $this->match[$i];
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'mid');
-						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','treetomatch.');
+						$checked	= HTMLHelper::_('grid.checkedout',$row,$i,'mid');
+						$published	= HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','treetomatch.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 					

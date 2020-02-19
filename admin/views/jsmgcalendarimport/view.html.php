@@ -20,7 +20,11 @@
  */
 
 defined('_JEXEC') or die();
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
+
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
 /**
@@ -43,34 +47,15 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
      */
     function init( $tpl = null )
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$db	= sportsmanagementHelper::getDBConnection();
-//		$uri = JFactory::getURI();
-//		$user = JFactory::getUser();
-//		$model = $this->getModel();
-//        $starttime = microtime(); 
         
         if (strpos($this->getLayout(), 'login') === false) 
         {
 			$this->onlineItems = $this->get('OnlineData');
 			$this->dbItems = $this->get('DBData');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dbItems<br><pre>'.print_r($this->dbItems,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
         }
-        
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
-        
+       
         $this->setLayout('login');
         
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
-        
-        //$this->addToolbar();
-//        
-//        parent::display($tpl);
    }     
 
 //	protected $onlineItems = null;
@@ -83,35 +68,19 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 	 */
 	protected function addToolbar() 
     {
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $option = $jinput->getCmd('option');
 		if (strpos($this->getLayout(), 'login') === false) {
-			$canDo = jsmGCalendarUtil::getActions();
-			if ($canDo->get('core.create')){
-				JToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
-			}
-			JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+				ToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
+			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		}
         else
         {
-            JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+            ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
         }
         
-//        JToolbarHelper::divider();
-//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences($option);
-
-//		JFactory::getApplication()->input->setVar('hidemainmenu', 0);
-
 		parent::addToolbar();
 	}
-
-//	protected function init() {
-//		if (strpos($this->getLayout(), 'login') === false) {
-//			$this->onlineItems = $this->get('OnlineData');
-//			$this->dbItems = $this->get('DBData');
-//		}
-//	}
 
 }
 

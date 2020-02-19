@@ -4,17 +4,16 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage extrafield
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory; 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewextrafield
@@ -36,27 +35,11 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI();
-//        $starttime = microtime(); 
-        
-       // // get the Data
-//		$form = $this->get('Form');
-//		$item = $this->get('Item');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-//		$script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 //		// Assign the Data
@@ -66,7 +49,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		
 //		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
 //		$this->assignRef( 'extended', $extended );
-		$this->cfg_which_media_tool	= JComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+		$this->cfg_which_media_tool	= ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
  
 
 	}
@@ -76,11 +59,11 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 		$jinput	= $app->input;
 		$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
         $this->icon = 'extrafield';
 		
         parent::addToolbar();

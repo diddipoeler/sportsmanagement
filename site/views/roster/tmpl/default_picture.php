@@ -4,13 +4,15 @@
  * @file      default_picture.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage roster
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster"> 
 <?php
 	// Show team-picture if defined.
 	if ( $this->config['show_team_logo'] )
@@ -27,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 						$picture = $this->team->picture;
 					}
 										
-					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
+					$imgTitle = Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
            
 echo sportsmanagementHelperHtml::getBootstrapModalImage('roster'.$this->team->name,
 $picture,
@@ -46,3 +48,4 @@ $this->overallconfig['use_jquery_modal']);
 	<?php
 	}
 	?>
+</div>

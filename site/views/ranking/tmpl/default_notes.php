@@ -4,15 +4,16 @@
  * @file      deafult_notes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
-
+<div class="<?php echo $this->divclassrow;?>" id="notes">
 <h4>
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
 </h4>
 
 <table class="<?PHP echo $this->config['table_class']; ?>">
@@ -26,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
                     ?>
                     <div class="alert alert-warning" role="alert">
                         <?PHP
-                        echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
+                        echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
                         ?>
                     </div>
                     <?PHP
@@ -36,4 +37,4 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
 </table>
-
+</div>

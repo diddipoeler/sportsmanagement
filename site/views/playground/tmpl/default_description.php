@@ -4,21 +4,23 @@
  * @file      default_description.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage playground
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <?php
 if ( $this->playground->notes )
 {
 ?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
-<div class="row-fluid">
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_description">
 <?php 
 $description = $this->playground->notes;
-$description = JHtml::_('content.prepare', $description);
+$description = HTMLHelper::_('content.prepare', $description);
 echo $description; 
 ?>
 </div>

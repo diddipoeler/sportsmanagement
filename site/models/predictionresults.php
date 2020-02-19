@@ -1,48 +1,20 @@
 <?php
-
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
- * ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
- * OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License f�r weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      predictionresults.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage predictionresults
  */
-// Check to ensure this file is included in Joomla!
+ 
+
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPredictionResults
  * 
@@ -52,7 +24,7 @@ require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionResults extends JModelLegacy {
+class sportsmanagementModelPredictionResults extends JSMModelList {
 
     var $predictionGameID = 0;
 
@@ -70,6 +42,8 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
     var $config = array();
     var $configavatar = array();
     static $roundID = 0;
+static $limitstart = 0;
+static $limit = 0;
 
     /**
      * sportsmanagementModelPredictionResults::__construct()
@@ -77,69 +51,25 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
      * @return
      */
     function __construct() {
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-
-//    $this->predictionGameID		= $jinput->getInt('prediction_id',		0);
-//		$this->predictionMemberID	= $jinput->getInt('uid',	0);
-//		$this->joomlaUserID			= $jinput->getInt('juid',	0);
-//		self::$roundID				= $jinput->request->get('r', '0', 'STR');
-//        $this->pggroup				= $jinput->getInt('pggroup',		0);
-//        $this->pggrouprank			= $jinput->getInt('pggrouprank',		0);
-//		$this->pjID					= $jinput->getInt('pj',		0);
-//		$this->isNewMember			= $jinput->getInt('s',		0);
-//		$this->tippEntryDone		= $jinput->getInt('eok',	0);
-//
-//		$this->from  				= $jinput->getInt('from',self::$roundID);
-//		$this->to	 				= $jinput->getInt('to',	self::$roundID);
-//		$this->type  				= $jinput->getInt('type',	0);
-//
-//		$this->page  				= $jinput->getInt('page',	1);
-
+        parent::__construct();
         $prediction = new sportsmanagementModelPrediction();
 
-//        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
-//        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-//        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-//        sportsmanagementModelPrediction::$roundID = self::$roundID;
-//        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-//        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-//        sportsmanagementModelPrediction::$pjID = $this->pjID;
-//        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-//        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-//        sportsmanagementModelPrediction::$from = $this->from;
-//        sportsmanagementModelPrediction::$to = $this->to;
-//        sportsmanagementModelPrediction::$type = $this->type;
-//        sportsmanagementModelPrediction::$page = $this->page;
-
-        sportsmanagementModelPrediction::$roundID = $jinput->getVar('r', '0');
-        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj', '0');
-        sportsmanagementModelPrediction::$from = $jinput->getVar('from', $jinput->getVar('r', '0'));
-        sportsmanagementModelPrediction::$to = $jinput->getVar('to', $jinput->getVar('r', '0'));
-
-        sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
-
-        sportsmanagementModelPrediction::$predictionMemberID = $jinput->getVar('uid', '0');
-        sportsmanagementModelPrediction::$joomlaUserID = $jinput->getVar('juid', '0');
-
-        sportsmanagementModelPrediction::$pggroup = $jinput->getVar('pggroup', '0');
-        sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank', 0);
-
-        sportsmanagementModelPrediction::$isNewMember = $jinput->getInt('s', 0);
-        sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok', 0);
-
-        sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
-        sportsmanagementModelPrediction::$page = $jinput->getInt('page', 1);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
+        sportsmanagementModelPrediction::$roundID = $this->jsmjinput->getVar('r', '0');
+        sportsmanagementModelPrediction::$pjID = $this->jsmjinput->getVar('pj', '0');
+        sportsmanagementModelPrediction::$from = $this->jsmjinput->getVar('from', $this->jsmjinput->getVar('r', '0'));
+        sportsmanagementModelPrediction::$to = $this->jsmjinput->getVar('to', $this->jsmjinput->getVar('r', '0'));
+        sportsmanagementModelPrediction::$predictionGameID = $this->jsmjinput->getVar('prediction_id', '0');
+        sportsmanagementModelPrediction::$predictionMemberID = $this->jsmjinput->getVar('uid', '0');
+        sportsmanagementModelPrediction::$joomlaUserID = $this->jsmjinput->getVar('juid', '0');
+        sportsmanagementModelPrediction::$pggroup = $this->jsmjinput->getVar('pggroup', '0');
+        sportsmanagementModelPrediction::$pggrouprank = $this->jsmjinput->getInt('pggrouprank', 0);
+        sportsmanagementModelPrediction::$isNewMember = $this->jsmjinput->getInt('s', 0);
+        sportsmanagementModelPrediction::$tippEntryDone = $this->jsmjinput->getInt('eok', 0);
+        sportsmanagementModelPrediction::$type = $this->jsmjinput->getInt('type', 0);
+        sportsmanagementModelPrediction::$page = $this->jsmjinput->getInt('page', 1);
 
         if ((int) sportsmanagementModelPrediction::$pjID == 0) {
             $pred_proj = sportsmanagementModelPrediction::getPredictionProjectNames(sportsmanagementModelPrediction::$predictionGameID, 'ASC', 1);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_proj<br><pre>'.print_r($pred_proj,true).'</pre>'),'');
-
             if (isset($pred_proj[0])) {
                 sportsmanagementModelPrediction::$pjID = $pred_proj[0]->slug;
             }
@@ -147,32 +77,88 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
 
         sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID, sportsmanagementModelPrediction::$roundID);
 
-        parent::__construct();
-
-        //$this->pggrouprank			= JFactory::getApplication()->input->getInt('pggrouprank',		0);
-        //$this->predictionGameID	= $jinput->getInt('prediction_id',0);
-
-        if (JFactory::getApplication()->input->getVar("view") == 'predictionresults') {
-            // Get pagination request variables
-            $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-            $limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-
-            // In case limit has been changed, adjust it
-            $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-            $this->setState('limit', $limit);
-            $this->setState('limitstart', $limitstart);
-        }
-
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
 
+/**
+ * sportsmanagementModelPredictionResults::getStart()
+ * 
+ * @return
+ */
+public function getStart()
+{
+    // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', self::$limitstart );
+    
+    $store = $this->getStoreId('getstart');
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+    return $this->cache[$store];
+}	
+	
+/**
+ * sportsmanagementModelPredictionResults::populateState()
+ * 
+ * @param mixed $ordering
+ * @param mixed $direction
+ * @return void
+ */
+protected function populateState($ordering = null, $direction = null)
+	{
+$app = Factory::getApplication();
+$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+self::$limit = $value;
+$this->setState('list.limit', self::$limit);
+$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+$this->setState('list.start', self::$limitstart);
+	
+}
+	
+/**
+ * sportsmanagementModelPredictionResults::getLimit()
+ * 
+ * @return
+ */
+function getLimit()
+	{
+		return $this->getState('list.limit');
+	}
+	
+	/**
+	 * sportsmanagementModelPredictionResults::getLimitStart()
+	 * 
+	 * @return
+	 */
+	function getLimitStart()
+	{
+		return $this->getState('list.start');
+	}
+ 
     /**
      * sportsmanagementModelPredictionResults::getPagination()
      * 
      * @return
      */
+	/*
     function getPagination() {
         // Load the content if it doesn't already exist
         if (empty($this->_pagination)) {
@@ -181,7 +167,7 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
         }
         return $this->_pagination;
     }
-
+*/
     /**
      * sportsmanagementModelPredictionResults::getTotal()
      * 
@@ -207,7 +193,7 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
         if (empty($this->_data)) {
             //$query = $this->_buildQuery();
             $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
-            $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+            $this->_data = $this->_getList($query);
         }
         return $this->_data;
     }
@@ -224,17 +210,12 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
      */
     static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '') {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
 
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_ids<br><pre>'.print_r($round_ids,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' proteams_ids<br><pre>'.print_r($proteams_ids,true).'</pre>'),'');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -320,15 +301,15 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
      */
     function showClubLogo($clubLogo, $teamName) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
 
 
@@ -336,8 +317,8 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
         if ((!isset($clubLogo)) || ($clubLogo == '') || (!file_exists($clubLogo))) {
             $clubLogo = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
         }
-        $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
-        $output .= JHTML::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
+        $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
+        $output .= HTMLHelper::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
         return $output;
     }
 

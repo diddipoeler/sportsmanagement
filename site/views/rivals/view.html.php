@@ -4,12 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage rivals
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewRivals
@@ -30,20 +32,10 @@ class sportsmanagementViewRivals extends sportsmanagementView
 	 */
 	function init()
 	{
-//	   $app = JFactory::getApplication();
-//       // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-//        
-//		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-        
-        $this->document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		
-		$this->project = sportsmanagementModelProject::getProject();
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+        $this->document->addScript ( Uri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js' );
+	
+		//$this->project = sportsmanagementModelProject::getProject();
+		//$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         
 		if (!isset( $this->overallconfig['seperator']))
 		{
@@ -54,7 +46,7 @@ class sportsmanagementViewRivals extends sportsmanagementView
 		$this->team = $this->model->getTeam();
        
 		// Set page title
-		$titleInfo = sportsmanagementHelper::createTitleInfo(JText::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
+		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
 		if (!empty($this->team))
 		{
 			$titleInfo->team1Name = $this->team->name;

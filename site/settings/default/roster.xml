@@ -5,7 +5,7 @@
 	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
       label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" >
-			
+
 		<field 	name="show_projectheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PROJECTHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PROJECTHEADER">
@@ -201,7 +201,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+		<field name="show_event_icons" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_ICONS"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_ICONS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+</field>
 	</fieldset>	
 <!-- reiter 3 -->	
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS"

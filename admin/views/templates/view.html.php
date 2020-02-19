@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage templates
  */
  
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTemplates
@@ -29,54 +34,40 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $app = JFactory::getApplication();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $model = $this->getModel();
         $starttime = microtime();
 
         $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-        $this->project_id = $app->getUserState("$option.pid", '0');
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        //$this->project_id = $this->app->getUserState("$this->option.pid", '0');
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
-        $lists = '';
-        $allTemplates = $model->checklist($this->project_id);
+        $lists = array();
+        //$allTemplates = $model->checklist($this->project_id);
 
         // das sind die eigenen templates
         $templates = $this->get('Items');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         $total = $this->get('Total');
 
         if ($project->master_template) {
             // das sind die templates aus einenm anderen projekt
-            $model->set('_getALL', 1);
-            $allMasterTemplates = $model->getMasterTemplatesList();
-            $model->set('_getALL', 0);
-            $masterTemplates = $model->getMasterTemplatesList();
+            $this->model->set('_getALL', 1);
+            $allMasterTemplates = $this->model->getMasterTemplatesList();
+            $this->model->set('_getALL', 0);
+            $masterTemplates = $this->model->getMasterTemplatesList();
 
-            // Build in JText of template title here
+            // Build in Text of template title here
             foreach ($masterTemplates as $temptext) {
-                $temptext->text = JText::_($temptext->text);
+                $temptext->text = Text::_($temptext->text);
             }
 
             $importlist = array();
-            $importlist[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+            $importlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
             $importlist = array_merge($importlist, $masterTemplates);
-            $lists['mastertemplates'] = JHtml::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
-            $master = $model->getMasterName();
+            $lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
+            $master = $this->model->getMasterName();
             $this->master = $master;
             $templates = array_merge($templates, $allMasterTemplates);
 
@@ -84,12 +75,12 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         }
 
         $pagination = $this->get('Pagination');
-        $this->user = JFactory::getUser();
+        //$this->user = Factory::getUser();
         $this->lists = $lists; //otherwise no indication of the list in default_data.php on line 64!
         $this->templates = $templates;
         $this->projectws = $project;
         $this->pagination = $pagination;
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
     }
 
     /**
@@ -98,19 +89,19 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
-            JToolbarHelper::editList('template.edit');
-            JToolbarHelper::save('template.save');
+            ToolbarHelper::editList('template.edit');
 
             if ($this->projectws->master_template) {
 
-                JToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
+                ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
             } else {
-                JToolbarHelper::custom('template.reset', 'restore', 'restore', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+                ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+                ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
             }
 
-        JToolbarHelper::checkin('templates.checkin');
+        ToolbarHelper::checkin('templates.checkin');
         parent::addToolbar();
     }
 

@@ -4,16 +4,18 @@
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
 * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+* @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
+
 defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldMessage
+ * FormFieldMessage
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +23,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldMessage extends JFormField
+class JFormFieldMessage extends FormField
 {
 	public $type = 'Message';
 
 	/**
-	 * JFormFieldMessage::getLabel()
+	 * FormFieldMessage::getLabel()
 	 * 
 	 * @return
 	 */
@@ -34,12 +36,12 @@ class JFormFieldMessage extends JFormField
 	{
 		$html = '';
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('lib_syw.sys', JPATH_SITE);
 
 		if ($this->message_type == 'example') 
         {
-			$html .= '<label style="visibility: hidden; margin: 0">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
+			$html .= '<label style="visibility: hidden; margin: 0">'.Text::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
 		} 
         else if ($this->message_type == 'fieldwarning' || $this->message_type == 'fielderror' || $this->message_type == 'fieldinfo') 
         {
@@ -54,7 +56,7 @@ class JFormFieldMessage extends JFormField
 	}
 
 	/**
-	 * JFormFieldMessage::getInput()
+	 * FormFieldMessage::getInput()
 	 * 
 	 * @return
 	 */
@@ -62,12 +64,12 @@ class JFormFieldMessage extends JFormField
 	{
 		$html = '';
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('lib_syw.sys', JPATH_SITE);
 
 		$message_label = '';
 		if ($this->element['label']) {
-			$message_label = $this->translateLabel ? JText::_(trim($this->element['label'])) : trim($this->element['label']);
+			$message_label = $this->translateLabel ? Text::_(trim($this->element['label'])) : trim($this->element['label']);
 		}
 			
 		if ($this->message_type == 'example') 
@@ -79,13 +81,13 @@ class JFormFieldMessage extends JFormField
 			} 
             else 
             {
-				$html .= '<span class="label">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</span>&nbsp;';
+				$html .= '<span class="label">'.Text::_('LIB_SYW_MESSAGE_EXAMPLE').'</span>&nbsp;';
 			}
 			$html .= '<span class="muted" style="font-size: 0.8em;">';
 				
 			if ($this->message) 
             {
-				$html .= JText::_($this->message);
+				$html .= Text::_($this->message);
 			}
 			$html .= '</span>';
 				
@@ -109,7 +111,7 @@ class JFormFieldMessage extends JFormField
 			$html .= '<span>';
 			if ($this->message) 
             {
-				$html .= JText::_($this->message);
+				$html .= Text::_($this->message);
 			}
 			$html .= '</span>';
 			$html .= '</div>';
@@ -119,7 +121,7 @@ class JFormFieldMessage extends JFormField
 	}
 
 	/**
-	 * JFormFieldMessage::setup()
+	 * FormFieldMessage::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

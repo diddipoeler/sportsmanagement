@@ -20,8 +20,12 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $tmp = array();
@@ -46,7 +50,7 @@ if(!empty($this->calendars)){
 	}
 }
 
-$params = clone JComponentHelper::getParams('com_sportsmanagement');
+$params = clone ComponentHelper::getParams('com_sportsmanagement');
 $params->set('show_event_title', 1);
 $data = array();
 foreach ($tmp as $date => $events){
@@ -64,7 +68,7 @@ foreach ($tmp as $date => $events){
 	$day = $parts[2];
 	$month = $parts[1];
 	$year = $parts[0];
-	$url = JRoute::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
+	$url = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
 
 	$data[] = array(
 			'id' => $date,
@@ -72,7 +76,7 @@ foreach ($tmp as $date => $events){
 			'start' => $date,
 			'url' => $url,
 			'allDay' => true,
-			'description' => jsmGCalendarUtil::renderEvents($events, sprintf(JText::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)).'<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
+			'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)).'<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
 	);
 }
 ob_clean();

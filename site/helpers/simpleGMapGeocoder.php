@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
 * simpleGMapGeocoder | simpleGMapGeocoder is part of simpleGMapAPI
@@ -50,16 +53,12 @@ class JSMsimpleGMapGeocoder {
 function JLgetGeoCoords($address)
 {
     $coords = array();
-   
+   $result = '';
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=".
                   urlencode($address)."&sensor=false";
-/*    
-    $result = json_decode(file_get_contents($geoCodeURL), true);
-    echo 'getGeoCoords result<br><pre>';
-    print_r($result);
-    echo '</pre><br>';
-*/
+
+if (function_exists('curl_init')) {	
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -67,19 +66,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
-    
-//    echo 'JLgetGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
-    
-    /*
-    $coords['status'] = $result["status"];
-    
-    if ( isset($result["results"][0]) )
-    {        
-    $coords['lat'] = $result["results"][0]["geometry"]["location"]["lat"];
-    $coords['lng'] = $result["results"][0]["geometry"]["location"]["lng"];
-    }
-    */
-    
+}
     return $result;
 }
 
@@ -94,7 +81,7 @@ function getGeoCoordsMapQuest($address_string)
 
 $geoCodeURL = "http://open.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6r20%2Crl%3Do5-9uaxu4&location=".
                   urlencode($address_string)."&callback=renderGeocode&outFormat=json";    
-
+if (function_exists('curl_init')) {
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -102,8 +89,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
-    
-//echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
+}
         
 }
 
@@ -122,7 +108,7 @@ $result = json_decode($file_content, true);
  */
 function genkml3file($id, $address_string, $type, $picture, $name,$latitude = 255,$longitude = 255)
 {
-$params	= JComponentHelper::getParams('com_sportsmanagement');
+$params	= ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big = $params->get('ph_logo_big',0);
     
 $lat = $latitude;
@@ -142,7 +128,7 @@ case 'playground':
 $kml[] = ' <href>' .'http://maps.google.com/mapfiles/kml/pal2/icon49.png'.'</href>';
 break;  
 default:
-$kml[] = ' <href>' . JURI::root().$picture . '</href>';
+$kml[] = ' <href>' . Uri::root().$picture . '</href>';
 break;  
 }
 
@@ -172,8 +158,8 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$id.'-'.$type.'.kml';
+File::write($file, $xmlfile);
 
 
 
@@ -191,13 +177,6 @@ JFile::write($file, $xmlfile);
 function genkml3prediction($project_id,$allmembers)
 {
 $type = 'prediction';
-
-
-/*
-echo 'genkml3prediction allmembers<br><pre>';
-    print_r($allmembers);
-    echo '</pre><br>';
-*/
 
 foreach ( $allmembers as $row )
 {
@@ -350,16 +329,12 @@ function getGeoCoords($address)
       $address = str_replace("Ü", "Ue", $address);
       $address = str_replace("ß", "ss", $address);
     */
-    
-    //$address = utf8_encode($address);
-    
-    //echo 'getGeoCoords address -> '.$address.'<br>';
-    
+   
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=".
                   urlencode($address)."&sensor=false";
     
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
+	if (function_exists('curl_init')) {
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -367,13 +342,8 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-    
-    /*
-    echo 'getGeoCoords result<br><pre>';
-    print_r($result);
-    echo '</pre><br>';
-    */
-    
+	}
+	
     $coords['status'] = $result["status"];
     
     if ( isset($result["results"][0]) )
@@ -400,7 +370,7 @@ function reverseGeoCode($lat,$lng)
     
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=$lat,$lng&sensor=false";
-    
+ if (function_exists('curl_init')) {   
     $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -408,14 +378,9 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
-                
+}
     $address['status'] = $result["status"];
-    
     echo $geoCodeURL."<br />";
-    print_r($result);
-    
     return $address;
 }
 
@@ -436,7 +401,7 @@ function getOSMGeoCoords($address)
     // output in JSON
     $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=0&q=".
                   urlencode($address);
-    
+ if (function_exists('curl_init')) {   
     $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -444,9 +409,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-
-//    $result = json_decode(file_get_contents($geoCodeURL), true);
-//    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
+}
     
     if ( isset($result[0]) )
     {        
@@ -469,7 +432,7 @@ $result = json_decode($file_content, true);
  */
 function writekml3prediction($allmembers,$project_id,$type)
 {
-$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
+$params		 	=	ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big	=	$params->get('ph_player',0);
     
 // Creates an array of strings to hold the lines of the KML file.
@@ -504,25 +467,15 @@ $kml[] = ' <IconStyle id="' . $row->user_id . 'Icon">';
 $kml[] = ' <Icon>';
 
 
-$picturepath = JPATH_SITE.DS.$row->avatar;
-
-/*
-echo 'writekml3prediction picturepath<br><pre>';
-    print_r($picturepath);
-    echo '</pre><br>';
-
-echo 'writekml3prediction avatar<br><pre>';
-    print_r($row->avatar);
-    echo '</pre><br>';
-*/
+$picturepath = JPATH_SITE.DIRECTORY_SEPARATOR.$row->avatar;
 
 if ( !file_exists($picturepath) || empty($row->avatar) )
 {
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+$kml[] = ' <href>' . Uri::root().$ph_logo_big . '</href>';    
 }
 else
 {
-$kml[] = ' <href>' . JURI::root().$row->avatar . '</href>';    
+$kml[] = ' <href>' . Uri::root().$row->avatar . '</href>';    
 }
 
 $kml[] = ' </Icon>';
@@ -563,8 +516,8 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$project_id.'-'.$type.'.kml';
+File::write($file, $xmlfile);
 
 }
 
@@ -579,7 +532,7 @@ JFile::write($file, $xmlfile);
  */
 function writekml3($allteams,$project_id,$type)
 {
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$params = ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big = $params->get('ph_logo_big',0);
     
 // Creates an array of strings to hold the lines of the KML file.
@@ -598,18 +551,9 @@ $kml[] = ' <Style id="' . $row->team_id . 'Style">';
 $kml[] = ' <IconStyle id="' . $row->team_id . 'Icon">';
 $kml[] = ' <Icon>';
 
-//$picturepath = JURI::root().$row->logo_big;
-$picturepath = JURI::root().$row->logo_big;
-//if ( !file_exists($picturepath) )
-//{
-//$kml[] = ' <href>' . $ph_logo_big . '</href>';    
-//}
-//else
-//{
-//$kml[] = ' <href>' . $row->logo_big . '</href>';    
-//}
+$picturepath = Uri::root().$row->logo_big;
 
-$kml[] = ' <href>' . JURI::root().$row->logo_big . '</href>';
+$kml[] = ' <href>' . Uri::root().$row->logo_big . '</href>';
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
 $kml[] = ' </Style>';    
@@ -648,8 +592,8 @@ $kmlOutput = join("\n", $kml);
 
 // mal als test
 $xmlfile = $kmlOutput;
-$file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$project_id.'-'.$type.'.kml';
+File::write($file, $xmlfile);
 
 }
 

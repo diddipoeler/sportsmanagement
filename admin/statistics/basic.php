@@ -4,15 +4,16 @@
  * @file      basic.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticBasic
@@ -47,18 +48,22 @@ class SMStatisticBasic extends SMStatistic
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
+	/**
+	 * SMStatisticBasic::getMatchPlayersStats()
+	 * 
+	 * @param mixed $match_id
+	 * @return
+	 */
 	function getMatchPlayersStats($match_id)
 	{
-		$db = &sportsmanagementHelper::getDBConnection();
-		
-		$query = ' SELECT SUM(ms.value) AS value, tp.id '
-		       . ' FROM #__joomleague_team_player AS tp '
-		       . ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-		       . ' WHERE ms.statistic_id = '. $db->Quote($this->id)
-		       . '   AND ms.match_id = '. $db->Quote($match_id)
-		       . '   AND tp.published = 1 '
-		       . ' GROUP BY tp.id '
-		       ;
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        $query->select('SUM(ms.value) AS value, tp.id');
+        $query->from('#__sportsmanagement_match_statistic AS ms');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->where('ms.statistic_id = ' . $this->id);
+        $query->where('ms.match_id = ' . $match_id);
 		$db->setQuery($query);
 		$res = $db->loadObjectList('id');
 
@@ -143,17 +148,17 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		$query_core = JFactory::getDbo()->getQuery(true);
+		$query_core = Factory::getDbo()->getQuery(true);
 		
-		$query_select_count = ' SELECT COUNT(DISTINCT tp.id) as count';
+		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
-		$query_select_details	= ' SELECT SUM(ms.value) AS total,'
-								. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
-								. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-								. ' pt.team_id, pt.picture AS projectteam_picture,'
-								. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
+		$query_select_details = ' SUM(ms.value) AS total,'
+					. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
+					. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
+					. ' st.team_id, pt.picture AS projectteam_picture,'
+					. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
 		
         
@@ -163,7 +168,6 @@ class SMStatisticBasic extends SMStatistic
         $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
-        
         $query_core->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id = '. $db->Quote($this->id));
         $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
         $query_core->where('pt.project_id = ' . $project_id);
@@ -180,9 +184,7 @@ class SMStatisticBasic extends SMStatistic
 
 		$res = new stdclass;
 		$db->setQuery($query_core);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+       
 		$res->pagination_total = $db->loadResult();
         
         $query_core->clear('select');
@@ -191,9 +193,7 @@ class SMStatisticBasic extends SMStatistic
         $query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id '); 
 
 		$db->setQuery($query_core, $limitstart, $limit);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+       
 		$res->ranking = $db->loadObjectList();
 	
 		if ($res->ranking)
@@ -233,27 +233,24 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'SUM(ms.value) AS total, st.team_id ';
         $statistic_id = $this->id;
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
-	
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
-        
-        $db->setQuery($query, $limitstart, $limit);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
+	$query->group('st.team_id');	
 try{        
+        $db->setQuery($query, $limitstart, $limit);
 		$res = $db->loadObjectList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-		
+
+	
 		if ($res)
 		{
 			$precision = SMStatistic::getPrecision();
@@ -305,16 +302,14 @@ try{
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id,$select,FALSE);
               
 		$db->setQuery($query, 0, 1);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$res = $db->loadResult();
 		return self::formatValue($res, $this->getPrecision());
 	}
@@ -327,17 +322,15 @@ try{
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'SUM(ms.value) AS value ';
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id,$select,TRUE);
         
 		$db->setQuery($query);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$res = $db->loadResult();
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}

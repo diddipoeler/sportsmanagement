@@ -4,37 +4,41 @@
  * @file      jlextlmoimports.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JFactory::getApplication()->input->getCmd('option');
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Utility\Utility;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
+use Joomla\Utilities\ArrayHelper;
+
+$option = Factory::getApplication()->input->getCmd('option');
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
-	$maxImportTime=480;
+	$maxImportTime = 480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
-	$maxImportMemory='350M';
+	$maxImportMemory = '350M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
 
-jimport('joomla.application.component.model');
+
 jimport('joomla.html.pane');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper') ;
-// import JFile
-jimport('joomla.filesystem.file');
-jimport( 'joomla.utilities.utility' );
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
+
 
 /**
  * sportsmanagementModeljlextlmoimports
@@ -45,19 +49,24 @@ jimport( 'joomla.utilities.utility' );
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextlmoimports extends JModelLegacy
+class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 {
-  var $_datas=array();
-	var $_league_id=0;
-	var $_season_id=0;
-	var $_sportstype_id=0;
-	var $import_version='';
-  var $debug_info = false;
+    var $_datas = array();
+    var $_league_id = 0;
+    var $_season_id = 0;
+    var $_sportstype_id = 0;
+    var $import_version = '';
+    var $debug_info = false;
 
+/**
+ * sportsmanagementModeljlextlmoimports::__construct()
+ * 
+ * @return void
+ */
 function __construct( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
   $this->debug_info = true;
@@ -71,49 +80,49 @@ function __construct( )
 	
 	}
 
-private function dump_header($text)
-	{
-		echo "<h1>$text</h1>";
-	}
-
-	private function dump_variable($description, $variable)
-	{
-		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
-	}
-    
-
+/**
+ * sportsmanagementModeljlextlmoimports::checkStartExtension()
+ * 
+ * @return void
+ */
 function checkStartExtension()
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$app	=& JFactory::getApplication();
-$user = JFactory::getUser();
-$fileextension = JPATH_SITE.DS.'tmp'.DS.'lmoimport-2-0.txt';
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$user = Factory::getUser();
+$fileextension = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'lmoimport-2-0.txt';
 $xmlfile = '';
 
-if( !JFile::exists($fileextension) )
+if( !File::exists($fileextension) )
 {
 $to = 'diddipoeler@gmx.de';
 $subject = 'LMO-Import Extension';
-$message = 'LMO-Import Extension wurde auf der Seite : '.JURI::base().' gestartet.';
-JUtility::sendMail( '', JURI::base(), $to, $subject, $message );
+$message = 'LMO-Import Extension wurde auf der Seite : '.Uri::base().' gestartet.';
+Utility::sendMail( '', Uri::base(), $to, $subject, $message );
 
 $xmlfile = $xmlfile.$message;
-JFile::write($fileextension, $xmlfile);
+File::write($fileextension, $xmlfile);
 
 }
 
 }
 
 	
+/**
+ * sportsmanagementModeljlextlmoimports::parse_ini_file_ersatz()
+ * 
+ * @param mixed $f
+ * @return
+ */
 function parse_ini_file_ersatz($f)
 {
- $r=null;
- $sec=null;
- $f=@file($f);
- for ($i=0;$i<@count($f);$i++)
+ $r = null;
+ $sec = null;
+ $f = @file($f);
+ for ($i = 0;$i <@count($f);$i++)
  {
-  $newsec=0;
-  $w=@trim($f[$i]);
+  $newsec = 0;
+  $w = @trim($f[$i]);
   if ($w)
   {
    if ((!$r) or ($sec))
@@ -122,7 +131,7 @@ function parse_ini_file_ersatz($f)
    }
    if (!$newsec)
    {
-   $w=@explode("=",$w);$k=@trim($w[0]);unset($w[0]); $v=@trim(@implode("=",$w));
+   $w = @explode("=",$w);$k=@trim($w[0]);unset($w[0]); $v=@trim(@implode("=",$w));
    if ((@substr($v,0,1)=="\"") and (@substr($v,-1,1)=="\"")) {$v=@substr($v,1,@strlen($v)-2);}
    if ($sec) {$r[$sec][$k]=$v;} else {$r[$k]=$v;}
    }
@@ -132,23 +141,28 @@ function parse_ini_file_ersatz($f)
 }
 
 
+ /**
+  * sportsmanagementModeljlextlmoimports::_getXml()
+  * 
+  * @return
+  */
  function _getXml()
 	{
-		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98'))
+		if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98','SimpleXMLElement',LIBXML_NOCDATA);
 			}
 			else
 			{
-				JError::raiseWarning(500,JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
+                Log::add(Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), Log::WARNING, 'jsmerror');
 			}
 		}
 		else
 		{
-			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
-			echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
+            Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'), Log::WARNING, 'jsmerror');
+			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
 
@@ -163,7 +177,7 @@ function parse_ini_file_ersatz($f)
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_joomleague.'.$this->name, $this->name,
+		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
 		if (empty($form))
 		{
@@ -181,7 +195,7 @@ function parse_ini_file_ersatz($f)
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
@@ -189,48 +203,42 @@ function parse_ini_file_ersatz($f)
 		return $data;
 	}
         	
+/**
+ * sportsmanagementModeljlextlmoimports::getData()
+ * 
+ * @return
+ */
 function getData()
 	{
-	
-/* tabellen leer machen
-TRUNCATE TABLE `jos_joomleague_club`; 
-TRUNCATE TABLE `jos_joomleague_team`;
-TRUNCATE TABLE `jos_joomleague_person`;
-TRUNCATE TABLE `jos_joomleague_playground`;
-*/
 
-	
   global $app, $option;
-  $app =& JFactory::getApplication();
-  $document	=& JFactory::getDocument();
+  $app =& Factory::getApplication();
+  $document	=& Factory::getDocument();
   
-  $lang = JFactory::getLanguage();
+  $lang = Factory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JFactory::getApplication()->input->post->getArray(array());
+  $post = Factory::getApplication()->input->post->getArray(array());
   $country = $post['country'];
-  //$country = JSMCountries::convertIso2to3($teile[1]);
+	$agegroup = $post['agegroup'];
+	$template = $post['copyTemplate'];
   
-  $app->enqueueMessage(JText::_('land '.$country.''),'');
   
-  $option = JFactory::getApplication()->input->getCmd('option');
+  $app->enqueueMessage(Text::_('land '.$country.''),'');
+  
+  $option = Factory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
 	
 	$tempprovorschlag = '';
 	$team2_summary = '';
 
-if ( $this->debug_info )
-{
-$this->pane =& JPane::getInstance('sliders');
-echo $this->pane->startPane('pane');    
-}
-	
 	if ( $project )
 	{
   // projekt wurde mitgegeben, also die liga und alles andere vorselektieren
   
   $temp = new stdClass();
-  $temp->exportRoutine = '2010-09-19 23:00:00';  
+  $temp->exportRoutine = '2010-09-19 23:00:00';
+  $temp->exportSystem = 'LMO File';    
   $this->_datas['exportversion'] = $temp;
 
 // projektname
@@ -240,7 +248,7 @@ WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
 $row = $this->_db->loadAssoc();
 $tempprovorschlag = $row['name'];
-$app->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
+$app->enqueueMessage(Text::_('project '.$tempprovorschlag.''),'');
 
 // saisonname  
   $query = 'SELECT se.name,se.id
@@ -255,7 +263,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['season'] = $temp;
-$app->enqueueMessage(JText::_('season '.$temp->name.''),'');
+$app->enqueueMessage(Text::_('season '.$temp->name.''),'');
 $convert = array (
       $temp->name => ''
   );
@@ -285,7 +293,7 @@ $row = $this->_db->loadAssoc();
   }
   
   $this->_datas['league'] = $temp;
-$app->enqueueMessage(JText::_('league '.$temp->name.''),'');
+$app->enqueueMessage(Text::_('league '.$temp->name.''),'');
   
 //   $temp = new stdClass();
 //   $temp->project_type = 'SIMPLE_LEAGUE';
@@ -304,7 +312,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['sportstype'] = $temp;
-$app->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');  
+$app->enqueueMessage(Text::_('sportstype '.$temp->name.''),'');  
   
   $temp = new stdClass();
   $this->_datas['template'] = $temp;
@@ -326,7 +334,7 @@ $app->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');
 	$lmoimportuseteams=$app->getUserState($option.'lmoimportuseteams');
   
   $teamid = 1;
-  $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98';
+  $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.l98';
 
 $exportplayer = array();
 $exportclubs = array();
@@ -443,8 +451,11 @@ if (array_key_exists('league',$this->_datas))
     $temp->sports_type_id = 1;
     $temp->admin = 62;
     $temp->editor = 62;
-    $temp->timezone = 'Europe/Amsterdam';
-    
+    $temp->timezone = 321;
+	
+	$temp->master_template = $template;
+    $temp->agegroup_id = $agegroup;
+	
     $temp->current_round_auto = 1;
     $temp->auto_time = 1440;
     
@@ -472,11 +483,10 @@ if (array_key_exists('league',$this->_datas))
     
     foreach ($parse['Round'.$a] AS $key => $value)
 		{
-    //$lfdmatch = 1;
-    
 		$temp = new stdClass();
 		$tempmatch = new stdClass();
-//  		$temp->id = 0;
+	    $tempmatch->playground_id = 0;
+
     $temp->id = $a;
 		$temp->roundcode = $a;
 		$temp->name = $a.'. Spieltag';
@@ -484,16 +494,17 @@ if (array_key_exists('league',$this->_datas))
 		
     if ( $key == 'D1' )
 		{
-		//echo $value.'<br>';
 		$round_id = $a;
 		$datetime = strtotime($value);
     $round_date_first = date('Y-m-d', $datetime); 
-		//$round_date_first = $value;
+	    if ( $a == 1 )
+	    {
+		$this->_datas['project']->start_date = $round_date_first;    
+	    }
 		}
 		
 		if ( $key == 'D2' )
 		{
-		//echo $value.'<br>';
 		$temp->round_date_first = $round_date_first;
 		$datetime = strtotime($value);
 		$temp->round_date_last = date('Y-m-d', $datetime);
@@ -795,19 +806,19 @@ $value = trim($value);
 		{
     
 $query = '	SELECT count(*) as total
-FROM #__joomleague_project_team
+FROM #__sportsmanagement_project_team
 WHERE project = ' . $project;
 
 $this->_db->setQuery( $query );
-$countjoomleagueteams = $this->_db->loadResult();
+$countteams = $this->_db->loadResult();
 
-if (  $countlmoteams != $countjoomleagueteams  )
+if (  $countlmoteams != $countteams  )
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
+$app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
 }
 else
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
+$app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
 }
     
     }
@@ -819,56 +830,56 @@ $app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stim
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
 $output .= "<project>\n";
-// set the version of JoomLeague
-$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLeagueVersion());
+// set the version of SportsManagement
+$output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsManagementVersion());
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$app->enqueueMessage(JText::_('project daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('project daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$app->enqueueMessage(JText::_('league daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('league daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$app->enqueueMessage(JText::_('season daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('season daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
-$app->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('sportstype daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$app->enqueueMessage(JText::_('round daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('round daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$app->enqueueMessage(JText::_('team daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$app->enqueueMessage(JText::_('club daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('club daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$app->enqueueMessage(JText::_('match daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('match daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
@@ -916,249 +927,14 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 $output .= '</project>';
 // mal als test
 $xmlfile = $output;
-$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
-
-
-if ( $this->debug_info )
-{
-echo $this->pane->endPane();    
-}
-  
+$file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
+File::write($file, $xmlfile);
+ 
     $this->import_version='NEW';
     //$this->import_version='';
     return $this->_datas;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-          	
-function _loadData()
-	{
-  global $app, $option;
-  $this->_data =  $app->getUserState( $option . 'project', 0 );
-   
-  return $this->_data;
-	}
-
-function _initData()
-	{
-	global $app, $option;
-  $this->_data =  $app->getUserState( $option . 'project', 0 );
-  return $this->_data;
-	}
-
-
-	
-	/**
-	 * _getDataFromObject
-	 *
-	 * Get data from object
-	 *
-	 * @param object $obj object where we find the key
-	 * @param string $key key what we find in the object
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
-	 */
-	private function _getDataFromObject(&$obj,$key)
-	{
-		if (is_object($obj))
-		{
-			$t_array=get_object_vars($obj);
-
-			if (array_key_exists($key,$t_array))
-			{
-				return $t_array[$key];
-			}
-			return false;
-		}
-		return false;
-	}
-
-
-
-
-	
-private function _getObjectName($tableName,$id,$usedFieldName='')
-	{
-		$fieldName=($usedFieldName=='') ? 'name' : $usedFieldName;
-		$query="SELECT $fieldName FROM #__joomleague_$tableName WHERE id=$id";
-		$this->_db->setQuery($query);
-		if ($result=$this->_db->loadResult()){return $result;}
-		return JText::sprintf('Item with ID [%1$s] not found inside [#__joomleague_%2$s]',$id,$tableName)." $query";
-	}
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
-
-	private function _convertNewPlaygroundIDs()
-	{
-		$my_text='';
-		$converted=false;
-		if (isset($this->_convertPlaygroundID) && !empty($this->_convertPlaygroundID))
-		{
-			foreach ($this->_convertPlaygroundID AS $key => $new_pg_id)
-			{
-				$p_playground=$this->_getPlaygroundRecord($new_pg_id);
-				foreach ($this->_convertClubID AS $key => $new_club_id)
-				{
-					if (isset($p_playground->club_id) && ($p_playground->club_id ==$key))
-					{
-						if ($this->_updatePlaygroundRecord($new_club_id,$new_pg_id))
-						{
-							$converted=true;
-							$my_text .= '<span style="color:green">';
-							$my_text .= JText::sprintf(	'Converted club-info %1$s in imported playground %2$s',
-														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
-														"</span><strong>$p_playground->name</strong>");
-							$my_text .= '<br />';
-						}
-						break;
-					}
-				}
-			}
-			if (!$converted){$my_text .= '<span style="color:green">'.JText::_('Nothing needed to be converted').'<br />';}
-			$this->_success_text['Converting new playground club-IDs of new playground data:']=$my_text;
-		}
-		return true;
-	}
-
-
- 
-
-
-
-  
-	/**
-	 * check that all templates in default location have a corresponding record,except if project has a master template
-	 *
-	 */
-	private function _checklist()
-	{
-		$project_id=$this->_project_id;
-		$defaultpath=JPATH_COMPONENT_SITE.DS.'settings';
-		$extensiontpath=JPATH_COMPONENT_SITE.DS.'extensions'.DS;
-		$predictionTemplatePrefix='prediction';
-
-		if (!$project_id){return;}
-
-		// get info from project
-		$query='SELECT master_template,extension FROM #__joomleague_project WHERE id='.(int)$project_id;
-
-		$this->_db->setQuery($query);
-		$params=$this->_db->loadObject();
-
-		// if it's not a master template,do not create records.
-		if ($params->master_template){return true;}
-
-		// otherwise,compare the records with the files
-		// get records
-		$query='SELECT template FROM #__joomleague_template_config WHERE project_id='.(int)$project_id;
-
-		$this->_db->setQuery($query);
-		$records=$this->_db->loadResultArray();
-		if (empty($records)){$records=array();}
-
-		// first check extension template folder if template is not default
-		if ((isset($params->extension)) && ($params->extension!=''))
-		{
-			if (is_dir($extensiontpath.$params->extension.DS.'settings'))
-			{
-				$xmldirs[]=$extensiontpath.$params->extension.DS.'settings';
-			}
-		}
-
-		// add default folder
-		$xmldirs[]=$defaultpath.DS.'default';
-
-		// now check for all xml files in these folders
-		foreach ($xmldirs as $xmldir)
-		{
-			if ($handle=opendir($xmldir))
-			{
-				/* check that each xml template has a corresponding record in the
-				database for this project. If not,create the rows with default values
-				from the xml file */
-				while ($file=readdir($handle))
-				{
-					if	(	$file!='.' &&
-							$file!='..' &&
-							$file!='do_tipsl' &&
-							strtolower(substr($file,-3))=='xml' &&
-							strtolower(substr($file,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix
-						)
-					{
-						$template=substr($file,0,(strlen($file)-4));
-
-						if ((empty($records)) || (!in_array($template,$records)))
-						{
-							//template not present,create a row with default values
-							$params=new JLParameter(null,$xmldir.DS.$file);
-
-							//get the values
-							$defaultvalues=array();
-							foreach ($params->getGroups() as $key => $group)
-							{
-								foreach ($params->getParams('params',$key) as $param)
-								{
-									$defaultvalues[]=$param[5].'='.$param[4];
-								}
-							}
-							$defaultvalues=implode("\n",$defaultvalues);
-
-							$query="	INSERT INTO #__joomleague_template_config (template,title,params,project_id)
-													VALUES ('$template','$params->name','$defaultvalues','$project_id')";
-							$this->_db->setQuery($query);
-							//echo error,allows to check if there is a mistake in the template file
-							if (!$this->_db->execute())
-							{
-								$this->setError($this->_db->getErrorMsg());
-								return false;
-							}
-							array_push($records,$template);
-						}
-					}
-				}
-				closedir($handle);
-			}
-		}
-	}
-
-
-
-
-    
-
-
 
 
 }

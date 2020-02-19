@@ -1,17 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
  
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 switch ($mode) {
     // bootstrap mode template
@@ -43,10 +44,10 @@ switch ($mode) {
 
                         if ($params->get('show_picture')) {
 
-                            if (curl_init($module->picture_server . DS . $person['picture']) && $person['picture'] != '') {
-                                $thispic = $module->picture_server . DS . $person['picture'];
-                            } elseif (curl_init($module->picture_server . DS . $person['default_picture']) && $person['default_picture'] != '') {
-                                $thispic = $module->picture_server . DS . $person['default_picture'];
+                            if (curl_init($module->picture_server .DIRECTORY_SEPARATOR. $person['picture']) && $person['picture'] != '') {
+                                $thispic = $module->picture_server .DIRECTORY_SEPARATOR. $person['picture'];
+                            } elseif (curl_init($module->picture_server .DIRECTORY_SEPARATOR. $person['default_picture']) && $person['default_picture'] != '') {
+                                $thispic = $module->picture_server .DIRECTORY_SEPARATOR. $person['default_picture'];
                             }
                         }
 
@@ -59,7 +60,7 @@ switch ($mode) {
                                 break;
                         }
 
-                        $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                         $dayformat = htmlentities(trim($params->get('dayformat')));
                         $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                         $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -144,7 +145,7 @@ switch ($mode) {
                             break;
                     }
 
-                    $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                     $dayformat = htmlentities(trim($params->get('dayformat')));
                     $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -202,29 +203,29 @@ switch ($mode) {
 
                     if ($person_type == 1) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['tid'] = $person['team_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
                     } else if ($person_type == 2) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['tid'] = $person['team_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
                     } else if ($person_type == 3) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
                     }
-                    $showname = JHTML::link($person_link, $usedname);
+                    $showname = HTMLHelper::link($person_link, $usedname);
                     ?>
                     <tr class="<?php echo $params->get('heading_style'); ?>">
                         <td class="birthday"><?php echo $showname; ?></td>
@@ -238,7 +239,7 @@ switch ($mode) {
                                 } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
                                     $thispic = $person['default_picture'];
                                 }
-                                echo '<img src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+                                echo '<img src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
                                 if ($params->get('picture_width') != '') {
                                     echo ' width="' . $params->get('picture_width') . '"';
                                 }
@@ -252,7 +253,7 @@ switch ($mode) {
                                 default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
                                     break;
                             }
-                            $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                             $dayformat = htmlentities(trim($params->get('dayformat')));
                             $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                             $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -274,7 +275,7 @@ switch ($mode) {
                 ?>
                 <tr>
                     <td class="birthday"><div class="bg-warning alert alert-warning">
-            <?php echo '' . str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim(JText::_($params->get('not_found_text'))))) . ''; ?>
+            <?php echo '' . str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim(Text::_($params->get('not_found_text'))))) . ''; ?>
                         </div>
                     </td>
                 </tr>

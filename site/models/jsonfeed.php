@@ -20,32 +20,31 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-JLoader::import( 'joomla.application.component.model' );
-
-class sportsmanagementModelJSONFeed extends JModelLegacy 
+class sportsmanagementModelJSONFeed extends BaseDatabaseModel 
 {
 
 	public function getGoogleCalendarFeeds() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
-		$startDate = JFactory::getApplication()->input->getVar('start', null, 'GET');
-		$endDate = JFactory::getApplication()->input->getVar('end', null, 'GET');
+		$startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
+		$endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
 
 		$calendarids = '';
-		if (JFactory::getApplication()->input->getVar('gcids', null) != null) {
-			if(is_array(JFactory::getApplication()->input->getVar('gcids', null)))
-				$calendarids = JFactory::getApplication()->input->getVar('gcids', null);
+		if (Factory::getApplication()->input->getVar('gcids', null) != null) {
+			if(is_array(Factory::getApplication()->input->getVar('gcids', null)))
+				$calendarids = Factory::getApplication()->input->getVar('gcids', null);
 			else
-				$calendarids = explode(',', JFactory::getApplication()->input->getVar('gcids', null));
+				$calendarids = explode(',', Factory::getApplication()->input->getVar('gcids', null));
 		} else {
-			$calendarids = JFactory::getApplication()->input->getVar('gcid', null);
+			$calendarids = Factory::getApplication()->input->getVar('gcid', null);
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
-        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
-        
+       
 		if(empty($results))
 			return null;
 
@@ -61,8 +60,6 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 			$calendars[] = $events;
 		}
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
-
 		return $calendars;
 	}
 }

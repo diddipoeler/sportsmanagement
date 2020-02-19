@@ -4,13 +4,14 @@
  * @file      teams.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teams
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelTeams
@@ -21,7 +22,7 @@ jimport( 'joomla.application.component.model' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelTeams extends JModelLegacy
+class sportsmanagementModelTeams extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $divisionid = 0;
@@ -38,7 +39,7 @@ class sportsmanagementModelTeams extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 		parent::__construct( );
         

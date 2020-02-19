@@ -1,40 +1,12 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+ * @version   1.0.05
+ * @file      jsm_ishupdate.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage plugins
  */
 
 /**
@@ -50,18 +22,17 @@
  * 'Joomla_base\libraries\joomla\application'.
  */
 
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
-
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
+//if (!defined('DS')) {
+//    define('DS', DIRECTORY_SEPARATOR);
+//}
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'jsminlinehockey'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'jsminlinehockey.php');
 
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
@@ -101,11 +72,8 @@ static $linkresult = '';
     public function __construct(&$subject, $params)
     {
         parent::__construct($subject, $params);
-        $app = JFactory::getApplication();
-    
-    //self::$projectid = $app->input->getInt('p');
-    //self::$projectid = JRequest::getInt('p',0);
-    
+        $app = Factory::getApplication();
+   
     $date = time();    // aktuelles Datum 
     //echo date('d.m.Y h:i:s', $date) . ""; 
     $stunden = 4;   // z.B. ein Tag 
@@ -114,7 +82,7 @@ static $linkresult = '';
     
     if (!class_exists(self::$classname))
         {
-        $file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+        $file = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
         if (file_exists($file))
         {
         require_once($file);
@@ -124,9 +92,7 @@ static $linkresult = '';
     
     if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' app<br><pre>'.print_r($app,true).'</pre>'),'Notice');
+
         }
 
     
@@ -140,16 +106,14 @@ static $linkresult = '';
      */
     public function onBeforeRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         if ( self::$projectid )
         {
-//        $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
-//        $actionsModel->getmatches(self::$projectid);
         $this->getmatchestoupdate(2);
         }
         
@@ -163,10 +127,10 @@ static $linkresult = '';
      */
     public function onAfterRender()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
     }
@@ -179,11 +143,11 @@ static $linkresult = '';
      */
     public function onAfterRoute()
     {
-        $app = JFactory::getApplication();
-        self::$projectid = JRequest::getInt('p',0);
+        $app = Factory::getApplication();
+        self::$projectid = Factory::getApplication()->input->getInt('p',0);
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         if ( self::$projectid )
@@ -206,10 +170,10 @@ static $linkresult = '';
      */
     public function onAfterDispatch()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
 
     }
@@ -222,10 +186,10 @@ static $linkresult = '';
      */
     public function onAfterInitialise()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         
         
@@ -240,12 +204,12 @@ static $linkresult = '';
      */
     public function getmatchestoupdate($step=1)
     {
-    $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+    $app = Factory::getApplication();
+        $db = Factory::getDBO();
         $query = $db->getQuery(true); 
         if ( $this->params->get('load_debug', 1) )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
+
         }
         $query->clear(); 
         $query->select('count(*) AS count');
@@ -266,7 +230,7 @@ static $linkresult = '';
     $code = $e->getCode(); // Returns '500';
     if ( $this->params->get('load_debug', 1) )
         {
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     }
 }
     

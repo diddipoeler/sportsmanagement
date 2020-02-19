@@ -4,13 +4,19 @@
  * @file      clubinfo.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubinfo
  */
  
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelClubInfo
@@ -21,7 +27,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelClubInfo extends JModelLegacy {
+class sportsmanagementModelClubInfo extends BaseDatabaseModel {
 
     static $projectid = 0;
     static $clubid = 0;
@@ -47,7 +53,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -58,6 +64,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
 
+	 if ( empty(self::$projectid) )
+	 {
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');	 
+	 }
         parent::__construct();
     }
 
@@ -70,14 +80,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     static function getFirstClubId($club_id=0,$new_club_id=0)
     {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
-    
+   
     if ( $new_club_id > 0 )
     {
     // Select some fields
@@ -88,19 +95,12 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     $query->where('id = ' . $new_club_id);
     $db->setQuery($query);
     $result_club_id = $db->loadObject();
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($result_club_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
-    
-    
+
     self::$first_club_id = $result_club_id->id;    
     self::getFirstClubId($result_club_id->id,$result_club_id->new_club_id);    
     }
     else
     {
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
     self::$first_club_id = $club_id;
     return $club_id; 
     }
@@ -114,18 +114,18 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @return void
      */
     static function generateTree($parent, $tree = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if (array_key_exists($parent, self::$arrPCat)) {
             self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
             foreach (self::$arrPCat[$parent] as $arrC) {
 
                 if (!$tree) {
-                    $treespan = '<span><i class="icon-minus-sign"></i>'.JHTML::_('image', 'media/com_sportsmanagement/jl_images/arrow_left.png').'</span>';
+                    $treespan = '<span><i class="icon-minus-sign"></i>'.HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/arrow_left.png','').'</span>';
                 } else {
                     $treespan = '';
                 }
-                self::$historyhtmltree .= '<li>' . $treespan . '<a href="' . $arrC['clublink'] . '">' . JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a>';
+                self::$historyhtmltree .= '<li>' . $treespan . '<span style="background-color:' . $arrC['color'] . '"><a href="' . $arrC['clublink'] . '">' . HTMLHelper::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a></span>';
                 self::generateTree($arrC['id'], $tree);
 
                 self::$historyhtmltree .= '</li>';
@@ -147,7 +147,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @return
      */
     static function fbTreeRecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if (isset($children[$id]) && $level <= $maxlevel) {
             foreach ($children[$id] as $v) {
@@ -224,10 +224,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 
             } elseif (version_compare(JSM_JVERSION, '3', 'eq')) {
 // Joomla! 3.0 code here
-                $rssDoc = JFactory::getFeedParser($options);
+                $rssDoc = Factory::getFeedParser($options);
             } elseif (version_compare(JSM_JVERSION, '2', 'eq')) {
 // Joomla! 2.5 code here
-                $rssDoc = JFactory::getXMLparser('RSS', $options);
+                $rssDoc = Factory::getXMLparser('RSS', $options);
             } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
 // Joomla! 1.7 code here
             } elseif (version_compare(JVERSION, '1.6.0', 'ge')) {
@@ -243,9 +243,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                     $rssDoc = $feed->getFeed($rssId);
                     return $rssDoc;
                 } catch (\InvalidArgumentException $e) {
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 } catch (\RuntimeException $e) {
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 }
             } else {
                 $feed = new stdclass();
@@ -279,7 +279,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getClubAssociation($associations) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -299,6 +299,44 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         return $result;
     }
 
+/**
+ * sportsmanagementModelClubInfo::getFirstClub()
+ * 
+ * @param integer $club_id
+ * @return
+ */
+static function getFirstClub($club_id = 0) {
+        // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $query = $db->getQuery(true);
+        // Select some fields
+                $query->select('c.*');
+	$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
+	$query->select('CONCAT_WS(\':\',p.id,p.alias) as pro_slug');
+                // From 
+                $query->from('#__sportsmanagement_club AS c');
+	$query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
+            $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+            $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
+                // Where
+                $query->where('c.id = ' . $db->Quote($club_id));
+$query->group('c.name');
+                $db->setQuery($query);
+	
+	$firstclub = $db->loadObject();
+	$firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute($firstclub->pro_slug, $firstclub->club_slug, null, self::$cfg_which_database);
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+                return $firstclub;
+        
+        
+        }
+	
     /**
      * sportsmanagementModelClubInfo::updateHits()
      * 
@@ -307,9 +345,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @return void
      */
     public static function updateHits($clubid = 0, $inserthits = 0) {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if ($inserthits) {
@@ -323,15 +361,17 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      
     }
 
+    
     /**
      * sportsmanagementModelClubInfo::getClub()
      * 
      * @param integer $inserthits
+     * @param integer $club_id
      * @return
      */
-    static function getClub($inserthits = 0) {
+    static function getClub($inserthits = 0,$club_id = 0) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -340,8 +380,21 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $query = $db->getQuery(true);
 
         self::$projectid = $jinput->getInt("p", 0);
-        self::$clubid = $jinput->getInt("cid", 0);
 
+if ( empty(self::$projectid) )
+	 {
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::ERROR, 'jsmerror');	 
+	 }
+	    
+	    if ( $club_id )
+	    {
+		    self::$clubid = $club_id;
+	    }
+	    else
+	    {
+        self::$clubid = $jinput->getInt("cid", 0);
+	    }
+	    
         self::updateHits(self::$clubid, $inserthits);
 
         if (is_null(self::$club)) {
@@ -368,7 +421,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getTeamsByClubId() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -377,9 +430,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $query = $db->getQuery(true);
         $subquery1 = $db->getQuery(true);
         $subquery2 = $db->getQuery(true);
+        $start_time = microtime(true);
 
         $teams = array(0);
-        if (self::$clubid > 0) {
+        if ( self::$clubid && self::$projectid ) {
 
             $query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
             $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
@@ -387,9 +441,8 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 				FROM #__sportsmanagement_project_team as pt
 				RIGHT JOIN #__sportsmanagement_project as p on pt.project_id = p.id
                 RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
-				WHERE st.team_id = t.id and p.published = 1), 0) as pid');
+				WHERE st.team_id = t.id), 0) as pid');
             $query->from('#__sportsmanagement_team as t ');
-            
             $query->where('t.club_id = ' . (int) self::$clubid);
 
             try {
@@ -413,18 +466,39 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                     $subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
                     $subquery1->from('#__sportsmanagement_project AS p');
                     $subquery1->where('p.id = ' . $team->pid);
+			try {
                     $db->setQuery($subquery1);
                     $team->pid = $db->loadResult();
+		} catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                $team->pid = 0;
+            }		
+                  
+			
+			
                 }
                
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
             }
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        $diff = microtime(true) - $start_time;
+        $logarray['method'] = __METHOD__;
+$logarray['line'] = __LINE__;
+$logarray['zeit'] = $diff;
+if ( ComponentHelper::getParams($option)->get('show_query_debug_info') )
+{
+/**
+ * Add the message.
+ */
+Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
+}
         return $teams;
     }
 
@@ -435,7 +509,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getStadiums() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -490,7 +564,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getPlaygrounds() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -516,7 +590,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             $query->where('id = ' . $stadium);
 
             $db->setQuery($query, 0, 1);
-            $playgrounds[] = $db->loadObject();
+		$result = $db->loadObject();
+		if ( $result )
+		{
+            $playgrounds[] = $result;
+		}
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $playgrounds;
@@ -530,7 +608,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getClubHistory($clubid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -549,8 +627,8 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-            return false;
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+	            return false;
         }
 
         foreach ($result as $row) {
@@ -577,7 +655,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getClubHistoryHTML($clubid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -585,18 +663,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
-        $query->select('c.id, c.name, c.new_club_id,c.logo_big');
+        $query->select('c.id, c.name, c.new_club_id,c.logo_big,c.founded_year');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-        $subquery->select('max(pt.project_id)');
-        $subquery->from('#__sportsmanagement_project_team AS pt');
-        $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
-        $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
-        $subquery->join('RIGHT', '#__sportsmanagement_project AS p on pt.project_id = p.id');
-        $subquery->where('t.club_id = c.id ');
-        $subquery->where('p.published = 1');
-        $query->select('(' . $subquery . ') as pid ');
         $query->from('#__sportsmanagement_club AS c');
         $query->where('c.new_club_id = ' . $clubid);
+       
         try {
             $db->setQuery($query);
             $result = $db->loadObjectList();
@@ -605,12 +676,25 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 
         foreach ($result as $row) {
 
+            $subquery->clear();
+            $subquery->select('max(p.id) as maxpid');
+            $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
+            $subquery->from('#__sportsmanagement_project AS p');
+            $subquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.project_id = p.id');
+            $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+            $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
+            $subquery->where('t.club_id = '. $row->id);
+            $subquery->where('p.published = 1');    
+            $db->setQuery($subquery);
+            $result2 = $db->loadObject();
+            $row->pid = $result2->pid;
+            
             $pt = $row->new_club_id;
             $list = isset(self::$tree_fusion[$pt]) ? self::$tree_fusion[$pt] : array();
             array_push($list, $row);
@@ -620,16 +704,22 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 $row->pid = 0;
             }
 // store parent and its children into the $arrPCat Array
+if ( $row->id == self::$clubid )
+{
+$color = 'lawngreen';
+}
+else
+{
+$color = '';
+}		
             self::$arrPCat[$pt][] = Array('id' => $row->id,
-                'name' => $row->name,
+                'name' => $row->name.' ('.$row->founded_year.')',
                 'pid' => $row->pid,
                 'slug' => $row->slug,
+		'color' => $color, 
                 'logo_big' => $row->logo_big,
                 'clublink' => sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug)
             );
-
-            //$temp = '<ul><li>'.$row->name.'</li>';
-            //$this->treedepthold = $this->treedepth;
 
             if (self::$treedepthold === self::$treedepth) {
                 $temp = '<li>';
@@ -638,11 +728,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             }
 
             $link = sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug, null, self::$cfg_which_database);
-            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
+            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
 
-            $temp .= JHTML::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
+            $temp .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
             $temp .= "&nbsp;";
-            $temp .= JHTML::link($link, $row->name);
+            $temp .= HTMLHelper::link($link, $row->name);
             $temp .= '</li>';
             self::$historyhtml .= $temp;
 
@@ -669,7 +759,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getClubHistoryTree($clubid, $new_club_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -680,15 +770,13 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 
         if (self::$new_club_id != 0) {
             $icon = 'to_club.png';
-//  $querywhere = ' WHERE c.id = '. $this->new_club_id	;
             $query->where('c.id = ' . self::$new_club_id);
         } else {
             $icon = 'from_club.png';
-            //$querywhere = ' WHERE c.new_club_id = '. $clubid	;
             $query->where('c.new_club_id = ' . $clubid);
         }
 
-        $query->select('c.id, c.name, c.new_club_id');
+        $query->select('c.id, c.name, c.new_club_id,c.founded_year');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         $subquery->select('max(pt.project_id)');
         $subquery->from('#__sportsmanagement_project_team AS pt');
@@ -701,16 +789,13 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $query->from('#__sportsmanagement_club AS c');
         try {
             $db->setQuery($query);
-
-//                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
             $result = $db->loadObjectList();
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 
@@ -721,7 +806,6 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 
         self::$jgcat_rows = array_merge(self::$jgcat_rows, $result);
 
-        //$app->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
         foreach ($result as $row) {
             if ($row->new_club_id) {
                 self::$treedepth++;
@@ -743,7 +827,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getSortClubHistoryTree($clubtree, $root_catid, $cat_name) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -752,34 +836,26 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $jgcat_rows_sorted = Array();
         $jgcat_rows_sorted = self::sortCategoryList($clubtree, $jgcat_rows_sorted);
 
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubtree<br><pre>'.print_r($clubtree,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root_catid<br><pre>'.print_r($root_catid,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cat_name<br><pre>'.print_r($cat_name,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jgcat_rows_sorted<br><pre>'.print_r($jgcat_rows_sorted,true).'</pre>'),'');
-
         $cat_link = '';
 
-        $script .= "d" . $root_catid . " = new dTree('d" . $root_catid . "','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/');" . "\n";
+        $script .= "d" . $root_catid . " = new dTree('d" . $root_catid . "','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/');" . "\n";
         $script .= "d" . $root_catid . ".add(" . "0" . ", " . "-1" . ", ";
         $script .= "'" . $cat_name . "', ";
         $script .= "'" . $cat_link . "', ";
-        //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
         $script .= "'" . 'true' . "');" . "\n";
 
         foreach ($jgcat_rows_sorted as $key => $value) {
             foreach ($value as $row) {
                 if ($root_catid == $row->new_club_id) {
                     $script .= "d" . $root_catid . ".add(" . $row->id . ", " . "0" . ", ";
-                    $script .= "'" . $row->name . "', ";
+                    $script .= "'" . $row->name.' ('.$row->founded_year.')' . "', ";
                     $script .= "'" . $row->link . "', ";
-                    //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name.' ('.$row->founded_year.')' . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 } else {
                     $script .= "d" . $root_catid . ".add(" . $row->id . ", " . $row->new_club_id . ", ";
-                    $script .= "'" . $row->name . "', ";
+                    $script .= "'" . $row->name.' ('.$row->founded_year.')' . "', ";
                     $script .= "'" . $row->link . "', ";
-                    //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name.' ('.$row->founded_year.')' . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 }
             }
         }
@@ -866,7 +942,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     function hasEditPermission($task = null) {
         //check for ACL permsission and project admin/editor
         $allowed = parent::hasEditPermission($task);
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->id > 0 && !$allowed) {
             // Check if user is the club admin
             $club = $this->getClub();

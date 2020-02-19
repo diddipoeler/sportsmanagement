@@ -4,35 +4,308 @@
  * @file      deafault_googlemap.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage globalviews
  */
 
+/**
+ * Leaflet Routing Machine API
+ * http://www.liedman.net/leaflet-routing-machine/api/
+ * https://github.com/perliedman/leaflet-routing-machine
+ * 
+ * 
+ * https://github.com/Turistforeningen/leaflet-routing
+ *
+ * https://github.com/smeijer/leaflet-geosearch
+ */
+
 defined('_JEXEC') or die('Restricted access');
-$this->view = JFactory::getApplication()->input->getCmd('view');
-//echo $this->kmlfile.'<br>';
-//echo JURI::root(true).'<br>';
-//echo JURI::root().'<br>';
-//$this->kmlfile = 'test-club.kml';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Registry\Registry;
+
+$this->view = Factory::getApplication()->input->getCmd('view');
+$this->showmap = false;
+$map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'; 
+
+if ( $this->config['use_which_map'] )
+{
+$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
+$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');	
+
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');	
+
+$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js');
+$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css');
+	
+/**
+ * geocoderscript
+ */
+//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+//$this->document->addStyleSheet('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css');
+ 
+switch ( $this->mapconfig['default_map_type'] )
+{
+case 'G_NORMAL_MAP':  
+$map_type = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';  
+break;    
+case 'G_SATELLITE_MAP': 
+$map_type = 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';   
+break;
+case 'G_HYBRID_MAP':  
+$map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';  
+break;
+case 'G_TERRAIN_MAP': 
+$map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';   
+break;
+}
+
+?>	
+<h4>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+</h4>
+<div id="map" style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;">
+</div>
+<?php
+switch ($this->view)
+{
+case 'playground':
+if ( $this->playground->latitude && $this->playground->longitude ) 		
+{	
+$this->showmap = true;	
+?>
+<script>
+  
+     var planes = [
+         ["<?php echo $this->playground->name; ?>",<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>]
+         ];
+  
+         var map = L.map('map').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             '<?php echo $map_type; ?>', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
+             }).addTo(map);
+var myIcon = L.icon({
+	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+});    
+         for (var i = 0; i < planes.length; i++) {
+             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+//L.Control.geocoder().addTo(map); 
+              L.control.locate().addTo(map);
+              
+jQuery.getJSON('https://ipinfo.io/geo', function(response) { 
+    var loc = response.loc.split(',');
+    console.log(response.loc);
+    marker = new L.marker([loc[0],loc[1]]).addTo(map);
+    
+L.Routing.control({
+    waypoints: [
+        L.latLng(loc[0],loc[1]),
+        L.latLng(<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>)
+    ]
+}).addTo(map);    
+    
+    
+    
+    console.log(loc);
+    var coords = {
+        latitude: loc[0],
+        longitude: loc[1]
+    };
+    console.log(coords);
+});
+
+jQuery.get("https://ipinfo.io", function(response) {
+  console.log(response.ip, response.country);
+}, "jsonp");              
+
+
+              
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+jQuery("#map").width(50).height(50);
+</script>
+<?php
+}
+break;
+
+case 'clubinfo':
+if ( $this->club->latitude && $this->club->longitude ) 		
+{	
+$this->showmap = true;	
+?>
+<script>
+  
+     var planes = [
+         ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
+         ];
+  
+         var map = L.map('map').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             '<?php echo $map_type; ?>', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
+             }).addTo(map);
+var myIcon = L.icon({
+	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+});    
+         for (var i = 0; i < planes.length; i++) {
+             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+//L.Control.geocoder().addTo(map); 
+              L.control.locate().addTo(map);
+              
+jQuery.getJSON('https://ipinfo.io/geo', function(response) { 
+    var loc = response.loc.split(',');
+    console.log(response.loc);
+    marker = new L.marker([loc[0],loc[1]]).addTo(map);
+    
+L.Routing.control({
+    waypoints: [
+        L.latLng(loc[0],loc[1]),
+        L.latLng(<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>)
+    ]
+}).addTo(map);    
+    
+    
+    
+    console.log(loc);
+    var coords = {
+        latitude: loc[0],
+        longitude: loc[1]
+    };
+    console.log(coords);
+});
+
+jQuery.get("https://ipinfo.io", function(response) {
+  console.log(response.ip, response.country);
+}, "jsonp");              
+
+
+              
+</script>
+<?php
+}
+else
+{
+?>
+<script>
+jQuery("#map").width(50).height(50);
+</script>
+<?php
+}		
+break;
+case 'ranking':
+case 'resultsranking':
+case 'resultsmatrix':
+$zaehler = 1;
+$find[] = "'";
+$replace[] = " ";
+foreach ( $this->allteams as $row )
+{
+
+$latitude = $row->latitude;
+$longitude = $row->longitude;
+	
+if ( !empty($latitude) && $latitude != '0.00000000' )
+{
+$row->team_name= str_replace($find, $replace, $row->team_name);
+// logo_big
+$map_markes[] = "['".$row->team_name.'<br>'.HTMLHelper::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".Uri::root().$row->logo_big."']";
+$map_bounds[] = "[".$latitude.",".$longitude."]";
+$zaehler++;
+$setlatitude = $row->latitude;
+$setlongitude = $row->longitude;	
+}
+
+}
+
+$comma_separated = implode(",", $map_markes);
+$comma_bounds = implode(",", $map_bounds);
+?>
+<script>
+  
+     var planes = [
+         <?php echo $comma_separated; ?>
+         ];
+  
+         var map = L.map('map').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             '<?php echo $map_type; ?>', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
+             }).addTo(map);
+
+         for (var i = 0; i < planes.length; i++) {
+<?php
+if ( $this->mapconfig['map_ranking_club_icon'] )
+{
+?>
+console.log("wappen : " + planes[i][4]);  
+var myIcon = L.icon({
+	iconUrl: planes[i][4],
+    iconSize: [<?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>, <?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>]
+});           
+<?php
+}
+else
+{
+?>
+var myIcon = L.icon({
+	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+});  
+<?php
+}
+?>
+            
+             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+         map.fitBounds([<?php echo $comma_bounds; ?>]);  
+//L.Control.geocoder().addTo(map);             
+     </script>
+<?php
+
+break;		
+}		
+?>	
+
+
+<?php
+}
+else
+{
 
 switch ($this->view)
 {
 case 'ranking':
-//echo '<pre>'.print_r($this->allteams,true).'</pre><br>';
-//foreach ( $this->allteams as $row )
-//{
-// team_name
-//$values[]['latLng'] = '['.$row->latitude.','.$row->longitude.'], data:'.$row->team_name;
-//$values[][data] = '['.$row->team_name.']';
-//$latitude = $row->latitude;
-//$longitude = $row->longitude;
-//echo 'latitude  -> '.$latitude .'<br>';
-//echo 'longitude -> '.$longitude .'<br>';
-//}
 $icon = 'http://maps.google.com/mapfiles/marker_green.png';
-//echo json_encode($values);
-
 break;
 case 'clubinfo':
 $latitude = $this->club->latitude;
@@ -49,10 +322,10 @@ break;
 
 ?>
 
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?>" id="jsmgooglemap">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <h4>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 </h4>
 	
 <?php
@@ -62,43 +335,31 @@ break;
  */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-$sef = JFactory::getConfig()->get('sef', false);
+$sef = Factory::getConfig()->get('sef', false);
 }
 else
 {
-$sef = JFactory::getConfig()->getValue('config.sef', false);
+$sef = Factory::getConfig()->getValue('config.sef', false);
 }
-
-
-//echo 'sef -> '.$sef .'<br>';
-//echo 'plugin_googlemap3 -> '.JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ).'<br>';
-        
-if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
-//if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) )
+       
+if ( ( !PluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( PluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
 {
-// JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
+
 
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
-$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
-
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js&sensor=false');
-//$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3-7.min.js');
-
-
-//$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false&language=de');	
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&language=de');		
-//$this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
-
+$this->document->addScript(Uri::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 
 switch ($this->view)
 {
 case 'clubinfo':
 case 'playground':
+if ( $this->showmap )		
+{
 ?>
 <div id="map" style="width:50%;height:600px;float: left;"></div>
 <div id="pano" style="width:50%;height:600px;float: left;"></div>
 <?php
+}		
 break;
 default:
 ?>
@@ -191,15 +452,13 @@ if ( !empty($latitude) && $latitude != '0.00000000' )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
-//$row->team_name = $row->team_name.' '."<img src='".JURI::root().$row->logo_big."' width='50'>";
-//$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."']";
-$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."','".JURI::root().$row->logo_big."']";
+$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."','".$row->logo_big."']";
 $zaehler++;
 }
 
 }
 
-//echo 'map_markes <br><pre>'.print_r($this->allteams,true).'</pre>';
+
 $comma_separated = implode(",", $map_markes);
 
 
@@ -280,18 +539,15 @@ height: 570px;
 }
 else
 {
-$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
-$paramsPlugin = new JRegistry($plugin->params);
-
-//echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
-//echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
-
-$params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
-echo JHtml::_('content.prepare', $params);
-  
+$plugin = PluginHelper::getPlugin('system', 'plugin_googlemap3');
+$paramsPlugin = new Registry($plugin->params);
+$params  = "{mosmap kml[0]='".'tmp'.DIRECTORY_SEPARATOR.$this->kmlfile."'}";
+echo HTMLHelper::_('content.prepare', $params);
 }
-            
             
 ?>
 </div>
 </div>
+<?php
+}
+?>

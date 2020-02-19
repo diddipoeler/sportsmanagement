@@ -18,10 +18,12 @@
  * If you have any questions please use the contact form on our website: http://www.bluestarsoftware.de/en/contact.html   
  * 
  * beispielseite: http://www.bluestarsoftware.de/de/beitraege/sepa-lastschrift.html   
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
 */
 
 namespace BlueStarSoftware\SEPA;
- 
+
+defined('_JEXEC') or die('Restricted access'); 
  
   class PropTool {    
     public static function transfer( $destObj, $sourceArray, $propList )

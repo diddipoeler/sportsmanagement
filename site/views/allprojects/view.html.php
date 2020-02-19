@@ -4,15 +4,16 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojects
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
@@ -22,7 +23,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 if ( !class_exists('sportsmanagementHelperHtml') ) 
 {
 //add the classes for handling
-$classpath = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php';
+$classpath = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html.php';
 JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
 
@@ -51,29 +52,23 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 	function init()
 	{
         
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
         $starttime = microtime(); 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
 
 		$this->state 		= $this->get('State');
 		$this->items 		= $this->get('Items');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$this->pagination	= $this->get('Pagination');
 		
         //build the html options for nation
-		$temp[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$temp[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $temp = array_merge($temp,$res);
             }
 		
-        //$lists['nation'] = $temp;
         $lists['nation2'] = JHtmlSelect::genericlist(	$temp,
 																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -83,14 +78,13 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
-        $modeltemp = JModelLegacy::getInstance("Leagues", "sportsmanagementModel");
+        $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
+        $modeltemp = BaseDatabaseModel::getInstance("Leagues", "sportsmanagementModel");
 		if ($res = $modeltemp->getLeagues())
         {
             $temp = array_merge($temp,$res);
             }
 		
-        //$lists['nation'] = $temp;
         $lists['leagues'] = JHtmlSelect::genericlist(	$temp,
 																'filter_search_leagues',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -100,8 +94,8 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
-        $modeltemp = JModelLegacy::getInstance("Seasons", "sportsmanagementModel");
+        $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
+        $modeltemp = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
 		if ($res = $modeltemp->getSeasons())
         {
             $temp = array_merge($temp,$res);
@@ -118,7 +112,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         unset($temp);
         
         // Set page title
-		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();

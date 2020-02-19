@@ -4,15 +4,17 @@
  * @file      imagehandler.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage imagehandler
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\Folder;
 
-jimport('joomla.application.component.model');
-jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 
@@ -25,7 +27,7 @@ jimport('joomla.filesystem.file');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelImagehandler extends JModelLegacy
+class sportsmanagementModelImagehandler extends BaseDatabaseModel
 {
 	/**
 	 * Pagination object
@@ -43,13 +45,13 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	{
 		parent::__construct();
 
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
 		$search 	= $app->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-		$search 	= trim(JString::strtolower( $search ) );
+		$search 	= trim(StringHelper::strtolower( $search ) );
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -69,7 +71,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->getVar( 'folder' );
+			$folder = Factory::getApplication()->input->getVar( 'folder' );
 			$this->setState('folder', $folder);
 
 			$set = true;
@@ -130,8 +132,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function getList()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 		// JInput object 
          $jinput = $app->input; 
 
@@ -148,20 +150,18 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		$search = $this->getState('search');
 
 		// Initialize variables
-		$basePath = JPATH_SITE.DS.'images'.DS.$option.DS.'database'.DS.$folder;
+		$basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
 		$images 	= array ();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder -> '.$folder.''),'Notice');
-
-		// Get the list of files and folders from the given folder
-		$fileList 	= JFolder::files($basePath);
+	// Get the list of files and folders from the given folder
+		$fileList 	= Folder::files($basePath);
 
 		// Iterate over the files if they exist
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.DS.$file) && substr($file, 0, 1) != '.'
+				if (is_file($basePath.DIRECTORY_SEPARATOR.$file) && substr($file, 0, 1) != '.'
 					&& strtolower($file) !== 'index.html'
 					&& strtolower($file) !== 'thumbs.db'
 					&& strtolower($file) !== 'readme.txt'
@@ -172,14 +172,14 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 					if ( $search == '') {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = JPath::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
 					} elseif(stristr( $file, $search)) {
 						$tmp = new JObject();
 						$tmp->name = $file;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = JPath::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 

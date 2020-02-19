@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @version		$Id: helper.php 16385 2010-04-23 10:44:15Z ian $
  * @package		Joomla
@@ -13,8 +12,14 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Client\FtpClient;
 
 /**
  * @package		Joomla
@@ -22,21 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class JInstallationHelper
 {
-	/**
-	 * @return string A guess at the db required
-	 */
-	function detectDB()
-	{
-		$map = array ('mysql_connect' => 'mysql', 'mysqli_connect' => 'mysqli', 'mssql_connect' => 'mssql');
-		foreach ($map as $f => $db)
-		{
-			if (function_exists($f))
-			{
-				return $db;
-			}
-		}
-		return 'mysql';
-	}
+	
 
 	/**
 	 * @param array
@@ -251,10 +242,10 @@ class JInstallationHelper
 	function getFilePerms($input, $type = 'file')
 	{
 		$perms = '';
-		if (JArrayHelper::getValue($input, $type.'PermsMode', 0))
+		if (ArrayHelper::getValue($input, $type.'PermsMode', 0))
 		{
 			$action = ($type == 'dir') ? 'Search' : 'Execute';
-			$perms = '0'. (JArrayHelper::getValue($input, $type.'PermsUserRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsUserWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsUser'.$action, 0)). (JArrayHelper::getValue($input, $type.'PermsGroupRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsGroupWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsGroup'.$action, 0)). (JArrayHelper::getValue($input, $type.'PermsWorldRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsWorldWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsWorld'.$action, 0));
+			$perms = '0'. (ArrayHelper::getValue($input, $type.'PermsUserRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsUserWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsUser'.$action, 0)). (ArrayHelper::getValue($input, $type.'PermsGroupRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsGroupWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsGroup'.$action, 0)). (ArrayHelper::getValue($input, $type.'PermsWorldRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsWorldWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsWorld'.$action, 0));
 		}
 		return $perms;
 	}
@@ -264,15 +255,15 @@ class JInstallationHelper
 	 */
 	function createAdminUser(& $vars)
 	{
-		$DBtype		= JArrayHelper::getValue($vars, 'DBtype', 'mysql');
-		$DBhostname	= JArrayHelper::getValue($vars, 'DBhostname', '');
-		$DBuserName	= JArrayHelper::getValue($vars, 'DBuserName', '');
-		$DBpassword	= JArrayHelper::getValue($vars, 'DBpassword', '');
-		$DBname		= JArrayHelper::getValue($vars, 'DBname', '');
-		$DBPrefix	= JArrayHelper::getValue($vars, 'DBPrefix', '');
+		$DBtype		= ArrayHelper::getValue($vars, 'DBtype', 'mysql');
+		$DBhostname	= ArrayHelper::getValue($vars, 'DBhostname', '');
+		$DBuserName	= ArrayHelper::getValue($vars, 'DBuserName', '');
+		$DBpassword	= ArrayHelper::getValue($vars, 'DBpassword', '');
+		$DBname		= ArrayHelper::getValue($vars, 'DBname', '');
+		$DBPrefix	= ArrayHelper::getValue($vars, 'DBPrefix', '');
 
-		$adminPassword	= JArrayHelper::getValue($vars, 'adminPassword', '');
-		$adminEmail		= JArrayHelper::getValue($vars, 'adminEmail', '');
+		$adminPassword	= ArrayHelper::getValue($vars, 'adminPassword', '');
+		$adminEmail		= ArrayHelper::getValue($vars, 'adminEmail', '');
 
 		jimport('joomla.user.helper');
 
@@ -295,8 +286,8 @@ class JInstallationHelper
 			// is there already and existing admin in migrated data
 			if ( $db->getErrorNum() == 1062 )
 			{
-				$vars['adminLogin'] = JText::_('Admin login in migrated content was kept');
-				$vars['adminPassword'] = JText::_('Admin password in migrated content was kept');
+				$vars['adminLogin'] = Text::_('Admin login in migrated content was kept');
+				$vars['adminPassword'] = Text::_('Admin password in migrated content was kept');
 				return;
 			}
 			else
@@ -348,22 +339,22 @@ class JInstallationHelper
 	 */
 	function fsPermissionsCheck()
 	{
-		if(!is_writable(JPATH_ROOT.DS.'tmp')) {
+		if(!is_writable(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp')) {
 			return false;
 		}
-		if(!mkdir(JPATH_ROOT.DS.'tmp'.DS.'test', 0755)) {
+		if(!mkdir(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test', 0755)) {
 			return false;
 		}
-		if(!copy(JPATH_ROOT.DS.'tmp'.DS.'index.html', JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html')) {
+		if(!copy(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'index.html', JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html')) {
 			return false;
 		}
-		if(!chmod(JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html', 0777)) {
+		if(!chmod(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html', 0777)) {
 			return false;
 		}
-		if(!unlink(JPATH_ROOT.DS.'tmp'.DS.'test'.DS.'index.html')) {
+		if(!unlink(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'index.html')) {
 			return false;
 		}
-		if(!rmdir(JPATH_ROOT.DS.'tmp'.DS.'test')) {
+		if(!rmdir(JPATH_ROOT.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'test')) {
 			return false;
 		}
 		return true;
@@ -380,29 +371,29 @@ class JInstallationHelper
 	 */
 	function findFtpRoot($user, $pass, $host='127.0.0.1', $port='21')
 	{
-		jimport('joomla.client.ftp');
+
 		$ftpPaths = array();
 
 		// Connect and login to the FTP server (using binary transfer mode to be able to compare files)
-		$ftp =& JFTP::getInstance($host, $port, array('type'=>FTP_BINARY));
+		$ftp = FtpClient::getInstance($host, $port, array('type'=>FTP_BINARY));
 		if (!$ftp->isConnected()) {
-			return JError::raiseError('31', 'NOCONNECT');
+			return Log::add( 'NOCONNECT', Log::ERROR, 'jsmerror');
 		}
 		if (!$ftp->login($user, $pass)) {
-			return JError::raiseError('31', 'NOLOGIN');
+			return Log::add( 'NOLOGIN', Log::ERROR, 'jsmerror');
 		}
 
 		// Get the FTP CWD, in case it is not the FTP root
 		$cwd = $ftp->pwd();
 		if ($cwd === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+			return Log::add( 'NOPWD', Log::ERROR, 'jsmerror');
 		}
 		$cwd = rtrim($cwd, '/');
 
 		// Get list of folders in the CWD
 		$ftpFolders = $ftp->listDetails(null, 'folders');
 		if ($ftpFolders === false || count($ftpFolders) == 0) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NODIRECTORYLISTING');
+			return Log::add( 'NODIRECTORYLISTING', Log::ERROR, 'jsmerror');
 		}
 		for ($i=0, $n=count($ftpFolders); $i<$n; $i++) {
 			$ftpFolders[$i] = $ftpFolders[$i]['name'];
@@ -426,7 +417,7 @@ class JInstallationHelper
 		}
 
 		// Check all possible paths for the real Joomla! installation
-		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'version.php');
 		foreach ($ftpPaths as $tmpPath)
 		{
 			$filePath = rtrim($tmpPath, '/').'/libraries/joomla/version.php';
@@ -446,7 +437,7 @@ class JInstallationHelper
 		if (isset($ftpPath)) {
 			return $ftpPath;
 		} else {
-			return JError::raiseError('SOME_ERROR_CODE', 'Unable to autodetect the FTP root folder');
+			return Log::add( 'Unable to autodetect the FTP root folder', Log::ERROR, 'jsmerror');
 		}
 	}
 
@@ -461,83 +452,82 @@ class JInstallationHelper
 	 */
 	function FTPVerify($user, $pass, $root, $host='127.0.0.1', $port='21')
 	{
-		jimport('joomla.client.ftp');
-		$ftp = & JFTP::getInstance($host, $port);
+		$ftp = FtpClient::getInstance($host, $port);
 
 		// Since the root path will be trimmed when it gets saved to configuration.php, we want to test with the same value as well
 		$root = rtrim($root, '/');
 
 		// Verify connection
 		if (!$ftp->isConnected()) {
-			return JError::raiseWarning('31', 'NOCONNECT');
+			return Log::add( 'NOCONNECT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify username and password
 		if (!$ftp->login($user, $pass)) {
-			return JError::raiseWarning('31', 'NOLOGIN');
+			return Log::add( 'NOLOGIN', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify PWD function
 		if ($ftp->pwd() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+			return Log::add( 'NOPWD', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify root path exists
 		if (!$ftp->chdir($root)) {
-			return JError::raiseWarning('31', 'NOROOT');
+			return Log::add( 'NOROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify NLST function
 		if (($rootList = $ftp->listNames()) === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NONLST');
+			return Log::add( 'NONLST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify LIST function
 		if ($ftp->listDetails() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOLIST');
+			return Log::add( 'NOLIST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify SYST function
 		if ($ftp->syst() === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOSYST');
+			return Log::add( 'NOSYST', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify valid root path, part one
 		$checkList = array('CHANGELOG.php', 'COPYRIGHT.php', 'index.php', 'INSTALL.php', 'LICENSE.php');
 		if (count(array_diff($checkList, $rootList))) {
-			return JError::raiseWarning('31', 'INVALIDROOT');
+			return Log::add( 'INVALIDROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify RETR function
 		$buffer = null;
 		if ($ftp->read($root.'/libraries/joomla/version.php', $buffer) === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NORETR');
+			return Log::add( 'NORETR', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify valid root path, part two
-		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DIRECTORY_SEPARATOR.'joomla'.DIRECTORY_SEPARATOR.'version.php');
 		if ($buffer !== $checkValue) {
-			return JError::raiseWarning('31', 'INVALIDROOT');
+			return Log::add( 'INVALIDROOT', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify STOR function
 		if ($ftp->create($root.'/ftp_testfile') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOSTOR');
+			return Log::add( 'NOSTOR', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify DELE function
 		if ($ftp->delete($root.'/ftp_testfile') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NODELE');
+			return Log::add( 'NODELE', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify MKD function
 		if ($ftp->mkdir($root.'/ftp_testdir') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NOMKD');
+			return Log::add( 'NOMKD', Log::ERROR, 'jsmerror');
 		}
 
 		// Verify RMD function
 		if ($ftp->delete($root.'/ftp_testdir') === false) {
-			return JError::raiseError('SOME_ERROR_CODE', 'NORMD');
+			return Log::add( 'NORMD', Log::ERROR, 'jsmerror');
 		}
 
 		$ftp->quit();
@@ -565,7 +555,7 @@ class JInstallationHelper
 		/*
 		 * First we need to determine if the path is chmodable
 		 */
-		if (!JPath::canChmod(JPath::clean(JPATH_SITE.DS.$dir)))
+		if (!JPath::canChmod(JPath::clean(JPATH_SITE.DIRECTORY_SEPARATOR.$dir)))
 		{
 			$ftpFlag = true;
 		}
@@ -579,8 +569,7 @@ class JInstallationHelper
 		if ($ftpFlag == true)
 		{
 			// Connect the FTP client
-			jimport('joomla.client.ftp');
-			$ftp = & JFTP::getInstance($srv['ftpHost'], $srv['ftpPort']);
+			$ftp = FtpClient::getInstance($srv['ftpHost'], $srv['ftpPort']);
 			$ftp->login($srv['ftpUser'],$srv['ftpPassword']);
 
 			//Translate path for the FTP account
@@ -600,7 +589,7 @@ class JInstallationHelper
 		else
 		{
 
-			$path = JPath::clean(JPATH_SITE.DS.$dir);
+			$path = JPath::clean(JPATH_SITE.DIRECTORY_SEPARATOR.$dir);
 
 			if (!@ chmod($path, octdec('0755')))
 			{
@@ -616,7 +605,7 @@ class JInstallationHelper
 	}
 
 	function findMigration( &$args ) {
-		print_r($args); jexit();
+		 jexit();
 	}
 
 	/**
@@ -638,7 +627,7 @@ class JInstallationHelper
 		 * Check for iconv
 		 */
 		if ($migration && !$preconverted && !function_exists( 'iconv' ) ) {
-			return JText::_( 'WARNICONV' );
+			return Text::_( 'WARNICONV' );
 		}
 
 
@@ -647,11 +636,11 @@ class JInstallationHelper
 		 */
 		if( $migration )
 		{
-			$sqlFile	= JFactory::getApplication()->input->getVar('migrationFile', '', 'files', 'array');
+			$sqlFile	= Factory::getApplication()->input->getVar('migrationFile', '', 'files', 'array');
 		}
 		else
 		{
-			$sqlFile	= JFactory::getApplication()->input->getVar('sqlFile', '', 'files', 'array');
+			$sqlFile	= Factory::getApplication()->input->getVar('sqlFile', '', 'files', 'array');
 		}
 
 		/*
@@ -659,7 +648,7 @@ class JInstallationHelper
 		 */
 		if (!(bool) ini_get('file_uploads'))
 		{
-			return JText::_('WARNINSTALLFILE');
+			return Text::_('WARNINSTALLFILE');
 		}
 
 		/*
@@ -667,7 +656,7 @@ class JInstallationHelper
 		 */
 		if (!extension_loaded('zlib'))
 		{
-			return JText::_('WARNINSTALLZLIB');
+			return Text::_('WARNINSTALLZLIB');
 		}
 
 		/*
@@ -675,27 +664,27 @@ class JInstallationHelper
 		 */
 		if (!is_array($sqlFile) || $sqlFile['size'] < 1)
 		{
-			return JText::_('WARNNOFILE');
+			return Text::_('WARNNOFILE');
 		}
 
 		/*
 		 * Move uploaded file
 		 */
 		// Set permissions for tmp dir
-		JInstallationHelper::_chmod(JPATH_SITE.DS.'tmp', 0777);
+		JInstallationHelper::_chmod(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp', 0777);
 		jimport('joomla.filesystem.file');
-		$uploaded = JFile::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
+		$uploaded = File::upload($sqlFile['tmp_name'], JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name']);
 		if(!$uploaded) {
-			return JText::_('WARNUPLOADFAILURE');
+			return Text::_('WARNUPLOADFAILURE');
 		}
 
 		if( !preg_match('#\.sql$#i', $sqlFile['name']) )
 		{
-			$archive = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
+			$archive = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name'];
 		}
 		else
 		{
-			$script = JPATH_SITE.DS.'tmp'.DS.$sqlFile['name'];
+			$script = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$sqlFile['name'];
 		}
 
 		// unpack archived sql files
@@ -704,9 +693,9 @@ class JInstallationHelper
 			$package = JInstallationHelper::unpack( $archive, $args );
 			if ( $package === false )
 			{
-				return JText::_('WARNUNPACK');
+				return Text::_('WARNUNPACK');
 			}
-			$script = $package['folder'].DS.$package['script'];
+			$script = $package['folder'].DIRECTORY_SEPARATOR.$package['script'];
 		}
 
 		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
@@ -719,7 +708,7 @@ class JInstallationHelper
 			$script = JInstallationHelper::preMigrate($script, $args, $db);
 			if ( $script == false )
 			{
-				return JText::_( 'Script operations failed' );
+				return Text::_( 'Script operations failed' );
 			}
 		}
 
@@ -763,13 +752,13 @@ class JInstallationHelper
 			{
 				$msg .= stripslashes( $error['msg'] );
 				$msg .= chr(13)."-------------".chr(13);
-				$txt = '<textarea cols="40" rows="4" name="instDefault" readonly="readonly" >'.JText::_("Database Errors Reported").chr(13).$msg.'</textarea>';
+				$txt = '<textarea cols="40" rows="4" name="instDefault" readonly="readonly" >'.Text::_("Database Errors Reported").chr(13).$msg.'</textarea>';
 			}
 		}
 		else
 		{
 			// consider other possible errors from populate
-			$msg = $result == 0 ? JText::_('SQL script installed successfully') : JText::_('Error installing SQL script') ;
+			$msg = $result == 0 ? Text::_('SQL script installed successfully') : Text::_('Error installing SQL script') ;
 			$txt = '<input size="50" value="'.$msg.'" readonly="readonly" />';
 		}
 
@@ -778,12 +767,12 @@ class JInstallationHelper
 		 */
 		if ($archive)
 		{
-			JFile::delete( $archive );
-			JFolder::delete( $package['folder'] );
+			File::delete( $archive );
+			Folder::delete( $package['folder'] );
 		}
 		else
 		{
-			JFile::delete( $script );
+			File::delete( $script );
 		}
 
 		return $txt;
@@ -809,7 +798,7 @@ class JInstallationHelper
 
 
 		// Clean the paths to use for archive extraction
-		$extractdir = JPath::clean(dirname($p_filename).DS.$tmpdir);
+		$extractdir = JPath::clean(dirname($p_filename).DIRECTORY_SEPARATOR.$tmpdir);
 		$archivename = JPath::clean($archivename);
 		jimport('joomla.filesystem.archive');
 		$result = JArchive::extract( $archivename, $extractdir);
@@ -907,20 +896,20 @@ class JInstallationHelper
 		$oldPrefix = rtrim( $oldPrefix, '_' ) . '_';
 		$srcEncoding = $args['srcEncoding'];
 		if(!is_file($scriptName)) return false; // not a file?
-		$newFile = dirname( $scriptName ).DS.'converted.sql';
+		$newFile = dirname( $scriptName ).DIRECTORY_SEPARATOR.'converted.sql';
 		$tfilesize = filesize($scriptName);
 		if($maxread > 0 && $tfilesize > 0 && $maxread < $tfilesize)
 		{
 			$parts = ceil($tfilesize / $maxread);
 			file_put_contents( $newFile, '' ); // cleanse the file first
 			for($i = 0; $i < $parts; $i++) {
-				$buffer = JFile::read($scriptName, false, $maxread, $maxread,($i * $maxread));
+				$buffer = File::read($scriptName, false, $maxread, $maxread,($i * $maxread));
 				// Lets try and read a portion of the file
 				JInstallationHelper::replaceBuffer($buffer, $oldPrefix, $newPrefix, $srcEncoding);
 				JInstallationHelper::appendFile($buffer, $newFile);
 				unset($buffer);
 			}
-			JFile::delete( $scriptName );
+			File::delete( $scriptName );
 		} else {
 			/*
 			 * read script file into buffer
@@ -935,11 +924,11 @@ class JInstallationHelper
 			/*
 			 * write to file
 			 */
-			//$newFile = dirname( $scriptName ).DS.'converted.sql';
+			//$newFile = dirname( $scriptName ).DIRECTORY_SEPARATOR.'converted.sql';
 			$ret = file_put_contents( $newFile, $buffer );
 			unset($buffer); // Release the memory used by the buffer
 			jimport('joomla.filesystem.file');
-			JFile::delete( $scriptName );
+			File::delete( $scriptName );
 		}
 
 		/*
@@ -1309,7 +1298,7 @@ class JInstallationHelper
 			$db->setQuery( $qry );
 			if ( $row = $db->loadObject() ) {
 				if($row->module == '') { $row->module = 'mod_custom'; }
-				if(JFolder::exists(JPATH_SITE.DS.'modules'.DS.$row->module)) {
+				if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$row->module)) {
 					$nextId++;
 					$oldid = $row->id;
 					$row->id = $nextId;
@@ -1416,8 +1405,7 @@ class JInstallationHelper
 		if ($ftpFlag == true)
 		{
 			// Connect the FTP client
-			jimport('joomla.client.ftp');
-			$ftp = & JFTP::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
+			$ftp = FtpClient::getInstance($app->getCfg('ftp_host'), $app->getCfg('ftp_port'));
 			$ftp->login($app->getCfg('ftp_user'), $app->getCfg('ftp_pass'));
 
 			//Translate the destination path for the FTP account

@@ -4,7 +4,7 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubs
  */
@@ -16,23 +16,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-	<?php 
-	echo $this->loadTemplate('projectheading');
+<div class="<?php echo $this->divclasscontainer;?>" id="clubs">
+<?php 
+echo $this->loadTemplate('projectheading');
 
-	if ( $this->config['show_sectionheader'] )
-	{ 
-		echo $this->loadTemplate('sectionheader');
-	}
+if ( $this->config['show_sectionheader'] )
+{ 
+echo $this->loadTemplate('sectionheader');
+}
 		
-	if ( $this->config['show_clubs'] )
-	{ 
-		echo $this->loadTemplate('clubs');
-	}
+if ( $this->config['show_clubs'] )
+{ 
+echo $this->loadTemplate('clubs');
+}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>

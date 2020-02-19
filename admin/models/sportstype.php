@@ -4,14 +4,14 @@
  * @file      sportstype.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel; 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
@@ -26,16 +26,13 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-    
+   
 	}	   
 
      /**

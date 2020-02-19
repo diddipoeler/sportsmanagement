@@ -4,21 +4,20 @@
  * @file      deafult_rssfeed-table.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-    echo 'club rssfeedoutput<pre>', print_r($this->rssfeedoutput, true), '</pre><br>';
-}
-$app = & JFactory::getApplication();
+$app = & Factory::getApplication();
 ?>
 <div class="no-column">
     <div class="contentpaneopen">
         <div class="contentheading">
-<?php echo JText::_('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEEDS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEEDS'); ?>
         </div>
     </div>
 
@@ -70,7 +69,7 @@ foreach ($this->rssfeedoutput as $key => $feed):
 
                         <?php if ($this->feedItemReadMore): ?>
                         <span class="srfrReadMore">
-                            <a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo JText::_('MOD_JW_SRFR_READ_MORE'); ?></a>
+                            <a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo Text::_('MOD_JW_SRFR_READ_MORE'); ?></a>
                         </span>
                     <?php endif; ?>
 

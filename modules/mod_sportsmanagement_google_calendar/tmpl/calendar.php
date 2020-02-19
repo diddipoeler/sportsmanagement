@@ -1,12 +1,25 @@
-<?php defined('_JEXEC') or die;
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      calendar.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_google_calendar
+ */
+ 
+defined('_JEXEC') or die;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 // Load the FullCalendar assets
-$document = JFactory::getDocument();
-$document->addStyleSheet(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.css');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/lib/moment.min.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/lang/de.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/gcal.js');
+$document = Factory::getDocument();
+$document->addStyleSheet(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.css');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/lib/moment.min.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/lang/de.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/gcal.js');
 ?>
 <script>
 	jQuery(document).ready(function($) {

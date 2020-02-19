@@ -1,15 +1,29 @@
 <?php
-// No direct access to this file
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagement.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
+ 
+
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
  
 // import the list field type
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
  
 /**
  * SportsManagement Form Field class for the SportsManagement component
  */
-class JFormFieldsportsmanagement extends JFormFieldList
+class JFormFieldsportsmanagement extends \JFormFieldList
 {
 	/**
 	 * The field type.
@@ -37,7 +51,7 @@ class JFormFieldsportsmanagement extends JFormFieldList
 		{
 			foreach($messages as $message) 
 			{
-				$options[] = JHtml::_('select.option', $message->id, $message->greeting . ($message->catid ? ' (' . $message->category . ')' : ''));
+				$options[] = HTMLHelper::_('select.option', $message->id, $message->greeting . ($message->catid ? ' (' . $message->category . ')' : ''));
 			}
 		}
 		$options = array_merge(parent::getOptions(), $options);

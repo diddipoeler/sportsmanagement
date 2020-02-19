@@ -4,32 +4,32 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage imagehandler
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
-// welche joomla version
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+/** welche joomla version */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="imghead">
 
-	<?php echo JText::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
+	<?php echo Text::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
 	<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onChange="document.getElementById('adminForm').submit();" />
-	<button onclick="this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
-	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>
+	<button onclick="this.form.submit();"><?php echo Text::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
+	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo Text::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>
 
 </div>
 
@@ -52,5 +52,5 @@ JHtml::_( 'behavior.mootools' );
 	<input type="hidden" name="tmpl" value="component" />
 	<input type="hidden" name="task" value="imagehandler.select" />
 	<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>

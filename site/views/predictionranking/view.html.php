@@ -1,22 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionranking
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-// pagination
-require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
-
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPredictionRanking
@@ -41,11 +39,17 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
+$this->limit = $this->model->getLimit();
+$this->limitstart = $this->model->getLimitStart();
+$this->ausgabestart = $this->limitstart + 1;
+$this->ausgabeende = $this->limitstart + $this->limit;
+	
 	// push data into the template
+	$this->state = $this->get('State');	
 	$this->items = $this->get('Data');	
 	$this->pagination =$this->get('Pagination');
     
-    $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
+    $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
        
 		if (isset($this->predictionGame))
 		{
@@ -61,27 +65,27 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
       
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			
             
             $ranking_array = array();
-			$ranking_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
-			$ranking_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
+			$ranking_array[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
+			$ranking_array[] = HTMLHelper::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
 			$lists['ranking_array'] = $ranking_array;
 			unset($ranking_array);
 
 			$type_array = array();
-			$type_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
-			$type_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
-			$type_array[] = JHTML ::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
+			$type_array[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
+			$type_array[] = HTMLHelper::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
+			$type_array[] = HTMLHelper::_('select.option','2',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
 			$lists['type'] = $type_array;
 			unset($type_array);
 
 			$this->lists = $lists;
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
-			$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+			$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 			foreach ( $this->predictionProjectS as $project )
 			{
       $mdlProject->setProjectId($project->project_id);
@@ -100,7 +104,7 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
 		}
 	}
 

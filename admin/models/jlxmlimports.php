@@ -4,14 +4,14 @@
  * @file      jlxmlimports.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelJLXMLImports
@@ -22,13 +22,17 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelJLXMLImports extends JModelLegacy
+class sportsmanagementModelJLXMLImports extends BaseDatabaseModel
 {
     
+        /**
+         * sportsmanagementModelJLXMLImports::__construct()
+         * 
+         * @param mixed $config
+         * @return void
+         */
         public function __construct($config = array())
         {   
-////            $app = JFactory::getApplication();
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    
+<layout title="COM_SPORTSMANAGEMENT_XML_MAP_LAYOUT_TITLE">
+        <message>
+            <![CDATA[COM_SPORTSMANAGEMENT_XML_MAP_LAYOUT_TITLE_DESCR]]>
+        </message>
+</layout>    
 </metadata>

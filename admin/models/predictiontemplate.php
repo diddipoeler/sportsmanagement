@@ -4,17 +4,17 @@
  * @file      predictiontemplate.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\AdminModel;
 
 /**
  * sportsmanagementModelPredictionTemplate
@@ -25,10 +25,8 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelPredictionTemplate extends JModelAdmin
+class sportsmanagementModelPredictionTemplate extends AdminModel
 {
-
-
 
     /**
 	 * Method to get a single record.
@@ -42,13 +40,12 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	public function getItem($pk = null)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
        
        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
- //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($prediction_id,true).'</pre>'),'Notice');
         
 		if ($item = parent::getItem($pk))
 		{
@@ -72,7 +69,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -87,7 +84,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**
@@ -100,10 +97,9 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictiontemplate', 'predictiontemplate', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -134,7 +130,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.predictiontemplate.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.predictiontemplate.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -151,43 +147,32 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+	   $app = Factory::getApplication();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        if (isset($post['params']) && is_array($post['params'])) 
 		{
 			// Convert the params field to a string.
-			//$parameter = new JRegistry;
-			//$parameter->loadArray($post['params']);
             $paramsString = json_encode( $post['params'] );
-			//$data['params'] = (string)$parameter;
             $data['params'] = $paramsString;
-            
 		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+      
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
-            
+          
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}
@@ -203,8 +188,8 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	*/
 	function getPredictionGame( $id )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

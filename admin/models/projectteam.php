@@ -1,48 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      projectteam.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelprojectteam
@@ -56,6 +28,82 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModelprojectteam extends JSMModelAdmin
 {
     
+	/**
+	 * sportsmanagementModelprojectteam::set_playground_match()
+	 * 
+	 * @param mixed $post
+	 * @return void
+	 */
+	function set_playground_match($post)
+	{
+	$post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $project_id = $post['pid'];
+        $season_id = $post['season_id'];
+
+	for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+		$proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
+		$proTeam->load( $projectteam_id );
+		$seasonteam_id	= $proTeam->team_id; 
+		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);	
+        
+		if ( $playground_id ) {
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('playground_id') . ' = ' . $playground_id
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('projectteam1_id') . ' = '.$projectteam_id
+);
+$this->jsmquery->clear();			
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();
+			
+			
+		}
+	}	
+		
+	}
+	
+	
+	
+	/**
+	 * sportsmanagementModelprojectteam::set_playground()
+	 * 
+	 * @param mixed $post
+	 * @return void
+	 */
+	function set_playground($post)
+	{
+	$post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $project_id = $post['pid'];
+        $season_id = $post['season_id'];
+        
+	 for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+		$proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
+		$proTeam->load( $projectteam_id );
+		$seasonteam_id	= $proTeam->team_id; 
+		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);
+	if ( $playground_id ) {	 
+        // Create and populate an object.
+        $object = new stdClass();
+        $object->id = $projectteam_id;
+        $object->standard_playground = $playground_id;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+	 }
+		 
+	 }
+	}
+		
     /**
 	 * Method to update checked project teams
 	 *
@@ -65,15 +113,14 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
 
 $project_id = $post['pid'];
-//$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+$new_project_id = $post['all_project_id'];  		
 $this->jsmquery->clear();
 $this->jsmquery->select('l.associations');
 $this->jsmquery->from('#__sportsmanagement_league as l');
@@ -81,14 +128,7 @@ $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.league_id 
 $this->jsmquery->where('p.id = '.$project_id);
 $this->jsmdb->setQuery($this->jsmquery);
 $associations = $this->jsmdb->loadResult();
-//$app->enqueueMessage('associations <br><pre>'.print_r($associations , true).'</pre><br>','Notice');
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        }
-        
+       
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -97,7 +137,15 @@ $associations = $this->jsmdb->loadResult();
             $tblProjectteam->division_id = $post['division_id' . $pks[$x]];
 			$tblProjectteam->start_points = $post['start_points' .$pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' .$pks[$x]];
-            
+// alle umsetzen       
+      if ( $project_id != $new_project_id )
+      {
+      $tblProjectteam->project_id = $new_project_id;  
+      }
+          else
+          {
+            $tblProjectteam->project_id = $post['new_project_id' .$pks[$x]];
+          }
             $tblProjectteam->is_in_score = $post['is_in_score' .$pks[$x]];
             $tblProjectteam->use_finally = $post['use_finally' .$pks[$x]];
             
@@ -113,8 +161,6 @@ $associations = $this->jsmdb->loadResult();
 			$tblProjectteam->diffgoals_finally = $post['diffgoals_finally' . $pks[$x]];
 
 			if(!$tblProjectteam->store()) {
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		
@@ -123,7 +169,7 @@ $associations = $this->jsmdb->loadResult();
  * hier werden noch die vereine aktualisiert 
  * wenn schon ein verband/kreis vorhanden ist, kein update
  */
-$clubrow = JTable::getInstance('club', 'sportsmanagementTable', array()); 
+$clubrow = Table::getInstance('club', 'sportsmanagementTable', array()); 
 $clubrow->load($post['club_id'.$pks[$x]]);
 if ( $clubrow->associations )
 {
@@ -143,7 +189,7 @@ $object->associations = $associations;
 }
 			
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 			
 			
 		}
@@ -159,24 +205,20 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setseasonid()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $db = Factory::getDbo();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
         
-        $proTeam = JTable::getInstance( 'Projectteam', 'sportsmanagementTable' );
+        $proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
 		$proTeam->load( $projectteam_id );
         
         // Create and populate an object.
@@ -184,11 +226,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $proTeam->team_id;
         $object->season_id = $season_id;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }
@@ -204,7 +246,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetable($setzer=0)
     {
-    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+    $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -215,11 +257,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $projectteam_id;
         $object->is_in_score = $setzer;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }    
@@ -235,7 +277,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetablepoints($setzer=0)
     {
-    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+    $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -246,11 +288,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $projectteam_id;
         $object->use_finally = $setzer;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
         
         }        
@@ -268,23 +310,18 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function matchgroups()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
-        
+        $db = Factory::getDbo();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+
         for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
         $projectteam_division_id = $post['division_id' . $pks[$x]];  
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_division_id<br><pre>'.print_r($projectteam_division_id , true).'</pre><br>','Notice');
-        
+
         // Fields to update.
         $query = $db->getQuery(true);
         $query->clear();
@@ -300,7 +337,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $result = $db->execute();  
         if ( !$result )
 		{
-			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+
 		}
         
         $query->clear();
@@ -316,7 +353,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $result = $db->execute();  
         if ( !$result )
 		{
-			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+
 		}
         
         
@@ -333,35 +370,31 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function storeAssign($post)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post = JFactory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
-        $query = JFactory::getDbo()->getQuery(true);
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_backend') )
+        $query = Factory::getDbo()->getQuery(true);
+        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
         {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+
         }
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
         $delete_team = $post['teamslist'];
-        
 
         if ( $delete_team )
         {
-        $mdlProjectTeams = JModelLegacy::getInstance("projectteams", "sportsmanagementModel");
+        $mdlProjectTeams = BaseDatabaseModel::getInstance("projectteams", "sportsmanagementModel");
         $project_teams = $mdlProjectTeams->getAllProjectTeams($project_id,0,$delete_team);
         foreach( $project_teams as $row )
           {
           $_pro_teams_to_delete[] = $row->projectteamid;  
           }
          } 
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_to_delete<br><pre>'.print_r($_pro_teams_to_delete , true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_team<br><pre>'.print_r($delete_team , true).'</pre><br>','Notice');
         
         foreach ( $assign_id as $key => $value )
         {
@@ -370,8 +403,8 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 		    $query->from('#__sportsmanagement_project_team');
 		    $query->where('team_id = '.$value);
             $query->where('project_id = '.$project_id);
-		    JFactory::getDbo()->setQuery($query);
-		    $team_id = JFactory::getDbo()->loadResult();
+		    Factory::getDbo()->setQuery($query);
+		    $team_id = Factory::getDbo()->loadResult();
             if ( !$team_id )
             {
         // Create and populate an object.
@@ -379,7 +412,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $profile->project_id = $project_id;
         $profile->team_id = $value;
         // Insert the object into the user profile table.
-        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
+        $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
         }
         
         }
@@ -401,14 +434,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     public function delete(&$pks)
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$db		= JFactory::getDbo();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$db		= Factory::getDbo();
 		//$query	= $db->getQuery(true);
-        //$pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        
+       
         // als erstes die heimspiele
         if (count($pks))
 		{
@@ -420,11 +450,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
             }
             else
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
             }
         }    
         // dann die auswärtsspiele
@@ -438,11 +468,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
             }
             else
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
             }
         }    
         
@@ -450,23 +480,45 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         return parent::delete($pks);
         
     }
-    /**
-	 * return 
-	 *
-	 * @param int team_id
-	 * @return int
+	
+
+/**
+ * sportsmanagementModelprojectteam::getProjectTeamPlayground()
+ * 
+ * @param integer $team_id
+ * @return
+ */
+function getProjectTeamPlayground($team_id=0)	
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('c.standard_playground');
+$this->jsmquery->from('#__sportsmanagement_club AS c');	
+$this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');	
+$this->jsmquery->where('st.id = '. $team_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadResult();	
+return $result;	
+}
+	
+
+	/**
+	 * sportsmanagementModelprojectteam::getProjectTeam()
+	 * 
+	 * @param integer $team_id
+	 * @return
 	 */
-	function getProjectTeam($team_id)
+	function getProjectTeam($team_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$db	= JFactory::getDbo();
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
         // Select some fields
 		$query->select('t.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+		$query->from('#__sportsmanagement_team t');
+        $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $query->where('st.team_id = '.$team_id);
 
 		$db->setQuery($query);

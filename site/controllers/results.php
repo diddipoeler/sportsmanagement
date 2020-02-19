@@ -1,18 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      results.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementControllerResults
@@ -23,7 +23,7 @@ jimport( 'joomla.application.component.controller' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerResults extends JControllerLegacy
+class sportsmanagementControllerResults extends BaseController
 {
 
 	
@@ -37,7 +37,7 @@ class sportsmanagementControllerResults extends JControllerLegacy
 	{
 		parent::__construct($config);
     // Initialise variables.
-    $this->app = JFactory::getApplication();
+    $this->app = Factory::getApplication();
     // JInput object
     $this->jinput = $this->app->input;
     $this->jsmoption = $this->jinput->getCmd('option');
@@ -46,9 +46,9 @@ class sportsmanagementControllerResults extends JControllerLegacy
     $this->pks = $this->jinput->getVar('cid', null, 'post', 'array');
     $this->post = $this->jinput->post->getArray();
     
-    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
         {
-    $this->app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post, true).'</pre><br>','Notice');
+    
 }
 
 	}
@@ -89,7 +89,7 @@ class sportsmanagementControllerResults extends JControllerLegacy
     public function saveshort()
 	{
 	// Initialise variables.
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
     $jinput = $app->input;
     $model = $this->getModel('results');
@@ -98,10 +98,9 @@ class sportsmanagementControllerResults extends JControllerLegacy
     $post = $jinput->post->getArray();
     $layout = $jinput->getCmd('layout', 'form');
     
-    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
         {
-    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
 }
 
     $model->saveshort();

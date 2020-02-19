@@ -16,6 +16,7 @@
       value_field="name" 
 					label="COM_SPORTSMANAGEMENT_STAT_SUMSTAT_STAT_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_SUMSTAT_STAT_IDS_DESC">
+					<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
 			</field>
 			
       <field 	

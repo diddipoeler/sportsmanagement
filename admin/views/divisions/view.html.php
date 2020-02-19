@@ -4,13 +4,16 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage divisions
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewDivisions
@@ -31,17 +34,12 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-
         $lists = array();
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
-        $starttime = microtime(); 
-
-        $this->table = JTable::getInstance('division', 'sportsmanagementTable');
-        $this->projectws = $project;
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+	    $this->projectws = $mdlProject->getProject($this->project_id);
+        $this->table = Table::getInstance('division', 'sportsmanagementTable');
 		$this->lists = $lists;
-
 	}
 	
 	/**
@@ -51,16 +49,18 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-        // Set toolbar items for the page
-		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
-        
-        JToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolbarHelper::checkin('divisions.checkin');
-        JToolbarHelper::apply('divisions.saveshort');
-		JToolbarHelper::divider();
-		JToolbarHelper::addNew('division.add');
-		JToolbarHelper::editList('division.edit');
+		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
+        if ( $this->user->username == 'admin' )
+        {
+        ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);    
+        }
+        ToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::checkin('divisions.checkin');
+        ToolbarHelper::apply('divisions.saveshort');
+		ToolbarHelper::divider();
+		ToolbarHelper::addNew('division.add');
+		ToolbarHelper::editList('division.edit');
 
         parent::addToolbar();
 	}

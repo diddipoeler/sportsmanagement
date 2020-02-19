@@ -4,18 +4,15 @@
  * @file      templaytes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+ 
 /**
  * sportsmanagementControllertemplates
  * 
@@ -25,7 +22,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllertemplates extends JControllerAdmin
+class sportsmanagementControllertemplates extends JSMControllerAdmin
 {
   
 	
@@ -38,7 +35,7 @@ class sportsmanagementControllertemplates extends JControllerAdmin
      */
     public function changetemplate() 
 	{
-	$post=JFactory::getApplication()->input->post->getArray(array());
+	$post=Factory::getApplication()->input->post->getArray(array());
     $msg = '';
     $this->setRedirect('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.$post['new_id'],$msg);	
 	}

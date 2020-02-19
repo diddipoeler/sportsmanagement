@@ -1,36 +1,23 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      dependsql.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage elements
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'ajax.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php');  
+require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'ajax.php');
+JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
 
 jimport('joomla.form.helper');
 //JFormHelper::loadFieldClass('list');
-
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
 
 /**
  * Renders a Dynamic SQL field
@@ -60,13 +47,13 @@ class JFormFieldDependSQL extends JFormField
     protected function getInput()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
        $view = $jinput->getCmd('view');
        $option = $jinput->getCmd('option');
        
-       $lang = JFactory::getLanguage();
+       $lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
         
        $attribs = '';
@@ -128,26 +115,6 @@ class JFormFieldDependSQL extends JFormField
 //        }
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
-        
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' norequest -> '.$norequest.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($this->fieldset,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jform<br><pre>'.print_r($this->jform,true).'</pre>'),'Notice');
-        
-//        
-//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> '.$div.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->value -> '.$this->value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
-
-//        }
 
 		$ctrl = $this->name;
 		$id = $this->id;
@@ -240,31 +207,17 @@ $script[] = "				});";
 $script[] = "});";       
        
        // Add the script to the document head.
-    JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+    Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
         
-        //if ( $ajaxtask && $value )
-        //{
         $ajaxtask = 'get'.$ajaxtask;    
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
-        //}
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
      if ( $result )
         {
      $options = array_merge($options, $result);
      }
-//     // Merge any additional options in the XML definition.
-//		$options = array_merge(parent::getOptions(), $options);
-//
-//		return $options;   
-    //return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
-    return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
+
+    return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
     }    
 
 

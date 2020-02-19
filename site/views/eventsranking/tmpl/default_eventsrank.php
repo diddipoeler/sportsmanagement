@@ -1,57 +1,67 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_eventsrank.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventsranking
  */
 
 defined('_JEXEC') or die('Restricted access');
-$colspan	= 4;
-$show_icons	= 0;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
+$colspanevent = 1;
+$colspan = 4;
+$show_icons = 0;
 if ($this->config['show_picture_thumb'] == 1) $colspan++;
 if ($this->config['show_nation'] == 1) $colspan++;
 if ($this->config['show_icons'] == 1) $show_icons = 1;
+
+if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+{
+$colspanevent = 2;	
+}	
 ?>
 
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="default_eventsrank" >
 
 
 <?php foreach ($this->eventtypes AS $rows): ?>
 <?php if ($this->multiple_events == 1) :?>
-<h2><?php echo JText::_($rows->name); ?></h2>
+<h2><?php echo Text::_($rows->name); ?></h2>
 <?php endif; ?>
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr class="sectiontableheader">
-		<th class="rank"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
+		<th class="rank"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
 
 		<?php if ( $this->config['show_picture_thumb'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
-		<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
+		<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
 
 		<?php if( $this->config['show_nation'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
-		<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
+		<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
 
 
-		<?php if ($show_icons == 1): ?>
-		<th class="td_c" nowrap="nowrap">
+		<?php if ( $show_icons ): ?>
+		<th class="td_c" nowrap="nowrap" colspan="<?php echo $colspanevent; ?>">
 			<?php
 				$iconPath=$rows->icon;
 				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
-				echo JHtml::image($iconPath,JText::_($rows->name),array('title'=> JText::_($rows->name),'align'=> 'top','hspace'=> '2'));
+				echo HTMLHelper::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','height'=> 20,'hspace'=> '2'));
 			?>
 			</th>
 		<?php else: ?>
-		<th class="td_c" nowrap="nowrap"><?php	echo JText::_($rows->name); ?></th>
+		<th class="td_c" nowrap="nowrap" colspan="<?php echo $colspanevent; ?>"><?php echo Text::_($rows->name); ?></th>
 		<?php endif; ?>
 	</tr>
 	</thead>
@@ -121,13 +131,13 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			if ( $this->config['link_to_player'] )
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $row->team_slug;
 $routeparameter['pid'] = $row->person_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-				echo JHtml::link($link, $playerName);
+				echo HTMLHelper::link($link, $playerName);
 			}
 			else
 			{
@@ -146,8 +156,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			if (( $this->config['link_to_team'] ) &&
 				($this->project->id > 0) && ($row->tid > 0)) {
 				    $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $row->team_slug;
 $routeparameter['ptid'] = $row->projectteam_slug;
@@ -164,6 +174,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 		$value=($row->p > 9) ? $row->p : '&nbsp;'.$row->p;
 		?>
 		<td class="td_c playertotal"><?php echo $value; ?></td>
+		
+<?php
+if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+{
+?>
+<td class="td_c playertotal"><?php echo $row->zaehler; ?></td>		
+<?php		
+}
+?>
 	</tr>
 	<?php
 		$k=(1-$k);
@@ -177,15 +196,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 <div class="fulltablelink">
 <?php 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['division'] = (isset($this->division->id) ? $this->division->id : 0);
 $routeparameter['tid'] = $this->teamid;
 $routeparameter['evid'] = $rows->event_slug;
 $routeparameter['mid'] = (isset($this->matchid) ? $this->matchid : 0);
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
-echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
+echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 </div>
 <?php else: ?>
 <div class="pageslinks">

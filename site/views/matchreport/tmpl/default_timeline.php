@@ -1,30 +1,29 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_timeline.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 ?>
 <!-- START of match timeline -->
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <script type="text/javascript">
-//	window.addEvent('domready', function(){
-//		var Tips1 = new Tips($$('.imgzev'));
-//	});
-    
 	function gotoevent(row) {
         var t=document.getElementById('event-' + row)
         t.scrollIntoView()
     }
 </script>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
-<table id="timeline" class="table table-responsive" >
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
+<table id="timeline" class="table " >
 	<tr>
   <?php
 		if ($this->team1->logo_small == '')
@@ -44,11 +43,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <td id="" style="">
     <div id="timelinetop" style="position:relative;width:100%;">
     <div id="firsthalftime" style="position:absolute; top:0px; left:0px; width:50%; height:15px;text-align: center;color:#FFFFFF;background-color:lightgrey;">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_FIRST_HALF'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_FIRST_HALF'); ?>
     </div>
    
     <div id="secondhalftime" style="position:absolute; top:0px; left:50%; width:50%; height:15px;text-align: center;color:#FFFFFF;background-color:grey;">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SECOND_HALF'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SECOND_HALF'); ?>
     </div>
     </div>
     <br>
@@ -69,7 +68,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>
@@ -96,7 +95,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>
@@ -110,5 +109,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</tr>
 
 </table>
-
+</div>
 <!-- END of match timeline -->

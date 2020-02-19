@@ -4,16 +4,17 @@
  * @file      complexsumpergame.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
-
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticComplexsumpergame
@@ -58,7 +59,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		
 		if (count($stat_ids) != count($factors)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -134,7 +135,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
@@ -158,15 +159,9 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
 		$query->where('ms.statistic_id IN ('. implode(',', $sqids) .')');
         $query->where('m.published = 1');
-        
         $db->setQuery($query);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		$stats = $db->loadObjectList();
-		
 		$query = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 		$db->setQuery($query);
 		$gp = $db->loadObjectList('tpid');
 		
@@ -229,9 +224,6 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		}
 
 		$db->setQuery($query);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
 		$details = $db->loadObjectList('teamplayer_id');
 
 		$res->ranking = array();

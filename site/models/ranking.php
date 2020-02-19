@@ -4,13 +4,15 @@
  * @file      ranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRanking
@@ -21,7 +23,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRanking extends JModelLegacy
+class sportsmanagementModelRanking extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $round = 0;
@@ -41,7 +43,6 @@ class sportsmanagementModelRanking extends JModelLegacy
 	var $colors = array();
 	var $result = array();
 	var $pageNav = array();
-	var $pageNav2 = array();
 	static $current_round = 0;
 	static $viewName = '';
     static $selDivision = 0;
@@ -55,18 +56,18 @@ class sportsmanagementModelRanking extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
        $jinput = $app->input;
        $from = 0;
        $to = 0;
 		self::$projectid = (int) $jinput->get('p', 0, '');
         self::$paramconfig['p'] = self::$projectid;
-		//$this->round = JFactory::getApplication()->input->getInt("r", $this->current_round);
+		//$this->round = Factory::getApplication()->input->getInt("r", $this->current_round);
         self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = $jinput->getInt("part", 0);
-		//$this->from  = JFactory::getApplication()->input->getInt('from', 0 );
-		//$this->to	 = JFactory::getApplication()->input->getInt('to', $this->round);
+		//$this->from  = Factory::getApplication()->input->getInt('from', 0 );
+		//$this->to	 = Factory::getApplication()->input->getInt('to', $this->round);
         self::$from = $jinput->post->get('from', 0, '');
         self::$to = $jinput->post->get('to', self::$round, '');
         
@@ -112,32 +113,6 @@ class sportsmanagementModelRanking extends JModelLegacy
         }
         
         sportsmanagementModelProject::$_round_from = self::$from; 
-        
-        
-//        echo 'from <pre>'.print_r($from,true).'</pre>';    
-//        echo 'to <pre>'.print_r($to,true).'</pre>';
-//		echo 'projekt <pre>'.print_r(sportsmanagementModelProject::$_round_to,true).'</pre>';
-//		echo 'self round <pre>'.print_r(self::$round,true).'</pre>';
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'from <pre>'.print_r($from,true).'</pre>';    
-        $my_text .= 'to <pre>'.print_r($to,true).'</pre>';
-        $my_text .= 'projectid '.self::$projectid.'<br>';
-        $my_text .= 'round '.self::$round.'<br>';
-        $my_text .= 'current_round '.self::$current_round.'<br>';
-        $my_text .= 'self from '.self::$from.'<br>';
-        $my_text .= 'self to '.self::$to.'<br>';
-        
-        $my_text .= 'self part '.self::$part.'<br>';
-        $my_text .= 'self type '.self::$type.'<br>';
-        $my_text .= 'viewName '.self::$viewName.'<br>';
-        
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-
-
-    
 		parent::__construct( );
 	}
 
@@ -191,12 +166,12 @@ class sportsmanagementModelRanking extends JModelLegacy
          if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$rssDoc = JFactory::getFeedParser($options);
+$rssDoc = Factory::getFeedParser($options);
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-$rssDoc = JFactory::getXMLparser('RSS', $options);
+$rssDoc = Factory::getXMLparser('RSS', $options);
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -231,8 +206,6 @@ else
         
          
         }  
-    //var_dump($lists);
-    //echo 'getRssFeeds lists<pre>',print_r($lists,true),'</pre><br>';
     return $lists;         
     }
     
@@ -247,21 +220,17 @@ else
 	 */
 	public static function getPreviousGames($cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
     $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vorher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
-       
        if ( !self::$round )
         {
             sportsmanagementModelProject::$_current_round = 0;
             self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r(self::$round,true).'</pre>'),'');
         }
         else
         {
@@ -278,13 +247,11 @@ catch (Exception $e){
     echo $e->getMessage();
 }
 
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
     
     if ( !$result )
     {
         sportsmanagementModelProject::$_current_round = 0;
         self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt current round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
     }    
 
         }
@@ -299,10 +266,7 @@ catch (Exception $e){
 		// current round roundcode
 		$rounds = sportsmanagementModelProject::getRounds('ASC',$cfg_which_database);
 		$current = null;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds<pre>'.print_r($rounds,true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nachher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
-        
+       
 		foreach ($rounds as $r)
 		{
 			if ( (int)$r->id == (int)self::$round ) 
@@ -341,37 +305,8 @@ catch (Exception $e){
         $query->order('r.roundcode ASC ');
                
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($current->roundcode,true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$projectid,true).'</pre>'),'Error');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		$games = $db->loadObjectList();
-        
-        if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-            
-            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        
-        } 
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
+		$games = $db->loadObjectList();
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$cfg_which_database,__METHOD__);
 
@@ -409,16 +344,12 @@ catch (Exception $e){
 	 */
 	public static function computeRanking($cfg_which_database = 0,$s=0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
         $input = $app->input;
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
-        
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        //$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
-		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
         
 		$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
-
+if ( $project )
+{
 		sportsmanagementModelRounds::$_project_id = $project->id;
 		
 		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
@@ -434,11 +365,6 @@ catch (Exception $e){
 		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" , $cfg_which_database,__METHOD__);
 
 		self::$round = (self::$round == 0 || self::$round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database) : self::$round;
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstRound<br><pre>'.print_r($firstRound,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastRound<br><pre>'.print_r($lastRound,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
-
 
 		self::$rounds = sportsmanagementModelProject::getRounds($cfg_which_database);
         
@@ -477,15 +403,6 @@ catch (Exception $e){
 
 		self::$divLevel = 0;
 
-
-
-
-//$app->enqueueMessage(JText::_('computeRanking this->part -> '.'<pre>'.print_r($this->part,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->from -> '.'<pre>'.print_r($this->from,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->to-> '.'<pre>'.print_r($this->to,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->rounds -> '.'<pre>'.print_r($this->rounds,true).'</pre>' ),'');
-
-
 		//for sub division ranking tables
 		if ( $project->project_type=='DIVISIONS_LEAGUE' )
 		{
@@ -510,7 +427,6 @@ catch (Exception $e){
 				if ( self::$divLevel )
 				{
 					$divisions = sportsmanagementModelProject::getDivisionsId( self::$divLevel,$cfg_which_database );
-				//	print_r( $divisions);
 				}
 				else
 				{
@@ -531,7 +447,7 @@ catch (Exception $e){
 		}
 		if ( $input->getInt( 'sef', 0) == 1 )
 		{
-			$app->redirect( JRoute::_( $url ) );
+			$app->redirect( Route::_( $url ) );
 		}
 
 		/**
@@ -560,6 +476,15 @@ catch (Exception $e){
 			}
 			self::_sortRanking(self::$currentRanking[$division]);
 
+if ( empty(self::$from)  )
+{
+$from = sportsmanagementModelRounds::getFirstRound(self::$projectid,sportsmanagementModelProject::$cfg_which_database);
+self::$from = $from['id'];
+}
+if ( empty(self::$to)  )
+{
+self::$to = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementModelProject::$cfg_which_database);
+}
 			
 			//previous rank
 			if( $tableconfig['last_ranking'] )
@@ -587,6 +512,7 @@ catch (Exception $e){
 			}
 		}
 		self::$current_round = self::$round;
+	}
 		return ;
 	}
 	
@@ -599,25 +525,18 @@ catch (Exception $e){
 	 */
 	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
-        $option = $app->input->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-		$query = $db->getQuery(true);
-        $starttime = microtime(); 
+    $app = Factory::getApplication();
+    $option = $app->input->getCmd('option');
+	$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+	$query = $db->getQuery(true);
+    $starttime = microtime(); 
         
-        // Select some fields
-		$query->select('id');
-        $query->from('#__sportsmanagement_round');
-        $query->where('project_id = ' . self::$projectid);
-        $query->order('roundcode ASC');
+	$query->select('id');
+    $query->from('#__sportsmanagement_round');
+    $query->where('project_id = ' . self::$projectid);
+    $query->order('roundcode ASC');
 
-		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+	$db->setQuery($query);
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -655,12 +574,12 @@ catch (Exception $e){
 	public static function _sortRanking(&$ranking)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'ASC', 'STR');
-//		$order     = JFactory::getApplication()->input->getVar( 'order', '' );
-//		$order_dir = JFactory::getApplication()->input->getVar( 'dir', 'ASC' );
+//		$order     = Factory::getApplication()->input->getVar( 'order', '' );
+//		$order_dir = Factory::getApplication()->input->getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{

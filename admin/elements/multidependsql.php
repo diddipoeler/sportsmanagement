@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -37,16 +37,19 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
-// welche joomla version
+// welche version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 /**
@@ -125,7 +128,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		}
 		else
 		{
-			$options = array(JHtml::_('select.option', '', JText::_('Select'), $key, $val));
+			$options = array(HTMLHelper::_('select.option', '', Text::_('Select'), $key, $val));
 		}
 
 		if ($query!='')
@@ -137,12 +140,12 @@ class JFormFieldMultiDependSQL extends JFormField
 
 		if ($depends)
 		{
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		// Render the HTML SELECT list.
-		$text = JHtml::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
+		$text = HTMLHelper::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
 		$text .= '<input type="hidden" name="'.$ctrl.'" id="'.$this->id.'" value="'.$value.'"/>';
 		return $text;
 	}

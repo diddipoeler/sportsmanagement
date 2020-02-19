@@ -4,16 +4,16 @@
  * @file      predictionranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage prediction
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionRanking
@@ -24,7 +24,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionRanking extends JControllerLegacy
+class sportsmanagementControllerPredictionRanking extends BaseController
 {
 	
     	/**
@@ -47,9 +47,9 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $pID = $jinput->getVar('prediction_id','0');
@@ -69,17 +69,6 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
         $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
         }
         
-//		//$post	= JFactory::getApplication()->input->post->getArray(array());
-//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',	'post',	'int');
-//		$pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');
-//        $pggrouprank= JFactory::getApplication()->input->getVar('pggrouprank',null,	'post',	'int');
-//        $pjID	= JFactory::getApplication()->input->getVar('pj',	'',	'post',	'int');
-//        
-//		$rID	= JFactory::getApplication()->input->getVar('r',		'',	'post',	'int');
-//		$set_pj	= JFactory::getApplication()->input->getVar('set_pj',		'',	'post',	'int');
-//		$set_r	= JFactory::getApplication()->input->getVar('set_r',			'',	'post',	'int');
-
 		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank,$type,$from,$to);
         
 		//echo '<br />' . $link . '<br />';

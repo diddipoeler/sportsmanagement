@@ -4,7 +4,7 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jsminlinehockey
  */
@@ -44,11 +44,12 @@
   91  .icon-48-massemail     { background-image: url(../images/header/icon-48-massmail.png); }
 
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-jimport('joomla.html.html.select');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjsminlinehockey
@@ -67,41 +68,29 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
      * @return void
      */
     function init() {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $mainframe = JFactory::getApplication();
-
-        $db = JFactory::getDBO();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $user = JFactory::getUser();
-
-        //$model = $this->getModel();
-
 
         $this->projectid = $this->jinput->get("pid", '0');
         if (!$this->projectid) {
-            $this->projectid = $mainframe->getUserState("$option.pid", '0');
+            $this->projectid = $this->app->getUserState("$this->option.pid", '0');
         }
 
-        $mainframe->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
+        $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
         $this->matchlink = $this->model->getMatchLink($this->projectid);
-        //$project = sportsmanagementModelProject::getProject($projectid);
-        // if ( empty($projectid) )
-//    {
-//    JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_NO_PROJECT' ) );
-//    $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
-//    }
-//    else
-//    {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
-//    }
 
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+        $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
 
-        $this->request_url = $uri->toString();
+        ToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+
+switch ($this->getLayout())
+        {
+        case 'default':  
+        case 'default_3':
+        case 'default_4':
+        $this->setLayout('default');
+        return;  
+        break;
+        }
+        
     }
 
     /**
@@ -110,14 +99,12 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
         // Set toolbar items for the page
-        JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-        JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+//        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
+//        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
 
         if ($this->projectid) {
-            JToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
+            ToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
         }
     }
 

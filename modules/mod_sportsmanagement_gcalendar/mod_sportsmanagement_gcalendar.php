@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -39,4 +40,4 @@ JLoader::import('components.com_sportsmanagement.libraries.fullcalendar.fullcale
 require_once (dirname(__FILE__).'/helper.php');
 
 $calendars = sportsmanagementModGCalendarHelper::getCalendars($params);
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_gcalendar'));
+require(ModuleHelper::getLayoutPath('mod_sportsmanagement_gcalendar'));

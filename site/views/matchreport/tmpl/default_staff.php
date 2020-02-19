@@ -4,25 +4,28 @@
  * @file      default_staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <!-- Show Match staff -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 if (!empty($this->matchstaffpositions))
 {
 	?>
-	<table class="table table-responsive">
+	<table class="table ">
 		<?php
 		foreach ($this->matchstaffpositions as $pos)
 		{
 			?>
-			<tr><td colspan="2" class="positionid"><?php echo JText::_($pos->name); ?></td></tr>
+			<tr><td colspan="2" class="positionid"><?php echo Text::_($pos->name); ?></td></tr>
 			<tr>
 				<!-- list of home-team -->
 				<td class="list">
@@ -37,16 +40,16 @@ if (!empty($this->matchstaffpositions))
 									<li class="list">
 										<?php
                                         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $player->team_slug;
        $routeparameter['pid'] = $player->person_slug;
                                         
 										$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
 										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-										echo JHtml::link($player_link,$match_player);
-										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										echo HTMLHelper::link($player_link,$match_player);
+										$imgTitle = Text::sprintf('Picture of %1$s',$match_player);
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 										echo '&nbsp;';
@@ -74,7 +77,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 									<li class="list">
 										<?php
 										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										$imgTitle = Text::sprintf('Picture of %1$s',$match_player);
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 
@@ -88,14 +91,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
                                         <?php
                                         echo '&nbsp;';
                                         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $player->team_slug;
        $routeparameter['pid'] = $player->person_slug;
 										$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
 
-										echo JHtml::link($player_link,$match_player);
+										echo HTMLHelper::link($player_link,$match_player);
 										?>
 									</li>
 									<?php
@@ -113,4 +116,5 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 	<?php
 }
 ?>
+</div>
 <!-- END of Match staff -->

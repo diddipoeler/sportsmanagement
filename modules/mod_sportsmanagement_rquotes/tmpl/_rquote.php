@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,12 @@
 
 //no direct access
 defined('_JEXEC') or die('Restricted access');
-$css = JURI::base().'modules/'.$module->module.'/assets/rquote.css';
-$document = JFactory::getDocument();
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
+$css = Uri::base().'modules/'.$module->module.'/assets/rquote.css';
+$document = Factory::getDocument();
 $document->addStyleSheet($css); 
 
 $quotemarks = $params->get('quotemarks');
@@ -49,12 +53,12 @@ $cfg_which_database = $params->get('cfg_which_database');
 
 if ( $cfg_which_database )
 {	
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );	
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',Uri::root() );
 }
 
 if ( !isset($rquote->person_picture) )

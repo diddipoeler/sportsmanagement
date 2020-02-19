@@ -4,16 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage databasetool
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//jimport( 'joomla.application.component.view' );
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewDatabaseTool
@@ -36,26 +38,20 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
 	public function init ($tpl = null)
 	{
 		$db		= sportsmanagementHelper::getDBConnection();
-		$uri	= JFactory::getURI();
+		$uri	= Factory::getURI();
         $model	= $this->getModel();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $document = Factory::getDocument();
         //$this->state = $this->get('State'); 
-        $command = JFactory::getApplication()->input->getCmd('task');
+        $command = Factory::getApplication()->input->getCmd('task');
         
         $this->assign('request_url',$uri->toString());
-        
-        //$command2 = JFactory::getApplication()->input->getVar('task');
-        
+       
         $this->task = $command;
         // Explode the controller.task command.
 	   //list ($this->controller, $this->task) = explode('.', $command);
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command2<br><pre>'.print_r($command2,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($this->task,true).'</pre>'),'');
-        
+       
         $this->step = $app->getUserState( "$option.step", '0' );
         
         if ( !$this->step )
@@ -73,9 +69,7 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
             case 'optimize':
             case 'repair':
             $jsm_tables = $model->getSportsManagementTables();
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');
-            
+           
             $this->assign('totals',count(sportsmanagementModeldatabasetool::$jsmtables) );
             if ( $this->step < count(sportsmanagementModeldatabasetool::$jsmtables) )
             {
@@ -133,20 +127,20 @@ $document->addScriptDeclaration( $javascript );
         }
         
         // Load mooTools
-		//JHtml::_('behavior.framework', true);
+		//HTMLHelper::_('behavior.framework', true);
         
         // Load our Javascript
-        $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/progressbar.js');
+        $document->addStylesheet(Uri::base().'components/'.$option.'/assets/css/progressbar.css');
+        //$document->addScript(Uri::base().'components/'.$option.'/assets/js/progressbar.js');
 
 /*        
         // Load our Javascript
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript('../media/com_joomlaupdate/json2.js');
 		$document->addScript('../media/com_joomlaupdate/encryption.js');
 		$document->addScript('../media/com_joomlaupdate/update.js');
-		JHtml::_('script', 'system/progressbar.js', true, true);
-        JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
+		HTMLHelper::_('script', 'system/progressbar.js', true, true);
+        HTMLHelper::_('stylesheet', 'media/mediamanager.css', array(), true);
 */
 		//$this->addToolbar();		
 		//parent::display( $tpl );
@@ -160,17 +154,17 @@ $document->addScriptDeclaration( $javascript );
 	protected function addToolbar()
 	{
   		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
-		JToolbarHelper::back();
-		JToolbarHelper::divider();
+		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
+		ToolbarHelper::back();
+		ToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
+        ToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
 	}	
 	
 }

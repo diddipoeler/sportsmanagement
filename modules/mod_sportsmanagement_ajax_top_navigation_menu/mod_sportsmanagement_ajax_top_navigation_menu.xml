@@ -26,10 +26,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_ajax_top_navigation_menu.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_ajax_top_navigation_menu.sys.ini</language>
 	</languages>
 
 	<config>  
@@ -42,7 +38,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Ajax_Top_Navigation" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
@@ -290,7 +286,7 @@
 				</field>
 	
 				<field name="navpoint1"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -299,7 +295,7 @@
 				<field name="navpoint_label1" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint2"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -308,7 +304,7 @@
 				<field name="navpoint_label2" type="text" default="" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint3"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -321,7 +317,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint4"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -334,7 +330,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint5"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -346,7 +342,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint6"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -359,7 +355,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint7"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -372,7 +368,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint8"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -385,7 +381,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint9"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -398,7 +394,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint10"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -411,7 +407,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint11"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -424,7 +420,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint12"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -436,7 +432,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint13"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -449,7 +445,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint14"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -462,7 +458,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint15"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -475,7 +471,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint16"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -488,7 +484,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpoint17"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -508,7 +504,7 @@
 				
 
 				<field name="navpointct17"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -520,7 +516,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 				
 				<field name="navpointct18"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -533,7 +529,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpointct19"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -546,7 +542,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpointct20"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -558,7 +554,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpointct21"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -571,7 +567,7 @@
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_TEXT_DESC" />
 
 				<field name="navpointct22"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -610,6 +606,7 @@
 
 					<field name="moduleclass_sfx"
 						type="text"
+						default="container-fluid"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 

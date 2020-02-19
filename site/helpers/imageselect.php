@@ -4,13 +4,20 @@
  * @file      imageselect.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage helpers
+ * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
 
-// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * ImageSelectSM
@@ -25,7 +32,8 @@ abstract class ImageSelectSM
 {
 
 static $_foldertype = '';
-
+static $_view = '';
+	
 	/**
 	 * ImageSelectSM::__construct()
 	 * 
@@ -33,8 +41,10 @@ static $_foldertype = '';
 	 */
 	function __construct()
 	{
-  $type	= JFactory::getApplication()->input->getVar( 'type' );
+  $type	= Factory::getApplication()->input->getVar( 'type' );
   self::$_foldertype = $type;
+self::$_view = Factory::getApplication()->input->getVar( 'view' );
+		
 	}
 
 	/**
@@ -51,81 +61,179 @@ static $_foldertype = '';
 	 */
 	public static function getSelector( $fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name='', $fieldid)
 	{
-		$document = JFactory::getDocument();
-    $app = JFactory::getApplication();
+		$document = Factory::getDocument();
+    $app = Factory::getApplication();
     self::$_foldertype = $type;
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<pre>'.print_r($type,true).'</pre>'),'Error');
+$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
     
-		JHtml::_( 'behavior.modal' );
-
-		$baseFolder = JURI::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
+		$baseFolder = Uri::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
 
-		//Build the image select functionality
+switch ( self::$_view )
+{
+case 'projectteam':
+$typefolder = $type;
+break;
+default:
+$typefolder = $type;		
+break;
+}
+		
+		/** Build the image select functionality */
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
-			$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-			$('a_' + field + '_name').fireEvent('change');
-      		if($(fieldid)) {
-        		$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-      		}
-			$('a_' + field + '_name').fireEvent('change');
-			//window.top.setTimeout('window.parent.SqueezeBox.close()', 100);
+			console.log('selectImage fieldid : ' + fieldid);
+			console.log('selectImage field : ' + field);
+			document.getElementById('copy_' + fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
+			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
+			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
+			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
+var els=document.getElementsByName(field);
+for (var i=0;i<els.length;i++) {
+els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;}
+
 		}
+        
 		function reset_" . $funcname . "()
 		{
-			$('a_" . $fieldname . "').setProperty('value', '" . $default . "');
-			$('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
+        var imgSource = document.getElementById('original_" . $fieldid . "').value;
+        document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + imgSource  ;
+        document.getElementById('" . $fieldid . "').value = imgSource;
+        document.getElementById('copy_" . $fieldid . "').value = imgSource;
+        
+			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
+			console.log('1.reset original : ' + imgSource );
+			//document.getElementById('" . $fieldid . "').value = '" . $default . "';
+			//document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
+			
+			//var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
+			//console.log('2.reset fieldpreview_name : ' + imgSource );
+			//console.log('3.reset default : ' + '" . $default . "' );
 		}
 
 		function clear_" . $funcname . "()
 		{
-			$('a_" . $fieldname . "').setProperty('value', '');
-			$('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
+var radios = document.getElementsByName('jform[gender]');
+picture = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
+for (var i = 0, length = radios.length; i < length; i++)
+{
+ if (radios[i].checked)
+ {
+  // do whatever you want with the checked radio
+  //alert(radios[i].value);
+  gender = radios[i].value;
+console.log('0.clear gender : ' + gender );
+  // only one radio can be logically checked, don't check the rest
+  break;
+ }
+}
+
+if (typeof gender != 'undefined' )
+{
+switch(gender) {
+  case '1':
+picture = '".sportsmanagementHelper::getDefaultPlaceholder('mensmall')."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('mensmall')."';
+      break;
+  case '2':
+picture = '".sportsmanagementHelper::getDefaultPlaceholder('womansmall')."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('womansmall')."';
+      break;
+
+  } 
+}  
+  
+console.log('picture : ' + picture );
+console.log('pictureprev : ' + pictureprev );
+console.log('1.clear type: ' + '" . $type . "' );
+console.log('2.clear fieldname: ' + '" . $fieldname . "' );
+console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
+//alert(select);
+
+document.getElementById('" . $fieldid . "').value = picture;
+document.getElementById('copy_" . $fieldid . "').value = picture;
+document.getElementById('" . $fieldid . "_preview').src = pictureprev;
 		}
 
-		window.addEvent('domready', function()
+
+			
+			
+		//window.addEvent('domready', function()
+        jQuery(document).ready(function()
 		{
-			$('a_" . $fieldname . "_name').addEvent('change', function()
-			{
-				if ($('a_" . $fieldname . "_name').value!='') {
-					$('" . $fieldpreview_name . "').src='" . $baseFolder . "' + $('a_" . $fieldname . "_name').value;
-				}
-				else
-				{
-					$('" . $fieldpreview_name . "').src='../images/blank.png';
-				}
-				if($('" . $fieldid . "')) {
-					$('" . $fieldid . "').value = $('a_" . $fieldname . "_name').value;
-				}
-			});
-			$('a_" . $fieldname . "_name').fireEvent('change');
+		console.log('fieldid: " . $fieldid . "');	
+		select = document.getElementById('" . $fieldid . "').value;
+		console.log('select : ' + select  );
+		document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + select  ;
+
+		console.log('document.ready ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
+		console.log('document.ready fieldname: ' + '" . $fieldname . "' );
+		console.log('document.ready fieldid: ' + '" . $fieldid . "' );
+		console.log('document.ready type: ' + '" . $type . "' );
+		console.log('document.ready preview name: ' + '" . $fieldpreview_name . "' );
+		
 		});
 		";
+      
+$js .= '      
+// Compatibility with mootools modal layout
+function jInsertFieldValue(value, id) {
+console.log("jInsertFieldValue value : " + value);
+console.log("jInsertFieldValue id : " + id);	
+jQuery("#" + id).val(value);
+jQuery("#copy_" + id).val(value);
+select = jQuery("#" + id).val();
+console.log("jInsertFieldValue select : " + select);
+var $img = jQuery("#" + id + "_preview");
+console.log("jInsertFieldValue img : " + $img);	
+$img.attr("src", "' . Uri::root(). '" + select);
+}      
+';
 
-		$link =		'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
+$imageselect = '';
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
+{	
+$layoutdrag = 'uploaddraganddrop';
+}
+else
+{
+$layoutdrag = 'upload';
+}
+		
+		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout='.$layoutdrag.'&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-		$link2 =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
-		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+		
+//        $link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
+//		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+        
+       $link2 = 'index.php?option=com_media&amp;view=images' .
+		'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder( $typefolder ) . '&author=&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+        
 		$document->addScriptDeclaration( $js );
 
-		JHtml::_( 'behavior.modal', 'a.modal' );
+//		HTMLHelper::_( 'behavior.modal', 'a.modal' );
 
-		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
+		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"" . $fieldid . "\" name=\"" . $fieldname . "\"  value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
-		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		JText::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "</a></div></div>\n";
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
-		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
-		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		JText::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . JText::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		JText::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . JText::_( 'JCLEAR' ) . "</a></div></div></td></tr>\n";
+		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
+$imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,'',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
+		$imageselect .=	 "</div></div>\n";
+		
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
+$imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcname ,'',Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),'20',Uri::base().$link2,$modalwidth,$modalheight);   		
+$imageselect .=	 "</div></div>\n";
+		
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-primary\" title=\"" .
+Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
+		
+$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"btn btn-primary\" title=\"" .
+Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
+        
+        $imageselect .=	"</td></tr>\n";
 		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
 
 		return $imageselect;
@@ -141,42 +249,30 @@ static $_foldertype = '';
 	public static function check( $file )
 	{
 		jimport( 'joomla.filesystem.file' );
-$app = JFactory::getApplication();
-		$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<pre>'.print_r($file,true).'</pre>'),'');
+$app = Factory::getApplication();
+		$params = ComponentHelper::getParams( 'com_sportsmanagement' );
 
 		$sizelimit = $params->get( 'image_max_size', 120 )*1024; //size limit in kb
 		$imagesize = $file['size'];
-/*
-		//check if the upload is an image...getimagesize will return false if not
-		if ( !getimagesize( $file['tmp_name'] ) )
-		{
-			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_UPLOAD_FAILED' ) . ': ' . htmlspecialchars($file['name'], ENT_COMPAT, 'UTF-8' ) );
-			return false;
-		}
-*/
-		//check if the imagefiletype is valid
-		$fileext = JFile::getExt($file['name']);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fileext<pre>'.print_r($fileext,true).'</pre>'),'');
+		/** check if the imagefiletype is valid */
+		$fileext = File::getExt($file['name']);
 
 		$allowable	= array ('gif','jpg','jpeg','png','bmp','svg', 'GIF','JPG','JPEG','PNG','BMP','SVG');
 		if ( !in_array( $fileext, $allowable ) )
 		{
-			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 			return false;
 		}
 
-		//Check filesize
+		/** Check filesize */
 		if ( $imagesize > $sizelimit )
 		{
-			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' ' . htmlspecialchars($$file['name'], ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 			return false;
 		}
 
-		//XSS check
-		$xss_check = JFile::read( $file['tmp_name'], false, 256 );
+		/** XSS check */
+		$xss_check = File::read( $file['tmp_name'], false, 256 );
 		$html_tags = array( 'abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big',
 							'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col',
 							'colgroup', 'comment', 'custom', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'fn',
@@ -189,10 +285,10 @@ $app = JFactory::getApplication();
 							'wbr', 'xml', 'xmp', '!DOCTYPE', '!--' );
 		foreach( $html_tags as $tag )
 		{
-			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
+			/**  A tag is '<tagname ', so we need to add < and a space or '<tagname>' */
 			if ( stristr( $xss_check, '<' . $tag . ' ') || stristr( $xss_check, '<' . $tag . '>' ) )
 			{
-				JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN' ) );
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_IE_WARN'), Log::WARNING, 'jsmerror');
 				return false;
 			}
 		}
@@ -216,31 +312,33 @@ $app = JFactory::getApplication();
 		jimport( 'joomla.filesystem.file' );
     
     
-		//check for any leading/trailing dots and remove them (trailing shouldn't be possible cause of the getEXT check)
+		/** check for any leading/trailing dots and remove them (trailing shouldn't be possible cause of the getEXT check) */
 		$filename = preg_replace( "/^[.]*/", '', $filename );
 		$filename = preg_replace( "/[.]*$/", '', $filename ); //shouldn't be necessary, see above
 
-		//we need to save the last dot position cause preg_replace will also replace dots
+		/** we need to save the last dot position cause preg_replace will also replace dots */
 		$lastdotpos = strrpos( $filename, '.' );
 
-		//replace invalid characters
+		/** replace invalid characters */
 		$chars = '[^0-9a-zA-Z()_-]';
 		$filename	 = strtolower( preg_replace( "/$chars/", '_', $filename ) );
 
-		//get the parts before and after the dot (assuming we have an extension...check was done before)
+		/** get the parts before and after the dot (assuming we have an extension...check was done before) */
 		$beforedot	= substr( $filename, 0, $lastdotpos );
 		$afterdot	 = substr( $filename, $lastdotpos + 1 );
 
-		//make a unique filename for the image and check it is not already taken
-		//if it is already taken keep trying till success
+/**
+ * 		make a unique filename for the image and check it is not already taken
+ * 		if it is already taken keep trying till success
+ */
 		$now = time();
 
-		while( JFile::exists( $base_Dir . $beforedot . '_' . $now . '.' . $afterdot ) )
+		while( File::exists( $base_Dir . $beforedot . '_' . $now . '.' . $afterdot ) )
 		{
 			$now++;
 		}
 
-		//create out of the seperated parts the new filename
+		/** create out of the seperated parts the new filename */
 		if ( self::$_foldertype == 'flags' )
 		{
     $filename = $beforedot . '.' . $afterdot;
@@ -272,7 +370,6 @@ $app = JFactory::getApplication();
 			case "clubs_large":
 				return "clubs/large";
 				break;
-				
 			case "clubs_trikot_home":
                 return "clubs/trikot";
 				break;
@@ -288,7 +385,6 @@ $app = JFactory::getApplication();
 			case "associations":
 				return "associations";
 				break;	
-        
 			case "events":
 				return "events";
 				break;	
@@ -307,25 +403,21 @@ case "projectreferee":
       case "playgrounds":
 				return "playgrounds";
 				break;
-                
                 case "positions":
 				return "positions";
 				break;
-                
       case "projects":
 				return "projects";
 				break;	
       case "projectteams":
 				return "projectteams";
 				break;
-			
       case "projectteams_trikot_home":
 				return "projectteams/trikot_home";
 				break;
       case "projectteams_trikot_away":
 				return "projectteams/trikot_away";
 				break;
-          	
 		  case "seasons":
 				return "seasons";
 				break;
@@ -350,11 +442,9 @@ case "projectreferee":
                 case "rounds":
 				return "rounds";
 				break;
-                
             case "agegroups":
 				return "agegroups";
 				break;    
-				
 			default:
 				return "events/".$type;
 		}

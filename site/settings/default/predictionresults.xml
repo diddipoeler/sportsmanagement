@@ -6,6 +6,15 @@
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
+<field	name="use_jquery_modal" type="extensionradiobutton" default="2"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
+			<option value="0">Bootstrap Modal</option>
+			<option value="1">Window open</option>
+			<option value="2">JCE Modal</option>
+</field>
+		
 		<field	name="show_matchday_pagenav" type="list" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_PAGE_NAV"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_PAGE_NAV">
@@ -24,6 +33,15 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
+
+ <field 	name="table_class_responsive" type="list" default="table-responsive" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE_RESPONSIVE">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_NO_RESPONSIVE</option>
+			<option value="table-responsive">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE</option>
+		
+</field>
 		
 		<field	name="show_all_user" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_ALL_USERS"
@@ -58,7 +76,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
+		
+<field 	name="show_user_icon_width" type="text" default="50"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
+		</field>
+		
 		<field	name="show_average_points" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_AVERAGE_POINTS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_AVERAGE_POINTS">
@@ -72,16 +95,6 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-    <!--
-		<field	name="show_logo_small_overview" type="extensionradiobutton" default="1"
-				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_CLUB_ICON"
-				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_CLUB_ICON">
-			<option value="0">JNO</option>
-			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
-			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
-		</field>
-    -->
     
     <field name="show_logo_small_overview" type="list" default="logo_big"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"

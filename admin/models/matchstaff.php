@@ -1,9 +1,18 @@
 <?php
-// No direct access to this file
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      matchstaff.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
+
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table; 
+use Joomla\CMS\MVC\Model\AdminModel;
  
 
 /**
@@ -15,7 +24,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelmatchstaff extends JModelAdmin
+class sportsmanagementModelmatchstaff extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -29,7 +38,7 @@ class sportsmanagementModelmatchstaff extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -44,7 +53,7 @@ class sportsmanagementModelmatchstaff extends JModelAdmin
 	public function getTable($type = 'matchstaff', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**
@@ -85,7 +94,7 @@ class sportsmanagementModelmatchstaff extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.matchstaff.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.matchstaff.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();

@@ -1,17 +1,22 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.pdf.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.application.component.view');
+use Joomla\CMS\MVC\View\HtmlView;
 jimport('joomla.filesystem.file');
 
 /**
@@ -23,7 +28,7 @@ jimport('joomla.filesystem.file');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRanking extends JViewLegacy 
+class sportsmanagementViewRanking extends HtmlView 
 {
 	
 	/**
@@ -35,18 +40,17 @@ class sportsmanagementViewRanking extends JViewLegacy
 	function display($tpl = null) 
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory :: getDocument();
-		$uri = JFactory :: getURI();
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$document = Factory::getDocument();
+		$uri = Factory::getURI();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
-        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
-        $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
+        $mdlDivisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
@@ -69,44 +73,44 @@ class sportsmanagementViewRanking extends JViewLegacy
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
-	  $mod_name               = "mod_jw_srfr";
-	  $rssfeeditems = '';
-    $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
+          $mod_name = "mod_jw_srfr";
+          $rssfeeditems = '';
+          $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
     if ( $rssfeedlink )
     {
-    $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
+        $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->rssfeeditems = $rssfeeditems;
+        $this->rssfeeditems = $rssfeeditems;
     }
     
         
        }
        
-       if ($this->config['show_half_of_season']==1)
-	{
-	   if ($this->config['show_table_4']==1)
-	{
-       $model->part = 1;
-       $model->from = 0;
-       $model->to = 0;
-       unset ($model->currentRanking);
-	   unset ($model->previousRanking);
-       $model->computeRanking($model::$cfg_which_database);
-       $this->firstRank = $model->currentRanking;
-     }
+        if ($this->config['show_half_of_season'] == 1)
+        {
+            if ($this->config['show_table_4'] == 1)
+            {
+                $model->part = 1;
+                $model->from = 0;
+                $model->to = 0;
+                unset ($model->currentRanking);
+                unset ($model->previousRanking);
+                $model->computeRanking($model::$cfg_which_database);
+                $this->firstRank = $model->currentRanking;
+            }
      
-     if ($this->config['show_table_5']==1)
-	{  
-       $model->part = 2;
-       $model->from = 0;
-       $model->to = 0;
-       unset ($model->currentRanking);
-	   unset ($model->previousRanking);
-       $model->computeRanking($model::$cfg_which_database);
-       $this->secondRank = $model->currentRanking;
-     }  
+    if ($this->config['show_table_5']==1)
+    {
+        $model->part = 2;
+        $model->from = 0;
+        $model->to = 0;
+        unset ($model->currentRanking);
+        unset ($model->previousRanking);
+        $model->computeRanking($model::$cfg_which_database);
+        $this->secondRank = $model->currentRanking;
+    }  
        
        $model->part = 0;
        unset ($model->currentRanking);
@@ -124,41 +128,33 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->to = $model->to;
 		$this->divLevel = $model->divLevel;
         
-        if ($this->config['show_table_1']==1)
+        if ($this->config['show_table_1'] == 1)
 	{
 		$this->currentRanking = $model->currentRanking;
         }
         
 		$this->previousRanking = $model->previousRanking;
         
-        if ($this->config['show_table_2']==1)
+        if ($this->config['show_table_2'] == 1)
 	{
 		$this->homeRank = $model->homeRank;
         }
         
-        if ($this->config['show_table_3']==1)
+        if ($this->config['show_table_3'] == 1)
 	{
 		$this->awayRank = $model->awayRank;
         }
         
-        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JFactory::getApplication()->input->getVar("view"));
+        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.Factory::getApplication()->input->getVar("view"));
         
         // mannschaften holen
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
-       }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
-		
+	
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
 	{
 	$ranking_reason = array();
-		foreach ( $this->teams as $teams ) 
+		Uri:: ( $this->teams as $teams ) 
         {
         
         if ( $teams->start_points )
@@ -194,17 +190,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->previousgames = $model->getPreviousGames();
 		$this->action = $uri->toString();
 
-		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+		$frommatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
 		$lists['frommatchday'] = $frommatchday;
-		$tomatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
+		$tomatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
 		$tomatchday = array_merge($tomatchday, $rounds);
 		$lists['tomatchday'] = $tomatchday;
 
 		$opp_arr = array ();
-		$opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
 		$lists['type'] = $opp_arr;
 		$this->lists = $lists;
@@ -217,51 +213,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
     // diddipoeler
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id);
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
 		if (($this->config['show_ranking_maps'])==1)
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
-	  
-// 	  $this->map = new simpleGMapAPI();
-//   $this->geo = new simpleGMapGeocoder();
-//   $this->map->setWidth($this->mapconfig['width']);
-//   $this->map->setHeight($this->mapconfig['height']);
-//   $this->map->setZoomLevel($this->mapconfig['map_zoom']); 
-//   $this->map->setMapType($this->mapconfig['default_map_type']);
-//   $this->map->setBackgroundColor('#d0d0d0');
-//   $this->map->setMapDraggable(true);
-//   $this->map->setDoubleclickZoom(false);
-//   $this->map->setScrollwheelZoom(true);
-//   $this->map->showDefaultUI(false);
-//   $this->map->showMapTypeControl(true, 'DROPDOWN_MENU');
-//   $this->map->showNavigationControl(true, 'DEFAULT');
-//   $this->map->showScaleControl(true);
-//   $this->map->showStreetViewControl(true);
-//   $this->map->setInfoWindowBehaviour('SINGLE_CLOSE_ON_MAPCLICK');
-//   $this->map->setInfoWindowTrigger('CLICK');
   
-  //echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre><br>';
-
-  
-  
-  foreach ( $this->allteams as $row )
+  Uri:: ( $this->allteams as $row )
     {
-    $address_parts = array();
+        $address_parts = array();
 		if (!empty($row->club_address))
 		{
 			$address_parts[] = $row->club_address;
@@ -286,57 +246,20 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
 		$row->address_string = implode(', ', $address_parts);
-//    $this->map->addMarkerByAddress($row->address_string, $row->team_name, '"<a href="'.$row->club_www.'" target="_blank">'.$row->club_www.'</a>"', "http://maps.google.com/mapfiles/kml/pal2/icon49.png");		
-    
-    /*
-    $paramsdata	= $row->club_extended;
-		$paramsdefs	= JLG_PATH_ADMIN . DS . 'assets' . DS . 'extended' . DS . 'club.xml';
-		$extended	= new JLGExtraParams( $paramsdata, $paramsdefs );
-		foreach ( $extended->getGroups() as $key => $groups )
-		{
-		$lat = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LATITUDE');
-    $lng = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LONGITUDE');
-		}
-		
-    if ( $lat && $lng )
-    {
-    $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
-        
-    //echo JURI::root().'<br>';
-    						
-		if ( $row->logo_big )
-    {
-    $path = JURI::root().$row->logo_big;
-    }
-    else
-    {
-    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
-    }
-    
-    //echo $path.'<br>';
-    						
-    $this->map->addMarker($lat, $lng, $row->club_name, $adressecountry_flag.' '.$row->address_string.'<br>',$path);
-    }
-    */
     
     }
-    
-  
-//   $document->addScript($this->map->JLprintGMapsJS());
-//   $document->addScriptDeclaration($this->map->JLshowMap(false));
-  
+ 
 	}
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$document->setTitle( $pageTitle );
-		$view = JFactory::getApplication()->input->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        //$document->addCustomTag($stylelink);
+		$view = Factory::getApplication()->input->getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
 		parent :: display($tpl);
 	}
 		

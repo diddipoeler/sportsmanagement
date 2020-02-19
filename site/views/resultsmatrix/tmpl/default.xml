@@ -78,10 +78,15 @@
             <field	name="what_to_show_first" type="extensionradiobutton" default="0"
                 	label="COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_SELECT_SHOWFIRST_LABEL"
                 	description="COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_SELECT_SHOWFIRST_DESCR">
-                <option value="0">Results</option>
-                <option value="1">Matrix</option>
+                <option value="0">COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_BUTTON_RESULTS</option>
+                <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_MATRIX_BUTTON_MATRIX</option>
             </field>
-
+<field	name="show_map" type="extensionradiobutton" default="0"
+			    	label="COM_SPORTSMANAGEMENT_TABS_MAP"
+			    	description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>
         </fieldset>
 	</fields>
 </metadata>

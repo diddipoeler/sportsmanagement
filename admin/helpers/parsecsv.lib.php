@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 
 	Class: parseCSV v0.4.3 beta
 	http://code.google.com/p/parsecsv-for-php/
@@ -39,19 +39,19 @@
 	----------------
 	# general usage
 	$csv = new parseCSV('data.csv');
-	print_r($csv->data);
+
 	----------------
 	# tab delimited, and encoding conversion
 	$csv = new parseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	$csv->delimiter = "\t";
 	$csv->parse('data.tsv');
-	print_r($csv->data);
+
 	----------------
 	# auto-detect delimiter character
 	$csv = new parseCSV();
 	$csv->auto('data.csv');
-	print_r($csv->data);
+
 	----------------
 	# modify data in a csv file
 	$csv = new parseCSV();
@@ -72,10 +72,11 @@
 	$csv->output (true, 'movies.csv', $array);
 	----------------
 	
-
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
 */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 class parseCSV {
 	
@@ -363,7 +364,7 @@ class parseCSV {
 	 * @return  2D array with CSV data, or false on failure
 	 */
 	function parse_string ($data = null) {
-	$app	=& JFactory::getApplication();
+	$app	=& Factory::getApplication();
 		if ( empty($data) ) {
 			if ( $this->_check_data() ) {
 				$data = &$this->file_data;
@@ -423,9 +424,6 @@ class parseCSV {
     {
 	  $letters[] = 'I'.$buchstabe;
     }
-    //$app->enqueueMessage(JText::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('letters<br><pre>'.print_r($letters,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('strlen<br><pre>'.print_r($strlen,true).'</pre>'   ),'');
 		
 		// walk through each character
 		for ( $i=0; $i < $strlen; $i++ ) {
@@ -505,7 +503,7 @@ class parseCSV {
               //$head[$key] = 'Spalte'. ( $key + 1 );
               $head[$key] = $letters[$key];
               }
-//$app->enqueueMessage(JText::_('head2<br><pre>'.print_r($head,true).'</pre>'   ),'');							
+
 						} elseif ( empty($this->fields) || (!empty($this->fields) && (($this->heading && $row_count > 0) || !$this->heading)) ) {
 							if ( !empty($this->sort_by) && !empty($row[$this->sort_by]) ) {
 								if ( isset($rows[$row[$this->sort_by]]) ) {

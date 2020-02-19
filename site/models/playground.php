@@ -4,13 +4,13 @@
  * @file      playground.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage playground
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPlayground
@@ -21,7 +21,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayground extends JModelLegacy
+class sportsmanagementModelPlayground extends BaseDatabaseModel
 {
     static $playgroundid = 0;
     var $playground = null;
@@ -37,7 +37,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
     function __construct( )
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 

@@ -1,47 +1,20 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      jsminlinehockey.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage jsminlinehockey
+ */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
-jimport( 'joomla.application.component.model' );
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 $maxImportTime = 480;
 
@@ -54,12 +27,12 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
  * sportsmanagementModeljsminlinehockey
  * 
  * @package 
- * @author Dieter Pl�
+ * @author Dieter Plöger
  * @copyright 2016
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsminlinehockey extends JModelLegacy
+class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 {
 
 var $storeFailedColor = 'red';
@@ -89,12 +62,12 @@ var $storeFailedColor = 'red';
  */
 function __construct()
 	{
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
         
-        if($mainframe->isAdmin()) 
+        if( $mainframe->isClient('administrator') ) 
 {
-
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'PHPExcel'.DS.'PHPExcel.php');
+/** es wird keine excel verarbeitung mehr angeboten */
+//require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'PHPExcel'.DIRECTORY_SEPARATOR.'PHPExcel.php');
 }
         parent::__construct();
         }
@@ -110,9 +83,9 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
  */
 function checkProjectTeam($team_id,$project_id,$season_id)
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$mainframe = JFactory::getApplication();
-$db = JFactory::getDBO();
+$option = Factory::getApplication()->input->getCmd('option');
+$mainframe = Factory::getApplication();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 
 $query->clear();
@@ -148,7 +121,7 @@ $temp_project_team = new stdClass();
 $temp_project_team->team_id = $season_team_id;
 $temp_project_team->project_id = $project_id;
 // Insert the object into the table.
-$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+$result_project_team = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
 
 if ( $result_project_team )
 {
@@ -170,7 +143,7 @@ $temp_season_team_id = new stdClass();
 $temp_season_team_id->team_id = $team_id;
 $temp_season_team_id->season_id = $season_id;
 // Insert the object into the table.
-$result_season_team_id = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
+$result_season_team_id = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
 if ( $result_season_team_id )
 {
 $season_team_id = $db->insertid();
@@ -179,7 +152,7 @@ $temp_project_team = new stdClass();
 $temp_project_team->team_id = $season_team_id;
 $temp_project_team->project_id = $project_id;
 // Insert the object into the table.
-$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+$result_project_team = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
 
 if ( $result_project_team )
 {
@@ -212,15 +185,15 @@ return 0;
  */
 function getmatches($projectid=0,$username='',$password='')
 {
-$app = JFactory::getApplication ();
+$app = Factory::getApplication ();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 //set the target directory
-$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. 'clubs/large' . DS;
+$base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR. 'clubs/large' . DS;
 $post = $jinput->post->getArray();
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
 $matchlink = '';
 
 if ( $post )
@@ -236,12 +209,6 @@ if ( !$projectid )
 if ( !$matchlink )
 {
     $matchlink = $this->getMatchLink($projectid);
-}
-
-if($app->isAdmin()) 
-{
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
 }
 
 $teams = array();
@@ -273,7 +240,7 @@ $newround->name = $spieltag.'.Spieltag';
 $newround->project_id = $projectid;
 
 // Insert the object
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
 // runde angelegt
 if ( $result )
 {
@@ -298,10 +265,7 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_matches = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_matches,true).'</pre>'),'');
 $pages = $json_object_matches->pages;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($pages ,true).'</pre>'),'');
 
 for( $page =1; $page <= $pages ; $page++  )
 {
@@ -321,11 +285,6 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_matches = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_matches,true).'</pre>'),'');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' schedule<br><pre>'.print_r( sizeof($json_object_matches->_embedded->schedule) ,true).'</pre>'),'');
-
 
 for($a=0; $a < sizeof($json_object_matches->_embedded->schedule)  ;$a++ )
 {
@@ -334,7 +293,7 @@ $value_match = $json_object_matches->_embedded->schedule[$a];
 
 if ( $a == 0 )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($value_match,true).'</pre>'),'');
+
 }
 
 $temp = new stdClass();
@@ -366,8 +325,8 @@ $club_id_heim = $db->loadResult();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_home, 'error');
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_home, 'error');
 }
 
 
@@ -377,13 +336,13 @@ $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
 $linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
 if ( !copy($linkaddress,$filepath) )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.print_r($linkaddress,true).'</pre>'),'Error');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.$linkaddress.'</pre>'),'Error');    
 }
 else
 {
 }
     
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_home;
@@ -392,7 +351,7 @@ $profile->country = 'DEU';
 $profile->website = $temp->club_website_home;
 $profile->alias = JFilterOutput::stringURLSafe( $temp->club_name_home );;
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
 }
 
 
@@ -422,7 +381,7 @@ $profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $temp->team_name_home );;
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 }
 
 $teams[$temp->team_name_home] = $temp->team_id_home;
@@ -473,15 +432,14 @@ $club_id_away = $db->loadResult();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
+Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
 }
 
 if ( !$club_id_away ) 
 {
 $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_away;
@@ -490,7 +448,7 @@ $profile->country = 'DEU';
 $profile->website = $temp->club_website_away;
 $profile->alias = JFilterOutput::stringURLSafe( $temp->club_name_away );;
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
 }
 
 
@@ -520,7 +478,7 @@ $profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $temp->team_name_away );;
  
 // Insert the object into the table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 }
 
 $teams[$temp->team_name_away] = $temp->team_id_away;
@@ -574,7 +532,7 @@ $temp->match_result_type = 2;
 
 if ( $value_match->id == 1324 )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
+
 }
 
 /**
@@ -585,9 +543,6 @@ $exportmatches[] = $temp;
 }
 
 }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
 
 /**
@@ -634,7 +589,7 @@ $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date)
 $row->published = 1;
 
 // update the object into the table.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
 
 
 }
@@ -650,7 +605,7 @@ $row->published = 1;
 $row->import_match_id = $match->match_id;
 $row->match_number = $match->match_id;
 // update the object into the table.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
     
 }
     
@@ -684,7 +639,7 @@ $rowInsert->match_timestamp = sportsmanagementHelper::getTimestamp($match->match
 $rowInsert->published = 1;
 
 // update the object into the table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $rowInsert);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_match', $rowInsert);
    
     
 }    
@@ -721,8 +676,6 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_club = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_club,true).'</pre>'),'');
 
 $playground_id = $json_object_club->venue->venue->id;
 $playground_short_name = $json_object_club->venue->venue->name;
@@ -740,9 +693,8 @@ $profile = new stdClass();
 $profile->id = $playground_club_id;
 $profile->standard_playground = $playground_id;
 // update the object into the table. 
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $profile,'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $profile,'id');
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($playground_id,true).'</pre>'),'');
 
 // Select some fields  
 $query->clear();  
@@ -750,9 +702,10 @@ $query->select('id');
 // From the table  
 $query->from('#__sportsmanagement_playground');  
 $query->where('id = '.$playground_id );  
+try {	
 $db->setQuery($query);  
-
-if ( !$db->loadResult() ) 
+$result = $db->loadResult();
+if ( !$result ) 
 {
 // Create and populate an object. 
 $profile = new stdClass(); 
@@ -766,9 +719,12 @@ $profile->city = $playground_city;
 $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $playground_name );; 
 // Insert the object into the table. 
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
 }
-
+} catch (Exception $e) {
+             //   $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
 
 
 }
@@ -813,7 +769,7 @@ $object->round_date_first = $von;
 $object->round_date_last = $bis;
  
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');     
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');     
 
 } 
 
@@ -830,20 +786,20 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_round', $object,
  */
 function getMatchLink($projectid)
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$app = JFactory::getApplication();
-$post = JFactory::getApplication()->input->post->getArray(array());
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$post = Factory::getApplication()->input->post->getArray(array());
 
-if ( $app->isAdmin() )
+if ( $app->isClient('administrator') )
 { 
-$view = JFactory::getApplication()->input->getVar('view');
+$view = Factory::getApplication()->input->getVar('view');
 }
 else
 {
 $view = 'jsminlinehockey';    
 }
 //$project_id = $mainframe->getUserState( "$option.pid", '0' );
-$db = JFactory::getDBO();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);    
 
 $query->select('ev.fieldvalue');
@@ -856,12 +812,6 @@ $query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
 $db->setQuery( $query );
 $derlink  = $db->loadResult();
     
-if($app ->isAdmin()) 
-{
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
-}    
-
 return $derlink;
 }
 
@@ -873,22 +823,21 @@ return $derlink;
  */
 function getClubs()
 {
-$app = JFactory::getApplication ();
+$app = Factory::getApplication ();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
-$db = JFactory::getDbo();
+$db = Factory::getDbo();
 $query = $db->getQuery(true);
 
 $post = $jinput->post->getArray();
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
 ini_set('max_execution_time', 300);
-$app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.print_r(ini_get('memory_limit'), true).'</pre><br>','Notice');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.print_r(ini_get('max_execution_time'), true).'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.ini_get('memory_limit').'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.ini_get('max_execution_time').'</pre><br>','Notice');
 
-$username = JComponentHelper::getParams($option)->get('ishd_benutzername');
-$password = JComponentHelper::getParams($option)->get('ishd_kennwort');
-$stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');
-$current_season = JComponentHelper::getParams($option)->get('current_season');
+$username = ComponentHelper::getParams($option)->get('ishd_benutzername');
+$password = ComponentHelper::getParams($option)->get('ishd_kennwort');
+$stammverein = ComponentHelper::getParams($option)->get('ishd_stammverein');
+$current_season = ComponentHelper::getParams($option)->get('current_season');
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 
@@ -907,7 +856,7 @@ $profile = new stdClass();
 $profile->name = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
 
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_sports_type', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_sports_type', $profile);
 $sports_type_id = $db->insertid();
 }
 
@@ -932,8 +881,7 @@ $json_object_clubs = json_decode($result);
 $json_array = json_decode($result,true);
 
 $seiten = $json_object_clubs->pages;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_clubs,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.print_r($seiten ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.$seiten.'</pre>'),'');
 
 for ($seite=1;$seite <= $seiten;$seite++)
 {
@@ -952,9 +900,6 @@ $json_object_clubs = json_decode($result);
 //$json_array = json_decode($result,true);
 foreach( $json_object_clubs->_embedded->clubs as $key_club => $value_club )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($value_club->name,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value_club,true).'</pre>'),'');
 
 $club_id = $value_club->id;
 $club_name = $value_club->name;
@@ -972,16 +917,16 @@ $club_id_db = $db->loadResult();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
+Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
 }
 
 
 
 if ( !$club_id_db ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
@@ -990,12 +935,12 @@ $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
-//$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
+
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
 }
 else
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
 }
 }
 }
@@ -1010,11 +955,11 @@ $query->from('#__sportsmanagement_club');
 $db->setQuery($query); 
 
 $db_clubs = $db->loadObjectList();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($db_clubs,true).'</pre>'),'');
+
 
 foreach( $db_clubs as $row )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($row->id,true).'</pre>'),'');
+
 // ################ anfang ############
 // jetzt holen wir uns die mannschaften
 $url_teams = 'https://www.ishd.de/api/licenses/clubs/'.$row->id.'/teams.json';
@@ -1028,16 +973,12 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+
 }
 $json_object_teams = json_decode($result);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_teams,true).'</pre>'),'');
 
 foreach( $json_object_teams->teams as $key_team => $value_team )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->club_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($value_club->club_name,true).'</pre>'),'');
-
 $team_id = $value_team->team_id;
 $team = $value_team->team;
 $team_name = $value_team->team_name;
@@ -1056,7 +997,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'Notice');
+
 
 // Create and populate an object.
 $profile = new stdClass();
@@ -1070,14 +1011,10 @@ $profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $team );;
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_id.'-'.$team_name.'-'.$team.'-'.$club_id),'Notice');
-
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_id.'-'.$team_name.'-'.$team.'-'.$club_id),'Notice');
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
@@ -1089,7 +1026,7 @@ $object->info= $team_name;
 $object->sports_type_id = $sports_type_id;
 $object->alias = JFilterOutput::stringURLSafe( $team );;
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
 	
 }
 }
@@ -1112,7 +1049,6 @@ foreach( $db_teams as $row )
 // ################ anfang ############
 // jetzt holen wir uns die spieler
 $url_players = 'https://www.ishd.de/api/licenses/clubs/'.$row->club_id.'/teams/'.$row->id.'.json';
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url_players <br><pre>'.print_r($url_players,true).'</pre>'),'Notice');
 
 $curl = curl_init($url_players);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -1124,7 +1060,7 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->club_id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+
 }
 $json_object_players = json_decode($result);
 
@@ -1153,7 +1089,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
+
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
@@ -1167,19 +1103,17 @@ $parts = array( trim( $player_first_name ), trim( $player_last_name ) );
 $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $player_id;
 $object->knvbnr = $player_license_number;
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $object, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_person', $object, 'id');
 }
 
 
@@ -1202,7 +1136,6 @@ foreach( $xml->children() as $quote )
 { 
 $club_id = (string)$quote->club_id;
 $club_name = (string)$quote->club_name;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($club_name,true).'</pre>'),'');
 
 // Select some fields 
 $query->clear(); 
@@ -1213,7 +1146,7 @@ $query->where('id = '.$club_id );
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
@@ -1222,13 +1155,12 @@ $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.print_r($club_name,true).'</pre>'),'');
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.$club_name.'</pre>'),'');
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden<br><pre>'.print_r($club_name,true).'</pre>'),'Notice');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
 }
 
 // ################ anfang ############
@@ -1243,9 +1175,9 @@ curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 
-//$xml = JFactory::getXML($result,true); 
+
 $xml_team = simplexml_load_string($result );
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml_team <br><pre>'.print_r($xml_team ,true).'</pre>'),'');
+
 
 foreach( $xml_team->children() as $quote_team )  
 { 
@@ -1269,8 +1201,8 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden<br><pre>'.print_r($team_name ,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
+
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 // Create and populate an object.
 $profile = new stdClass();
@@ -1280,25 +1212,25 @@ $profile->info= $team;
 $profile->alias = JFilterOutput::stringURLSafe( $team_name );;
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden<br><pre>'.print_r($team_name ,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
+
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 
 if ( $stammverein == $club_id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team spieler lesen -> '.$team_name.'-'.$team.'-'.$club_id),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler lesen -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 // jetzt holen wir uns die spieler
 $url_player = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams/'.rawurlencode($team);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url_player <br><pre>'.print_r($url_player ,true).'</pre>'),'');
+
 $curl = curl_init($url_player);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -1308,9 +1240,9 @@ curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 
-//$xml = JFactory::getXML($result,true); 
+
 $xml_player = simplexml_load_string($result );
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml_player <br><pre>'.print_r($xml_player ,true).'</pre>'),'');
+
 
 
 foreach( $xml_player->children() as $quote_player )  
@@ -1327,7 +1259,7 @@ $player_approved = (string)$quote_player->approved;
 $player_nationality = (string)$quote_player->nationality;
 $player_last_modifcation = (string)$quote_player->last_modifcation;
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth),'');
 
 $parts = array();
 // Select some fields 
@@ -1340,7 +1272,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
@@ -1354,13 +1286,12 @@ $parts = array( trim( $player_first_name ), trim( $player_last_name ) );
 $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden<br><pre>'.print_r($club_name,true).'</pre>'),'Notice');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
 }
 
 
@@ -1387,140 +1318,14 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$
 }
 
 
+/**
+ * sportsmanagementModeljsminlinehockey::getdata()
+ * 
+ * @return void
+ */
 function getdata()
 {
-    	$app = JFactory::getApplication ();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$document = JFactory::getDocument ();
-		// Check for request forgeries
-		//JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
-		$msg = '';
-        $post = $jinput->post->getArray(array());
-        
-        	if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls'))
-		{
-		  echo date('H:i:s') , " Load workbook from Excel5 file" , EOL;
-$callStartTime = microtime(true);
-		  $objPHPExcel = PHPExcel_IOFactory::load(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls');
-          //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' objPHPExcel<br><pre>'.print_r($objPHPExcel,true).'</pre>'),'');
-          
-/**
-* heimmannschaft auslesen
-*/          
-          for($a=5;$a <= 22;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('H'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue();
-		$temp->pass = $objPHPExcel->getActiveSheet()->getCell('N'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-         
-         $this->_datas['homeplayer'] = array_merge($export);
-          
-          unset($export);
-
-/**
-* gastmannschaft auslesen
-*/
-          
-          for($a=34;$a <= 51;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('H'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue();
-		$temp->pass = $objPHPExcel->getActiveSheet()->getCell('N'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['awayplayer'] = array_merge($export);
-          
-/**
-* schiedsrichter auslesen
-*/          
-          
-          unset($export);
-//          for($a=22;$a <= 31;$a + 3)
-//          {
-            $a=22;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-            $a=25;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-        
-        $a=28;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-        
-        $a=31;
-            $temp = new stdClass();
-            
-    $temp->nummer = $objPHPExcel->getActiveSheet()->getCell('B'.$a)->getValue();
-		$temp->name = $objPHPExcel->getActiveSheet()->getCell('D'.$a)->getValue();
-		$temp->vorname = $objPHPExcel->getActiveSheet()->getCell('E'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-//         }
-         
-         $this->_datas['referees'] = array_merge($export);
-          
-         unset($export);
-          for($a=5;$a <= 25;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->time = $objPHPExcel->getActiveSheet()->getCell('O'.$a)->getValue();
-		$temp->g_nummer = $objPHPExcel->getActiveSheet()->getCell('P'.$a)->getValue();
-		$temp->a_nummer = $objPHPExcel->getActiveSheet()->getCell('Q'.$a)->getValue();
-        $temp->t_nummer = $objPHPExcel->getActiveSheet()->getCell('R'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['homegoals'] = array_merge($export);
-          
-           unset($export);
-          for($a=34;$a <= 51;$a++)
-          {
-            $temp = new stdClass();
-            
-    $temp->time = $objPHPExcel->getActiveSheet()->getCell('O'.$a)->getValue();
-		$temp->g_nummer = $objPHPExcel->getActiveSheet()->getCell('P'.$a)->getValue();
-		$temp->a_nummer = $objPHPExcel->getActiveSheet()->getCell('Q'.$a)->getValue();
-        $temp->t_nummer = $objPHPExcel->getActiveSheet()->getCell('R'.$a)->getValue();
-		$export[] = $temp;
-          //echo 'getCellValue <pre>'.print_r($objPHPExcel->getActiveSheet()->getCell('J'.$a)->getValue(),true).'</pre>';
-         }
-          $this->_datas['awaygoals'] = array_merge($export);
-          
-          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _datas<br><pre>'.print_r($this->_datas,true).'</pre>'),'');
-          
-          echo date('H:i:s') , ' Current memory usage: ' , (memory_get_usage(true) / 1024 / 1024) , " MB" , EOL;
-
-
-// Echo memory peak usage
-echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 1024 / 1024) , " MB" , EOL;
-
-// Echo done
-echo date('H:i:s') , " Done reading file" , EOL;
-          
-          }
+/** es wird keine excel verarbeitung mehr angeboten */
     
 }
 

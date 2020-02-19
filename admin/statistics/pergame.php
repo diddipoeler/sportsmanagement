@@ -1,19 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      pergame.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
-
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticPergame
@@ -109,16 +109,13 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 
 		$query_num = SMStatistic::getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id,$sids);
         $query_den = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_den<br><pre>'.print_r($query_den->dump(),true).'</pre>'),'');
-
+        $select = '';
 		$query_select_details = '(n.num / d.played) AS total, n.person_id, 1 as rank,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
@@ -126,24 +123,30 @@ class SMStatisticPergame extends SMStatistic
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
                               
 		$res = new stdclass;
-		$query_core = SMStatistic::getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den);
-        $db->setQuery($query_core);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+		$query_core = SMStatistic::getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den,$select);
+try {
+		$db->setQuery($query_core);
 		$res->pagination_total = $db->loadResult();
-        
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
+		
         $query_core->clear('select');
         $query_core->select($query_select_details);
         $query_core->group('tp.id');
 		$query_core->order('total '.(!empty($order) ? $order : SMStatistic::getParam('ranking_order', 'DESC')).' ');
-
+try {
 		$db->setQuery($query_core, $limitstart, $limit);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
 		$res->ranking = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
 		if ($res->ranking)
 		{
 			$precision = SMStatistic::getPrecision();
@@ -177,21 +180,23 @@ class SMStatisticPergame extends SMStatistic
 	 * @param mixed $order
 	 * @return
 	 */
-	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
+	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
+		$app = Factory::getApplication();
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        //$query_num = $db->getQuery(true);
         $query_den = $db->getQuery(true);
         
         $query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids);
 
         $query_den->select('COUNT(m.id) AS value, pt.id');
         $query_den->from('#__sportsmanagement_project_team AS pt');
-        $query_den->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.published = 1 AND m.team1_result IS NOT NULL');
+        $query_den->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ');
         $query_den->where('pt.project_id = ' . $project_id);
+        $query_den->where('m.published = 1');
+        $query_den->where('m.team1_result IS NOT NULL' );
         $query_den->group('pt.id');
         
 		$query->select('(n.num / d.value) AS total, st.team_id');
@@ -202,10 +207,15 @@ class SMStatisticPergame extends SMStatistic
         $query->join('INNER','('.$query_den.') AS d ON d.id = pt.id ');
         $query->where('pt.project_id = '. $projectid);
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).' ');
-	
+try {	
 		$db->setQuery($query, $limitstart, $limit);
 		$res = $db->loadObjectList();
-		
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}		
 		if (!empty($res))
 		{
 			$precision = $this->getPrecision();

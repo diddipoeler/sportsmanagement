@@ -1,48 +1,26 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+ * @version   1.0.05
+ * @file      default_fieldsets.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fieldsets
  */
+ 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 switch ($this->fieldset) {
     case 'playground_jquery':
-        $backgroundimage = JURI::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+        $backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
         list($width, $height, $type, $attr) = getimagesize($backgroundimage);
-        $picture = JURI::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
+        $picture = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
         ?>
 
         <style type="text/css">
@@ -75,20 +53,20 @@ switch ($this->fieldset) {
 
         break;
     case 'training':
-        $view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
+        $view = Factory::getApplication()->input->getCmd('view', 'cpanel');
         ?>                
         <fieldset class="adminform">
 
             <table class='table'>
                 <tr>
                     <td class='key' nowrap='nowrap'>
-        <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+        <?php echo Text::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                     </td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
                 </tr>
         <?php
         if (!empty($this->trainingData)) {
@@ -109,7 +87,7 @@ switch ($this->fieldset) {
                         ?>
                         <tr>
                             <td class='key' nowrap='nowrap'>
-                                <?php echo JText::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+                                <?php echo Text::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                             </td>
                             <td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
                             <td nowrap='nowrap' width='5%'>
@@ -140,7 +118,7 @@ switch ($this->fieldset) {
         <fieldset class='adminform'>
 
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
+            echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
             ?>
         </fieldset>
         <?php
@@ -277,7 +255,7 @@ switch ($this->fieldset) {
 // für google maps    
     case 'maps1':
         $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
-        $paramsPlugin = new JRegistry($plugin->params);
+        $paramsPlugin = new Registry($plugin->params);
 
         $arrPluginParams = array();
 
@@ -312,13 +290,13 @@ switch ($this->fieldset) {
 zoom='3'\|mapType='Satellite'\|text='sv DWO'\|tooltip='DWO'\|
 marker='1'\|align='center' } ";
 //$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";  
-        echo JHtml::_('content.prepare', $params);
+        echo HTMLHelper::_('content.prepare', $params);
 
         break;
 
 // für google maps    
     case 'maps2':
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
 //$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp');
         ?>
@@ -387,7 +365,7 @@ marker='1'\|align='center' } ";
                 $fields = $this->extended->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -412,7 +390,7 @@ marker='1'\|align='center' } ";
                     <?php
                 }
             } else {
-                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
             }
             break;
 
@@ -427,7 +405,7 @@ marker='1'\|align='center' } ";
                 $fields = $this->extendeduser->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -439,7 +417,7 @@ marker='1'\|align='center' } ";
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
 
@@ -454,9 +432,9 @@ marker='1'\|align='center' } ";
                     $fields = $this->formparams->getFieldset($fieldset->name);
 
                     if (!count($fields)) {
-                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                        echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                     }
-                    echo '<b><p class="tab-description">' . JText::_($this->description) . '</p></b>';
+                    echo '<b><p class="tab-description">' . Text::_($this->description) . '</p></b>';
                     foreach ($fields as $field) {
                         echo $field->label;
                         echo $field->input;
@@ -466,7 +444,7 @@ marker='1'\|align='center' } ";
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
 
@@ -477,7 +455,6 @@ marker='1'\|align='center' } ";
             <table class="table">
             <?php
             foreach ($this->form->getFieldset($this->fieldset) as $field):
-                //echo 'name -><pre> '.print_r($field->getFieldAttribute(),true).'</pre>';
                 ?>
                     <tr>
                         <td class="key"><?php echo $field->label; ?></td>
@@ -494,11 +471,11 @@ marker='1'\|align='center' } ";
                     default:
                         ?>
                                     <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                       href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . JFactory::getApplication()->input->getVar("view") . '-' . $var_onlinehelp; ?>"
+                                       href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                        class="modal">
                     <?php
-                    echo JHtml::_('image', 'media/com_sportsmanagement/jl_images/help.png', JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-                            JText::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
+                    echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+                            Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
                     ?>
                                     </a>
 

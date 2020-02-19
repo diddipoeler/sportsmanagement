@@ -1,50 +1,23 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jlxmlexports.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
-jimport('joomla.filesystem.file');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelJLXMLExports
@@ -55,7 +28,7 @@ jimport('joomla.utilities.arrayhelper');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelJLXMLExports extends JModelLegacy
+class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 {
 	/**
 	 * @var int
@@ -269,13 +242,11 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
     public function __construct($config = array())
         {   
 
-                parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
-        // Reference global application object
-        $this->app = JFactory::getApplication();
-        $this->user	= JFactory::getUser();     
-        // JInput object
+        parent::__construct($config);
+        $getDBConnection = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($getDBConnection);
+        $this->app = Factory::getApplication();
+        $this->user	= Factory::getUser();     
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
         $this->jsmdb = $this->getDbo();
@@ -294,24 +265,11 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 	 */
 	public function exportData()
 	{
-//	   // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-//        $db	= $this->getDbo();
-//        $query = $db->getQuery(true);
-
-//		$user = JFactory::getUser();
-
-		//$this->_project_id = $app->getUserState($option.'project');
-        //$this->_project_id = JFactory::getApplication()->input->getInt('p');
         $this->_project_id = $this->jinput->getVar('pid');
         $this->_update = $this->jinput->getVar('update');
-		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
-			JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+			Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 		}
 		else
 		{
@@ -321,31 +279,27 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		
 		if(empty($filename)) 
     {
-			//$this->_project_id = $app->getUserState($option.'project');
-            //$this->_project_id = JFactory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				Log::add( Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else 
       {
-				// get the project datas
+				/** get the project datas */
 				$this->_getProjectData();
 				$filename = $this->_getIdFromData('name', $this->_project);
 				$filename[0] = $filename[0]."-".$table;
 			}
 		}			
-    $l98filename = JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His");
-    //$file = JPATH_SITE.DS.'tmp'.DS.$l98filename.'.jlg';
-    $file = JPATH_SITE.DS.'tmp'.DS.$this->user->username.DS.JFilterOutput::stringURLSafe($filename[0]).'.jlg';   
-    
-    $userpath = JPATH_SITE.DS.'tmp'.DS.$this->user->username;
-    if ( JFolder::exists($userpath) )
+    $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
+    $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
+    $userpath = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username;
+    if ( Folder::exists($userpath) )
     {
     }
     else
     {
-    JFolder::create($userpath);
+    Folder::create($userpath);
     }  
       
       $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
@@ -362,58 +316,59 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
             }
             else
             {
-            // get the version of JoomLeague
-			$output .= $this->_addToXml($this->_getJoomLeagueVersion());
-
+            // get the version of SportsManagement
+            $this->query->clear();
+			$output .= $this->_addToXml($this->_getSportsManagementVersion());
 			// get the project datas
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectData());
-
 			// get sportstype data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getSportsTypeData());
-
 			// get league data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getLeagueData());
-
 			// get season data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getSeasonData());
-
 			// get the template data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTemplateData());
-
 			// get divisions data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getDivisionData());
-
 			// get the projectteams data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectTeamData());
-
 			// get referee data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectRefereeData());
-
 			// get position data of project
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getProjectPositionData());
-
 			// get the teams data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamData());
-
 			// get the clubs data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getClubData());
-
 			// get the rounds data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getRoundData());
-
 			// get the matches data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchData());
-
 			// get the playground data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPlaygroundData());
-
 			// get the team player data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamPlayerData());
-
 			// get the team staff data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamStaffData());
-
 			// get the team training data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getTeamTrainingData());
 
 /*
@@ -432,33 +387,34 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 */
 
 			// get the positions data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionData());
-
 			// get the positions parent data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getParentPositionData());
-
 			// get ALL persons data for Export
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPersonData());
-
 			// get the match events data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchEvent());
-
 			// get the event types data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getEventType());
-
 			// get the position eventtypes data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionEventType());
-
 			// get the match_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchStatistic());
-
 			// get the match_staff_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getMatchStaffStatistic());
-
 			// get the position_statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getPositionStatistic());
-
 			// get the statistic data
+            $this->query->clear();
 			$output .= $this->_addToXml($this->_getStatistic());
             }
 
@@ -467,13 +423,12 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 
 // mal als test
 $xmlfile = $xmlfile.$output;
-//JFile::write($file, $xmlfile);
     
 			// download the generated xml
 			$this->downloadXml($output,"");
 
 			// close the application
-			$app = JFactory::getApplication();
+			$app = Factory::getApplication();
 			$app->close();
 		}
 	}
@@ -492,12 +447,12 @@ $xmlfile = $xmlfile.$output;
 	function downloadXml($data, $table)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $this->query = $this->jsmdb->getQuery(true);
         
 		jimport('joomla.filter.output');
 		$filename = $this->_getIdFromData('name', $this->_project);
@@ -506,7 +461,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				Log::add( Text::_('COM_SPORTSMANAGEMENT_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else {
 				// get the project datas
@@ -517,7 +472,7 @@ $xmlfile = $xmlfile.$output;
 		}
 		/**/
 		header('Content-type: "text/xml"; charset="utf-8"');
-		header("Content-Disposition: attachment; filename=\"" . JFilterOutput::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
+		header("Content-Disposition: attachment; filename=\"" . OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His"). ".jlg\"");
 		header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H") + 2, date("i"), date("s"), date("m"), date("d"), date("Y"))) . " GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-cache, must-revalidate");
@@ -624,118 +579,75 @@ $xmlfile = $xmlfile.$output;
 		return false;
 	}
 
+	
 	/**
-	 * _getJoomLeagueVersion
-	 *
-	 * Get the version data and actual date, time and
-	 * Joomla systemName from the joomleague_version table
-	 *
-	 * @access private
-	 * @since  2010-08-26
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSportsManagementVersion()
+	 * 
+	 * @return
 	 */
-	private function _getJoomLeagueVersion()
+	private function _getSportsManagementVersion()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		$exportRoutine = '2010-09-23 15:00:00';
-//		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
-//		$this->_db->setQuery($query);
-//		$this->_db->execute();
-        
-        // Select some fields
-        $query->select('manifest_cache');
-		// From the table
-		$query->from('#__extensions');
-        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
-        JFactory::getDbo()->setQuery( $query );
-       $manifest_cache = json_decode( JFactory::getDbo()->loadResult(), true );
+        $this->query->select('manifest_cache');
+		$this->query->from('#__extensions');
+        $this->query->where('name LIKE '.$this->jsmdb->Quote(''.'com_sportsmanagement'.'') );
+        $this->jsmdb->setQuery( $this->query );
+       $manifest_cache = json_decode( $this->jsmdb->loadResult(), true );
        
 		if ( $manifest_cache['version'] )
 		{
 			$result[0]['version'] = $manifest_cache['version'];
+            $result[0]['exportversion'] = $manifest_cache['version'];
 			$result[0]['exportRoutine'] = $exportRoutine;
 			$result[0]['exportDate'] = date('Y-m-d');
 			$result[0]['exportTime'] = date('H:i:s');
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-			$result[0]['exportSystem'] = JFactory::getConfig()->get('config.sitename');
+			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
 }
 else
 {
-			$result[0]['exportSystem'] = JFactory::getConfig()->getValue('config.sitename');    
+			$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');    
 }            
 
-			$result[0]['object'] = 'JoomLeagueVersion';
+			$result[0]['object'] = 'SportsManagementVersion';
 			return $result;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getProjectData
-	 *
-	 * Get the project data from the joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project');
+        $this->query->where('id = ' . $this->_project_id );
         
-        $query->select('*');
-        $query->from('#__sportsmanagement_project');
-        $query->where('id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
-			$result[0]['object'] = 'JoomLeague15';
+			$result = $this->jsmdb->loadAssocList();
+			$result[0]['object'] = 'SportsManagement';
 			$this->_project = $result;
 			return $result;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getTemplateData
-	 *
-	 * Get the template data from the joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTemplateData()
+	 * 
+	 * @return
 	 */
 	private function _getTemplateData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		// this is the master template
 		if ( $this->_project[0]['master_template'] == 0 )
 		{
@@ -746,16 +658,14 @@ else
 			$master_template_id = $this->_project[0]['master_template'];
 		}
         
-        $query->select('*');
-        $query->from('#__sportsmanagement_template_config');
-        $query->where('project_id = ' . $master_template_id );
-
-		//$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_template_config');
+        $this->query->where('project_id = ' . $master_template_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Template';
 
 			return $result;
@@ -763,36 +673,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getLeagueData
-	 *
-	 * Get the league data from the joomleague_league table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getLeagueData()
+	 * 
+	 * @return
 	 */
 	private function _getLeagueData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_league');
-        $query->where('id = ' . $this->_project[0]['league_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_league');
+        $this->query->where('id = ' . $this->_project[0]['league_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'League';
 
 			return $result;
@@ -800,36 +696,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getSportsTypeData
-	 *
-	 * Get the sportstype data from the joomleague_sports_type table
-	 *
-	 * @access private
-	 * @since  1.5.5263
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSportsTypeData()
+	 * 
+	 * @return
 	 */
 	private function _getSportsTypeData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_sports_type');
-        $query->where('id = ' . $this->_project[0]['sports_type_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($this->_db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_sports_type');
+        $this->query->where('id = ' . $this->_project[0]['sports_type_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'SportsType';
 
 			return $result;
@@ -837,36 +719,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getSeasonData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getSeasonData()
+	 * 
+	 * @return
 	 */
 	private function _getSeasonData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_season');
-        $query->where('id = ' . $this->_project[0]['season_id'] );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_season');
+        $this->query->where('id = ' . $this->_project[0]['season_id'] );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Season';
 
 			return $result;
@@ -874,36 +742,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getDivisionData
-	 *
-	 * Get the division data from the joomleague_divisions table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getDivisionData()
+	 * 
+	 * @return
 	 */
 	private function _getDivisionData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_division');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_division');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'LeagueDivision';
 
 			return $result;
@@ -911,27 +765,15 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getprojectteamData
-	 *
-	 * Get the projectteam data from the joomleague_team_joomleague table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectTeamData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectTeamData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('pt.id,
+        $this->query->select('pt.id,
         pt.project_id,
         st.team_id,
         st.id as season_team_id,
@@ -953,35 +795,14 @@ else
   pt.reason,
   pt.checked_out,
   pt.checked_out_time');
-        $query->from('#__sportsmanagement_project_team as pt');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
-        $query->where('pt.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->from('#__sportsmanagement_project_team as pt');
+        $this->query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
+        $this->query->where('pt.project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
-/*
-            foreach( $result as $row ) 
-            { 
-
-      
-      $query->clear();
-      $query->select('team_id'); 
-      $query->from('#__sportsmanagement_season_team_id');
-      $query->where('id = ' . (int)$row['team_id'] );
-      $db->setQuery($query);
-	  $db->execute();
-      $teamresult = $db->loadResult();
-      if( $teamresult )
-      {
-      $row['team_id'] = $teamresult;  
-      }
-       
- }
-*/  
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -989,36 +810,22 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getProjectPositionData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectPositionData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_project_position');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project_position');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectPosition';
 			$this->_projectposition =& $result;
 			return $result;
@@ -1026,36 +833,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getProjectRefereeData
-	 *
-	 * Get the season data from the joomleague_season table
-	 *
-	 * @access private
-	 * @since  1.5.5241
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getProjectRefereeData()
+	 * 
+	 * @return
 	 */
 	private function _getProjectRefereeData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_project_referee');
-        $query->where('project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_project_referee');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'ProjectReferee';
 			$this->_projectreferee =& $result;
 			return $result;
@@ -1063,46 +856,31 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamData
-	 *
-	 * Get the team data from the joomleague_teams table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getTeamData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
 		$team_ids = $this->_getIdFromData('season_team_id', $this->_projectteam);
 
 		if (is_array($team_ids) && count($team_ids) > 0)
 		{
 			$ids = implode(",", array_unique($team_ids));
-            
-            $query->select('t.*');
-            $query->from('#__sportsmanagement_team as t');
-            $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-            $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-            $query->where('st.id IN (' . $ids .')' );
-            $query->where('pt.project_id = ' . $this->_project_id );
-            $query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
-			$db->setQuery($query);
-			$db->execute();
-			if ($db->getNumRows() > 0)
+            $this->query->select('t.*');
+            $this->query->from('#__sportsmanagement_team as t');
+            $this->query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $this->query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $this->query->where('st.id IN (' . $ids .')' );
+            $this->query->where('pt.project_id = ' . $this->_project_id );
+            $this->query->order('name');
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'JL_Team';
 				$this->_team =& $result;
 				return $result;
@@ -1120,35 +898,20 @@ else
 	 */
 	private function _getClubData()
 	{
-	  // // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-        //$db	= $this->getDbo();
-       // $query = $db->getQuery(true);
-        
 		$cIDs = array();
-
 		$teamClub_ids = $this->_getIdFromData('club_id', $this->_team);
 		if (is_array($teamClub_ids))
         {
             $cIDs=array_merge($cIDs,$teamClub_ids);
             }
 
-		//$playgroundClub_ids = $this->_getIdFromData('club_id',$this->_teamstaff);
-		//if (is_array($playgroundClub_ids)){$cIDs=array_merge($cIDs,$playgroundClub_ids);}
-
 		if (is_array($cIDs) && count($cIDs) > 0)
 		{
 			$ids = implode(",", array_unique($cIDs));
-            $this->query->clear();
             $this->query->select('*');
             $this->query->from('#__sportsmanagement_club');
             $this->query->where('id IN (' . $ids .')' );
             $this->query->order('name');
-
-			//$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
 			$this->jsmdb->setQuery($this->query);
 			$this->jsmdb->execute();
 			if ($this->jsmdb->getNumRows() > 0)
@@ -1163,36 +926,22 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getRoundData
-	 *
-	 * Get the rounds data from the joomleague_rounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getRoundData()
+	 * 
+	 * @return
 	 */
 	private function _getRoundData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_round');
-        $query->where('project_id = ' . $this->_project_id );
-            
-		//$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_round');
+        $this->query->where('project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Round';
 
 			return $result;
@@ -1200,37 +949,23 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getMatchData
-	 *
-	 * Get the matches data from the joomleague_matches table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-        $query->select('*');
-        $query->from('#__sportsmanagement_match as m');
-        $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
-        $query->where('r.project_id = ' . $this->_project_id );
-        
-		//$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
-		$db->setQuery($query);
-		$db->execute();
-		if ($db->getNumRows() > 0)
+        $this->query->select('*');
+        $this->query->from('#__sportsmanagement_match as m');
+        $this->query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+        $this->query->where('r.project_id = ' . $this->_project_id );
+		$this->jsmdb->setQuery($this->query);
+		$this->jsmdb->execute();
+		if ($this->jsmdb->getNumRows() > 0)
 		{
-			$result = $db->loadAssocList();
+			$result = $this->jsmdb->loadAssocList();
 			$result[0]['object'] = 'Match';
 			$this->_match = $result;
 			return $result;
@@ -1238,27 +973,15 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getPlaygroundData
-	 *
-	 * Get the playgrounds data from the joomleague_playgrounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPlaygroundData()
+	 * 
+	 * @return
 	 */
 	private function _getPlaygroundData()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
-        $query = $db->getQuery(true);
-        
-		$pgIDs=array();
+		$pgIDs = array();
 		$clubsPlayground_ids = $this->_getIdFromData('standard_playground',$this->_club);
 		if (is_array($clubsPlayground_ids)){$pgIDs=array_merge($pgIDs,$clubsPlayground_ids);}
 
@@ -1271,17 +994,14 @@ else
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-            
-            $query->select('*');
-            $query->from('#__sportsmanagement_playground');
-            $query->where('id IN (' . $ids .')' );
-            
-			//$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
-			$db->setQuery($query);
-			$db->execute();
-			if ($db->getNumRows() > 0)
+            $this->query->select('*');
+            $this->query->from('#__sportsmanagement_playground');
+            $this->query->where('id IN (' . $ids .')' );
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Playground';
 				$this->_playground = $result;
 				return $result;
@@ -1291,15 +1011,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamPlayerData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamPlayerData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamPlayerData()
 	{
@@ -1308,13 +1024,15 @@ else
 		if (is_array($teamplayer_ids) && count($teamplayer_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamplayer_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_team_player WHERE projectteam_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_player');
+            $this->query->where('projectteam_id IN (' . $ids .')' );
+            
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamPlayer';
 				$this->_teamplayer = $result;
 
@@ -1325,15 +1043,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamTrainingData
-	 *
-	 * Get the projectteams training data from the joomleague_team_trainingdata table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamTrainingData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamTrainingData()
 	{
@@ -1342,31 +1056,36 @@ else
 		if (is_array($teamtraining_ids) && count($teamtraining_ids) > 0)
 		{
 			$ids = implode(',',array_unique($teamtraining_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_team_trainingdata WHERE project_team_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_trainingdata');
+            $this->query->where('project_team_id IN (' . $ids .')' );
+try{ 
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamTraining';
 				$this->_teamtrainingdata = $result;
 				return $result;
 			}
+            }
+catch (Exception $e)
+{
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+
+}
 			return false;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getTeamStaffData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getTeamStaffData()
+	 * 
+	 * @return
 	 */
 	private function _getTeamStaffData()
 	{
@@ -1375,32 +1094,37 @@ else
 		if (is_array($teamstaff_ids) && count($teamstaff_ids) > 0)
 		{
 			$ids = implode(",", array_unique($teamstaff_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_team_staff WHERE projectteam_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_team_staff');
+            $this->query->where('project_team_id IN (' . $ids .')' );
+try{
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'TeamStaff';
 				$this->_teamstaff = $result;
 
 				return $result;
 			}
+            }
+catch (Exception $e)
+{
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+
+}
 			return false;
 		}
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchPlayerData
-	 *
-	 * Get the match players data from the joomleague_match_player table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchPlayerData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchPlayerData()
 	{
@@ -1409,14 +1133,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_player');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_player WHERE match_id IN ($ids)";
-
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchPlayer';
 				$this->_matchplayer = $result;
 
@@ -1427,15 +1152,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStaffData
-	 *
-	 * Get the match staffs data from the joomleague_match_staff table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchStaffData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStaffData()
 	{
@@ -1444,13 +1165,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_staff');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_staff WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStaff';
 				$this->_matchstaff = $result;
 
@@ -1461,15 +1184,11 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getMatchRefereeData
-	 *
-	 * Get the match referees data from the joomleague_match_referee table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchRefereeData()
+	 * 
+	 * @return
 	 */
 	private function _getMatchRefereeData()
 	{
@@ -1478,13 +1197,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_match_referee');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_referee WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchReferee';
 				$this->_matchreferee = $result;
 
@@ -1495,15 +1216,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getPositionData
-	 *
-	 * Get the positions data from the joomleague_playgrounds table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getPositionData()
 	{
@@ -1512,13 +1229,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_position');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Position';
 				$this->_position = $result;
 
@@ -1529,15 +1248,11 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getParentPositionData
-	 *
-	 * Get the parent positions data from the joomleague_positions table
-	 *
-	 * @access private
-	 * @since  1.5.5262
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getParentPositionData()
+	 * 
+	 * @return
 	 */
 	private function _getParentPositionData()
 	{
@@ -1546,13 +1261,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+$this->query->from('#__sportsmanagement_position');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'ParentPosition';
 				$this->_parentposition = $result;
 
@@ -1563,15 +1280,11 @@ else
 		return false;
 	}
 
+
 	/**
-	 * getPersonData
-	 *
-	 * Get the persons data from the joomleague_persons table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPersonData()
+	 * 
+	 * @return
 	 */
 	private function _getPersonData()
 	{
@@ -1589,12 +1302,15 @@ else
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-			$query = "SELECT * FROM #__sportsmanagement_person WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+            $this->query->select('*');
+            $this->query->from('#__sportsmanagement_person');
+            $this->query->where('id IN (' . $ids .')' );
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Person';
 				$this->_person = $result;
 
@@ -1605,15 +1321,11 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getMatchEvent
-	 *
-	 * Get the match events data from the joomleague_match_events_new table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getMatchEvent()
+	 * 
+	 * @return
 	 */
 	private function _getMatchEvent()
 	{
@@ -1622,13 +1334,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_event');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_event WHERE	match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchEvent';
 				$this->_matchevent = $result;
 				return $result;
@@ -1638,15 +1352,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getEventType
-	 *
-	 * Get the event types data from the joomleague_eventtypes table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getEventType()
+	 * 
+	 * @return
 	 */
 	private function _getEventType()
 	{
@@ -1655,13 +1365,15 @@ else
 		if (is_array($eventtype_ids) && count($eventtype_ids) > 0)
 		{
 			$ids = implode(",", array_unique($eventtype_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_eventtype');
+            $this->query->where('id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_eventtype WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'EventType';
 				$this->_eventtype = $result;
 				return $result;
@@ -1671,15 +1383,11 @@ else
 		return false;
 	}
 
+
 	/**
-	 * _getPositionEventType
-	 *
-	 * Get the position event types data from the joomleague_position_eventtype table
-	 *
-	 * @access private
-	 * @since  1.5.0a
-	 *
-	 * @return array
+	 * sportsmanagementModelJLXMLExports::_getPositionEventType()
+	 * 
+	 * @return
 	 */
 	private function _getPositionEventType()
 	{
@@ -1690,13 +1398,16 @@ else
 		{
 			$event_ids		= implode(",", array_unique($eventtype_ids));
 			$position_ids	= implode(",", array_unique($position_ids));
-
-			$query = "SELECT * FROM #__sportsmanagement_position_eventtype WHERE eventtype_id IN ($event_ids) AND position_id IN ($position_ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_position_eventtype');
+            $this->query->where('eventtype_id IN (' . $event_ids .')' );
+            $this->query->where('position_id IN (' . $position_ids .')' );
+            
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'PositionEventType';
 				return $result;
 			}
@@ -1705,15 +1416,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getPositionStatistic
-	 *
-	 * Get the statisctics data from the joomleague_position_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getPositionStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getPositionStatistic()
 	{
@@ -1722,13 +1429,15 @@ else
 		if (is_array($position_ids) && count($position_ids) > 0)
 		{
 			$ids = implode(",", array_unique($position_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_position_statistic');
+            $this->query->where('position_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_position_statistic WHERE position_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'PositionStatistic';
 				$this->_positionstatistic = $result;
 				return $result;
@@ -1738,15 +1447,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStatistic
-	 *
-	 * Get the statisctics data from the joomleague_match_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getMatchStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStatistic()
 	{
@@ -1755,13 +1460,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_statistic');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStatistic';
 				$this->_matchstatistic = $result;
 				return $result;
@@ -1771,15 +1478,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getMatchStaffStatistic
-	 *
-	 * Get the statisctics data from the joomleague_match_staff_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getMatchStaffStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getMatchStaffStatistic()
 	{
@@ -1788,13 +1491,15 @@ else
 		if (is_array($match_ids) && count($match_ids) > 0)
 		{
 			$ids = implode(",", array_unique($match_ids));
+$this->query->select('*');
+            $this->query->from('#__sportsmanagement_match_staff_statistic');
+            $this->query->where('match_id IN (' . $ids .')' );
 
-			$query = "SELECT * FROM #__sportsmanagement_match_staff_statistic WHERE match_id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'MatchStaffStatistic';
 				$this->_matchstaffstatistic = $result;
 				return $result;
@@ -1804,15 +1509,11 @@ else
 		return false;
 	}
 
+	
 	/**
-	 * _getStatistic
-	 *
-	 * Get the statistic data from the joomleague_statistic table
-	 *
-	 * @access private
-	 * @since  1.5.5283
-	 *
-	 * @return void
+	 * sportsmanagementModelJLXMLExports::_getStatistic()
+	 * 
+	 * @return
 	 */
 	private function _getStatistic()
 	{
@@ -1830,12 +1531,15 @@ else
 		if (is_array($sIDs) && count($sIDs) > 0)
 		{
 			$ids = implode(",",array_unique($sIDs));
-			$query = "SELECT * FROM #__sportsmanagement_statistic WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->execute();
-			if ($this->_db->getNumRows() > 0)
+            $this->query->select('*');
+                        $this->query->from('#__sportsmanagement_statistic');
+            $this->query->where('id IN (' . $ids .')' );
+
+			$this->jsmdb->setQuery($this->query);
+			$this->jsmdb->execute();
+			if ($this->jsmdb->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $this->jsmdb->loadAssocList();
 				$result[0]['object'] = 'Statistic';
 				$this->_person = $result;
 

@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <form>
+<!-- register 1 -->
 	<fieldset name="details"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
     label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
+	
+
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
@@ -28,6 +31,14 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field name="show_fusion" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FUSION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FUSION">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
     		<field name="show_founded" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
@@ -164,7 +175,7 @@
 		</field>
 		
 	</fieldset>
-  
+<!-- register 2 -->  
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
@@ -207,13 +218,6 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ASSOC_LOGO_PICTURE_WIDTH">
 		</field>
 
-<!--     
-		<field name="team_picture_height" type="text" default="150"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
-		</field>
--->   
- 
 		<field name="show_route" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"

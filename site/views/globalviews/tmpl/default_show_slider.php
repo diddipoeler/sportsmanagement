@@ -4,18 +4,21 @@
  * @file      default_show_tabs.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage globalviews
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
-<div class="row-fluid" id="show_slider">
+<div class="<?php echo $this->divclassrow; ?>" id="show_slider">
     <?php
     if (version_compare(JSM_JVERSION, '4', 'eq')) {
 // Joomla! 4.0 code here
         $idxTab = 1;
-        $view = JFactory::getApplication()->input->getCmd('view');
+        $view = Factory::getApplication()->input->getCmd('view');
         foreach ($this->output as $key => $templ) {
 
             switch ($view) {
@@ -30,19 +33,19 @@ defined('_JEXEC') or die('Restricted access');
             }
 
             if ($idxTab == 1) {
-                echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
+                echo HTMLHelper::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide' . $idxTab);
+            echo HTMLHelper::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
-            echo JHtml::_('bootstrap.endSlide');
+            echo HTMLHelper::_('bootstrap.endSlide');
             $idxTab++;
         }
 
-        echo JHtml::_('bootstrap.endAccordion');
+        echo HTMLHelper::_('bootstrap.endAccordion');
     } elseif (version_compare(JSM_JVERSION, '3', 'eq')) {
 // Joomla! 3.0 code here
         $idxTab = 1;
-        $view = JFactory::getApplication()->input->getCmd('view');
+        $view = Factory::getApplication()->input->getCmd('view');
         foreach ($this->output as $key => $templ) {
 
             switch ($view) {
@@ -57,15 +60,15 @@ defined('_JEXEC') or die('Restricted access');
             }
 
             if ($idxTab == 1) {
-                echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
+                echo HTMLHelper::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide' . $idxTab);
+            echo HTMLHelper::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
-            echo JHtml::_('bootstrap.endSlide');
+            echo HTMLHelper::_('bootstrap.endSlide');
             $idxTab++;
         }
 
-        echo JHtml::_('bootstrap.endAccordion');
+        echo HTMLHelper::_('bootstrap.endAccordion');
     } elseif (version_compare(JSM_JVERSION, '2', 'eq')) {
 // Joomla! 2.5 code here    
         ?>
@@ -77,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion-nextmatch" href="#<?php echo $key; ?>"><?php echo JText::_($key); ?></a>
+                            <a data-toggle="collapse" data-parent="#accordion-nextmatch" href="#<?php echo $key; ?>"><?php echo Text::_($key); ?></a>
                         </h4>
                     </div>
 

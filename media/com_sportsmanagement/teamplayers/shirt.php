@@ -1,8 +1,19 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      shirt.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage media
+ */
+
 //defined( '_JEXEC' ) or die( 'Restricted access' );
-//$text = JRequest::getInt('text');
-$text = intval( $_GET[ 'text' ] );
-//echo dirname(__FILE__).'<br>';
+defined( '_JEXEC' );
+//use Joomla\CMS\Factory;
+//$text = Factory::getApplication()->input->getInt('text', 0);
+$text = intval( $_GET['text']);
 $image_file = dirname(__FILE__).'/shirt.png';
 
 if(is_file($image_file)) {

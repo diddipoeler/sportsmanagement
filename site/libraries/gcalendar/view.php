@@ -20,6 +20,9 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 class GCalendarView extends JViewLegacy {
 
@@ -31,7 +34,7 @@ class GCalendarView extends JViewLegacy {
 		$state = $this->get('State');
 
 		$tmp = clone $state->params;
-		$tmp->merge(JFactory::getApplication()->getParams());
+		$tmp->merge(Factory::getApplication()->getParams());
 
 		$this->state = $state;
 		$this->params = $tmp;
@@ -39,7 +42,7 @@ class GCalendarView extends JViewLegacy {
 		$this->init();
 
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			Log::add( implode("\n", $errors));
 			return false;
 		}
 
@@ -48,7 +51,7 @@ class GCalendarView extends JViewLegacy {
 	}
 
 	protected function prepareDocument() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu();
 		$title	= null;
 
@@ -58,15 +61,15 @@ class GCalendarView extends JViewLegacy {
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_($this->defaultPageTitle));
+			$this->params->def('page_heading', Text::_($this->defaultPageTitle));
 		}
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = $app->getCfg('sitename');
 		} else if ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		} else if ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

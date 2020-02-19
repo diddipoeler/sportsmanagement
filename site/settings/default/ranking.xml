@@ -7,7 +7,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
     description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-    <field name="button_style" 
+		<field name="button_style" 
     type="list" 
     default="btn btn-default" 
 					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
@@ -19,7 +19,14 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 					<option value="btn btn-warning">Warning</option>
 					<option value="btn btn-danger">Danger</option>
 				</field>
-				
+<field name="show_result_tabs" type="extensionradiobutton" default="no_tabs"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_RESULT_TABS"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_RESULT_TABS">
+			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_NO_TABS</option>
+			<option value="show_tabs">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TABS</option>
+</field>
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -158,7 +165,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS" 
 				rows="4" cols="70">
 		</field>
-
+<!-- wird nicht benutzt daher erst einmal ausblenden
 <field
 			name="ordered_columns_new_select"
 			type="rankingcolumns"
@@ -183,12 +190,8 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS_NEW"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS_NEW"
 			>
-			
-
-				
-				
 		</field>
-
+-->
 		
 		<field 	name="ordered_columns_names" type="textarea" default="Pl, W, D, L, Pts, SF, SA, +/-" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMNS_NAMES" 
@@ -320,9 +323,18 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
             <option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
             <option value="logo_small_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
             <option value="country_flag_logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-            <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+            <option value="logo_big_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_BIG</option>
+	<option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
 		</field>
 		
+<field name="club_link_logo" type="extensionradiobutton" default="1"
+class="radio btn-group btn-group-yesno"
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LINK_LOGO"
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LINK_LOGO">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>		
 
         <field name="team_picture_width" type="text" default="21"
                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"

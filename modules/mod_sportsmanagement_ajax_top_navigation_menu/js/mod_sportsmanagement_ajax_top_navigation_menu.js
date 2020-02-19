@@ -1,10 +1,6 @@
 var jlcinjectcontainer = new Array();
 var jlcmodal = new Array();
 
-//window.addEvent('domready', function() {
-//	SqueezeBox.initialize({});
-//});
-
 function jlcnewtopAjax() {
 	/* THIS CREATES THE AJAX OBJECT */
 	var xmlhttp = false;
@@ -37,8 +33,8 @@ associd = document.getElementById("jlamtopassoc" + federation + modid).options[d
 subassocid = document.getElementById("jlamtopsubassoc" + federation + modid).options[document.getElementById("jlamtopsubassoc" + federation + modid).selectedIndex].value;
 subsubassocid = document.getElementById("jlamtopsubsubassoc" + federation + modid).options[document.getElementById("jlamtopsubsubassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubsubsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubsubsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -80,8 +76,8 @@ countryid = document.getElementById("jlamtopfederation" + federation + modid).op
 associd = document.getElementById("jlamtopassoc" + federation + modid).options[document.getElementById("jlamtopassoc" + federation + modid).selectedIndex].value;
 subassocid = document.getElementById("jlamtopsubassoc" + federation + modid).options[document.getElementById("jlamtopsubassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -121,8 +117,8 @@ var associd = 0;
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 associd = document.getElementById("jlamtopassoc" + federation + modid).options[document.getElementById("jlamtopassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -157,13 +153,14 @@ var response = ajax.responseText;
 
 function jlamtopnewcountries(modid,federation)
 {
-//alert('jlamtopnewcountries modid=' + modid);
-//alert('jlamtopnewcountries federation=' + federation);
+console.log('jlamtopnewcountries modid =' + modid);
+console.log('jlamtopnewcountries federation =' + federation);
 
 var countryid = '';
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewcountries country=' + countryid);
+console.log('jlamtopnewcountries country =' + countryid);
+console.log('jlamtopnewcountries href =' + location.href);
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -172,12 +169,14 @@ loadHtml = "<p id='loadingDiv-"
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
-    
+   
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
 ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 ajax.send('jlamtopcountry=' + countryid + '&ajaxmodid=' + modid);
 ajax.onreadystatechange = function() {
+
+console.log('readyState =' + ajax.readyState);
 
 if (ajax.readyState == 4) {
 
@@ -274,8 +273,6 @@ var response = ajax.responseText;
 
 function jlamtopdivision(modid)
 {
-//alert('jlamdivision_modid=' + modid);
-
 var seasonid = 0;
 var leagueid = 0;
 var projectid = 0;
@@ -284,19 +281,19 @@ var divisionid = 0;
 
 
 seasonid = document.getElementById("jlamseason" + modid).options[document.getElementById("jlamseason" + modid).selectedIndex].value;
-//alert('jlamdivision seasonid=' + seasonid);
+console.log('jlamtopdivision seasonid = ' + seasonid);
 
 leagueid = document.getElementById("jlamleague" + modid).options[document.getElementById("jlamleague" + modid).selectedIndex].value;
-//alert('jlamdivision leagueid=' + leagueid);
+console.log('jlamtopdivision leagueid = ' + leagueid);
 
 projectid = document.getElementById("jlamproject" + modid).options[document.getElementById("jlamproject" + modid).selectedIndex].value;
-//alert('jlamdivision projectid=' + projectid);
+console.log('jlamtopdivision projectid = ' + projectid);
 
 divisionid = document.getElementById("jlamdivisions" + modid).options[document.getElementById("jlamdivisions" + modid).selectedIndex].value;
-//alert('jlamdivision divisionid=' + divisionid);
+console.log('jlamtopdivision divisionid = ' + divisionid);
 
 teamid = document.getElementById("jlamteams" + modid).options[document.getElementById("jlamteams" + modid).selectedIndex].value;
-//alert('jlamdivision teamid=' + teamid);
+console.log('jlamtopdivision teamid = ' + teamid);
 
 
 loadHtml = "<p id='loadingDiv-"

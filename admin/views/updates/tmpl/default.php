@@ -1,48 +1,19 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage updates
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -87,19 +58,19 @@ echo $this->loadTemplate('joomla2');
   <?php
   // tabs anzeigen
   $idxTab = 1;
-  echo JHtml::_('tabs.start','tabs_updates', array('useCookie'=>1)); 
-  echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
+  echo HTMLHelper::_('tabs.start','tabs_updates', array('useCookie'=>1)); 
+  echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
   ?>
   <table class="table">
 		<thead>
 			<tr>
-				<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FILE','name',$this->sortDirection,$this->sortColumn); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
-				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSION','version',$this->sortDirection,$this->sortColumn); ?></th>
-				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DATE','date',$this->sortDirection,$this->sortColumn); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT');?></th>
+				<th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+				<th class="title" class="nowrap"><?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FILE','name',$this->sortDirection,$this->sortColumn); ?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
+				<th class="title" class="nowrap"><?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSION','version',$this->sortDirection,$this->sortColumn); ?></th>
+				<th class="title" class="nowrap"><?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DATE','date',$this->sortDirection,$this->sortColumn); ?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT');?></th>
 			</tr>
 		</thead>
 		<tfoot><tr><td colspan='7'><?php echo '&nbsp;'; ?></td></tr></tfoot>
@@ -108,15 +79,14 @@ echo $this->loadTemplate('joomla2');
 		for ($i=0, $n=count($this->updateFiles); $i < $n; $i++)
 		{
 			$row =& $this->updateFiles[$i];
-			$link=JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.save&file_name='.$row['file_name']);
+			$link=Route::_('index.php?option=com_sportsmanagement&view=updates&task=update.save&file_name='.$row['file_name']);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td class="center"><?php echo $i+1; ?></td>
 				<?php
 					$linkTitle=$row['file_name'];
-					$linkParams="title='".JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE')."'";
+					$linkParams="title='".Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE')."'";
                     $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name='.$row['file_name'];
-					//echo JHtml::link($link,$linkTitle,$linkParams);
                     ?>
                     <td class="center" nowrap="nowrap">
                     <!--
@@ -133,8 +103,8 @@ echo $this->loadTemplate('joomla2');
 									 
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
-								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -149,7 +119,7 @@ $params['title']  = "test";
 $params['url']    = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name='.$row['file_name'];
 $params['height'] = 400;
 $params['width']  = "100%";
-echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
+echo $html .= HTMLHelper::_('bootstrap.renderModal', 'modal-' . $i, $params);
 
 ?>                                                 
 					</td>
@@ -160,11 +130,11 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 					}
 					else
 					{
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE',$row['last_version'],$row['version']);
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE',$row['last_version'],$row['version']);
 					}
 					?></td>
 				<td class="center"><?php echo $row['version']; ?></td>
-				<td class="center"><?php echo JText::_($row['updateFileDate']).' '.JText::_($row['updateFileTime']); ?></td>
+				<td class="center"><?php echo Text::_($row['updateFileDate']).' '.Text::_($row['updateFileTime']); ?></td>
 				<td class="center"><?php echo $row['date']; ?></td>
 				<td class="center"><?php echo $row['count']; ?></td>
 			</tr>
@@ -175,7 +145,7 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 	</table>
 	
 	<?PHP
-	echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel'.($idxTab++));
+	echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel'.($idxTab++));
 	foreach ( $this->versionhistory as $history )
 	{
   ?>
@@ -184,18 +154,18 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 <strong>
 <?php 
 //echo $history->date; 
-echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN',$history->version,JHtml::date($history->date, JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
+echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN',$history->version,HTMLHelper::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
 ?>
 </strong>
 </legend>
 <?php 
 //echo $history->text; 
-echo JText::_($history->text);
+echo Text::_($history->text);
 ?>
 	</fieldset>
 	<?PHP
 	}
-  echo JHtml::_('tabs.end');
+  echo HTMLHelper::_('tabs.end');
   ?>
 	
 	
@@ -204,7 +174,7 @@ echo JText::_($history->text);
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

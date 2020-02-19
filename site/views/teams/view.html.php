@@ -1,17 +1,16 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teams
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewTeams
@@ -33,11 +32,11 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	function init()
 	{
 	
-		$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
-        $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
+	$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
+        $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0),'',$this->config['show_club_playground']);
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 		if ( isset( $this->project ) )
 		{
 			$pageTitle .= " " . $this->project->name;
@@ -48,7 +47,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		}
 		$this->document->setTitle( $pageTitle );
         
-        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
+        $this->headertitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 
 	}
 }

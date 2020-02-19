@@ -1,72 +1,87 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_matches
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
-$app = JFactory::getApplication();
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
+$app = Factory::getApplication();
+
+$maxImportTime = 480;
+if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
+$maxImportMemory = '350M';
+if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
+
+//if (! defined('DS'))
+//{
+//	define('DS', DIRECTORY_SEPARATOR);
+//}
 
 if ( !defined('JSM_PATH') )
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
+ */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-}
-if ( !class_exists('JSMCountries') ) 
-{
-//add the classes for handling
-$classpath = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php';
-JLoader::register('JSMCountries', $classpath);
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {    
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if (!defined('_JSMMATCHLISTMODPATH')) 
-{ 
-    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
-}
+//if (!defined('_JSMMATCHLISTMODPATH')) 
+//{ 
+//    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
+//}
 if (!defined('_JSMMATCHLISTMODURL')) 
 { 
-    define('_JSMMATCHLISTMODURL', JURI::base().'modules/'.$module->module.'/');
+    define('_JSMMATCHLISTMODURL', Uri::base().'modules/'.$module->module.'/');
 }
 
-require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
-require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
-
+/** Include the functions only once */
+JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
+JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
 /**
- * besonderheit für das inlinehockey update, wenn sich das 
+ * besonderheit fÃ¼r das inlinehockey update, wenn sich das 
  * modul in einem artikel befindet
  * 
  */
 if ($params->get('ishd_update'))
 {
-$app = JFactory::getApplication();    
+$app = Factory::getApplication();    
 $projectid = $params->get('p');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
-$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');  
+JLoader::import('components.com_sportsmanagement.extensions.jsminlinehockey.admin.models.jsminlinehockey', JPATH_SITE);
+$actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
 for($a=0; $a < sizeof($projectid); $a++ )
 {
 $project_id = (int)$projectid[$a];
@@ -85,13 +100,6 @@ $match_id = $app->input->post->get('match_id', 0);
 $nr = $app->input->post->get('nr', -1);
 $ajaxmod = $app->input->post->get('ajaxmodid', 0);
 
-/*
-$ajax= JRequest::getVar('ajaxMListMod',0,'default','POST');
-$match_id = JRequest::getVar('match_id',0,'default','POST');
-$nr = JRequest::getVar('nr',-1,'default','POST');
-$ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
-*/
-
 $template = $params->get('template','default');
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -99,15 +107,19 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 } 
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
+
+if ($params->get('mootools'))
+{
+$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
+}
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_3.js' );
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
@@ -117,7 +129,7 @@ $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_2.js'
 } 
 
 
-$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DS.$module->module.'.css');
+$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DIRECTORY_SEPARATOR.$module->module.'.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
 : _JSMMATCHLISTMODURL.'assets/images/';
 $doc->addStyleDeclaration('
@@ -129,7 +141,7 @@ div.tool-tip div.tool-title a.sticky_close{
 	height:16px;
 }
 ');
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 $doc->addScriptDeclaration('
   window.addEvent(\'domready\', function() {
     if ($$(\'#modJLML'.$module->id.'holder .jlmlTeamname\')) addJLMLtips(\'#modJLML'.$module->id.'holder .jlmlTeamname\', \'over\');
@@ -143,11 +155,9 @@ $oldround_id  = 0;
 if($ajax == 0) { echo '<div id="modJLML'.$module->id.'holder" class="modJLMLholder">';}
 $matches = $mod->getMatches();
 
-//echo 'matches <pre>'.print_r($matches,true).'</pre>';
-
 $cnt = ($nr >= 0) ? $nr : 0;
 if (count($matches) > 0){
-	//$user = JFactory::getUser();
+	//$user = Factory::getUser();
 	foreach ($matches AS $key => $match) {
 		if(!isset($match['project_id'])) continue; 
 		$styleclass =($cnt%2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
@@ -161,7 +171,7 @@ if (count($matches) > 0){
 			if (!empty($match['heading'])) $show_pheading = true;
 			$pheading .= $match['heading'];
 		}
-		include(JModuleHelper::getLayoutPath($module->module, $template.DS.'match'));
+		include(ModuleHelper::getLayoutPath($module->module, $template.DIRECTORY_SEPARATOR.'match'));
 		$lastheading = $heading;
 		$oldprojectid = $match['project_id'];
 		$oldround_id = $match['round_id'];

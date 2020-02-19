@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventtypes
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -34,25 +39,16 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	public function init ()
 	{
        
-        $starttime	= microtime(); 
-
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
-        $table = JTable::getInstance('eventtype', 'sportsmanagementTable');
-		$this->table = $table;
+        $this->table = Table::getInstance('eventtype', 'sportsmanagementTable');
 
 		//build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
-		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
+		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
 		$this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList',
 							$sportstypes,
 							'filter_sports_type',
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -75,16 +71,16 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
 
-		JToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
+		ToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
 		
-		JToolbarHelper::addNew('eventtype.add');
-		JToolbarHelper::editList('eventtype.edit');
-		JToolbarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('eventtype.add');
+		ToolbarHelper::editList('eventtype.edit');
+		ToolbarHelper::custom('eventtype.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('eventtype.export',Text::_('JTOOLBAR_EXPORT'));
 				
         parent::addToolbar();
 	}

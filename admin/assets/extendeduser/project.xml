@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	
-  <fieldset name="COM_JOOMLEAGUE_EXT_EXTENDED_USER_PREFERENCES">
+  <fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_USER_PREFERENCES">
   	<field name="insertmatchplan" type="extensionradiobutton" default="1" label="insertmatchplan" description="insertmatchplan">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>

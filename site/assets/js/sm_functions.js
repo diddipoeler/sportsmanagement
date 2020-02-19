@@ -1,5 +1,5 @@
-var windowWidth = jQuery(window).width(); //retrieve current window width
-var windowHeight = jQuery(window).height(); //retrieve current window height
+//var windowWidth = jQuery(window).width(); //retrieve current window width
+//var windowHeight = jQuery(window).height(); //retrieve current window height
 //var documentWidth = jQuery(document).width(); //retrieve current document width
 //var documentHeight = jQuery(document).height(); //retrieve current document height
 //var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
@@ -11,6 +11,8 @@ var PreviousUrl; /* global variable which will store the
 
 
 jQuery(document).ready(function(){
+var windowWidth = jQuery(window).width(); //retrieve current window width
+var windowHeight = jQuery(window).height(); //retrieve current window height	
 console.log("document.URL : "+document.URL);
 console.log("document.location.href : "+document.location.href);
 console.log("document.location.origin : "+document.location.origin);
@@ -53,9 +55,21 @@ var top = (screen.height/2)-(Height/2);
      in the event of another call of this function. */
 }
 
-
-
-
+/*
+function toggle_altdecision() {
+	if (document.getElementById('jform_alt_decision').value == 0) {
+		document.getElementById('alt_decision_enter').style.display = 'none';
+		document.getElementById('team1_result_decision').disabled = true;
+		document.getElementById('team2_result_decision').disabled = true;
+		document.getElementById('decision_info').disabled = true;
+	} else {
+		document.getElementById('alt_decision_enter').style.display = 'block';
+		document.getElementById('team1_result_decision').disabled = false;
+		document.getElementById('team2_result_decision').disabled = false;
+		document.getElementById('decision_info').disabled = false;
+	}
+}
+*/
 
 
 function get_documentWidth()
@@ -87,6 +101,8 @@ return documentHeight - 100 ;
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
+console.log("move_list_items sourceid : "+sourceid);
+console.log("move_list_items destinationid : "+destinationid);
 
 //alert(sourceid);
 //alert(destinationid);
@@ -153,7 +169,7 @@ var url = 'index.php?option=com_sportsmanagement&task=ajax.personpositionoptions
 
 
 
-
+/*
 function EditshowPersons() 
 {
 //alert('hier bin ich');
@@ -176,7 +192,7 @@ if (selected == 2)
 }
 	
 }
-
+*/
 function StartEditshowPersons(selected) 
 {
 //alert('hier bin ich');

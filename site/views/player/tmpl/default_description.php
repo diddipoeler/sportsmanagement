@@ -4,14 +4,17 @@
  * @file      default_description.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage player
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- Team Player Description START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <?php
 	$description = "";
 	if ( isset($this->teamPlayer) && !empty($this->teamPlayer->notes) )
@@ -29,14 +32,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	if ( !empty($description) )
 	{
 		?>
-		<h2><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INFO' );	?></h2>
+		<h2><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INFO' );	?></h2>
 		<div class="personinfo">
 			<?php	
-			$description = JHtml::_('content.prepare', $description);
+			$description = HTMLHelper::_('content.prepare', $description);
 			echo stripslashes( $description ); 
 			?>
 		</div>
 		<?php
 	}
 	?>
+</div>    
 <!-- Team Player Description END -->

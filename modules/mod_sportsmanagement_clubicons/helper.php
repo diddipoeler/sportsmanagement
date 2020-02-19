@@ -1,43 +1,19 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_clubicons
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * modJSMClubiconsHelper
@@ -59,7 +35,8 @@ class modJSMClubiconsHelper
 			'logo_small' => 'images/com_sportsmanagement/database/placeholders/placeholder_small.png',
 			'logo_middle' => 'images/com_sportsmanagement/database/placeholders/placeholder_50.png',
 			'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
-            'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png'
+            'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
+		'team_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png'
 		);
 	/**
 	 * modJSMClubiconsHelper::__construct()
@@ -81,8 +58,7 @@ class modJSMClubiconsHelper
 	 */
 	private function _getData()
 	{
-		$app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+		$app = Factory::getApplication();
 
 		$project_id = ($app->input->getVar('option','') == 'com_sportsmanagement' AND 
 									$app->input->getInt('p',0) > 0 AND 
@@ -112,7 +88,6 @@ class modJSMClubiconsHelper
 			$teams = sportsmanagementModelProject::getTeams($divisionid,'name',$this->params->get('cfg_which_database'));
 		}
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
         
 		self::buildData($teams);
 		unset($teams);
@@ -129,8 +104,7 @@ class modJSMClubiconsHelper
 	 */
 	function buildData( &$result )
 	{
-	   $app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+	   $app = Factory::getApplication();
         
 		if (count($result))
 		{
@@ -153,23 +127,27 @@ class modJSMClubiconsHelper
 	 */
 	function getLogo( & $item, $class )
 	{
-	   $app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+	   $app = Factory::getApplication();
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
 		$logourl = $item->$imgtype;
+		
+if ( !$logourl )
+{
+$logourl = $this->placeholders[$imgtype];	
+}
+		
 $cfg_which_database = $this->params->get('cfg_which_database');
 		
 if ( $cfg_which_database )
 {
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );	
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );	
 $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
-        
-		$imgtitle = JText::_('View ') . $item->name;
-		return JHTML::image($logourl, $item->name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
+       
+		$imgtitle = Text::_('View ') . $item->name;
+		return HTMLHelper::image($logourl, $item->name,'border="0" width="'.$this->params->get('jcclubiconsglobalmaxwidth').'" class="'.$class.'" title="'.$imgtitle.'"');
 	}
     
 	/**
@@ -180,8 +158,7 @@ $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 	 */
 	function getLink( &$item )
 	{
-	   $app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+	   $app = Factory::getApplication();
         
 	    $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->params->get('cfg_which_database');

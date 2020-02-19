@@ -4,12 +4,13 @@
  * @file      deafult_ranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
 
 /**
  * es wird als erstes die farblegende der divisionen/gruppen gelesen 
@@ -17,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->currentRanking as $division => $cu_rk) {
     if ($division) {
 
-        $jRegistry = new JRegistry;
+        $jRegistry = new Registry;
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $jRegistry->loadString($this->divisions[$division]->rankingparams);
         } else {
@@ -25,13 +26,17 @@ foreach ($this->currentRanking as $division => $cu_rk) {
         }
         $configvalues = $jRegistry->toArray();
         $colors = array();
-        for ($a = 1; $a <= sizeof($configvalues[rankingparams]); $a++) {
-            $colors[] = implode(",", $configvalues[rankingparams][$a]);
+        if ( isset($configvalues['rankingparams']) )
+        {
+        for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++) {
+            $colors[] = implode(",", $configvalues['rankingparams'][$a]);
         }
+    }
         $configvalues = implode(";", $colors);
 
         $this->colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
         ?>
+<div class="<?php echo $this->divclassrow;?> table-responsive">
         <table class="<?PHP echo $this->config['table_class']; ?>">
             <tr>
                 <td class="contentheading">
@@ -45,7 +50,8 @@ foreach ($this->currentRanking as $division => $cu_rk) {
                 </td>
             </tr>
         </table>
-        <div class="table-responsive">
+</div>    
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
                     <?php
                     foreach ($cu_rk as $ptid => $team) {
@@ -62,7 +68,7 @@ foreach ($this->currentRanking as $division => $cu_rk) {
                 <?php
             } else {
                 ?>
-        <div class="table-responsive">
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
                 <?php
                 echo $this->loadTemplate('rankingheading');

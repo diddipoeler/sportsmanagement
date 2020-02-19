@@ -1,30 +1,33 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      editlineup.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage match
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 }
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+
 $params = $this->form->getFieldsets('params');
 
 ?>
 <?php
 //save and close 
-$close = JFactory::getApplication()->input->getInt('close',0);
+$close = Factory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -34,18 +37,17 @@ if($close == 1) {
 	<?php 
 }
 ?>
-<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminForm' method='post' style='display:inline' name='adminform' >
+<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='adminForm' method='post' style='display:inline' name='adminform' >
 	<fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
-				<?php echo JText::_('JAPPLY');?></button>
+				<?php echo Text::_('JAPPLY');?></button>
 			<button type="button" onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
-				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JSAVE');?></button>
+			
 		</div>
 		<div class="configuration" >
-			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
+			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
 		</div>
 	</fieldset>
 	<div class="clear"></div>
@@ -59,39 +61,39 @@ $tabsOptionsJ31 = array(
             "active" => "panel1" // It is the ID of the active tab.
         );
 
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
 echo $this->loadTemplate('players');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
 echo $this->loadTemplate('substitutions');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
 echo $this->loadTemplate('staff');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
 echo $this->loadTemplate('players_trikot_numbers');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.endTabSet');    
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');    
     }
         else
     {
 		// focus on players tab 
 		$startOffset = 1;
-		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
+		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
 		echo $this->loadTemplate('players');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
 		echo $this->loadTemplate('substitutions');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
-		echo JHtml::_('tabs.end');
+		echo HTMLHelper::_('tabs.end');
         }
 		?>
 		<input type="hidden" name="task" value="" />
@@ -105,6 +107,6 @@ echo JHtml::_('bootstrap.endTabSet');
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
         
         
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</div>
 </form>

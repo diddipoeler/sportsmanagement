@@ -205,13 +205,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			<field
 				name="picture"
 				type="media"
-				default=""				
+				default="images/com_sportsmanagement/database/leagues/placeholder_21.png"				
 				label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC"
-				class="form-control form-control-inline"
+				class="inputbox"
 				preview="show"	
-        targetfolder="leagues"			
-				directory=""/>
+        targetfolder="leagues"	
+showon="show_info:1[AND]show_image:1"		
+				directory="images/com_sportsmanagement/database/leagues"/>
 				
 		<field
 			name="cr_picture"

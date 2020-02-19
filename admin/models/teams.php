@@ -4,13 +4,15 @@
 * @file      teams.php
 * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license   This file is part of SportsManagement.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 * @package   sportsmanagement
 * @subpackage models
 */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelTeams
@@ -50,7 +52,7 @@ class sportsmanagementModelTeams extends JSMModelList {
         );
         parent::__construct($config);
 
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
 
@@ -59,13 +61,10 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->club_id = $this->jinput->get->get('club_id');
         }
 
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($this->jinput ,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
-
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
 
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->jsmdb = $this->getDbo();
         $this->query = $this->jsmdb->getQuery(true);
     }
@@ -79,9 +78,9 @@ class sportsmanagementModelTeams extends JSMModelList {
      */
     protected function populateState($ordering = 't.name', $direction = 'asc') {
 
-        if (JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+        if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
         }
 
         // Load the filter state.
@@ -145,13 +144,20 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->app->setUserState("$this->option.club_id", '0');
         }
 
+        if ( $this->jsmapp->input->getVar('layout') == 'assignteams')
+        {
+	$this->_season_id = $this->jsmapp->input->get('season_id');
+        $this->jsmsubquery1->select('stp.team_id');
+                $this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
+                $this->jsmsubquery1->where('stp.season_id = '.$this->_season_id);
+                $this->query->where('t.id NOT IN ('.$this->jsmsubquery1.')');
+        
+        } 
+        
         $this->query->order($this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = ' <br><pre>' . print_r($this->query->dump(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
+       
 
         return $this->query;
     }
@@ -172,10 +178,6 @@ class sportsmanagementModelTeams extends JSMModelList {
         $this->query->order('name');
 
         $this->jsmdb->setQuery($this->query);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         if ($results = $this->jsmdb->loadObjectList()) {
             foreach ($results AS $team) {
@@ -202,35 +204,30 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->jsmquery->clear();
             // Select some fields
             $this->jsmquery->select('pt.id, st.team_id, pt.project_id');
+	    $this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');  
             // From table
             $this->jsmquery->from('#__sportsmanagement_project_team as pt');
             $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+	    $this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id ');
             $this->jsmquery->where('pt.standard_playground = ' . (int) $playground_id);
 
             $starttime = microtime();
 
             $this->jsmdb->setQuery($this->jsmquery);
-            if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-            }
-
             $rows = $this->jsmdb->loadObjectList();
 
             foreach ($rows as $row) {
                 $teams[$row->id]->project_team[] = $row;
                 // Select some fields
                 $this->jsmquery->clear();
-                $this->jsmquery->select('name, short_name, notes');
+                $this->jsmquery->select('t.name, t.short_name, t.notes');
+		$this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');    
                 // From table
-                $this->jsmquery->from('#__sportsmanagement_team');
-                $this->jsmquery->where('id=' . (int) $row->team_id);
+                $this->jsmquery->from('#__sportsmanagement_team as t');
+                $this->jsmquery->where('t.id=' . (int) $row->team_id);
 
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
-                if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-                }
-
                 $teams[$row->id]->teaminfo[] = $this->jsmdb->loadObjectList();
 
                 // Select some fields
@@ -241,9 +238,6 @@ class sportsmanagementModelTeams extends JSMModelList {
                 $this->jsmquery->where('id=' . $row->project_id);
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
-                if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-                }
                 $teams[$row->id]->project = $this->jsmdb->loadResult();
             }
         }

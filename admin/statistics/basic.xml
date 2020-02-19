@@ -2,7 +2,10 @@
 <config>
 		<fieldset name="typefields_base" 
 		          label="COM_SPORTSMANAGEMENT_STAT_PARAMS_GROUP_SETTINGS" 
-		          description="COM_SPORTSMANAGEMENT_STAT_BASIC_DESC">
+		          description="COM_SPORTSMANAGEMENT_STAT_BASIC_DESC"
+			  addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			  >
 
 			<field 	name="precision" 
       type="text" 
@@ -10,7 +13,28 @@
 			label="COM_SPORTSMANAGEMENT_STAT_PRECISION"
 				description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
-	
+
+			<field 	name="event_value" 
+      type="text" 
+      default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD">
+			</field>
+			
+<field
+			name="event_id"
+			type="eventtypelist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_TABS_EVENTS"
+			description="COM_SPORTSMANAGEMENT_TABS_EVENTS_DESC" >
+			
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS</option>
+		</field>			
+			
 			<field name="statistic_views" 
       type="list" 
       default="roster,matchreport,player" 

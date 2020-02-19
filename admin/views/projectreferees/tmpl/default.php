@@ -4,23 +4,19 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage projectreferees
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
+
 ?>
 <style>
 .search-item {
@@ -49,7 +45,7 @@ JHtml::_( 'behavior.mootools' );
 </style>
 <script>
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
+	var quickaddsearchurl = '<?php echo Uri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
 
 	function searchPlayer(val)
 	{
@@ -59,7 +55,7 @@ JHtml::_( 'behavior.mootools' );
 	}
 </script>
 <?php
-$uri=JURI::root();
+$uri=Uri::root();
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -76,19 +72,19 @@ echo $this->loadTemplate('joomla2');
 <!-- <fieldset class="adminform"> -->
 	<legend>
 	<?php
-	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
+	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
+	<form id="quickaddForm" action="<?php echo Uri::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_DESCR');?>:</td>
+			<td><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_DESCR');?>:</td>
 			<td><input type="text" name="quickadd" id="quickadd"  size="50" /></td>
-			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
+			<td><input type="submit" name="submit" id="submit" value="<?php echo Text::_('Add');?>" /></td>
 		</tr>
 	</table>
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 <!-- </fieldset> -->
 
@@ -100,7 +96,7 @@ echo $this->loadTemplate('data');
 else
 {
 echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
 
@@ -111,7 +107,7 @@ echo '</div>';
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";

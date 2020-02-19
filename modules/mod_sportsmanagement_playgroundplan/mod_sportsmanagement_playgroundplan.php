@@ -1,16 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_playgroundplan.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_playgroundplan
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -23,49 +26,55 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 /**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ * prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
  */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 /**
  * add the classes for handling
  */
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
-/**
- * get helper
- */
-require_once (dirname(__FILE__).DS.'helper.php');
+/** Include the functions only once */
+JLoader::register('modSportsmanagementPlaygroundplanHelper', __DIR__ . '/helper.php');
 
 $list = modSportsmanagementPlaygroundplanHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * add css file
  */
-$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
 
 $mode = $params->def("mode");
 
 switch ($mode)
 	{
 	case 0:
-		$document->addScript(JURI::base().'modules'.DS.$module->module.DS.'js/qscroller.js');
-		require_once(dirname(__FILE__).DS.'js'.DS.'ticker.js');
+		$document->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js/qscroller.js');
+		require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'js'.DIRECTORY_SEPARATOR.'ticker.js');
 		break;
 	case 1:
 		break;
 }
 
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('divclasscontainer'); ?> table-responsive" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

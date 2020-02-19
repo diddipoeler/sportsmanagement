@@ -1,20 +1,18 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      editmperson.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editperson
  */
 
-// No direct access.
 defined('_JEXEC') or die;
-
-// Include dependancy of the main controllerform class
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllereditperson
@@ -25,7 +23,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllereditperson extends JControllerForm {
+class sportsmanagementControllereditperson extends FormController {
 
     /**
      * Class Constructor
@@ -37,55 +35,57 @@ class sportsmanagementControllereditperson extends JControllerForm {
     function __construct($config = array()) {
         parent::__construct($config);
 
-        // Map the apply task to the save method.
+        /** Map the apply task to the save method. */
         $this->registerTask('apply', 'save');
     }
 
+    /**
+     * sportsmanagementControllereditperson::getModel()
+     * 
+     * @param string $name
+     * @param string $prefix
+     * @param mixed $config
+     * @return
+     */
     public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+    /**
+     * sportsmanagementControllereditperson::submit()
+     * 
+     * @return
+     */
     public function submit() {
-//                // Check for request forgeries.
-//                JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-// 
-//                // Initialise variables.
-//                $app    = JFactory::getApplication();
-//                $model  = $this->getModel('updhelloworld');
-// 
-//                // Get the data from the form POST
-//                $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-// 
-//        // Now update the loaded data to the database via a function in the model
-//        $upditem        = $model->updItem($data);
-// 
-//        // check if ok and display appropriate message.  This can also have a redirect if desired.
-//        if ($upditem) {
-//            echo "<h2>Updated Greeting has been saved</h2>";
-//        } else {
-//            echo "<h2>Updated Greeting failed to be saved</h2>";
-//        }
+
 
         return true;
     }
 
-    public function save() {
-        // Initialise variables.
-        $app = JFactory::getApplication();
+   
+    /**
+     * sportsmanagementControllereditperson::save()
+     * 
+     * @param mixed $key
+     * @param mixed $urlVar
+     * @return
+     */
+    public function save($key = NULL, $urlVar = NULL) {
+        /** Initialise variables. */
+        $app = Factory::getApplication();
         $model = $this->getModel('editperson');
 
-        //$data	= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-        $data = JFactory::getApplication()->input->post->getArray(array());
-        $id = JFactory::getApplication()->input->getInt('id');
+        $data = Factory::getApplication()->input->post->getArray(array());
+        $id = Factory::getApplication()->input->getInt('id');
 
-        // Now update the loaded data to the database via a function in the model
+        /** Now update the loaded data to the database via a function in the model */
         $upditem = $model->updItem($data);
 
-        // Set the redirect based on the task.
+        /** Set the redirect based on the task. */
         switch ($this->getTask()) {
             case 'apply':
-                $message = JText::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id=' . $id, $message);
+                $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
+                $this->setRedirect('index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id='.$id.'&pid='.$id.'&p='.$data['p'].'&tid='.$data['tid'], $message);
                 break;
 
             case 'save':
@@ -98,12 +98,16 @@ class sportsmanagementControllereditperson extends JControllerForm {
         return true;
     }
 
-//        public function apply()
-//        {
-////            $msg = 'apply';
-////            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-//
-// 
-//                return true;
-//        }
+        /**
+         * sportsmanagementControllereditperson::cancel()
+         * 
+         * @param mixed $key
+         * @return
+         */
+        public function cancel($key = NULL)
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+                return true;
+        }
 }

@@ -4,20 +4,22 @@
  * @file      default_result.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-//echo '<pre>'.print_r($this->config,true).'</pre>';
-?>
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
+?>
 <!-- START: game result -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport-result">
 <table class="table" >
 
     <?php
-    if ($this->config['show_team_logo'] == 1)
+    if ( $this->config['show_team_logo'] )
     {
     ?>
         <tr>
@@ -26,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 //dynamic object property string
                 $pic = $this->config['show_picture'];
                 
-                if ( !JFile::exists(JPATH_SITE.DS.$this->team1->$pic) )
+                if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team1->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
@@ -58,7 +60,7 @@ $this->overallconfig['use_jquery_modal']);
 		</td>
 		<td class="teamlogo">
 			<?php 
-            if ( !JFile::exists(JPATH_SITE.DS.$this->team2->$pic) )
+            if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team2->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
@@ -106,7 +108,7 @@ $this->overallconfig['use_jquery_modal']);
 				<?php echo $this->showMatchresult($this->match->alt_decision, 1); ?>
 			</td>
 		<td>
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
 		</td>
         <td class="resultaway">
 				<?php echo $this->showMatchresult($this->match->alt_decision, 2); ?>
@@ -126,7 +128,7 @@ $this->overallconfig['use_jquery_modal']);
 		</td>
 	</tr>
 	<?php
-        if ($this->config['show_period_result'] == 1)
+        if ( $this->config['show_period_result'] )
         {
             if ( $this->showLegresult() )
             {
@@ -138,7 +140,7 @@ $this->overallconfig['use_jquery_modal']);
                         <?php echo $this->showLegresult(1); ?>
                     </td>
                     <td>
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
 		</td>
                     <td class="legsaway">
                         <?php echo $this->showLegresult(2); ?>
@@ -149,6 +151,47 @@ $this->overallconfig['use_jquery_modal']);
                 <?php
             }
         }
+        
+/**
+ * legs anzeigen
+ */        
+        if ( $this->match->team1_legs )
+        {
+        ?>
+                <tr>
+                <td>
+		</td>
+                    <td class="legshome">
+                        <?php echo $this->match->team1_legs; ?>
+                    </td>
+                    <td>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+		</td>
+                    <td class="legsaway">
+                        <?php echo $this->match->team2_legs; ?>
+                    </td>
+                    <td>
+		</td>
+                </tr>
+                <?php    
+            
+            
+            
+        }
+
+/**
+ * details anzeigen
+ */
+        if ( $this->match->match_result_detail )
+        {
+        ?>
+                <tr>
+                    <td colspan="5" class="match_result_detail">
+                        <?php echo $this->match->match_result_detail; ?>
+                    </td>
+                </tr>
+                <?php    
+        }
         ?>
 	
 </table>
@@ -157,7 +200,7 @@ $this->overallconfig['use_jquery_modal']);
 if ($this->match->cancel > 0)
 {
 	?>
-	<table class="matchreport" border="0">
+	<table class="table" >
 		<tr>
 			<td class="result">
 					<?php echo $this->match->cancel_reason; ?>
@@ -169,20 +212,19 @@ if ($this->match->cancel > 0)
 else
 {
 	?>
-	<table class="matchreport" border="0">
+	<table class="table" >
 		
         
 		<?php
-        
 
-        if ($this->config['show_overtime_result'] == 1)
+        if ( $this->config['show_overtime_result'] )
         {
             if ( $this->showOvertimeResult() )
             {
                 ?>
                 <tr>
                     <td class="legs" colspan="2">
-                        <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_OVERTIME');
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_OVERTIME');
                         echo " " . $this->showOvertimeresult(); ?>
                     </td>
                 </tr>
@@ -190,20 +232,21 @@ else
             }
         }
 
-        if ($this->config['show_shotout_result'] == 1)
+        if ( $this->config['show_shotout_result'] )
         {
             if ( $this->showShotoutResult() )
             {
                 ?>
                 <tr>
                     <td class="legs" colspan="2">
-                        <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SHOOTOUT');
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SHOOTOUT');
                         echo " " . $this->showShotoutResult(); ?>
                     </td>
                 </tr>
                 <?php
             }
         }
+
 		?>
 	</table>
 	<?php
@@ -220,7 +263,7 @@ echo $this->loadTemplate('timeline');
 if ( $this->match->decision_info != '' )
 {
 	?>
-	<table class="matchreport">
+	<table class="table">
 		<tr>
 			<td>
 				<i><?php echo $this->match->decision_info; ?></i>
@@ -232,4 +275,5 @@ if ( $this->match->decision_info != '' )
 }
 ?>
 <!-- END of decision info -->
+</div>
 <!-- END: game result -->

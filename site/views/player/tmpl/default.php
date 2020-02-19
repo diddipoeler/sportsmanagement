@@ -1,25 +1,28 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage player
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+use Joomla\CMS\Language\Text;
+/**
+ *  Make sure that in case extensions are written for mentioned (common) views,
+ *  that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if (isset($this->person))
 {
 ?>
+
 <!-- player anfang -->
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="player">
 <?php
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -89,14 +92,9 @@ $this->output[intval($this->config['show_order_stcareer'])] = array('text'=>'COM
  */
 ksort($this->output);   
 echo $this->loadTemplate($this->config['show_players_layout']);
-   
+echo $this->loadTemplate('jsminfo');   
 ?>
-<div>
-<?PHP    
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 <?PHP 
 
 ?>
@@ -111,11 +109,11 @@ else
 <div class="alert alert-error">
 <h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
+echo Text::_('COM_SPORTSMANAGEMENT_ERROR');
 ?>
 </h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_SELECTED');
+echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NO_SELECTED');
 ?>
 </div>
 <?php

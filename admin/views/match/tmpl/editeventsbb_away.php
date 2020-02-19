@@ -1,69 +1,43 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editeventsbb_away.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 ?>
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( $this->teams->team2 ); 
+				echo Text::_( $this->teams->team2 ); 
 				?>
 			</legend>
 	<table class='adminlist'>
 		<thead>
 			<tr>
 				<th style="text-align: left; width: 10px;"></th>
-				<th style="text-align: left; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_PERSON' ); ?></th>
+				<th style="text-align: left; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_PERSON' ); ?></th>
 				<?php
 				foreach ( $this->events as $ev)
 				{
 					?>
 					<th style="text-align: center;">
 					<?php
-					if ( JFile::exists(JPATH_SITE.DS.$ev->icon ) )
+					if ( File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$ev->icon ) )
 					{
-						$imageTitle = JText::sprintf( '%1$s', JText::_( $ev->text ) );
+						$imageTitle = Text::sprintf( '%1$s', Text::_( $ev->text ) );
 						$iconFileName = $ev->icon;
-						echo JHtml::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
+						echo HTMLHelper::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
 					} else {
-						echo JText::_( $ev->text ) ;
+						echo Text::_( $ev->text ) ;
 					}
 					?>
 					</th>
@@ -88,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="checkbox" id="cb_a<?php echo $i;?>" name="cid_a<?php echo $i;?>" value="cb_a" onclick="isChecked(this.checked);" />
 						</td>
 						<td style="text-align: left;">
-						<?php echo '('.JText::_($row->positionname).') - '.sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
+						<?php echo '('.Text::_($row->positionname).') - '.sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
 						</td>
 						<?php
 						//total events away player
@@ -96,17 +70,17 @@ defined('_JEXEC') or die('Restricted access');
 						foreach ( $this->events as $ev)
 						{
 							$teap++;	
-							$this->assign( 'evbb', $model->getPlayerEventsbb( $row->value, $ev->value, $this->item->id ) );
+							$this->evbb = $model->getPlayerEventsbb( $row->value, $ev->value, $this->item->id );
 							?>
 							<td style="text-align: center; ">
 							<input type="hidden" name="event_type_id_a_<?php echo $i.'_'.$teap;?>" value="<?php echo $ev->value;?>" />
 							<input type="hidden" name="event_id_a_<?php echo $i.'_'.$teap;?>" value="<?php echo $this->evbb[0]->id;?>" />
 
-                            <input type="text" size="1" class="inputbox" name="event_sum_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="1" class="inputbox" name="event_sum_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
 
-                            <input type="text" size="2" class="inputbox" name="event_time_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="2" class="inputbox" name="event_time_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
 
-                            <input type="text" size="2" class="inputbox" name="notice_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo ((strlen($this->evbb[0]->notice) > 0) ? $this->evbb[0]->notice : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="2" class="inputbox" name="notice_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo ((strlen($this->evbb[0]->notice) > 0) ? $this->evbb[0]->notice : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
                             &nbsp;&nbsp;
                             </td>
 

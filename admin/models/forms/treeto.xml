@@ -70,6 +70,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX"
 			<option value="4">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX4</option>
 			<option value="5">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX5</option>
 			<option value="6">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX6</option>
+			<option value="7">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX7</option>
 		</field>
 	</fieldset>  
   		

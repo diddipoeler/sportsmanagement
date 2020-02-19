@@ -1,48 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      matches.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.modellist');
-
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelMatches
@@ -53,7 +24,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatches extends JModelList
+class sportsmanagementModelMatches extends JSMModelList
 {
 	var $_identifier = "matches";
     var $_rid = 0;
@@ -88,14 +59,16 @@ class sportsmanagementModelMatches extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // Initialise variables.
-		//$app = JFactory::getApplication('administrator');
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,28 +78,138 @@ class sportsmanagementModelMatches extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.division', 'filter_division', '');
 		$this->setState('filter.division', $temp_user_request);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-//        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
-//		$this->setState('list.start', $value);
-//        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-//		$this->setState('list.start', $value);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
 		// List state information.
 		parent::populateState('mc.match_date', 'asc');
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 	}
 
+  
+  /**
+   * sportsmanagementModelMatches::prepareItems()
+   * 
+   * @param mixed $items
+   * @return
+   */
+  function prepareItems($items)
+  {
+  foreach($items as $item)  
+  {
+  $item->homeplayers_count = 0;  
+  $item->homestaff_count = 0;   
+    $item->awayplayers_count = 0;  
+  $item->awaystaff_count = 0; 
+    $item->referees_count = 0; 
+    
+    $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam1_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 1'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    $players = implode(",",$result);
+    // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->homeplayers_count = $this->jsmdb->loadResult();
+  }
+    
+  $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam1_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 2'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    $players = implode(",",$result);
+    // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->homestaff_count = $this->jsmdb->loadResult();
+  }  
+    
+    
+      $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam2_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 1'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    $players = implode(",",$result);
+    // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->awayplayers_count = $this->jsmdb->loadResult();
+  }
+    
+  $this->jsmquery->clear();
+    $this->jsmquery->select('tp.id');
+    $this->jsmquery->from('#__sportsmanagement_season_team_person_id AS tp ');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+    $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
+    $this->jsmquery->where('pthome.id ='. $item->projectteam2_id);
+    $this->jsmquery->where('tp.season_id = '.$this->_season_id);
+    $this->jsmquery->where('tp.persontype = 2'); 
+    $this->jsmdb->setQuery($this->jsmquery);
+    $result = $this->jsmdb->loadColumn();
+
+    if ( $result )
+    {
+    $players = implode(",",$result);
+    // count match homeplayers
+    $this->jsmquery->clear();
+        $this->jsmquery->select('count(mp.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_player AS mp  ');
+        $this->jsmquery->where('mp.match_id = '.$item->id.' AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$players.')');
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->awaystaff_count = $this->jsmdb->loadResult();
+  }  
+    
+  $this->jsmquery->clear();  
+   // count match referee
+        $this->jsmquery->select('count(mr.id)');
+        $this->jsmquery->from('#__sportsmanagement_match_referee AS mr ');
+        $this->jsmquery->where('mr.match_id = '.$item->id);  
+    $this->jsmdb->setQuery($this->jsmquery);
+    $item->referees_count = $this->jsmdb->loadResult();
+    
+  }  
+
+  return $items;  
+  }
+  
 	/**
 	 * sportsmanagementModelMatches::getListQuery()
 	 * 
@@ -135,25 +218,29 @@ class sportsmanagementModelMatches extends JModelList
 	protected function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         //$search_division	= $this->getState('filter.division');
         
-        $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
-        
-//        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+        $this->_rid = Factory::getApplication()->input->getvar('rid', 0);
+        $this->_projectteam = Factory::getApplication()->input->getvar('projectteam', 0);
         
         if ( !$this->_rid )
         {
             $this->_rid	= $app->getUserState( "$option.rid", '0' );
         }
         
+	if ( $this->_projectteam )
+	{
+	$this->_rid = '';
+	}
+		
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	$db = sportsmanagementHelper::getDBConnection();
+	$query = $db->getQuery(true);
         $subQueryPlayerHome= $db->getQuery(true);
         $subQueryStaffHome= $db->getQuery(true);
         $subQueryPlayerAway= $db->getQuery(true);
@@ -163,77 +250,14 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery3= $db->getQuery(true);
         $subQuery4= $db->getQuery(true);
         $subQuery5= $db->getQuery(true);
-		// Select some fields
-		$query->select('mc.*');
-		// From the match table
-		$query->from('#__sportsmanagement_match AS mc');
-        // join player home
-        $subQueryPlayerHome->select('tp.id');
-        $subQueryPlayerHome->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $subQueryPlayerHome->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $subQueryPlayerHome->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
-        $subQueryPlayerHome->where('pthome.id = mc.projectteam1_id');
-        $subQueryPlayerHome->where('tp.season_id = '.$this->_season_id);
-        $subQueryPlayerHome->where('tp.persontype = 1'); 
-        // count match homeplayers
-        $subQuery1->select('count(mp.id)');
-        $subQuery1->from('#__sportsmanagement_match_player AS mp  ');
-        $subQuery1->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerHome.')');
-        $query->select('('.$subQuery1.') AS homeplayers_count');
-        // join staff home
-        $subQueryStaffHome->select('tp.id');
-        $subQueryStaffHome->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $subQueryStaffHome->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $subQueryStaffHome->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
-        $subQueryStaffHome->where('pthome.id = mc.projectteam1_id');
-        $subQueryStaffHome->where('tp.season_id = '.$this->_season_id);
-        $subQueryStaffHome->where('tp.persontype = 2'); 
-        // count match homestaff
-        $subQuery2->select('count(ms.id)');
-        $subQuery2->from('#__sportsmanagement_match_staff AS ms  ');
-        $subQuery2->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffHome.')');
-        $query->select('('.$subQuery2.') AS homestaff_count');
-        // join player away
-        $subQueryPlayerAway->select('tp.id');
-        $subQueryPlayerAway->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $subQueryPlayerAway->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $subQueryPlayerAway->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
-        $subQueryPlayerAway->where('pthome.id = mc.projectteam2_id');
-        $subQueryPlayerAway->where('tp.season_id = '.$this->_season_id);
-        $subQueryPlayerAway->where('tp.persontype = 1'); 
-        // count match awayplayers
-        $subQuery3->select('count(mp.id)');
-        $subQuery3->from('#__sportsmanagement_match_player AS mp  ');
-        $subQuery3->where('mp.match_id = mc.id AND (came_in=0 OR came_in=1) AND mp.teamplayer_id in ('.$subQueryPlayerAway.')');
-        $query->select('('.$subQuery3.') AS awayplayers_count');
-/**
- * join staff away
- */        
-        $subQueryStaffAway->select('tp.id');
-        $subQueryStaffAway->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $subQueryStaffAway->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $subQueryStaffAway->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.team_id = st.id');
-        $subQueryStaffAway->where('pthome.id = mc.projectteam2_id');
-        $subQueryStaffAway->where('tp.season_id = '.$this->_season_id);
-        $subQueryStaffAway->where('tp.persontype = 2'); 
-        // count match awaystaff
-        $subQuery4->select('count(ms.id)');
-        $subQuery4->from('#__sportsmanagement_match_staff AS ms  ');
-        $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
-        $query->select('('.$subQuery4.') AS awaystaff_count');
-        
-           
-
-        
-        // count match referee
-        $subQuery5->select('count(mr.id)');
-        $subQuery5->from('#__sportsmanagement_match_referee AS mr ');
-        $subQuery5->where('mr.match_id = mc.id');
-        $query->select('('.$subQuery5.') AS referees_count');
-        
-        // Join over the users for the checked out user.
-		$query->select('u.name AS editor');
-		$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
+      
+$query->clear();
+$query->select('mc.*');
+// From the match table
+$query->from('#__sportsmanagement_match AS mc');      
+ // Join over the users for the checked out user.
+	$query->select('u.name AS editor');
+	$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.id = mc.projectteam1_id');
         $query->join('LEFT','#__sportsmanagement_project_team AS ptaway ON ptaway.id = mc.projectteam2_id');
         $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = pthome.id');
@@ -244,23 +268,23 @@ class sportsmanagementModelMatches extends JModelList
         $query->select('divhome.id as divhomeid'); 
         $query->join('LEFT','#__sportsmanagement_division AS divhome ON divhome.id = pthome.division_id');
         
+	if ( $this->_rid )
+	{
         $query->where(' mc.round_id = ' . $this->_rid);
-        
+	}
+	if ( $this->_projectteam )
+	{
+	$query->where('( mc.projectteam1_id = ' . $this->_projectteam .' OR mc.projectteam2_id = '.$this->_projectteam.' )' );
+	}
+		
         if ($this->getState('filter.division'))
 		{
         $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
-        }
-		
-        
+        }      
+  
         $query->order($db->escape($this->getState('list.ordering', 'mc.match_date')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
- 
- if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-         
-
+     
 		return $query;
         
 	}
@@ -278,11 +302,11 @@ class sportsmanagementModelMatches extends JModelList
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   $this->setState('folder', $folder);
-  if(JFolder::exists($dest)) {
+  if(Folder::exists($dest)) {
   }
   else
   {
-  JFolder::create($dest);
+  Folder::create($dest);
   }
   
   }
@@ -297,11 +321,11 @@ class sportsmanagementModelMatches extends JModelList
   {
   $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
-
 $query->select('count(m.id)');
 $query->from('#__sportsmanagement_match as m');
 $query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
 $query->where('r.project_id = '.$project_id);
+
 $db->setQuery($query);
 		return $db->loadResult();
 
@@ -318,21 +342,23 @@ $db->setQuery($query);
 	 */
 	function getMatchesByRound($roundId)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');    
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');    
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        
-		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;
+        $query->select('*');
+        $query->from('#__sportsmanagement_match as m');
+        $query->where('round_id = '.$roundId);
+        try {
 		$db->setQuery($query);
-		//echo($this->_db->getQuery());
 		$result = $db->loadObjectList();
-		if ($result === FALSE)
-		{
-			JError::raiseError(0, $db->getErrorMsg());
-			return false;
-		}
+ }
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.Text::_($e->getMessage()),'Error');
+$result = false;
+}
+
 		return $result;
 	}
 

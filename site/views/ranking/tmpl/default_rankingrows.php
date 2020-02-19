@@ -4,14 +4,17 @@
  * @file      deafult_rankingrows.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 $current = &$this->current;
 //$current  = &$this->currentRanking;
@@ -22,14 +25,6 @@ $config = &$this->tableconfig;
 if (!isset($config['show_unique_id'])) {
     $config['show_unique_id'] = 1;
 }
-
-
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
-//echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';
-//}
-//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
 
 $counter = 1;
 $k = 0;
@@ -78,7 +73,7 @@ foreach ($current as $ptid => $team) {
         }
     }
     echo "\n\n";
-    echo '<tr class=""' . $favStyle . '>';
+    echo '<tr id="rankingrow'.$team->team->id.'" class="team'.$ptid.'"' . $favStyle . '>';
     echo "\n";
 
     //**************rank row
@@ -121,11 +116,9 @@ foreach ($current as $ptid => $team) {
     echo "\n";
 
     //**************logo - jersey
-    if (!sportsmanagementHelper::existPicture($team->team->logo_small)) {
-        $team->team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
-    }
-
-
+$team->team->logo_small = empty($team->team->logo_small) ? sportsmanagementHelper::getDefaultPlaceholder('clublogosmall') : $team->team->logo_small;    
+$team->team->logo_big = empty($team->team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->team->logo_big;    
+    
     if ($config['show_logo_small_table'] != "no_logo") {
         echo '<td class="rankingrow_logo"';
         if ($color != '' && $config['use_background_row_color']) {
@@ -141,9 +134,19 @@ foreach ($current as $ptid => $team) {
         } elseif ($config['show_logo_small_table'] == "country_flag_logo_small") {
             sportsmanagementHelper::showClubIcon($team->team, 2);
             echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_small, $team->team->name, $config['team_picture_width'], 'auto', 3);
-        } else {
+        } 
+        elseif ($config['show_logo_small_table'] == "logo_big_country_flag") {
+            echo sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3) . ' ';
+            sportsmanagementHelper::showClubIcon($team->team, 2);
+        }
+        elseif ($config['show_logo_small_table'] == "country_flag_logo_big") {
+            sportsmanagementHelper::showClubIcon($team->team, 2);
+            echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3);
+        } 
+        else {
             $pic = $config['show_logo_small_table'];
-
+if ( $this->config['club_link_logo'] )
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow . 'teamranking' . $team->team->id,
 COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->team->$pic,
 $team->team->name,
@@ -152,7 +155,12 @@ $team->team->name,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
-
+}
+else
+{
+echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->$pic, $team->team->name, $config['team_picture_width'], 'auto', 3);    
+}
+            
         }
 
         echo '</td>';
@@ -166,10 +174,8 @@ $this->overallconfig['use_jquery_modal']);
     }
     echo ">";
     $isFavTeam = in_array($team->team->id, explode(",", $this->project->fav_team));
-    // TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
     $config['highlight_fav'] = $isFavTeam;
-    //echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
-    echo sportsmanagementHelper::formatTeamName($team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL, JFactory::getApplication()->input->getInt('cfg_which_database', 0));
+    echo sportsmanagementHelper::formatTeamName($team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL, $this->cfg_which_database);
 
     if ($config['show_unique_id']) {
         if ($team->team->unique_id) {
@@ -180,12 +186,11 @@ $this->overallconfig['use_jquery_modal']);
     echo '</td>';
     echo "\n";
 
-//echo 'teams<pre>'.print_r($team,true).'</pre><br>';
     //**********START OPTIONAL COLUMNS DISPLAY
     foreach ($columns AS $c) {
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
         $routeparameter['p'] = $this->project->slug;
         $routeparameter['tid'] = $team->team->team_slug;
         $routeparameter['division'] = 0;
@@ -213,7 +218,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 1;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_won);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_won);
                 } else {
                     printf($format, $team->cnt_won);
                 }
@@ -230,7 +235,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 2;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_draw);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
                 } else {
                     printf($format, $team->cnt_draw);
                 }
@@ -247,7 +252,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 3;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_lost);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
                 } else {
                     printf($format, $team->cnt_lost);
                 }
@@ -559,7 +564,7 @@ $this->overallconfig['use_jquery_modal']);
                 }
                 echo '>';
                 if ((($team->team->start_points) != 0) AND ( ( $config['show_manipulations']) == 1)) {
-                    $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_START');
+                    $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_START');
                     $toolTipText = $team->team->reason;
                     echo '<span class="hasTip" title="' . $toolTipTitle . ' :: ' . $toolTipText . '">' . printf($format, $team->team->start_points) . '</span>';
                 } else {
@@ -650,6 +655,9 @@ $this->overallconfig['use_jquery_modal']);
                     echo ' style="background-color:' . $color . '"';
                 }
                 echo '>';
+                ?>
+                <ul class="list-inline">
+                <?php
                 if (isset($this->previousgames[$ptid])) {
                     foreach ($this->previousgames[$ptid] as $g) {
                         $txt = $this->teams[$g->projectteam1_id]->name . ' [ ' . $g->team1_result . ' - ' . $g->team2_result . ' ] ' . $this->teams[$g->projectteam2_id]->name;
@@ -669,16 +677,24 @@ $this->overallconfig['use_jquery_modal']);
                                 break;
                         }
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                         $routeparameter['p'] = $g->project_slug;
                         $routeparameter['mid'] = $g->slug;
                         $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 
-                        //$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)));
-                        echo JHtml::link($url, $img, $attr);
+                        ?>
+                        <li class="list-inline-item">
+                        <?php
+                        echo HTMLHelper::link($url, $img, $attr);
+                        ?>
+                        </li>
+                        <?php
                     }
                 }
+                ?>
+                </ul>
+                <?php
                 echo '</td>';
                 echo "\n";
                 break;

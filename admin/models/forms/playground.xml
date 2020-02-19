@@ -82,12 +82,14 @@
   
   <field
 			name="latitude"
+	 default="0.00000000"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
 			class="inputbox"/>  
 <field
 			name="longitude"
+       default="0.00000000"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
@@ -236,13 +238,15 @@ label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
 			<field
 				name="picture"
 				type="media"
-        default=""
+        default="images/com_sportsmanagement/database/playgrounds/placeholder_stadium.png"	
 				label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_DESC"
 				class="inputbox"
 				preview="show"	
-        targetfolder="playgrounds"			
-				directory=""/>
+        targetfolder="playgrounds"
+showon="show_info:1[AND]show_image:1"		
+				directory="images/com_sportsmanagement/database/playgrounds"
+				/>
         
         <field
 			name="cr_picture"

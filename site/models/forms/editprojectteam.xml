@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+	<field
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="project_id"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="team_id"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="admin"
+			type="user"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ADMIN_DESC"
+			class="inputbox"/>
+	<field
+			name="standard_playground"
+			type="playgroundlist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_VENUE_DESC"
+			>
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+		</field>			
+		<field
+			name="is_in_score"
+			type="extensionradiobutton"
+			default="1"
+			class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="start_points"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INIT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INIT_POINTS_DESC"
+			class="inputbox validate-numeric"/>		
+		<field
+			name="reason"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_REASON_INIT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_REASON_INIT_POINTS_DESC"
+			class="inputbox"/>	
+		<field
+			name="use_finally"
+			type="extensionradiobutton"
+			default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"
+			class="radio btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="matches_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_MATCH"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_MATCH_DESC"
+			class="inputbox validate-numeric"/>				
+		<field
+			name="points_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_POINTS_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="neg_points_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_NEG_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_NEG_POINTS_DESC"
+			class="inputbox validate-numeric"/>
+    <field
+			name="penalty_points"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_PENALTY_POINTS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_PENALTY_POINTS_DESC"
+			class="inputbox validate-numeric"/>	  	
+		<field
+			name="won_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_WON"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_WON_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="draws_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DRAW"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DRAW_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="lost_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_LOST"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_LOST_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="homegoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_HG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_HG_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="guestgoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_GG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_GG_DESC"
+			class="inputbox validate-numeric"/>	
+		<field
+			name="diffgoals_finally"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_DG"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TOT_DG_DESC"
+			class="inputbox validate-numeric"/>					
+	</fieldset>
+  
+	
+  <fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
+			<field
+				name="picture"
+				type="media"
+				default=""				
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
+				class="inputbox"
+				preview="show"
+				targetfolder="projectteams"
+				directory=""/>
+				
+				<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PICTURE_CR_DESC"
+			class="inputbox"/>	
+			
+      <field
+				name="trikot_home"
+				type="media"
+				default="" 
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
+				class="inputbox"
+				preview="show"
+				directory=""/>				
+			<field
+				name="trikot_away"
+				type="media"
+				default=""
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
+				class="inputbox"
+				preview="show"
+				directory=""/>
+        
+        <!--
+        <field
+				name="logo_big"
+				type="media"
+				default=""
+				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
+				class="inputbox"
+				preview="show"
+				targetfolder="clubs_large"
+				directory=""/>	
+        -->	  					
+	</fieldset>	
+
+<fieldset name="description" 
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>		
+    
+<fieldset name="training"
+  label="COM_SPORTSMANAGEMENT_TABS_TRAINING"
+  description="COM_SPORTSMANAGEMENT_TABS_TRAINING_DESC">
+  
+  </fieldset>	  
+
+<fieldset name="extended"
+  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+  </fieldset>
+      	
+</form>
+

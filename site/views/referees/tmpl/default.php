@@ -4,7 +4,7 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage referees
  */
@@ -18,30 +18,27 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if ( !isset( $this->config['show_referees'] ) )
 {
-	$this->config['show_referees'] = 1;
+$this->config['show_referees'] = 1;
 }
 ?>
-<div class="">
-	<?php
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+<div class="<?php echo $this->divclasscontainer;?>" id="referees">
+<?php
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');
 }
-	echo $this->loadTemplate( 'projectheading' );
+echo $this->loadTemplate( 'projectheading' );
 
-	if ( $this->config['show_sectionheader'] == 1 )
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+if ( $this->config['show_sectionheader'] )
+{
+echo $this->loadTemplate('sectionheader');
+}
 
-	if ( $this->config['show_referees'] == 1 )
-	{
-		echo $this->loadTemplate( 'referees' );
-	}
+if ( $this->config['show_referees'] )
+{
+echo $this->loadTemplate( 'referees' );
+}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>

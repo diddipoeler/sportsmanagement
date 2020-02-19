@@ -4,20 +4,20 @@
  * @file      deafault_googlemap_route.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage playground
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true');
 $latitude = $this->playground->latitude;
 $longitude = $this->playground->longitude;
 ?>
 
 
-<?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
 <div class="row-fluid">
 
 

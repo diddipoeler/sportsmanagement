@@ -1,10 +1,10 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage resultsmatrix
  */
@@ -16,41 +16,38 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<!-- <a name="jl_top" id="jl_top"></a> -->
-	<?php 
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+<div class="<?php echo $this->divclasscontainer;?>" id="resultsmatrix">
+<?php 
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-    echo $this->loadTemplate('debug');
+echo $this->loadTemplate('debug');
 }
-	echo $this->loadTemplate('projectheading');
-		
-	echo $this->loadTemplate('selectround');
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('selectround');
 
-// diddipoeler
-  // aufbau der templates
-  $this->output = array();
+/**
+ * diddipoeler
+ * aufbau der templates
+ */
+$this->output = array();
   
-  $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
-  if(isset($this->divisions) && count($this->divisions) > 1) 
-  {
-	//echo $this->loadTemplate('matrix_division');
-    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
-    }
-    else
-    {
-	//echo $this->loadTemplate('matrix');
-    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
-    }
+$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+if(isset($this->divisions) && count($this->divisions) > 1) 
+{
+$this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
+}
+else
+{
+$this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
+}
 
 echo $this->loadTemplate('show_tabs');
-  
 
+if ( $this->params->get('show_map', 0) )
+{ 
+echo $this->loadTemplate('googlemap');
+}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>

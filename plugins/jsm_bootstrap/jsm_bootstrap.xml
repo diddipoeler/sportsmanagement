@@ -22,8 +22,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.plg_system_jsm_bootstrap.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_bootstrap.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_bootstrap.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_system_jsm_bootstrap.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_system_jsm_bootstrap.sys.ini</language>
 	</languages> 
 
 	<config>
@@ -39,11 +37,6 @@
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
 <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />			
-			
-
-
-
-	
 		</fieldset>
 		
 			<fieldset name="basic_front" label="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_LABEL">
@@ -51,11 +44,56 @@
 <field type="sywonlinehelp" url="" class="alert alert-info"
 					description="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_DESC" />
 
-<field type="title" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERY_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jquery.png" color="#26a69a" />
-<field type="title" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERYUI_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jqueryui.png" color="#26a69a" />
-
-
-<field type="title" title="PLUGIN_JSM_BOOTSTRAP_BOOTSTRAP_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />			
+<field type="jsmtitle" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERY_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jquery.png" color="#26a69a" />
+<field name="jqueryversionfrontend" type="list" default="1.8" 
+	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYVERSION_LABEL" 
+	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYVERSION_DESC">
+	            	<option value="3.2#slim" disabled="true">3.2.x slim</option>
+	            	<option value="3.2">3.2.x</option>
+	            	<option value="3.1#slim" disabled="true">3.1.x slim</option>
+	            	<option value="3.1">3.1.x</option>
+	            	<option value="3.0#slim" disabled="true">3.0.x slim</option>
+	            	<option value="3.0">3.0.x</option>
+           			<option value="2.2">2.2.x</option>
+           			<option value="2.1">2.1.x</option>
+           			<option value="2.0">2.0.x</option>
+           			<option value="1.12">1.12.x</option>
+           			<option value="1.11">1.11.x</option>
+	            	<option value="1.10">1.10.x</option>
+	            	<option value="1.9">1.9.x</option>
+           			<option value="1.8">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST18</option>
+	                <option value="1.7">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST17</option>
+	                <option value="1.6">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST16</option>
+	                <option value="1.5">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST15</option>
+	                <option value="1.4">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST14</option>
+	                <option value="1.3">PLG_SYSTEM_JQUERYEASY_VALUE_LATEST13</option>
+	                <option value="local">PLG_SYSTEM_JQUERYEASY_VALUE_LOCAL</option>
+	                <option value="joomla">PLG_SYSTEM_JQUERYEASY_VALUE_JOOMLA</option>
+	            </field>   
+<field name="jquerysubversionfrontend" type="text" default="" size="2" showon="jqueryversionfrontend:1.3,1.4,1.5,1.6,1.7,1.8,1.9,1.10,1.11,1.12,2.0,2.1,2.2,3.0,3.1,3.2" 
+					label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYSUBVERSION_LABEL" 
+					description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYSUBVERSION_DESC" />				
+ 			
+<field type="jsmtitle" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERYUI_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jqueryui.png" color="#26a69a" />
+<field name="jqueryuiversionfrontend" type="list" default="1.9" 
+	            	label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_LABEL" 
+	            	description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUIVERSION_DESC">
+	            	<option value="1.12">1.12.x</option>
+	            	<option value="1.11">1.11.x</option>
+	            	<option value="1.10">1.10.x</option>
+	            	<option value="1.9">1.9.x</option>
+	                <option value="1.8">PLG_SYSTEM_JQUERYEASY_VALUE_LATESTUI18</option>
+	                <option value="1.7">PLG_SYSTEM_JQUERYEASY_VALUE_LATESTUI17</option>
+	                <option value="local">PLG_SYSTEM_JQUERYEASY_VALUE_CUSTOM</option>
+	                <option value="joomla">PLG_SYSTEM_JQUERYEASY_VALUE_JOOMLA</option>
+	            </field>
+	            
+	            <field name="jqueryuisubversionfrontend" type="text" default="" size="2" showon="jqueryuiversionfrontend:1.7,1.8,1.9,1.10,1.11,1.12" 
+					label="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUISUBVERSION_LABEL" 
+					description="PLG_SYSTEM_JQUERYEASY_FIELD_JQUERYUISUBVERSION_DESC" />	
+				
+				
+				<field type="jsmtitle" title="PLUGIN_JSM_BOOTSTRAP_BOOTSTRAP_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/bootstrap.png" color="#26a69a" />			
 				<field name="load_bootstrap" 
         type="radio" 
         default="1" 

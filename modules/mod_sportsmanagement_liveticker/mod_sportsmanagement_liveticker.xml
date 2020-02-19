@@ -6,7 +6,7 @@
 	<authorUrl>www.fussballineuropa.de</authorUrl>
 	<creationDate>Februar 2014</creationDate>
 	<copyright>(C) 2014 </copyright>
-	<license>kein</license>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<version>1.00</version>
 	<description>MOD_SPORTSMANAGEMENT_LIVETICKER_DESC</description>
 
@@ -30,10 +30,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.sys.ini</language>
 		</languages>
 
 	<config>
@@ -46,7 +42,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Liveticker" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
@@ -74,6 +70,7 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
 			</field>
+<field name="playtime" type="text" default="105" label="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME" description="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME_DESC" />			
 		<field name="use_local_jquery"  class="radio btn-group btn-group-yesno"
 			type="extensionradiobutton" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY" description="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY_DESC" >
 			<option value="0">JNO</option>
@@ -179,7 +176,7 @@
 			
 		</field>
 		
-			<field 	name="moduleclass_sfx" type="text" default="" 
+			<field 	name="moduleclass_sfx" type="text" default="container-fluid"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 						

@@ -4,16 +4,15 @@
  * @file      predictiongame.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage prediction
  */
 
 defined('_JEXEC') or die( 'Restricted access' );
+use Joomla\CMS\MVC\Controller\BaseController;
 
-jimport( 'joomla.application.component.controller' );
-
-require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.php' ;
+require_once JLG_PATH_EXTENSION_PREDICTIONGAME .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'route.php' ;
 
 /**
  * sportsmanagementControllerPredictiongame
@@ -24,7 +23,7 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.ph
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictiongame extends JControllerLegacy
+class sportsmanagementControllerPredictiongame extends BaseController
 {
 	/**
 	 * sportsmanagementControllerPredictiongame::__construct()

@@ -20,11 +20,14 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'fullcalendar' => true));
 
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
+$document = Factory::getDocument();
+$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
 
 $color = $params->get('event_color', '135CAE');
 $fadedColor = jsmGCalendarUtil::getFadedColor($color);
@@ -73,7 +76,7 @@ $ids = rtrim($ids,',');
 $calCode = "// <![CDATA[ \n";
 $calCode .= "gcjQuery(document).ready(function(){\n";
 $calCode .= "   gcjQuery('#gcalendar_module_".$module->id."').fullCalendar({\n";
-$calCode .= "		events: '".html_entity_decode(JRoute::_('index.php?option=com_sportsmanagement&view=jsonfeed&compact='.$params->get('compact_events', 1).'&format=raw&gcids='.$ids))."',\n";
+$calCode .= "		events: '".html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&compact='.$params->get('compact_events', 1).'&format=raw&gcids='.$ids))."',\n";
 $calCode .= "       header: {\n";
 $calCode .= "				left: 'prev,next ',\n";
 $calCode .= "				center: 'title',\n";
@@ -112,5 +115,5 @@ $calCode .= "});\n";
 $calCode .= "// ]]>\n";
 $document->addScriptDeclaration($calCode);
 
-echo "<div id='gcalendar_module_".$module->id."_loading' style=\"text-align: center;\"><img src=\"".JURI::base() . "administrator/components/com_sportsmanagement/assets/images/ajax-loader.gif\"  alt=\"loader\" /></div>";
+echo "<div id='gcalendar_module_".$module->id."_loading' style=\"text-align: center;\"><img src=\"".Uri::base() . "administrator/components/com_sportsmanagement/assets/images/ajax-loader.gif\"  alt=\"loader\" /></div>";
 echo "<div id='gcalendar_module_".$module->id."'></div><div id='gcalendar_module_".$module->id."_popup' style=\"visibility:hidden\" ></div>";

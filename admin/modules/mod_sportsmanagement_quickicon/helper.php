@@ -1,44 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_quickicon
+ */
 
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * ModSportsmanagementQuickIconHelper
@@ -66,13 +41,13 @@ abstract class ModSportsmanagementQuickIconHelper
      */
     public static function getModPosition()
 	{
-	$query = JFactory::getDBO()->getQuery(true);
+	$query = Factory::getDBO()->getQuery(true);
     $query->select('position');
     $query->from('#__modules');
-    $query->where('module LIKE '.JFactory::getDbo()->Quote(''.'mod_sportsmanagement_quickicon'.'') );
+    $query->where('module LIKE '.Factory::getDbo()->Quote(''.'mod_sportsmanagement_quickicon'.'') );
         
-	JFactory::getDBO()->setQuery($query);
-	$res = JFactory::getDBO()->loadResult();
+	Factory::getDBO()->setQuery($query);
+	$res = Factory::getDBO()->loadResult();
     
     return $res;   
     }   
@@ -100,50 +75,50 @@ abstract class ModSportsmanagementQuickIconHelper
 			if ($context == 'mod_sportsmanagement_quickicon')
 			{
 				// Load mod_quickicon language file in case this method is called before rendering the module
-				JFactory::getLanguage()->load('mod_sportsmanagement_quickicon');
+				Factory::getLanguage()->load('mod_sportsmanagement_quickicon');
 
 				self::$buttons[$key] = array(
 					array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement'),
+						'link' => Route::_('index.php?option=com_sportsmanagement'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
+						'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 						),
                         
                         array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=extensions'),
+						'link' => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
 						'image' => 'pencil-2',
 						'icon' => '/components/com_sportsmanagement/assets/icons/extensions.png',
-						'text' => JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
+						'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 						),
                         
                         array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=projects'),
+						'link' => Route::_('index.php?option=com_sportsmanagement&view=projects'),
 						'image' => 'pencil-2',
 						'icon' => '/components/com_sportsmanagement/assets/icons/projekte.png',
-						'text' => JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
+						'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 						),
                         
                         array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=predictions'),
+						'link' => Route::_('index.php?option=com_sportsmanagement&view=predictions'),
 						'image' => 'pencil-2',
 						'icon' => '/components/com_sportsmanagement/assets/icons/tippspiele.png',
-						'text' => JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
+						'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 						),
                         
                         array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=currentseasons'),
+						'link' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
 						'image' => 'pencil-2',
 						'icon' => '/components/com_sportsmanagement/assets/icons/aktuellesaison.png',
-						'text' => JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
+						'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
 						)
@@ -155,8 +130,8 @@ abstract class ModSportsmanagementQuickIconHelper
 			}
 
 			// Include buttons defined by published quickicon plugins
-			JPluginHelper::importPlugin('quickicon');
-			$app = JFactory::getApplication();
+			PluginHelper::importPlugin('quickicon');
+			$app = Factory::getApplication();
 			$arrays = (array) $app->triggerEvent('onGetIcons', array($context));
 
 			foreach ($arrays as $response)
@@ -215,9 +190,9 @@ abstract class ModSportsmanagementQuickIconHelper
 	{
 		$key = $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
 
-		if (JFactory::getLanguage()->hasKey($key))
+		if (Factory::getLanguage()->hasKey($key))
 		{
-			return JText::_($key);
+			return Text::_($key);
 		}
 		else
 		{

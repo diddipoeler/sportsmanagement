@@ -4,18 +4,18 @@
  * @file      deafult_explanation.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 $config = &$this->tableconfig;
 
 $columns = explode(",", $config['ordered_columns']);
 $column_names = explode(',', $config['ordered_columns_names']);
 ?>
-
+<div class="<?php echo $this->divclassrow;?>" id="explanation">
 <br />
 <table class="table">
     <tr class="explanation">
@@ -29,7 +29,7 @@ $column_names = explode(',', $config['ordered_columns_names']);
                 $c = strtoupper(trim($column));
                 $c = "COM_SPORTSMANAGEMENT_" . $c;
                 echo "<td class=\"\">";
-                echo $column_names[$k] . " = " . JText::_($c);
+                echo $column_names[$k] . " = " . Text::_($c);
                 echo "</td>";
                 //$d=(1-$d);
             }
@@ -37,3 +37,4 @@ $column_names = explode(',', $config['ordered_columns_names']);
         </td>
     </tr>
 </table>
+</div>

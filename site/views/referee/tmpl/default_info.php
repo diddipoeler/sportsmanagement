@@ -1,53 +1,25 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      default_info.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage referee
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
-//echo 'referee <pre>',print_r($this->referee,true),'</pre>';
-//echo 'person <pre>',print_r($this->person,true),'</pre>';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 ?>
 <!-- person data START -->
 <?php if ($this->referee) { ?>
-<h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
+<h2><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="referee_info">
 
 <div class="col-md-6">
 
@@ -59,8 +31,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 			
 				<?php
-				$picturetext=JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
-				$imgTitle = JText::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->referee->firstname, $this->referee->nickname, $this->referee->lastname, $this->config["name_format"]) );
+				$picturetext=Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+				$imgTitle = Text::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->referee->firstname, $this->referee->nickname, $this->referee->lastname, $this->config["name_format"]) );
 				$picture = $this->referee->picture;
 				if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  ))
 				{
@@ -71,7 +43,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
 				}
 			
-echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,$picture,$imgTitle,$this->config['picture_width']);                                                       
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,
+$picture,
+$imgTitle,
+$this->config['picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);
 				
 		}
 		?>
@@ -86,10 +66,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				               
                 
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
 			<?php
 						echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
-						JText::_( JSMCountries::getCountryName($this->person->country));
+						Text::_( JSMCountries::getCountryName($this->person->country));
 						?>
             </address>
             
@@ -98,21 +78,21 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				?>
 				
 						<?php
-						$outputName = JText::sprintf( '%1$s %2$s', $this->referee->firstname, $this->referee->lastname);
+						$outputName = Text::sprintf( '%1$s %2$s', $this->referee->firstname, $this->referee->lastname);
 						if ( $this->referee->user_id )
 						{
 							switch ( $this->config['show_user_profile'] )
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute( $this->referee->user_id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->referee->user_id,
 																									$this->project->id,
 																									$this->referee->id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								default:	break;
@@ -123,7 +103,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				
                 
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
 			<?php
 						echo $outputName;
 						?>
@@ -135,7 +115,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							?>
 							
                             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
 			<?php
 						echo $this->referee->nickname;
 						?>
@@ -152,61 +132,54 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					
 
-								<?php
-								switch ( $this->config['show_birthday'] )
-								{
-									case 	1:			// show Birthday and Age
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
-														break;
+<?php
+switch ( $this->config['show_birthday'] )
+{
+case 	1:			// show Birthday and Age
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
+break;
+case 	2:			// show Only Birthday
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
+break;
+case 	3:			// show Only Age
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
+break;
+case 	4:			// show Only Year of birth
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
+break;
+}
 
-									case 	2:			// show Only Birthday
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
-														break;
+?>
 
-									case 	3:			// show Only Age
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
-														break;
+<?php
+switch ( $this->config['show_birthday'] )
+{
+case 1:	 // show Birthday and Age
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
+break;
+case 2:	 // show Only Birthday
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+break;
+case 3:	 // show Only Age
+$birthdateStr = sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday );
+break;
+case 4:	 // show Only Year of birth
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
+break;
+default:
+$birthdateStr = "";
+break;
+}
 
-									case 	4:			// show Only Year of birth
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
-														break;
-								}
-								//echo JText::_( $outputStr );
-								?>
-
-						
-							<?php
-							switch ( $this->config['show_birthday'] )
-							{
-								case 1:	 // show Birthday and Age
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
-											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
-											break;
-
-								case 2:	 // show Only Birthday
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
-											break;
-
-								case 3:	 // show Only Age
-											$birthdateStr = sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday );
-											break;
-
-								case 4:	 // show Only Year of birth
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( '%Y' ) ) : "-";
-											break;
-
-								default:	$birthdateStr = "";
-											break;
-							}
-							//echo $birthdateStr;
-							?>
+?>
 						
                     
                     <address>
-			<strong><?php echo $outputStr; ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo $birthdateStr; ?>
             </address>
             
@@ -217,16 +190,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				{
 					?>
 					                    
-                    <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
-			<?php echo Countries::convertAddressString(	'',
-																	$this->referee->address,
-																	$this->referee->state,
-																	$this->referee->zipcode,
-																	$this->referee->location,
-																	$this->referee->address_country,
-																	'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' ); ?>
-            </address>
+<address>
+<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+<?php echo Countries::convertAddressString(	'',
+$this->referee->address,
+$this->referee->state,
+$this->referee->zipcode,
+$this->referee->location,
+$this->referee->address_country,
+'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' ); ?>
+</address>
                     
                     
 					<?php
@@ -237,7 +210,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
 			<?php echo $this->referee->phone; ?>
             </address>
             
@@ -250,7 +223,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
 			<?php echo $this->referee->mobile; ?>
             </address>
                     
@@ -262,9 +235,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 				                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php
-							$user = JFactory::getUser();
+							$user = Factory::getUser();
 							if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
 							{
 								?>
@@ -277,7 +250,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							}
 							else
 							{
-								echo JHtml::_('email.cloak', $this->referee->email );
+								echo HTMLHelper::_('email.cloak', $this->referee->email );
 							}
 							?>
             </address>
@@ -291,8 +264,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
-			<?php echo JHtml::_(	'link',
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<?php echo HTMLHelper::_(	'link',
 											$this->referee->website,
 											$this->referee->website,
 											array( 'target' => '_blank' ) ); ?>
@@ -306,8 +279,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                      <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
-			<?php echo str_replace( "%HEIGHT%", $this->referee->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->referee->height, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -317,8 +290,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
-			<?php echo str_replace( "%WEIGHT%", $this->referee->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->referee->weight, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -328,8 +301,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
-			<?php echo JText::_( $this->referee->position_name ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
+			<?php echo Text::_( $this->referee->position_name ); ?>
             </address>
             
 					<?php
@@ -340,7 +313,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
 			<?php echo $this->referee->knvbnr; ?>
             </address>
 					<?php

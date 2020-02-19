@@ -4,12 +4,14 @@
 * @file      player.php
 * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license   This file is part of SportsManagement.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 * @subpackage player
 */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPlayer
@@ -20,7 +22,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayer extends JModelLegacy {
+class sportsmanagementModelPlayer extends BaseDatabaseModel {
 
     static $projectid = 0;
     static $personid = 0;
@@ -43,13 +45,14 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         parent::__construct();
-        self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
-        self::$personid = JFactory::getApplication()->input->get('pid', 0, 'INT');
-        self::$teamplayerid = JFactory::getApplication()->input->get('pt', 0, 'INT');
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT');
+        self::$personid = Factory::getApplication()->input->get('pid', 0, 'INT');
+        self::$teamplayerid = Factory::getApplication()->input->get('pt', 0, 'INT');
+        self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         $getDBConnection = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         parent::setDbo($getDBConnection);
     }
@@ -61,7 +64,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getTeamPlayers($cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -73,7 +76,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('rinjuryfrom.round_date_first as injury_date,rinjuryfrom.name as rinjury_from');
         $query->select('rinjuryto.round_date_last as injury_end,rinjuryto.name as rinjury_to');
         $query->select('rsuspfrom.round_date_first as suspension_date,rsuspfrom.name as rsusp_from');
@@ -85,11 +88,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id and p.season_id = st.season_id');
-
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pe.id');
         $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id and ppos.project_id = perpos.project_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->join('LEFT', '#__sportsmanagement_round AS rinjuryfrom ON pe.injury_date = rinjuryfrom.id');
         $query->join('LEFT', '#__sportsmanagement_round AS rinjuryto ON pe.injury_end = rinjuryto.id');
         $query->join('LEFT', '#__sportsmanagement_round AS rsuspfrom ON pe.suspension_date = rsuspfrom.id');
@@ -100,10 +101,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->where('tp.person_id = ' . self::$personid);
         $query->where('pe.id = ' . self::$personid);
         $query->where('p.published = 1');
+	try {
         $db->setQuery($query);
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');        
-        self::$_teamplayers = $db->loadObjectList('projectteam_id');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r(self::$_teamplayers,true).'</pre>'),'');
+        $result = $db->loadObjectList('projectteam_id');
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+self::$_teamplayers = $result;
         return self::$_teamplayers;
     }
 
@@ -113,8 +122,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     static function getTeamPlayer($projectid = 0, $personid = 0, $teamplayerid = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -133,19 +142,15 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
-
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('ps.firstname, ps.lastname');
-
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->join('INNER', '#__sportsmanagement_person AS ps ON ps.id = tp.person_id');
-
         $query->where('pt.project_id = ' . self::$projectid);
         if (self::$personid) {
             $query->where('tp.person_id = ' . self::$personid);
@@ -157,9 +162,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $query->where('p.published = 1');
         $query->where('tp.persontype = 1');
-
+try {
         $db->setQuery($query);
-        self::$_inproject = $db->loadObjectList();
+        $result = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+self::$_inproject = $result;
         
         return self::$_inproject;
     }
@@ -170,8 +184,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getTeamStaff() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -180,7 +194,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
@@ -191,10 +205,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->where('tp.person_id = ' . self::$personid);
         $query->where('p.published = 1');
         $query->where('tp.persontype = 2');
-
+try {
         $db->setQuery($query);
-        self::$_inproject = $db->loadObject();
-
+        $result = $db->loadObject();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+self::$_inproject = $result;
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$_inproject;
     }
 
@@ -208,8 +230,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getPlayerHistory($sportstype = 0, $order = 'ASC', $persontype = 1, $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
@@ -222,9 +244,10 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('pos.name AS position_name,pos.id AS posID');
         $query->select('pt.id AS ptid,pt.project_id,pt.picture as team_picture');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('tp.picture as season_picture');
         $query->select('p.picture as project_picture');
+	$query->select('p.game_regular_time,p.add_time');
         $query->select('c.logo_big as club_picture');
         $query->from('#__sportsmanagement_person AS pr');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
@@ -235,26 +258,29 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
         $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
-
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pr.id');
-
         $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->where('pr.id = ' . self::$personid);
         $query->where('p.published = 1');
+	$query->where('perpos.published = 1');
         $query->where('pr.published = 1');
         $query->where('tp.persontype = ' . $persontype);
         if ($sportstype > 0) {
             $query->where('p.sports_type_id = ' . $sportstype);
         }
 
-
         $query->order('s.ordering ' . $order . ',l.ordering ASC,p.name ASC ');
-
+try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
         switch ($persontype) {
             case 1:
                 self::$_playerhistory = $result;
@@ -265,7 +291,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                 return self::$_playerhistorystaff;
                 break;
         }
-        //return self::$_playerhistory;
+
     }
 
     /**
@@ -275,8 +301,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getAllEvents($sportstype = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -292,39 +318,48 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             return array();
         }
 
-        $query->select('DISTINCT et.*');
+        $query->select('DISTINCT et.*,pet.ordering');
         $query->from('#__sportsmanagement_eventtype AS et');
         $query->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
         $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pet.position_id');
         $query->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
         $query->where('et.published = 1');
         $query->order('pet.ordering ');
-
+try {
         $db->setQuery($query);
         $info = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $info = false;
+}
+        
         return $info;
     }
 
+    
     /**
-     * sportsmanagementModelPLayer::getTimePlayed()
+     * sportsmanagementModelPlayer::getTimePlayed()
      * 
      * @param mixed $player_id
      * @param mixed $game_regular_time
      * @param mixed $match_id
      * @param mixed $cards
+     * @param integer $project_id
      * @return
      */
-    public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
+    public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0,$add_time = 0) {
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        /** Create a new query object. */		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         $result = 0;
-/**
- * startaufstellung ohne ein und auswechselung
- */
+
+/** startaufstellung ohne ein und auswechselung */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
         $query->where('mp.teamplayer_id = ' . $player_id);
@@ -334,6 +369,10 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+          if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -343,13 +382,30 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $db->setQuery($query);
         $totalresult = $db->loadObject();
+      
+          if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $totalresult2 = $db->loadObject();
+        if ($totalresult2) {
+            $result += $totalresult2->totalmatch * ($game_regular_time + $add_time);
+        }    
+            
+            
+          }
         if ($totalresult) {
             $result += $totalresult->totalmatch * $game_regular_time;
         }
         
-/**
- * einwechselung
- */
+/** einwechselung */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalin');
@@ -362,6 +418,10 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+           if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -371,13 +431,31 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $db->setQuery($query);
         $cameinresult = $db->loadObject();
 
+      if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $cameinresult2 = $db->loadObject();
+        if ($cameinresult2) {
+          $result += ( $cameinresult2->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult2->totalin );
+        }    
+            
+            
+          }
+      
+      
         if ($cameinresult) {
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
         }
 
-/**
- * auswechselung
- */
+/** auswechselung */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalout');
@@ -389,6 +467,10 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
+           if ( $add_time )
+      {
+           $query->where('m.match_result_type = 0'); 
+          }
         }
 
         if ($match_id) {
@@ -398,13 +480,30 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $db->setQuery($query);
         $cameautresult = $db->loadObject();
 
+      if ( $add_time )
+      {
+      $query->clear('where');
+            $query->clear('join');
+      $query->where('mp.teamplayer_id = ' . $player_id);
+        $query->where('mp.came_in = 0');
+            $query->join('INNER', '#__sportsmanagement_match as m ON m.id = mp.match_id');
+            $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+            $query->where('r.project_id = ' . $project_id);
+            $query->where('m.match_result_type = 1');
+            $db->setQuery($query);
+        $cameautresult2 = $db->loadObject();
+        if ($cameautresult2) {
+
+          $result += ( $cameautresult2->totalout ) - ( $cameautresult2->totalmatch * ($game_regular_time + $add_time) );
+        }    
+            
+          }
+      
         if ($cameautresult) {
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
         }
 
-/**
- * jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
- */
+/** jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen */
         if ($cards) {
             $query = $db->getQuery(true);
             $query->clear();
@@ -437,7 +536,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         }
 
-        //$app->enqueueMessage(JText::_('result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
     }
@@ -456,20 +554,11 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0, $cfg_which_database = 0, $team_id = 0, $person_id = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'project_id <pre>' . print_r($project_id, true) . '</pre>';
-            $my_text .= 'projectteam_id <pre>' . print_r($projectteam_id, true) . '</pre>';
-            $my_text .= 'teamplayer_id <pre>' . print_r($teamplayer_id, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
 
         $query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for, mp.in_out_time');
         $query->from('#__sportsmanagement_match AS m');
@@ -505,19 +594,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $db->setQuery($query);
         $rows = $db->loadObjectList();
 
-        if (!$rows && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
-//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+        
 
         $inoutstat = new stdclass;
         $inoutstat->played = 0;
@@ -531,15 +608,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $inoutstat->sub_in += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
             $inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
         }
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'inoutstat <pre>' . print_r($inoutstat, true) . '</pre>';
-//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
-//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' inoutstat<br><pre>'.print_r($inoutstat,true).'</pre>'),'');
-        }
-
+       
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $inoutstat;
@@ -551,21 +620,19 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getStats() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         $stats = array();
         $players = self::getTeamPlayer();
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' players<br><pre>'.print_r($players,true).'</pre>'),'');
-
         if (is_array($players)) {
             foreach ($players as $player) {
-                // Remark: we cannot use array_merge because numerical keys will result in duplicate entries
-                // so we check if a key already exists in the output array before adding it.
+/**
+ *                  Remark: we cannot use array_merge because numerical keys will result in duplicate entries
+ *                  so we check if a key already exists in the output array before adding it.
+ */
                 $projectStats = sportsmanagementModelProject::getProjectStats(0, $player->position_id);
-
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectStats<br><pre>'.print_r($projectStats,true).'</pre>'),'');
 
                 if (is_array($projectStats)) {
                     foreach ($projectStats as $key => $projectStat) {
@@ -587,9 +654,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getCareerStats($person_id, $sports_type_id) {
-        $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $db = Factory::getDBO();
+        $query_core = Factory::getDbo()->getQuery(true);
 
         if (empty($this->_careerStats)) {
             $query_core->select('s.id,s.name,s.short,s.class,s.icon,s.calculated,ppos.id AS pposid,ppos.position_id AS position_id,s.params,s.baseparams');
@@ -605,19 +672,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                 $query_core->where('pos.sports_type_id = ' . $sports_type_id);
             }
 
-            $query_core->group('s.id');
-
+            $query_core->group('s.id,ppos.id');
+try{
             $db->setQuery($query_core);
-
-            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                $my_text = 'dump <pre>' . print_r($query_core->dump(), true) . '</pre>';
-                //$my_text .= 'cardsresult <pre>'.print_r($cardsresult,true).'</pre>';   
-                //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-            }
-
             $this->_careerStats = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $this->_careerStats = false;
+}            
+            
         }
 
         $stats = array();
@@ -638,14 +704,16 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getPlayerStatsByGame() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $teamplayers = self::getTeamPlayers();
         $displaystats = array();
         if (count($teamplayers)) {
             $project = sportsmanagementModelProject::getProject();
             $project_id = $project->id;
-            // Determine teamplayer id(s) of the player (plural if (s)he played in multiple teams of the project
-            // and the position_id(s) where the player played
+/**
+ *              Determine teamplayer id(s) of the player (plural if (s)he played in multiple teams of the project
+ *              and the position_id(s) where the player played
+ */
             $teamplayer_ids = array();
             $position_ids = array();
             foreach ($teamplayers as $teamplayer) {
@@ -654,8 +722,10 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                     $position_ids[] = $teamplayer->position_id;
                 }
             }
-            // For each position_id get the statistics types and merge the results (prevent duplicate statistics ids)
-            // ($pos_stats is an array indexed by statistic_id)
+/**
+ *              For each position_id get the statistics types and merge the results (prevent duplicate statistics ids)
+ *              ($pos_stats is an array indexed by statistic_id)
+ */
             $pos_stats = array();
             foreach ($position_ids as $position_id) {
                 $stats_for_position_id = sportsmanagementModelProject::getProjectStats(0, $position_id);
@@ -665,18 +735,20 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                     }
                 }
             }
+		if ( $pos_stats )
+		{
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
-                    foreach ($stat as $id => $value) {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
-                        if ($value->_showinsinglematchreports) {
-                            $value->set('gamesstats', $value->getPlayerStatsByGame($teamplayer_ids, $project_id));
-                            $displaystats[] = $stat;
-                        }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
-                    }
+if ( isset($stat->_showinsinglematchreports) ) {
+require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'statistics' .DIRECTORY_SEPARATOR.$stat->_name. '.php');	
+$mdlstats = BaseDatabaseModel::getInstance($stat->_name, "SMStatistic");   
+$mdlstats->id = $stat->id;    
+$stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);
+$displaystats[] = $stat;
+}                    
                 }
             }
+	}
         }
         return $displaystats;
     }
@@ -688,50 +760,31 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getPlayerStatsByProject($sportstype = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         $teamplayer = self::getTeamPlayer();
         $result = array();
         if (is_array($teamplayer) && !empty($teamplayer)) {
-            // getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
-            // one team to another inside a season, but they are all the same person so have same person_id.
-            // So we get the player_id from the first array entry.
+/**
+ *              getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
+ *              one team to another inside a season, but they are all the same person so have same person_id.
+ *              So we get the player_id from the first array entry.
+ */
             $stats = self::getCareerStats($teamplayer[0]->person_id, $sportstype);
             $history = self::getPlayerHistory($sportstype);
-
-            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                $my_text = 'teamplayer <pre>' . print_r($teamplayer, true) . '</pre>';
-                $my_text .= 'stats <pre>' . print_r($stats, true) . '</pre>';
-                $my_text .= 'history <pre>' . print_r($history, true) . '</pre>';
-                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
-            }
-
+            
             if (count($history) > 0) {
                 foreach ($stats as $stat) {
                     if (!empty($stat)) {
                         foreach ($history as $player) {
-
-                            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                                $my_text = 'person_id <pre>' . print_r($player->person_id, true) . '</pre>';
-                                $my_text .= 'ptid <pre>' . print_r($player->ptid, true) . '</pre>';
-                                $my_text .= 'project_id <pre>' . print_r($player->project_id, true) . '</pre>';
-                                $my_text .= 'sportstype <pre>' . print_r($sportstype, true) . '</pre>';
-                                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($player->person_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($player->ptid,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($player->project_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sportstype<br><pre>'.print_r($sportstype,true).'</pre>'),'');
-                            }
-
                             $result[$stat->id][$player->project_id][$player->ptid] = $stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
+                        if ( !isset($result[$stat->id]['totals']) )
+			{
+			$result[$stat->id]['totals'] = 0;	
+			}
+				$result[$stat->id]['totals'] += $result[$stat->id][$player->project_id][$player->ptid];
                         }
-                        $result[$stat->id]['totals'] = $stat->getPlayerStatsByProject($player->person_id, 0, 0, $sportstype);
                     }
                 }
             }
@@ -745,17 +798,13 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getGames() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        //$subquery1 = $db->getQuery(true);
-
         $teamplayers = self::getTeamPlayers();
         $games = array();
-
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
 
         if (count($teamplayers)) {
             $quoted_tpids = array();
@@ -764,13 +813,15 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             }
             $tpid_list = '(' . implode(',', $quoted_tpids) . ')';
 
-            // Get all games played by the player (possible of multiple teams in the project)
-            // A player was in a match if:
-            // 1. He is defined as a match player in the match
-            // 2. There is one or more statistic on his name for the match
-            // 3. There is one or more event on his name for the match
-            //$query->select('m.*');
+/**
+ *              Get all games played by the player (possible of multiple teams in the project)
+ *              A player was in a match if:
+ *              1. He is defined as a match player in the match
+ *              2. There is one or more statistic on his name for the match
+ *              3. There is one or more event on his name for the match
+ */
             $query->select('m.id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
+	$query->select('m.match_result_type');	
             $query->select('t1.id AS team1,t1.name AS home_name');
             $query->select('t2.id AS team2,t2.name AS away_name');
             $query->select('mp.teamplayer_id');
@@ -805,22 +856,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $games = $db->loadObjectList();
         }
 
-        if (!$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'tpid_list <pre>' . print_r($tpid_list, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpid_list<br><pre>'.print_r($tpid_list,true).'</pre>'),'');
-        }
-
         foreach ($games as $game) {
 
             $inoutstats = self::getInOutStats($game->project_id, $game->projectteam1_id, $game->teamplayer_id, 0, $game->id);
@@ -830,15 +865,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $game->playedtime = 0;
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'games <pre>' . print_r($games, true) . '</pre>';
-            $my_text .= 'inoutstats <pre>' . print_r($inoutstats, true) . '</pre>';
-            //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' games<br><pre>'.print_r($games,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' inoutstats<br><pre>'.print_r($inoutstats,true).'</pre>'),'');
-        }
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $games;
     }
@@ -849,8 +876,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getGamesEvents() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -859,24 +886,26 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $teamplayers = self::getTeamPlayers();
         $gameevents = array();
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
-
         if (count($teamplayers)) {
             $quoted_tpids = array();
             foreach ($teamplayers as $teamplayer) {
                 $quoted_tpids[] = $this->_db->Quote($teamplayer->id);
             }
 
-            $query->select('SUM(me.event_sum) as value,me.*');
+            $query->select('SUM(me.event_sum) as value,me.match_id, me.event_type_id');
             $query->from('#__sportsmanagement_match_event AS me ');
             $query->where('me.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
             $query->group('me.match_id, me.event_type_id');
-
+try {
             $db->setQuery($query);
             $events = $db->loadObjectList();
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
+ }
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $events = false;
+}
 
             foreach ((array) $events as $ev) {
                 if (isset($gameevents[$ev->match_id])) {
@@ -886,6 +915,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                 }
             }
         }
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
         return $gameevents;
     }
 

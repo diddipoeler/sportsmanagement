@@ -4,13 +4,14 @@
  * @file      ajax.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerAjax
@@ -21,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JControllerLegacy
+class sportsmanagementControllerAjax extends BaseController
 {
 
 /**
@@ -31,9 +32,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
  */
 public function __construct()
 	{
-		// Get the document object.
-		$document = JFactory::getDocument();
-		// Set the MIME type for JSON output.
+		$document = Factory::getDocument();
 		$document->setMimeEncoding('application/json');
 		parent::__construct();
 	}
@@ -47,12 +46,11 @@ public function __construct()
   */
  public function predictionid()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
         $model = $this->getModel('ajax');
                 echo json_encode((array) $model->getpredictionid($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false') ));
-                JFactory::getApplication()->close();    
+                Factory::getApplication()->close();    
         }    
         
 /**
@@ -62,12 +60,11 @@ public function __construct()
  */
 public function predictiongroups()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
         $model = $this->getModel('ajax');
                 echo json_encode((array) $model->getpredictiongroups($jinput->getVar('prediction_id','0'), $jinput->getVar('required','false') ));
-                JFactory::getApplication()->close();    
+                Factory::getApplication()->close();    
         }          
                 
 /**
@@ -77,12 +74,11 @@ public function predictiongroups()
  */
 public function predictionpj()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
         $model = $this->getModel('ajax');
                 echo json_encode((array) $model->getpredictionpj($jinput->getVar('prediction_id','0'), $jinput->getVar('required','false') ));
-                JFactory::getApplication()->close();    
+                Factory::getApplication()->close();    
         }          
                         
         /**
@@ -92,12 +88,11 @@ public function predictionpj()
          */
         public function locationzipcodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getlocationzipcodeoptions(JFactory::getApplication()->input->getVar( 'zipcode' ), $jinput->getVar('required','false'),JFactory::getApplication()->input->getInt( 'slug' ),JFactory::getApplication()->input->getInt( 'dbase' ),JFactory::getApplication()->input->getVar( 'country' ) ));
-                JFactory::getApplication()->close();    
+                echo json_encode((array) $model->getlocationzipcodeoptions(Factory::getApplication()->input->getVar( 'zipcode' ), $jinput->getVar('required','false'),Factory::getApplication()->input->getInt( 'slug' ),Factory::getApplication()->input->getInt( 'dbase' ),Factory::getApplication()->input->getVar( 'country' ) ));
+                Factory::getApplication()->close();    
         } 
         
         
@@ -108,12 +103,11 @@ public function predictionpj()
          */
         public function countryzipcodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getcountryzipcodeoptions(JFactory::getApplication()->input->getVar( 'country' ), $jinput->getVar('required','false'),JFactory::getApplication()->input->getInt( 'slug' ),JFactory::getApplication()->input->getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();    
+                echo json_encode((array) $model->getcountryzipcodeoptions(Factory::getApplication()->input->getVar( 'country' ), $jinput->getVar('required','false'),Factory::getApplication()->input->getInt( 'slug' ),Factory::getApplication()->input->getInt( 'dbase' ) ));
+                Factory::getApplication()->close();    
         } 
         
         
@@ -125,10 +119,9 @@ public function predictionpj()
          */
         public function personcontactid()
         {
-        $app = JFactory::getApplication();    
+        $app = Factory::getApplication();    
         $model = $this->getModel('ajax');
         $result = $model->getpersoncontactid( $this->input->get->get('show_user_profile') );
-        //echo $result;
         echo json_encode($result);
         //echo new JResponseJson($result);
         //$this->input->get->get('menutype')
@@ -145,23 +138,8 @@ public function predictionpj()
          */
         public function projects()
         {
-            $app = JFactory::getApplication();
-            
-//            $model = $this->getModel('Projects', '', array());
-//            $results = $model->getItems();
-//            // Output a JSON object
-//		echo json_encode($results);
-            
-//            $db = sportsmanagementHelper::getDBConnection();
-//            $query = $db->getQuery(true);
-//            $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
-//            $query->from('#__sportsmanagement_project as p');
-//            $db->setQuery($query);
-//            $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-//            //return array_merge($mitems, $elements);
-//            return json_encode(array_merge($mitems, $db->loadObjectList() ) );
-            //return json_encode( $db->loadObjectList() );
-            
+            $app = Factory::getApplication();
+
        // JInput object
         //$jinput = $app->input;
         //$menutype = $this->input->get->get('menutype');
@@ -185,12 +163,12 @@ public function predictionpj()
          */
         public function seasons()
         {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $model = $this->getModel('ajax');
                 echo json_encode((array) $model->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
-                JFactory::getApplication()->close();    
+                Factory::getApplication()->close();    
         }    
         
         /**
@@ -200,12 +178,11 @@ public function predictionpj()
          */
         public function personlistoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonlistoptions(JFactory::getApplication()->input->getInt( 'person_art' ), $jinput->getVar('required','false'),JFactory::getApplication()->input->getInt( 'slug' ),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getpersonlistoptions(Factory::getApplication()->input->getInt( 'person_art' ), $jinput->getVar('required','false'),Factory::getApplication()->input->getInt( 'slug' ),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -215,12 +192,11 @@ public function predictionpj()
          */
         public function personpositionoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonpositionoptions(JFactory::getApplication()->input->getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JFactory::getApplication()->input->getInt( 'slug' ),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getpersonpositionoptions(Factory::getApplication()->input->getInt( 'sports_type_id' ), $jinput->getVar('required','false'),Factory::getApplication()->input->getInt( 'slug' ),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -230,12 +206,11 @@ public function predictionpj()
          */
         public function personagegroupoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonagegroupoptions(JFactory::getApplication()->input->getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JFactory::getApplication()->input->getInt( 'slug' ),JFactory::getApplication()->input->getInt( 'dbase' ),JFactory::getApplication()->input->getInt( 'project' ) ) );
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getpersonagegroupoptions(Factory::getApplication()->input->getInt( 'sports_type_id' ), $jinput->getVar('required','false'),Factory::getApplication()->input->getInt( 'slug' ),Factory::getApplication()->input->getInt( 'dbase' ),Factory::getApplication()->input->getInt( 'project' ) ) );
+                Factory::getApplication()->close();
         }
 
         
@@ -247,12 +222,11 @@ public function predictionpj()
          */
         public function predictionmembersoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpredictionmembersoptions(JFactory::getApplication()->input->getInt( 'prediction_id' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getpredictionmembersoptions(Factory::getApplication()->input->getInt( 'prediction_id' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -262,12 +236,11 @@ public function predictionpj()
          */
         public function projectdivisionsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -277,12 +250,11 @@ public function predictionpj()
          */
         public function projecteventsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectEventsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectEventsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -292,12 +264,11 @@ public function predictionpj()
          */
         public function projectteamsbydivisionoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), JFactory::getApplication()->input->getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), Factory::getApplication()->input->getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -307,12 +278,11 @@ public function predictionpj()
          */
         public function projectsbysportstypesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectsBySportsTypesOptions(JFactory::getApplication()->input->getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectsBySportsTypesOptions(Factory::getApplication()->input->getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -322,12 +292,11 @@ public function predictionpj()
          */
         public function agegroupsbysportstypesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getAgeGroupsBySportsTypesOptions(JFactory::getApplication()->input->getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getAgeGroupsBySportsTypesOptions(Factory::getApplication()->input->getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -337,12 +306,11 @@ public function predictionpj()
          */
         public function projectsbycluboptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectsByClubOptions(JFactory::getApplication()->input->getInt( 'cid' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectsByClubOptions(Factory::getApplication()->input->getInt( 'cid' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -352,12 +320,11 @@ public function predictionpj()
          */
         public function projectteamoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' ) ));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -367,12 +334,11 @@ public function predictionpj()
          */
         public function projectteamsptidoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamPtidOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectTeamPtidOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' ) ));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -382,12 +348,11 @@ public function predictionpj()
          */
         public function projectplayeroptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectPlayerOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectPlayerOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -397,12 +362,11 @@ public function predictionpj()
          */
         public function projectstaffoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectStaffOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectStaffOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -412,12 +376,11 @@ public function predictionpj()
          */
         public function projectcluboptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectClubOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectClubOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -427,12 +390,11 @@ public function predictionpj()
          */
         public function projectstatsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectStatOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectStatOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -442,12 +404,11 @@ public function predictionpj()
          */
         public function matchesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getMatchesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getMatchesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -457,12 +418,11 @@ public function predictionpj()
          */
         public function refereesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getRefereesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getRefereesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -472,12 +432,11 @@ public function predictionpj()
          */
         public function projectroundoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
             $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
 
         /**
@@ -487,12 +446,11 @@ public function predictionpj()
          */
         public function projecttreenodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
+            $app = Factory::getApplication();
         $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTreenodeOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JFactory::getApplication()->input->getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                echo json_encode((array) $model->getProjectTreenodeOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),Factory::getApplication()->input->getInt( 'dbase' )));
+                Factory::getApplication()->close();
         }
         
         /**
@@ -502,12 +460,13 @@ public function predictionpj()
          */
         public function sportstypesoptions()
         {
-                echo json_encode((array) JoomleagueModelSportsTypes::getSportsTypes());
-                JFactory::getApplication()->close();
+            $app = Factory::getApplication();
+        $jinput = $app->input;
+        $model = $this->getModel('ajax');
+                echo json_encode((array) $model->getsportstypes($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
+                Factory::getApplication()->close(); 
         }
 
 }
-// Register the error handler.
-//JError::setErrorHandling(E_ALL, 'callback', array('JoomleagueControllerAjax', 'sendResponse'));
 
 ?>

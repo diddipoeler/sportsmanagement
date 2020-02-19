@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+div.modjlgevent .teamlogo {
+	max-height: 20px;
+	max-width: 20px;
+	vertical-align: middle;
+}
+
+div.modjlgevent .projectname {
+	font-weight:bold;
+}
+
+div.modjlgevent .fulltablelink {
+	text-align:center;
+}
+
+th.td_c, td.td_c {
+	text-align:center;
+}
+
+table.eventsranking {
+	width:100%;
+}

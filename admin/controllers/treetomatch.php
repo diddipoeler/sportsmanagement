@@ -4,13 +4,15 @@
  * @file      treetomatch.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
  
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerTreetomatch
@@ -21,7 +23,7 @@ defined('_JEXEC') or die;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerTreetomatch extends JControllerForm
+class sportsmanagementControllerTreetomatch extends FormController
 {
 
 	/**
@@ -32,17 +34,17 @@ class sportsmanagementControllerTreetomatch extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-	//	$app = JFactory::getApplication();
+	//	$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$jinput->set('layout','form');
         
         parent::__construct($config);
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
 	}
 
 
@@ -59,18 +61,15 @@ class sportsmanagementControllerTreetomatch extends JControllerForm
     $post = $this->jsmjinput->post->getArray();    
     $cid = $this->jsmjinput->get('cid',array(),'array');
     $post['id'] = $this->jsmjinput->get('nid');
-    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($post,true).'</pre>'),'Notice');    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
-    
+   
 		$model = $this->getModel('treetomatchs');
 		if($model->store($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_SAVED');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_SAVED');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_ERROR_SAVE') . $model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_ERROR_SAVE') . $model->getError();
 		}
 
     $link = 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->jsmjinput->get('nid').'&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');    

@@ -1,16 +1,34 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      sportsmanagement.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage helpers
+ * 
+ * toolbar
+ * https://issues.joomla.org/tracker/joomla-cms/19670
+ * 
  */
-// Check to ensure this file is included in Joomla!
+ 
 defined('_JEXEC') or die;
+use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\Button\PopupButton;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Log\Log;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -61,23 +79,32 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200') {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
         $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-        $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+        if ( $picture )
+	{
+	    $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+	}
+	    else
+	    {
+	    $modaltext .= '<button type="button" class="btn btn-primary">' . $text . '</button>';
+	    }
+	    
         $modaltext .= '</a>';
 
         if (!$url) {
             $url = $picture;
         }
 
-        $modaltext .= JHtml::_('bootstrap.renderModal', $target, array(
+        $modaltext .= HTMLHelper::_('bootstrap.renderModal', $target, array(
                     'title' => $text,
                     'url' => $url,
                     'height' => $height,
-                    'width' => $width
+                    'width' => $width,
+                    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">'.Text::_('JCANCEL').'</button>'
                         )
         );
 
@@ -186,7 +213,7 @@ abstract class sportsmanagementHelper {
      * das template kann angepasst werden
      * @return
      */
-    function jsmsernum() {
+    public static function jsmsernum() {
         $template = 'XX99-XX99-99XX-99XX-XXXX-99XX';
         $k = strlen($template);
         $sernum = '';
@@ -211,60 +238,17 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function existPicture($picture = '', $standard = '') {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $imageArray = '';
 
-        if (!JFile::exists($picture)) {
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture nicht vorhanden <pre>'.print_r($picture, true).'</pre><br>','Error');    
+        if (!File::exists($picture)) {
+    
             return false;
         } else {
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture vorhanden <pre>'.print_r($picture, true).'</pre><br>','');    
+    
             return true;
         }
 
-
-        /*
-          $file_headers = @get_headers($picture);
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' picture_server <pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER, true).'</pre><br>','');
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' picture <pre>'.print_r($picture, true).'</pre><br>','');
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' file_headers <pre>'.print_r($file_headers, true).'</pre><br>','');
-
-          // check if files exists
-          $fileExists = true;
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' fileExists <pre>'.print_r($fileExists, true).'</pre><br>','');
-          $fileExists = JFile::exists($picture);
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' fileExists <pre>'.print_r($fileExists, true).'</pre><br>','');
-
-          $ch = curl_init($picture);
-          curl_setopt($ch, CURLOPT_NOBODY, true);
-          curl_exec($ch);
-          $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' retcode <pre>'.print_r($retcode, true).'</pre><br>','');
-          // $retcode >= 400 -> not found, $retcode = 200, found.
-          curl_close($ch);
-         */
-
-        //$imageArray = getimagesize($picture);
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' imageArray <pre>'.print_r($imageArray, true).'</pre><br>','');
-//    if ( is_array ($imageArray) )
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return true;
-//    }
-//    if($file_headers[0] == 'HTTP/1.1 404 Not Found') 
-//    {
-//    return false;
-//    }
-//    else 
-//    {
-//    return true;
-//    }
     }
 
     /**
@@ -278,7 +262,7 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function setDebugInfoText($methode, $funktion, $klasse, $zeile, $text) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
@@ -287,16 +271,11 @@ abstract class sportsmanagementHelper {
         $object->class = $klasse;
         $object->line = $zeile;
         $object->text = $text;
-        //if ( !isset(self::$_success_text[$klasse]) )
-        //if ( !is_array(self::$_success_text) )
         if (!array_key_exists($klasse, self::$_success_text)) {
             self::$_success_text[$klasse] = array();
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.'klasse <pre>'.print_r($klasse, true).'</pre><br>','');
         }
         $export[] = $object;
         self::$_success_text[$klasse] = array_merge(self::$_success_text[$klasse], $export);
-
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(self::$_success_text, true).'</pre><br>','');
     }
 
     /**
@@ -321,7 +300,7 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function getMatchContent($content_id) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -347,7 +326,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchDate($match, $format = 'Y-m-d') {
+	    $app = Factory::getApplication();
+	    try{
         return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx";
+		    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -358,7 +345,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchTime($match, $format = 'H:i') {
+	    $app = Factory::getApplication();
+	    try{
         return $match->match_date ? $match->match_date->format($format, true) : "xx:xx";
+		    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -369,7 +364,17 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i') {
-        return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	    $app = Factory::getApplication();
+	    try{
+		    if ($match->match_date) {
+	    return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	    }
+	    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -381,12 +386,19 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i') {
+	    $app = Factory::getApplication();
         $endTimestamp = "xxxx-xx-xx xx:xx";
+	    try{
         if ($match->match_date) {
             $start = new DateTime(self::getMatchStartTimestamp($match));
             $end = $start->add(new DateInterval('PT' . $totalMatchDuration . 'M'));
             $endTimestamp = $end->format($format);
         }
+	 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+        }	    
         return $endTimestamp;
     }
 
@@ -409,30 +421,16 @@ abstract class sportsmanagementHelper {
      * @param match $match Typically obtained from a DB-query and contains the match_date and timezone (of the project)
      */
     public static function convertMatchDateToTimezone(&$match) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Get some system objects.
-        $config = JFactory::getConfig();
-        $user = JFactory::getUser();
-        $res = JFactory::getDate(strtotime($match->match_date));
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
-//        
-//         if(version_compare(JVERSION,'3.0.0','ge')) 
-//            {
-//                $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-//            }
-//            else
-//            {
-//				$res->setOffset($app->getCfg('offset'));
-//            }
-//        
-//        $test = $res->toUnix('true');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' test<br><pre>'.print_r($test,true).'</pre>'),'Notice');
+        $config = Factory::getConfig();
+        $user = Factory::getUser();
+	    try{
+        $res = Factory::getDate(strtotime($match->match_date));
 
         if ($match->match_date > 0) {
-            $app = JFactory::getApplication();
-            if ($app->isAdmin()) {
+            $app = Factory::getApplication();
+            if ( $app->isClient('administrator') ) {
                 // In case we are editing match(es) always use the project timezone
                 $timezone = $match->timezone;
             } else {
@@ -440,19 +438,8 @@ abstract class sportsmanagementHelper {
                 $timezone = $user->getParam('timezone', $match->timezone);
             }
 
-            //$matchDate = new JDate($match->match_date, 'UTC');
             $matchDate = new JDate($match->match_date);
-            /*
-              if(version_compare(JVERSION,'3.0.0','ge'))
-              {
-              //$res->setTimezone($app->getCfg('offset'));
-              $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-              }
-              else
-              {
-              $res->setOffset($app->getCfg('offset'));
-              }
-             */
+
             if ($timezone) {
                 $matchDate->setTimezone(new DateTimeZone($timezone));
             } else {
@@ -465,20 +452,20 @@ abstract class sportsmanagementHelper {
         } else {
             $match->match_date = null;
         }
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($config->get('offset'),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match  timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
+}
+        catch (Exception $e)
+        {
+	//$app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_EDITMATCH_MATCHDATE'), $match->value),'Notice');
+        }
     }
-
+	
     /**
      * sportsmanagementHelper::get_IP_address()
      * 
      * @return
      */
     function get_IP_address() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         foreach (array('HTTP_CLIENT_IP',
     'HTTP_X_FORWARDED_FOR',
     'HTTP_X_FORWARDED',
@@ -489,11 +476,7 @@ abstract class sportsmanagementHelper {
             if (array_key_exists($key, $_SERVER) === true) {
                 foreach (explode(',', $_SERVER[$key]) as $IPaddress) {
                     $IPaddress = trim($IPaddress); // Just to be safe
-
-                    $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' key<br><pre>' . print_r($key, true) . '</pre>'), 'Notice');
-                    $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' IPaddress<br><pre>' . print_r($IPaddress, true) . '</pre>'), 'Notice');
-
-                    if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                   if (filter_var($IPaddress, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
 
                         return $IPaddress;
                     }
@@ -509,14 +492,11 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function isJoomlaVersion($version = '2.5') {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 
         $j = new JVersion();
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
 
         if (!defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION')) {
             DEFINE('COM_SPORTSMANAGEMENT_JOOMLAVERSION', substr($j->RELEASE, 0, strlen($version)));
@@ -647,16 +627,11 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getDBConnection($request = FALSE, $value = FALSE) {
-        $app = JFactory::getApplication();
-        $params = JComponentHelper::getParams('com_sportsmanagement');
-
-        $config = JFactory::getConfig();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(JURI::root(),true).'</pre>'),'');
+        $app = Factory::getApplication();
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $config = Factory::getConfig();
 
         if ($params->get('cfg_dbprefix')) {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> wir benutzen andere tabellen</pre>'),'');
-
             $host = $config->get('host'); //replace your IP or hostname
             $user = $config->get('user'); //database user
             $password = $config->get('password'); //database password
@@ -666,31 +641,20 @@ abstract class sportsmanagementHelper {
             $debug = $config->get('config.debug');
 
             $options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r($options,true).'</pre>'),'');   
 
             try {
                 $db = JDatabase::getInstance($options);
             } catch (Exception $e) {
                 // catch any database errors.
-                //$db->transactionRollback();
                 JErrorPage::render($e);
             }
 
-            if (JError::isError($db)) {
+            if ( !$db ) {
                 header('HTTP/1.1 500 Internal Server Error');
                 jexit('Database Error: ' . $db->toString());
             } else {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> kein verbindungsfehler</pre>'),'');   
+   
             }
-            /*
-              if ($db->getErrorNum() > 0) {
-              JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br />' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
-              }
-              else
-              {
-              //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> verbindung hergestellt</pre>'),'');
-              }
-             */
             $db->debug($debug);
             return $db;
         } else {
@@ -700,13 +664,8 @@ abstract class sportsmanagementHelper {
                 $cfg_which_database = $params->get('cfg_which_database');
             }
 
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDbo<br><pre>'.print_r(JFactory::getDbo(),true).'</pre>'),'');
-            //self::get_IP_address();
-
             if (!$cfg_which_database) {
-                //self::$_jsm_db = JFactory::getDbo(); 
-                return JFactory::getDbo();
+                return Factory::getDbo();
             } else {
                 $option = array(); //prevent problems
                 $option['driver'] = $params->get('jsm_dbtype');            // Database driver name
@@ -732,15 +691,8 @@ abstract class sportsmanagementHelper {
                     JErrorPage::render($e);
                 }
 
-                //$user_password = $params->get( 'jsm_server_password' );
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_server_password<br><pre>'.print_r($user_password,true).'</pre>'),'');
-
                 if ($user_id) {
-
-                    //echo "<strong>Password: </strong>" . JUserHelper::hashPassword($password);    
-                    //$testcrypt = JUserHelper::getCryptedPassword($user_password);
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . $testcrypt),'');
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . JUserHelper::hashPassword($user_password)),'');
+			try{
                     // Load the profile data from the database.
                     $db = self::$_jsm_db;
                     $query = $db->getQuery(true);
@@ -756,7 +708,7 @@ abstract class sportsmanagementHelper {
                     $query->from('#__user_profiles as up');
                     $query->where('up.user_id = ' . $user_id);
                     $query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.website' . ''));
-                    $query->where('up.profile_value LIKE ' . $db->Quote('' . JURI::root() . ''));
+                    $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
                     $db->setQuery($query);
                     $results2 = $db->loadResult();
 
@@ -768,12 +720,17 @@ abstract class sportsmanagementHelper {
                             return JDatabase::getInstance($option);
                         }
                     } else {
-                        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
-                        return JFactory::getDbo();
+                        return Factory::getDbo();
                     }
+		}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return Factory::getDbo();
+        }	
+			
                 } else {
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
-                    return JFactory::getDbo();
+                    return Factory::getDbo();
                 }
             }
         }
@@ -808,124 +765,105 @@ abstract class sportsmanagementHelper {
         return false;
     }
 
+    
     /**
-     * _setJoomLeagueVersion
-     *
-     * set the version data and actual date, time and
-     * Joomla systemName from the joomleague_version table
-     *
-     * @access private
-     * @since  2010-08-26
-     *
-     * @return array
+     * sportsmanagementHelper::_setSportsManagementVersion()
+     * 
+     * @return
      */
-    function _setJoomLeagueVersion() {
+    function _setSportsManagementVersion() {
         $exportRoutine = '2010-09-23 15:00:00';
         $result[0]['exportRoutine'] = $exportRoutine;
         $result[0]['exportDate'] = date('Y-m-d');
         $result[0]['exportTime'] = date('H:i:s');
         // welche joomla version ?
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            $result[0]['exportSystem'] = JFactory::getConfig()->get('config.sitename');
+            $result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
         } else {
-            $result[0]['exportSystem'] = JFactory::getConfig()->getValue('config.sitename');
+            $result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
         }
-        $result[0]['object'] = 'JoomLeagueVersion';
+        $result[0]['object'] = 'SportsManagementVersion';
         return $result;
     }
 
+    
     /**
-     * _setLeagueData
-     *
-     * set the league data from the joomleague_league table
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setLeagueData()
+     * 
+     * @param mixed $league
+     * @return
      */
     function _setLeagueData($league) {
 
         if ($league) {
-            $result[] = JArrayHelper::fromObject($league);
+            $result[] = ArrayHelper::fromObject($league);
             $result[0]['object'] = 'League';
             return $result;
         }
         return false;
     }
 
+    
     /**
-     * _setProjectData
-     *
-     * set the project data from the joomleague table
-     *
-     * @access private
-     * @since  1.5.0a
-     *
-     * @return array
+     * sportsmanagementHelper::_setProjectData()
+     * 
+     * @param mixed $project
+     * @return
      */
     function _setProjectData($project) {
         if ($project) {
-            $result[] = JArrayHelper::fromObject($project);
-            $result[0]['object'] = 'JoomLeague20';
+            $result[] = ArrayHelper::fromObject($project);
+            $result[0]['object'] = 'SportsManagement';
             return $result;
         }
         return false;
     }
 
+    
     /**
-     * _setSeasonData
-     *
-     * set the season data from the joomleague_season table
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setSeasonData()
+     * 
+     * @param mixed $season
+     * @return
      */
     function _setSeasonData($season) {
         if ($season) {
-            $result[] = JArrayHelper::fromObject($season);
+            $result[] = ArrayHelper::fromObject($season);
             $result[0]['object'] = 'Season';
             return $result;
         }
         return false;
     }
 
+    
     /**
-     * _setSportsType
-     *
-     * set the SportsType
-     *
-     * @access private
-     * @since  1.5.5241
-     *
-     * @return array
+     * sportsmanagementHelper::_setSportsType()
+     * 
+     * @param mixed $sportstype
+     * @return
      */
     function _setSportsType($sportstype) {
 
         if ($sportstype) {
-            $result[] = JArrayHelper::fromObject($sportstype);
+            $result[] = ArrayHelper::fromObject($sportstype);
             $result[0]['object'] = 'SportsType';
             return $result;
         }
         return false;
     }
 
+    
     /**
-     * _setXMLData
-     *
+     * sportsmanagementHelper::_setXMLData()
      * 
-     *
-     * @access private
-     * @since  1.5.0a
-     *
-     * @return void
+     * @param mixed $data
+     * @param mixed $object
+     * @return
      */
     function _setXMLData($data, $object) {
         if ($data) {
             foreach ($data as $row) {
-                $result[] = JArrayHelper::fromObject($row);
+                $result[] = ArrayHelper::fromObject($row);
             }
             $result[0]['object'] = $object;
             return $result;
@@ -940,89 +878,65 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function addSubmenu($submenu) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        // retrieve the value of the state variable. If no value is specified,
-        // the specified default value will be returned.
-        // function syntax is getUserState( $key, $default );
+        $document = Factory::getDocument();
         $project_id = $app->getUserState("$option.pid", '0');
         $project_team_id = $app->getUserState("$option.project_team_id", '0');
         $team_id = $app->getUserState("$option.team_id", '0');
         $club_id = $app->getUserState("$option.club_id", '0');
 
-
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-//            $app->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JFactory::getApplication()->input->post->getArray(array()),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
-
-            $my_text = 'post <pre>' . print_r(JFactory::getApplication()->input->post->getArray(array()), true) . '</pre>';
-            $my_text .= 'project_id <pre>' . print_r($project_id, true) . '</pre>';
-            $my_text .= 'project_team_id <pre>' . print_r($project_team_id, true) . '</pre>';
-            $my_text .= 'team_id <pre>' . print_r($team_id, true) . '</pre>';
-            $my_text .= 'club_id <pre>' . print_r($club_id, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
-        //$app->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
-
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel'
+                    Text::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel'
             );
 
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects'
             );
 
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions'
             );
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons'
             );
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar'
             );
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions'
             );
             JHtmlSidebar::addEntry(
-                    JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions'
+                    Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions'
             );
         } else {
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel');
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects');
 
             if ($project_id != 0) {
-                JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $project_id, $submenu == 'project');
+                JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $project_id, $submenu == 'project');
             } else {
                 
             }
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons');
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar');
 
-            JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions');
+            JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions');
 
             // set some global property
-            $document = JFactory::getDocument();
+            $document = Factory::getDocument();
             $document->addStyleDeclaration('.icon-48-helloworld {background-image: url(../media/com_sportsmanagement/images/tux-48x48.png);}');
             if ($submenu == 'extensions') {
-                $document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
+                $document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
             }
         }
     }
@@ -1031,7 +945,7 @@ abstract class sportsmanagementHelper {
      * Get the actions
      */
     public static function getActions($messageId = 0) {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         $result = new JObject;
 
         if (empty($messageId)) {
@@ -1058,14 +972,9 @@ abstract class sportsmanagementHelper {
      * @return object
      */
     static function getExtendedStatistic($data = '', $file, $format = 'ini') {
-        $app = JFactory::getApplication();
-        //$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
-        $templatepath = JPATH_COMPONENT_ADMINISTRATOR . DS . 'statistics';
-        $xmlfile = $templatepath . DS . $file . '.xml';
-
-        //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-
+        $app = Factory::getApplication();
+        $templatepath = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'statistics';
+        $xmlfile = $templatepath .DIRECTORY_SEPARATOR. $file . '.xml';
         $extended = JForm::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
         $extended->bind($data);
         return $extended;
@@ -1077,16 +986,15 @@ abstract class sportsmanagementHelper {
      * @param string $file
      * @return object
      */
-    static function getExtended($data = '', $file, $format = 'ini') {
-        $app = JFactory::getApplication();
-        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DS . 'assets' . DS . 'extended' . DS . $file . '.xml';
-        /*
+    static function getExtended($data = '', $file, $format = 'ini', $frontend = FALSE) {
+        $app = Factory::getApplication();
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'assets' .DIRECTORY_SEPARATOR. 'extended' .DIRECTORY_SEPARATOR. $file . '.xml';
+        /**
          * extended data
          */
-        if (JFile::exists($xmlfile)) {
+        if (File::exists($xmlfile)) {
             try {
-                $jRegistry = new JRegistry;
-                //$jRegistry->loadString($data, $format);
+                $jRegistry = new Registry;
 
                 if ($data) {
                     if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -1095,16 +1003,21 @@ abstract class sportsmanagementHelper {
                         $jRegistry->loadJSON($data);
                     }
                 }
-                //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-                //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
 
                 $extended = JForm::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
                 $extended->bind($jRegistry);
+		    if ( $frontend )
+		    {
+		return $jRegistry;	    
+		    }
+		    else
+		    {
                 return $extended;
+		    }
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
             }
         } else {
@@ -1121,15 +1034,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     static function getExtendedUser($data = '', $file, $format = 'ini') {
-        $app = JFactory::getApplication();
-        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DS . 'assets' . DS . 'extendeduser' . DS . $file . '.xml';
+        $app = Factory::getApplication();
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'assets' .DIRECTORY_SEPARATOR. 'extendeduser' .DIRECTORY_SEPARATOR. $file . '.xml';
         /*
          * extended data
          */
 
-        if (JFile::exists($xmlfile)) {
+        if (File::exists($xmlfile)) {
             try {
-                $jRegistry = new JRegistry;
+                $jRegistry = new Registry;
 
                 if ($data) {
                     if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -1138,16 +1051,13 @@ abstract class sportsmanagementHelper {
                         $jRegistry->loadJSON($data);
                     }
                 }
-                //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-                //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-
                 $extended = JForm::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
                 $extended->bind($jRegistry);
                 return $extended;
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             }
         } else {
             return false;
@@ -1167,7 +1077,7 @@ abstract class sportsmanagementHelper {
         $query = '	SELECT	id,
 							name
 
-					FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project
+					FROM #__sportsmanagement_project
 					ORDER BY ordering, name ASC';
 
         $db->setQuery($query);
@@ -1189,7 +1099,7 @@ abstract class sportsmanagementHelper {
     public static function getProjectFavTeams($project_id) {
 
         if ($project_id) {
-            $row = JTable::getInstance('project', 'sportsmanagementTable');
+            $row = Table::getInstance('project', 'sportsmanagementTable');
             $row->load($project_id);
             return $row;
         } else {
@@ -1206,7 +1116,7 @@ abstract class sportsmanagementHelper {
      */
     function getTeamplayerProject($projectteam_id) {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT project_id FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project_team WHERE id=' . (int) $projectteam_id;
+        $query = 'SELECT project_id FROM #__sportsmanagement_project_team WHERE id=' . (int) $projectteam_id;
         $db->setQuery($query);
         if (!$result = $db->loadResult()) {
             //$this->setError($db->getErrorMsg());
@@ -1224,13 +1134,13 @@ abstract class sportsmanagementHelper {
      */
     public static function getSportsTypeName($sportsType) {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT name FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_sports_type WHERE id=' . (int) $sportsType;
+        $query = 'SELECT name FROM #__sportsmanagement_sports_type WHERE id=' . (int) $sportsType;
         $db->setQuery($query);
         if (!$result = $db->loadResult()) {
             //$this->setError($db->getErrorMsg());
             return false;
         }
-        return JText::_($result);
+        return Text::_($result);
     }
 
     /**
@@ -1242,14 +1152,14 @@ abstract class sportsmanagementHelper {
      */
     function getSportsTypes() {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = 'SELECT id, name FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_sports_type ORDER BY name ASC ';
+        $query = 'SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
         $db->setQuery($query);
         if (!$result = $db->loadObjectList()) {
             $this->setError($db->getErrorMsg());
             return false;
         }
         foreach ($result as $sportstype) {
-            $sportstype->name = JText::_($sportstype->name);
+            $sportstype->name = Text::_($sportstype->name);
         }
         return $result;
     }
@@ -1263,14 +1173,14 @@ abstract class sportsmanagementHelper {
      */
     public static function getPosPersonTypeName($personType) {
         switch ($personType) {
-            case 2 : $result = JText::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF');
+            case 2 : $result = Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF');
                 break;
-            case 3 : $result = JText::_('COM_SPORTSMANAGEMENT_F_REFEREES');
+            case 3 : $result = Text::_('COM_SPORTSMANAGEMENT_F_REFEREES');
                 break;
-            case 4 : $result = JText::_('COM_SPORTSMANAGEMENT_F_CLUB_STAFF');
+            case 4 : $result = Text::_('COM_SPORTSMANAGEMENT_F_CLUB_STAFF');
                 break;
             default :
-            case 1 : $result = JText::_('COM_SPORTSMANAGEMENT_F_PLAYERS');
+            case 1 : $result = Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS');
                 break;
         }
         return $result;
@@ -1284,7 +1194,7 @@ abstract class sportsmanagementHelper {
     function getExtension($project_id = 0) {
         $option = 'com_sportsmanagement';
         if (!$project_id) {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             $project_id = $app->getUserState($option . 'project', 0);
         }
         if (!$project_id) {
@@ -1294,10 +1204,8 @@ abstract class sportsmanagementHelper {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $query->select('extension');
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project');
+        $query->from('#__sportsmanagement_project');
         $query->where('id =' . $db->Quote((int) $project_id));
-
-//		$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
         $db->setQuery($query);
         $res = $db->loadResult();
 
@@ -1310,21 +1218,17 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getExtensions() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = 'com_sportsmanagement';
         $view = $jinput->get('view');
         $arrExtensions = array();
         $excludeExtension = array();
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
-
-        if (JFolder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions')) {
-            $folderExtensions = JFolder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions')) {
+            $folderExtensions = Folder::folders(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
-
                     if ($ext == $view) {
                         $arrExtensions[] = $ext;
                     }
@@ -1334,35 +1238,6 @@ abstract class sportsmanagementHelper {
 
         return $arrExtensions;
     }
-
-//	public static function getExtensions($project_id)
-//	{
-//		$option='com_sportsmanagement';
-//		$arrExtensions = array();
-//		$excludeExtension = array();
-//		if ($project_id) {
-//			$db= sportsmanagementHelper::getDBConnection();
-//			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
-//
-//			$db->setQuery($query);
-//			$res=$db->loadObject();
-//			if(!empty($res)) {
-//				$excludeExtension = explode(",", $res->extension);
-//			}
-//		}
-//		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
-//			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
-//													'.', false, false, $excludeExtension);
-//			if($folderExtensions !== false) {
-//				foreach ($folderExtensions as $ext)
-//				{
-//					$arrExtensions[] = $ext;
-//				}
-//			}
-//		}
-//
-//		return $arrExtensions;
-//	}
 
     /**
      * sportsmanagementHelper::getExtensionsOverlay()
@@ -1376,7 +1251,7 @@ abstract class sportsmanagementHelper {
         $excludeExtension = array();
         if ($project_id) {
             $db = sportsmanagementHelper::getDBConnection();
-            $query = 'SELECT extension FROM #__' . COM_SPORTSMANAGEMENT_TABLE . '_project WHERE id=' . $db->Quote((int) $project_id);
+            $query = 'SELECT extension FROM #__sportsmanagement_project WHERE id=' . $db->Quote((int) $project_id);
 
             $db->setQuery($query);
             $res = $db->loadObject();
@@ -1384,8 +1259,8 @@ abstract class sportsmanagementHelper {
                 $excludeExtension = explode(",", $res->extension);
             }
         }
-        if (JFolder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay')) {
-            $folderExtensions = JFolder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions-overlay')) {
+            $folderExtensions = Folder::folders(JPATH_SITE .DIRECTORY_SEPARATOR. 'components' .DIRECTORY_SEPARATOR. 'com_sportsmanagement' .DIRECTORY_SEPARATOR. 'extensions-overlay', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
                     $arrExtensions[] = $ext;
@@ -1446,43 +1321,89 @@ abstract class sportsmanagementHelper {
      * @return string placeholder (path)
      */
     public static function getDefaultPlaceholder($type = "player") {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
         $ph_logo_medium = $params->get('ph_logo_medium', 0);
         $ph_logo_small = $params->get('ph_logo_small', 0);
         $ph_icon = $params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');
         $ph_team = $params->get('ph_team', 0);
+	    $ph_stadium = $params->get('ph_stadium', 0);
+	    $ph_trikot = $params->get('ph_trikot', 0);
+        $ph_project = $params->get('ph_project', 0);
+	    $ph_player_men_large = $params->get('ph_player_men_large', 0);
+	    $ph_player_men_small = $params->get('ph_player_men_small', 0);
+	    $ph_player_woman_large = $params->get('ph_player_woman_large', 0);
+	    $ph_player_woman_small = $params->get('ph_player_woman_small', 0);
 
-        //setup the different placeholders
-        switch ($type) {
-            case "player": //player
-                return $ph_player;
-                break;
-            case "clublogobig": //club logo big
-            case "logo_big":
-                return $ph_logo_big;
-                break;
-            case "clublogomedium": //club logo medium
-            case "logo_middle":
-                return $ph_logo_medium;
-                break;
-            case "clublogosmall": //club logo small
-            case "logo_small":
-                return $ph_logo_small;
-                break;
-            case "icon": //icon
-                return $ph_icon;
-                break;
-            case "team": //team picture
-            case "team_picture":
-            case "projectteam_picture":
-                return $ph_team;
-                ;
-                break;
-            default:
-                $picture = null;
-                break;
+/** setup the different placeholders */
+switch ($type) {
+case "trikot_home": //
+case "trikot_away": //
+case "clubs_trikot_home": //
+case "clubs_trikot_away": //
+return $ph_trikot;
+break;
+case "projects":			
+return $ph_project;
+break;
+case "projectteams/trikot_home":			
+return $ph_logo_small;
+break;
+case "projectteams/trikot_away":			
+return $ph_logo_small;
+break;				
+case "player": //player
+case "persons": 
+return $ph_player;
+break;
+case "stadium": //
+case "playgrounds": //
+return $ph_stadium;
+break;
+case "menlarge": //
+return $ph_player_men_large;
+break;
+case "mensmall": //
+return $ph_player_men_small;
+break;
+case "womanlarge": //
+return $ph_player_woman_large;
+break;
+case "womansmall": //
+return $ph_player_woman_small;
+break;
+case "clublogobig": //club logo big
+case "logo_big":
+case "clubs_large":
+case "projects":
+case "league":
+case "leagues":
+return $ph_logo_big;
+break;
+case "clublogomedium": //club logo medium
+case "logo_middle":
+case "clubs_medium":
+return $ph_logo_medium;
+break;
+case "clublogosmall": //club logo small
+case "logo_small":
+case "clubs_small":
+return $ph_logo_small;
+break;
+case "icon": //icon
+return $ph_icon;
+break;
+case "team": //team picture
+case "team_picture":
+case "teams":
+case "projectteams":
+case "projectteam_picture":
+return $ph_team;
+break;
+default:
+$picture = null;
+break;
         }
     }
 
@@ -1498,8 +1419,8 @@ abstract class sportsmanagementHelper {
      */
     public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0) {
         $ret = "";
-        $picturepath = JPath::clean(JPATH_SITE . DS . str_replace(JPATH_SITE . DS, '', $picture));
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $picturepath = JPath::clean(JPATH_SITE .DIRECTORY_SEPARATOR. str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $picture));
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
         $ph_logo_medium = $params->get('ph_logo_medium', 0);
@@ -1507,26 +1428,26 @@ abstract class sportsmanagementHelper {
         $ph_icon = $params->get('ph_icon', 0);
         $ph_team = $params->get('ph_team', 0);
 
-        if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DS) {
+        if (!file_exists($picturepath) || $picturepath == JPATH_SITE . DIRECTORY_SEPARATOR) {
             //setup the different placeholders
             switch ($type) {
                 case 0: //player
-                    $picture = JPATH_SITE . DS . $ph_player;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_player;
                     break;
                 case 1: //club logo big
-                    $picture = JPATH_SITE . DS . $ph_logo_big;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_big;
                     break;
                 case 2: //club logo medium
-                    $picture = JPATH_SITE . DS . $ph_logo_medium;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_medium;
                     break;
                 case 3: //club logo small
-                    $picture = JPATH_SITE . DS . $ph_logo_small;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_logo_small;
                     break;
                 case 4: //icon
-                    $picture = JPATH_SITE . DS . $ph_icon;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_icon;
                     break;
                 case 5: //team picture
-                    $picture = JPATH_SITE . DS . $ph_team;
+                    $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $ph_team;
                     break;
                 default:
                     $picture = null;
@@ -1534,7 +1455,7 @@ abstract class sportsmanagementHelper {
             }
         }
         if (!empty($picture)) {
-            $params = JComponentHelper::getParams('com_sportsmanagement');
+            $params = ComponentHelper::getParams('com_sportsmanagement');
             $format = "JPG"; //PNG is not working in IE8
             $format = $params->get('thumbformat', 'PNG');
             $bUseThumbLib = $params->get('usethumblib', false);
@@ -1575,12 +1496,12 @@ abstract class sportsmanagementHelper {
                     $ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
                 }
             } else {
-                $picture = JURI::root(true) . '/' . str_replace(JPATH_SITE . DS, "", $picture);
+                $picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, "", $picture);
                 $title = $alttext;
                 //height and width set, let the browser resize it
                 $bUseHighslide = $params->get('use_highslide', false);
                 if ($bUseHighslide && $type != 4) {
-                    $title .= ' (' . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLICK_TO_ENLARGE') . ')';
+                    $title .= ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLICK_TO_ENLARGE') . ')';
                     $ret .= '<a href="' . $picture . '" class="highslide">';
                 }
                 $ret .= '<img ';
@@ -1625,15 +1546,15 @@ abstract class sportsmanagementHelper {
      * @param JLGView       $view to which the template paths should be added
      */
     public static function addTemplatePaths($templatesToLoad, &$view) {
-        $jinput = JFactory::getApplication()->input;
+        $jinput = Factory::getApplication()->input;
         $extensions = sportsmanagementHelper::getExtensions($jinput->getInt('p'));
         foreach ($templatesToLoad as $template) {
-            $view->addTemplatePath(JPATH_COMPONENT . DS . 'views' . DS . $template . DS . 'tmpl');
+            $view->addTemplatePath(JPATH_COMPONENT .DIRECTORY_SEPARATOR. 'views' .DIRECTORY_SEPARATOR. $template .DIRECTORY_SEPARATOR. 'tmpl');
             if (is_array($extensions) && count($extensions) > 0) {
                 foreach ($extensions as $e => $extension) {
-                    $extension_views = JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension . DS . 'views';
-                    $tmpl_path = $extension_views . DS . $template . DS . 'tmpl';
-                    if (JFolder::exists($tmpl_path)) {
+                    $extension_views = JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'extensions' .DIRECTORY_SEPARATOR. $extension .DIRECTORY_SEPARATOR. 'views';
+                    $tmpl_path = $extension_views .DIRECTORY_SEPARATOR. $template .DIRECTORY_SEPARATOR. 'tmpl';
+                    if (Folder::exists($tmpl_path)) {
                         $view->addTemplatePath($tmpl_path);
                     }
                 }
@@ -1651,32 +1572,22 @@ abstract class sportsmanagementHelper {
      */
     public static function getTimestamp($date = null, $use_offset = 0, $offset = null) {
         $date = $date ? $date : 'now';
-        $app = JFactory::getApplication();
-        $res = JFactory::getDate(strtotime($date));
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' date<br><pre>'.print_r($date,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' use_offset<br><pre>'.print_r($use_offset,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($offset,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        $app = Factory::getApplication();
+	    try{
+        $res = Factory::getDate(strtotime($date));
 
         if ($use_offset) {
             if ($offset) {
                 $serveroffset = explode(':', $offset);
 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' serveroffset<br><pre>'.print_r($serveroffset,true).'</pre>'),'');
-
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                    //$res->setTimezone($serveroffset[0]);   
                     $res->setTimezone(new DateTimeZone($serveroffset[0]));
                 } else {
                     $res->setOffset($serveroffset[0]);
                 }
             } else {
 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($app->getCfg('offset'),true).'</pre>'),'');
-
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                    //$res->setTimezone($app->getCfg('offset'));
                     $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
                 } else {
                     $res->setOffset($app->getCfg('offset'));
@@ -1684,9 +1595,13 @@ abstract class sportsmanagementHelper {
             }
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
-
         return $res->toUnix('true');
+	    } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                return false;
+            }
     }
 
     /**
@@ -1704,6 +1619,7 @@ abstract class sportsmanagementHelper {
      *
      */
     static function convertDate($DummyDate, $direction = 1) {
+	    $result = '';
         if (!strpos($DummyDate, "-") !== false) {
             // for example 31122011 is used for 31 december 2011
             if (strlen($DummyDate) == 8) {
@@ -1750,17 +1666,9 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'team <br><pre>' . print_r($team, true) . '</pre>';
-            sportsmanagementHelper::$_success_text[__METHOD__][__LINE__] = $my_text;
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
-        }
 
         if (!isset($team->projectteamid))
             return "";
@@ -1771,7 +1679,7 @@ abstract class sportsmanagementHelper {
         $clubSlug = (isset($team->club_slug) ? $team->club_slug : $team->club_id);
         $division_slug = (isset($team->division_slug) ? $team->division_slug : $team->division_id);
         $projectSlug = (isset($team->project_slug) ? $team->project_slug : $team->project_id);
-        $output = '';
+        $output = '<ul class="list-inline">';
 
         if ($config['show_team_link']) {
             $routeparameter = array();
@@ -1782,10 +1690,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['ptid'] = $projectteamid;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if (((!isset($team_plan)) || ($teamid != $team_plan->id)) && ($config['show_plan_link'])) {
@@ -1798,10 +1708,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['mode'] = 0;
             $routeparameter['ptid'] = $projectteamid;
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_curve_link']) {
@@ -1814,10 +1726,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['division'] = $division_slug;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_teaminfo_link']) {
@@ -1829,10 +1743,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['ptid'] = $projectteamid;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_club_link']) {
@@ -1845,10 +1761,12 @@ abstract class sportsmanagementHelper {
 
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/mail.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_teamstats_link']) {
@@ -1859,10 +1777,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['tid'] = $teamSlug;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_clubplan_link']) {
@@ -1874,10 +1794,12 @@ abstract class sportsmanagementHelper {
             $routeparameter['task'] = NULL;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_rivals_link']) {
@@ -1888,12 +1810,14 @@ abstract class sportsmanagementHelper {
             $routeparameter['tid'] = $teamSlug;
 
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals', $routeparameter);
-            $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
+            $title = Text::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/rivals.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-            $output .= JHtml::link($link, $desc);
+		$output .= '<li class="list-inline-item">';
+            $output .= HTMLHelper::link($link, $desc);
+		$output .= '</li>';
         }
-
+$output .= '</ul>';
         return $output;
     }
 
@@ -1908,7 +1832,7 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function formatTeamName($team, $containerprefix, &$config, $isfav = 0, $link = null, $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $output = '';
         $desc = '';
@@ -1974,7 +1898,7 @@ abstract class sportsmanagementHelper {
         $desc .= '</span>';
 
         if ($showIcons) {
-            $output .= JHtml::link('javascript:void(0);', $desc, $params);
+            $output .= HTMLHelper::link('javascript:void(0);', $desc, $params);
             $output .= '<' . $container . ' id="' . $containerId . '" style="' . $style_append . ';" class="rankingteam jsmeventsshowhide">';
             $output .= self::showTeamIcons($team, $config, $cfg_which_database);
             $output .= '</' . $container . '>';
@@ -1983,7 +1907,7 @@ abstract class sportsmanagementHelper {
         }
 
         if ($link != null) {
-            $output = JHtml::link($link, $output);
+            $output = HTMLHelper::link($link, $output);
         }
 
         return $output;
@@ -2000,7 +1924,7 @@ abstract class sportsmanagementHelper {
     public static function showClubIcon(&$team, $type = 1, $with_space = 0) {
         if (($type == 1) && (isset($team->country))) {
             if ($team->logo_small != '') {
-                echo JHtml::image($team->logo_small, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_small, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -2009,7 +1933,7 @@ abstract class sportsmanagementHelper {
             }
         } elseif (($type == 3) && (isset($team->country))) {
             if ($team->logo_middle != '') {
-                echo JHtml::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -2018,7 +1942,7 @@ abstract class sportsmanagementHelper {
             }
         } elseif (($type == 4) && (isset($team->country))) {
             if ($team->logo_big != '') {
-                echo JHtml::image($team->logo_big, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_big, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -2038,11 +1962,11 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function showColorsLegend($colors, $divisions = NULL) {
-        $jinput = JFactory::getApplication()->input;
+        $jinput = Factory::getApplication()->input;
         $favshow = $jinput->getString('func', '');
 
         if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team)) {
-            $fav = array('color' => sportsmanagementModelProject::$_project->fav_team_color, 'description' => JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
+            $fav = array('color' => sportsmanagementModelProject::$_project->fav_team_color, 'description' => Text::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
             array_push($colors, $fav);
         }
 
@@ -2057,7 +1981,7 @@ abstract class sportsmanagementHelper {
         foreach ($divisions as $division) {
             echo '<tr>';
             echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
-            $jRegistry = new JRegistry;
+            $jRegistry = new Registry;
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $jRegistry->loadString($division->rankingparams);
             } else {
@@ -2065,9 +1989,12 @@ abstract class sportsmanagementHelper {
             }
             $configvalues = $jRegistry->toArray();
             $colors = array();
-            for ($a = 1; $a <= sizeof($configvalues[rankingparams]); $a++) {
-                $colors[] = implode(",", $configvalues[rankingparams][$a]);
+         if ( isset($configvalues['rankingparams']) )
+	 {
+	for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++) {
+                $colors[] = implode(",", $configvalues['rankingparams'][$a]);
             }
+	}
             $configvalues = implode(";", $colors);
             $colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
             foreach ($colors as $color) {
@@ -2119,23 +2046,17 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getVersion() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('manifest_cache');
         // From the table
         $query->from('#__extensions');
-        $query->where('name LIKE ' . JFactory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
-        JFactory::getDbo()->setQuery($query);
-
-//	   $query->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
-        $manifest_cache = json_decode(JFactory::getDbo()->loadResult(), true);
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' manifest_cache -><br><pre>'.print_r($manifest_cache,true).'</pre>'),'');
-
+        $query->where('name LIKE ' . Factory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
+        Factory::getDbo()->setQuery($query);
+        $manifest_cache = json_decode(Factory::getDbo()->loadResult(), true);
         return $manifest_cache['version'];
     }
 
@@ -2320,43 +2241,40 @@ abstract class sportsmanagementHelper {
      * @since 1.5.2
      */
     public static function printbutton($print_link, &$config) {
-        $jinput = JFactory::getApplication()->input;
-        $app = JFactory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
-
+        $jinput = Factory::getApplication()->input;
+        $app = Factory::getApplication();
         if ($config['show_print_button'] == 1) {
-            JHtml::_('behavior.tooltip');
+            HTMLHelper::_('behavior.tooltip');
             $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
             // checks template image directory for image, if non found default are loaded
             if ($config['show_icons'] == 1) {
-                $image = JHtml::image('media/com_sportsmanagement/jl_images/printButton.png', JText::_('Print'));
+                $image = HTMLHelper::image('media/com_sportsmanagement/jl_images/printButton.png', Text::_('Print'));
             } else {
-                $image = JText::_('Print');
+                $image = Text::_('Print');
             }
             if ($jinput->getInt('pop')) {
                 //button in popup
                 $output = '<a href="javascript: void(0)" onclick="window.print();return false;">' . $image . '</a>';
             } else {
                 //button in view
-                $overlib = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP');
-                $text = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT');
+                $overlib = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP');
+                $text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PRINT');
 
                 /**
                  * welche joomla version 
                  * und ist seo eingestellt
                  */
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                    $sef = JFactory::getConfig()->get('sef', false);
+                    $sef = Factory::getConfig()->get('sef', false);
                 } else {
-                    $sef = JFactory::getConfig()->getValue('config.sef', false);
+                    $sef = Factory::getConfig()->getValue('config.sef', false);
                 }
-                //$print_urlparams = ($sef ? "/component/1" : "&tmpl=component&print=1");
                 $print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
                 if (is_null($print_link)) {
                     $output = '<a href="javascript: void(0)" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
                 } else {
-                    $output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+                    $output = '<a href="' . Route::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
                 }
             }
             return $output;
@@ -2389,31 +2307,35 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     static function ToolbarButton($layout = Null, $icon_image = 'upload', $alt_text = 'My Label', $view = '', $type = 0, $issueview = NULL, $issuelayout = NULL) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 
         $zusatz = '';
         $project_id = $jinput->get('pid');
         if ($project_id) {
-            $zusatz = '&pid=' . $project_id;
+            $zusatz .= '&pid=' . $project_id;
         }
-        //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JFactory::getApplication()->input->getVar('layout'),true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
-
         if (!$view) {
             $view = $jinput->get('view');
         }
+        
+        switch ($layout)
+        {
+            case 'assignpersons':
+            $zusatz .= '&team_id=' . $jinput->get('team_id');
+            $zusatz .= '&persontype=' . $jinput->get('persontype');
+            $zusatz .= '&season_id=' . $app->getUserState( "$option.season_id", '0' );;
+            break;
+        }
 
-        $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
-        $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
-        $bar = JToolbar::getInstance('toolbar');
-        $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
+        $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+        $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
+        $bar = Toolbar::getInstance('toolbar');
+        
+        $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
         $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
-
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
     }
 
     /**
@@ -2422,20 +2344,17 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     static function ToolbarButtonOnlineHelp() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $view = $jinput->get('view');
         $layout = $jinput->get('layout');
         $view = ucfirst(strtolower($view));
         $layout = ucfirst(strtolower($layout));
-        $document->addScript(JURI::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $window_width = '<script>alert($(window).width()); </script>';
         $window_height = '<script>alert(window.screen.height); </script>';
-
-        //$app->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($window_width,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($_SESSION,true).'</pre>'),'Notice');
 
         switch ($view) {
             case 'Template':
@@ -2446,25 +2365,19 @@ abstract class sportsmanagementHelper {
             default:
                 break;
         }
-        $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server', '');
-        $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
-        $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
-        $bar = JToolBar::getInstance('toolbar');
+        $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server', '');
+        $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+        $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
+        $bar = ToolBar::getInstance('toolbar');
 
         if ($layout) {
-            $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '-' . $layout . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . JText::_('Onlinehilfe') . '</button>';
+            $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '-' . $layout . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . Text::_('Onlinehilfe') . '</button>';
         } else {
-            $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . JText::_('Onlinehilfe') . '</button>';
+            $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . Text::_('Onlinehilfe') . '</button>';
         }
-
-        /*
-          $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
-          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
-         */
 
         // Add a help button.
         $bar->appendButton('Custom', $send);
-        //$bar->appendButton('Help', $ref, $com, $override, $component);
     }
 
     /**
@@ -2474,12 +2387,11 @@ abstract class sportsmanagementHelper {
      * @return array
      */
     public static function getRoundsOptions($project_id, $ordering = 'ASC', $required = false, $round_ids = NULL, $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $db = self::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-        //$query->select('id as value');
 
-        if ($app->isAdmin()) {
+        if ( $app->isClient('administrator') ) {
             $query->select('id AS value');
         } else {
             $query->select('CONCAT_WS( \':\', id, alias ) AS value');
@@ -2497,20 +2409,21 @@ abstract class sportsmanagementHelper {
         }
 
         $query->order('roundcode ' . $ordering);
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-
+try{
         $db->setQuery($query);
         if (!$required) {
-            $mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+            $mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
             return array_merge($mitems, $db->loadObjectList());
         } else {
             return $db->loadObjectList();
         }
+	 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return false;
+        }    
+	    
     }
 
     /**
@@ -2556,7 +2469,7 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getExtraSelectOptions($view = '', $field = '', $template = FALSE, $fieldtyp = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $select_columns = array();
@@ -2566,41 +2479,31 @@ abstract class sportsmanagementHelper {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
         // Select some fields
         if ($template) {
             $query->select('select_columns,select_values');
             // From the table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields');
+            $query->from('#__sportsmanagement_user_extra_fields');
             $query->where('template_backend LIKE ' . $db->Quote('' . $view . ''));
             $query->where('name LIKE ' . $db->Quote('' . $field . ''));
         } else {
             $query->select('select_columns,select_values');
             // From the table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields');
+            $query->from('#__sportsmanagement_user_extra_fields');
             $query->where('views_backend LIKE ' . $db->Quote('' . $view . ''));
             $query->where('views_backend_field LIKE ' . $db->Quote('' . $field . ''));
         }
 
-
         $query->where('fieldtyp = ' . $fieldtyp);
-
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
         $db->setQuery($query);
         $result = $db->loadObject();
         if ($result) {
             $select_columns = explode(",", $result->select_columns);
-            //$select_values = explode(",",$result->select_values);
-
             if ($result->select_values) {
                 $select_values = explode(",", $result->select_values);
             } else {
                 $select_values = explode(",", $result->select_columns);
             }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
 
             foreach ($select_columns as $key => $value) {
                 $temp = new stdClass();
@@ -2611,7 +2514,6 @@ abstract class sportsmanagementHelper {
 
             return $select_options;
         } else {
-//            JError::raiseError(0, $db->getErrorMsg());
             return false;
         }
     }
@@ -2623,13 +2525,11 @@ abstract class sportsmanagementHelper {
      * @return
      */
     static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
 
         $query->select('ef.id');
         $query->from('#__sportsmanagement_user_extra_fields as ef ');
@@ -2644,7 +2544,7 @@ abstract class sportsmanagementHelper {
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
     }
@@ -2657,7 +2557,7 @@ abstract class sportsmanagementHelper {
      * @return
      */
     static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -2675,7 +2575,7 @@ abstract class sportsmanagementHelper {
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
             }
         } else {
@@ -2691,15 +2591,11 @@ abstract class sportsmanagementHelper {
      * @return void
      */
     public static function saveExtraFields($post, $pid) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $address_parts = array();
-        //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-
         $db = sportsmanagementHelper::getDBConnection();
         //-------extra fields-----------//
         if (isset($post['extraf']) && count($post['extraf'])) {
-            //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-            //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
             for ($p = 0; $p < count($post['extraf']); $p++) {
                 // Create a new query object.
                 $query = $db->getQuery(true);
@@ -2721,11 +2617,6 @@ abstract class sportsmanagementHelper {
                     
                 }
 
-//if (!$db->query())
-//		{
-//			
-//            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		}
 // Create a new query object.
                 $query = $db->getQuery(true);
                 // Insert columns.
@@ -2734,12 +2625,9 @@ abstract class sportsmanagementHelper {
                 $values = array($post['extra_id'][$p], $pid, '\'' . $post['extraf'][$p] . '\'');
                 // Prepare the insert query.
                 $query
-                        ->insert($db->quoteName('#__' . COM_SPORTSMANAGEMENT_TABLE . '_user_extra_fields_values'))
+                        ->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
                         ->columns($db->quoteName($columns))
                         ->values(implode(',', $values));
-                // Set the query using our newly populated query object and execute it.
-                //$db->setQuery($query);
-
                 try {
                     $db->setQuery($query);
                     $result = $db->execute();
@@ -2747,11 +2635,6 @@ abstract class sportsmanagementHelper {
                     
                 }
 
-//if (!$db->query())
-//		{
-//			
-//            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		}
             }
         }
     }
@@ -2761,21 +2644,15 @@ abstract class sportsmanagementHelper {
      * http://code.google.com/apis/maps/documentation/geocoding/#Geocoding	 
      */
     public static function getAddressData($address) {
-        $app = JFactory::getApplication();
-
+        $app = Factory::getApplication();
         $url = 'http://maps.google.com/maps/api/geocode/json?' . 'address=' . urlencode($address) . '&sensor=false&language=de';
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
-
         $content = self::getContent($url);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');   		
 
         $status = null;
         if (!empty($content)) {
             $json = new JSMServices_JSON();
             $status = $json->decode($content);
         }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($status,true).'</pre>'),'');   
 
         return $status;
     }
@@ -2787,28 +2664,14 @@ abstract class sportsmanagementHelper {
      * @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
      */
     public function getOSMGeoCoords($address) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $coords = array();
-
-        //$address = utf8_encode($address);
         // call OSM geoencoding api
         // limit to one result (limit=1) without address details (addressdetails=0)
         // output in JSON
         $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=" . urlencode($address);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
-
         $result = json_decode(file_get_contents($geoCodeURL), true);
 
-
-
-
-        /*
-          [COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME] => D�rpum
-          [COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME] => Bordelum
-          [COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME] => Schleswig-Holstein
-          [COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME] => SH
-         */
         if (isset($result[0])) {
             $coords['latitude'] = $result[0]["lat"];
             $coords['longitude'] = $result[0]["lon"];
@@ -2818,8 +2681,6 @@ abstract class sportsmanagementHelper {
             $coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME'] = $result[0]["address"]["residential"];
             $coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
         }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
         return $coords;
     }
@@ -2831,13 +2692,9 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function resolveLocation($address) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $coords = array();
         $data = self::getAddressData($address);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
-//$osm = self::getOSMGeoCoords($address);  
 
         if ($data) {
             if ($data->status == 'OK') {
@@ -2910,7 +2767,7 @@ abstract class sportsmanagementHelper {
             $curl_error = curl_error($ch);
 
             if ($curl_errno != 0) {
-                $app = JFactory::getApplication();
+                $app = Factory::getApplication();
                 $err = 'CURL error : ' . $curl_errno . ' ' . $curl_error;
                 $app->enqueueMessage($err, 'error');
             }
@@ -2956,21 +2813,21 @@ abstract class sportsmanagementHelper {
      * @return
      */
     static function getPictureClub($id) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('logo_big'))
-                ->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_club')
+                ->from('#__sportsmanagement_club')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (JFile::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $picture)) {
             // alles ok
         } else {
-            $picture = JComponentHelper::getParams($option)->get('ph_logo_big', '');
+            $picture = ComponentHelper::getParams($option)->get('ph_logo_big', '');
         }
         return $picture;
     }
@@ -2982,21 +2839,21 @@ abstract class sportsmanagementHelper {
      * @return
      */
     static function getPicturePlayground($id) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('picture'))
-                ->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_playground')
+                ->from('#__sportsmanagement_playground')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (JFile::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $picture)) {
             // alles ok
         } else {
-            $picture = JComponentHelper::getParams($option)->get('ph_team', '');
+            $picture = ComponentHelper::getParams($option)->get('ph_team', '');
         }
         return $picture;
     }
@@ -3008,30 +2865,28 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getArticleList($project_category_id) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // $db = sportsmanagementHelper::getDBConnection();
         // wenn der user die k2 komponente
         // in der konfiguration ausgewählt hat,
         // kommt es zu einem fehler, wenn wir darüber selektieren
         // ist k2 installiert ?
-        if (JComponentHelper::getParams($option)->get('which_article_component') == 'com_k2') {
-            $k2 = JComponentHelper::getComponent('com_k2');
+        if (ComponentHelper::getParams($option)->get('which_article_component') == 'com_k2') {
+            $k2 = ComponentHelper::getComponent('com_k2');
 
             if (!$k2->option) {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'), 'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'), 'Error');
                 return false;
             }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' k2<br><pre>'.print_r($k2,true).'</pre>'),'');
         }
 
         // Create a new query object.
-        $query = JFactory::getDBO()->getQuery(true);
+        $query = Factory::getDBO()->getQuery(true);
 
         $query->select('c.id as value,c.title as text');
 
-        switch (JComponentHelper::getParams($option)->get('which_article_component')) {
+        switch (ComponentHelper::getParams($option)->get('which_article_component')) {
             case 'com_content':
                 $query->from('#__content as c');
                 break;
@@ -3043,8 +2898,8 @@ abstract class sportsmanagementHelper {
                 break;
         }
         $query->where('catid =' . $project_category_id);
-        JFactory::getDBO()->setQuery($query);
-        $result = JFactory::getDBO()->loadObjectList();
+        Factory::getDBO()->setQuery($query);
+        $result = Factory::getDBO()->loadObjectList();
         return $result;
     }
 
@@ -3110,7 +2965,6 @@ abstract class sportsmanagementHelper {
                     $elements[] = $key . ': ' . json_encode((string) $v);
                 }
             } else {
-                //$elements[] = $key . ': ' . static::getJSObject(is_object($v) ? get_object_vars($v) : $v);
                 $elements[] = $key . ': ' . self::getJSObject(is_object($v) ? get_object_vars($v) : $v);
             }
         }
@@ -3124,15 +2978,10 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function checkUpdateVersion() {
-        //$app = JFactory::getApplication(); 
-//        $option = JFactory::getApplication()->input->getCmd('option');  
-        //$xml = JFactory::getXMLParser( 'Simple' );
         $return = 0;
         $version = self::getVersion();
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
 
         $temp = explode(".", $version);
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
         //Laden
         $datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
         if (function_exists('curl_version')) {
@@ -3150,45 +2999,27 @@ abstract class sportsmanagementHelper {
 
             if (curl_errno($curl)) {
                 // moving to display page to display curl errors
-                //echo curl_errno($curl) ;
-                //echo curl_error($curl);
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
             } else {
                 $content = curl_exec($curl);
-                //print_r($content);
                 curl_close($curl);
             }
 
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen')) {
             $content = file_get_contents($datei);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
         } else {
-            //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
         }
-        //$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
-        //Parsen
-
         if ($content) {
-            //$doc = DOMDocument::loadXML($content);
             $doc = new DOMDocument();
             $doc->loadXML($content, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
-            $doc->save(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+            $doc->save(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            $xml = simplexml_load_file(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
-//        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
+            $xml = simplexml_load_file(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
         } else {
-            $xml = JFactory::getXML(JPATH_SITE . DS . 'tmp' . DS . 'sportsmanagement.xml');
+            $xml = Factory::getXML(JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement.xml');
         }
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
 
         $github_version = (string) $xml->version;
 
@@ -3207,10 +3038,10 @@ abstract class sportsmanagementHelper {
         $aktversion = self::checkUpdateVersion();
         $version = self::getVersion();
         if (!$aktversion) {
-            $status_text = JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE');
+            $status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE');
             $status = 'update-ok';
         } else {
-            $status_text = JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE');
+            $status_text = Text::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE');
             $status = 'update';
         }
         echo '<div class="d-flex align-self-center jsm-logo-box">
@@ -3218,11 +3049,11 @@ abstract class sportsmanagementHelper {
         </div>
             <hr>
         <div class="d-flex flex-wrap justify-content-center mb-1 ' . $status . '">
-            <div class="p-1">' . JText::_('COM_SPORTSMANAGEMENT_VERSION') . ': ' . $version . '</div>
+            <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_VERSION') . ': ' . $version . '</div>
             <div class="p-1">' . $status_text . ' </div>
         </div>
         <div class="d-flex flex-column flex-wrap">
-             <div class="p-1">' . JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') . ': </div>     
+             <div class="p-1">' . Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') . ': </div>     
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg" alt="diddipoeler" height="80px">
                 <span>diddipoeler</span><br>
@@ -3247,11 +3078,11 @@ abstract class sportsmanagementHelper {
                 <span>donclumsy</span><br>
             </div>
 
-            <div class="p-1 mb-2">' . JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') . ': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') . ': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
 
-            <div class="p-1 mb-2">' . JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') . ': &copy; 2014 fussballineuropa, All rights reserved.</div>
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') . ': &copy; 2014 fussballineuropa, All rights reserved.</div>
 
-            <div class="p-1 mb-2">' . JText::_('COM_SPORTSMANAGEMENT_LICENSE') . ': GNU General Public License</div>            
+            <div class="p-1 mb-2">' . Text::_('COM_SPORTSMANAGEMENT_LICENSE') . ': GNU General Public License</div>            
         </div>'
         ;
     }

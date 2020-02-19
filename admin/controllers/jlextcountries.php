@@ -4,18 +4,14 @@
  * @file      jlextcountries.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
 /**
  * sportsmanagementControllerjlextcountries
  * 
@@ -25,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextcountries extends JControllerAdmin
+class sportsmanagementControllerjlextcountries extends JSMControllerAdmin
 {
   
   
@@ -38,7 +34,7 @@ class sportsmanagementControllerjlextcountries extends JControllerAdmin
     {
     $model = $this->getModel();
        $model->importplz();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
     }    
     
 	/**

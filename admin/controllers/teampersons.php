@@ -4,19 +4,16 @@
  * @file      teampersons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route; 
 
 /**
  * sportsmanagementControllerteampersons
@@ -27,7 +24,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerteampersons extends JControllerAdmin
+class sportsmanagementControllerteampersons extends JSMControllerAdmin
 {
 	
   /**
@@ -40,7 +37,7 @@ class sportsmanagementControllerteampersons extends JControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 $this->registerTask('unpublish', 'set_season_team_state');
@@ -58,18 +55,15 @@ $this->registerTask('archive', 'set_season_team_state');
  */
 function set_season_team_state()
 {
-$post = JFactory::getApplication()->input->get( 'post' );
+$post = Factory::getApplication()->input->post->getArray(array());
 $ids = $this->input->get('cid', array(), 'array');
 $tpids = $this->input->get('tpid', array(), 'array');
 $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2);
 $task = $this->getTask();
 $value = ArrayHelper::getValue($values, $task, 0, 'int');    
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
 $model = $this->getModel();
-$model->set_state($ids,$tpids,$value);  
+$model->set_state($ids,$tpids,$value,$post['pid']);  
 
 switch ($value)
 {
@@ -87,9 +81,9 @@ $ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_TRASHED';
 break;		
 }		
 
-$this->setMessage(JText::plural($ntext, count($ids)));	
+$this->setMessage(Text::plural($ntext, count($ids)));	
 	
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
 }
 	
   /**
@@ -101,27 +95,26 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	 */
     function saveshort()
 	{
-	   $post = JFactory::getApplication()->input->get( 'post' );
+	   $post = Factory::getApplication()->input->post->getArray(array());
 	   $model = $this->getModel();
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
     } 
   
-  /**
-   * sportsmanagementControllerteampersons::remove()
-   * 
-   * @return void
-   */
-  function remove()
-	{
-	$app = JFactory::getApplication();
-    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-    $model = $this->getModel('teampersons');
-    $model->remove($pks);
 	
-    $this->setRedirect('index.php?option=com_sportsmanagement&view=teampersons');    
-        
-   }
+	
+	/**
+	 * sportsmanagementControllerteampersons::assignplayerscountry()
+	 * 
+	 * @return void
+	 */
+	function assignplayerscountry()
+	{
+	$post = Factory::getApplication()->input->post->getArray(array());
+	$model = $this->getModel();	
+	$model->assignplayerscountry(1,$post['project_team_id'],$post['team_id'],$post['pid'],$post['season_id']);	
+	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
+	}
    
   /**
 	 * Proxy for getModel.

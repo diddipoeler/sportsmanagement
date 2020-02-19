@@ -4,18 +4,20 @@
  * @file      deafault_extrafields.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage globalviews
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 <div class="row-fluid">
 <h4>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
 </h4>
 </div>
 
@@ -29,13 +31,13 @@ $field_type = $field->field_type;
 if (!empty($value)) // && !$field->backendonly)
 {
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-<strong><?php echo JText::_( $field->name); ?></strong>
+<div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
+<div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
+<strong><?php echo Text::_( $field->name); ?></strong>
 </div>
-<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
 <?php 
-switch (JFactory::getApplication()->input->getVar('view'))
+switch (Factory::getApplication()->input->getVar('view'))
 {
     case 'clubinfo':
     $title = $this->club->name;
@@ -45,10 +47,10 @@ switch (JFactory::getApplication()->input->getVar('view'))
 switch ($field_type)
 {
     case 'link':
-    echo JHtml::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
+    echo HTMLHelper::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
     break;
     default:
-    echo JText::_( $field->fvalue); 
+    echo Text::_( $field->fvalue); 
     break;
 }
 

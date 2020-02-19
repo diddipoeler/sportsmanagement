@@ -1,21 +1,22 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTreetonode
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -42,11 +43,11 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
        
         }    
         
@@ -57,10 +58,9 @@ public function __construct($config = array())
          * @param mixed $data
          * @return
          */
+	/*
         public function save($data)
 	{
-	
-    //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
     
      // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -70,7 +70,8 @@ public function __construct($config = array())
        } 
        return true;   
        }
-	    
+	  */
+		  
     /**
      * sportsmanagementModelTreetonode::getNode()
      * 
@@ -84,9 +85,7 @@ public function __construct($config = array())
     $this->jsmquery->from('#__sportsmanagement_treeto_node AS ttn');  
     $this->jsmquery->where('ttn.id = ' . $node_id );
     $this->jsmdb->setQuery( $this->jsmquery );
-    
-    //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-    
+   
     return $this->jsmdb->loadObject();
     
     }   
@@ -120,7 +119,7 @@ public function __construct($config = array())
        
     $this->jsmquery->order('mid ASC');   
        
-       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+
        		
 		$this->jsmdb->setQuery($this->jsmquery);
 		
@@ -143,14 +142,14 @@ public function __construct($config = array())
 	 */
 	function setUnpublishNode()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		$id = (int) $post['id'];
 		
-		$query = ' UPDATE #__joomleague_treeto_node AS ttn ';
+		$query = ' UPDATE #__sportsmanagement_treeto_node AS ttn ';
 		$query .= ' SET ';
 		$query .= ' ttn.published = 0 ';
 		$query .= ' WHERE ttn.id = ' . $id;

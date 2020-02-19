@@ -4,20 +4,26 @@
  * @file      countries.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage helpers
  */
 
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.utilities.arrayhelper');
 
 if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php');
+require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php');
 
 $maxImportTime = 480;
 if ((int) ini_get('max_execution_time') < $maxImportTime) {
@@ -70,7 +76,7 @@ class JSMCountries {
      * @return
      */
     public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -87,7 +93,7 @@ class JSMCountries {
 
         $options = array();
         foreach ($countries AS $k) {
-            $options[] = JHtml::_('select.option', $k['alpha3'], JText::_($k['name']), $value_tag, $text_tag);
+            $options[] = HTMLHelper::_('select.option', $k['alpha3'], Text::_($k['name']), $value_tag, $text_tag);
         }
 
         //Now Sort the countries
@@ -102,7 +108,7 @@ class JSMCountries {
      * @return
      */
     public static function convertIso2to3($iso_code_2) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -132,7 +138,7 @@ class JSMCountries {
      * @return
      */
     public static function convertIso3to2($iso_code_3) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -183,11 +189,11 @@ class JSMCountries {
 
         
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $cssflags = $params->get('cfg_flags_css');
         
         // Get a db connection.
@@ -207,13 +213,13 @@ class JSMCountries {
         }
 
         if (!$src) {
-            $src = JComponentHelper::getParams($option)->get('ph_flags', '');
+            $src = ComponentHelper::getParams($option)->get('ph_flags', '');
         } else {
             $src = $src;
         }
         
         if ($cssflags == 0){
-        $html = '<img src="' . JURI::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
+        $html = '<img src="' . Uri::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
         $html .= 'title="' . self::getCountryName($countrycode) . '" ' . $attributes . ' />';
         }
         else
@@ -230,7 +236,7 @@ class JSMCountries {
      * @return string: a country name
      */
     public static function getCountryName($iso3) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -250,7 +256,7 @@ class JSMCountries {
         $res = $db->loadResult();
 
         if ($res)
-            return JText::_($res);
+            return Text::_($res);
     }
 
     /**
@@ -264,7 +270,7 @@ class JSMCountries {
             return false;
         }
         $parts = explode(',', $full);
-        return JText::_($parts[0]);
+        return Text::_($parts[0]);
     }
 
     /**
@@ -308,7 +314,7 @@ class JSMCountries {
         ) {
             $countryFlag = self::getCountryFlag($country);
             $countryName = self::getCountryName($country);
-            $dummy = JText::_($addressString);
+            $dummy = Text::_($addressString);
             $dummy = str_replace('%NAME%', $name, $dummy);
             $dummy = str_replace('%ADDRESS%', $address, $dummy);
             $dummy = str_replace('%STATE%', $state, $dummy);

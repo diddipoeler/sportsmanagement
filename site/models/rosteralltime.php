@@ -1,48 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      rosteralltime.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
-//jimport('joomla.application.component.model');
-jimport('joomla.application.component.modellist');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelRosteralltime
@@ -53,8 +24,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-//class sportsmanagementModelRosteralltime extends JModelLegacy
-class sportsmanagementModelRosteralltime extends JModelList
+class sportsmanagementModelRosteralltime extends ListModel
 {
 	static $projectid = 0;
 	static $projectteamid = 0;
@@ -87,14 +57,14 @@ var $_identifier = "rosteralltime";
 	function __construct()
 	{
 		parent::__construct();
-$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // JInput object
        $jinput = $app->input;
 		self::$projectid = (int) $jinput->get( 'p', 0 );
 		self::$teamid = (int) $jinput->get( 'tid', 0 );
 		self::$projectteamid = (int) $jinput->get( 'ttid', 0 );
-		self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
         $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 	}
     
@@ -108,7 +78,7 @@ $option = JFactory::getApplication()->input->getCmd('option');
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -130,12 +100,6 @@ public function getStart()
         $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
     }
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
-
     // Add the total to the internal cache.
     $this->cache[$store] = $start;
 
@@ -152,15 +116,14 @@ public function getStart()
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
         
         // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
@@ -177,7 +140,7 @@ public function getStart()
     function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -185,7 +148,7 @@ public function getStart()
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
         
         $query->select('tp.person_id AS person_id');
         //$query->select('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
@@ -205,8 +168,7 @@ public function getStart()
         $query->group('tp.person_id');
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
     return $query;
 
 	}    
@@ -219,9 +181,9 @@ public function getStart()
      */
     function getPlayerPosition()
     {
-         $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+         $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  // Select some fields
         $query->select('po.*');
@@ -243,9 +205,9 @@ return $db->loadObjectList();
      */
     function getPositionEventTypes($positionId=0)
 	{
-	    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
 		$result = array();
         
@@ -285,21 +247,21 @@ return $db->loadObjectList();
      */
     function getTeam()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  
 		if (is_null($this->team))
 		{
 			if (!self::$teamid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_ERROR' ) );
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'), Log::WARNING, 'jsmerror');
 				return false;
 			}
 			if (!self::$projectid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', JText::_( 'COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED' ) );
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), Log::WARNING, 'jsmerror');
 				return false;
 			}
             
@@ -329,9 +291,9 @@ return $db->loadObjectList();
 	 */
 	function getTeamPlayers($persontype = 1,$positioneventtypes = array(),$items = array() )
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
 	
     $person_range = array();	
@@ -383,13 +345,7 @@ return $db->loadObjectList();
 			$this->_players = $db->loadObjectList();
 			$this->_all_time_players = $db->loadObjectList('pid');
 //		}
-		
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _players<br><pre>'.print_r($this->_players,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positioneventtypes<br><pre>'.print_r($positioneventtypes,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamid<br><pre>'.print_r(self::$teamid,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype,true).'</pre>'),'');
-        
+       
 		foreach ($this->_players as $player)
 		{
 		$player->start = 0;
@@ -409,9 +365,8 @@ return $db->loadObjectList();
             $this->_all_time_players[$player->pid]->out = 0;
         }
         
-        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
+        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>'),'');
 $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;
                 $this->_all_time_players[$player->pid]->start = $this->InOutStat->started;
 				$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
@@ -421,7 +376,6 @@ $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;
 
 foreach ($positioneventtypes AS $event => $eventid )
 			{
-			 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventId<br><pre>'.print_r($eventid,true).'</pre>'),'');
              
              for($a=0; $a < count($eventid); $a++ )
 {
@@ -447,60 +401,10 @@ foreach ($positioneventtypes AS $event => $eventid )
 		
 		}
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _all_time_players<br><pre>'.print_r($this->_all_time_players,true).'</pre>'),'');
-
 		return $this->_all_time_players;
 	}
 
-	function getStaffList()
-	{
-		$projectteam =& $this->getprojectteam();
-		$query='	SELECT	pr.firstname, 
-							pr.nickname,
-							pr.lastname,
-							pr.country,
-							pr.birthday,
-							pr.deathday,
-							ts.id AS ptid,
-							ppos.position_id,
-							ppos.id AS pposid,
-							pr.id AS pid,
-							pr.picture AS ppic,
-							pos.name AS position,
-							ts.picture,
-							ts.notes AS description,
-							ts.injury AS injury,
-							ts.suspension AS suspension,
-							ts.away AS away,
-							pos.parent_id,
-							posparent.name AS parentname,				
-							CASE WHEN CHAR_LENGTH(pr.alias) THEN CONCAT_WS(\':\',pr.id,pr.alias) ELSE pr.id END AS slug
-					FROM #__joomleague_team_staff ts
-					INNER JOIN #__joomleague_person AS pr ON ts.person_id=pr.id
-					INNER JOIN #__joomleague_project_position AS ppos ON ppos.id=ts.project_position_id
-					INNER JOIN #__joomleague_position AS pos ON pos.id=ppos.position_id
-					LEFT JOIN #__joomleague_position AS posparent ON pos.parent_id=posparent.id
-					WHERE ts.projectteam_id='.$this->_db->Quote($projectteam->id).'
-					  AND pr.published = 1
-					  AND ts.published = 1
-					ORDER BY pos.parent_id, pos.ordering';
-		$this->_db->setQuery($query);
-		$stafflist=$this->_db->loadObjectList();
-		return $stafflist;
-	}
 
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
 
 }
 ?>

@@ -4,14 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventsranking
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEventsRanking
@@ -33,7 +33,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 	function init()
 	{
 
-$this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+$this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->jinput->getInt('cfg_which_database',0));
 
@@ -46,13 +46,20 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		$this->limit = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
-		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart);
+		if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+		{
+		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,NULL,true);					
+		}
+		else
+		{
+		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,NULL,false);
+		}
 		$this->multiple_events = count($this->eventtypes) > 1 ;
         
-        $prefix = JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
+        $prefix = Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
 		if ( $this->multiple_events )
 		{
-			$prefix .= " - " . JText::_( 'COM_SPORTSMANAGEMENT_EVENTSRANKING_TITLE' );
+			$prefix .= " - " . Text::_( 'COM_SPORTSMANAGEMENT_EVENTSRANKING_TITLE' );
 		}
 		else
 		{
@@ -60,7 +67,7 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 			$evid = array_keys($this->eventtypes);
 
 			// Selected one valid eventtype, so show its name
-			$prefix .= " - " . JText::_($this->eventtypes[$evid[0]]->name);
+			$prefix .= " - " . Text::_($this->eventtypes[$evid[0]]->name);
 		}
 
 		// Set page title

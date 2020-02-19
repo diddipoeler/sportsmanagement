@@ -4,13 +4,19 @@
  * @file      mod_sportsmanagement_top_tipper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_top_tipper
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 if ( !defined('DS') )
 {
     define('DS', DIRECTORY_SEPARATOR);
@@ -21,42 +27,54 @@ if ( !defined('JSM_PATH') )
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-if ( !class_exists('JSMModelList') )
-{
-    $classpath = JPATH_ADMINISTRATOR . DS . 'components/com_sportsmanagement' . DS . 'libraries' . DS . 'sportsmanagement' . DS . 'model.php';
-    JLoader::register('JSMModelList', $classpath);
-}
-
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
+if (!class_exists('JSMModelList')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
 if ( !class_exists('sportsmanagementHelper') )
 {
 /**
  * add the classes for handling
  */
-    $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
-    JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
-require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'predictionranking.php' );
+
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.predictionranking', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
+
+/** Include the functions only once */
+JLoader::register('modJSMTopTipper', __DIR__ . '/helper.php');
+
+$document = Factory::getDocument();
+$mainframe = Factory::getApplication();
+$config    = array();
 
 /**
- * get helper
+ * sprachdatei aus dem frontend laden
  */
-require_once( dirname(__FILE__) . DS . 'helper.php' );
-
-$document = JFactory::getDocument();
-$mainframe = JFactory::getApplication();
-$config    = array();
+$langtag = Factory::getLanguage();
+$lang = Factory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_SITE;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
 
 /**
  * add css file
  */
-$document->addStyleSheet(JURI::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+$document->addStyleSheet(Uri::base() . 'modules' .DIRECTORY_SEPARATOR. $module->module .DIRECTORY_SEPARATOR. 'css' .DIRECTORY_SEPARATOR. $module->module . '.css');
 
 $pg_id = $params->get('pg');
 
@@ -84,9 +102,12 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
 /**
  * das model laden
  */
-$modelpg = JModelLegacy::getInstance('PredictionRanking', 'sportsmanagementModel');
+$modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
+sportsmanagementModelPrediction::$_predictionProjectS = NULL;
+sportsmanagementModelPrediction::$_predictionGame = NULL;
+sportsmanagementModelPrediction::$predictionGameID = (int)$pg_id;
+sportsmanagementModelPredictionRanking::$predictionGameID = (int)$pg_id;
 
-sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 /**
  * jetzt noch das overall template nachladen
  * dadurch erhalten wir die sortierung aus dem backend
@@ -94,22 +115,22 @@ sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 $overallConfig        = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $config               = array_merge($overallConfig, $config);
 $configavatar         = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-$predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame();
+$predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame((int)$pg_id);
 $predictionMember[]   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS();
-$actJoomlaUser[]      = JFactory::getUser();
+$predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS((int)$pg_id);
+$actJoomlaUser[]      = Factory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
 $type_array    = array();
-$type_array[]  = JHTML::_('select.option', '0', JText::_('JL_PRED_RANK_FULL_RANKING'));
-$type_array[]  = JHTML::_('select.option', '1', JText::_('JL_PRED_RANK_FIRST_HALF'));
-$type_array[]  = JHTML::_('select.option', '2', JText::_('JL_PRED_RANK_SECOND_HALF'));
+$type_array[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '2', Text::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
 $lists['type'] = $type_array;
 unset($type_array);
 
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

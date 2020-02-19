@@ -1,49 +1,19 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      sishandball.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-jimport('joomla.application.component.model');
-//jimport('joomla.application.component.modelitem');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelsishandball
@@ -54,7 +24,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsishandball extends JModelLegacy 
+class sportsmanagementModelsishandball extends BaseDatabaseModel 
 {
 
 
@@ -71,8 +41,8 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
 		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer );	
 		return $link;
@@ -89,8 +59,8 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getTabelle($linkresults,$liganummer,$sis_art) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -118,7 +88,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -147,7 +117,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -169,8 +139,8 @@ else
 	 */
 	function getStatistik($linkresults,$liganummer) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -199,7 +169,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -228,7 +198,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -253,8 +223,8 @@ else
 	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -282,7 +252,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
 					$doc = DOMDocument::loadXML($content);
@@ -310,7 +280,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);

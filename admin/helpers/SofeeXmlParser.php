@@ -35,6 +35,9 @@
 * @since		2005-05-30
 * @see			PEAR:XML_Parser | SimpleXML extension
 */
+
+defined('_JEXEC') or die('Restricted access');
+
 class SofeeXmlParser {
 	
 	/**

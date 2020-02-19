@@ -4,18 +4,15 @@
  * @file      smimageimports.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
 /**
  * sportsmanagementControllersmimageimports
  * 
@@ -25,7 +22,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllersmimageimports extends JControllerAdmin
+class sportsmanagementControllersmimageimports extends JSMControllerAdmin
 {
   
   /**
@@ -35,12 +32,12 @@ class sportsmanagementControllersmimageimports extends JControllerAdmin
    */
   function import()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $model	= $this->getModel();
         $result = $model->import();
         
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 
 }
 

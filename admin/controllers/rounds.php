@@ -4,17 +4,17 @@
  * @file      rounds.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllerrounds
  * 
@@ -24,7 +24,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerrounds extends JControllerAdmin
+class sportsmanagementControllerrounds extends JSMControllerAdmin
 {
 	
   /**
@@ -37,14 +37,18 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
 	}
   
   
-  
+function cancel()
+	{
+$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}  
   
   /**
 	 * Method to add mass rounds
@@ -57,7 +61,7 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	{
 		
         // Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->massadd();
@@ -76,9 +80,9 @@ class sportsmanagementControllerrounds extends JControllerAdmin
     function deleteRoundMatches()
 	{
 	   $model = $this->getModel();
-       $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+       $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
        $msg = $model->deleteRoundMatches($pks);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        //$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
     } 
     
@@ -95,7 +99,6 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	   $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
        $model = $this->getModel();
        $msg = $model->saveshort();
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds&pid='.$this->project_id,$msg);
     } 
   
@@ -104,10 +107,9 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	 */
 	public function populate()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$division_id = $jinput->getInt('division_id',0);
-		
 		$this->setRedirect('index.php?option='.$this->option.'&view=rounds&layout=populate&division_id='.$division_id);
 	}
 

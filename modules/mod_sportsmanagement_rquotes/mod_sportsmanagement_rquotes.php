@@ -4,18 +4,19 @@
  * @file      mod_sportsmanagement_rquotes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_rquotes
  */
  
- 
- //no direct access
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 if(!defined('DS'))
 {
 define('DS',DIRECTORY_SEPARATOR);
-error_reporting(0);
 }
 
 if ( !defined('JSM_PATH') )
@@ -23,15 +24,16 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-//include helper file	
-require_once(dirname(__FILE__).DS.'helper.php'); 
+/** Include the functions only once */
+JLoader::register('modRquotesHelper', __DIR__ . '/helper.php'); 
+
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 $source = $params->get('source');
@@ -86,7 +88,7 @@ $list = modRquotesHelper::getTodayRquote($category,$params);
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module, $style,'default'));
+require(ModuleHelper::getLayoutPath($module->module, $style,'default'));
 ?>
 </div>
 <?PHP
@@ -103,7 +105,7 @@ $list = modRquotesHelper::getTextFile2($params,$filename,$module);
 }
 break;
 default:
-echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
+echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
 
 
 }

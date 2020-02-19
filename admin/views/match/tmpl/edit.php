@@ -1,53 +1,22 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      edit.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-
-$params = $this->form->getFieldsets('params');
-
-//echo 'sportsmanagementViewMatch _display project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
 
 /**
  * Match Form
@@ -59,11 +28,11 @@ $params = $this->form->getFieldsets('params');
 ?>
 <div id="matchdetails">
 	
-    <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
+    <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
 		<!-- Score Table START -->
 		<?php
 		//save and close 
-		$close = JFactory::getApplication()->input->getInt('close',0);
+		$close = Factory::getApplication()->input->getInt('close',0);
 		if($close == 1) {
 			?><script>
 			window.addEvent('domready', function() {
@@ -76,14 +45,14 @@ $params = $this->form->getFieldsets('params');
 			<fieldset>
 				<div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('match.apply', this.form);">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('match.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
-					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo JText::_('JCANCEL');?></button>
+						<?php echo Text::_('JSAVE');?></button>
+					<button id="cancel" type="button" onclick="Joomla.submitform('match.cancelmodal', this.form);">
+						<?php echo Text::_('JCANCEL');?></button>
 				</div>
 				<div class="configuration" >
-					<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_TITLE',$this->match->hometeam,$this->match->awayteam); ?>
+					<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_TITLE',$this->match->hometeam,$this->match->awayteam); ?>
 				</div>
 			</fieldset>
 		<?php
@@ -102,58 +71,53 @@ $tabsOptionsJ31 = array(
             "active" => "panel1" // It is the ID of the active tab.
         );
 
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'));
 echo $this->loadTemplate('matchpreview');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'));
 echo $this->loadTemplate('matchdetails');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'));
 echo $this->loadTemplate('scoredetails');
-echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'));
-//echo $this->loadTemplate('altdecision');
-//echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel5', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel5', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'));
 echo $this->loadTemplate('matchreport');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel6', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel6', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'));
 echo $this->loadTemplate('matchrelation');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel7', JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel7', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'));
 echo $this->loadTemplate('matchextended');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.endTabSet');    
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');    
     }
     else
     {
-		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
+		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
 		echo $this->loadTemplate('matchpreview');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'), 'panel2');
 		echo $this->loadTemplate('matchdetails');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
 		echo $this->loadTemplate('scoredetails');
 		
-		//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'), 'panel4');
-		//echo $this->loadTemplate('altdecision');
+
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
 		echo $this->loadTemplate('matchreport');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'), 'panel6');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'), 'panel6');
 		echo $this->loadTemplate('matchrelation');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel7');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel7');
 		echo $this->loadTemplate('matchextended');
 		
-// 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPICTURE'), 'panel8');
-// 		echo $this->loadTemplate('matchpicture');
+
 		
-		echo JHtml::_('tabs.end');
+		echo HTMLHelper::_('tabs.end');
 	}	
 		?>
 		<!-- Additional Details Table END -->
@@ -163,7 +127,7 @@ echo JHtml::_('bootstrap.endTabSet');
 		<input type="hidden" name="close" id="close" value="0"/>
         <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
 		<input type="hidden" name="component" value="" />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</div>
 </form>
 <?PHP

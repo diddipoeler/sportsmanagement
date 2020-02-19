@@ -1,16 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      jlmenuitems.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
@@ -25,7 +26,7 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldJLMenuItems extends JFormFieldList
+class JFormFieldJLMenuItems extends \JFormFieldList
 {
 	/**
 	 * field type
@@ -42,39 +43,40 @@ class JFormFieldJLMenuItems extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
-		$options = array(
-				JHTML::_('select.option', '', JText::_('JNONE')),
-				JHTML::_('select.option', 'separator', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_SEPARATOR')),
-				JHTML::_('select.option', 'calendar', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CALENDAR')),
-				JHTML::_('select.option', 'curve', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CURVE')),
-				JHTML::_('select.option', 'eventsranking', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_EVENTSRANKING')),
-				JHTML::_('select.option', 'matrix', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_MATRIX')),
-				JHTML::_('select.option', 'ranking', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE')),
-				JHTML::_('select.option', 'referees', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_REFEREES')),
-				JHTML::_('select.option', 'results', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RESULTS')),
-				JHTML::_('select.option', 'resultsmatrix', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RESULTSMATRIX')),
-				JHTML::_('select.option', 'resultsranking', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE_AND_RESULTS')),
-				JHTML::_('select.option', 'roster', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_ROSTER')),
-				JHTML::_('select.option', 'rosteralltime', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_ROSTERALLTIME')),
-				JHTML::_('select.option', 'stats', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATS')),
-				JHTML::_('select.option', 'statsranking', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATSRANKING')),
-				JHTML::_('select.option', 'clubinfo', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBINFO')),
-				JHTML::_('select.option', 'clubplan', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBPLAN')),
-                JHTML::_('select.option', 'teaminfo', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMINFO')),
-                JHTML::_('select.option', 'teams', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMS')),
-                JHTML::_('select.option', 'teamstree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTREE')),
-				JHTML::_('select.option', 'teamplan', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMPLAN')),
-				JHTML::_('select.option', 'teamstats', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTATS')),
-                JHTML::_('select.option', 'jltournamenttree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLTOURNAMENTTREE')),
-				JHTML::_('select.option', 'treetonode', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
-                JHTML::_('select.option', 'jlallprojectrounds', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
-                JHTML::_('select.option', 'jlxmlexports', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
-				);
+	// Initialize variables.
+	$options = array(
+	HTMLHelper::_('select.option', '', Text::_('JNONE')),
+	HTMLHelper::_('select.option', 'separator', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_SEPARATOR')),
+	HTMLHelper::_('select.option', 'calendar', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CALENDAR')),
+	HTMLHelper::_('select.option', 'curve', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CURVE')),
+	HTMLHelper::_('select.option', 'eventsranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_EVENTSRANKING')),
+	HTMLHelper::_('select.option', 'matrix', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_MATRIX')),
+	HTMLHelper::_('select.option', 'ranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE')),
+	HTMLHelper::_('select.option', 'referees', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_REFEREES')),
+	HTMLHelper::_('select.option', 'results', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RESULTS')),
+	HTMLHelper::_('select.option', 'resultsmatrix', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RESULTSMATRIX')),
+	HTMLHelper::_('select.option', 'resultsranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE_AND_RESULTS')),
+	HTMLHelper::_('select.option', 'roster', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_ROSTER')),
+	HTMLHelper::_('select.option', 'rosteralltime', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_ROSTERALLTIME')),
+	HTMLHelper::_('select.option', 'stats', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATS')),
+	HTMLHelper::_('select.option', 'statsranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATSRANKING')),
+	HTMLHelper::_('select.option', 'clubinfo', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBINFO')),
+	HTMLHelper::_('select.option', 'clubplan', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBPLAN')),
+        HTMLHelper::_('select.option', 'teaminfo', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMINFO')),
+        HTMLHelper::_('select.option', 'teams', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMS')),
+        HTMLHelper::_('select.option', 'teamstree', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTREE')),
+	HTMLHelper::_('select.option', 'treetonode', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
+	HTMLHelper::_('select.option', 'teamplan', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMPLAN')),
+	HTMLHelper::_('select.option', 'teamstats', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTATS')),
+        HTMLHelper::_('select.option', 'jltournamenttree', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLTOURNAMENTTREE')),
+	HTMLHelper::_('select.option', 'treetonode', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TREETONODE')),
+        HTMLHelper::_('select.option', 'jlallprojectrounds', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
+        HTMLHelper::_('select.option', 'jlxmlexports', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
+	);
 		
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
+	// Merge any additional options in the XML definition.
+	$options = array_merge(parent::getOptions(), $options);
 
-		return $options;
+	return $options;
 	}
 }

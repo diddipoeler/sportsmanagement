@@ -4,13 +4,14 @@
  * @file      ranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage helpers
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * JSMRanking
@@ -110,7 +111,7 @@ class JSMRanking
 				$classname = 'JSMRanking'. ucfirst($type);
 				if (!class_exists($classname))
 				{
-					$file = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$type.DS.'ranking.php';
+					$file = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$type.DIRECTORY_SEPARATOR.'ranking.php';
 					if (file_exists($file))
 					{
 						require_once($file);
@@ -141,9 +142,9 @@ class JSMRanking
 	 */
 	function setProjectId($id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+    
     
 		$this->_projectid = (int) $id;
 //		$this->_project = new sportsmanagementModelProject();
@@ -157,7 +158,7 @@ $option = $app->input->getCmd('option');
             $my_text = 'projectid -> '.$this->_projectid.'<br>'; 
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
           
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
+    
     }
 
 		// wipe data
@@ -184,9 +185,9 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -199,10 +200,8 @@ $option = $app->input->getCmd('option');
 		self::setDivisionId($division,$cfg_which_database);
 
 		$teams = self::_collect(NULL,$cfg_which_database);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 	
 		$rankings = self::_buildRanking($teams,$cfg_which_database);
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankings<br><pre>'.print_r($rankings,true).'</pre>'),'');
         	
 		return $rankings;
 	}
@@ -217,9 +216,9 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -246,9 +245,9 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -272,12 +271,13 @@ $option = $app->input->getCmd('option');
 	 */
 	function _initData($cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       
        
 		if (!$this->_projectid) {
-			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'));
+
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'),'error');			
 			return false;
 		}
 
@@ -288,16 +288,8 @@ $data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_data
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {		
-	// Get a reference to the global cache object.
-		$cache = JFactory::getCache('sportsmanagement.project'.$this->_projectid);
-		 
-		// Enable caching regardless of global setting
-		$params = JComponentHelper::getParams('com_sportsmanagement');
-		if ($params->get('force_ranking_cache', 1)) {
-			$cache->setCaching( 1 );
-		}
+$data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_database );
 
-		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division,$cfg_which_database );
 }			
 		return $data;
 	}
@@ -324,9 +316,9 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 	 */
 	function _collect($ptids = null,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');    
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       
     
 		$mode     	= $this->_mode;
 		$from     	= $this->_from;
@@ -737,7 +729,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 	 */
 	public static function _initTeams($pid,$division,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
     $option = $app->input->getCmd('option');    
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -765,36 +757,9 @@ if( version_compare(JSM_JVERSION,'3','eq') )
     {
 
 		}
-        
         		
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
 		$res = $db->loadObjectList();
-        
-        if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-          
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } 
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
 
 /**
  * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
@@ -870,11 +835,7 @@ $res = $db->loadObjectList();
       			
 			$teams[$r->ptid] = $t;
 		}
-/*		
- echo '_initTeams teams<br><pre>';
- print_r($teams);
- echo '</pre>';
-*/		
+	
 		return $teams;
 	}
 
@@ -885,7 +846,7 @@ $res = $db->loadObjectList();
 	 */
 	public static function _getMatches($pid,$division,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
@@ -950,19 +911,14 @@ $option = $app->input->getCmd('option');
     }
     
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$res = $db->loadObjectList();
 		$matches = array();
 		foreach ((array) $res as $r) 
 		{
 			$matches[$r->id] = $r;
 		}
-	//echo '_getMatches matches<br><pre>';print_r($matches);echo '</pre>';
+
 		return $matches;
 	}
 
@@ -973,7 +929,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
@@ -989,16 +945,7 @@ $option = $app->input->getCmd('option');
             $query->where('project_id = ' . $db->Quote($this->_projectid) );
             $query->where('parent_id = ' . $db->Quote($this->_division) );
             
-//			$query = ' SELECT id from #__'.COM_SPORTSMANAGEMENT_TABLE.'_division '
-//			. ' WHERE project_id = '. $db->Quote($this->_projectid)
-//			. '   AND parent_id = '. $db->Quote($this->_division)
-//			;
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
             
 			if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1027,29 +974,9 @@ $option = $app->input->getCmd('option');
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     $option = $app->input->getCmd('option');  
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'game -><pre>'.print_r($game,true).'</pre>';
-            $my_text .= 'from -><pre>'.print_r($from,true).'</pre>';
-            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
-            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
-    }
-    
-//	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
-    
- 
-	
+
 		$res = true;
 		
 		if ($from)
@@ -1087,23 +1014,13 @@ $option = $app->input->getCmd('option');
 	 */
 	function _getRoundcode($round_id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
             
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'round_id -><pre>'.print_r($round_id,true).'</pre>';
-//            $my_text .= 'from -><pre>'.print_r($from,true).'</pre>';
-//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
-//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
-    }
-        
+               
 		if (empty($this->_roundcodes))
 		{
 			
@@ -1112,36 +1029,21 @@ $option = $app->input->getCmd('option');
             $query->where('r.project_id = ' . $this->_projectid);
             $query->order('r.roundcode');
             
-//			$query = ' SELECT r.roundcode, r.id ' 
-//			       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ' 
-//			       . ' WHERE r.project_id = ' . $this->_projectid;
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+            
         
 			$this->_roundcodes = $db->loadAssocList('id');
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-                        $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            $my_text .= '_roundcodes -><pre>'.print_r($this->_roundcodes,true).'</pre>';
-//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
-//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    }
+            
 		}
         
       
         
 		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
-			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID').': '.$round_id);
-            JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID').': '.$this->_projectid);
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'),'error');	
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'),'error');				
 			return false;
 		}
 		return $this->_roundcodes[(int)$round_id];
@@ -1156,6 +1058,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _getRankingCriteria()
 	{
+$app = Factory::getApplication();		
 		if (empty($this->_criteria))
 		{
 			// get the values from ranking template setting
@@ -1168,7 +1071,7 @@ $option = $app->input->getCmd('option');
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA').': '.$v);
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');				
 				}
 			}
 			// set a default criteria if empty
@@ -1187,9 +1090,9 @@ $option = $app->input->getCmd('option');
 	 */
 	function _buildRanking($teams,$cfg_which_database = 0)
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
         $option = $app->input->getCmd('option');  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+
         
         // division filtering
 		$teams = array_filter($teams, array($this, "_filterdivision"));
@@ -1611,7 +1514,6 @@ $option = $app->input->getCmd('option');
 class JSMRankingTeamClass
 {
 
-// new for use_finally
 	var $_use_finally = 0;
 	var $_points_finally = 0;
 	var $_neg_points_finally = 0;   
@@ -1622,37 +1524,12 @@ class JSMRankingTeamClass
 	var $_homegoals_finally = 0;
 	var $_guestgoals_finally = 0;
 	var $_diffgoals_finally = 0;
-
-	// new for is_in_score 
 	var $_is_in_score = 0;
-
-	/**
-	 * project team id
-	 * @var int
-	 */
 	var $_ptid = 0;
-	/**
-	 * team id
-	 * @var int
-	 */
 	var $_teamid = 0;
-	/**
-	 * division id
-	 * @var int
-	 */
 	var $_divisionid = 0;
-	/**
-	 * start point / penalty
-	 * @var int
-	 */
-	//public static $_startpoints = 0;
     var $_startpoints = 0;
-	/**
-	 * team name
-	 * @var string
-	 */
 	var $_name = null;
-
 	var $cnt_matches   	= 0;
 	var $cnt_won       	= 0;
 	var $cnt_draw      	= 0;
@@ -1663,7 +1540,6 @@ class JSMRankingTeamClass
 	var $cnt_won_away  	= 0;
 	var $cnt_draw_away 	= 0;
 	var $cnt_lost_away 	= 0;
-	
 	var $cnt_wot		= 0; 
 	var $cnt_wso		= 0;
 	var $cnt_lot		= 0;
@@ -1676,8 +1552,6 @@ class JSMRankingTeamClass
 	var $cnt_wso_away	= 0;
 	var $cnt_lot_away	= 0;
 	var $cnt_lso_away	= 0;	
-	
-	//public static $sum_points    	= 0;
     var $sum_points    	= 0;
 	var $neg_points    	= 0;
 	var $bonus_points  	= 0;
@@ -1686,81 +1560,155 @@ class JSMRankingTeamClass
 	var $sum_away_for   = 0;
 	var $sum_team1_legs = 0;
 	var $sum_team2_legs = 0;
-    
-    
     var $sum_team1_matchpoint = 0;
 	var $sum_team2_matchpoint = 0;
     var $sum_team1_sets = 0;
 	var $sum_team2_sets = 0;
     var $sum_team1_games = 0;
 	var $sum_team2_games = 0;
-    
-    
 	var $diff_team_results = 0;
 	var $diff_team_legs = 0;
 	var $round          = 0;
 	var $rank           = 0;
 	
+
 	/**
-	 * contructor requires ptid
-	 * @param int $ptid
+	 * JSMRankingTeamClass::JSMRankingTeam()
+	 * 
+	 * @param mixed $ptid
+	 * @return void
 	 */
 	function JSMRankingTeam($ptid)
 	{
 		$this->setPtid($ptid);
 	}
 
-// new for is_in_score
+	/**
+	 * JSMRankingTeamClass::setis_in_score()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setis_in_score($val)
 	{
 		$this->_is_in_score = (int) $val;
 	}
 	
-// new for use finally
+	/**
+	 * JSMRankingTeamClass::setuse_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setuse_finally($val)
 	{
 		$this->_use_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setpoints_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setpoints_finally($val)
 	{
 		$this->_points_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setneg_points_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setneg_points_finally($val)
 	{
 		$this->_neg_points_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setmatches_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setmatches_finally($val)
 	{
 		$this->_matches_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setwon_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setwon_finally($val)
 	{
 		$this->_won_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setdraws_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setdraws_finally($val)
 	{
 		$this->_draws_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setlost_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setlost_finally($val)
 	{
 		$this->_lost_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::sethomegoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function sethomegoals_finally($val)
 	{
 		$this->_homegoals_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setguestgoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setguestgoals_finally($val)
 	{
 		$this->_guestgoals_finally = (int) $val;
 	}
+
+	/**
+	 * JSMRankingTeamClass::setdiffgoals_finally()
+	 * 
+	 * @param mixed $val
+	 * @return void
+	 */
 	function setdiffgoals_finally($val)
 	{
 		$this->_diffgoals_finally = (int) $val;
 	}
-
+	
 	/**
-	 * set project team id
-	 * @param int ptid
+	 * JSMRankingTeamClass::setPtid()
+	 * 
+	 * @param mixed $ptid
+	 * @return void
 	 */
 	function setPtid($ptid)
 	{
@@ -1768,8 +1716,10 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team id
-	 * @param int id
+	 * JSMRankingTeamClass::setTeamid()
+	 * 
+	 * @param mixed $id
+	 * @return void
 	 */
 	function setTeamid($id)
 	{
@@ -1777,8 +1727,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * returns project team id
-	 * @return int id
+	 * JSMRankingTeamClass::getPtid()
+	 * 
+	 * @return
 	 */
 	function getPtid()
 	{
@@ -1786,8 +1737,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * returns team id
-	 * @return int id
+	 * JSMRankingTeamClass::getTeamid()
+	 * 
+	 * @return
 	 */
 	function getTeamid()
 	{
@@ -1795,8 +1747,10 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team division id
-	 * @param int val
+	 * JSMRankingTeamClass::setDivisionid()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setDivisionid($val)
 	{
@@ -1804,8 +1758,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return team division id
-	 * @return int id
+	 * JSMRankingTeamClass::getDivisionid()
+	 * 
+	 * @return
 	 */
 	function getDivisionid()
 	{
@@ -1813,18 +1768,21 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * set team start points
-	 * @param int val
+	 * JSMRankingTeamClass::setStartpoints()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setStartpoints($val)
 	{
-		//self::$_startpoints = $val;
         $this->_startpoints = $val;
 	}
 	
 	/**
-	 * set team neg points
-	 * @param int val
+	 * JSMRankingTeamClass::setNegpoints()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setNegpoints($val)
 	{
@@ -1832,8 +1790,10 @@ class JSMRankingTeamClass
 	}
 	
 	/**
-	 * set team name
-	 * @param string val
+	 * JSMRankingTeamClass::setName()
+	 * 
+	 * @param mixed $val
+	 * @return void
 	 */
 	function setName($val)
 	{
@@ -1841,9 +1801,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return winning percentage
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::winPct()
+	 * 
+	 * @return
 	 */
 	function winPct()
 	{
@@ -1856,12 +1816,11 @@ class JSMRankingTeamClass
 			return ($this->cnt_won/($this->cnt_won+$this->cnt_lost+$this->cnt_draw))*100;
 		}
 	}
-
-
+	
 	/**
-	 * return scoring average
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::scoreAvg()
+	 * 
+	 * @return
 	 */
 	function scoreAvg()
 	{
@@ -1876,9 +1835,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return scoring percentage
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::scorePct()
+	 * 
+	 * @return
 	 */
 	function scorePct()
 	{
@@ -1886,11 +1845,10 @@ class JSMRankingTeamClass
 		return $result;
 	}
 
-
 	/**
-	 * return leg ratio
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::legsRatio()
+	 * 
+	 * @return
 	 */
 	function legsRatio()
 	{
@@ -1905,9 +1863,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points ratio
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::pointsRatio()
+	 * 
+	 * @return
 	 */
 	function pointsRatio()
 	{
@@ -1924,9 +1882,9 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points quot
-	 *
-	 * @return float
+	 * JSMRankingTeamClass::pointsQuot()
+	 * 
+	 * @return
 	 */
 	function pointsQuot()
 	{
@@ -1954,20 +1912,19 @@ class JSMRankingTeamClass
 	}
 
 	/**
-	 * return points total
-	 *
-	 * @param boolean include start points, default true
+	 * JSMRankingTeamClass::getPoints()
+	 * 
+	 * @param bool $include_start
+	 * @return
 	 */
 	function getPoints($include_start = true)
 	{
 		if ($include_start) 
         {
-			//return self::$sum_points + self::$_startpoints;
             return $this->sum_points + $this->_startpoints;
 		}
 		else 
         {
-			//return self::$sum_points;
             return $this->sum_points;
 		}
 	}
@@ -1991,6 +1948,7 @@ class JSMRankingTeamClass
 	}	 
 	
 	/**
+     * JSMRankingTeamClass::getGAA()
 	 * GAA:Goal Against Average per match = Goal against / played matches
 	 *
 	 * @return float
@@ -2008,6 +1966,7 @@ class JSMRankingTeamClass
 	}	
 
 	/**
+     * JSMRankingTeamClass::getPPG()
 	 * PpG:Points per Game = points / played matches
 	 *
 	 * @return float
@@ -2025,6 +1984,7 @@ class JSMRankingTeamClass
 	}		
  
 	/**
+     * JSMRankingTeamClass::getPPP()
 	 * %PP:Team points in relation into max points = (points / (played matches*win points))*100
 	 *
 	 * @return float

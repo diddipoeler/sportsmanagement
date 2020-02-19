@@ -1,94 +1,66 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage statistics
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
-//Ordering allowed ?
-$ordering=($this->sortColumn == 'obj.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+
 ?>
 
 	<div id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20">
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
 
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="20">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ABBREV','obj.short',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ABBREV','obj.short',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ICON','obj.icon',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ICON','obj.icon',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_SPORTSTYPE','obj.sports_type_id',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_SPORTSTYPE','obj.sports_type_id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NOTE'); ?></th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TYPE'); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NOTE'); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TYPE'); ?></th>
 					<th width="1%">
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','obj.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','obj.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn); ?>
-						<?php echo JHtml::_('grid.order',$this->items, 'filesave.png', 'statistics.saveorder'); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'statistics.saveorder'); ?>
 					</th>
 
 					<th width="5%">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -99,11 +71,11 @@ JHtml::_('behavior.modal');
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.$row->id);
+					$link=Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'statistics.', $canCheckin);
-					$published=JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','statistics.');
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'statistics.', $canCheckin);
+					$published=HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','statistics.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -113,16 +85,16 @@ JHtml::_('behavior.modal');
                         </td>
                         <td class="center">
                         <?php 
-                        echo JHtml::_('grid.id', $i, $row->id);  
+                        echo HTMLHelper::_('grid.id', $i, $row->id);  
                         ?>
                         </td>
 						
 						<td class="center">
                             <?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.(int) $row->id); ?>">
+						<a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->name); ?></a>
 					<?php else : ?>
 							<?php echo $this->escape($row->name); ?>
@@ -134,24 +106,24 @@ JHtml::_('behavior.modal');
                         
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
 							</td>
 						
 						<td><?php echo $row->short; ?></td>
 						<td class="center">
 							<?php
-							$picture=JPATH_SITE.DS.$row->icon;
-							$desc=JText::_($row->name);
+							$picture=JPATH_SITE.DIRECTORY_SEPARATOR.$row->icon;
+							$desc=Text::_($row->name);
 							echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
 							?>
 						</td>
 						<td class="center">
 							<?php
-							echo JText::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id));
+							echo Text::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id));
 							?>
 						</td>
 						<td><?php echo $row->note; ?></td>
-						<td><?php echo JText::_($row->class); ?></td>
+						<td><?php echo Text::_($row->class); ?></td>
 						<td class="center"><?php echo $published; ?>
 						</td>
 						<td class="order">

@@ -1,19 +1,20 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage roster
  */
  
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.modal');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-//echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
-//echo ' positioneventtypes<br><pre>'.print_r($this->positioneventtypes,true).'</pre>';
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -44,7 +45,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
         $InOutStats[4] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png');
         for ($x = count($InOutStats); $x >= 1; $x--) {
             $css .= ".jl_roster_in_out$x { 
-		background: #0a0 url('" . JURI::base() . $InOutStats[$x]['icon'] . "') left top  no-repeat;
+		background: #0a0 url('" . Uri::base() . $InOutStats[$x]['icon'] . "') left top  no-repeat;
 		-moz-background-size: 14px;
 		-o-background-size: 14px;
 		-webkit-background-size: 14px; 
@@ -64,7 +65,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
                             $iconPath = 'media/com_sportsmanagement/event_icons/' . $iconPath;
                         }
                         $css .= ".jl_roster_event" . $eventtype->eventtype_id . " { 
-					background: #ddd url('" . JURI::base() . $iconPath . "') left top  no-repeat;
+					background: #ddd url('" . Uri::base() . $iconPath . "') left top  no-repeat;
 					-moz-background-size: 12px;
 					-o-background-size: 12px;
 					-webkit-background-size: 12px; 
@@ -94,13 +95,13 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
     }
 
     if (!empty($css)) {
-        $doc = JFactory::getDocument();
+        $doc = Factory::getDocument();
         $doc->addStyleDeclaration($css);
     }
 // johncage css ends    
 }
 ?>
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="roster">
 <?php
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
     echo $this->loadTemplate('debug');
@@ -126,14 +127,14 @@ if ($this->projectteam) {
         if (($this->config['show_players_layout']) == 'player_standard') {
             echo $this->loadTemplate('players');
         } else if (($this->config['show_players_layout']) == 'player_card') {
-            $document = JFactory::getDocument();
-            $option = JFactory::getApplication()->input->getCmd('option');
+            $document = Factory::getDocument();
+            $option = Factory::getApplication()->input->getCmd('option');
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
             echo $this->loadTemplate('players_card');
         } else if (($this->config['show_players_layout']) == 'player_johncage') {
-            $document = JFactory::getDocument();
-            $option = JFactory::getApplication()->input->getCmd('option');
+            $document = Factory::getDocument();
+            $option = Factory::getApplication()->input->getCmd('option');
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
             echo $this->loadTemplate('players_johncage');
@@ -145,14 +146,14 @@ if ($this->projectteam) {
         if (($this->config['show_staff_layout']) == 'staff_standard') {
             echo $this->loadTemplate('staff');
         } else if (($this->config['show_staff_layout']) == 'staff_card') {
-            $document = JFactory::getDocument();
-            $option = JFactory::getApplication()->input->getCmd('option');
+            $document = Factory::getDocument();
+            $option = Factory::getApplication()->input->getCmd('option');
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
             echo $this->loadTemplate('staff_card');
         } else if (($this->config['show_staff_layout']) == 'staff_johncage') {
-            $document = JFactory::getDocument();
-            $option = JFactory::getApplication()->input->getCmd('option');
+            $document = Factory::getDocument();
+            $option = Factory::getApplication()->input->getCmd('option');
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
             echo $this->loadTemplate('staff_johncage');
@@ -160,13 +161,10 @@ if ($this->projectteam) {
         }
     }
 } else {
-    echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
+    echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
 }
+
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

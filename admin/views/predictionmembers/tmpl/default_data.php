@@ -1,48 +1,20 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage predictionmembers
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
-//Ordering allowed ?
-$ordering = ( $this->sortColumn == 'pre.ordering' );
-
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 ?>
 
 	<div id="editcell">
@@ -51,67 +23,66 @@ JHtml::_( 'behavior.tooltip' );
 				<tr>
 					<th width="5">
 						<?php
-						echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
+						echo Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 						?>
 					</th>
 					<th width="20">
-						<input  type="checkbox" name="toggle" value=""
-								onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME' ), 'u.username', $this->sortDirection, $this->sortColumn );
-						?>
-					</th>
-					<th class="title" nowrap="nowrap">
-						<?php
-						echo JHtml::_( 'grid.sort',  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REAL_NAME' ), 'u.name', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort',  Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_USERNAME' ), 'u.username', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PRED_NAME' ), 'p.name', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort',  Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REAL_NAME' ), 'u.name', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_DATE_LAST_TIP' ), 'tmb.last_tipp', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PRED_NAME' ), 'p.name', $this->sortDirection, $this->sortColumn );
+						?>
+					</th>
+					<th class="title" nowrap="nowrap">
+						<?php
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_DATE_LAST_TIP' ), 'tmb.last_tipp', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), 'tmb.reminder', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), 'tmb.reminder', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT' ), 'tmb.receipt', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT' ), 'tmb.receipt', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE' ), 'tmb.show_profile', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE' ), 'tmb.show_profile', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP' ), 'tmb.admintipp', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP' ), 'tmb.admintipp', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
 					<th width="1%">
 						<?php
-						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED' ), 'tmb.approved', $this->sortDirection, $this->sortColumn );
+						echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED' ), 'tmb.approved', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
                     
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 						?>
 					</th>
                     
@@ -137,14 +108,12 @@ JHtml::_( 'behavior.tooltip' );
 			{
 				$row =& $this->items[$i];
 
-				$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
-				//$link2	= JRoute::_( 'index.php?option=com_users&view=user&layout=edit&cid[]=' . $row->user_id );
-                $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
+				$link	= Route::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
+                $link2	= Route::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
                 $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin);
 
-				//$checked = JHtml::_( 'grid.checkedout', $row, $i );
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
@@ -154,16 +123,16 @@ JHtml::_( 'behavior.tooltip' );
 					</td>
 					<td>
 						<?php
-						echo JHtml::_('grid.id', $i, $row->id);
+						echo HTMLHelper::_('grid.id', $i, $row->id);
 						?>
 					</td>
 					<td>
 					<?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin); ?>
 									<?php endif; ?>	
 							<a  href="<?php echo $link2; ?>"
-								title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_EDIT_USER' ); ?>" >
+								title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_EDIT_USER' ); ?>" >
 								<?php
 								echo $row->username;
 								?>
@@ -183,7 +152,7 @@ JHtml::_( 'behavior.tooltip' );
 						?>
 							<?php /* ?>
 							<a  href="<?php echo $link; ?>"
-								title="<?php echo JText::_( 'Edit JoomLeague-Prediction User' ); ?>">
+								title="<?php echo Text::_( 'Edit SportsManagement-Prediction User' ); ?>">
 							<?php */ ?>
 								<?php
 								echo $row->realname;
@@ -212,42 +181,42 @@ JHtml::_( 'behavior.tooltip' );
 						}
 						else
 						{
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NEVER_TIPPED' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NEVER_TIPPED' );
 						}
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
-						if ($row->reminder){$imgfile='ok.png';$imgtitle=JText::_('Active');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
+						if ($row->reminder){$imgfile='ok.png';$imgtitle=Text::_('Active');}else{$imgfile='delete.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
+						echo HTMLHelper::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
-						if ($row->receipt){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
+						if ($row->receipt){$imgfile='ok.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
+						echo HTMLHelper::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
-						if ($row->show_profile){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ALLOWED');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_ALLOWED');}
-						echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
+						if ($row->show_profile){$imgfile='ok.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ALLOWED');}else{$imgfile='delete.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_ALLOWED');}
+						echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 											$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
-						if ($row->admintipp){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
-						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
+						if ($row->admintipp){$imgfile='ok.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ACTIVE');}else{$imgfile='delete.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_INACTIVE');}
+						echo HTMLHelper::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
 					<td style='text-align: center; '>
 						<?php
-						if ($row->approved){$imgfile='ok.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED');}else{$imgfile='delete.png';$imgtitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_APPROVED');}
-						echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
+						if ($row->approved){$imgfile='ok.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED');}else{$imgfile='delete.png';$imgtitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_NOT_APPROVED');}
+						echo HTMLHelper::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>

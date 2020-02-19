@@ -1,10 +1,10 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventsranking
  */
@@ -16,25 +16,20 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container-fluid">
-	<?php
-	if ($this->config['show_sectionheader']==1)
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
-
-	echo $this->loadTemplate('projectheading');
-
-	if (($this->config['show_eventsstats'])==1)
-	{
-		echo $this->loadTemplate('eventsrank');
-	}
-?>
-<div>
+<div class="<?php echo $this->divclasscontainer;?>" id="eventsranking">
 <?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
+if ( $this->config['show_sectionheader'] )
+{
+echo $this->loadTemplate('sectionheader');
+}
 
+echo $this->loadTemplate('projectheading');
+
+if ( $this->config['show_eventsstats'] )
+{
+echo $this->loadTemplate('eventsrank');
+}
+echo $this->loadTemplate('jsminfo');
 ?>
-</div>
+
 </div>

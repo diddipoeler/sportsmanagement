@@ -17,7 +17,7 @@
 		/>
 		<field
 			name="project_id"
-			type="hidden"
+			type="number"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
 			class="readonly" 
@@ -27,7 +27,7 @@
 		/>
 		<field
 			name="team_id"
-			type="hidden"
+			type="number"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN_DESC" 
 			class="readonly" 
@@ -155,13 +155,15 @@
 			<field
 				name="picture"
 				type="media"
-				default=""				
+				default="images/com_sportsmanagement/database/projectteams/placeholder_450_3.png"				
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
 				class="inputbox"
 				preview="show"
 				targetfolder="projectteams"
-				directory=""/>
+				showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/projectteams"
+				/>
 				
 				<field
 			name="cr_picture"
@@ -173,34 +175,28 @@
       <field
 				name="trikot_home"
 				type="media"
-				default="" 
+				default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-				directory=""/>				
+	     targetfolder="clubs_trikot_home"
+				showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/trikot_home"
+				/>				
 			<field
 				name="trikot_away"
 				type="media"
-				default=""
+default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif"
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-				directory=""/>
+			       targetfolder="clubs_trikot_away"
+				showon="show_info:1[AND]show_image:1"
+            directory="images/com_sportsmanagement/database/clubs/trikot_away"
+				/>
         
-        <!--
-        <field
-				name="logo_big"
-				type="media"
-				default=""
-				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
-				class="inputbox"
-				preview="show"
-				targetfolder="clubs_large"
-				directory=""/>	
-        -->	  					
 	</fieldset>	
 
 <fieldset name="description" 

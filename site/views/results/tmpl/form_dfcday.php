@@ -4,17 +4,21 @@
  * @file      form_dfcday.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 
 if ( $this->overallconfig['use_jquery_modal'] )
@@ -28,27 +32,11 @@ if ( $this->overallconfig['use_jquery_modal'] )
 
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
+	Factory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), Text::_('ALERTNOTAUTH') );
 }
-
-
-//echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
-$document = JFactory::getDocument();
-
-/*
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );   
-require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
-}
-*/
+$document = Factory::getDocument();
 
 ?>
 <div class="row-fluid" style="overflow:auto;">
@@ -59,7 +47,7 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 				<?php
 				if ($this->roundid>0)
 				{
-					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
+					sportsmanagementHelperHtml::showMatchdaysTitle(Text::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
@@ -73,10 +61,10 @@ $routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
-						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);
+						echo HTMLHelper::link($link, $desc);
 					}
 				}
 				?>
@@ -102,7 +90,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						if($this->project->project_type=='DIVISIONS_LEAGUE') {
 							$colspan++;
 					?>
-					<th style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
+					<th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
 					<?php 
 						}
 					?>
@@ -110,14 +98,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					
 					
 					
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
-					<th style="text-align: center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
+					<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
+					<th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
+					<th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
 					<?php
 					if ($this->project->allow_add_time)
 					{
 						?>
-						<th style="text-align:center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT_TYPE'); ?></th>
+						<th style="text-align:center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT_TYPE'); ?></th>
 						<?php
 					}
 					?>
@@ -125,13 +113,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				if ( $this->config['show_edit_match_events'] )
 				{
 				?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
 					<?php
 				}
 				if ( $this->config['show_edit_match_statistic'] )
 				{
 					?>
-					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
+					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
 					<?php
 				}
 				?>	
@@ -173,16 +161,16 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         
         
 		<input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />
 		<!--
-		<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' onclick="$('checkmycontainers').value=0; " />
+		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' onclick="$('checkmycontainers').value=0; " />
 		-->
-		<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
-		<?php echo JHtml::_('form.token'); ?>
+		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<!-- Main END -->
 	</form>
 </div>
@@ -191,7 +179,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 <div class='pagenav'>
 <table width='96%' align='center' cellpadding='0' cellspacing='0'>
 	<tr>
-		<?php //echo JoomleaguePagination::pagenav($this->project); ?>
+		<?php 
+		?>
 	</tr>
 </table>
 <!-- matchdays pageNav END -->

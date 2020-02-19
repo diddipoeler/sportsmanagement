@@ -4,12 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage sishandball
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport( 'joomla.application.component.view');
 
@@ -34,15 +36,15 @@ class sportsmanagementViewsishandball extends JViewLegacy
 	function display($tpl = null) 
     {
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 		$params = $app->getParams();
-        $paramscomponent = JComponentHelper::getParams( $option );
+        $paramscomponent = ComponentHelper::getParams( $option );
 		$model = $this->getModel();
 		//$model = &$this->getModelitem();
 		

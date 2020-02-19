@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_playgroundplan
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 $teamformat = $params->get('teamformat', 'name');
 $dateformat = $params->get('dateformat');
@@ -19,8 +22,8 @@ $textdiv = "";
 
 $n = 1;
 ?>
-<div class="row-fluid" id="modjlplaygroundplan<?php echo $mode; ?>">
-
+<div class="<?php echo $params->get('divclassrow'); ?>" id="modjlplaygroundplan<?php echo $mode; ?>">
+<table class="<?php echo $params->get('table_class'); ?>">
 <?php
 foreach ($list as $match)
  	{
@@ -30,7 +33,7 @@ $playground_id = 0;
 $picture = ""; 	  
 	if ($mode == 0)
 		{
-		$textdiv .= '<div class="qslidejl">';
+		$textdiv .= '<tr><td><div class="qslidejl">';
 		}
 if ($mode == 1)
 {
@@ -61,17 +64,17 @@ $playground_id = $match->playground_club_slug;
 if( $params->get('show_playground_link'))
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $match->project_slug;
 $routeparameter['pgid'] = $playground_id ;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    
   
-$playgroundname= JHTML::link($link, JText::sprintf( '%1$s', $playgroundname ) );
+$playgroundname= HTMLHelper::link($link, Text::sprintf( '%1$s', $playgroundname ) );
 }
 else
 {
-$playgroundname= JText::sprintf( '%1$s', $playgroundname);
+$playgroundname= Text::sprintf( '%1$s', $playgroundname);
 }
 $textdiv.= $playgroundname.'</div>';
 }
@@ -95,15 +98,15 @@ $picture = $match->playground_club_picture;
 
 if ( $picture )
 {
-$textdiv .= '<p>'.JHtml::image( $picture,"","width=".$params->get('picture_playground_width')).'</p>';
+$textdiv .= '<p>'.HTMLHelper::image( $picture,"","width=".$params->get('picture_playground_width')).'</p>';
 }
 
 $textdiv.= '</div>';    
 }
     
 $textdiv .= '<div class="jlplplanedate">';
-$textdiv .= JHtml::date( $match->match_date,$dateformat );
-$textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
+$textdiv .= HTMLHelper::date( $match->match_date,$dateformat );
+$textdiv .= " ".Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
 list($date,$time) = explode(" ",$match->match_date);
 $time = strftime("%H:%M",strtotime($time));
 $textdiv .= $time;
@@ -133,11 +136,11 @@ $team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.HTMLHelper::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team1logo,"").'</p>';    
+$textdiv .= '<p>'.HTMLHelper::image( $team1logo,"").'</p>';    
 }
 
 }
@@ -153,11 +156,11 @@ $team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.HTMLHelper::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team2logo,"").'</p>';    
+$textdiv .= '<p>'.HTMLHelper::image( $team2logo,"").'</p>';    
 }
 
 
@@ -167,10 +170,11 @@ $textdiv .= '<p>'.modSportsmanagementPlaygroundplanHelper::getTeams($match->team
 $textdiv.= '</div>';
 $textdiv.= '</div>';
 $textdiv.= '<div style="clear:both"></div>';
-$textdiv.= '</div>';
+$textdiv.= '</div></td></tr>';
 
 }
 
 echo $textdiv;
 ?>
+</table>	
 </div>

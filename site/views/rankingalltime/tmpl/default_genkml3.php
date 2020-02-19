@@ -1,25 +1,14 @@
 <?php 
-//defined( '_JEXEC',1 ) or die( 'Restricted access' );
-define( '_JEXEC', 1 );
-define( '_VALID_MOS', 1 );
-
-/*
-if ( $this->show_debug_info )
-{
-echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
-echo 'allteams<pre>',print_r($this->allteams,true),'</pre><br>';
-}
-
-VALUES ('Pan Africa Market', '1521 1st Ave, Seattle, WA', '47.608941', '-122.340145', 'restaurant');
-VALUES ('Buddha Thai & Bar', '2222 2nd Ave, Seattle, WA', '47.613591', '-122.344394', 'bar');
-VALUES ('The Melting Pot', '14 Mercer St, Seattle, WA', '47.624562', '-122.356442', 'restaurant');
-VALUES ('Ipanema Grill', '1225 1st Ave, Seattle, WA', '47.606366', '-122.337656', 'restaurant');
-VALUES ('Sake House', '2230 1st Ave, Seattle, WA', '47.612825', '-122.34567', 'bar');
-VALUES ('Crab Pot', '1301 Alaskan Way, Seattle, WA', '47.605961', '-122.34036', 'restaurant');
-VALUES ('Mama\'s Mexican Kitchen', '2234 2nd Ave, Seattle, WA', '47.613975', '-122.345467', 'bar');
-VALUES ('Wingdome', '1416 E Olive Way, Seattle, WA', '47.617215', '-122.326584', 'bar');
-VALUES ('Piroshky Piroshky', '1908 Pike pl, Seattle, WA', '47.610127', '-122.342838', 'restaurant');
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_genkml3.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage rankingalltime
+ */
+defined( '_JEXEC',1 ) or die( 'Restricted access' );
 
 // Creates an array of strings to hold the lines of the KML file.
 $kml = array('<?xml version="1.0" encoding="UTF-8"?>');

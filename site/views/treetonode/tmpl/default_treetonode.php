@@ -1,16 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      default_treetonode.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage treetonode
  */
 
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+//echo '<pre>'.print_r($this->node,true).'</pre>';
 $style  = 'style="background-color: '.$this->config['tree_bg_colour'].';';
 $style .= 'border: 1px solid  '.$this->config['tree_border_colour'].';';
 $style .= 'font-weight: bold; white-space:nowrap;';
@@ -47,7 +50,7 @@ $h = '<img src="'.$path.$treeh.'" alt="" width="16" height="30">';
 
 if(!$this->node)
 {
-    echo JText::_( 'COM_SPORTSMANAGEMENT_TREETONODE_GENERATE_THE_TREE' );
+    echo Text::_( 'COM_SPORTSMANAGEMENT_TREETONODE_GENERATE_THE_TREE' );
 }
 else
 {
@@ -59,7 +62,7 @@ $c = 2*$i+1;        			//columns
 $col_hide = $c-2*$hide;			//hiden col
 ?>
 
-<table class="table table-responsive">
+<table class="table ">
 <?php
 //headerline
 if( $this->config['show_treeheader'] == 1 )
@@ -91,17 +94,17 @@ if( $this->config['show_treeheader'] == 1 )
 					if( $this->config['show_round_date'] )
                     {
 						echo '<br/>';
-						$date1 = JFactory::getDate($this->roundname[$hed]->round_date_first)->format('d-m-Y');
-						$date2 = JFactory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
+						$date1 = Factory::getDate($this->roundname[$hed]->round_date_first)->format('d-m-Y');
+						$date2 = Factory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
 						if( $date1 == $date2 )
                         {
 							echo $date1;
 						}
 						else
                         {
-							echo JFactory::getDate($this->roundname[$hed]->round_date_first)->format('d');
+							echo Factory::getDate($this->roundname[$hed]->round_date_first)->format('d');
 							echo '&divide;';
-							echo JFactory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
+							echo Factory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
 						}
 					}
 					//date end
@@ -194,6 +197,27 @@ if( $this->config['show_treeheader'] == 1 )
 			echo $this->node[$j-1]->team_name;
 		}
 	}
+	
+if ( $this->node[$j-1]->match_id )
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = Factory::getApplication()->input->getInt('p',0);
+$routeparameter['mid'] = $this->node[$j-1]->match_id;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+?>    
+<a href='<?php echo $report_link ; ?>'>
+<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+width='20'
+alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT' ); ?>'
+title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT' ); ?>'>
+</a>
+<?php					
+}					
+					
+					
+					
 	if(($this->config['show_overlib_seed']==0)&& $this->node[$j-1]->is_leaf )
     {
 		;

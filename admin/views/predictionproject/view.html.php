@@ -4,15 +4,16 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionproject
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewpredictionproject
@@ -37,20 +38,30 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->script = $this->get('Script');
-
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$this->form->setFieldAttribute('champ', 'type', 'radio');				    
+$this->form->setFieldAttribute('champ', 'class', 'switcher');				    
+$this->form->setFieldAttribute('joker', 'type', 'radio');				    
+$this->form->setFieldAttribute('joker', 'class', 'switcher');				
+$this->form->setFieldAttribute('published', 'type', 'radio');				    
+$this->form->setFieldAttribute('published', 'class', 'switcher');				
+$this->form->setFieldAttribute('mode', 'type', 'radio');				    
+$this->form->setFieldAttribute('mode', 'class', 'switcher');				
+$this->form->setFieldAttribute('overview', 'type', 'radio');				    
+$this->form->setFieldAttribute('overview', 'class', 'switcher');					
+}	
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 
 		$this->item->name = '';
 		
 		$this->app->setUserState( "$this->option.pid", $this->item->project_id );
-        
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-		 
+	 
 		// Set the document
 		$this->setDocument();
         
@@ -75,11 +86,11 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	{
 		$isNew = $this->item->id == 0;
         //$this->name = $this->item->name;
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+		$document = Factory::getDocument();
+		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->addScript(Uri::root() . $this->script);
+		$document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     
 }

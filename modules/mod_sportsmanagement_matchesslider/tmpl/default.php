@@ -1,17 +1,15 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.00
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
  */ 
 
 defined('_JEXEC') or die('Restricted access');
-
-//echo ' matches<br><pre>'.print_r($slidermatches,true).'</pre>';
-//echo ' projectid<br><pre>'.print_r($projectid,true).'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
@@ -44,9 +42,9 @@ foreach( $slidermatches as $match )
     <a href="<?PHP echo $link;  ?>" title="">
     <?PHP
 //echo $match->match_date;
-echo JHTML::_('date', $match->match_date, $params->get('dateformat'), null);
+echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
 echo ' ';
-echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
+echo HTMLHelper::_('date', $match->match_date, $params->get('timeformat'), null);
 ?>
 </a>
 </h1>

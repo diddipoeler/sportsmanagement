@@ -4,18 +4,19 @@
  * @file      sportstypes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.'components/com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'components/com_sportsmanagement' .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 }
 
@@ -67,10 +68,10 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }    
         
 		// Load the filter state.
@@ -127,11 +128,6 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 's.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
                 
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
-        
 		return $this->jsmquery;
         
 	}
@@ -155,11 +151,11 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 		$this->jsmdb->setQuery($this->jsmquery);
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-            $this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
+            $this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
 		foreach ($result as $sportstype){
-			$sportstype->name = JText::_($sportstype->name);
+			$sportstype->name = Text::_($sportstype->name);
 		}
 		return $result;
 	}

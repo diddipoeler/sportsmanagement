@@ -1,23 +1,36 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      imagehandler.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage 
  */
-// no direct access
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Log\Log;
 
-jimport('joomla.application.component.controller');
-jimport('joomla.filesystem.file');
-//require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
-require_once (JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imageselect.php');
+require_once (JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php');
 
-class sportsmanagementControllerImagehandler extends JControllerLegacy {
+/**
+ * sportsmanagementControllerImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementControllerImagehandler extends BaseController {
 
     /**
      * Constructor
@@ -38,28 +51,27 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
      * @since 0.9
      */
     function upload() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         // Check for request forgeries
-        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-        $file = JFactory::getApplication()->input->getVar('userfile', '', 'files', 'array');
-        //$task	= JFactory::getApplication()->input->getVar( 'task' );
-        $type = JFactory::getApplication()->input->getVar('type');
+        $file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $linkaddress = JFactory::getApplication()->input->getVar('linkaddress');
+        $field = Factory::getApplication()->input->getVar('field');
+        $linkaddress = Factory::getApplication()->input->getVar('linkaddress');
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
-        JClientHelper::setCredentialsFromRequest('ftp');
-        //$ftp = JClientHelper::getCredentials( 'ftp' );
-        //set the target directory
-        $base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS;
+        ClientHelper::setCredentialsFromRequest('ftp');
 
-        $app->enqueueMessage(JText::_($type), '');
-        $app->enqueueMessage(JText::_($folder), '');
-        $app->enqueueMessage(JText::_($base_Dir), '');
+        //set the target directory
+        $base_Dir = JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder . DS;
+
+        $app->enqueueMessage(Text::_($type), '');
+        $app->enqueueMessage(Text::_($folder), '');
+        $app->enqueueMessage(Text::_($base_Dir), '');
 
         //do we have an imagelink?
         if (!empty($linkaddress)) {
@@ -75,10 +87,10 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
             $filepath = $base_Dir . $filename;
 
             if (!copy($linkaddress, $filepath)) {
-                echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
+                echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
                 //$app->close();
             } else {
-                //echo "<script> alert('" . JText::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+                //echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
                 echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
                 //$app->close();
             }
@@ -86,7 +98,7 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
 
         //do we have an upload?
         if (empty($file['name'])) {
-            echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
+            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
             //$app->close();
         }
 
@@ -102,12 +114,12 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
         $filepath = $base_Dir . $filename;
 
         //upload the image
-        if (!JFile::upload($file['tmp_name'], $filepath)) {
-            echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
+        if (!File::upload($file['tmp_name'], $filepath)) {
+            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
 //          $app->close();
         } else {
-//          echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-//          echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
             echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 //          $app->close();
         }
@@ -121,32 +133,32 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
      * @since 0.9
      */
     function delete() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
-        JClientHelper::setCredentialsFromRequest('ftp');
+        ClientHelper::setCredentialsFromRequest('ftp');
 
         // Get some data from the request
-        $images = JFactory::getApplication()->input->getVar('rm', array(), '', 'array');
-        $type = JFactory::getApplication()->input->getVar('type');
+        $images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
+        $type = Factory::getApplication()->input->getVar('type');
 
         $folder = ImageSelectSM::getfolder($type);
 
         if (count($images)) {
             foreach ($images as $image) {
-                if ($image !== JFilterInput::clean($image, 'path')) {
-                    JError::raiseWarning(100, JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+                if ($image !== FilterInput::clean($image, 'path')) {
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
                     continue;
                 }
 
-                $fullPath = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . $image);
-                $fullPaththumb = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . 'small' . DS . $image);
+                $fullPath = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. $image);
+                $fullPaththumb = Path::clean(JPATH_SITE .DIRECTORY_SEPARATOR. 'images' .DIRECTORY_SEPARATOR. $option .DIRECTORY_SEPARATOR. 'database' .DIRECTORY_SEPARATOR. $folder .DIRECTORY_SEPARATOR. 'small' .DIRECTORY_SEPARATOR. $image);
                 if (is_file($fullPath)) {
-                    JFile::delete($fullPath);
-                    if (JFile::exists($fullPaththumb)) {
-                        JFile::delete($fullPaththumb);
+                    File::delete($fullPath);
+                    if (File::exists($fullPaththumb)) {
+                        File::delete($fullPaththumb);
                     }
                 }
             }

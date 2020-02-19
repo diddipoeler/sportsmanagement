@@ -4,17 +4,18 @@
  * @file      default_info.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionuser
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-//echo '<br /><pre>~' . print_r($this->model->pjID,true) . '~</pre><br />';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_PERS_DATA'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_PERS_DATA'); ?></h2>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="info">
 <?php
 if ($this->config['show_full_name'])
 {
@@ -73,24 +74,24 @@ if (!empty($memberPredictionPoints))
 		<td class='info'>
 			<table class='plinfo'>
 				<tr>
-					<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NAME'); ?></td>
+					<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NAME'); ?></td>
 					<td class='data'>
 						<?php
-						$outputName = JText::sprintf('%1$s %2$s', $outputUserName, '');
+						$outputName = Text::sprintf('%1$s %2$s', $outputUserName, '');
 						if ($this->predictionMember->user_id)
 						{
 							switch ($this->config['show_user_profile'])
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute($this->predictionMember->user_id);
-											$outputName = JHTML::link($link, $outputName);
+											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
-								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
+								case 2:	 // Link to CBE User Page with support for SportsManagement Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->predictionMember->user_id,
 																									$this->predictionGame->id,
 																									$this->predictionMember->pmID);
-											$outputName = JHTML::link($link, $outputName);
+											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
 								default:	break;
@@ -103,15 +104,14 @@ if (!empty($memberPredictionPoints))
 				<?php
 					if ($this->config['show_register_date'])
 					{
-						//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_MEMBERSHIP'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_MEMBERSHIP'); ?></td>
 							<td class='data'>
 								<?php
 								echo	($this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
-										JHTML::date($this->predictionMember->pmRegisterDate,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) :
-										JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN'));
+										HTMLHelper::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) :
+										Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN'));
 								?>
 							</td>
 						</tr>
@@ -123,10 +123,9 @@ if (!empty($memberPredictionPoints))
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SLOGAN'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SLOGAN'); ?></td>
 							<td class='data'><?php
-								//echo strip_tags($this->predictionMember->slogan);
-								echo (!empty($this->predictionMember->slogan)) ? strip_tags($this->predictionMember->slogan) : JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_SLOGAN')
+								echo (!empty($this->predictionMember->slogan)) ? strip_tags($this->predictionMember->slogan) : Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_SLOGAN')
 								?></td>
 						</tr>
 						<?php
@@ -137,11 +136,11 @@ if (!empty($memberPredictionPoints))
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_LAST_PRED'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_LAST_PRED'); ?></td>
 							<td class='data'>
 								<?php
 								echo	( !empty($this->predictionMember->last_tipp) && ( $this->predictionMember->last_tipp != '0000-00-00 00:00:00') ) ?
-										JHTML::date($this->predictionMember->last_tipp,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NEVER');
+										HTMLHelper::date($this->predictionMember->last_tipp,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NEVER');
 								?>
 							</td>
 						</tr>
@@ -154,7 +153,7 @@ if (!empty($memberPredictionPoints))
 					$found=false;
 					?>
 					<tr>
-						<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_FAVTEAMS'); ?></td>
+						<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_FAVTEAMS'); ?></td>
 						<td class='data'><?php
 							foreach ( $this->predictionProjectS AS $predictionProject )
 							{
@@ -173,7 +172,7 @@ if (!empty($memberPredictionPoints))
 														$found=true;
 														?>
 														<span class='hasTip' title="<?php
-																echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_FAVTEAM_IN_PROJECT',$predictionProjectSettings->name);
+																echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_FAVTEAM_IN_PROJECT',$predictionProjectSettings->name);
 																?>"><?php
 															echo $team->text . '<br />';
 															?></span>
@@ -186,7 +185,7 @@ if (!empty($memberPredictionPoints))
 									}
 								}
 							}
-							if (!$found){echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_FAVTEAM');}
+							if (!$found){echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_FAVTEAM');}
 							?></td>
 					</tr>
 					<?php
@@ -194,14 +193,13 @@ if (!empty($memberPredictionPoints))
 				?>
 				
         <tr>
-					<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /*Meistertipp*/ ?></td>
+					<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /** Meistertipp */ ?></td>
 					<td class='data'><?php
-						//echo '<br /><pre>~' . print_r($this->model->pjID,true) . '~</pre><br />';
 						$found=false;
 
 						if ( !isset($this->predictionMember->champ_tipp) )
 						{
-							$this->predictionMember->champ_tipp = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
+							$this->predictionMember->champ_tipp = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
 						}
 
 						$champShown=false;
@@ -212,27 +210,13 @@ if (!empty($memberPredictionPoints))
 							{
 								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
-									//$predictionProjectSettings->start_date='2010-08-08';
-									//$time=time();
 									$time=strtotime($predictionProjectSettings->start_date);
-									//$date=date("Y-m-d",$time);
-									//echo $date.'/';
 									$time += 86400; // Ein Tag in Sekunden
 									$showDate=date("Y-m-d",$time);
-									//echo $showDate;
+
 									$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
-									//if (($showChamp) || ($this->showediticon))
-									
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-echo '<br />predictionuser info -> time <pre>~' . print_r($time,true) . '~</pre><br />';
-echo '<br />predictionuser info -> showDate <pre>~' . print_r($showDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> thisTimeDate <pre>~' . print_r($thisTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> competitionStartTimeDate <pre>~' . print_r($competitionStartTimeDate,true) . '~</pre><br />';
-echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) . '~</pre><br />';
-            }
             									
 									if (($showChamp))
 									{
@@ -248,7 +232,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 														$champShown=true;
 														?>
 														<span class='hasTip' title="<?php
-																echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT',$predictionProjectSettings->name);
+																echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT',$predictionProjectSettings->name);
 																?>"><?php
 															echo $team->text . '<br />';
 															?></span>
@@ -263,14 +247,14 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 									{
 										if (!$dummyOutputShown)
 										{
-											echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SHOW_AFTER_START') . '<br />';
+											echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SHOW_AFTER_START') . '<br />';
 										}
 										$dummyOutputShown=true;
 									}
 								}
 							}
 						}
-						if ((!$found)&&($champShown)){echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');}
+						if ((!$found)&&($champShown)){echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');}
 						?></td>
 				</tr>
 			</table>
@@ -291,7 +275,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								<input type='hidden' name='task' value='predictionusers.selectprojectround' />
 								<input type='hidden' name='option' value='com_sportsmanagement' />
 								
-								<?php echo JHTML::_('form.token'); ?>
+								<?php echo HTMLHelper::_('form.token'); ?>
 
 								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
 																				sportsmanagementModelPrediction::$pjID,
@@ -303,24 +287,14 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 				}
 				?>
 				<?php
-					/*
-					if ($this->config['show_ranking'])
-					{
-						?>
-						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_RANK'); ?></td>
-							<td class='data'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_RANK_OUTPUT',$this->memberData->rankingAll); ?></td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 				<?php
 					if ($this->config['show_totalpoints'])
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TOTAL_POINTS'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TOTAL_POINTS'); ?></td>
 							<td class='data'><?php
 								// Add Link to totalranking
 								echo $totalPoints;
@@ -330,29 +304,14 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					}
 				?>
 				<?php
-					/* only works if game has just one project or we have a project selector
-					if (($this->config['show_lastpoints']) && (count($this->predictionProjectS)==1))
-					{
-						?>
-						<tr>
-							<td class='label'><?php
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_LAST_ROUND');
-								?></td>
-							<td class='data'><?php
-								//add link to last round ranking
-								echo $this->memberData->lastTipp;
-								?></td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 				<?php
 					if ($this->config['show_counttipps'])
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_PRED_COUNT'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_PRED_COUNT'); ?></td>
 							<td class='data'><?php echo $predictionsCount; ?></td>
 						</tr>
 						<?php
@@ -363,7 +322,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_AVERAGE_POINTS'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_AVERAGE_POINTS'); ?></td>
 							<td class='data'><?php
 								if ($predictionsCount > 0)
 								{
@@ -383,7 +342,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TOPS'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TOPS'); ?></td>
 							<td class='data'><?php
 								if ($predictionsCount > 0)
 								{
@@ -393,7 +352,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								{
 									$percent = number_format(0,2);
 								}
-								echo JText::sprintf('%1$s (%2$s%%)',$totalTop,$percent);
+								echo Text::sprintf('%1$s (%2$s%%)',$totalTop,$percent);
 								?></td>
 						</tr>
 						<?php
@@ -404,7 +363,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_MARGINS'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_MARGINS'); ?></td>
 							<td class='data'><?php
 								if ($predictionsCount > 0)
 								{
@@ -414,7 +373,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								{
 									$percent = number_format(0,2);
 								}
-								echo JText::sprintf('%1$s (%2$s%%)',$totalDiff,$percent);
+								echo Text::sprintf('%1$s (%2$s%%)',$totalDiff,$percent);
 								?></td>
 						</tr>
 						<?php
@@ -425,7 +384,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 					{
 						?>
 						<tr>
-							<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TENDENCIES'); ?></td>
+							<td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_TENDENCIES'); ?></td>
 							<td class='data'><?php
 								if ($predictionsCount > 0)
 								{
@@ -435,37 +394,17 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								{
 									$percent = number_format(0,2);
 								}
-								echo JText::sprintf('%1$s (%2$s%%)',$totalTend,$percent);
+								echo Text::sprintf('%1$s (%2$s%%)',$totalTend,$percent);
 								?></td>
 						</tr>
 						<?php
 					}
 				?>
 				<?php
-					/* only works if game has just one project or we have a project selector
-					if (($this->config['show_form']) && (count($this->predictionProjectS)==1))
-					{
-						?>
-						<tr>
-							<td class='label'><?php
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_PRED_FORM');
-								?></td>
-							<td class='data'>
-								<?php
-								$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_UP'); $picture = 'media/com_sportsmanagement/jl_images/up.png';
-								echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
-								$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SAME'); $picture = 'media/com_sportsmanagement/jl_images/same.png';
-								echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
-								$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_DOWN'); $picture = 'media/com_sportsmanagement/jl_images/down.png';
-								echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
-								?>
-							</td>
-						</tr>
-						<?php
-					}
-					*/
+
 				?>
 			</table>
 		</td>
 	</tr>
 </table>
+</div>

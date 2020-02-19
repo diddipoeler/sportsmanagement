@@ -4,17 +4,14 @@
  * @file      club.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelclub
@@ -33,20 +30,14 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}	
-
-
-   
    
     /**
 	 * Method to update checked clubs
@@ -57,20 +48,12 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
+      
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -113,21 +96,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
-        
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'coords <pre>'.print_r($coords, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts <pre>'.print_r($address_parts, true).'</pre><br>','');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts2 <pre>'.print_r($address_parts2, true).'</pre><br>','');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'coords <pre>'.print_r($coords,true).'</pre>';    
-        $my_text .= 'address_parts <pre>'.print_r($address_parts,true).'</pre>';
-        $my_text .= 'address_parts2 <pre>'.print_r($address_parts2,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(sportsmanagementHelper::$_success_text, true).'</pre><br>','');
-        }
-        
+       
         if ( $coords )
         {
 		$tblClub->latitude = $coords['latitude'];
@@ -140,8 +109,6 @@ class sportsmanagementModelclub extends JSMModelAdmin
 
 			if(!$tblClub->store()) 
             {
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}
@@ -158,7 +125,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
     function teamsofclub($club_id)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

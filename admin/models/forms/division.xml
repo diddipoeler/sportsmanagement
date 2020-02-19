@@ -21,10 +21,15 @@
         />
         
         <field
-            name="project_id"
-            type="hidden"
-            default="0"			
-        />
+			name="project_id"
+			type="number"
+		       label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+readonly="true"
+/>
         
         <field
             name="name"
@@ -71,6 +76,15 @@
             <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DPARENT_ID</option>
         </field>
         
+	    <field
+            name="ordering" 
+            type="number" 
+            label="JGRID_HEADING_ORDERING"
+            description="JGRID_HEADING_ORDERING" 
+            size="11" 
+            default="0"
+        />
+	    
     </fieldset>		
 	
     <fieldset 

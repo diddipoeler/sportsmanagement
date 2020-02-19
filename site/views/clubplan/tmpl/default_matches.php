@@ -1,43 +1,44 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubplan
  */
 
 defined('_JEXEC') or die('Restricted access'); 
-
-
-//echo '<pre>',print_r($this->matches,true),'</pre><br>';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 ?>
 <!-- START: matches -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="clubplanmatches">
 <table class="<?php echo $this->config['table_class']; ?>">
 <?php
 if ($this->config['type_matches'] != 0) {
 ?>
 	<tr class="sectiontableheader">
 		<?php if ( $this->config['show_matchday'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_match_nr'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
 		<?php } ;?>		
 		<?php if ( $this->config['show_match_date'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_match_time'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_time_present'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_league'] ) { ?>		
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
 		<?php } ;?>		
 		<?php if ( $this->config['show_club_logo'] ) { ?>
 		<th></th>
@@ -49,12 +50,12 @@ if ($this->config['type_matches'] != 0) {
 		<?php } ?>
 		<th>&nbsp;</th>
 		<?php if ( $this->config['show_referee'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_playground'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
 		<?php } ;?>
-		<th colspan=3 align="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
+		<th colspan=3 align="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
 		<?php if ( $this->config['show_thumbs_picture'] ) { ?>
 		<th align="center">&nbsp;</th>
 		<?php } ;?>
@@ -63,7 +64,7 @@ if ($this->config['type_matches'] != 0) {
 }
 		$k   = 0;
 		$cnt = 0;
-		$club_id = JFactory::getApplication()->input->getInt('cid') != -1 ? JFactory::getApplication()->input->getInt('cid') : false;
+		$club_id = Factory::getApplication()->input->getInt('cid') != -1 ? Factory::getApplication()->input->getInt('cid') : false;
 		$prevDate = '';
 		foreach ($this->matches as $game)
 		{
@@ -73,7 +74,7 @@ if ($this->config['type_matches'] != 0) {
 				?>
 					<tr class="sectiontableheader">
 						<th colspan="16">
-							<?php echo JHtml::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<?php
@@ -82,8 +83,8 @@ if ($this->config['type_matches'] != 0) {
 			}
 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['r'] = $game->round_slug;
 $routeparameter['division'] = 0;
@@ -92,14 +93,14 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['mid'] = $game->match_slug;
 $nextmatch_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);            
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['tid'] = $game->team1_slug;
 $routeparameter['ptid'] = $game->projectteam1_slug;
@@ -108,16 +109,16 @@ $routeparameter['tid'] = $game->team2_slug;
 $routeparameter['ptid'] = $game->projectteam2_slug;        
 $teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['tid'] = $game->team1_slug;
 $teamstats1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
 $routeparameter['tid'] = $game->team2_slug;
 $teamstats2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['pgid'] = $game->playground_id;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
@@ -203,12 +204,12 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 					?>
 					<?php if ($this->config['which_link']==1) { ?>
 					<?php
-					echo JHtml::link($result_link,$game->roundcode);
+					echo HTMLHelper::link($result_link,$game->roundcode);
 					}
 					?>
 					<?php if ($this->config['which_link']==2) { ?>
 					<?php
-					echo JHtml::link($nextmatch_link,$game->roundcode);
+					echo HTMLHelper::link($nextmatch_link,$game->roundcode);
 					}
 					?>
 				</td>
@@ -223,7 +224,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				<?php if ( $this->config['show_match_date'] ) { ?>
 				<td>
 					<?php
-					echo JHtml::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
+					echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
 					?>
 				</td>
 					<?php } ;?>
@@ -267,7 +268,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal'])
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 
                 </td>
@@ -291,7 +292,7 @@ $this->overallconfig['use_jquery_modal'])
                 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal'])
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 </td>
 					<?php 
@@ -308,8 +309,14 @@ $this->overallconfig['use_jquery_modal'])
 					$matchReferees = $this->model->getMatchReferees($game->match_id);
 					foreach ($matchReferees AS $matchReferee)
 					{
-						$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
-						echo JHtml::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $game->project_id;
+$routeparameter['pid'] = $matchReferee->id;
+$referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);						
+//$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
+						echo HTMLHelper::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
 					?>
@@ -318,7 +325,7 @@ $this->overallconfig['use_jquery_modal'])
 					<?php if ( $this->config['show_playground'] ) { ?>
 				<td>
 					<?php
-					echo JHtml::link($playground_link,$game->pl_name);
+					echo HTMLHelper::link($playground_link,$game->pl_name);
 					?>
 				</td>
 					<?php } ;?>
@@ -368,22 +375,22 @@ $this->overallconfig['use_jquery_modal'])
 					   }
 						if(isset($team1) && isset($team2) && ($team1==$team2)) {
 							echo '<td align="center" valign="middle">' .
-							JHtml::image("media/com_sportsmanagement/jl_images/draw.png",
+							HTMLHelper::image("media/com_sportsmanagement/jl_images/draw.png",
 							"draw.png",
-							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
+							array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
 								"thumbs_up.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
 								"thumbs_down.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";
 							}
 							else
@@ -399,5 +406,5 @@ $this->overallconfig['use_jquery_modal'])
 		} ;
 		?>
 </table>
-<br />
+</div>
 <!-- END: matches -->

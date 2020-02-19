@@ -1,11 +1,21 @@
 <?PHP
-
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage github
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 
 
 $attribs['width'] = '20px';
@@ -37,7 +47,7 @@ foreach( $this->commitlist as $key => $value   )
 $new_date = substr($value->commit->author->date,0,10).' '.substr($value->commit->author->date,11,8);
 //echo $value->commit->author->date;
 $timestamp = sportsmanagementHelper::getTimestamp($new_date);
-//$date = JFactory::getDate( $timestamp );
+
 //echo $date;
 //echo $new_date;
 echo date("d.m.Y H:i:s",$timestamp);  
@@ -59,13 +69,13 @@ echo $value->commit->author->name;
 
 <!--
 <a class="btn btn-small btn-warning" href="https://issues.joomla.org/tracker/<?php echo $this->trackerAlias; ?>/<?php echo $item->pull_id; ?>" target="_blank">
-<i class="icon-joomla"></i> <?php echo \JText::_('COM_PATCHTESTER_JISSUE'); ?>
+<i class="icon-joomla"></i> <?php echo Text::_('COM_PATCHTESTER_JISSUE'); ?>
 </a>
 -->
 
 <?PHP
 //echo $value->author->avatar_url;
-echo JHtml::image($value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
+echo HTMLHelper::image($value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
 ?>
 </td>
 

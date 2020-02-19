@@ -1,12 +1,31 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      projectrounds.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
 
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
+FormHelper::loadFieldClass('list');
 
-JFormHelper::loadFieldClass('list');
-
-
-class JFormFieldprojectrounds extends JFormFieldList
+/**
+ * FormFieldprojectrounds
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JFormFieldprojectrounds extends \JFormFieldList
 {
 	/**
 	 * The form field type.
@@ -24,44 +43,23 @@ class JFormFieldprojectrounds extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $options = array();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.name AS text')
 			->from('#__sportsmanagement_round AS a')
 			;
-
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
 
 		if ($menuType = $this->form->getValue('project'))
 		{
 			$query->where('a.project_id = ' . $db->quote($menuType));
 		}
 
-
-
-
 		// Get the options.
 		$db->setQuery($query);
         $options = $db->loadObjectList();
-/*
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		// Pad the option text with spaces using depth level as a multiplier.
-		for ($i = 0, $n = count($options); $i < $n; $i++)
-		{
-			$options[$i]->text = str_repeat('- ', $options[$i]->value) . $options[$i]->text;
-		}
-*/
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 

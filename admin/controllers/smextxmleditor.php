@@ -4,16 +4,17 @@
  * @file      smextxmleditor.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\MVC\Controller\FormController;
  
 
 /**
@@ -25,7 +26,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllersmextxmleditor extends JControllerForm
+class sportsmanagementControllersmextxmleditor extends FormController
 {
     
     /**
@@ -50,7 +51,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
     public function cancel()
 	{
     // Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
     }
     
     /**
@@ -59,11 +60,12 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$data		= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$app		= Factory::getApplication();
+		//$data		= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$data  = Factory::getApplication()->input->post->get('jform', array(), 'array');
 		//$context	= 'com_templates.edit.source';
 		$task		= $this->getTask();
 		$model		= $this->getModel();
@@ -76,7 +78,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 				//$app->setUserState($context.'.data',	null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$data['filename'], false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$data['filename'], false));
 				break;
 
 			default:
@@ -85,7 +87,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 				//$app->setUserState($context.'.data', null);
 
 				// Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false));
 				break;
 		}
         

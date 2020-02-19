@@ -4,17 +4,19 @@
  * @file      jlextdfbnetplayerimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-
-jimport ( 'joomla.application.component.controller' );
-jimport ( 'joomla.filesystem.file' );
-jimport ( 'joomla.filesystem.folder' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Log\Log;
 jimport ( 'joomla.filesystem.archive' );
 
 /**
@@ -26,7 +28,7 @@ jimport ( 'joomla.filesystem.archive' );
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegacy 
+class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController 
 {
 
 	/**
@@ -35,49 +37,39 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 	 * @return
 	 */
 	function save() {
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-		$document = JFactory::getDocument ();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
-		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		
-		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
-		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
+		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
 		
 		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
 		{
 		$link = 'index.php?option='.$option.'&view=jlextdfbnetplayerimport';
-		$msg = JText::_ ('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link <br><pre>'.print_r($link ,true).'</pre>'),'Notice');
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' msg <br><pre>'.print_r($msg ,true).'</pre>'),'Notice');
+		$msg = Text::_ ('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
 		$app->Redirect ( $link, $msg, 'ERROR' );
 		}
-
-		
-		
-		//$app->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
-		//$app->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
 		
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE' ) );
+		  Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'), Log::NOTICE, 'jsmerror');	 
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE' ) );
-			
+		  Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'), Log::NOTICE, 'jsmerror');
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE' ) );
+			 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE'), Log::NOTICE, 'jsmerror');
 			}
 		}
 		
-		// first step - upload
+/**
+ * first step - upload
+ */
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			//$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			$upload = $app->input->files->get('import_package');
-			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
+			$lmoimportuseteams = Factory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
 			$app->setUserState ( $option . 'whichfile', $whichfile );
@@ -87,50 +79,49 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 			$app->setUserState ( $option . 'uploadArray', $upload );
 			$filename = '';
 			$msg = '';
-			$dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
-			$extractdir = JPATH_SITE . DS . 'tmp';
-			$importFile = JPATH_SITE . DS . 'tmp' . DS . 'joomleague_import.csv';
-			if (JFile::exists ( $importFile )) {
-				JFile::delete ( $importFile );
+			$dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
+			$extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
+			$importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'sportsmanagement_import.csv';
+			if (File::exists ( $importFile )) {
+				File::delete ( $importFile );
 			}
-			if (JFile::exists ( $tempFilePath )) {
-				if (JFile::exists ( $dest )) {
-					JFile::delete ( $dest );
+			if (File::exists ( $tempFilePath )) {
+				if (File::exists ( $dest )) {
+					File::delete ( $dest );
 				}
-				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
+				if (! File::upload ( $tempFilePath, $dest )) {
+				    Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
 					return;
 				} else {
-					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
+					if (strtolower ( File::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
+						  Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
 							return false;
 						}
-						JFile::delete ( $dest );
-						$src = JFolder::files ( $extractdir, 'l98', false, true );
+						File::delete ( $dest );
+						$src = Folder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
-							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG' );
-							// todo: delete every extracted file / directory
+						  Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
 							return false;
 						}
-						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
+						if (strtolower ( File::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
+							 Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
+						  Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED'), Log::WARNING, 'jsmerror');
 							return;
 						}
 					} else {
-						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
+						if (strtolower ( File::getExt ( $dest ) ) == 'csv' || strtolower ( File::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
+							 Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
+						  Log::add(Text::_(__METHOD__.' '.__LINE__.'-'.'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
 							return false;
 						}
 					}
@@ -143,15 +134,13 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		} else {
 			
 			if ($whichfile == 'matchfile') {
-				$xml_file = $model->getData ();
+				$xml_file = $model->getData ($post);
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
 			} else {
-				$xml_file = $model->getData ();
+				$xml_file = $model->getData ($post);
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit&filter_season='.$post['filter_season'];
 			}
 		}
-		
-		
 		
 		$this->setRedirect ( $link, $msg );
 	}

@@ -4,15 +4,16 @@
  * @file      treetos.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\ListModel;
 
 
 
@@ -25,7 +26,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelTreetos extends JModelList
+class sportsmanagementModelTreetos extends ListModel
 {
 	var $_identifier = "treetos";
 	static $_project_id = 0;
@@ -38,8 +39,8 @@ class sportsmanagementModelTreetos extends JModelList
      */
     public function __construct($config = array())
         {
-            $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+            $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
                 self::$_project_id = $app->getUserState( "$option.pid", '0' );
                 //$config['filter_fields'] = array(
 //                        'r.name',
@@ -59,11 +60,11 @@ class sportsmanagementModelTreetos extends JModelList
 	 */
 	protected function getListQuery()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $search	= $this->getState('filter.search');
 	
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('tt.*');
 		// From the rounds table
@@ -89,7 +90,7 @@ class sportsmanagementModelTreetos extends JModelList
 		for ( $x = 0; $x < count( $cid ); $x++ )
 		{
 			
-			$tblTreeto = JTable::getInstance('Treeto','sportsmanagementTable');
+			$tblTreeto = Table::getInstance('Treeto','sportsmanagementTable');
 			$tblTreeto->id = $cid[$x];
 			$tblTreeto->division_id =	$data['division_id' . $cid[$x]];
 			

@@ -1,44 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_ranking
+ */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMRankingHelper
@@ -51,7 +25,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class modJSMRankingHelper
 {
-
 	
 	/**
 	 * modJSMRankingHelper::getData()
@@ -61,34 +34,28 @@ class modJSMRankingHelper
 	 */
 	public static function getData(&$params)
 	{
-		$app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+		$app = Factory::getApplication();
 
 		if (!class_exists('sportsmanagementModelRanking')) 
         {
-			//require_once(JLG_PATH_SITE.DS.'models'.DS.'ranking.php');
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'ranking.php' );
-            require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+            JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+            JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
+            JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 		}
 		
-        //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
         sportsmanagementModelProject::$cfg_which_database = $params->get( 'cfg_which_database' );
 		sportsmanagementModelProject::setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
-        //sportsmanagementModelRanking::$cfg_which_database = $params->get( 'cfg_which_database' );
 
 		$project = sportsmanagementModelProject::getProject($params->get( 'cfg_which_database' ),__METHOD__);
 
 		$ranking = JSMRanking::getInstance($project,$params->get( 'cfg_which_database' ));
 		$ranking->setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
-		$divisionid = explode(':', $params->get('division_id', 0));
-		$divisionid = $divisionid[0];
+//		$divisionid = explode(':', $params->get('division_id', 0));
+//		$divisionid = $divisionid[0];
+        $divisionid = (int) $params->get('division_id', 0);
 		$res   = $ranking->getRanking(null, null, $divisionid,$params->get( 'cfg_which_database' ));
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$params->get( 'cfg_which_database' ),__METHOD__);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-
 		$list = array();
 		foreach ($res as $ptid => $t) 
         {
@@ -104,8 +71,6 @@ class modJSMRankingHelper
 		$colors = array();
 		if ($params->get('show_rank_colors', 0)) 
         {
-//			$mdlRanking = JModel::getInstance("Ranking", "sportsmanagementModel");
-//			$mdlRanking->setProjectid($params->get('p'));
 			sportsmanagementModelRanking::$projectid = $params->get('p');
             $config = sportsmanagementModelProject::getTemplateConfig("ranking",$params->get( 'cfg_which_database' ),__METHOD__);
 			$colors = sportsmanagementModelProject::getColors($config["colors"]);
@@ -113,10 +78,7 @@ class modJSMRankingHelper
 		return array('project' => $project, 'ranking' => $list, 'colors' => $colors);
 
 	}
-    
-    
-    
-    
+  
     /**
      * modJSMRankingHelper::getCountGames()
      * 
@@ -126,11 +88,11 @@ class modJSMRankingHelper
      */
     static function getCountGames($projectid,$ishd_update_hour)
     {
-    $db = JFactory::getDBO();
-    $app = JFactory::getApplication();
+    $db = Factory::getDBO();
+    $app = Factory::getApplication();
     $query = $db->getQuery(true);      
     $date = time();    // aktuelles Datum     
-    $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
+    $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag spÃ¤ter (stunden * minuten * sekunden) 
     $match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
     $query->clear(); 
     $query->select('count(*) AS count');
@@ -142,9 +104,7 @@ class modJSMRankingHelper
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
     $matchestoupdate = $db->loadResult();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
     return $matchestoupdate;
-            
     }
 
 	/**
@@ -273,21 +233,21 @@ class modJSMRankingHelper
 		{
 			if (!empty($item->team->logo_small))
 			{
-				return JHtml::image($item->team->logo_small, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_small, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
         elseif ($type == 3) // club small logo
 		{
 			if (!empty($item->team->logo_middle))
 			{
-				return JHtml::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
         elseif ($type == 4) // club small logo
 		{
 			if (!empty($item->team->logo_big))
 			{
-				return JHtml::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
 		else if ($type == 2 && !empty($item->team->country))

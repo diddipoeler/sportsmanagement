@@ -4,18 +4,20 @@
  * @file      default_playground.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage playground
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_default">
 <table class="table">
 	<tr class="">
 		<th colspan="2">
 			<?php
-			echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_DATA' );
+			echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_DATA' );
 			?>
 		</th>
 	</tr>
@@ -24,7 +26,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<th class="" width="">
 
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT' );
 				?>
 
 		</th>
@@ -42,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	{
 		?>
 		<tr>
-			<th class="" width=''><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS' ); ?></th>
+			<th class="" width=''><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS' ); ?></th>
 			<td width=''>
 				<?php
 				echo JSMCountries::convertAddressString(	'',
@@ -65,11 +67,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 		<tr>
 			<th class="" width="">
-			   <?php echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE' ); ?>
+			   <?php echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE' ); ?>
 			</th>
 			<td>
 				<?php
-				echo JHtml::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
+				echo HTMLHelper::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
 				?>
 			</td>
 		</tr>
@@ -85,7 +87,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<th class="" width="">
 
 					<?php
-					echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS' );
+					echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS' );
 					?>
 
 			</th>

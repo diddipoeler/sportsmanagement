@@ -4,7 +4,7 @@
  * @file      deafult_ranking_home.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
@@ -19,6 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->homeRank as $division => $cu_rk) {
     if ($division) {
         ?>
+<div class="<?php echo $this->divclassrow;?> table-responsive">
         <table class="<?PHP echo $this->config['table_class']; ?>">
             <tr>
                 <td class="contentheading">
@@ -32,7 +33,8 @@ foreach ($this->homeRank as $division => $cu_rk) {
                 </td>
             </tr>
         </table>
-        <div class="table-responsive">
+</div>
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
         <?php
         foreach ($cu_rk as $ptid => $team) {
@@ -49,7 +51,7 @@ foreach ($this->homeRank as $division => $cu_rk) {
                 <?php
             } else {
                 ?>
-        <div class="table-responsive">
+       <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
         <?php
         echo $this->loadTemplate('rankingheading');

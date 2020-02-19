@@ -1,46 +1,20 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_rquotes
+ */
  
-//no direct access
 defined('_JEXEC') or die('Restricted access');
-
-
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Input\Cookie;
 
 /**
  * modRquotesHelper
@@ -64,7 +38,7 @@ class modRquotesHelper
  */
 static function renderRquote(&$rquote, &$params,$module)
 	{	
-	require(JModuleHelper::getLayoutPath($module->module,'_rquote'));
+	require(ModuleHelper::getLayoutPath($module->module,'_rquote'));
 	}
 //---------------------------------------------------------------------------------------------------------------------------------------------------	
 /**
@@ -78,10 +52,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
     $x = 0;
     $catid = 0;
     $row = array();
-    $app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
+    $app = Factory::getApplication();
     
         if ( $params->get('cfg_which_database') )
         {
@@ -100,9 +71,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
 			$x = count($category);
 		}
 
-        
-//		$x = count($category);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' x<br><pre>'.print_r($x,true).'</pre>'),'Notice');
 	
 	if( $x == 1) // get $catid when one category is selected 	
 		{
@@ -133,7 +101,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
         	
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -145,8 +112,6 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $row = array( $rows[$i] );
         }
 
-//echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
-//echo get_class($this).' '.__FUNCTION__.' row<pre>'.print_r($row,true).'</pre><br>';
 		
 }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -164,7 +129,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
  */
 static function getMultyRandomRquote($category,$num_of_random, &$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $x = 0;
        $catid = 0;
        $qrows = NULL;
@@ -209,7 +174,6 @@ static function getMultyRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 				
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -240,8 +204,6 @@ if ( $rows )
 			}
  }
             
-//echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
-//echo get_class($this).' '.__FUNCTION__.' qrows<pre>'.print_r($qrows,true).'</pre><br>';
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect            
 		return $qrows;
 		}
@@ -260,22 +222,12 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
  */
 static function getSequentialRquote($category, &$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
+       $cookie = Factory::getApplication()->input->cookie;
+       $cookieValue = $cookie->get('rquote');
 	   $x = 0;
        $row = NULL;
        $catid = 0;
-       
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
-
-
-	// by PD, not yet implemented
-
-	// make use of cookie to store last displayed rquote
-
-	// if cookies not enabled then fetch randomly
-//$query = "SELECT * from	#__rquotes WHERE published='1' and catid = $category";
- 
  
 	if ( $params->get('cfg_which_database') )
         {
@@ -298,9 +250,8 @@ static function getSequentialRquote($category, &$params)
 		}	
 		elseif( $x > 1)
 		{ 
-		  echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
+		  echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
           }
-//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
 $query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.*,p.picture as person_picture');
@@ -315,7 +266,6 @@ $query = $db->getQuery(true);
         } 
 	$db->setQuery( $query );
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 	$rows = $db->loadObjectList();
 
@@ -323,9 +273,9 @@ $query = $db->getQuery(true);
  {
 	$numRows = count($rows) - 1;
 
-	if (isset($_COOKIE['rquote']))
+	if ( !empty($cookieValue) )
     {
-		$i = intval($_COOKIE['rquote']);
+		$i = intval( $cookieValue );
 		if ($i < $numRows)
 			$i++;
 		else 
@@ -364,13 +314,13 @@ jimport('joomla.filesystem.file');
 
 		$path= JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
 		$cleanpath = JPATH::clean($path);
-		$contents = JFile::read($cleanpath);
+		$contents = File::read($cleanpath);
 		$lines = explode("\n", $contents);
 		$count = count($lines);
 		$rows = explode("\n", $contents);
 		$num = rand(0,$count-1);
 		
-	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
+	require(ModuleHelper::getLayoutPath($module->module,'textfile'));
 
 	return $rows;
  }
@@ -391,12 +341,12 @@ function getTextFile2(&$params,$filename,$module)
 	$num=($today-1);
 	$path = JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
 	$cleanpath = JPATH::clean($path);
-	$contents = JFile::read($cleanpath);
+	$contents = File::read($cleanpath);
 	$lines = explode("\n", $contents);
 	$count = count($lines);
 	$rows = explode("\n", $contents);
 
-	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
+	require(ModuleHelper::getLayoutPath($module->module,'textfile'));
 	}
 
 //------------------------------------------------------------------------------------------------	
@@ -411,55 +361,65 @@ function getDailyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
+
 $xx= count($category);
 	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta WHERE id='1'";
+	$no_of_quotes = $db->loadResult();
+    
+    $query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 1');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("j");
-
 	
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-			$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
-			$db->setQuery($query3);
-			$row=$db->query();
+				// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 1;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta`  SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='1'";
-	$db->setQuery($query3);
-	$row=$db->query();
+	// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 1;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -474,26 +434,25 @@ $xx= count($category);
  */
 function getWeeklyRquote($category,$x, &$params)
 	{
-	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='2'";
+	$no_of_quotes = $db->loadResult();
+
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 2');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -507,24 +466,35 @@ $xx= count($category);
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='2' ";
-			$db->setQuery($query3);
-			$row=$db->query();
+				// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 2;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached' WHERE id='2'";
-	$db->setQuery($query3);
-	$row=$db->query();
+	// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 2;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -541,22 +511,22 @@ function getMonthlyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='3'";
+	$no_of_quotes = $db->loadResult();
+    
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 3');
 	$db->setQuery($query,0);
 	$row = $db->loadRow();
 	
@@ -564,32 +534,41 @@ $xx= count($category);
 	$date_modified= $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("n");
-
 	
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
-			$db->setQuery($query3);
-			$row=$db->query();
+			// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 3;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
-		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='3'";
-	$db->setQuery($query3);
-	$row=$db->query();
+		// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 3;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -606,55 +585,65 @@ function getYearlyRquote($category,$x, &$params)
 	{
 	
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	
-//	$query="SELECT count(*) from #__rquote WHERE published='1' AND catid='$category'";
+	$query = $db->getQuery(true);
 $xx= count($category);
-	if($xx =='1') 
-		
-		
-			$catid =	$category[0];
-	
-	$query="SELECT count(*) from #__sportsmanagement_rquote WHERE published='1' AND catid='$catid'";
-	
-	
-	
-	
+	if( $xx == '1' ) 
+	$catid = $category[0];
+	$query->clear();
+    $query->select('count(*)');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 	$db->setQuery($query,0);
-	$no_of_quotes=$db->loadResult();
-	$query="SELECT * FROM #__rquote_meta where ID='4'";
+	$no_of_quotes = $db->loadResult();
+    
+	$query->clear();
+    $query->select('*');
+    $query->from('#__rquote_meta');
+    $query->where('id = 4');
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
-	$date_modified= $row[2];
+	$date_modified = $row[2];
 	
 	// get the current day of the month (from 1 to 31)
-
 	$day_today = date("Y");
-
 
 		if ($date_modified != $day_today){
 		// we have reached the end of the quotes
 		if ($number_reached >($no_of_quotes - 1)){
 			$number_reached = 1;
-			$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-			$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='4'";
-			$db->setQuery($query3);
-			$row=$db->query();
+            // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 4;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		} else {
 		// we haven't reached the end of the quotes	- therefore we increment $number_reached
 		
 		$number_reached = $number_reached + 1;
-		
-		
-		$query3 = "UPDATE `#__rquote_meta` SET `date_modified`= '$day_today', number_reached = '$number_reached'WHERE id='4'";
-	$db->setQuery($query3);
-	$row=$db->query();
+		// Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = 4;
+        $object->date_modified = $day_today;
+        $object->number_reached = $number_reached;
+        // Update their details in the table using id as the primary key.
+        $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
 		}
 	}
 	// we get the quote with 'catid = $number_reached' from the database
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
-	$db->setQuery($getQuoteQuery,0);
+    $query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$number_reached);
+	$db->setQuery($query,0);
 	$row = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
@@ -669,23 +658,30 @@ $xx= count($category);
  */
 function getTodayRquote($category,$x, &$params)
 {
-
 	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
-	$catid =	$category[0];
+    $query = $db->getQuery(true);
+	$catid = $category[0];
 	$day_today = date("z");
-
-	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$day_today' ";
-	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
+    
+    $query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
+    $query->where('daily_number = '.$day_today);
+	$db->setQuery($query,0);
+	$row = $db->loadObjectList();
 	
 	if(!$row)
 	{
-		$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
+	$query->clear();
+    $query->select('*');
+    $query->from('#__sportsmanagement_rquote');
+    $query->where('published = 1');
+    $query->where('catid = '.$catid);
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
-		
 		$i = rand(0, count($rows) - 1 );
-
 		$row = array( $rows[$i] );
 	}
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect

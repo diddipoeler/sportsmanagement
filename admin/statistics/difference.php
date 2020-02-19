@@ -4,17 +4,16 @@
  * @file      difference.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
-
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticDifference
@@ -46,22 +45,20 @@ class SMStatisticDifference extends SMStatistic
 	function getSids($id_field = '')
 	{
 		$params = SMStatistic::getParams();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		//$add_ids = explode(',', $params->get('add_ids'));
         $add_ids = $params->get('add_ids');
-		//JArrayHelper::toInteger($add_ids);
 		if (!count($add_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id), Log::WARNING, 'jsmerror');
 			return(array(0));
 		}
 		
-		//$sub_ids = explode(',', $params->get('sub_ids'));
         $sub_ids = $params->get('sub_ids');
-		//JArrayHelper::toInteger($sub_ids);
+
 		if (!count($sub_ids)) 
         {
-			JError::raiseError(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id));
+			Log::add( Text::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id), Log::ERROR, 'jsmerror');
 			return(array(0));
 		}
 				
@@ -207,13 +204,12 @@ class SMStatisticDifference extends SMStatistic
 	{
 		$sids = self::getQuotedSids('');
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['add'],'SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['sub'],'SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_add<br><pre>'.print_r($query_add->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_sub<br><pre>'.print_r($query_sub->dump(),true).'</pre>'),'');
+
         $select = 'COUNT(DISTINCT tp.id) as count';
 		$query_select_details	= 'n.num - d.den AS total, n.person_id, 1 as rank,'
 								. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
@@ -226,8 +222,7 @@ class SMStatisticDifference extends SMStatistic
 		$res = new stdclass;
 		$db->setQuery($query_core);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+       
 		$res->pagination_total = $db->loadResult();
         
         $query_core->clear('select');
@@ -236,7 +231,6 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->ranking = $db->loadObjectList();
 
@@ -278,8 +272,6 @@ class SMStatisticDifference extends SMStatistic
 		
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-//        $query_num = $db->getQuery(true);
-//        $query_den = $db->getQuery(true);
         
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0,$sids['add'],'SUM(ms.value) AS num, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0,$sids['sub'],'SUM(ms.value) AS den, tp.person_id');
@@ -354,8 +346,8 @@ class SMStatisticDifference extends SMStatistic
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $sids = self::getQuotedSids();
 		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -365,7 +357,6 @@ class SMStatisticDifference extends SMStatistic
         
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$add = $db->loadResult();
 		$add = isset($add->value) ? $add->value : 0;
@@ -375,7 +366,6 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$sub = $db->loadResult();
 		$sub = isset($sub->value) ? $sub->value : 0;
@@ -392,8 +382,8 @@ class SMStatisticDifference extends SMStatistic
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $sids = self::getQuotedSids();
 		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -402,7 +392,6 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$add = $db->loadResult();
 		$add = isset($add->value) ? $add->value : 0;
@@ -412,7 +401,6 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$sub = $db->loadResult();
 		$sub = isset($sub->value) ? $sub->value : 0;

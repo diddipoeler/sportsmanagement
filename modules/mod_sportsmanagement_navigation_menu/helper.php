@@ -1,47 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_navigation_menu
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-
-//jimport('joomla.application.component.model');
-//JModel::addIncludePath(JPATH_SITE.'/components/com_sportsmanagement/models', 'sportsmanagementModelAjax');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * modsportsmanagementNavigationMenuHelper
@@ -81,27 +53,24 @@ class modsportsmanagementNavigationMenuHelper
     public function __construct($params)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input;
+        $this->jinput = $app->input;
         
         $this->_params = $params;
-        $this->_db = JFactory::getDbo();
+        $this->_db = Factory::getDbo();
 
-        if (JRequest::getCmd('option') == 'com_sportsmanagement') {
-            $p = JRequest::getInt('p', $params->get('default_project_id'));
+        if ($this->jinput->getCmd('option') == 'com_sportsmanagement') {
+            $p = $this->jinput->getInt('p', $params->get('default_project_id'));
         } else {
             $p = $params->get('default_project_id');
         }
         $this->_project_id = intval($p);
         $this->_project = $this->getProject();
-        $this->_round_id = JRequest::getInt('r');
-        $this->_division_id = JRequest::getInt('division', 0);
-        $this->_team_id = JRequest::getInt('tid', 0);
-        
-        
-        
-        
+        $this->_round_id = $this->jinput->getInt('r');
+        $this->_division_id = $this->jinput->getInt('division', 0);
+        $this->_team_id = $this->jinput->getInt('tid', 0);
+
     }
 
     /**
@@ -159,21 +128,21 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getSeasonSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(JHtml::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('seasons_text'))));
 
         $query->select('s.id AS value, s.name AS text');
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_season AS s');
+        $query->from('#__sportsmanagement_season AS s');
 
         $db->setQuery($query);
         $res = $db->loadObjectList();
         if ($res) {
             $options = array_merge($options, $res);
         }
-        return JHtml::_('select.genericlist', $options, 's', 'class="jlnav-select"',
+        return HTMLHelper::_('select.genericlist', $options, 's', 'class="jlnav-select"',
             'value', 'text', $this->getSeasonId());
     }
 
@@ -184,8 +153,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getDivisionSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $project = $this->getProject();
@@ -195,7 +164,7 @@ class modsportsmanagementNavigationMenuHelper
             'DIVISION_LEAGUE') {
             return false;
         }
-        $options = array(JHtml::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('divisions_text'))));
 
         $query->select('d.id AS value, d.name AS text');
         $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
@@ -211,7 +180,7 @@ class modsportsmanagementNavigationMenuHelper
         if ($res) {
             $options = array_merge($options, $res);
         }
-        return JHtml::_('select.genericlist', $options, 'd', 'class="jlnav-division"',
+        return HTMLHelper::_('select.genericlist', $options, 'd', 'class="jlnav-division"',
             'value', 'text', $this->getDivisionId());
     }
 
@@ -222,11 +191,11 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getLeagueSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(JHtml::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
 
         $query->select('l.id AS value, l.name AS text');
         $query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
@@ -237,7 +206,7 @@ class modsportsmanagementNavigationMenuHelper
         if ($res) {
             $options = array_merge($options, $res);
         }
-        return JHtml::_('select.genericlist', $options, 'l', 'class="jlnav-select"',
+        return HTMLHelper::_('select.genericlist', $options, 'l', 'class="jlnav-select"',
             'value', 'text', $this->getLeagueId());
     }
 
@@ -248,15 +217,14 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getProjectSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(JHtml::_('select.option', 0, JText::_($this->getParam('text_project_dropdown'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_project_dropdown'))));
 
         $query->select('p.name AS text, s.name AS season_name, st.name as sports_type_name');
         $query->select('p.id AS value');
-        //$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS value');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->from('#__sportsmanagement_project AS p');
         $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
@@ -264,6 +232,13 @@ class modsportsmanagementNavigationMenuHelper
         $query->join('INNER','#__sportsmanagement_sports_type AS st on st.id = p.sports_type_id ');
 
         $query->where('p.published = 1');
+        
+        if ($this->getParam('show_project_dropdown') == 'season' && !$this->getProject()) {
+        if ( $this->getParam('s', 0) )
+        {
+        $query->where('p.season_id = ' . (int)$this->getParam('s') );
+        }    
+        }
 
         if ($this->getParam('show_project_dropdown') == 'season' && $this->getProject()) {
 
@@ -315,16 +290,16 @@ class modsportsmanagementNavigationMenuHelper
                 case 2:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
-                        $options[] = JHtml::_('select.option', $p->value, $p->text . ' - ' . $p->
+                            Text::_($p->sports_type_name) . ')' : '';
+                        $options[] = HTMLHelper::_('select.option', $p->value, $p->text . ' - ' . $p->
                             season_name . $stText);
                     }
                     break;
                 case 1:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
-                        $options[] = JHtml::_('select.option', $p->value, $p->season_name . ' - ' . $p->
+                            Text::_($p->sports_type_name) . ')' : '';
+                        $options[] = HTMLHelper::_('select.option', $p->value, $p->season_name . ' - ' . $p->
                             text . $stText);
                     }
                     break;
@@ -332,12 +307,12 @@ class modsportsmanagementNavigationMenuHelper
                 default:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
-                        $options[] = JHtml::_('select.option', $p->value, $p->text . $stText);
+                            Text::_($p->sports_type_name) . ')' : '';
+                        $options[] = HTMLHelper::_('select.option', $p->value, $p->text . $stText);
                     }
             }
         }
-        return JHtml::_('select.genericlist', $options, 'p', 'class="jlnav-project"',
+        return HTMLHelper::_('select.genericlist', $options, 'p', 'class="jlnav-project"',
             'value', 'text', $this->_project_id);
     }
 
@@ -351,12 +326,12 @@ class modsportsmanagementNavigationMenuHelper
         if (!$this->_project_id) {
             return false;
         }
-        $options = array(JHtml::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_teams_dropdown'))));
         $res = $this->getTeamsOptions();
         if ($res) {
             $options = array_merge($options, $res);
         }
-        return JHtml::_('select.genericlist', $options, 'tid', 'class="jlnav-team"',
+        return HTMLHelper::_('select.genericlist', $options, 'tid', 'class="jlnav-team"',
             'value', 'text', $this->getTeamId());
     }
 
@@ -367,8 +342,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     protected function getTeamsOptions()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if (empty($this->_teamoptions)) {
@@ -392,7 +367,7 @@ class modsportsmanagementNavigationMenuHelper
             $res = $db->loadObjectList();
 
             if (!$res) {
-                Jerror::raiseWarning(0, $db->getErrorMsg());
+                Log::add( $db->getErrorMsg());
             }
             $this->_teamoptions = $res;
         }
@@ -406,8 +381,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getProject()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if (!$this->_project) {
@@ -444,8 +419,8 @@ class modsportsmanagementNavigationMenuHelper
         switch ($view) {
             case "calendar":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['tid'] = $this->_team_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -456,8 +431,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "curve":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['tid1'] = $this->_team_id;
                 $routeparameter['tid2'] = 0;
@@ -467,8 +442,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "eventsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['division'] = $this->_division_id;
                 $routeparameter['tid'] = $this->_team_id;
@@ -479,8 +454,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "matrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['division'] = $this->_division_id;
                 $routeparameter['r'] = 0;
@@ -489,16 +464,16 @@ class modsportsmanagementNavigationMenuHelper
 
             case "referees":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referees', $routeparameter);
                 break;
 
             case "results":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['r'] = $this->_round_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -510,8 +485,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "resultsmatrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['r'] = $this->_round_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -523,8 +498,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "resultsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['r'] = $this->_round_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -537,8 +512,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "resultsrankingmatrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['r'] = $this->_round_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -551,8 +526,8 @@ class modsportsmanagementNavigationMenuHelper
                     return false;
                 }
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['tid'] = $this->_team_id;
                 $routeparameter['ptid'] = 0;
@@ -561,8 +536,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "stats":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['division'] = $this->_division_id;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('stats', $routeparameter);
@@ -570,8 +545,8 @@ class modsportsmanagementNavigationMenuHelper
 
             case "statsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['division'] = $this->_division_id;
                 $routeparameter['tid'] = 0;
@@ -585,8 +560,8 @@ class modsportsmanagementNavigationMenuHelper
                     return false;
                 }
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['tid'] = $this->_team_id;
                 $routeparameter['ptid'] = 0;
@@ -598,8 +573,8 @@ class modsportsmanagementNavigationMenuHelper
                     return false;
                 }
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['tid'] = $this->_team_id;
                 $routeparameter['division'] = $this->_division_id;
@@ -626,8 +601,8 @@ class modsportsmanagementNavigationMenuHelper
             default:
             case "ranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = $this->jinput->getInt('s', 0);
                 $routeparameter['p'] = $this->_project_id;
                 $routeparameter['type'] = 0;
                 $routeparameter['r'] = $this->_round_id;

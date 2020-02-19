@@ -4,13 +4,18 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage teamperson
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewTeamPerson
@@ -31,10 +36,11 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
+		$lists = array();
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			Log::add( implode('<br />', $errors));
 			return false;
 		}
 
@@ -47,7 +53,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->season_id = $this->app->getUserState( "$this->option.season_id", '0' );
                
         
-		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($this->project_id);
 		$this->project = $project;
         
@@ -57,12 +63,12 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->project_team = $project_team;
 		}
         
-		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+		$mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
 	 //build the html options for position
         $position_id = array();        
-$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
 if ($project_ref_positions) {
             $position_id = array_merge($position_id, $project_ref_positions);
@@ -114,21 +120,16 @@ foreach($position_id as $items => $item) {
     }
 } 	
 $this->form->setValue('project_position_id', null, $results);
-$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
         
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
 		$this->extended = $extended;
 		$this->lists = $lists;
         
-		if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 		{
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+
 		}
  
   
@@ -142,7 +143,7 @@ $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POS
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 	   
@@ -157,18 +158,18 @@ $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POS
 		$app->setUserState( "$option.team_id", $this->team_id );
 		$app->setUserState( "$option.season_id", $this->season_id );
         
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
         
 		if ( $this->_persontype == 1 )
         {
-        JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
+        ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
 		}
         elseif ( $this->_persontype == 2 )
         {
-        JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
+        ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
 		}
 
 parent::addToolbar();

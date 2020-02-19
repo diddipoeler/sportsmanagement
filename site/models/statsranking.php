@@ -1,17 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      statsranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statsranking
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelStatsRanking
@@ -22,7 +23,7 @@ jimport( 'joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelStatsRanking extends JModelLegacy
+class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 {
 	/**
 	 * players total
@@ -53,7 +54,7 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	function __construct( )
 	{
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct( );
@@ -192,13 +193,13 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	{
 		$stats = self::getProjectUniqueStats();
 		$order = ($order ? $order : $this->order);
-		
 		$results = array();
+		$results2 = array();
 		foreach ($stats as $stat) 
 		{
 			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
+			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
 		}
-		
 		return $results;
 	}
 

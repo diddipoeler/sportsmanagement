@@ -9,10 +9,12 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * Sportsmanagement Component TeamStaffs Model
@@ -21,7 +23,7 @@ jimport('joomla.application.component.modellist');
  * @package	Sportsmanagement
  * @since	1.5.01a
  */
-class sportsmanagementModelTeamStaffs extends JModelList
+class sportsmanagementModelTeamStaffs extends ListModel
 {
 	var $_identifier = "teamstaffs";
     var $_project_id = 0;
@@ -31,16 +33,16 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function getListQuery()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_team_id        = JFactory::getApplication()->input->getVar('team_id');
-        $this->_project_team_id        = JFactory::getApplication()->input->getVar('project_team_id');
+        $this->_team_id        = Factory::getApplication()->input->getVar('team_id');
+        $this->_project_team_id        = Factory::getApplication()->input->getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
@@ -65,8 +67,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
                             'ppl.away',
 							'ts.*',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS ts on ts.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_season_team_person_id AS ts on ts.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
         }
         else
@@ -76,8 +78,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
 							'ppl.nickname',
 							'ts.*',
 							'u.name AS editor'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl')
-        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts on ts.person_id = ppl.id')
+        ->from('#__sportsmanagement_person AS ppl')
+        ->join('INNER', '#__sportsmanagement_team_staff AS ts on ts.person_id = ppl.id')
         ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
         }
         
@@ -96,8 +98,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function _buildContentOrderBy()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 		//$filter_order		= $app->getUserStateFromRequest($option.'ts_filter_order',		'filter_order',		'ppl.ordering',	'cmd');
         $filter_order		= $app->getUserStateFromRequest($option.'ts_filter_order','filter_order','ts.ordering','cmd');
 		$filter_order_Dir	= $app->getUserStateFromRequest($option.'ts_filter_order_Dir','filter_order_Dir','','word');
@@ -114,8 +116,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function _buildContentWhere()
 	{
-		$option 		= $option = JFactory::getApplication()->input->getCmd('option');
-		$app		= JFactory::getApplication();
+		$option 		= $option = Factory::getApplication()->input->getCmd('option');
+		$app		= Factory::getApplication();
 		//$project_id		= $app->getUserState($option.'project');
 		//$team_id		= $app->getUserState($option.'project_team_id');
 		$filter_state	= $app->getUserStateFromRequest( $option . 'ts_filter_state','filter_state','','word');
@@ -184,7 +186,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 			}
 			else
 			{
-				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_STAFF',$object->getError()));
+				$this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_STAFF',$object->getError()));
 			}
 		}
 		return $count;

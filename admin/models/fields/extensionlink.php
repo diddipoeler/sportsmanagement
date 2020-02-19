@@ -1,19 +1,23 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.58
-* @file 
-* @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
-* @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      extensionlink.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
  */
  
-// no direct access
-defined('_JEXEC') or die ;
 
-jimport('joomla.form.formfield');
+defined('_JEXEC') or die ;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
- * JFormFieldExtensionLink
+ * FormFieldExtensionLink
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,7 +25,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionLink extends JFormField {
+class JFormFieldExtensionLink extends FormField {
 		
 	public $type = 'ExtensionLink';
 
@@ -29,7 +33,7 @@ class JFormFieldExtensionLink extends JFormField {
 	 * Method to get the field options.
 	 */
 	/**
-	 * JFormFieldExtensionLink::getLabel()
+	 * FormFieldExtensionLink::getLabel()
 	 * 
 	 * @return
 	 */
@@ -37,7 +41,7 @@ class JFormFieldExtensionLink extends JFormField {
 		
 		$html = '';
 		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();
@@ -76,10 +80,10 @@ class JFormFieldExtensionLink extends JFormField {
 		}
 					
 		if (!empty($image)) {
-			$html .= '<img src="'.JURI::root().'administrator/components/'.$extension.'/assets/images/'.$image.'" style="margin-right: 5px;">';
-			$html .= '<span style="vertical-align: middle">'.JText::_($title).'</span>';
+			$html .= '<img src="'.Uri::root().'administrator/components/'.$extension.'/assets/images/'.$image.'" style="margin-right: 5px;">';
+			$html .= '<span style="vertical-align: middle">'.Text::_($title).'</span>';
 		} else {
-			$html .= JText::_($title);
+			$html .= Text::_($title);
 		}
 		
 		if (intval($jversion[0]) > 2) {
@@ -99,13 +103,13 @@ class JFormFieldExtensionLink extends JFormField {
 	 * Method to get the field input markup.
 	 */
 	/**
-	 * JFormFieldExtensionLink::getInput()
+	 * FormFieldExtensionLink::getInput()
 	 * 
 	 * @return
 	 */
 	protected function getInput() {
 		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();
@@ -141,15 +145,15 @@ class JFormFieldExtensionLink extends JFormField {
 			
 		if (isset($specific_desc)) {
 			if (isset($link)) {
-				$html .= JText::sprintf($specific_desc, $link);
+				$html .= Text::sprintf($specific_desc, $link);
 			} else {
-				$html .= JText::_($specific_desc);
+				$html .= Text::_($specific_desc);
 			}
 		} else {
 			if (isset($link)) {
-				$html .= JText::sprintf($desc, $link);
+				$html .= Text::sprintf($desc, $link);
 			} else {
-				$html .= JText::_($desc);
+				$html .= Text::_($desc);
 			}
 		}
 		

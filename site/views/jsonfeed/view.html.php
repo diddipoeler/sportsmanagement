@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Factory;
 JLoader::import( 'joomla.application.component.view');
 
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
@@ -32,10 +32,10 @@ class sportsmanagementViewJSONFeed extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-	    $start = jsmGCalendarUtil::getDate(JFactory::getApplication()->input->getInt('start'));
-	    JFactory::getApplication()->input->setVar('start', $start->format('U') - $start->getTimezone()->getOffset($start));
-	    $end = jsmGCalendarUtil::getDate(JFactory::getApplication()->input->getInt('end'));
-	    JFactory::getApplication()->input->setVar('end', $end->format('U') - $end->getTimezone()->getOffset($end));
+	    $start = jsmGCalendarUtil::getDate(Factory::getApplication()->input->getInt('start'));
+	    Factory::getApplication()->input->setVar('start', $start->format('U') - $start->getTimezone()->getOffset($start));
+	    $end = jsmGCalendarUtil::getDate(Factory::getApplication()->input->getInt('end'));
+	    Factory::getApplication()->input->setVar('end', $end->format('U') - $end->getTimezone()->getOffset($end));
 
 		parent::display($tpl);
 	}

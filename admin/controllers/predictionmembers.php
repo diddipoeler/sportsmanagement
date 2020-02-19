@@ -4,17 +4,17 @@
  * @file      predictionmembers.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
+use Joomla\CMS\Session\Session; 
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerpredictionmembers
@@ -25,7 +25,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerpredictionmembers extends JControllerAdmin
+class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 {
     
 	/**
@@ -33,7 +33,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JControllerLegacy
+	 * @see     BaseController
 	 * @since   1.6
 	 */
 	public function __construct($config = array())
@@ -41,7 +41,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		parent::__construct($config);
         
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
 
@@ -57,7 +57,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     {
     	
         // Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->save_memberlist();
@@ -87,33 +87,16 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 */
 	function reminder()
 	{
-//	   // Reference global application object
-//        $this->jsmapp = JFactory::getApplication();
-//        // JInput object
-//        $this->jsmjinput = $this->jsmapp->input;
-        
-//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
-//		JToolbarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
-
-//		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
-		//$post = JFactory::getApplication()->input->get( 'post' );
+/**
+ * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
+ */
         $post = $this->jsmjinput->post->getArray();
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-        
-		//$cid = JFactory::getApplication()->input->getVar( 'cid', array(0), 'post', 'array' );
         $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
-        
-		$pgmid = JFactory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pgmid<br><pre>'.print_r($pgmid,true).'</pre>'),'Notice');
-//		$post['id'] = (int) $cid[0];
-//		$post['predgameid'] = (int) $pgmid[0];
-//		echo '<pre>'; print_r($post); echo '</pre>';
-
+		$pgmid = Factory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
 
 		if ( $pgmid == 0 )
 		{
-			JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR'), Log::WARNING, 'jsmerror');
 		}
 		$msg		= '';
 		$d			= ' - ';
@@ -135,13 +118,13 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function publish()
 	{
-		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
+		$cids = Factory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
+		ArrayHelper::toInteger( $cids );
+		$predictionGameID	= Factory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -161,13 +144,13 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function unpublish()
 	{
-		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
+		$cids = Factory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
+		ArrayHelper::toInteger( $cids );
+		$predictionGameID	= Factory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -188,37 +171,36 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     function remove()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     
 		$d		= ' - ';
 		$msg	= '';
-		$cid	= JFactory::getApplication()->input->getVar('cid',array(),'post','array');
-		JArrayHelper::toInteger($cid);
-		$prediction_id	= JFactory::getApplication()->input->getInt('prediction_id',(-1),'post');
-		//echo '<pre>'; print_r($cid); echo '</pre>';
+		$cid	= Factory::getApplication()->input->getVar('cid',array(),'post','array');
+		ArrayHelper::toInteger($cid);
+		$prediction_id	= Factory::getApplication()->input->getInt('prediction_id',(-1),'post');
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'), Log::ERROR, 'jsmerror');
 		}
 
 		$model = $this->getModel('predictionmember');
 
 		if (!$model->deletePredictionResults($cid,$prediction_id))
 		{
-			$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+			$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
 		}
-		$msg .= $d . JText::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
 
 		if (!$model->deletePredictionMembers($cid))
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
 		}
 
-		$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
 
 		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
 		//echo $msg;

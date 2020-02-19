@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Router\Route;
 ?>
 
 <dl class="search-results<?php echo $this->pageclass_sfx; ?>">
@@ -31,7 +32,7 @@ echo '<div style="float: left;margin: 0px 0px;"><img src="'. $this->escape($resu
 	<dt class="result-title">
 		<?php echo $this->pagination->limitstart + $result->count . '. ';?>
 		<?php if ($result->href) :?>
-			<a href="<?php echo JRoute::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php endif;?>>
+			<a href="<?php echo Route::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php endif;?>>
 				<?php 
                 //echo $this->escape($result->title);
                 echo $result->title;
@@ -56,7 +57,7 @@ echo '<div style="float: left;margin: 0px 0px;"><img src="'. $this->escape($resu
 	</dd>
 	<?php if ($this->params->get('show_date')) : ?>
 		<dd class="result-created<?php echo $this->pageclass_sfx; ?>">
-			<?php echo JText::sprintf('JGLOBAL_CREATED_DATE_ON', $result->created); ?>
+			<?php echo Text::sprintf('JGLOBAL_CREATED_DATE_ON', $result->created); ?>
 		</dd>
 	<?php endif; ?>
 

@@ -4,21 +4,22 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage resultsmatrix
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
-require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results'.DS.'view.html.php');
+require_once(JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR.'view.html.php');
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-//jimport('joomla.html.pane');
 
 /**
  * sportsmanagementViewResultsmatrix
@@ -31,7 +32,6 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewResultsmatrix extends sportsmanagementView  
 {
-
 	
 	/**
 	 * sportsmanagementViewResultsmatrix::init()
@@ -43,7 +43,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
 		$params = $this->app->getParams();
         
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
 		// add the matrix model
 		$matrixmodel = new sportsmanagementModelMatrix();
@@ -51,14 +51,22 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$matrixconfig = sportsmanagementModelProject::getTemplateConfig('matrix',$this->jinput->getInt('cfg_which_database',0));
 
 		// add the results model
-		$resultsmodel	= new sportsmanagementModelResults();
+		$resultsmodel = new sportsmanagementModelResults();
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0));
+		$resultsmodel::$roundid = $this->jinput->getInt('r',0);
         
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		
-		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
+		if ( $resultsmodel::$roundid )
+		{
 		$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid);
+		}
+		else
+		{
+		$roundcode = '';	
+		}
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC',$this->jinput->getInt('cfg_which_database',0));
 		
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
@@ -88,9 +96,9 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$this->matchdaysoptions = $options;
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $project->slug;
-$routeparameter['r'] = $this->roundid;
+$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = 0;
@@ -117,28 +125,62 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
         
 		// Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-		? JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
-		: JText::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+		? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
+		: Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ' - ' . $this->project->name;
 		}
 		$this->document->setTitle($pageTitle);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
-		/*
-		 //build feed links
-		 $feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
-		 $rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
+        sportsmanagementHelperHtml::$project = $project;
+        sportsmanagementHelperHtml::$teams = $this->teams;
+        
+        if ( $this->params->get('show_map', 0) )
+	  {
+/**
+ * diddipoeler
+ */
+	$mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+    $this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));	   
+	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
+//	  $this->geo = new JSMsimpleGMapGeocoder();
+//	  $this->geo->genkml3($project->id,$this->allteams);
+  
+  foreach ( $this->allteams as $row )
+    {
+    $address_parts = array();
+		if (!empty($row->club_address))
+		{
+			$address_parts[] = $row->club_address;
+		}
+		if (!empty($row->club_state))
+		{
+			$address_parts[] = $row->club_state;
+		}
+		if (!empty($row->club_location))
+		{
+			if (!empty($row->club_zipcode))
+			{
+				$address_parts[] = $row->club_zipcode. ' ' .$row->club_location;
+			}
+			else
+			{
+				$address_parts[] = $row->club_location;
+			}
+		}
+		if (!empty($row->club_country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
+		}
+		$row->address_string = implode(', ', $address_parts);
 
-		 // add the links
-		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-		 */
-         
-         sportsmanagementHelperHtml::$project = $project;
-         sportsmanagementHelperHtml::$teams = $this->teams;
+    }
+
+	}
          
 	}
 
@@ -151,21 +193,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 	function getRoundSelectNavigation(&$rounds)
 	{
 	   // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
-        
+       
 		$options = array();
 		foreach ($rounds as $r)
 		{
 		  $routeparameter = array();
 $routeparameter['cfg_which_database'] = $jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $r->slug;
 $routeparameter['division'] = 0;
@@ -175,7 +215,7 @@ $routeparameter['layout'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$routeparameter);
 
 
-			$options[] = JHTML::_('select.option', $link, $r->text);
+			$options[] = HTMLHelper::_('select.option', $link, $r->text);
 		}
 		return $options;
 	}

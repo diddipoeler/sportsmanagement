@@ -4,13 +4,13 @@
  * @file      about.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage about
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelAbout
@@ -21,7 +21,7 @@ jimport('joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelAbout extends JModelLegacy
+class sportsmanagementModelAbout extends BaseDatabaseModel
 {
 	/**
 	 * sportsmanagementModelAbout::getAbout()
@@ -33,16 +33,16 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about = new stdClass();
 		
 		//Translations Hosted by
-		$about->translations = '<a href="https://www.transifex.com/opentranslators/sportsmanagement/">https://www.transifex.com/opentranslators/sportsmanagement/</a>';
+		$about->translations = '<a href="https://www.transifex.com/jsm/sportsmanagement/">https://www.transifex.com/jsm/sportsmanagement/</a>';
 		//Repository Hosted by
 		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
 		//version
 		$version = sportsmanagementHelper::getVersion();
 		$revision = explode('.', $version);
-		$about->version = '<a href="http://gitorious.org/joomleague/joomleague/commits/'.$revision[0].'.'.$revision[1].'.0/">' . $version . '</a>';
+		$about->version = '';
 		
 		//author
-		$about->author = '<a href="http://stats.joomleague.net/authors.html">Joomleague-Team</a>';
+		$about->author = '';
 
 		//page
 		$about->page = 'http://sportsmanagement.fussballineuropa.de/';
@@ -76,13 +76,13 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about->icons .= ', Panel images (Kasi)';
 
 		//flash
-		$about->flash = '<a href="http://teethgrinder.co.uk/open-flash-chart-2/" target="_blank">Open Flash Chart 2.x</a>';
+		$about->flash = '';
 
 		//graphoc library
-		$about->graphic_library = '<a href="http://www.walterzorn.com" target="_blank">www.walterzorn.com</a>';
+		$about->graphic_library = '';
 		
 		//phpthumb class
-		$about->phpthumb = '<a href="http://phpthumb.gxdlabs.com/" target="_blank">phpthumb.gxdlabs.com</a>';
+		$about->phpthumb = '';
 
 
     //page

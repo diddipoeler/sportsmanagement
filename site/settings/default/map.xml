@@ -1,14 +1,10 @@
 <?xml version="1.0"?>
 <form>
+<!-- register 1 -->
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
-
-		<field name="width" type="text" default="100%"
-			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_WIDTH" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_WIDTH">
-		</field>
-
-		<field name="height" type="text" default="300"
+		<field name="map_height" type="text" default="600"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_HEIGHT" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_HEIGHT">
 		</field>
 
@@ -16,6 +12,10 @@
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ZOOM">
 		</field>
 
+		<field name="map_icon" type="text" default="http://maps.google.com/mapfiles/kml/pal2/icon49.png"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ICON">
+		</field>
+		
 		<field name="default_map_type" type="list" default="G_NORMAL_MAP"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_TYPE" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_TYPE">
 			<option value="G_NORMAL_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION0_TYPE
@@ -24,8 +24,26 @@
 			</option>
 			<option value="G_HYBRID_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION2_TYPE
 			</option>
+			<option value="G_TERRAIN_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION3_TYPE
+			</option>
 		</field>
-
+		<field name="map_ranking_club_icon" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_RANKING_CLUB_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_RANKING_CLUB_ICON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="map_ranking_club_icon_width" type="text" default="20"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_RANKING_CLUB_ICON_WIDTH" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_RANKING_CLUB_ICON_WIDTH">
+		</field>
+		<field name="map_kmlfile" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_KMLFILE"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_KMLFILE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+<!--
 		<field name="map_control" type="list" default="LARGE_PAN_ZOOM"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ZOOM">
 			<option value="NONE">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION0_ZOOM
@@ -122,5 +140,6 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		-->
 	</fieldset>
 </form>

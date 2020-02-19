@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+    >
+        
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
+        
+		<field
+            name="new_club_id"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
+            class="inputbox"
+        />    
+		
+        <field
+            name="name"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"
+        />
+        
+        <field
+            name="alias"
+            size="100"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="admin"
+            type="user"
+            class="inputbox"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC"
+        />
+
+        <field 
+            name="geocomplete"
+            type="geocomplete"
+            class="inputbox"
+            size="40" 
+            label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
+            description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" 
+        />
+      
+        <field
+            name="country"
+            type="country"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+            required="true"
+            class="form-control form-control-inline"
+        >
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+  
+        <field
+            name="state"
+            size="50"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
+            class="inputbox"
+        />	
+      
+        <field
+            name="location"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
+            class="inputbox"
+        />	 
+      
+        <field
+            name="zipcode"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
+            class="inputbox"
+        />	
+                          
+        <field
+            name="address"
+            type="textarea"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
+            class="inputbox"
+        />
+
+        <field
+            name="latitude"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
+            class="inputbox"
+        />  
+        
+        <field
+            name="longitude"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
+            class="inputbox"
+        />
+
+        <field
+            name="associations"
+            type="dependsql" 
+            size="10"
+            depends="country"
+            task="associationsoptions" 
+            value_field="country"
+            key_field="country"
+            default="0"
+            norequest="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
+            class="form-control form-control-inline">
+            <option
+                value="0">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+        </field>
+      	
+        <field
+            name="phone"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="fax"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC"
+            class="inputbox"
+        />	
+        
+        <field
+            name="email"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC"
+            class="inputbox"
+        />		
+        
+        <field
+            name="website"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
+            class="inputbox"
+        />	
+			
+        <field
+            name="twitter"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="facebook"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC"
+            class="inputbox"
+        />
+            			
+        <field
+            name="manager"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER_DESC"
+            class="inputbox"
+        />	
+        
+        <field
+            name="president"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC"
+            class="inputbox"
+        />		
+  
+        <field
+            name="founded"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
+            class="inputbox"
+        />
+    	
+        <field
+            name="dissolved"
+            type="calendar"
+            format="%d-%m-%Y"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
+            class="inputbox"
+        />
+      	
+        <field
+            name="standard_playground"
+            type="playgroundlist"
+            class="inputbox"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+        </field>	
+
+        <field
+            name="merge_teams"
+            type="teamlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE_DESC"
+            multiple="true"
+            size="15"
+            class="inputbox">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+        </field>	
+		
+        <field 
+            name="enable_sb" 
+            type="extensionradiobutton" 
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+		
+        <field
+            name="sb_catid"
+            type="kunenacategorylist"
+            class="inputbox"
+            size="5"
+            multiple="false"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID_DESC"
+        />
+
+        <field
+            name="founded_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC"
+            class="inputbox"
+        />	
+        
+        <field
+            name="dissolved_year"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC"
+            class="inputbox"
+        />	
+  
+        <field
+            name="unique_id"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID_DESC"
+            class="inputbox"
+        />
+                      	
+    </fieldset>			
+  
+    <fieldset 
+        name="teamsofclub"
+        label="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB"
+        description="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB_DESC"
+    >
+        
+    </fieldset>		
+  
+    <fieldset 
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
+        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
+    >
+        <field
+            name="logo_small"
+            type="media"
+            default=""				
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_small"
+            directory=""
+        />	
+				
+        <field
+            name="cr_logo_small"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
+            class="inputbox"
+        />  
+			
+        <field
+            name="logo_middle"
+            type="media"
+            default="" 
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_medium"
+            directory=""
+        />	
+      
+        <field
+            name="cr_logo_middle"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
+            class="inputbox"
+        />
+        			
+        <field
+            name="logo_big"
+            type="media"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_large"
+            directory=""
+        />				
+		  
+        <field
+            name="cr_logo_big"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
+            class="inputbox"
+        />
+       
+        <field
+            name="trikot_home"
+            type="media"
+            default="" 
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_trikot_home"
+            directory=""
+        />		
+        		
+        <field
+            name="trikot_away"
+            type="media"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="clubs_trikot_away"
+            directory=""
+        />	
+        
+    </fieldset>	
+
+    <fieldset 
+        name="extended"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC"
+    >
+  
+    </fieldset>
+
+    <fieldset 
+        name="extra_fields"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC"
+    >
+  
+    </fieldset>
+
+</form>

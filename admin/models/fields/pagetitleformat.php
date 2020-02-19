@@ -1,15 +1,28 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      pagetitleformat.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 
-class JFormFieldPageTitleFormat extends JFormField
+class JFormFieldPageTitleFormat extends FormField
 {
 	protected $type = 'pagetitleformat';
 
 	function getInput() 
     {
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
 		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
@@ -18,16 +31,16 @@ class JFormFieldPageTitleFormat extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
-		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
-		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 3, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_SEASON'));
-		$mitems[] = JHtml::_('select.option', 4, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE'));
-		$mitems[] = JHtml::_('select.option', 5, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 6, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 7, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
+		$mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
+		$mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
+		$mitems[] = HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE_SEASON'));
+		$mitems[] = HTMLHelper::_('select.option', 3, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_SEASON'));
+		$mitems[] = HTMLHelper::_('select.option', 4, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE'));
+		$mitems[] = HTMLHelper::_('select.option', 5, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE_SEASON'));
+		$mitems[] = HTMLHelper::_('select.option', 6, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
+		$mitems[] = HTMLHelper::_('select.option', 7, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
 		
-		$output= JHtml::_('select.genericlist',  $mitems,
+		$output= HTMLHelper::_('select.genericlist',  $mitems,
 							$this->name,
 							'class="inputbox" size="1"', 
 							'value', 'text', $this->value, $this->id);

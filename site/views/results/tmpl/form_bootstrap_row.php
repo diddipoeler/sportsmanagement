@@ -4,16 +4,20 @@
  * @file      form_row_bootstrap.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
-// No direct access to this file
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 $match = $this->game;
 $i = $this->i;
-$thismatch = JTable::getInstance('Match','sportsmanagementTable');
+$thismatch = Table::getInstance('Match','sportsmanagementTable');
 $thismatch->bind(get_object_vars($match));
 
 list($datum,$uhrzeit) = explode(' ',$thismatch->match_date);
@@ -26,7 +30,7 @@ if ( isset($this->teams[$thismatch->projectteam2_id]) )
 $team2 = $this->teams[$thismatch->projectteam2_id];
 }
 		
-$user = JFactory::getUser();
+$user = Factory::getUser();
 if (isset($team1) && isset($team2))
 {
 $userIsTeamAdmin = ( $user->id == $team1->admin || $user->id == $team2->admin );
@@ -36,10 +40,10 @@ else
 $userIsTeamAdmin = $this->isAllowed;
 }
 $teams = $this->teams;
-$teamsoptions[] = JHtml::_('select.option','0','- '.JText::_('Select Team').' -');
+$teamsoptions[] = HTMLHelper::_('select.option','0','- '.Text::_('Select Team').' -');
 foreach ($teams AS $team)
 {
-$teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');
+$teamsoptions[] = HTMLHelper::_('select.option',$team->projectteamid,$team->name,'value','text');
 }
 
 
@@ -61,14 +65,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/edit.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/edit.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),'20',$url);        
 ?>
 </div>
 <!-- Edit round -->
 <div class="<?php echo $this->divclass; ?>" style="">
 <?PHP
 $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
-echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
+echo HTMLHelper::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
  ?>
 
 </div>
@@ -96,7 +100,7 @@ jQuery('#<?php echo 'match_date'.$thismatch->id;?>').datepicker();
 }
 else
 {     
-    echo JHtml::calendar(sportsmanagementHelper::convertDate($datum,1),
+    echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($datum,1),
 					'match_date'.$thismatch->id,
 					'match_date'.$thismatch->id,
 					'%d-%m-%Y',
@@ -119,7 +123,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);        
 ?>	
 
 
@@ -128,7 +132,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
 if ((!$userIsTeamAdmin) and (!$match->allowed)){$append .= ' disabled="disabled"';}
 if (!isset($team1->projectteamid)){$team1->projectteamid=0;}
-echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch->id, $append, 'value', 'text', $team1->projectteamid);
+echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch->id, $append, 'value', 'text', $team1->projectteamid);
 ?>
 
 </div>
@@ -136,12 +140,12 @@ echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch-
 <div class="<?php echo $this->divclass; ?>" style="">
 <?php
 if (!isset($team2->projectteamid)){$team2->projectteamid=0;}
-echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam2_id'.$thismatch->id, $append, 'value', 'text', $team2->projectteamid);
+echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam2_id'.$thismatch->id, $append, 'value', 'text', $team2->projectteamid);
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),'20',$url);        
 ?>
 </div>
 
@@ -158,7 +162,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/events.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),'20',$url);        
 ?>
 <!-- Edit match statistics -->
 <?php
@@ -166,7 +170,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
 ?> 
 <!-- Edit referee -->
 <?php
@@ -174,7 +178,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/players_add.png',Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),'20',$url);        
 ?> 
 
 

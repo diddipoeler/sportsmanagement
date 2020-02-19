@@ -4,23 +4,17 @@
  * @file      default_results.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionresults
  */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
-JHTML::_('behavior.tooltip');
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
-echo 'this->items<br /><pre>~' . print_r($this->items,true) . '~</pre><br />';
-echo 'this->pagination<br /><pre>~' . print_r($this->pagination,true) . '~</pre><br />';
-echo 'this->limit<br /><pre>~' . print_r($this->limit,true) . '~</pre><br />';
-echo 'this->limitstart<br /><pre>~' . print_r($this->limitstart,true) . '~</pre><br />';
-echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br />';
-}
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 
@@ -35,7 +29,7 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<!-- <a name='jl_top' id='jl_top'></a> -->
+
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
@@ -59,7 +53,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         }
         $this->roundID = sportsmanagementModelPrediction::$roundID;
 		?>
-		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
+		<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='view' value='predictionresults' />
 			<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
@@ -73,7 +67,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
 			<input type='hidden' name='task' value='predictionresults.selectprojectround' />
 			
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 <!--
 Responsive tables
 Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
@@ -84,7 +78,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 				<tr>
 					<td >
 						<?php
-						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
+						echo '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
 						?>
 					</td>
 					
@@ -98,16 +92,15 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
                         
                         $groups = sportsmanagementModelPrediction::getPredictionGroupList();
-						//$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->roundID);
-						$htmlRoundsOptions = JHTML::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
+
+						$htmlRoundsOptions = HTMLHelper::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
                         
-                        $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
+                        $predictionGroups[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
-                        $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
+                        $htmlGroupOptions = HTMLHelper::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
             
-//echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
-            
-            echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
+           
+            echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
 						'<td>'.$htmlRoundsOptions.'</td>',
 						'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id).'</td>',
                         '<td>'.$htmlGroupOptions.'</td>');
@@ -118,7 +111,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
             echo '&nbsp;&nbsp;';
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = sportsmanagementModelPrediction::$cfg_which_database;
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = sportsmanagementModelPrediction::$pjID;
 $routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;
@@ -127,19 +120,24 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
 
-						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
-						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
-						echo JHTML::link($link,$desc,array('target' => ''));
+						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
+						echo HTMLHelper::link($link,$desc,array('target' => ''));
 						?>
                         </td>
 				</tr>
 
 <tfoot>
-<div class="pred_ranking">
-<?php 
-echo $this->pagination->getListFooter(); 
-?>
+<div class="pagination">
+    <p class="counter">
+        <?php echo $this->pagination->getPagesCounter(); ?>
+    </p>
+    <p class="counter">
+        <?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
+    <?php echo $this->pagination->getPagesLinks(); ?>
 </div>
+	
 </tfoot>  
                 
 			</table>
@@ -152,26 +150,26 @@ Create responsive tables by adding .table-responsive to any .table to make them 
 When viewing on anything larger than 768px wide, you will not see any difference in these tables.
 -->
         <div class="table-responsive">        
-		<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
+		<table class="<?PHP echo $this->config['table_class']; ?> <?PHP echo $this->config['table_class_responsive']; ?>">
         <thead>
 			<tr>
 				<?php 
                 $tdClassStr = "style='text-align:center; vertical-align:middle; '"; 
                 ?>
-				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
+				<th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
 				<?php
 				
         if ($this->config['show_user_icon'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
 				}
 				
 				?>
-				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
+				<th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
 				<?php
                 if ($this->config['show_pred_group'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
 				}
                 
 				$match_ids = NULL;
@@ -197,9 +195,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
       
         // hier holen wir uns die spiele zu dem projekt und der runde
 				$roundMatchesList = sportsmanagementModelPredictionResults::getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids,$this->config['show_logo_small_overview']);
-				
-				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
-				
+			
 				foreach ($roundMatchesList AS $match)
 				{
 					?>
@@ -219,8 +215,17 @@ When viewing on anything larger than 768px wide, you will not see any difference
                             {
                             $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,$match->homeLogo,$match->homeName,'20');                               
-                            ?>                                    
+//echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,$match->homeLogo,$match->homeName,'20');                               
+                            
+ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->homeid,
+            $match->homeLogo,
+            $match->homeName,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->config['use_jquery_modal']);  						
+						?>                                    
 
                             <?PHP
                             //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
@@ -246,7 +251,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
 						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
                         
 						?>
-                        <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
+                        <span class='hasTip' title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
                         <br />
                         <?php
 						
@@ -262,7 +267,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                             {
                             $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,$match->awayLogo,$match->awayName,'20');                        
+//echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,$match->awayLogo,$match->awayName,'20');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->awayid,
+            $match->awayLogo,
+            $match->awayName,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->config['use_jquery_modal']);  					
+					
                             ?>                                    
                             
                             <?PHP
@@ -292,24 +306,20 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awa
 				<?php
 				if ($this->config['show_points'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_average_points'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
 				}
 				?>
 			</tr>
             </thead>
 			<?php
 			
-			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-      {
-			echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-			echo '<br />predictionProject<pre>~' . print_r($predictionProject,true) . '~</pre><br />';
-			}
+			
 			
 			$k = 0;
 			$tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
@@ -323,28 +333,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awa
 			$membersDataArray = array();
 			$membersMatchesArray = array();
 
-      if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-		echo '<br />memberList<pre>~' . print_r($this->memberList,true) . '~</pre><br />';
-		}
+      
 				
 			foreach ($this->memberList AS $member)
 			{
 			
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-		echo '<br />member<pre>~' . print_r($member,true) . '~</pre><br />';
-		}
+		
 				
 				$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$predictionProject->project_id,
 																							$this->roundID,
 																							$this->roundID,
 																							$member->user_id);
         
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{																							
-echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
-}
+
 
 				$memberPredictionPointsCount=0;
 				$predictionsCount=0;
@@ -365,10 +366,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 							(!is_null($memberPredictionPoint->awayDecision)))
 						{
 						
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-}
+
 				    
 							$predictionsCount++;
 							$result = sportsmanagementModelPrediction::createResultsObject(	$memberPredictionPoint->homeResult,
@@ -399,25 +397,28 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 							if (!is_null($memberPredictionPoint->prTend)){$totalTend=$totalTend+$memberPredictionPoint->prTend;}
 						}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
-}
+
 						
-						$memberPredictionOutput = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
+						$memberPredictionOutput = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 
                         $matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->timezone);
                         $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
-						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
+			$predMemberId = explode(":", $this->predictionMember->pmID);
+						
+						/*$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
 										(!is_null($memberPredictionPoint->homeResult)) ||
 										(!is_null($memberPredictionPoint->awayResult)) ||
 										(!is_null($memberPredictionPoint->homeDecision)) ||
 										(!is_null($memberPredictionPoint->awayDecision)) ||
-										($this->predictionMember->pmID==$member->pmID));
-
-//echo '<br />showAllowed<pre>~' . print_r($showAllowed,true) . '~</pre><br />';
-//echo '<br />matchTimeDate <pre>~' . print_r($matchTimeDate ,true) . '~</pre><br />';
-//echo '<br />thisTimeDate <pre>~' . print_r($thisTimeDate ,true) . '~</pre><br />';
+										($this->predictionMember->pmID==$member->pmID));*/
+						
+						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
+                                        	(!is_null($memberPredictionPoint->homeResult)) ||
+                                        	(!is_null($memberPredictionPoint->awayResult)) ||
+                                        	(!is_null($memberPredictionPoint->homeDecision)) ||
+                                        	(!is_null($memberPredictionPoint->awayDecision)) ||
+                                         	$predMemberId[0] == $member->pmID);
+						
 
 						if ($showAllowed)
 						{
@@ -473,7 +474,8 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 				$membersResultsArray[$member->pmID]['totalDiff'] = $totalDiff;
 				$membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
 				$membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
-
+				$membersResultsArray[$member->pmID]['membernameAtoZ'] = $member->name;
+				
 				// check all needed output for later
 				{
 					$picture = $member->avatar;
@@ -494,17 +496,15 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
-				//tobe removed
-				//$imgTitle = JText::sprintf('JL_PRED_AVATAR_OF',$member->name);
-				//$output = JHTML::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
-				
-					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+			
+//$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
+$output = HTMLHelper::image( $picture, $playerName , array('title' => $playerName,'width' => $this->config['show_user_icon_width'] ));					
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
 				
 					if ( ( $this->config['link_name_to'] ) && (($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
 						$link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID,$member->pmID);
-						$output = JHTML::link($link,$member->name);
+						$output = HTMLHelper::link($link,$member->name);
 					}
 					else
 					{
@@ -514,38 +514,26 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />membersResultsArray<pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
-echo '<br />membersDataArray<pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
-}
+
 			
 			$computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
 			$recordCount = count($computedMembersRanking);
 			
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo '<br />computedMembersRanking<pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
-echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~</pre><br />';
-}
+
       
 			$i=1;
             $skipMemberCount = 0;
 
-/*			
-            if ((int)$this->config['limit'] < 1){$this->config['limit']=1;}
-			$rlimit=ceil($recordCount / $this->config['limit']);
-			$this->model->page=($this->model->page > $rlimit) ? $rlimit : $this->model->page;
-			$skipMemberCount=($this->model->page > 0) ? (($this->model->page-1)*$this->config['limit']) : 0;
-*/
+
 
 ?>
 <tbody>
 <?PHP
+$durchlauf = 1; 
 			foreach ($computedMembersRanking AS $key => $value)
 			{
-				if ($i <= $skipMemberCount) { $i++; continue; }
-
+				if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende)))
+					{
 				//$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
                 // änderung bluesunny62
 				//$styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:yellow; color:black; " ' : '';
@@ -586,7 +574,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 							}
 							else
 							{
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
+								echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 							}
 							echo '</td>';
 						}
@@ -618,7 +606,8 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 					$k = (1-$k);
 					$i++;
 					//if ($i > $skipMemberCount+$this->config['limit']){break;}
-				//}
+				}
+				$durchlauf++;
 			}
 			?>
             </tbody>

@@ -1,61 +1,34 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_clubs.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage clubs
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
-<div class="table-responsive">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="clubs">
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr>
-		<?php if ($this->config['show_small_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<?php if ($this->config['show_medium_logo'])	{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<?php if ($this->config['show_big_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<th class="club_name"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME' ); ?></th>
-		<?php if ($this->config['show_club_teams'])		{ ?><th class="club_teams"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_TEAMS' ); ?></th><?php } ?>
+		<?php if ($this->config['show_small_logo'])		{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<?php if ($this->config['show_medium_logo'])	{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<?php if ($this->config['show_big_logo'])		{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<th class="club_name"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME' ); ?></th>
+		<?php if ($this->config['show_club_teams'])		{ ?><th class="club_teams"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_TEAMS' ); ?></th><?php } ?>
 		
          <?php if ($this->config['show_club_internetadress_picture']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
 		<?php } ?>
         
-        <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
+        <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
 	</tr>
 	</thead>
 	<?php
@@ -63,31 +36,31 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	foreach ($this->clubs as $club)
 	{
 		$clubinfo_link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $club->club_slug );
-		$title			= JText::sprintf( 'COM_SPORTSMANAGEMENT_CLUBS_TITLE2', $club->name );
+		$title			= Text::sprintf( 'COM_SPORTSMANAGEMENT_CLUBS_TITLE2', $club->name );
 
 		$picture = $club->logo_small;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 		}
-		$image = JHTML::image( $picture, $title, array( 'height'=>21, 'title' => $title, ' border' => 0  ) );
-		$smallClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array( 'height'=>21, 'title' => $title, ' border' => 0  ) );
+		$smallClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 
 		$picture = $club->logo_middle;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
 		}
-		$image = JHTML::image( $picture, $title, array('height'=>50, 'title' => $title, ' border' => 0  ) );
-		$mediumClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array('height'=>50, 'title' => $title, ' border' => 0  ) );
+		$mediumClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 
 		$picture = $club->logo_big;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 		}
-		$image = JHTML::image( $picture, $title, array( 'height'=>150, 'title' => $title, ' border' => 0  ) );
-		$bigClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array( 'height'=>150, 'title' => $title, ' border' => 0  ) );
+		$bigClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 		?>
 		<tr class="">
 			<?php if ($this->config['show_small_logo'])		{ ?><td><?php echo $smallClubLogoLink;	?></td><?php } ?>
@@ -97,7 +70,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php
 					if ( !empty( $club->website ) )
 					{
-						echo JHTML::link	(	$club->website,
+						echo HTMLHelper::link	(	$club->website,
 												$club->name,
 												array( "target" => "_blank")
 											);
@@ -127,14 +100,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$team->id,$team->$pic,$team->name,$this->config['team_picture_width']);
 echo '<br />';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
 $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);                                            
 
-							echo JHTML::link( $teaminfo_link, $team->name );
+							echo HTMLHelper::link( $teaminfo_link, $team->name );
 							echo '<br />';
 						}
 					?>

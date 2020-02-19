@@ -4,13 +4,17 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage playgrounds
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPlaygrounds
@@ -31,20 +35,11 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
-$starttime = microtime(); 
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-		
-        
-        $this->table = JTable::getInstance('playground', 'sportsmanagementTable');
 
+        $this->table = Table::getInstance('playground', 'sportsmanagementTable');
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);
@@ -58,14 +53,9 @@ $starttime = microtime();
 							'value', 
 							'text', 
 							$this->state->get('filter.search_nation'));
-
-
 	
 		$this->lists	= $lists;
 	
-        
-        
-		
 	}
 
 	
@@ -78,11 +68,11 @@ $starttime = microtime();
 	{
 		
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
-		JToolbarHelper::editList('playground.edit');
-		JToolbarHelper::addNew('playground.add');
-		JToolbarHelper::custom('playground.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('playground.export', JText::_('JTOOLBAR_EXPORT'));
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
+		ToolbarHelper::editList('playground.edit');
+		ToolbarHelper::addNew('playground.add');
+		ToolbarHelper::custom('playground.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('playground.export', Text::_('JTOOLBAR_EXPORT'));
 		
 
         parent::addToolbar();

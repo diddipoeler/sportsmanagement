@@ -4,19 +4,24 @@
  * @file      predictionmember.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionmember
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'prediction.php');
+require_once(JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'predictionentry.php');
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
 
 /**
  * sportsmanagementModelpredictionmember
@@ -38,9 +43,9 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
     function save_memberlist()
 	{
 	// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -48,14 +53,9 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 	
-  $post	= JFactory::getApplication()->input->post->getArray(array());
-	$cid	= JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-  $prediction_id = (int) $cid[0];
-  //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
-  
-  //$app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
-  //$app->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
-  
+  $post	= Factory::getApplication()->input->post->getArray(array());
+	$cid	= Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+  $prediction_id = $post['cid'];
   
   foreach ( $post['prediction_members'] as $key => $value )
   {
@@ -70,24 +70,21 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 if ( !$result )
 {
 	
-  //$app->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
-  //$table = 'predictionmember';
   $table = 'predictionentry';
-  $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
-  //$rowproject->load( $value );
+  $rowproject = Table::getInstance( $table, 'sportsmanagementTable' );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;
-  $rowproject->registerDate = JHtml::date(time(),'%Y-%m-%d %H:%M:%S');
+  $rowproject->registerDate = HTMLHelper::date(time(),'%Y-%m-%d %H:%M:%S');
   $rowproject->approved = 1;
   $rowproject->modified = $date->toSql();
   $rowproject->modified_by = $user->get('id');
   if ( !$rowproject->store() )
   {
-  //echo 'project -> '.$value. ' nicht gesichert <br>';
+
   }
   else
   {
-  //echo 'project -> '.$value. ' gesichert <br>';
+
   }
    
 }
@@ -106,34 +103,21 @@ if ( !$result )
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
-    //$app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
-        $config = JFactory::getConfig();
-  $mailer = JFactory::getMailer();
+        $config = Factory::getConfig();
   
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
 
 sportsmanagementModelPrediction::$predictionGameID = $prediction_id;
 $configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
 $overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $configprediction = array_merge($overallConfig,$configprediction);
-    
-  // als html
-  $mailer->isHTML(TRUE);
-  
-  $pred_reminder_mail_text = JComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
-  
-  
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' language->getTag() <br><pre>'.print_r($language->getTag(),true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configprediction <br><pre>'.print_r($configprediction,true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_reminder_mail_text <br><pre>'.print_r($pred_reminder_mail_text,true).'</pre>'),'');
-  
-//  $meta_keys[] = $config->getValue( 'config.MetaKeys' );
-//$your_name = $config->getValue( 'config.sitename' );
+ 
+  $pred_reminder_mail_text = ComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
 
-//add the sender Information.
+/**
+ * add the sender Information.
+ */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
@@ -149,23 +133,24 @@ $sender = array(
     $config->getValue( 'config.fromname' ) );
 }
 
-
-$mailer->setSender($sender); 
-
-$mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
-$mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
+$mdlPredictionGame = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+$mdlPredictionGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
 
 $predictiongame = $mdlPredictionGame->getPredictionGame($prediction_id);
 $predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sender<br><pre>'.print_r($sender,true).'</pre>'),'');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongame<br><pre>'.print_r($predictiongame,true).'</pre>'),'');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionproject<br><pre>'.print_r($predictionproject,true).'</pre>'),'');
-
- 
-
+/**
+ * schleife über die tippspieler anfang
+ */
   foreach ( $cid as $key => $value )
     {
+$mailer = Factory::getMailer();
+/**
+ * als html
+ */
+$mailer->isHTML(TRUE);
+$mailer->setSender($sender); 
+          
 $body = '';
 /**
   * jetzt die ergebnisse
@@ -178,20 +163,16 @@ $body .= "<html>";
     foreach ( $predictionproject as $project_key => $project_value )
     {
     $predictiongamematches = $mdlPredictionGames->getPredictionGamesMatches($prediction_id,$project_value,$member_email->user_id);
-    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_value<br><pre>'.print_r($project_value,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongamematches<br><pre>'.print_r($predictiongamematches,true).'</pre>'),'');
-    
+   
     $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
-  
 	$body .= "<tr>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 	$body .= "</tr>";
-    /**
+/**
  * schleife über die ergebnisse in der runde
  */	
 	foreach ($predictiongamematches AS $result)
@@ -214,24 +195,23 @@ $body .= "<html>";
 	$matchTimeDate = $matchTimeDate - $closingtime;
     $body .= "<tr class='" . $class ."'>";
 	$body .= "<td class='td_c'>";
-	$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
+	$body .= HTMLHelper::date($result->match_date, 'd.m.Y H:i', false);
 	$body .= " - ";
-	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
 	$body .= "</td>";
- /**
+/**
  * clublogo oder vereinsflagge hometeam	
  */
 $body .= "<td nowrap='nowrap' class='td_r'>";
 $body .= $result->home_name;
 $body .= "</td>";
 $body .= "<td nowrap='nowrap' class='td_c'>";
-$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->home_name);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->home_name);
 $body .=  JSMCountries::getCountryFlag($result->home_country);
 if	(($result->home_logo_big == '') || (!file_exists($result->home_logo_big)))
 {
 $result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  JHTML::image(JURI::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(Uri::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .=  ' ' ;   
 $body .= "</td>";	
 $body .= "<td nowrap='nowrap' class='td_c'>";	
@@ -241,14 +221,14 @@ $body .= "</td>";
  * clublogo oder vereinsflagge awayteam
  */
 $body .= "<td nowrap='nowrap' class='td_c'>";
-$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->away_name);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->away_name);
 $body .=  ' ';
 $body .=  JSMCountries::getCountryFlag($result->away_country);
 if	(($result->away_logo_big == '') || (!file_exists($result->away_logo_big)))
 {
 $result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  JHTML::image(JURI::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(Uri::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .= "</td>";				
 $body .= "<td nowrap='nowrap' class='td_l'>";
 $body .= $result->away_name;
@@ -320,11 +300,11 @@ $percentageA = 0;
 }
 
 $body .= "<span style='color:" . $configprediction['color_home_win'] ."' >";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount) . "</span><br />";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount) . "</span><br />";
 $body .= "<span style='color:" . $configprediction['color_draw'] ."'>";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount) . "</span><br />";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount) . "</span><br />";
 $body .= "<span style='color:" . $configprediction['color_guest_win'] ."'>";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount) . "</span>";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount) . "</span>";
 $body .= "</td>";
 //$body .= "<td colspan='8'>&nbsp;</td>";
 $body .= "</tr>";
@@ -341,30 +321,33 @@ if ( $projectcount )
    {
    $fromdate .= ' und '; 
    }    
-$fromdate .= JHtml::date($result->round_date_first, 'd.m.Y', false).'-'.JHtml::date($result->round_date_last, 'd.m.Y', false);
+$fromdate .= HTMLHelper::date($result->round_date_first, 'd.m.Y', false).'-'.HTMLHelper::date($result->round_date_last, 'd.m.Y', false);
    
 $body .= "<tr>";
 $body .= "<td colspan='8'>&nbsp;</td>";
-$body .= "<td class='td_c'>" . JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints) ."</td>";
+$body .= "<td class='td_c'>" . Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints) ."</td>";
 $body .= "</tr>";            	
 $body .= "<table>";   
  
  $projectcount++;
     }
 $body .= "</html><br>";
-    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' member_email<br><pre>'.print_r($member_email,true).'</pre>'),'');
-    
-    //add the recipient. $recipient = $user_email;
+   
+/**
+ * add the recipient. $recipient = $user_email;
+ */
     $mailer->addRecipient($member_email->email); 
-    //add the subject
+/**
+ * add the subject
+ */
      $subject = addslashes(
 				sprintf(
-				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
+				Text::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				$predictiongame->name ) );
     $mailer->setSubject($subject);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' subject<br><pre>'.print_r($subject,true).'</pre>'),'');
-//add body
+/**
+ * add body
+ */
 $message = $pred_reminder_mail_text;
 
 $message = str_replace('[PREDICTIONMEMBER]', $member_email->username, $message);
@@ -385,21 +368,20 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 $message = str_replace('[PREDICTIONADMIN]', $config->getValue( 'sitename' ), $message);
 }
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($message,true).'</pre>'),'Error');
-
 $mailer->setBody($message);
 $send = $mailer->Send();
 
 if ( $send !== true ) {
-    //echo 'Error sending email: ' . $send->message;
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+
 } else {
-    //echo 'Mail sent';
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email),'notice');
 }
 
     }
-  
+/**
+ * schleife über die tippspieler ende
+ */
+   
   }
 
 
@@ -411,8 +393,8 @@ if ( $send !== true ) {
 	 */
 	function getSystemAdminsEMailAdresses()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 		$query =	'	SELECT u.email
 						FROM #__users AS u
@@ -443,8 +425,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getPredictionGameAdminsEMailAdresses( $predictionGameID )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
 		$query =	'	SELECT u.email
@@ -479,20 +461,18 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getPredictionMembersEMailAdresses( $cids )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
-		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 		$query =	'	SELECT user_id
 						FROM #__sportsmanagement_prediction_member
 						WHERE	id IN (' . $cids . ')';
-		//echo $query . '<br />';
+
 		$db->setQuery( $query );
 		if ( !$cids = $this->_db->loadResultArray() ) { return false; }
-		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 
-		JArrayHelper::toInteger( $cids );
+		ArrayHelper::toInteger( $cids );
 		$cids = implode( ',', $cids );
 		$query =	'	SELECT u.email
 						FROM #__users AS u
@@ -500,7 +480,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 								u.block = 0 AND
 								u.id IN (' . $cids . ')
 						ORDER BY u.email';
-		//echo $query . '<br />';
+
 		$db->setQuery( $query );
     
      if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -557,8 +537,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
      */
     function getPredictionGroups()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
 		$this->_db->setQuery($query);
@@ -579,10 +559,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function publishpredmembers( $cid = array(), $publish = 1, $predictionGameID )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
-		$user =& JFactory::getUser();
+		$user =& Factory::getUser();
 		if ( count( $cid ) )
 		{
 			$cids = implode( ',', $cid );
@@ -593,45 +573,28 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get( 'id' ) . ' ) )';
 
 			$this->_db->setQuery( $query );
-            
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
-            
+           
 			if ( !$this->_db->execute() )
 			{
-				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
 			// create and send mail about approving member here
-
 			$systemAdminsMails = $this->getSystemAdminsEMailAdresses();
-			//echo '<br /><pre>~' . print_r( $systemAdminsMails, true ) . '~</pre><br />';
-
 			$predictionGameAdminsMails = $this->getPredictionGameAdminsEMailAdresses( $predictionGameID );
-			//echo '<br /><pre>~' . print_r( $predictionGameAdminsMails, true ) . '~</pre><br />';
-
 			$predictionGameMembersMails = $this->getPredictionMembersEMailAdresses( $cids );
-			//echo '<br /><pre>~' . print_r( $predictionGameMembersMails, true ) . '~</pre><br />';
 
 			foreach ( $cid as $predictionMemberID )
 			{
-				//echo '<br /><pre>~' . print_r( $predictionMemberID, true ) . '~</pre><br />';
-
 				$predictionGameMemberMail = $this->getPredictionMemberEMailAdress( $predictionMemberID );
-				//echo '<br /><pre>~' . print_r( $predictionGameMemberMail, true ) . '~</pre><br />';
-
 				if ( count( $predictionGameMemberMail ) > 0 )
 				{
 					//Fetch the mail object
-					$mailer =& JFactory::getMailer();
+					$mailer = Factory::getMailer();
 
 					//Set a sender
-					$config =& JFactory::getConfig();
+					$config = Factory::getConfig();
 					$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
-					//echo '<br /><pre>~' . print_r( $sender, true ) . '~</pre><br />';
 					$mailer->setSender( $sender );
 
 					//set Member as recipient
@@ -645,10 +608,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							$lastMailAdress = $predictionGameMember_EMail;
 						}
 					}
-					//echo '<br />recipient<pre>~' . print_r( $recipient, true ) . '~</pre><br />';
 					$mailer->addRecipient( $recipient );
-					//unset( $recipient );
-
 					//set system admins as BCC recipients
 					$lastMailAdress = '';
 					$recipientAdmins = array();
@@ -661,8 +621,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						}
 					}
 					$lastMailAdress = '';
-					//echo '<br />recipientAdmins<pre>~' . print_r( $recipientAdmins, true ) . '~</pre><br />';
-
 					//set predictiongame admins as BCC recipients
 					foreach ( $predictionGameAdminsMails AS $predictionGameAdminMail )
 					{
@@ -672,39 +630,32 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							$lastMailAdress = $predictionGameAdminMail;
 						}
 					}
-					//echo '<br />recipientAdmins<pre>~' . print_r( $recipientAdmins, true ) . '~</pre><br />';
 					$mailer->addBCC( $recipientAdmins );
 					unset( $recipientAdmins );
-
 					//Create the mail
-					//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
 					if ( $publish == 1 )
 					{
-						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
-						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
+						$mailer->setSubject( Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
+						$body = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
 					}
 					else
 					{
-						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REJECTED') );
-						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
+						$mailer->setSubject( Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REJECTED') );
+						$body = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
 					}
 					$mailer->setBody( $body );
-					echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
-
 					// Optional file attached
-					//$mailer->addAttachment(PATH_COMPONENT.DS.'assets'.DS.'document.pdf');
-					//echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
+					//$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
 
 					//Sending the mail
 					$send =& $mailer->Send();
 					if ( $send !== true )
 					{
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
 					}
 					else
 					{
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_MAIL_SENT');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_MAIL_SENT');
 					}
 					echo '<br /><br />';
 				}
@@ -730,19 +681,17 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function deletePredictionMembers( $cid = array() )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
 			$query = 'DELETE FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ')';
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )
 			{
-				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -760,13 +709,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function deletePredictionResults($cid=array(),$prediction_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
     $db = sportsmanagementHelper::getDBConnection();
         
 		if (count($cid))
 		{
-			JArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode(',',$cid);
 			$query = 'SELECT user_id FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />';
@@ -788,17 +737,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			{
 				return true;
 			}
-			//echo '<pre>'; print_r($result); echo '</pre>';
-
-			JArrayHelper::toInteger($result);
+			ArrayHelper::toInteger($result);
 			$cids = implode(',',$result);
 			$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
-			//echo $query . '<br />'; return true;
 			$this->_db->setQuery($query);
 			if (!$this->_db->execute())
 			{
-				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -814,10 +758,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+	   $app = Factory::getApplication();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -832,7 +776,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

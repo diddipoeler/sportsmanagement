@@ -4,16 +4,21 @@
  * @file      edit_3.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionproject
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+
+
 $params = $this->form->getFieldsets('params');
 
 // Get the form fieldsets.
@@ -22,7 +27,7 @@ $fieldsets = $this->form->getFieldsets();
 
 ?>
 <script type="text/javascript">
-
+/*
 function change_published () {
   if (document.adminForm.published0.checked == true) {
     var deaktiviert=true;
@@ -54,25 +59,25 @@ function change_published () {
     document.adminForm.points_tipp_champ.disabled=deaktiviert;
 
   if (deaktiviert == false){
-  change_joker();
+//  change_joker();
   change_jokerlimit();
-  change_champ();
+ // change_champ();
 }
 }
-
-function change_joker () {
-  if (document.adminForm.joker0.checked == true) {
-    var deaktiviert=true;
-  } else {
-    var deaktiviert=false;
-  }
-  alert(deaktiviert);
-  document.adminForm.points_correct_result_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
-  document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
-  document.adminForm.points_tipp_joker.disabled=deaktiviert;
-}
+*/
+//function change_joker () {
+//  if (document.adminForm.joker0.checked == true) {
+//    var deaktiviert=true;
+//  } else {
+//    var deaktiviert=false;
+//  }
+//  alert(deaktiviert);
+//  document.adminForm.points_correct_result_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_diff_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_draw_joker.disabled=deaktiviert;
+//  document.adminForm.points_correct_tendence_joker.disabled=deaktiviert;
+//  document.adminForm.points_tipp_joker.disabled=deaktiviert;
+//}
 
 function change_jokerlimit () {
   if (document.adminForm.joker_limit_select0.checked == true) {
@@ -83,78 +88,62 @@ function change_jokerlimit () {
   document.adminForm.joker_limit.disabled=deaktiviert;
 }
 
-function change_champ () {
-  if (document.adminForm.champ0.checked == true) {
-    var deaktiviert=true;
-  } else {
-    var deaktiviert=false;
-  }
-  document.adminForm.points_tipp_champ.disabled=deaktiviert;
-  document.adminForm.league_champ.disabled=deaktiviert;
-}
+//function change_champ () {
+//  if (document.adminForm.champ0.checked == true) {
+//    var deaktiviert=true;
+//  } else {
+//    var deaktiviert=false;
+//  }
+//  document.adminForm.points_tipp_champ.disabled=deaktiviert;
+//  document.adminForm.league_champ.disabled=deaktiviert;
+//}
 
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&project_id='.(int) $this->item->project_id) ; ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&project_id='.(int) $this->item->project_id) ; ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
  <fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('predictionproject.store', this.form)">
-				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JSAVE');?></button>
+			<!--
+			<button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+				<?php echo Text::_('JCANCEL');?></button>
+			-->
 		</div>
 	</fieldset>
     	
  <div class="form-horizontal">
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 switch ($fieldset->name)
 {
     case 'details':
-    ?>
-    <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-    <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
-    {
-        ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php
-
-    }
-    ?>
-    </div>
-				</div>
-			</div>
-            </div>
-    <?PHP
+    echo $this->form->renderFieldset('details');
     break;
+case 'predchamp':
+echo $this->form->renderFieldset('predchamp');		
+break;		
+case 'predjoker':
+echo $this->form->renderFieldset('predjoker');		
+break;
+		
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets');
     break;
 }    
-echo JHtml::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 ?>    
 	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div>    
 
 	<div>	
@@ -163,11 +152,13 @@ echo JHtml::_('bootstrap.endTab');
 		<input type='hidden' name='psapply'	value='1' />
 	</div>
 	<?php 
-    echo JHtml::_('form.token'); 
+    echo HTMLHelper::_('form.token'); 
 
     ?>
 </form>
-<script type="text/javascript">change_published();</script>
+<script type="text/javascript">
+	//change_published();
+</script>
 <div>
 <?PHP
 echo $this->loadTemplate('footer');

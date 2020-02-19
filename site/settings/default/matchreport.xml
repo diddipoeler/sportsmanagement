@@ -4,7 +4,7 @@
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-
+	
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_HEADER"
 			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_HEADER">
@@ -38,6 +38,13 @@
 		<field name="show_extended" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_EXTENDED"
 			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_EXTENDED">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="show_youtube" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_YOUTUBE"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_YOUTUBE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -98,7 +105,14 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+
+		<field name="show_comments" type="extensionradiobutton" default="0"
+				class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
 		<field 	name="show_article" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_ARTICLE"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ARTICLE">
@@ -406,6 +420,13 @@ directory="images/com_sportsmanagement/database/rosterground"
 			<option value="1">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_LINK_ALIGNMENT_UNDER</option>
 		</field>
 
+<field 	name="show_player_profile_name_trikotnumber" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PLAYER_PROFILE_NAME_TRIKOTNUMBER"
+				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PLAYER_PROFILE_NAME_TRIKOTNUMBER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="show_player_picture" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PLAYER_PICTURE"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PLAYER_PICTURE">

@@ -4,7 +4,7 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage referee
  */
@@ -16,57 +16,50 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="referee">
-	<?php
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+<div class="<?php echo $this->divclasscontainer;?>" id="referee">
+<?php
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');
 }
 
-	echo $this->loadTemplate( 'projectheading' );
+echo $this->loadTemplate( 'projectheading' );
 
-	if ( $this->config['show_sectionheader'] )
-	{
-		echo $this->loadTemplate( 'sectionheader' );
-	}
+if ( $this->config['show_sectionheader'] )
+{
+echo $this->loadTemplate( 'sectionheader' );
+}
 
 /**
  * diddipoeler
  * aufbau der templates
  */
-  $this->output = array();
+$this->output = array();
   
-	if ( $this->config['show_info'] )
-	{
-		echo $this->loadTemplate( 'info' );
-	}
+if ( $this->config['show_info'] )
+{
+echo $this->loadTemplate( 'info' );
+}
 
-	if ( $this->config['show_extended'] )
-	{
-		echo $this->loadTemplate('extended');
-	}
+if ( $this->config['show_extended'] )
+{
+echo $this->loadTemplate('extended');
+}
 
-	if ( $this->config['show_description'] )
-	{
-		echo $this->loadTemplate( 'description' );
-	}
+if ( $this->config['show_description'] )
+{
+echo $this->loadTemplate( 'description' );
+}
 
-	if ( $this->config['show_gameshistory'] )
-	{
-		echo $this->loadTemplate( 'gameshistory' );
-	}
+if ( $this->config['show_gameshistory'] )
+{
+echo $this->loadTemplate( 'gameshistory' );
+}
 
-	if ( $this->config['show_career'] )
-	{
-		echo $this->loadTemplate( 'career' );
-	}
-		
- ?>
-    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
-    <?PHP
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	
-	?>
-</div>
+if ( $this->config['show_career'] )
+{
+echo $this->loadTemplate( 'career' );
+}
+echo $this->loadTemplate('jsminfo');	
+?>
 </div>

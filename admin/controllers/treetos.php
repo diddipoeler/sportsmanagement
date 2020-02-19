@@ -4,18 +4,16 @@
  * @file      treetos.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
+use Joomla\CMS\Session\Session; 
+use Joomla\Utilities\ArrayHelper; 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllertreetos
@@ -26,7 +24,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllertreetos extends JControllerAdmin
+class sportsmanagementControllertreetos extends JSMControllerAdmin
 {
 
 /**
@@ -39,7 +37,7 @@ public function __construct($config = array())
 	{
 		parent::__construct($config);
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -55,14 +53,14 @@ public function __construct($config = array())
 		return $model;
 	}
     
+/**
+ * sportsmanagementControllertreetos::genNode()
+ * 
+ * @return void
+ */
 public function genNode()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$cid = $jinput->get('cid',array(),'array');
-//		JArrayHelper::toInteger($cid);
 		$id = $this->jsmjinput->get->get('id');
-		
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=treeto&layout=gennode&id=' . $id);
 	}
         
@@ -74,37 +72,25 @@ public function genNode()
 public function save()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		
-		//$app = JFactory::getApplication();
-		//$jinput = $app->input;
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		$cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		
 		$post = $this->jsmjinput->post->getArray();
 		$data['project_id'] = $post['project_id'];
-
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post, true).'</pre><br>',''); 
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data, true).'</pre><br>',''); 
 		
         $model = $this->getModel('treeto');
         $row = $model->getTable();
         
-        
-		//$table = JTable::getInstance('Treeto','sportsmanagementTable');
 		if($row->save($data))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
 		}
-        
-        
-		// Check the table in so it can be edited.... we are done with it anyway
-		// $model->checkin();
-		
+	
 		$task = $this->getTask();
 		
 		if($task == 'save')

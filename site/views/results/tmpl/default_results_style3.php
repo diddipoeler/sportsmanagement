@@ -4,7 +4,7 @@
  * @file      default_results_style3.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage results
  */
 
@@ -20,12 +20,12 @@ if(($this->config['show_playground'] || $this->config['show_playground_alert']))
 if($this->config['show_referee']){$nbcols++;}
 
 ?>
-<div class="row-fluid">  
-<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
+ 
+<table class="<?PHP echo $this->config['table_class']; ?> ">
 	<tr>
 		<td>
 			May be designed in the future???
 		</td>
 	</tr>
 </table>
-</div>
+

@@ -1,5 +1,4 @@
 ALTER TABLE  `#__sportsmanagement_match` CHANGE  `approved_date`  `approved_date` DATE NOT NULL DEFAULT  '0000-00-00';
-ALTER TABLE  `#__sportsmanagement_match` CHANGE  `approved_time`  `approved_time` TIME NOT NULL DEFAULT  '00:00';
 ALTER TABLE  `#__sportsmanagement_match` ADD  `match_timestamp` INT( 11 ) NOT NULL DEFAULT  '0';
 
 ALTER TABLE  `#__sportsmanagement_season_team_id` ADD  `kaderlink` VARCHAR( 250 ) NULL DEFAULT NULL ;

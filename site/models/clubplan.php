@@ -4,13 +4,16 @@
  * @file      clubplan.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage clubplan
  */
  
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelClubPlan
@@ -21,7 +24,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelClubPlan extends JModelLegacy
+class sportsmanagementModelClubPlan extends BaseDatabaseModel
 {
 	static $clubid = 0;
 	static $project_id = 0;
@@ -50,7 +53,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct();
@@ -81,7 +84,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
     function getTeamsArt()
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -109,15 +112,10 @@ try{
 		}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
-       }
-        
+       
         return $teamsart;
     }
     
@@ -128,8 +126,8 @@ catch (Exception $e)
      */
     function getTeamsProjects()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -153,25 +151,12 @@ catch (Exception $e)
         $query->order('p.name DESC');
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$teamsprojects = $db->loadObjectList();
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsprojects'.'<pre>'.print_r($teamsprojects,true).'</pre>' ),'');
-       }
-        
+       
         return $teamsprojects;
-        
-        
-        
+
     }
     
     /**
@@ -181,8 +166,8 @@ catch (Exception $e)
      */
     function getTeamsSeasons()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -207,11 +192,6 @@ catch (Exception $e)
 		$teamsseasons = $db->loadObjectList();
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsseasons'.'<pre>'.print_r($teamsseasons,true).'</pre>' ),'');
-       }
-        
         return $teamsseasons;
         
         
@@ -226,8 +206,8 @@ catch (Exception $e)
 	 */
 	function getTeams()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -249,13 +229,9 @@ catch (Exception $e)
        
        if ( !$teams )
        {
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+
         }
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
-       }
        
 		return $teams;
 	}
@@ -267,13 +243,8 @@ catch (Exception $e)
 	 */
 	function getStartDate()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
-       }
-	
     	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
 		if (empty(self::$startdate))
 		{
@@ -288,10 +259,6 @@ catch (Exception $e)
 			self::$startdate = $project->start_date;
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
-        }
 		return self::$startdate;
 	}
 
@@ -302,12 +269,7 @@ catch (Exception $e)
 	 */
 	function getEndDate()
 	{
-	   $app = JFactory::getApplication();
-       
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
-       }
+	   $app = Factory::getApplication();
        
 		if ( empty(self::$enddate) )
 		{
@@ -317,11 +279,6 @@ catch (Exception $e)
 			$nextweek = mktime(0,0,0,date("m"),date("d")+ $dayz,date("y"));
 			self::$enddate = date("Y-m-d",$nextweek);
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
-        }
         
 		return self::$enddate;
 	}
@@ -334,7 +291,7 @@ catch (Exception $e)
 	 */
 	public static function setStartDate($date)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
 			self::$startdate = strftime("%Y-%m-%d",strtotime($date));
@@ -352,7 +309,7 @@ catch (Exception $e)
 	 */
 	public static function setEndDate($date)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
 			self::$enddate = strftime("%Y-%m-%d",strtotime($date));
@@ -371,24 +328,12 @@ catch (Exception $e)
 	 */
 	function getAllMatches($orderBy = 'ASC',$type = 0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        
        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
        $this->teamseasons = $project->season_id;
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
-       
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubid'.'<pre>'.print_r(self::$clubid,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
-         }
-        
+ 
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -400,14 +345,11 @@ catch (Exception $e)
 		$startdate = self::getStartDate();
 		$enddate = self::getEndDate();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' startdate'.'<pre>'.print_r($startdate,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' enddate'.'<pre>'.print_r($enddate,true).'</pre>' ),'');
-
 		if (is_null($teams)) 
         {
 			return null;
 		}
-        
+        /*
         if ( $startdate && $enddate )
         {
         $query->clear();
@@ -415,7 +357,8 @@ catch (Exception $e)
         $query->from('#__sportsmanagement_round as r');
         $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
         $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');  
-        $db->setquery($query);
+        $query->group('r.id');
+	$db->setquery($query);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -427,18 +370,18 @@ catch (Exception $e)
         // Joomla! 2.5 code here
         $rounds = $db->loadResultArray();
         } 
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
         if ( $rounds )
         {
         $round_ids = implode(',',$rounds);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($round_ids,true).'</pre>'),'Notice');
         }  
         }
-        
-        if ( $round_ids )
-        {
+*/
+$start_timestamp = sportsmanagementHelper::getTimestamp($startdate.' 00:00:00');      
+$end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59'); 
+		
+        //if ( $round_ids )
+        //{
         $query->clear();
         // Select some fields
 		//$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
@@ -488,12 +431,14 @@ catch (Exception $e)
         
         if ( self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0)
         {
-        $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+        //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  
         }
         
         if ( $startdate && $enddate )
         {
-        $query->where('m.round_id IN ('.$round_ids.')');    
+        //$query->where('m.round_id IN ('.$round_ids.')');    
+	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  	
         }
         
         if( self::$teamartsel > 0 ) 
@@ -542,22 +487,14 @@ catch (Exception $e)
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_($e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }		
-        }
+        //}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( !$this->allmatches )
        {
-  /*      
-		if ( $db->getErrorNum() )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        }
-*/
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
+        $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
         }
         
 		return $this->allmatches;
@@ -573,8 +510,8 @@ catch (Exception $e)
 	 */
 	function getMatchReferees($matchID)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -596,12 +533,6 @@ catch (Exception $e)
         $db->setQuery($query);
         
         $result = $db->loadObjectList();
-        /*
-        if ( !$result && $db->getErrorMsg() )
-       {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        }
-        */
 		return $result;
        
 	}
@@ -633,7 +564,7 @@ catch (Exception $e)
 				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
-			return JHtml::image($logo_small,"",$params);
+			return HTMLHelper::image($logo_small,"",$params);
 		}
 		elseif ($type==2 && isset($country))
 		{

@@ -4,17 +4,21 @@
  * @file      default_results_style0.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage results
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+
 ?>
 <style>
 #sbox-window {
 background-color: transparent;
-
 }
 
 </style>
@@ -24,13 +28,11 @@ function example_alertBox( boxText )
 	var options = {size: {x: 300, y: 250}};
 	SqueezeBox.initialize(options);
 	SqueezeBox.setContent('string','Spielnummer: ' + boxText);
-			
-	
 }
 </script>
 
 <?php
-$nbcols	= 7;
+$nbcols	= 6;
 $nbcols_header = 0;
 $dates = sportsmanagementViewResults::sortByDate($this->matches);
 
@@ -44,42 +46,23 @@ if($this->config['show_referee']){$nbcols++;}
 if($this->config['result_style']==2){$nbcols++;}
 if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
 
-if ($this->config['show_comments_count'] > 0)
+if ( $this->config['show_comments_count'] )
 {
-
-if(!JComponentHelper::isEnabled('com_jcomments', true))
-{
-    //JError::raiseError('Komponentenfehler', JText::_('Die Komponente JComments ist nicht installiert'));
-    $comJcomments = false;
-    JError::raiseWarning('Komponentenfehler', JText::_('Die Komponente JComments ist nicht installiert'));
-}
-else
+	$commmentsInstance = sportsmanagementModelComments::CreateInstance($this->config);
+	if(!$commmentsInstance->isEnabled())
 	{
-	$comJcomments = true;   
-    $nbcols++;
-	$nbcols_header++;
-
-	require_once (JPATH_ROOT . '/components/com_jcomments/jcomments.class.php');
-    require_once (JPATH_ROOT . '/components/com_jcomments/jcomments.config.php');
-	require_once (JPATH_ROOT . '/components/com_jcomments/models/jcomments.php');
-
-	// get joomleague comments plugin params
-	JPluginHelper::importPlugin( 'joomleague' );
-
-	$plugin	= & JPluginHelper::getPlugin('joomleague', 'comments');
-
-	if (is_object($plugin)) {
-		$pluginParams = new JParameter($plugin->params);
+	    $comJcomments = false;
 	}
-	else {
-		$pluginParams = new JParameter('');
+	else
+	{
+		$comJcomments = true;
+		$nbcols++;
+		$nbcols_header++;
 	}
-	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
-    }
 }
 ?>
-<div class="row-fluid">   
-<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
+ 
+<table class="<?PHP echo $this->config['table_class']; ?> ">
 	<?php
 	foreach( $dates as $date => $games )
 	{
@@ -87,57 +70,56 @@ else
     	?>
 	<!-- DATE HEADER -->
     <thead>
-	<tr >
+	<tr id="results-header" class="" >
 
 		<?php
         $timestamp = strtotime($date);
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
 		{
 			?>
-			<th colspan="<?php echo $nbcols-$nbcols_header; ?>">
+			<th id="results-header-head-column-count" colspan="<?php echo $nbcols-$nbcols_header; ?>">
             <?php 
-            //echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_MONTH'));
-            if ( !$timestamp )
+            if ( $date == "0000-00-00" )
     {
-        echo '';
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
     else
     {
-            echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
+            echo HTMLHelper::date( $date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
                 if ($this->config['show_matchday_dateheader']) 
                 {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    echo ' - ' . Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
                     } 
                     ?>
             </th>
             <?php
             if ($this->config['show_attendance_column']) {
 				?>
-				<th class="right"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
+				<th id="results-header-attendance" class="right"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
 			<?php
 			}
             if ($this->config['show_comments_count'] > 0) {
 				?>
-				<th class="center"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
+				<th id="results-header-comments" class="center"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
 			<?php
 			}
 
 		} else {
 			?>
-			<th colspan="<?php echo $nbcols; ?>">
+			<th id="results-header-head" colspan="<?php echo $nbcols; ?>">
             <?php 
-            if ( !$timestamp )
+            if ( $date == "0000-00-00" )
     {
-        echo '';
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
     }
     else
     {
-            echo JHtml::date( $date, JTExt::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
+            echo HTMLHelper::date( $date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
                 if ($this->config['show_matchday_dateheader']) 
                 {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    echo ' - ' . Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
                     } 
                     ?>
             </th>
@@ -150,38 +132,42 @@ else
 	<!-- GAMES -->
 	<?php
 	$k = 0;
+    $history_link = '';
 
 	foreach( $games as $game )
 	{
-		
-        //echo 'game <pre>'.print_r($game, true).'</pre><br>';
-        
         $this->game = $game;
 		if ($game->published)
 		{
 			if (isset($game->team1_result))
 			{
 			$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
-				
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);				
 			}
 			else
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-				
+$history_link = '';
 			}
 
-			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0));
-			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+if ( !$this->config['show_historylink'] ) 
+                {
+$history_link = '';                    
+                    }
+
+
+			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0));
+			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
@@ -227,14 +213,13 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 			}
 			?>
 
-	<!--<tr class="result<?php // echo ($k == 0) ? '' : ' alt'; ?><?php //echo ($hasEvents ? ' hasevents':''); ?>">-->
-	<tr	class=""<?php echo $favStyle; ?>>
+	<tr class="team<?php echo $game->projectteam1_id;?>  team<?php echo $game->projectteam2_id;?> "<?php echo $favStyle;?> >
 		<?php
 		if ($this->config['show_match_number'])
 		{
 			?>
 		<!-- show matchnumber -->
-		<td width="" class=""><?php
+		<td width="" class="" id="matchnumber"><?php
 		if ( $game->match_number>0 )
 		{
 			echo $game->match_number;
@@ -257,10 +242,10 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 		if ($hasEvents)
 		{
 			$link = "javascript:void(0);";
-			$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+			$img = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+			$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 							"onclick" => 'switchMenu(\'info'.$game->id.'\');return false;');
-			echo JHtml::link($link,$img,$params);
+			echo HTMLHelper::link($link,$img,$params);
 		}
 		else
 		{
@@ -287,7 +272,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 $imgcontent,
 $imgTitle,
 '20',
-JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
+Uri::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);                
@@ -300,7 +285,7 @@ $this->overallconfig['use_jquery_modal']);
 		<!-- show divisions -->
 		<?php
 		if($this->config['show_division']) {
-			echo '<td width="" class="" nowrap="nowrap">';
+			echo '<td width="" class="" nowrap="nowrap" id="divisions">';
 			echo sportsmanagementHelperHtml::showDivisonRemark(	$this->teams[$game->projectteam1_id],
 			$this->teams[$game->projectteam2_id],
 			$this->config,$game->division_id );
@@ -310,7 +295,7 @@ $this->overallconfig['use_jquery_modal']);
 		{
 			?>
 		<!-- show matchtime -->
-		<td width='' class=''><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
+		<td width='' class='' id="matchtime"><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
 		</abbr></td>
 		<?php
 		}
@@ -322,13 +307,12 @@ $this->overallconfig['use_jquery_modal']);
 		?>
 		<!-- show playground -->
 		<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($game,$this->config); ?>
 		</td>
 		<?php
 		}
 //--------------------------------------------------------------------------------------------------------------
-		//$this->config['result_style']=2;
-		if ($this->config['result_style']==0)
+		if ( $this->config['result_style'] == 0 )
 		{
 	
     switch ($this->config['show_logo_small'])
@@ -347,43 +331,87 @@ $this->overallconfig['use_jquery_modal']);
     break;
     
     }  
+			
+switch ($this->config['show_logo_small'])
+{
+case 1:
+$pic1 = $team1->logo_small;
+$pic2 = $team2->logo_small;
+break;
+case 5:
+$pic1 = $team1->logo_middle;
+$pic2 = $team2->logo_middle;
+break;
+case 6:
+$pic1 = $team1->logo_big;
+$pic2 = $team2->logo_big;
+break;
+}  
           
-		?>
-			<!-- show team-icons and/or -names -->
-			<td width='<?PHP echo $width;?>'>
-				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team1,
-                $this->config['show_logo_small'],
-                array('class' => 'teamlogo'),
-                $this->modalwidth,
+?>
+<!-- show team-icons and/or -names -->
+<td width='<?PHP echo $width;?>'>
+<?php 
+if ( $this->config['club_link_logo'] )
+{
+echo sportsmanagementViewResults::getTeamClubIcon($team1,
+$this->config['show_logo_small'],
+array('class' => 'teamlogo'),
+$this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
-                ?>
-			</td>
-			<td>
-				<?php
-					$isFavTeam = in_array($team1->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
-				?>
-			</td>
-			<td width='<?PHP echo $width;?>'>
-				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
-                $this->modalwidth,
+}
+else
+{
+echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->name, '20', 'auto', 3);	
+}			
+?>
+</td>
+<td>
+<?php
+$isFavTeam = in_array($team1->id, $this->favteams);
+echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0) );
+?>
+</td>
+<td width='<?PHP echo $width;?>'>
+<?php 
+if ( $this->config['club_link_logo'] )
+{			
+echo sportsmanagementViewResults::getTeamClubIcon($team2, 
+$this->config['show_logo_small'], 
+array('class' => 'teamlogo'),
+$this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
-                ?>
-			</td>
+}
+else
+{
+echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->name, '20', 'auto', 3);		
+}	
+?>
+</td>
 			<td>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0));
 				?>
 			</td>
 			<!-- show match score -->
 			<td width='' class='score'>
 				<?php 
         echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
+        if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
+        
         ?>
 			</td>
 				<?php
@@ -392,7 +420,7 @@ $this->overallconfig['use_jquery_modal']);
 	?>
 	<?php
 //--------------------------------------------------------------------------------------------------------------
-		if ($this->config['result_style']==1)
+		if ( $this->config['result_style'] == 1 )
 		{
 			?>
 			<!-- show team-icons and/or -names -->
@@ -416,6 +444,17 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
+        if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
 				?>
 			</td>
 			<td width=''>
@@ -436,7 +475,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 	?>
 	<?php
 //--------------------------------------------------------------------------------------------------------------
-		if ($this->config['result_style']==2)
+		if ( $this->config['result_style'] == 2 )
 		{
 			?>
 			<!-- show team-icons and/or -names -->
@@ -473,6 +512,17 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
+        if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
 				?>
 			</td>
 			<?php
@@ -481,24 +531,37 @@ $this->overallconfig['use_jquery_modal']); ?>
 	?>
 
 		<!-- show hammer if there is a alternative decision of the score -->
-		<td width="" class="">
+		<td width="" class="" id="">
 		<?php sportsmanagementViewResults::showReportDecisionIcons($game); ?>
 		</td>
 
 		<?php
-		if($this->config['show_referee'])
-		{
-			?>
+        switch ( $this->config['show_referee'] )
+        {
+            case 0:
+            break;
+            case 1:
+            ?>
 		<!-- show matchreferees icon with tooltip -->
-			<td width="" class="">
+			<td width="" class="" id="">
 			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
 			</td>
 		<?php
-		}
+            break;
+            case 2:
+            ?>
+		<!-- show matchreferees icon with tooltip -->
+			<td width="" class="" id="">
+			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
+			</td>
+		<?php
+            break;
+        }
+        
 		?>
 
 		<?php
-		if (($this->config['show_playground'] || $this->config['show_playground_alert']))
+		if ( $this->config['show_playground'] || $this->config['show_playground_alert'] )
 		{
 			?>
 		<!-- show only playground or playgroundalert if playgrund differs from normal -->
@@ -510,7 +573,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 		?>
 
 		<?php
-		if ($this->config['show_attendance_column'])
+		if ( $this->config['show_attendance_column'] )
 		{
 			?>
 		<!-- show attendance -->
@@ -535,114 +598,8 @@ $this->overallconfig['use_jquery_modal']); ?>
 			?>
 		<!-- show comments -->
 		<td class=""><?php
-
-			if ($separate_comments) {
-				// Comments integration trigger when separate_comments in plugin is set to yes/1
-				if (isset($game->team1_result))
-				{
-					$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
-				}
-				else {
-					$joomleage_comments_object_group = 'com_sportsmanagement_nextmatch';
-				}
-			}
-			else {
-				// Comments integration trigger when separate_comments in plugin is set to no/0
-				$joomleage_comments_object_group = 'com_sportsmanagement';
-			}
-
-			$options 					= array();
-			$options['object_id']		= (int) $game->id;
-			$options['object_group']	= $joomleage_comments_object_group;
-			$options['published']		= 1;
-
-			$count = JCommentsModel::getCommentsCount($options);
-
-			if ($count == 1) 
-            {
-				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
-				if ($this->config['show_comments_count'] == 1) 
-                {
-					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} 
-                elseif ($this->config['show_comments_count'] == 2) 
-                {
-					$href_text = '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-				if (isset($game->team1_result))
-				{
-				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $game->slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
-					
-				}
-				else
-				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
-				}
-				$viewComment = JHtml::link($link, $href_text);
-				echo $viewComment;
-			}
-			elseif ($count > 1) 
-            {
-				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
-				if ($this->config['show_comments_count'] == 1) 
-                {
-					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} 
-                elseif ($this->config['show_comments_count'] == 2) 
-                {
-					$href_text = '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-				if (isset($game->team1_result))
-				{
-				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $game->slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-					
-				}
-				else
-				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
-				}
-				$viewComment = JHtml::link($link, $href_text);
-				echo $viewComment;
-			}
-			else 
-            {
-				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
-				}
-				//Link
-				if (isset($game->team1_result))
-				{
-				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $game->slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-					
-				}
-				else
-				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
-				}
-				$viewComment = JHtml::link($link, $href_text);
-				echo $viewComment;
-			}
-		?></td>
+			echo $commmentsInstance->showMatchCommentIcon($game, $this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $this->config, $this->project);
+?></td>
 		<?php
 		}
 		?>
@@ -679,5 +636,5 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	}
 	?>
 </table>
-</div>
+
 <br />

@@ -4,15 +4,14 @@
  * @file      eventsranking.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage eventskranking
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerEventsRanking
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @access public
  */
 
-class sportsmanagementControllerEventsRanking extends JControllerLegacy {
+class sportsmanagementControllerEventsRanking extends BaseController {
 
     /**
      * sportsmanagementControllerEventsRanking::display()

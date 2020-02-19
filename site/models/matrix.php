@@ -4,14 +4,16 @@
  * @file      matrix.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matrix
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelMatrix
@@ -22,7 +24,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatrix extends JModelLegacy
+class sportsmanagementModelMatrix extends BaseDatabaseModel
 {
 	
     static $divisionid= 0;
@@ -37,7 +39,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
        $jinput = $app->input;
        
@@ -58,8 +60,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getDivision( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -86,8 +88,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getRound( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -116,17 +118,12 @@ class sportsmanagementModelMatrix extends JModelLegacy
      */
     function getRussiaMatrixResults($teams, $results )
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         //$russiamatrix = array();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
-        
+       
         foreach ($teams as $team_row_id => $team_row) 
         {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row_id<br><pre>'.print_r($team_row_id,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row<br><pre>'.print_r($team_row,true).'</pre>'),'Notice');
         
         foreach ($teams as $team_col_id => $team_col) 
         {
@@ -135,7 +132,6 @@ class sportsmanagementModelMatrix extends JModelLegacy
             {
             if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
                 {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
                 if ( isset($team_row->first[(int)$team_col->projectteamid]) )
                 {
                 $team_row->second[(int)$team_col->projectteamid] = new stdClass();     
@@ -209,10 +205,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
             }    
         }
         }    
-            
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-    
-    
+
     return $teams;    
     }
     
@@ -225,8 +218,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getMatrixResults( $project_id, $unpublished = 0 )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -270,18 +263,9 @@ class sportsmanagementModelMatrix extends JModelLegacy
 
 		$db->setQuery( $query );
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-        
 		if ( !$result = $db->loadObjectList() )
 		{
-		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			//echo $db->getErrorMsg();
+
 		}
 		return $result;
 	}

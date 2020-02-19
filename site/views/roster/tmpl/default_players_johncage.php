@@ -4,12 +4,13 @@
  * @file      default_players_johncage.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage roster
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $totalEvents = array();
 if (count($this->rows) > 0) {
     ?>
@@ -17,7 +18,7 @@ if (count($this->rows) > 0) {
     <?php
     $position = "";
     foreach ($this->rows as $position_id => $rows) {
-        $position = JText::_($rows[0]->position);
+        $position = Text::_($rows[0]->position);
         ?>
             <div class="jl_rosterposition sectiontableheader">
             <?php

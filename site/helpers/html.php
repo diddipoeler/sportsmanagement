@@ -4,13 +4,19 @@
  * @file      html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage helpers
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementHelperHtml
@@ -40,7 +46,7 @@ class sportsmanagementHelperHtml {
      * @return
      */
     public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -76,12 +82,29 @@ $modaltext .= '</a>';
 }		
 	break;	
         case 0:
-            if ($url) {
-                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
-            } else {
-                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
-            }
-            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
+//            if ($url) {
+//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
+//            } else {
+//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
+//            }
+//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
+            
+            $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+        $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+        $modaltext .= '</a>';
+
+        if (!$url) {
+            $url = $picture;
+        }
+            $modaltext .= HTMLHelper::_('bootstrap.renderModal', $target, array(
+                    'title' => $text,
+                    'url' => $url,
+                    'height' => $height,
+                    'width' => $width,
+                    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">'.Text::_('JCANCEL').'</button>'
+                        )
+        );
+
         break;
 	    
     }    
@@ -104,13 +127,13 @@ $modaltext .= '</a>';
         if (!isset($overallconfig['time_format'])) {
             $overallconfig['time_format'] = 'H:i';
         }
-        $timeSuffix = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
+        $timeSuffix = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
         if ($timeSuffix == 'COM_SPORTSMANAGEMENT_GLOBAL_CLOCK') {
             $timeSuffix = '%1$s&nbsp;h';
         }
 
         if (strtotime($game->match_date)) {
-            $matchTime = JHtml::date($game->match_date, $overallconfig['time_format'], 'UTC');
+            $matchTime = HTMLHelper::date($game->match_date, $overallconfig['time_format'], 'UTC');
 
             if ($config['show_time_suffix'] == 1) {
                 $output .= sprintf($timeSuffix, $matchTime);
@@ -138,7 +161,7 @@ $modaltext .= '</a>';
                         $styletext = ' style="text-decoration:blink"';
                     }
                     $output = '<b><i><acronym title="' . $title . '"' . $styletext . '>';
-                    $output .= JText::_($config['mark_now_playing_text']);
+                    $output .= Text::_($config['mark_now_playing_text']);
                     $output .= '</acronym></i></b>';
                 }
             }
@@ -164,13 +187,8 @@ $modaltext .= '</a>';
      * @return
      */
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') {
-        $app = JFactory::getApplication();
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' division_id'.'<pre>'.print_r($division_id,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
-
+        $app = Factory::getApplication();
+    
         $output = '';
         if ($config['switch_home_guest']) {
             $tmpteam = & $hometeam;
@@ -181,28 +199,18 @@ $modaltext .= '</a>';
         /**
          * die gruppen aus der spielpaarung setzen
          */
-        if (empty($hometeam->division_id)) {
-            $hometeam->division_id = $division_id;
-            $division = JTable::getInstance('division', 'sportsmanagementTable');
+$hometeam->division_id = $division_id;
+$division = Table::getInstance('division', 'sportsmanagementTable');
             $division->load((int) $division_id);
             $hometeam->division_slug = $division->id . ':' . $division->alias;
             $hometeam->division_name = $division->name;
-            $hometeam->division_shortname = $division->shortname;
-        }
-        if (empty($guestteam->division_id)) {
-            $guestteam->division_id = $division_id;
-            $division = JTable::getInstance('division', 'sportsmanagementTable');
-            $division->load((int) $division_id);
-            $guestteam->division_slug = $division->id . ':' . $division->alias;
+            $hometeam->division_shortname = $division->shortname;      
+$guestteam->division_id = $division_id;     
+      $guestteam->division_slug = $division->id . ':' . $division->alias;
             $guestteam->division_name = $division->name;
             $guestteam->division_shortname = $division->shortname;
-        }
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
-
+     
         if ((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0)) {
-            //TO BE FIXED: Where is spacer defined???
             if (!isset($config['spacer'])) {
                 $config['spacer'] = '/';
             }
@@ -211,8 +219,8 @@ $modaltext .= '</a>';
 
             if ($config['show_division_link']) {
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                 $routeparameter['p'] = self::$project->slug;
                 $routeparameter['type'] = 0;
                 $routeparameter['r'] = self::$project->round_slug;
@@ -221,24 +229,18 @@ $modaltext .= '</a>';
                 $routeparameter['division'] = $hometeam->division_slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
-                $output .= JHtml::link($link, $hometeam->$nametype);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam->nametype'.'<pre>'.print_r($hometeam->$nametype,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nametype'.'<pre>'.print_r($nametype,true).'</pre>' ),'');
+                $output .= HTMLHelper::link($link, $hometeam->$nametype);
             } else {
                 $output .= $hometeam->$nametype;
             }
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
 
             if ($hometeam->division_id != $guestteam->division_id) {
                 $output .= $config['spacer'];
 
                 if ($config['show_division_link']) {
                     $routeparameter = array();
-                    $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                    $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                     $routeparameter['p'] = self::$project->slug;
                     $routeparameter['type'] = 0;
                     $routeparameter['r'] = self::$project->round_slug;
@@ -248,8 +250,7 @@ $modaltext .= '</a>';
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
 
-                    $output .= JHtml::link($link, $guestteam->$nametype);
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
+                    $output .= HTMLHelper::link($link, $guestteam->$nametype);
                 } else {
                     $output .= $guestteam->$nametype;
                 }
@@ -258,12 +259,7 @@ $modaltext .= '</a>';
             $output .= '&nbsp;';
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'hometeam -><pre>' . print_r($hometeam, true) . '</pre>';
-            $my_text .= 'guestteam -><pre>' . print_r($guestteam, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
+        
         return $output;
     }
 
@@ -277,19 +273,14 @@ $modaltext .= '</a>';
      * @return string html
      */
     public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0) {
-        $app = JFactory::getApplication();
-        $cfg_which_database = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+        $app = Factory::getApplication();
+        $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'current_round <pre>' . print_r($current_round, true) . '</pre>';
-        }
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'current_round<pre>'.print_r($current_round,true).'</pre>'),'Error');
-
-        $projectid = JFactory::getApplication()->input->getInt('p', 0);
-        //$thisproject = JTable::getInstance('Project','sportsmanagementTable');
+        $projectid = Factory::getApplication()->input->getInt('p', 0);
+        //$thisproject = Table::getInstance('Project','sportsmanagementTable');
         //$thisproject->load($projectid);
 
         $query->clear();
@@ -297,7 +288,7 @@ $modaltext .= '</a>';
         $query->select('*');
         $query->select('CONCAT_WS( \':\', id, alias ) AS project_slug');
         // from table
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_project');
+        $query->from('#__sportsmanagement_project');
         // where
         $query->where('id = ' . $projectid);
         $db->setQuery($query);
@@ -305,7 +296,7 @@ $modaltext .= '</a>';
 
         echo ($title != '') ? $title . ' - ' : $title;
         if ((int) $current_round > 0) {
-            //$thisround = JTable::getInstance('Round','sportsmanagementTable');
+            //$thisround = Table::getInstance('Round','sportsmanagementTable');
             //$thisround->load($current_round);
 
             $query->clear();
@@ -313,7 +304,7 @@ $modaltext .= '</a>';
             $query->select('*');
             $query->select('CONCAT_WS( \':\', id, alias ) AS round_slug');
             // from table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_round');
+            $query->from('#__sportsmanagement_round');
             // where
             $query->where('id = ' . (int) $current_round);
             $db->setQuery($query);
@@ -322,8 +313,8 @@ $modaltext .= '</a>';
             if ($config['type_section_heading'] == 1 && $thisround->name != '') {
                 if ($mode == 1) {
                     $routeparameter = array();
-                    $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                    $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                     $routeparameter['p'] = $thisproject->project_slug;
                     $routeparameter['type'] = 0;
                     $routeparameter['r'] = $thisround->round_slug;
@@ -333,22 +324,22 @@ $modaltext .= '</a>';
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
 
-                    echo JHtml::link($link, $thisround->name);
+                    echo HTMLHelper::link($link, $thisround->name);
                 } else {
                     echo $thisround->name;
                 }
             } elseif ($thisround->id > 0) {
-                echo ' - ' . $thisround->id . '. ' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_MATCHDAY') . '&nbsp;';
+                echo ' - ' . $thisround->id . '. ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_MATCHDAY') . '&nbsp;';
             }
 
             if ($config['show_rounds_dates'] == 1) {
                 echo " (";
                 if (!strstr($thisround->round_date_first, "0000-00-00")) {
-                    echo JHtml::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
+                    echo HTMLHelper::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
                 if (($thisround->round_date_last != $thisround->round_date_first) &&
                         (!strstr($thisround->round_date_last, "0000-00-00"))) {
-                    echo " - " . JHtml::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
+                    echo " - " . HTMLHelper::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
                 echo ")";
             }
@@ -366,7 +357,7 @@ $modaltext .= '</a>';
      * @return
      */
     public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC', $cfg_which_database);
@@ -384,7 +375,7 @@ $modaltext .= '</a>';
         $routeparameter['layout'] = sportsmanagementModelProject::$layout;
 
 //                $routeparameter['cfg_which_database'] = $cfg_which_database;
-//                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+//                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
 //        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
 //        $routeparameter['r'] = 0;
 //        $routeparameter['division'] = $division;
@@ -399,7 +390,7 @@ $modaltext .= '</a>';
             foreach ($rounds as $r) {
                 $routeparameter['r'] = $r->slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                $options[] = JHtml::_('select.option', $link, $r->text);
+                $options[] = HTMLHelper::_('select.option', $link, $r->text);
             }
         } else {
             $routeparameter['r'] = $roundid;
@@ -408,17 +399,11 @@ $modaltext .= '</a>';
             foreach ($rounds as $r) {
                 $routeparameter['r'] = $r->slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                $options[] = JHtml::_('select.option', $link, $r->text);
+                $options[] = HTMLHelper::_('select.option', $link, $r->text);
             }
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'rounds <pre>' . print_r($rounds, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
-
-        return JHtml::_('select.genericlist', $options, 'select-round', 'onchange="top.location.href=this.options[this.selectedIndex].value;"', 'value', 'text', $currenturl);
+        return HTMLHelper::_('select.genericlist', $options, 'select-round', 'onchange="top.location.href=this.options[this.selectedIndex].value;"', 'value', 'text', $currenturl);
     }
 
     /**
@@ -429,36 +414,48 @@ $modaltext .= '</a>';
      * @return
      */
     public static function showMatchPlayground(&$game, $config = array()) {
-
-        $cfg_which_database = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+        $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-
+if ( !isset(self::$teams[$game->projectteam1_id]) )
+{
+self::$teams[$game->projectteam1_id] = new stdClass();
+self::$teams[$game->projectteam1_id]->standard_playground = 0;
+}
+	    
         if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id)) {
             if (empty($game->playground_id)) {
                 $game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
             }
             if (empty($game->playground_id)) {
-                //$cinfo =& JTable::getInstance('Club','Table');
+                //$cinfo =& Table::getInstance('Club','Table');
                 //$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
 
                 $query->clear();
                 // select some fields
                 $query->select('*');
                 // from table
-                $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_club');
+                $query->from('#__sportsmanagement_club');
                 // where
                 $query->where('id = ' . self::$teams[$game->projectteam1_id]->club_id);
-                $db->setQuery($query);
+                try{
+		    $db->setQuery($query);
                 $cinfo = $db->loadObject();
 
                 $game->playground_id = $cinfo->standard_playground;
                 self::$teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
+		}
+catch (Exception $e)
+{
+    // keine fehlermeldung ausgeben
+	//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+		    
             }
 
             if (!$config['show_playground'] && $config['show_playground_alert']) {
-                if ($this->teams[$game->projectteam1_id]->standard_playground == $game->playground_id) {
+                if (self::$teams[$game->projectteam1_id]->standard_playground == $game->playground_id) {
                     echo '-';
                     return '';
                 }
@@ -466,30 +463,36 @@ $modaltext .= '</a>';
 
             $boldStart = '';
             $boldEnd = '';
-            $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
+            $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
             $toolTipText = '';
             $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
 
             if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id)) {
                 $boldStart = '<b style="color:red; ">';
                 $boldEnd = '</b>';
-                $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+                $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
                 $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
             }
 
-            //$pginfo =& JTable::getInstance('Playground','sportsmanagementTable');
+            //$pginfo =& Table::getInstance('Playground','sportsmanagementTable');
             //$pginfo->load($game->playground_id);
 
             $query->clear();
             // select some fields
             $query->select('*');
             // from table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_playground');
+            $query->from('#__sportsmanagement_playground');
             // where
             $query->where('id = ' . $game->playground_id);
+		try{
             $db->setQuery($query);
             $pginfo = $db->loadObject();
-
+}
+catch (Exception $e)
+{
+	// keine fehlermeldung ausgeben
+    //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
             if ($pginfo) {
                 $toolTipText .= $pginfo->name . '&lt;br /&gt;';
                 $toolTipText .= $pginfo->address . '&lt;br /&gt;';
@@ -502,8 +505,8 @@ $modaltext .= '</a>';
                 $pginfo->short_name = '';
             }
             $routeparameter = array();
-            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
             $routeparameter['p'] = $game->project_slug;
             $routeparameter['pgid'] = $game->playground_slug;
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
@@ -513,7 +516,7 @@ $modaltext .= '</a>';
             ?>
             <span class='hasTip'
                   title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 
-                <?php echo JHtml::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
+                <?php echo HTMLHelper::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
 
             <?php
         }
@@ -537,7 +540,7 @@ $modaltext .= '</a>';
         } else {
             $overtime = 0;
         }
-        $temptext = JText::_('COM_SPORTSMANAGEMENT_RESULTS_LIVE_WRONG');
+        $temptext = Text::_('COM_SPORTSMANAGEMENT_RESULTS_LIVE_WRONG');
         for ($temp_count = 1; $temp_count <= $project->game_parts + $overtime; $temp_count++) {
             $this_part_start = (($temp_count - 1) * ($project->halftime + $parts_time));
             $this_part_end = $this_part_start + $parts_time;
@@ -563,7 +566,7 @@ $modaltext .= '</a>';
      * @return string image html code
      */
     public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
         if ($res === false) {
@@ -573,37 +576,37 @@ $modaltext .= '</a>';
         if ($res == 0) {
             if ($usefontawesome) {
                 $icon = 'fa-handshake-o';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_DRAW');
                 $title = $alt;
                 $icon_color = 'draw';
 
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/draw.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_DRAW');
                 $title = $alt;
             }
         } else if ($res < 0) {
             if ($usefontawesome) {
                  $icon = 'fa-thumbs-down';
-                 $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                 $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
                 $title = $alt;
                 $icon_color = 'lost';
                  
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
                 $title = $alt;
             }
         } else {
             if ($usefontawesome) {
                  $icon = 'fa-thumbs-up';
-                 $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                 $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
                 $icon_color = 'won';
                  
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
             }
         }
@@ -621,7 +624,7 @@ $modaltext .= '</a>';
                     <i class="fa '. $icon . ' fa-stack-1x fa-inverse" title="'.implode("|",$attributes).'"></i>
                     </span>';
             }else{
-            return JHtml::image($img, $alt, $attributes);
+            return HTMLHelper::image($img, $alt, $attributes);
         }
     }
 
@@ -643,8 +646,8 @@ $modaltext .= '</a>';
         if (is_array($attributes)) {
             $attribs = array_merge($attributes, $attribs);
         }
-        $url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
-        return JHtml::link($url, $img);
+        $url = Route::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
+        return HTMLHelper::link($url, $img);
     }
 
     /**
@@ -656,32 +659,32 @@ $modaltext .= '</a>';
      * @return string image html code
      */
     public static function getLastRankImg($team, $previous, $ptid, $attributes = null) {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         if (isset($previous[$ptid]->rank)) {
-            $imgsrc = JURI::root() . 'media/com_sportsmanagement/jl_images/';
+            $imgsrc = Uri::root() . 'media/com_sportsmanagement/jl_images/';
             if (( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" )) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
+                    echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
                 } else {
                     $imgsrc .= "same.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
                     $title = $alt;
                 }
             } elseif ($team->rank < $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-lg fa-angle-double-up won" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_UP').'"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-up won" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_UP').'"></i>';
                 } else {
                     $imgsrc .= "up.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_UP');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_UP');
                     $title = $alt;
                 }
             } elseif ($team->rank > $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-lg fa-angle-double-down lost" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN').'"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-down lost" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_DOWN').'"></i>';
                 } else {
                     $imgsrc .= "down.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
                     $title = $alt;
                 }
             }
@@ -693,7 +696,7 @@ $modaltext .= '</a>';
                 } else {
                     $attributes = $def_attribs;
                 }
-                return JHtml::image($imgsrc, $alt, $attributes);
+                return HTMLHelper::image($imgsrc, $alt, $attributes);
             }
         }
     }
@@ -709,7 +712,7 @@ $modaltext .= '</a>';
      */
     public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC") {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 
         $output = "";
@@ -720,14 +723,14 @@ $modaltext .= '</a>';
             $params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
             $params["l"] = $jinput->request->get('l', 0, 'INT');
             $params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
-            $params["type"] = JFactory::getApplication()->input->getInt("type", 0);
+            $params["type"] = Factory::getApplication()->input->getInt("type", 0);
             //$params["order"] = $jinput->request->get('order', '', 'STR');
             //$params["dir"] = $jinput->request->get('dir', 'DESC', 'STR');
             if ($jinput->request->get('order', '', 'STR') == $paramName) {
                 $params["order"] = $paramName;
-                $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
-                $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
-                $img = JHtml::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
+                $params["dir"] = ( Factory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
+                $imgname = 'sort' . (Factory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
+                $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;
                 $params["dir"] = $default;
@@ -736,11 +739,11 @@ $modaltext .= '</a>';
             $params["p"] = $jinput->request->get('p');
 
 
-            $query = JURI::buildQuery($params);
-            echo JHtml::link(
-                    JRoute::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+            $query = Uri::buildQuery($params);
+            echo HTMLHelper::link(
+                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
-            echo JText::_($columnTitle);
+            echo Text::_($columnTitle);
         }
     }
 
@@ -755,11 +758,8 @@ $modaltext .= '</a>';
      */
     public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($jinput->request,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramconfig<br><pre>'.print_r($paramconfig,true).'</pre>'),'');
 
         $output = "";
         $img = '';
@@ -800,19 +800,19 @@ $modaltext .= '</a>';
 
             if ($jinput->request->get('order', '', 'STR') == $paramName) {
                 $params["order"] = $paramName;
-                $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
-                $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
-                $img = JHtml::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
+                $params["dir"] = ( Factory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
+                $imgname = 'sort' . (Factory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
+                $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;
                 $params["dir"] = $default;
             }
 
-            $query = JURI::buildQuery($params);
-            echo JHtml::link(
-                    JRoute::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+            $query = Uri::buildQuery($params);
+            echo HTMLHelper::link(
+                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
-            echo JText::_($columnTitle);
+            echo Text::_($columnTitle);
         }
     }
 
@@ -845,17 +845,17 @@ $modaltext .= '</a>';
         echo '<tr>';
         echo '<td style="width: 10%; text-align: left;" nowrap="nowrap">';
         if ($limitstart > 0) {
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => 0));
-            echo JHtml::link($url . $query, '&lt;&lt;&lt;');
+            echo HTMLHelper::link($url . $query, '&lt;&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $latestlimitstart));
-            echo JHtml::link($url . $query, '&lt;&lt;');
+            echo HTMLHelper::link($url . $query, '&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp;';
         }
         echo '</td>';
@@ -869,17 +869,17 @@ $modaltext .= '</a>';
         echo '<td style="width: 10%; text-align: right;" nowrap="nowrap">';
         if ($nextlimitstart > 0) {
             echo '&nbsp;&nbsp;&nbsp;';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $nextlimitstart));
-            echo JHtml::link($url . $query, '&gt;&gt;');
+            echo HTMLHelper::link($url . $query, '&gt;&gt;');
             echo '&nbsp;&nbsp;&nbsp';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $lastlimitstart));
-            echo JHtml::link($url . $query, '&gt;&gt;&gt;');
+            echo HTMLHelper::link($url . $query, '&gt;&gt;&gt;');
         }
         echo '</td>';
         echo '</tr>';

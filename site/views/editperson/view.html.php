@@ -4,15 +4,13 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editperson
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEditPerson
@@ -23,34 +21,40 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewEditPerson extends JViewLegacy {
+class sportsmanagementViewEditPerson extends sportsmanagementView {
 
+    
     /**
-     * sportsmanagementViewEditPerson::display()
+     * sportsmanagementViewEditPerson::init()
      * 
-     * @param mixed $tpl
-     * @return void
+     * @return
      */
-    function display($tpl = null) {
+    function init() {
 
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $user = JFactory::getUser();
-
-        $params = $app->getParams();
-        $dispatcher = JDispatcher::getInstance();
-
-        // Get some data from the models
-        $state = $this->get('State');
-        $this->item = $this->get('Item');
+       
+$this->item = $this->model->getData();
         $this->form = $this->get('Form');
-
+        if ( $this->item->id )
+        {
+            // alles ok
+            if ( $this->item->birthday == '0000-00-00' )
+            {
+                $this->item->birthday = '';
+                $this->form->setValue('birthday','');
+            }
+            if ( $this->item->deathday == '0000-00-00' )
+            {
+                $this->item->deathday = '';
+                $this->form->setValue('deathday','');
+            }
+            
+        }
+        else
+        {
+            $this->form->setValue('birthday', '');
+            $this->form->setValue('deathday', '');
+        }
+        
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
@@ -62,20 +66,11 @@ class sportsmanagementViewEditPerson extends JViewLegacy {
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
         $this->extended = $extended;
 
-        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $model::$cfg_which_database);
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $this->cfg_which_database);
         if ($this->checkextrafields) {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $model::$cfg_which_database);
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $this->cfg_which_database);
         }
 
-
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode('<br />', $errors));
-            return false;
-        }
-
-
-        parent::display($tpl);
     }
 
 }

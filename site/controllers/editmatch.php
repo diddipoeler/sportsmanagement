@@ -4,16 +4,16 @@
  * @file      editmatch.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editmatch
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-// Include dependancy of the main controllerform class
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementControllerEditMatch
@@ -24,7 +24,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerEditMatch extends JControllerForm {
+class sportsmanagementControllerEditMatch extends FormController {
 
     /**
      * sportsmanagementControllerEditMatch::__construct()
@@ -34,11 +34,39 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      */
     function __construct($config = array()) {
         parent::__construct($config);
-
-        // Map the apply task to the save method.
-        $this->registerTask('apply', 'save');
     }
 
+/**
+ * sportsmanagementControllerEditMatch::savestats()
+ * 
+ * @return void
+ */
+function savestats()
+{
+$app = Factory::getApplication();
+$post = $app->input->post->getArray(array());	
+$model = $this->getModel('editmatch');
+$return = $model->savestats($post);  
+
+    $link = $_SERVER['HTTP_REFERER'];
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
+
+        $this->setRedirect($link, $msg);    
+}
+    
+     /**
+      * sportsmanagementControllerEditMatch::cancel()
+      * 
+      * @return
+      */
+     public function cancel()
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+ 
+                return true;
+        }
+    
     /**
      * sportsmanagementControllerEditMatch::getModel()
      * 
@@ -57,33 +85,26 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      * @return void
      */
     function saveReferees() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
         $model = $this->getModel('editmatch');
         $return = $model->updateReferees($post);
-        $routeparameter = array();
-        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-        $routeparameter['s'] = $post['s'];
-        $routeparameter['p'] = $post['p'];
-        $routeparameter['r'] = $post['r'];
-        $routeparameter['division'] = $post['division'];
-        $routeparameter['mode'] = 0;
-        $routeparameter['order'] = 0;
-        $routeparameter['layout'] = 'form';
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+
+         $link = $_SERVER['HTTP_REFERER'];
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES');
 
         $this->setRedirect($link, $msg);
     }
 
+    
     /**
-     * sportsmanagementControllerEditMatch::save()
+     * sportsmanagementControllerEditMatch::saveroster()
      * 
      * @return void
      */
-    function save() {
-        $app = JFactory::getApplication();
+    function saveroster() {
+        $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
         $model = $this->getModel('editmatch');
@@ -91,7 +112,7 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         $return = $model->updateStaff($post);
 
         $link = $_SERVER['HTTP_REFERER'];
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         $this->setRedirect($link, $msg);
     }
@@ -102,16 +123,21 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      * @return void
      */
     function saveshort() {
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-        $user = JFactory::getUser();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
         
-        /* Ein Datenbankobjekt beziehen */
-        $db = JFactory::getDbo();
+        /** Ein Datenbankobjekt beziehen */
+        $db = Factory::getDbo();
         
-        // Set the values
+        /** Set the values */
+        $data['team1_bonus'] = NULL;
+        $data['team2_bonus'] = NULL;
+        $data['team1_legs'] = NULL;
+        $data['team2_legs'] = NULL;
+        
         $data['modified'] = $date->toSql();
         $data['modified_by'] = $user->get('id');
         $data['id'] = $post['matchid'];
@@ -124,8 +150,18 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         $data['alt_decision'] = $post['alt_decision'];
         $data['team_won'] = $post['team_won'];
         $data['preview'] = $post['preview'];
+        if ( $post['team1_bonus'] != '' ) {
         $data['team1_bonus'] = $post['team1_bonus'];
+        }
+            if ( $post['team2_bonus'] != '' ) {
         $data['team2_bonus'] = $post['team2_bonus'];
+            }
+                if ( $post['team1_legs'] != '' ) {
+        $data['team1_legs'] = $post['team1_legs'];
+                }
+                    if ( $post['team2_legs'] != '' ) {
+        $data['team2_legs'] = $post['team2_legs'];
+                    }
         $data['match_result_detail'] = $post['match_result_detail'];
 
         $data['show_report'] = $post['show_report'];
@@ -135,8 +171,8 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         $data['new_match_id'] = $post['new_match_id'];
 
         if (isset($post['extended']) && is_array($post['extended'])) {
-            // Convert the extended field to a string.
-            $parameter = new JRegistry;
+            /** Convert the extended field to a string. */
+            $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string) $parameter;
         }
@@ -156,21 +192,9 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
 /**
  * Update their details in the table using id as the primary key.
  */
-        $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
-
-        $routeparameter = array();
-        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-        $routeparameter['s'] = $post['s'];
-        $routeparameter['p'] = $post['p'];
-        $routeparameter['r'] = $post['r'];
-        $routeparameter['division'] = $post['division'];
-        $routeparameter['mode'] = $post['mode'];
-        $routeparameter['order'] = $post['order'];
-        $routeparameter['layout'] = $post['oldlayout'];
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
-
-        //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);
+        $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+        $link = $_SERVER['HTTP_REFERER'];
+        $msg = sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $post['matchid']);
         $this->setRedirect($link, $msg);
     }
 

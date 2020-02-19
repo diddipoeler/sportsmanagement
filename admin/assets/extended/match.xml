@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<fieldset name="COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES">
-		
+	
+	<field name="youtube" type="text"
+      label="COM_SPORTSMANAGEMENT_EXT_MATCH_YOUTUBE" description="COM_SPORTSMANAGEMENT_EXT_MATCH_YOUTUBE_DESC">
+    </field>
+	
     <field name="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST" type="textarea"
 			rows="4" cols="50" label="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST"
 			description="COM_SPORTSMANAGEMENT_EXT_MATCH_TVBROADCAST_DESC">
@@ -26,18 +30,20 @@
 			label="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DESC">
 			<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
 			<option value="normal">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL</option>
-			<option value="dry">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY</option>
+			<option value="fielddry">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY</option>
 			<option value="wet">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET</option>
-			<option value="wet">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW</option>
+			<option value="snow">COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW</option>
 		</field>
 		
 <field name="formation1" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME_DESC"
 query="SELECT name AS value, name AS formation1 FROM #__sportsmanagement_rosterposition where short_name = 'HOME_POS' ORDER BY name" >
-</field>
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+		</field>
 
 <field name="formation2" type="sql"  label="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY" description="COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY_DESC"
 query="SELECT name AS value, name AS formation2 FROM #__sportsmanagement_rosterposition where short_name = 'AWAY_POS'  ORDER BY name" >
-</field>
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+		</field>
 
 	</fieldset>
 </config>

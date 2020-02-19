@@ -4,13 +4,17 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage sportstypes
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewSportsTypes
@@ -32,18 +36,12 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$starttime = microtime();
-		
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
         
 		$myoptions = array();
-		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
-		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
-		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
+		$this->table = Table::getInstance('sportstype', 'sportsmanagementTable');
         
         // sportart filter
 		$lists['sportart'] = $myoptions;
@@ -61,11 +59,11 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	{
 		        
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
-		JToolbarHelper::addNew('sportstype.add');
-		JToolbarHelper::editList('sportstype.edit');
-		JToolbarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
+		ToolbarHelper::addNew('sportstype.add');
+		ToolbarHelper::editList('sportstype.edit');
+		ToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
         				
         parent::addToolbar();
 	}

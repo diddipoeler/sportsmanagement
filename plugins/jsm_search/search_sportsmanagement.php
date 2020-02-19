@@ -1,10 +1,10 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      search_sportsmanagement.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage plugins
  */
@@ -17,7 +17,9 @@
  * 'Joomla_base\components\com_search\models'.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 if (! defined('DS'))
 {
@@ -31,13 +33,13 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 // Import library dependencies
 jimport( 'joomla.plugin.plugin' );
-require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php' );
+require_once(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'countries.php' );
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
-$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+$classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
@@ -55,7 +57,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || Factory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
 {
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
@@ -131,12 +133,12 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        //$db 	= JFactory::getDBO();
+        $app = Factory::getApplication();
+        //$db 	= Factory::getDBO();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
-		$user	= JFactory::getUser();
-
+		$user	= Factory::getUser();
+$country = '';
 		// load plugin params info
 		$plugin			= JPluginHelper::getPlugin('search','search_sportsmanagement');
 		$search_clubs 		= $this->params->def('search_clubs', 		1 );
@@ -171,6 +173,11 @@ $escape = 'getEscaped';
 			case 'any':
 			default:
 				$words = explode( ' ', $text );
+            
+//echo '<pre>'.print_r($words,true).'</pre>';            
+            
+            
+            
 				$wheres = array();
 				$wheresteam = array();
 				$wheresperson = array();
@@ -181,6 +188,22 @@ $escape = 'getEscaped';
 				{
 					foreach ($words as $word)
 					{
+                      
+$suchpattern="/\[(.*)\]/";
+preg_match ($suchpattern, $word, $match); //Search-String
+//echo 'wort <pre>'.print_r($word,true).'</pre>';                      
+//echo 'treffer <pre>'.print_r($match,true).'</pre>';                      
+
+                      
+                      
+                      if ( $match[1] )
+                      {
+                      //$wheres[] 	= 'c.country LIKE '.$match[1]; 
+                        $country = $match[1];
+                        //$wheres[] 	= 'c.country LIKE '.$db->Quote(''.$match[1].'');
+                      }
+                      else
+                      {
 						$word		= $db->Quote( '%'.$db->$escape( $word, true ).'%', false );
 						$wheres2 	= array();
 						$wheres2[] 	= 'c.name LIKE '.$word;
@@ -189,7 +212,15 @@ $escape = 'getEscaped';
                         $wheres2[] 	= 'c.unique_id LIKE '.$word;
 
 						$wheres[] 	= implode( ' OR ', $wheres2 );
+                      }
+                      
 					}
+                  
+                  if ( $match[1] )
+                      {
+                    array_pop($words);
+                  }
+                  
 				}
 
 
@@ -279,7 +310,11 @@ $escape = 'getEscaped';
             $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
 
 			$query->where(" ( ".$where." ) ");
-            $query->group('c.name');
+          if ( $country )
+          {
+          $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
+          }
+            $query->group('c.name,c.country');
             $query->order('c.name');
             
             $db->setQuery( $query );
@@ -293,7 +328,7 @@ $escape = 'getEscaped';
 		      foreach ($list as $row)
                 {
                 //$row->title = JSMCountries::getCountryFlag($row->country).' '.$row->title;    
-                $row->text = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture.'" alt="..." class="img-rounded" width="50">'.JSMCountries::getCountryFlag($row->country).' '.$row->text;
+                $row->text = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DIRECTORY_SEPARATOR.$row->picture.'" alt="..." class="img-rounded" width="50">'.JSMCountries::getCountryFlag($row->country).' '.$row->text;
                 }
 			     $rows[] = $list;
 		 }
@@ -318,7 +353,11 @@ $escape = 'getEscaped';
             $query->join('INNER', '#__sportsmanagement_club AS c on c.id = t.club_id');
 
 			$query->where(" ( ".$whereteam." ) ");
-            $query->group('t.name');
+          if ( $country )
+          {
+          $query->where('c.country LIKE '.$db->Quote(''.$country.'') );  
+          }
+            $query->group('t.name,c.country');
             $query->order('t.name');
             
             $db->setQuery( $query );
@@ -340,7 +379,7 @@ $escape = 'getEscaped';
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ,\'&p=\', CONCAT_WS(\':\',p.id,p.alias) , \'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
 			
             $query->from('#__sportsmanagement_person AS pe');
@@ -355,9 +394,7 @@ $escape = 'getEscaped';
             $query->where('tp.persontype = 1');
             $query->group('pe.lastname, pe.firstname, pe.nickname');
             $query->order('pe.lastname,pe.firstname,pe.nickname');
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-            
+
             $db->setQuery( $query );
 			$list = $db->loadObjectList();
 			$rows[] = $list;
@@ -377,7 +414,7 @@ $escape = 'getEscaped';
             $query->select('pe.picture AS picture');
             $query->select('CONCAT( \'Birthday:\',pe.birthday , \' Notes:\', pe.notes ) AS text');
             $query->select('pt.project_id AS project');
-            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ,\'&p=\', CONCAT_WS(\':\',p.id,p.alias) , \'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
+            $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
 			
             $query->from('#__sportsmanagement_person AS pe');
@@ -428,7 +465,7 @@ $escape = 'getEscaped';
 		}
 
 /**
- * 		hier werden die sportstätten gesucht
+ * 		hier werden die sportstÃ¤tten gesucht
  */
         if ( $search_playgrounds )
 		{
@@ -493,7 +530,7 @@ $escape = 'getEscaped';
 			{
 			foreach($row as $output )
 			{
-            $output->href = JRoute::_($output->href);
+            $output->href = Route::_($output->href);
 			if ( $output->country)
 			{
 			$flag = JSMCountries::getCountryFlag($output->country);

@@ -4,13 +4,14 @@
  * @file      clubname.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelclubname
@@ -32,29 +33,23 @@ class sportsmanagementModelclubname extends JSMModelAdmin
     public function import()
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Create a new query object.		 
 	$db = sportsmanagementHelper::getDBConnection(); 
 $query = $db->getQuery(true);
 
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
         // JInput object
         $jinput = $app->input;    
 
-$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
-        
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml ,true).'</pre>'),'');    
-     
+$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
+    
      foreach( $xml->children() as $quote )  
              { 
               
              $country = (string)$quote->clubname->attributes()->country; 
              $name = (string)$quote->clubname->attributes()->name; 
              $clubname = (string)$quote->clubname;
-             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country <br><pre>'.print_r($country ,true).'</pre>'),'Notice');             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name <br><pre>'.print_r($name ,true).'</pre>'),'Notice');             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubname<br><pre>'.print_r($clubname,true).'</pre>'),'Notice');                          
   
 $query->clear();  
 $query->select('id');  

@@ -1,12 +1,22 @@
 <?php
-// No direct access to this file
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagements.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
+ 
+
 defined('_JEXEC') or die('Restricted access');
-// import the Joomla modellist library
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
+
 /**
  * SportsManagementList Model
  */
-class sportsmanagementModelsportsmanagements extends JModelList
+class sportsmanagementModelsportsmanagements extends ListModel
 {
 	/**
 	 * Method to build an SQL query to load the list data.

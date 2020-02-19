@@ -4,16 +4,16 @@
  * @file      eventpergame.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
-
+JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
 /**
  * SMStatisticEventPergame
@@ -59,17 +59,13 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$sids = SMStatistic::getSids($this->_ids);
 		$num = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
 		$den = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
-}
 
 		return self::formatValue($num, $den, SMStatistic::getPrecision());
 	}
@@ -118,11 +114,11 @@ class SMStatisticEventPergame extends SMStatistic
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $query_core = Factory::getDbo()->getQuery(true);
         
         $query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
         $query_num	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'event');
@@ -203,7 +199,7 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $sids = SMStatistic::getQuotedSids($this->_ids);
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -278,14 +274,13 @@ class SMStatisticEventPergame extends SMStatistic
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
 		$db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
-        $app = JFactory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
         
         $select = 'SUM(ms.value) AS value, tp.person_id';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids,$select,FALSE);
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$num = $db->loadResult();
 		
@@ -294,7 +289,6 @@ class SMStatisticEventPergame extends SMStatistic
         
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$den = $db->loadResult();
 	

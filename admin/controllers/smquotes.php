@@ -4,17 +4,14 @@
  * @file      smquotes.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllersmquotes
  * 
@@ -24,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllersmquotes extends JControllerAdmin
+class sportsmanagementControllersmquotes extends JSMControllerAdmin
 {
   
 /**
@@ -34,7 +31,7 @@ class sportsmanagementControllersmquotes extends JControllerAdmin
  */
 function edittxt()
 {
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=smquotestxt', false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view=smquotestxt', false));    
     
 }  
 	/**

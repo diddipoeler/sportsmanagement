@@ -4,20 +4,24 @@
  * @file      default_fieldsets_3.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fieldsets
  */
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 switch ($this->fieldset) {
     /**
      * für die spielfeldpositionen
      */
     case 'playground_jquery':
-        $backgroundimage = JURI::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+        $backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
         list($width, $height, $type, $attr) = getimagesize($backgroundimage);
-        $picture = JURI::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
+        $picture = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
         ?>
 
         <style type="text/css">
@@ -37,9 +41,7 @@ switch ($this->fieldset) {
         $schemahome = $this->bildpositionen[$this->item->name];
         $testlauf = 1;
         foreach ($schemahome as $key => $value) {
-//<div id="draggable">
             ?>  
-
             <div id="draggable_<?PHP echo $testlauf; ?>" style="position:absolute; width:103px; left:<?PHP echo $value['heim']['links']; ?>px; top:<?PHP echo $value['heim']['oben']; ?>px; text-align:center;">
                 <img class="bild_s" style="width:60px;" id="img_<?PHP echo $testlauf; ?>" src="<?PHP echo $picture; ?>" alt="" /><br />
             </div>
@@ -60,13 +62,13 @@ switch ($this->fieldset) {
             <table class="table">
                 <tr>
                     <td class='key' nowrap='nowrap'>
-        <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+        <?php echo Text::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                     </td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
                 </tr>
         <?php
         if (!empty($this->trainingData)) {
@@ -87,7 +89,7 @@ switch ($this->fieldset) {
                         ?>
                         <tr>
                             <td class='key' nowrap='nowrap'>
-                                <?php echo JText::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+                                <?php echo Text::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                             </td>
                             <td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
                             <td nowrap='nowrap' width='5%'>
@@ -120,7 +122,7 @@ switch ($this->fieldset) {
         <fieldset class='adminform'>
 
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
+            echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
             ?>
         </fieldset>
         <?php
@@ -194,7 +196,7 @@ switch ($this->fieldset) {
                 $fields = $this->extended->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -214,7 +216,7 @@ switch ($this->fieldset) {
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
     /**
@@ -230,7 +232,7 @@ switch ($this->fieldset) {
                 $fields = $this->extendeduser->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -242,7 +244,7 @@ switch ($this->fieldset) {
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
 
@@ -256,7 +258,7 @@ case 'teamperson':
                     $fields = $this->extended->getFieldset($fieldset->name);
 
                     if (!count($fields)) {
-                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                        echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                     }
 
                     foreach ($fields as $field) {
@@ -281,7 +283,7 @@ case 'teamperson':
                     <?php
                 }
             } else {
-                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
             }
 
             break;
@@ -299,7 +301,7 @@ case 'teamperson':
                     $fields = $this->extended->getFieldset($fieldset->name);
 
                     if (!count($fields)) {
-                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                        echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                     }
 
                     foreach ($fields as $field) {
@@ -324,7 +326,7 @@ case 'teamperson':
                     <?php
                 }
             } else {
-                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
             }
 
             break;
@@ -339,9 +341,9 @@ case 'teamperson':
                             $fields = $this->formparams->getFieldset($fieldset->name);
 
                             if (!count($fields)) {
-                                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                             }
-                            echo '<b><p class="tab-description">' . JText::_($this->description) . '</p></b>';
+                            echo '<b><p class="tab-description">' . Text::_($this->description) . '</p></b>';
                             foreach ($fields as $field) {
                                 echo $field->label;
                                 echo $field->input;
@@ -351,19 +353,31 @@ case 'teamperson':
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
-
+        case 'request':
+echo $this->form->renderFieldset('request');	        
+        break;
+case 'injury':
+echo $this->form->renderFieldset('injury');
+break;
+case 'suspension':
+echo $this->form->renderFieldset('suspension');
+break;
+case 'away':
+echo $this->form->renderFieldset('away');
+break;        
+case 'competition':
+echo $this->form->renderFieldset('competition');
+break;         
 // das ist der standard
     default:
-//echo 'fieldset -><pre> '.print_r($this->fieldset,true).'</pre>';
         ?>
 
         <table class="table">
         <?php
         foreach ($this->form->getFieldset($this->fieldset) as $field):
-            //echo 'name -><pre> '.print_r($field,true).'</pre>';
             ?>
                 <tr>
                     <td class="key"><?php echo $field->label; ?></td>
@@ -371,7 +385,7 @@ case 'teamperson':
                     <td>
                 <?PHP
                 //echo 'field_name -> '.$field->name;
-                $suchmuster = array("jform[", "]", "request[");
+                $suchmuster = array("params[", "]", "request[");
                 $ersetzen = array('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
 
@@ -381,11 +395,11 @@ case 'teamperson':
                     default:
                         ?>
                                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $var_onlinehelp; ?>"
+                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $this->form->getName() . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
                                    class="modal">
                     <?php
-                    echo JHtml::_('image', 'media/com_sportsmanagement/jl_images/help.png', JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-                            JText::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
+                    echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+                            Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
                     ?>
                                 </a>
 
@@ -401,63 +415,8 @@ case 'teamperson':
             <?PHP
             if ($this->fieldset === 'request') {
                 ?>
+<!-- vielleicht für die zukunft-->                
                 <script type="text/javascript">
-                // var start;
-                    /*calculate center points*/
-
-                //var start= new google.maps.LatLng(<?php echo $this->item->latitude ?>,<?php echo $this->item->longitude ?>);
-                //var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
-
-                //jQuery(function(){ // document.ready
-
-                //jQuery("#map").gmap3({
-                //  map:{
-                //    options: {
-                //      center: start,
-                //      zoom: 9,
-                //      maxZoom: 16 ,
-                //      mapTypeId: google.maps.MapTypeId.SATELLITE,
-                //      mapTypeId: google.maps.MapTypeId.HYBRID,
-                //      navigationControl: true,
-                //      mapTypeControlOptions: {
-                //       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-                //     },
-                //     //scrollwheel: true,
-                //      streetViewControl: true
-                //    }
-                //  }
-                //  ,
-                //  marker:{
-                //    latLng: start,
-                //    //position: start,
-                //    options: {
-                //     icon: new google.maps.MarkerImage(
-                //       "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
-                //       new google.maps.Size(32, 37, "px", "px")
-                //     )
-                //    }
-                    //}
-                //  
-                //  }
-                //  ,
-                //"autofit" )
-                //                
-                //});
-
-
-
-                //setTimeout(function(){
-                //  jQuery('#map')
-                //    .width("100%")
-                //    .height("350px") 
-                //    .gmap3({trigger:"resize"})
-                //    ;
-                //}, 4000);
-
-
-
-
-
                 </script>            
 
             </div>
@@ -468,19 +427,8 @@ case 'teamperson':
         </tr>
         </table>
 
-
-        <script>
-        //      jQuery(function(){
-        //        var center = new google.maps.LatLng(51.165691,10.451526);
-        //        jQuery("#geocomplete").geocomplete({
-        //          map: ".map_canvas",
-        //          types: ['establishment'],
-        //          country: 'de'
-        //        });
-        //        var map =  jQuery("#geocomplete").geocomplete("map")
-        //        map.setCenter(center);
-        //        map.setZoom(6);
-        //      });
+<!-- vielleicht für die zukunft-->
+        <script type="text/javascript">
         </script>
 
 

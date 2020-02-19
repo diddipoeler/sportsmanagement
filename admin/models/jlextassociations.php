@@ -4,13 +4,14 @@
  * @file      jlextassociations.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModeljlextassociations
@@ -39,6 +40,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
                         'objassoc.short_name',
                         'objassoc.country',
                         'objassoc.id',
+			'objassoc.website',
                         'objassoc.ordering',
                         'objassoc.published',
                         'objassoc.modified',
@@ -62,10 +64,10 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -139,12 +141,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+		
         return $this->jsmquery;
 	}
 	
@@ -160,11 +157,11 @@ class sportsmanagementModeljlextassociations extends JSMModelList
     {
         $search_nation = '';
         
-        if ( $this->jsmapp->isAdmin() )
+        if ( $this->jsmapp->isClient('administrator') )
         {
         $search_nation	= $this->getState('filter.search_nation');
         }
-        // Create a new query object.
+        /** Create a new query object */
         $this->jsmquery->clear();
         $this->jsmquery->select('id,name,id as value,name as text,country');
         $this->jsmquery->from('#__sportsmanagement_associations');
@@ -185,14 +182,14 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 
         foreach ($result as $association)
         {
-            $association->name = '( '.$association->country.' ) '.   JText::_($association->name);
+            $association->name = '( '.$association->country.' ) '.   Text::_($association->name);
             $association->text = $association->name;
         }
         return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
     }

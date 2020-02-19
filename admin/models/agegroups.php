@@ -4,13 +4,14 @@
  * @file      agegroups.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelagegroups
@@ -65,10 +66,10 @@ class sportsmanagementModelagegroups extends JSMModelList
 	 */
 	protected function populateState($ordering = 'obj.name', $direction = 'asc')
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.TVarDumper::dump($this->context,10,TRUE).''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.TVarDumper::dump($this->context,10,TRUE).''),'');
         }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -129,14 +130,6 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
 		return $this->jsmquery;
         
 	}
@@ -171,16 +164,11 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->jsmdb->setQuery($this->jsmquery);
         if ( !$result = $this->jsmdb->loadObjectList() )
         {
-            //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             return array();
         }
 
         return $result;
     }
-
-
-
-	
 
 }
 ?>

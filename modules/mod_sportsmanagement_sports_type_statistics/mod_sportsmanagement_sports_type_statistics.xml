@@ -25,10 +25,6 @@
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_sports_type_statistics.sys.ini</language>
         <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_sports_type_statistics.ini</language>
         <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_sports_type_statistics.sys.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_sports_type_statistics.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_sports_type_statistics.sys.ini</language>
-        <language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_sports_type_statistics.ini</language>
-        <language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_sports_type_statistics.sys.ini</language>
     </languages>
 
     <config>
@@ -38,16 +34,19 @@
             <fieldset name="basic"
                       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Sports_type_Statistics" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-					  
+                <field type="extensionversion" version="1.1.0"/>
+                <field type="extensionauthor"/>
+                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS"/>
+                <field type="extensionlink" linktype="translate"
+                       link="https://www.transifex.com/jsm/sportsmanagement/"/>
+                <field type="extensionlink" linktype="onlinedoc"
+                       link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Sports_type_Statistics"/>
+                <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/"/>
+                <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/"/>
+                <field type="extensionlink" linktype="report"
+                       link="https://github.com/diddipoeler/sportsmanagement/issues"/>
+                <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/"/>
+
                 <field name="cfg_which_database"
                        type="extensionradiobutton"
                        default="0"
@@ -86,7 +85,7 @@
 
                 <field name="text_project"
                        type="text"
-                       default="Projekte"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_PROJECTS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_DESC_TEXT">
                 </field>
@@ -103,7 +102,7 @@
 
                 <field name="text_leagues"
                        type="text"
-                       default="Ligen"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_LEAGUES_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_DESC_TEXT">
                 </field>
@@ -118,7 +117,7 @@
                 </field>
 
                 <field name="text_seasons"
-                       type="text" default="Saisons"
+                       type="text" default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_SEASONS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC_TEXT">
                 </field>
@@ -133,7 +132,9 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="text_playgrounds" type="text" default="Spielorte"
+                <field name="text_playgrounds"
+                       type="text"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_PLAYGROUNDS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC_TEXT">
                 </field>
@@ -150,7 +151,7 @@
 
                 <field name="text_clubs"
                        type="text"
-                       default="Vereine"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_CLUBS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC_TEXT">
                 </field>
@@ -163,7 +164,9 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="text_teams" type="text" default="Mannschaften"
+                <field name="text_teams"
+                       type="text"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_TEAMS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC_TEXT">
                 </field>
@@ -178,7 +181,7 @@
 
                 <field name="text_players"
                        type="text"
-                       default="Spieler"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_PLAYERS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC_TEXT">
                 </field>
@@ -211,7 +214,7 @@
 
                 <field name="text_rounds"
                        type="text"
-                       default="Spieltage"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_ROUNDS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_DESC_TEXT">
                 </field>
@@ -228,7 +231,7 @@
 
                 <field name="text_matches"
                        type="text"
-                       default="Spiele"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_DESC_TEXT">
                 </field>
@@ -245,7 +248,7 @@
 
                 <field name="text_player_events"
                        type="text"
-                       default="Ereignisse"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_PLAYER_EVENTS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_DESC_TEXT">
                 </field>
@@ -262,7 +265,7 @@
 
                 <field name="text_player_stats"
                        type="text"
-                       default="Statistiken"
+                       default="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_DEFAULT_PLAYER_STATS_TEXT"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_TEXT"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_DESC_TEXT">
                 </field>

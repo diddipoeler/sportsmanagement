@@ -4,18 +4,24 @@
  * @file      model.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage libraries
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla library
-jimport('joomla.application.component.modeladmin');
-// import Joomla library
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Input\Input;
+use Joomla\CMS\Log\Log;
 
 /**
  * JSMModelAdmin
@@ -26,7 +32,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class JSMModelAdmin extends JModelAdmin
+class JSMModelAdmin extends AdminModel
 {
     
 
@@ -48,15 +54,13 @@ public function __construct($config = array())
         $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
-        // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
-        // JInput object
+        $this->jsmapp = Factory::getApplication();
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview = $this->jsmjinput->getCmd('view');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
-        $this->jsmdate = JFactory::getDate();
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
+        $this->jsmdate = Factory::getDate();
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
 
@@ -79,15 +83,13 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 /**
  * abfrage nach backend und frontend  
  */ 
-if ( $this->jsmapp->isAdmin() )
+if ( $this->jsmapp->isClient('administrator') )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+
 }  
-if( $this->jsmapp->isSite() )
+if( $this->jsmapp->isClient('site') )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+
 }    
         }    
 
@@ -103,15 +105,11 @@ if( $this->jsmapp->isSite() )
        $post = $this->jsmjinput->post->getArray();
        $address_parts = array();
        $person_double = array();
-       //$view = $this->jsmjinput->getCmd('view');
-       //$view = $this->jsmjinput->get('view', '', 'CMD');
-       
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
+       $parentsave = true;
 
-$input_options = JFilterInput::getInstance(
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' task '.$this->jsmjinput->get('task')), '');
+
+$input_options = InputFilter::getInstance(
         array(
             'img','p','a','u','i','b','strong','span','div','ul','li','ol','h1','h2','h3','h4','h5',
             'table','tr','td','th','tbody','theader','tfooter','br'
@@ -122,66 +120,37 @@ $input_options = JFilterInput::getInstance(
         )
     );
 
-    $postData = new JInput($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
+    $postData = new Input($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
 		
 if (array_key_exists('notes', $data)) 
 {    
 $html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 $data['notes'] = $html;
-//$html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 }
-		
-		
-		
-		
-if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
-{
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-}
-
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');    
-}
-
-    
-///**
-// * differenzierung zwischen den views
-// */       
-//       switch ( $this->jsmview )
-//       {
-//       case 'league': 
-//       $data['sports_type_id'] = $data['request']['sports_type_id'];
-//       $data['agegroup_id'] = $data['request']['agegroup_id'];
-//       break; 
-//       default:
-//       break; 
-//       }
-       
-       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+/**
+ * 			 Convert the extended field to a string.
+ */
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
         
         if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
 		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+/**
+ * 			 Convert the extended field to a string.
+ */
+			$parameter = new Registry;
 			$parameter->loadArray($post['extendeduser']);
 			$data['extendeduser'] = (string)$parameter;
 		}
        
-        // Set the values
+/**
+ *         Set the values
+ */
 	   $data['modified'] = $this->jsmdate->toSql();
 	   $data['modified_by'] = $this->jsmuser->get('id');
        $data['checked_out'] = 0;
@@ -198,13 +167,12 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        case 'division': 
        if ( !$data['id'] )
        {
-       //$data['project_id'] = $post['pid'];
        $data['project_id'] = $this->project_id;       
        }
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['rankingparams'] = (string)$parameter;
 		}
@@ -240,23 +208,28 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  * projektteam 
  */        
        case 'projectteam':
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       $data['trikot_home'] = $post['copy_jform']['trikot_home'];
+       $data['trikot_away'] = $post['copy_jform']['trikot_away'];
+       }
        if ( $post['delete'] )
         {
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->DeleteTrainigData($post['delete'][0]);
         }
         
         if ( $post['add_trainingData'] )
         {
-            $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
+            $row = Table::getInstance( 'seasonteam', 'sportsmanagementTable' );
             $row->load( (int)$post['jform']['team_id'] );
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->addNewTrainigData($row->team_id);
         }
         
         if ( $post['tdids'] )
         {
-        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
         $mdlTeam->UpdateTrainigData($post);
         }
         
@@ -268,32 +241,81 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         $object = new stdClass();
         // Must be a valid primary key value.
         $object->id = (int)$post['jform']['team_id'];
-        $object->picture = $post['jform']['picture'];
+        $object->picture = $data['picture'];
         $object->modified = $this->jsmdate->toSql();
 	    $object->modified_by = $this->jsmuser->get('id');
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
 
        break;  
 /**
  * liga 
  */       
        case 'league': 
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       }
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        break; 
 /**
  * person 
  */       
-       case 'person': 
+       case 'player': 
+       if ( $data['height'] == '' )
+       {
+       $data['height'] = NULL;
+       }
+       if ( $data['weight'] == '' )
+       {
+       $data['weight'] = NULL;
+       }
+       if ( $data['contact_id'] == '' )
+       {
+       $data['contact_id'] = NULL;
+       }	       
+       if ( $data['birthday'] == '' )
+       {
+       $data['birthday'] = '0000-00-00';
+       }
+		       
+       if ( $data['deathday'] == '' )
+       {
+       $data['deathday'] = '0000-00-00';
+       }
+       if ( $data['injury_date_start'] == '' )
+       {
+       $data['injury_date_start'] = '0000-00-00';
+       }
+       if ( $data['injury_date_end'] == '' )
+       {
+       $data['injury_date_end'] = '0000-00-00';
+       }
+       if ( $data['susp_date_start'] == '' )
+       {
+       $data['susp_date_start'] = '0000-00-00';
+       }
+       if ( $data['susp_date_end'] == '' )
+       {
+       $data['susp_date_end'] = '0000-00-00';
+       }
+       if ( $data['away_date_start'] == '' )
+       {
+       $data['away_date_start'] = '0000-00-00';
+       }
+       if ( $data['away_date_end'] == '' )
+       {
+       $data['away_date_end'] = '0000-00-00';
+       }
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
        $data['person_id2'] = $data['request']['person_id2'];
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['position_id'] = $data['request']['position_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
-
-       
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       }
        switch($data['person_art'])
         {
             case 1:
@@ -304,7 +326,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             $person_1 = $data['person_id1'];
             $person_2 = $data['person_id2'];
             $table = 'person';
-            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
+            $row = Table::getInstance( $table, 'sportsmanagementTable' );
             $row->load((int) $person_1);
             $person_double[] = $row->firstname.' '.$row->lastname;
             $row->load((int) $person_2);
@@ -321,16 +343,51 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */
        if ( empty($data['picture']) )
        {
-       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
+	switch($data['gender'])
+        {
+	case 0:
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player','');
+	break;	
+		case 1:
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small','');
+	break;
+			case 2:
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small','');
+	break;
+	}
        }
+       if ( $data['birthday'] != '0000-00-00' && $data['birthday'] != '' )
+       {
        $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
+       }
+       if ( $data['deathday'] != '0000-00-00' && $data['deathday'] != '' )
+       {
        $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
+       }
+       if ( $data['injury_date_start'] != '0000-00-00' && $data['injury_date_start'] != '' )
+       {
        $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
+       }
+       if ( $data['injury_date_end'] != '0000-00-00' && $data['injury_date_end'] != '' )
+       {
        $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
+       }
+       if ( $data['susp_date_start'] != '0000-00-00' && $data['susp_date_start'] != '' )
+       {
        $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);
+       }
+       if ( $data['susp_date_end'] != '0000-00-00' && $data['susp_date_end'] != '' )
+       {
        $data['susp_date_end'] = sportsmanagementHelper::convertDate($data['susp_date_end'],0);
+       }
+       if ( $data['away_date_start'] != '0000-00-00' && $data['away_date_start'] != '' )
+       {
        $data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'],0);
+       }
+       if ( $data['away_date_end'] != '0000-00-00' && $data['away_date_end'] != '' )
+       {
        $data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'],0);
+       }
        break;
 /**
  * template 
@@ -367,9 +424,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         // Must be a valid primary key value.
         $object->id = $team_id;
         $object->name = $team_name;
-        $object->alias = JFilterOutput::stringURLSafe( $team_name );
+        $object->alias = OutputFilter::stringURLSafe( $team_name );
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
         }
         
        }
@@ -377,17 +434,24 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 /**
  * hat der user die bildfelder geleert, werden die standards gesichert.
  */
+ if (array_key_exists('copy_jform', $post)) {
+       $data['logo_big'] = $post['copy_jform']['logo_big'];
+       $data['logo_middle'] = $post['copy_jform']['logo_middle'];
+       $data['logo_small'] = $post['copy_jform']['logo_small'];
+       $data['trikot_home'] = $post['copy_jform']['trikot_home'];
+       $data['trikot_away'] = $post['copy_jform']['trikot_away'];
+		       }
        if ( empty($data['logo_big']) )
        {
-       $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
+       $data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big','');
        }
        if ( empty($data['logo_middle']) )
        {
-       $data['logo_middle'] = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+       $data['logo_middle'] = ComponentHelper::getParams($option)->get('ph_logo_medium','');
        }
        if ( empty($data['logo_small']) )
        {
-       $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
+       $data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small','');
        }
  
 /**
@@ -435,6 +499,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  * mannschaft 
  */       
        case 'team':
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       }
        if ( $post['delete'] )
         {
             sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
@@ -450,14 +517,27 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             sportsmanagementModelteam::addNewTrainigData($data[id]);
         }
        break;  
+       
+/**
+ * playground
+ */
+       case 'playground':
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       }
+       break;
+
+       
 /**
  * projekt 
  */        
        case 'project':
+       if (array_key_exists('copy_jform', $post)) {
+       $data['picture'] = $post['copy_jform']['picture'];
+       }
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
-       //$data['fav_team'] = implode(',',$post['jform']['fav_team']);
        $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
        if ( !$post['jform']['fav_team'] )
        {
@@ -467,20 +547,31 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        {
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
        }
-
-
        break; 
+/**
+ * tippspiel 
+ */         
+       case 'predictiongame':
+       $data['alias'] = OutputFilter::stringURLSafe( $data['name'] ); 
+       if ( isset($data['notify_to']) )
+       {
+        
+       }
+       else
+       {
+       $data['notify_to'] = '-'; 
+       }
+       break;
        default:
        break; 
        }
        
        if (isset($post['params']) && is_array($post['params'])) 
 		{
-			// Convert the params field to a string.
-			//$parameter = new JRegistry;
-			//$parameter->loadArray($post['params']);
+/**
+ * 			 Convert the params field to a string.
+ */
             $paramsString = json_encode( $post['params'] );
-			//$data['params'] = (string)$parameter;
             $data['params'] = $paramsString;
 		}
                
@@ -518,17 +609,37 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             
  			if ($data['name'] == $orig_table->name) 
  			{ 
- 				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY'); 
- 				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
+ 				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY'); 
+ 				$data['alias'] = OutputFilter::stringURLSafe( $data['name'] ); 
  			} 
  		} 
 
 /**
  * zuerst sichern, damit wir bei einer neuanlage die id haben
  */         
-       if ( parent::save($data) )
+       try{   
+       $parentsave = parent::save($data);
+       $table = $this->getTable();
+       foreach ($table->getErrors() as $error)
+	   {
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$error), 'error');	 
+       }
+       
+       
+       }
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $parentsave = false;
+}
+    
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');  
+       if ( $parentsave )
        {
-	$id =  (int) $this->getState($this->getName().'.id');
+	$id = (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
@@ -540,7 +651,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 /**
  * Here you can do other tasks with your newly saved record...
  */                
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
 
 if ($this->jsmjinput->get('task') == 'save2copy') 
  		{
@@ -589,10 +700,11 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
 /**
  * person 
  */		  
-		case 'person':
+		case 'player':
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		$message = '';  
+		$delete_season = array();
 		foreach( $data['season_ids'] as $key => $value )
         {
         $this->jsmquery->clear();  
@@ -602,8 +714,9 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
         $this->jsmquery->where('spi.person_id ='. $data['id'] );
         $this->jsmquery->where('spi.season_id ='. $value );
         $this->jsmdb->setQuery($this->jsmquery);
-		$res = $this->jsmdb->loadObject();
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
+	$res = $this->jsmdb->loadObject();
+	$delete_season[] = $value;
+
         if ( !$res )
         {
         $this->jsmquery->clear();
@@ -622,13 +735,9 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery();
 }
 catch (Exception $e) {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+    
 }
 
-//		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-//		{
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
-//		}  
         $message .= 'Saisonzuordnung : '.$res->name.' angelegt.<br>';
         }
         else
@@ -637,11 +746,17 @@ catch (Exception $e) {
         }
           
         }
+// delete all custom keys
+$this->jsmquery->clear();    
+$this->jsmquery->delete()->from('#__sportsmanagement_season_person_id')->where('season_id NOT IN (' . implode(",",$delete_season) . ') AND person_id = '.$data['id']);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();		
+		
         $this->jsmapp->enqueueMessage($message, 'message');
 
 		}
         
-        //-------extra fields-----------//
+        /** -------extra fields----------- */
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
         break;
@@ -656,11 +771,8 @@ catch (Exception $e) {
 		{
 		if ( $data['id'] )
 		{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
-        {  
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
-        }
-		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
+
+		$mdl = BaseDatabaseModel::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
@@ -672,11 +784,8 @@ catch (Exception $e) {
 		{
 		if ( $data['id'] )
 		{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
-        {  
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
-        }
-		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
+
+		$mdl = BaseDatabaseModel::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
@@ -698,6 +807,7 @@ catch (Exception $e) {
  * mannschaft 
  */        
 		case 'team':
+		$delete_season = array();
 		if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		foreach( $data['season_ids'] as $key => $value )
@@ -707,17 +817,19 @@ catch (Exception $e) {
 		$this->jsmquery->from('#__sportsmanagement_season_team_id');
 		$this->jsmquery->where('team_id ='. $data['id'] );
 		$this->jsmquery->where('season_id ='. $value );
-		//JFactory::getDbo()->setQuery($query);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
+		$delete_season[] = $value;
 
 		if ( !$result )
 		{
 		$this->jsmquery->clear();
         // Insert columns.
-		$columns = array('team_id','season_id');
+		$modified = $this->jsmdate->toSql();
+	        $modified_by = $this->jsmuser->get('id');	
+		$columns = array('team_id','season_id','modified','modified_by');
 		// Insert values.
-		$values = array($data['id'],$value);
+		$values = array($data['id'],$value,$this->jsmdb->Quote(''.$modified.''),$modified_by);
 		// Prepare the insert query.
 		$this->jsmquery
 			->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_id'))
@@ -728,12 +840,17 @@ catch (Exception $e) {
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+
 		}
           
         }
-		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
+
 		}
+// delete all custom keys
+$this->jsmquery->clear();    
+$this->jsmquery->delete()->from('#__sportsmanagement_season_team_id')->where('season_id NOT IN (' . implode(",",$delete_season) . ') AND team_id = '.$data['id']);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();			
         }
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
         $this->jsmapp->setUserState( "$this->jsmoption.team_id", $data['id'] );	
@@ -746,6 +863,14 @@ catch (Exception $e) {
 		}
 		else
 		{
+		$id = $this->jsmjinput->getInt('id');
+//        $isNew = $this->getState($this->getName() . '.new');
+//        $data['id'] = $id;
+        $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
+	    $this->jsmapp->setUserState( "$this->jsmoption.person_id", $id );   
+        $this->jsmjinput->set('insert_id', $id);
+	    $this->jsmjinput->set('person_id', $id);  
+          
 		return false;
 		}
 	}
@@ -760,9 +885,9 @@ catch (Exception $e) {
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
-        $show_team_community = JComponentHelper::getParams($this->jsmoption)->get('show_team_community',0);
-        $cfg_use_plz_table = JComponentHelper::getParams($this->jsmoption)->get('cfg_use_plz_table',0);
+		$cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
+        $show_team_community = ComponentHelper::getParams($this->jsmoption)->get('show_team_community',0);
+        $cfg_use_plz_table = ComponentHelper::getParams($this->jsmoption)->get('cfg_use_plz_table',0);
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->getName(), $this->getName(), array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -770,13 +895,20 @@ catch (Exception $e) {
 			return false;
 		}
         
+        $joomladirectory = '';
+        if ( $cfg_which_media_tool == 'media' )
+        {
+        /** welche joomla version ? */
+            if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+            {
+            $joomladirectory = 'local-0:/';
+            }
+        }
         $prefix = $this->jsmapp->getCfg('dbprefix');
         
         switch ($this->getName())
 		{
 		case 'position':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -801,8 +933,8 @@ catch (Exception $e) {
            } 
         break;
         case 'statistic':
-        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/statistics');
+        $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/statistics');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -827,32 +959,32 @@ catch (Exception $e) {
            } 
         break;
         case 'projectreferee':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectreferees');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectreferees');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'division':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/divisions');
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/divisions');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'teamperson':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamplayers');
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/teamplayers');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'smquote':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'jlextfederation':
-         $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        //$form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        //$form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -878,8 +1010,8 @@ catch (Exception $e) {
            } 
         break;
         case 'jlextcountry':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/flags');
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/flags');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -910,12 +1042,12 @@ catch (Exception $e) {
             
         break;
         case 'jlextassociation':
-        $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
-        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        //$form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        //$form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
        
         $this->jsmquery->clear();
@@ -941,8 +1073,8 @@ catch (Exception $e) {
            } 
         break;
         case 'eventtype':
-         $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
+         $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/events');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
 
        $this->jsmquery->clear();
@@ -967,24 +1099,16 @@ catch (Exception $e) {
            } 
         break;  
 		case 'round':
-	/*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'calendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'calendar');       
-        }
-        else
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
-        }
-	*/
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;  
-		case 'project':
+	case 'project':
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('use_legs', 'type', 'radio');				    
+$form->setFieldAttribute('use_legs', 'class', 'switcher');				    
+}						
         $sports_type_id = $form->getValue('sports_type_id');
         $this->jsmquery->clear();
         // select some fields
@@ -995,7 +1119,7 @@ catch (Exception $e) {
         $this->jsmquery->where('id = '.(int) $sports_type_id);
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadResult();
-        
+        /*
         switch ($result)
         {
             case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
@@ -1006,8 +1130,8 @@ catch (Exception $e) {
             $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
             break;
         }
-        
-        switch ( JComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
+        */
+        switch ( ComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
         {
         case 'com_content':
         $form->setFieldAttribute('category_id', 'type', 'category');
@@ -1018,34 +1142,24 @@ catch (Exception $e) {
 
         break;
         }
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('start_date', 'type', 'calendar'); 
-        }
-        else
-        {
-        $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
-        }
-        */
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
+        
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         
         break;
         case 'projectteam':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectteams');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/projectteams/trikot_home');
+        //$form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        //$form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_home');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/projectteams/trikot_away');
+        //$form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        //$form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         break;
         case 'club':
@@ -1085,39 +1199,25 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('founded', 'type', 'calendar');
-        $form->setFieldAttribute('dissolved', 'type', 'calendar');  
-        }
-        else
-        {
-        $form->setFieldAttribute('founded', 'type', 'customcalendar');  
-        $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
-        }
-        */
-        $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
+
+//        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+//        $form->setFieldAttribute('logo_small', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_middle', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
-        $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
+//        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
+//        $form->setFieldAttribute('logo_middle', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/medium');
         $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_big', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
+//        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+//        $form->setFieldAttribute('logo_big', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/large');
         $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot_home');
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot');
+//        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+//        $form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
+//        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+//        $form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1153,8 +1253,8 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_clubs', 'type', 'hidden');
         }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teams');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/teams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1184,8 +1284,8 @@ catch (Exception $e) {
        
         break;
         case 'sportstype':
-        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/sport_types');
+        //$form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
         
         $this->jsmquery->clear();
@@ -1212,8 +1312,8 @@ catch (Exception $e) {
         break;
         
         case 'playground':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1238,16 +1338,26 @@ catch (Exception $e) {
            } 
         break;
         case 'agegroup':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'league':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/leagues');
+        //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
         break;
-        case 'person':
+	case 'predictionproject':		
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('champ', 'type', 'radio');				    
+$form->setFieldAttribute('champ', 'class', 'switcher');				    
+$form->setFieldAttribute('joker', 'type', 'radio');				    
+$form->setFieldAttribute('joker', 'class', 'switcher');				
+}			
+			
+			break;
+        case 'player':
                 switch($form->getValue('person_art'))
         {
             case 1:
@@ -1260,24 +1370,20 @@ catch (Exception $e) {
             break;
             
         }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+			
+//        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
+//        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('contact_id', 'type', 'modal_contact');
-        $form->setFieldAttribute('birthday', 'type', 'calendar');
-        $form->setFieldAttribute('deathday', 'type', 'calendar'); 
-        }
-        else
-        {
-        $form->setFieldAttribute('contact_id', 'type', 'modal_contacts');  
-        $form->setFieldAttribute('birthday', 'type', 'customcalendar');
-        $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
-        }
-        */
+if(version_compare( substr(JVERSION, 0, 3),'4.0','ge'))
+{
+$form->setFieldAttribute('injury', 'type', 'radio');				    
+$form->setFieldAttribute('injury', 'class', 'switcher');				    
+$form->setFieldAttribute('suspension', 'type', 'radio');				    
+$form->setFieldAttribute('suspension', 'class', 'switcher');				
+$form->setFieldAttribute('away', 'type', 'radio');				    
+$form->setFieldAttribute('away', 'class', 'switcher');				
+}
+        
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 			$this->jsmquery->from('information_schema.columns');
@@ -1313,11 +1419,28 @@ catch (Exception $e) {
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->getName().'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->getName().'.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
 		}
+		
+	switch ( $this->getName() )
+       {
+     
+       case 'league': 
+          if ( !$data->middle_name )
+      {
+        $data->middle_name = $data->name;
+      }
+      if ( !$data->short_name )
+      {
+        $data->short_name = $data->name;
+      }
+          break;
+      }
+		
+		
 		return $data;
 	}
 
@@ -1343,7 +1466,7 @@ catch (Exception $e) {
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 
 	/**
@@ -1362,7 +1485,7 @@ catch (Exception $e) {
        {
        $type = $this->getName();
        } 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -1383,17 +1506,42 @@ catch (Exception $e) {
 			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
-				$row->ordering = $order[$i];
+				switch ($this->getName())
+                {
+                case 'season':
+                $row->ordering = substr($row->name, 0, 4);
+                break;
+                default:
+                $row->ordering = $order[$i];
+                break;
+                }
                 $row->modified = $this->jsmdate->toSql();
                 $row->modified_by = $this->jsmuser->get('id');
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return JText::_('JGLOBAL_SAVE_SORT_NO');
+					return Text::_('JGLOBAL_SAVE_SORT_NO');
 				}
 			}
+            else
+            {
+                switch ($this->getName())
+                {
+                case 'season':
+                $row->ordering = substr($row->name, 0, 4);
+                $row->modified = $this->jsmdate->toSql();
+                $row->modified_by = $this->jsmuser->get('id');
+				if (!$row->store())
+				{
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+					return Text::_('JGLOBAL_SAVE_SORT_NO');
+				}
+                break;
+                }
+                
+            }
 		}
-		return JText::_('JGLOBAL_SAVE_SORT_YES');
+		return Text::_('JGLOBAL_SAVE_SORT_YES');
 	}
                 
 }
@@ -1407,7 +1555,7 @@ catch (Exception $e) {
  * @version $Id$
  * @access public
  */
-class JSMModelList extends JModelList
+class JSMModelList extends ListModel
 {
     
 /**
@@ -1429,28 +1577,45 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
         $this->jsmpost = $this->jsmjinput->post->getArray(array());  
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
+    $this->project_id = $this->jsmjinput->getint('pid');
+
+if ( !$this->project_id )
+{
+$this->project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+}
+
+$this->jsmjinput->set('pid', $this->project_id);
+$this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
 
 /**
  * abfrage nach backend und frontend  
  */ 
-if ( $this->jsmapp->isAdmin() )
+	/*
+if ( $this->jsmapp->isClient('administrator') )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+    
 }  
-if( $this->jsmapp->isSite() )
+if( $this->jsmapp->isClient('site') )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
-}    
+    
+}   
+	*/
+/**
+ * alle fehlermeldungen online ausgeben
+ * mit der kategorie: jsmerror       
+ */ 
+Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+    
         }    
     
 }
@@ -1465,7 +1630,7 @@ if( $this->jsmapp->isSite() )
  * @version $Id$
  * @access public
  */
-class JSMModelLegacy extends JModelLegacy
+class JSMModelLegacy extends BaseDatabaseModel
 {
     
 /**
@@ -1487,12 +1652,12 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
         $this->jsmpost = $this->jsmjinput->post->getArray(array()); 
 	$this->jsmmessage = '';
@@ -1501,14 +1666,16 @@ public function __construct($config = array())
 /**
  * abfrage nach backend und frontend  
  */        
-        if ( $this->jsmapp->isAdmin() )
+	/*
+        if ( $this->jsmapp->isClient('administrator') )
         {
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+        
         }  
-        if( $this->jsmapp->isSite() )
+        if( $this->jsmapp->isClient('site') )
         {
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+        
         } 
+	*/
         
         }    
     

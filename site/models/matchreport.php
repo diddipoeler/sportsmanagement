@@ -4,14 +4,20 @@
  * @file      matchreport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
-jimport( 'joomla.filesystem.folder' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Path;
 
 /**
  * sportsmanagementModelMatchReport
@@ -22,7 +28,7 @@ jimport( 'joomla.filesystem.folder' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatchReport extends JModelLegacy
+class sportsmanagementModelMatchReport extends JSMModelLegacy
 {
 
 	var $matchid = 0;
@@ -57,17 +63,18 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function __construct()
 	{
-	    // Reference global application object
-        $app = JFactory::getApplication();
+	parent::__construct();
+		// Reference global application object
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
-		$this->matchid = $jinput->getInt('mid',0);
+	$this->matchid = $jinput->getInt('mid',0);
         $this->projectid = $jinput->getInt( 'p', 0 );
         sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
-		sportsmanagementModelProject::$projectid = $this->projectid;
+	sportsmanagementModelProject::$projectid = $this->projectid;
         sportsmanagementModelProject::$matchid = $this->matchid;
-		parent::__construct();
+	
 	}
 
 	
@@ -78,8 +85,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function checkMatchPlayerProjectPositionID()
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -90,14 +97,15 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$query->from('#__sportsmanagement_match_player');
         $query->where('match_id = '.(int)$this->matchid);
         $query->where('project_position_id = 0');
-        $db->setQuery($query);
+        
         
         try{
+		$db->setQuery($query);
         $result = $db->loadObjectList();
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 	    
         if ( $result )
@@ -114,19 +122,20 @@ catch (Exception $e)
             $query->join('INNER','#__sportsmanagement_person AS pe ON pe.id = tp.person_id');
             $query->where('ppp.project_id = '.(int)$this->projectid);
             $query->where('tp.id = '.(int)$row->teamplayer_id);
-            $db->setQuery($query);
+            
         
  try{
+	 $db->setQuery($query);
 		$position = $db->loadResult();
 	}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }	
             
             if ( $position )
             {
-            $tblmatchplayer = JTable::getInstance("matchplayer", "sportsmanagementTable");
+            $tblmatchplayer = Table::getInstance("matchplayer", "sportsmanagementTable");
             $tblmatchplayer->load( (int) $row->id);
             $tblmatchplayer->project_position_id = $position;
             // Store the item to the database
@@ -152,10 +161,8 @@ catch (Exception $e)
 	 */
 	function getClubinfo($clubid)
 	{
-        $mdl = JModelLegacy::getInstance("club", "sportsmanagementModel");
-        $this->club = $mdl->getTable();
+        $this->club = Table::getInstance("club", "sportsmanagementTable");
 		$this->club->load($clubid);
-
 		return $this->club;
 	}
 
@@ -167,13 +174,11 @@ catch (Exception $e)
 	function getRound()
 	{
         $match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
-        
         $round = sportsmanagementModelround::getRound($match->round_id,sportsmanagementModelProject::$cfg_which_database);
 
-		//if no match title set then set the default one
 		if(is_null($round->name) || empty($round->name))
 		{
-			$round->name = JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$round->id);
+			$round->name = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$round->id);
 		}
 
 		return $round;
@@ -187,21 +192,19 @@ catch (Exception $e)
    */
   function getMatchPictures($folder)
   {
-  $basePath = JPATH_SITE.DS.'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
-  $sitePath = 'images'.DS.'com_sportsmanagement'.DS.'database'.DS.$folder;
+  $basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
+  $sitePath = 'images'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
   $images 	= array ();
   
-  
-  if( JFolder::exists($basePath) )
+  if( Folder::exists($basePath) )
 {
-  // Get the list of files and folders from the given folder
-	$fileList 	= JFolder::files($basePath);
-  
-  // Iterate over the files if they exist
+  /** Get the list of files and folders from the given folder */
+	$fileList 	= Folder::files($basePath);
+  /** Iterate over the files if they exist */
 		if ($fileList !== false) {
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.DS.$file) && substr($file, 0, 1) != '.'
+				if (is_file($basePath.DIRECTORY_SEPARATOR.$file) && substr($file, 0, 1) != '.'
 					&& strtolower($file) !== 'index.html'
 					&& strtolower($file) !== 'thumbs.db'
 					&& strtolower($file) !== 'readme.txt'
@@ -213,7 +216,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
@@ -221,7 +224,7 @@ catch (Exception $e)
 						$tmp = new JObject();
 						$tmp->name = $file;
 						$tmp->sitepath = $sitePath;
-						$tmp->path = JPath::clean($basePath.DS.$file);
+						$tmp->path = Path::clean($basePath.DIRECTORY_SEPARATOR.$file);
 
 						$images[] = $tmp;
 
@@ -250,18 +253,15 @@ catch (Exception $e)
      */
     function getMatchPositions($which = 'player')
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
-        // Select some fields
-		$query->select('pos.id, pos.name');
-		$query->select('ppos.position_id AS position_id, ppos.id as pposid');
-        // From table
-		$query->from('#__sportsmanagement_position AS pos');
-        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON pos.id = ppos.position_id');
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
+	$query->select('pos.id, pos.name');
+	$query->select('ppos.position_id AS position_id, ppos.id as pposid');
+	$query->from('#__sportsmanagement_position AS pos');
+    $query->join('INNER','#__sportsmanagement_project_position AS ppos ON pos.id = ppos.position_id');
         
         switch($which)
         {
@@ -286,11 +286,11 @@ catch (Exception $e)
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
        
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
         
     }    
@@ -303,22 +303,18 @@ catch (Exception $e)
      */
     function getMatchPersons($which = 'player')
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $starttime = microtime(); 
-        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-	   $query = $db->getQuery(true);
-       
-       // Select some fields
-	   $query->select('pt.id,pt.id as ptid');
-       $query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
-       $query->select('ppos.id AS pposid');
-       $query->select('st.team_id,st.id as stid');
-       
-       $query->select('tp.person_id,tp.picture');
-       $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-       $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+   $app = Factory::getApplication();
+   $option = Factory::getApplication()->input->getCmd('option');
+   $starttime = microtime(); 
+   $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+   $query = $db->getQuery(true);
+   $query->select('pt.id,pt.id as ptid');
+   $query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
+   $query->select('ppos.id AS pposid');
+   $query->select('st.team_id,st.id as stid');
+   $query->select('tp.person_id,tp.picture');
+   $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+   $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
        
        switch($which)
         {
@@ -348,24 +344,16 @@ catch (Exception $e)
        $query->where('mp.match_id = '.(int)$this->matchid);
        $query->where('p.published = 1');
 
-              
-       $db->setQuery($query);
-       
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
 	    try{
+		    $db->setQuery($query);
         $result = $db->loadObjectList();
 		    }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
    }    
     
@@ -378,35 +366,35 @@ catch (Exception $e)
      */
     function getMatchReferees()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
         
-        $query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
-        $query->select('ppos.position_id,ppos.id AS pposid');
-        $query->select('pos.name AS position_name');
-        $query->from('#__sportsmanagement_match_referee AS mr');
-        $query->join('INNER','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id ');
-        $query->join('INNER','#__sportsmanagement_season_person_id AS tp on tp.id = pref.person_id');
+    $query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
+    $query->select('ppos.position_id,ppos.id AS pposid');
+    $query->select('pos.name AS position_name');
+    $query->from('#__sportsmanagement_match_referee AS mr');
+    $query->join('INNER','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id ');
+    $query->join('INNER','#__sportsmanagement_season_person_id AS tp on tp.id = pref.person_id');
         
-        $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id=p.id');
-        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id=mr.project_position_id');
-        $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
-        $query->where('mr.match_id='.(int)$this->matchid);
-        $query->where('p.published = 1');
-        $query->where('tp.persontype = 3');
-             
-		$db->setQuery($query);
+    $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id=p.id');
+    $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id=mr.project_position_id');
+    $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
+    $query->where('mr.match_id='.(int)$this->matchid);
+    $query->where('p.published = 1');
+    $query->where('tp.persontype = 3');
+		
 	    try{
+	    $db->setQuery($query);
         $result = $db->loadObjectList();
 	    }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;	
 	}
 
@@ -419,30 +407,30 @@ catch (Exception $e)
 	 */
 	function getEventTypes()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
         
-        $query->select('et.id,et.name,et.icon');
-        $query->from('#__sportsmanagement_eventtype AS et');
-        $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id ');
-	    $query->join('LEFT','#__sportsmanagement_match_event AS me ON et.id = me.event_type_id ');
-        $query->where('me.match_id = '.(int)$this->matchid);
-        $query->group('et.id');
-        $query->order('pet.ordering');
-                    
-		$db->setQuery($query);
-		try{
-        $result = $db->loadObjectList();
-		}
+    $query->select('et.id,et.name,et.icon');
+    $query->from('#__sportsmanagement_eventtype AS et');
+    $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id ');
+    $query->join('LEFT','#__sportsmanagement_match_event AS me ON et.id = me.event_type_id ');
+    $query->where('me.match_id = '.(int)$this->matchid);
+    $query->group('pet.ordering,et.id');
+    $query->order('pet.ordering');
+    try{            
+	$db->setQuery($query);
+    $result = $db->loadObjectList();
+    $result = array_unique($result, SORT_REGULAR );
+	}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
-		
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	return $result;	
 	}
 
     
@@ -458,27 +446,31 @@ catch (Exception $e)
      */
     function getMatchArticle($article_id = 0,$match_id = 0,$cat_id = 0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
-        $query->select('c.id,c.title');
-       $query->select('c.introtext');
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
+    $query->select('c.id,c.title');
+    $query->select('c.introtext');
        
-    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    switch ( ComponentHelper::getParams($option)->get('which_article_component') )
     {
         case 'com_content':
         $query->from('#__content as c');
-        if ( $article_id )
+        if ( $article_id && !$match_id )
         {
         $query->where('id = '. $article_id );
         }
-        if ( $match_id )
+        elseif ( !$article_id && $match_id )
         {
         $query->where('xreference = '. $match_id );
         }
+        elseif ( $article_id && $match_id )
+        {
+        $query->where('(xreference = '. $match_id .' OR id = '. $article_id .' )' );
+        }
+        
         if ( $cat_id )
         {
         $query->where('catid = '. $cat_id );
@@ -493,11 +485,10 @@ catch (Exception $e)
         break;
     }
     
-    
-       $db->setQuery($query); 
-        $result = $db->loadObject();
-        return $result;
-        
+    $db->setQuery($query); 
+    $result = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    return $result;
     }
         
 	/**
@@ -507,36 +498,33 @@ catch (Exception $e)
 	 */
 	function getMatchStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
-        
-		$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
-        
-         $query->select('*');
-        $query->from('#__sportsmanagement_match_statistic');
-        $query->where('match_id = '.$match->id );
-             
-		$db->setQuery($query);
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
+	$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
+    $query->select('*');
+    $query->from('#__sportsmanagement_match_statistic');
+    $query->where('match_id = '.$match->id );
         
  try{       
+	 $db->setQuery($query);
 		$res = $db->loadObjectList();
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		$stats = array(	$match->projectteam1_id => array(),
-						$match->projectteam2_id => array());
+		$match->projectteam2_id => array());
 		if(count($stats)>0 && count($res)>0) {
 			foreach ($res as $stat)
 			{
 				@$stats[$stat->projectteam_id][$stat->teamplayer_id][$stat->statistic_id]=$stat->value;
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $stats;
 	}
 
@@ -548,29 +536,25 @@ catch (Exception $e)
 	 */
 	function getPlayersStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
         
-		if (!($this->_playersbasicstats))
-		{
-			$match = sportsmanagementModelProject::getMatch();
-            
-            $query->select('*');
-        $query->from('#__sportsmanagement_match_statistic');
-        $query->where('match_id = '.$match->id );
-                  
-			$db->setQuery($query);
-           
+	if (!($this->_playersbasicstats))
+	{
+	$match = sportsmanagementModelProject::getMatch();
+    $query->select('*');
+    $query->from('#__sportsmanagement_match_statistic');
+    $query->where('match_id = '.$match->id );
  try{       
+	 $db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 			$stats=array();
 			if (count($res))
@@ -582,7 +566,7 @@ catch (Exception $e)
 			}
 			$this->_playersbasicstats=$stats;
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_playersbasicstats;
 	}
 
@@ -594,31 +578,25 @@ catch (Exception $e)
 	 */
 	function getPlayersEvents()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
         
-		if (!($this->_playersevents))
-		{
-			$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
-            // Select some fields
-        $query->select('*');
-        // From 
-		$query->from('#__sportsmanagement_match_event');
-        // Where
-        $query->where('match_id = '. $match->id );
-			
-            $db->setQuery($query);
-            
+	if (!($this->_playersevents))
+	{
+	$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
+    $query->select('*');
+	$query->from('#__sportsmanagement_match_event');
+    $query->where('match_id = '. $match->id );
         try{
+		$db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 			
 			$events = array();
@@ -631,7 +609,7 @@ catch (Exception $e)
 			}
 			$this->_playersevents = $events;
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_playersevents;
 	}
 
@@ -643,32 +621,25 @@ catch (Exception $e)
 	 */
 	function getMatchStaffStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
-        $query = $db->getQuery(true);
+    $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
+    $query = $db->getQuery(true);
         
-		if (!($this->_staffsbasicstats))
-		{
-			$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
-            
-            // Select some fields
-        $query->select('*');
-        // From 
-		$query->from('#__sportsmanagement_match_staff_statistic');
-        // Where
-        $query->where('match_id = '. $match->id );
-		
-            $db->setQuery($query);
-            
+	if (!($this->_staffsbasicstats))
+	{
+	$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
+    $query->select('*');
+	$query->from('#__sportsmanagement_match_staff_statistic');
+    $query->where('match_id = '. $match->id );
 try{       
+	$db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 			$stats = array();
 			if (count($res))
@@ -680,6 +651,7 @@ catch (Exception $e)
 			}
 			$this->_staffsbasicstats=$stats;
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_staffsbasicstats;
 	}
    
@@ -693,8 +665,8 @@ catch (Exception $e)
     	 */
     	function getPlaygroundSchema($schema,$which)
   {
-  $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+  $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -704,12 +676,9 @@ catch (Exception $e)
   
   if ( $schema )
   {
-  // Select some fields
-        $query->select('extended');
-        // From 
-		$query->from('#__sportsmanagement_rosterposition');
-        // Where
-        $query->where('name LIKE '.  $db->Quote( '' . $schema . '' ) );
+  $query->select('extended');
+  $query->from('#__sportsmanagement_rosterposition');
+  $query->where('name LIKE '.  $db->Quote( '' . $schema . '' ) );
   
   switch ($which)
   {
@@ -721,24 +690,24 @@ catch (Exception $e)
     break;
     
   }
-  		
+  	try{	
         $db->setQuery($query);
-	  try{
 		$res = $db->loadResult();
 		}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-		$jRegistry = new JRegistry;
+	if ( $res )
+    {
+    	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'rosterposition.xml';
+		$jRegistry = new Registry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $jRegistry->loadString($res); 
         }
         else
         {
-		//$jRegistry->loadString($res, 'ini');
 		$jRegistry->loadJSON($res);
 		}
     
@@ -748,11 +717,13 @@ catch (Exception $e)
     $bildpositionen[$schema][$a][$which]['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
     $position++;
     }
-		
+    }
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $bildpositionen;
   }
   else
   {
+	  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     return false;
   }
   

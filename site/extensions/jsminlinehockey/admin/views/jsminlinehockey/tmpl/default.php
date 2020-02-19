@@ -1,8 +1,15 @@
 <?PHP
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage jsminlinehockey
+ */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.modal');
+use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -32,7 +39,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <input type="radio" name="check" value="players"> Spieler
 	
 <input class='input_box' id='import_package' name='import_package' type='file' size='57' />
-<input class='button' type='submit' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_BUTTON'); ?>' />
+<input class='button' type='submit' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_BUTTON'); ?>' />
 </fieldset>
 <input type='hidden' name='sent' value='1' />
 <input type='hidden' name='projectid' value='<?php echo $this->projectid ; ?>' />		
@@ -43,10 +50,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 </div>
 
-
-
 <?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
+//echo $this->loadTemplate('jsminfo');
 ?> 

@@ -4,13 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlxmlimport
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewJLXMLImport
@@ -31,7 +32,7 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 	public function init ()
 	{
 
-		$config = JComponentHelper::getParams('com_media');
+		$config = ComponentHelper::getParams('com_media');
 		$this->config	= $config;
 
 	}

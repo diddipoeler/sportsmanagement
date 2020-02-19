@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    <fieldset name="details"
+                  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+                  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
+        <field
+            name="name"
+            type="text"
+            size="100"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"/>
+        <field
+            name="alias"
+            type="text"
+            size="100"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"/>	
+        <field
+            name="middle_name"
+            type="text"
+            size="100"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_MID_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_MID_NAME_DESC"
+            class="inputbox"/>	
+        <field
+            name="short_name"
+            type="text"
+            size="100"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SHORT_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_SHORT_NAME_DESC"
+            class="inputbox"
+            required="true"/>		
+        <field
+            name="website"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_WEBSITE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_WEBSITE_DESC"
+            class="inputbox"/>
+        <field
+            name="email"
+            size="100"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_EMAIL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_EMAIL_DESC"
+            class="inputbox"/>	
+        <field
+            name="info"
+            type="text"
+            size="100"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO_DESC"
+            class="inputbox"/>
+
+        <!--
+                            addfieldpath="/administrator/components/com_sportsmanagement/elements"
+        -->
+
+        <!--      
+        <field  
+                                name="sports_type_id"
+                                type="sportstypes"
+                                default="0"
+                                size="1"
+                                label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+                                description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+                                required="false">
+                                <option
+                                        value="0">
+                                        COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
+                        </field>
+        -->
+
+        <field  
+            name="sports_type_id"
+            type="sportstypelist"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            required="true">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+        </field>
+    
+        <field
+            name="club_id"
+            type="clublist"
+            class="inputbox"
+            default="0"
+            size="1"
+            required="true"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
+
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
+        </field>	
+    
+        <field addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
+               name="agegroup_id"
+               type="dependsql" 
+               size="10"
+               depends="club_id"
+               task="countryclubagegroupoptions" 
+               value_field="club_id"
+               key_field="club_id"
+               default="0"
+               norequest="1"
+               label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
+               description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
+               class="form-control form-control-inline">
+            <option
+                value="0">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
+        </field>
+    
+        <!--		
+        <field
+                            addfieldpath="/administrator/components/com_sportsmanagement/elements"
+                                name="agegroup_id"
+                                type="agegroups"
+                                default="0"
+                                size="1"
+                                label="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE"
+                                description="COM_SPORTSMANAGEMENT_GLOBAL_AGEGROUP_TYPE_DESC"
+                                required="false">
+                                <option
+                                        value="0">
+                                        COM_SPORTSMANAGEMENT_GLOBAL_SELECT_AGEGROUP</option>
+                        </field>		
+        -->
+          	
+	
+    
+        <field
+            name="merge_clubs"
+            type="clublist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_MERGE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_MERGE_DESC"
+            multiple="true"
+            size="15"
+            class="inputbox">
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+        </field>	
+		
+        <field
+            name="standard_playground"
+            type="playgroundlist"
+            class="inputbox"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC">
+            <option
+                value="0">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+        </field>		
+			
+    </fieldset>	
+  
+    <fieldset name="seasons" 
+              label="COM_SPORTSMANAGEMENT_TABS_SEASON"
+              description="COM_SPORTSMANAGEMENT_TABS_SEASON_DESC">		
+
+        <field
+            name="season_ids"
+            type="seasoncheckbox"
+            targettable="season_team_id"
+            targetid="team_id"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SEASONLIST_DESC"
+            class="inputbox"/>	
+
+
+    </fieldset>		
+	
+    <fieldset name="description" 
+              label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+              description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+        <field
+            name="notes"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
+            width="450" 
+            filter="JComponentHelper::filterText"/>			
+    </fieldset>		
+	
+    <fieldset name="picture"
+                  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+                  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+        <field
+            name="picture"
+            type="media"
+            default=""				
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="teams"
+            directory=""/>	
+        
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PICTURE_CR_DESC"
+            class="inputbox"/>		
+    </fieldset>	
+
+    <fieldset name="extended"
+              label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+              description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+  
+    </fieldset>
+
+    <fieldset name="extra_fields"
+              label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
+              description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC">
+  
+    </fieldset>	
+	
+    <fieldset name="training"
+              label="COM_SPORTSMANAGEMENT_TABS_TRAINING"
+              description="COM_SPORTSMANAGEMENT_TABS_TRAINING_DESC">
+  
+    </fieldset>	  
+
+  		
+</form>
+

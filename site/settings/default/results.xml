@@ -4,7 +4,23 @@
 	<fieldset name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-	
+
+<field name="show_historylink" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_HISTORY"
+			description="COM_SPORTSMANAGEMENT_HISTORY">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+<field name="show_pagenav" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PAGENAV"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PAGENAV">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
@@ -99,7 +115,8 @@
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_REFEREES"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_REFEREES">
 			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_REFEREE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION2_SHOW_REFEREE</option>
 		</field>
 
 		<field	name="show_playground" type="extensionradiobutton" default="0"
@@ -251,14 +268,6 @@
 			<option value="1">JYES</option>
 		</field>	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 </fieldset>	
 <!-- register 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS" 
@@ -291,7 +300,7 @@
 
 			
 	</fieldset>
-	
+<!-- register 5 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_EVENTSOPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EVENTSOPTIONS" 
@@ -351,7 +360,7 @@
 		</field>
 							
 	</fieldset>			
-	
+<!-- register 6 -->	
 	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_LIVE_MATCHES"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_LIVE_MATCHES"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_LIVE_MATCHES">
@@ -414,27 +423,32 @@
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_MARK_NOW_PLAYING_ALT_ACTUAL_BREAK" size="50"/>
 
 	</fieldset>
-
-	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+<!-- register 7 -->
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">
 
-		<field	name="show_logo_small" type="list" default="6"
-				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
-				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_LOGO_SMALL">
-			<option value="0">JNO</option>
-			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
-			
-			<option value="5">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION3_LOGO_SMALL</option>
-			<option value="6">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION4_LOGO_SMALL</option>
-			
-			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
-      <option value="3">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
-      <option value="4">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-      
-      <option value="7">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_LOGO_BIG_COUNTRY_FLAG</option>
-		</field>
-
+	<field	name="show_logo_small" type="list" default="6"
+	label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
+	description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_LOGO_SMALL">
+	<option value="0">JNO</option>
+	<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
+	<option value="5">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION3_LOGO_SMALL</option>
+	<option value="6">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION4_LOGO_SMALL</option>
+	<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
+        <option value="3">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
+        <option value="4">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+        <option value="7">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG_COUNTRY_FLAG</option>
+        <option value="8">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_BIG</option>
+	</field>
+        <field	name="club_link_logo" type="extensionradiobutton" default="1"
+	class="radio btn-group btn-group-yesno"
+	label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_LINK_LOGO"
+	description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LINK_LOGO">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+	</field>
+		
 		<field	name="team_name_format" type="teamnameformat" default="2"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_NAMES"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_NAMES">
@@ -551,6 +565,15 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-    		
+<!--
+<field 	name="table_class_responsive" type="list" default="table-responsive" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE_RESPONSIVE">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_NO_RESPONSIVE</option>
+			<option value="table-responsive">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE</option>
+		
+</field>
+		-->
 	</fieldset>		
 </form>

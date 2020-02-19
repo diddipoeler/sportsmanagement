@@ -4,13 +4,15 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage databasetools
  */
  
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewDatabaseTools
@@ -29,14 +31,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $db = sportsmanagementHelper::getDBConnection();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-
-        $this->assign('request_url', $uri->toString());
+        
     }
 
     /**
@@ -47,7 +42,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView {
     protected function addToolbar() {
 
 //		// Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
         $this->icon = 'databases';
 
 

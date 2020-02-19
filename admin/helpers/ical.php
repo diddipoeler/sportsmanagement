@@ -35,8 +35,12 @@
  * 	$ical->get_all_data();
  *  echo "</pre>";
  * @version 1.0
- * @todo get sort todo list
+ * @internal get sort todo list
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+defined('_JEXEC') or die('Restricted access');
+
 class ical
 {
 	/**

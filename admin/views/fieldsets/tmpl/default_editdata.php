@@ -4,56 +4,49 @@
  * @file      default_editdata.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fieldsets
+ * https://www.joomlashack.com/blog/tutorials/tabs-bootstrap/
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-/**
- * welche joomla version ?
- */
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
-// Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('behavior.formvalidator');
-JHtml::_('behavior.keepalive');    
-JHtml::_('jquery.framework');
-}    
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
+$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
+$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try{
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }
 $view = $this->jinput->getCmd('view', 'cpanel');
 
 
-/**
- * welche joomla version ?
- */
+/** welche joomla version ? */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
+/** anfang joomla 4 ---------------------------------------------------------------------------------------------- */     
 ?>
 <div>
 <?php
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details'));
 
 foreach ($fieldsets as $fieldset) 
 {
-//echo JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>');
-    
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
+echo HTMLHelper::_('uitab.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 ?>
 <div class="row">
 <div class="col-md-12">
@@ -76,7 +69,7 @@ switch ($fieldset->name)
 							<?php echo $field->input; ?>
 						
                         <?PHP
-                        $suchmuster = array ("jform[","]","request[");
+                        $suchmuster = array ("jform[","]","request[","params[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                         switch ($var_onlinehelp)
@@ -87,14 +80,14 @@ switch ($fieldset->name)
                 ?>
 <a href="#<?php echo $var_onlinehelp;?>" title="<?php echo $var_onlinehelp;?>" class="" data-toggle="modal">
 <?php
-echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 	
-echo JHtml::_('bootstrap.renderModal',
+echo HTMLHelper::_('bootstrap.renderModal',
 	$var_onlinehelp,
 	array(
-	'title' => JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
+	'title' => Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
 	'url' => COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp,
     'width' => COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH,
     'height' => COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT
@@ -113,26 +106,32 @@ echo JHtml::_('bootstrap.renderModal',
                 {
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo Uri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo Uri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }
                 
                 if ( $field->name == 'jform[website]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">';
+                } 
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 break;
                 }
@@ -144,15 +143,30 @@ echo JHtml::_('bootstrap.renderModal',
     }
     ?>
     </div>
-             <div class="span6">
-						<div class="control-group">
-							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-							<div id="map_canvas"  class="map_canvas"></div>
-						</div>
-					</div>
-            </div>
+<div class="span6">
+<div class="control-group">
+<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+<!-- google map anfang -->
+<div id="map_canvas"  class="map_canvas">
+</div>
+<!-- google map ende -->
+
+<!-- leaflet map anfang -->
+<div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+</div>
+<!-- leaflet map ende -->	
+
+</div>
+</div>
+</div>
     <?PHP
     break;
+		case 'events':
+		echo $this->loadTemplate('position_events'); 
+	break;	
+case 'statistics':
+		echo $this->loadTemplate('position_statistics');
+	break;	
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets_4');
@@ -162,39 +176,50 @@ echo JHtml::_('bootstrap.renderModal',
 </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.endTab');
+echo HTMLHelper::_('uitab.endTab');
 }
-
-/**
- * bei den positionen müssen noch zusätzliche templates 
- * eingebunden werden
- */
-
-echo JHtml::_('bootstrap.endTabSet'); 
+echo HTMLHelper::_('uitab.endTabSet'); 
 ?>
 </div>
 <?php
+/** ende joomla 4 ---------------------------------------------------------------------------------------------- */
 }	
 elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
+/** anfang joomla 3 ---------------------------------------------------------------------------------------------- */    
 ?> 
 <div class="form-horizontal">
 <fieldset>
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 switch ($fieldset->name)
 {
     case 'details':
     ?>
     <div class="row-fluid">
-		<!--	<div class="span9"> -->
-		<!--		<div class="row-fluid form-horizontal-desktop"> -->
-					<div class="span6">
+    <?php
+    switch ($view)
+    {
+    case 'club':
+    case 'playground':
+    case 'player':
+    ?>
+    <div class="span6">
+    <?php
+    break;
+    default:
+    ?>
+    <div class="span12">
+    <?php
+    break;
+    }
+    ?>
+					
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
     {
@@ -207,11 +232,9 @@ switch ($fieldset->name)
 							<?php echo $field->input; ?>
 						
                         <?PHP
-                        $suchmuster = array ("jform[","]","request[");
+                        $suchmuster = array ("jform[","]","request[","params[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                        //echo 'field_name -> '.$field->name;
-//                        echo 'var_onlinehelp -> '.$var_onlinehelp;
                         switch ($var_onlinehelp)
                 {
                     case 'id':
@@ -219,12 +242,12 @@ switch ($fieldset->name)
                     default:
                 ?>
                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
                 
@@ -236,32 +259,35 @@ switch ($fieldset->name)
                 
                 if ( $field->name == 'jform[standard_playground]' )
                 {
-                //echo sportsmanagementHelper::getPicturePlayground($field->value);
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
-                //echo $picture;
-                //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
-                //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo Uri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo Uri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }
                 
                 if ( $field->name == 'jform[website]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 break;
                 }
@@ -273,23 +299,91 @@ switch ($fieldset->name)
     }
     ?>
     </div>
-		<!--		</div> -->
-		<!--	</div> -->
-             <div class="span6">
-						<div class="control-group">
-							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-							<div id="map_canvas"  class="map_canvas"></div>
+<?php
+    switch ($view)
+    {
+    case 'club':
+    case 'playground':
+    case 'player':
+    if ( !$this->item->latitude )
+    {
+        $this->item->latitude = '0.00000000';
+        $this->item->longitude = '0.00000000';
+    }
+?>
+<div class="span6">
+<div class="control-group">
+<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+<!-- google map anfang -->
+<div id="map_canvas" class="map_canvas" style="display: none;">
+</div>
+<!-- google map ende -->	
+<!-- leaflet map anfang -->	
+<div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+</div>
+<!-- leaflet map ende -->
+	
+<script>
+  
+     var planes = [
+         ["position",<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>]
+         ];
+  
+         var map = L.map('map').setView([<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>], 15);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: 20,
+             subdomains:['mt0','mt1','mt2','mt3'],
+             }).addTo(map);
+var myIcon = L.icon({
+	iconUrl: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png'
+});    
+
+var layerGroup = L.layerGroup().addTo(map);
+//var geocoder = new L.Control.Geocoder.Nominatim();
+for (i = 0; i < planes.length; i++) {
+    marker = L.marker([planes[i][1], planes[i][2]]);
+    layerGroup.addLayer(marker);
+}
+
+var overlay = {'markers': layerGroup};
+L.control.layers(null, overlay).addTo(map);
+
+//         for (var i = 0; i < planes.length; i++) {
+//             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+//                 .bindPopup(planes[i][0])
+//                 .addTo(map);
+//         }
+
+//L.Control.geocoder().addTo(map); 
+              
+     </script>                            
+                            
 						</div>
 					</div>
+                    <?php
+                    break;
+                    }
+                    ?>
             </div>
     <?PHP
     break;
+case 'events':
+		echo $this->loadTemplate('position_events'); 
+	break;	
+case 'statistics':
+		echo $this->loadTemplate('position_statistics');
+	break;			
+		
     default:
     $this->fieldset = $fieldset->name;
     echo $this->loadTemplate('fieldsets_3');
     break;
 }    
-echo JHtml::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 /**
@@ -300,12 +394,7 @@ echo JHtml::_('bootstrap.endTab');
 switch ($view)
 {
     case 'position':
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', JText::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
-    echo $this->loadTemplate('position_events');
-    echo JHtml::_('bootstrap.endTab');
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
-    echo $this->loadTemplate('position_statistics');
-    echo JHtml::_('bootstrap.endTab');  
+	
     break;
     
 } 
@@ -313,11 +402,12 @@ switch ($view)
  
 ?>    
 	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </fieldset>
 </div> 
 
 <?PHP
+/** ende joomla 3 ---------------------------------------------------------------------------------------------- */
 }
 else
 {
@@ -327,27 +417,31 @@ else
 	
 <div class="control-group">
 <style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-<div id="map_canvas"  class="map_canvas"></div>
+<!-- google map anfang -->
+<div id="map_canvas"  class="map_canvas">
+</div>
+<!-- google map ende -->	
+<!-- leaflet map anfang -->		
+<div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+</div>
+<!-- leaflet map ende -->			
 </div>
 
 		<?php
-		echo JHtml::_('sliders.start');
+		echo HTMLHelper::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
-        
-        //echo 'fieldset name'.$fieldset->name.'<br>';
-        
 			if ($fieldset->name == 'details') :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo HTMLHelper::_('sliders.end'); ?>
 
 	
 	</div>
@@ -378,7 +472,7 @@ if ( $view == 'treetonode' )
 }
 
 	
-echo JHtml::_('form.token'); 
+echo HTMLHelper::_('form.token'); 
 ?>
 </div>
 </form>

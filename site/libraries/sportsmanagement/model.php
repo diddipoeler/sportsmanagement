@@ -1,51 +1,152 @@
 <?PHP        
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      model.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage libraries
+ */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
-jimport('joomla.application.component.modeladmin');
-jimport('joomla.application.component.modellist');
-
-class JSMModelList extends JModelList
+/**
+ * JSMModelAdmin
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JSMModelAdmin extends AdminModel
 {
     
+    /**
+     * JSMModelAdmin::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+	{
+// Reference global application object
+$this->jsmapp = Factory::getApplication('site');
+$this->jsmjinput = $this->jsmapp->input;
+$this->jsmoption = $this->jsmjinput->getCmd('option');
+$this->jsmview = $this->jsmjinput->getCmd('view');	   
+       parent::__construct($config);
+       }
+    
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @return	mixed	A JForm object on success, false on failure
+	 * @since	1.6
+	 */
+	public function getForm($data = array(), $loadData = true) 
+	{
+		
+	}
+    
+}
+
+/**
+ * JSMModelList
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JSMModelList extends ListModel
+{
+    
+    /**
+     * JSMModelList::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+	{
+	    parent::__construct($config);
+	    $getDBConnection = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($getDBConnection);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($this->jsmdb);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+// Reference global application object
+$this->jsmapp = Factory::getApplication('site');
+$this->jsmjinput = $this->jsmapp->input;
+$this->jsmoption = $this->jsmjinput->getCmd('option');
+$this->jsmview = $this->jsmjinput->getCmd('view');	   
+       
+       }
+    
+    
+}
+
+
+/**
+ * JSMModelLegacy
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class JSMModelLegacy extends BaseDatabaseModel
+{
+
+/**
+ * JSMModelLegacy::__construct()
+ * 
+ * @param mixed $config
+ * @return void
+ */
+public function __construct($config = array())
+	{
+/** Reference global application object */
+$this->jsmapp = Factory::getApplication('site');
+$this->jsmjinput = $this->jsmapp->input;
+$this->jsmoption = $this->jsmjinput->getCmd('option');
+$this->jsmview = $this->jsmjinput->getCmd('view');
+$this->jsmdb = sportsmanagementHelper::getDBConnection();
+$this->jsmquery = $this->jsmdb->getQuery(true);
+	
+/**
+ * alle fehlermeldungen online ausgeben
+ * mit der kategorie: jsmerror    
+ * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL   
+ */ 
+Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+/**
+ * fehlermeldungen datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
+/**
+ * laufzeit datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+
+
+	   
+       parent::__construct($config);
+       }    
 
     
 }

@@ -4,17 +4,16 @@
  * @file      predictionproject.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
- 
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerpredictionproject
@@ -25,7 +24,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerpredictionproject extends JControllerForm
+class sportsmanagementControllerpredictionproject extends FormController
 {
 
 /**
@@ -37,9 +36,9 @@ class sportsmanagementControllerpredictionproject extends JControllerForm
 	 */
   function store()
 	{
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->save($post['jform']);

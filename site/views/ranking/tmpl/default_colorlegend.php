@@ -4,7 +4,7 @@
  * @file      deafult_colorlegend.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
@@ -18,7 +18,7 @@ if (!isset($this->tableconfig['show_colors_legend'])) {
 if ($this->tableconfig['show_colors_legend']) {
     ?>
     <br />
-    <div class="table-responsive">
+    <div class="<?php echo $this->divclassrow;?> table-responsive" id="colorlegend">
         <table class="table">
             <tr>
                 <?php

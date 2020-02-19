@@ -1,14 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.00
  * @file      mod_sportsmanagement_matchesslider.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
  */ 
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -19,68 +26,69 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-//if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-//{
-//DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
-//}
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+}
 
 /**
  * soll die externe datenbank genutzt werden ?
  */
-if ( JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
+if ( ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {
-$module->picture_server = JURI::root();    
+$module->picture_server = Uri::root();    
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+/**
+ *  prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('sportsmanagementHelper')) {
+/**
+ * add the classes for handling
+ */
+    $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
+    JLoader::register('sportsmanagementHelper', $classpath);
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+} 
+JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
 
-if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
-if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', JURI::base().'modules/'.$module->module.'/');}
-require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
-require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
+//if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
+if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', Uri::base().'modules/'.$module->module.'/');}
+
+/** Include the functions only once */
+JLoader::register('modMatchesSliderHelper', __DIR__ . '/helper.php');
+JLoader::register('MatchesSliderSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHTML::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $jinput = $app->input;
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 $doc->addScript( _JLMATCHLISTSLIDERMODURL.'assets/js/jquery.simplyscroll.js' );
-//$doc->addStyleSheet(_JLMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matchesslider.css');
 $doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL.'assets/css/'.$module->module.'.css');
 
-
-JHTML::_('behavior.tooltip');
-//$doc->addScriptDeclaration('
-//(function($) {
-//	$(function() { //on DOM ready
-//		$("#scroller").simplyScroll({
-//			customClass: \'custom\',
-//			direction: \'backwards\',
-//			pauseOnHover: false,
-//			frameRate: 20,
-//			speed: 2
-//		});
-//	});
-//})(jQuery);
-//  ');
-
-//$mod = new MatchesSliderSportsmanagementConnector($params, $module->id, $match_id);
-//$matches = $mod->getMatches();
+HTMLHelper::_('behavior.tooltip');
 
 $config = array();
 $slidermatches = array();
@@ -94,16 +102,34 @@ if ( !$projectid )
 $cfg_which_database = $params->get('cfg_which_database');
 $s = $params->get('s');
     
-    foreach( $params->get('project') as $key => $value )
+    foreach( $params->get('p') as $key => $value )
     {
-        //$projectid = $value;
-        sportsmanagementModelProject::$projectid = (int)$value;
+      
+      $projectid = (int)$value;
+	    if ( $params->get('teams') )
+	    {
+	foreach( $params->get('teams') as $keyteam => $valueteam )
+    {
+	sportsmanagementModelProject::$projectid = $projectid;
+        sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+        sportsmanagementModelResults::$projectid = $projectid;
+        sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
+        $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database,(int)$valueteam);
+        $slidermatches = array_merge($slidermatches,$matches);	
+	}
+	    }
+	    else
+	    {
+        sportsmanagementModelProject::$projectid = $projectid;
         sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
-        //$slidermatches[] = $matches;
-        $slidermatches = array_merge($matches);
+        $slidermatches = array_merge($slidermatches,$matches);
+	    }
+      
+      
+      
     }
     
 }    
@@ -114,8 +140,11 @@ sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
 sportsmanagementModelResults::$projectid = $projectid;
 sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
 $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
-$slidermatches = array_merge($matches);
+$slidermatches = array_merge($slidermatches,$matches);
 }
+
+usort($slidermatches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
+
 
 foreach( $slidermatches as $match )
 {
@@ -167,6 +196,6 @@ break;
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

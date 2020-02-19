@@ -4,15 +4,19 @@
  * @file      rankingalltime.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage rankingalltime
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Log\Log;
 
-
-jimport('joomla.application.component.model');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
 
@@ -22,7 +26,6 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 $maxImportTime = 480;
-error_reporting(0);
 if ((int)ini_get('max_execution_time') < $maxImportTime) {
     @set_time_limit($maxImportTime);
 }
@@ -36,7 +39,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRankingAllTime extends JModelLegacy
+class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 {
 
     var $teams = array();
@@ -68,36 +71,18 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
     function __construct()
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
-        /*
-        if (!class_exists(self::$classname))
-        {
-        $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
-        if (file_exists($file))
-        {
-        require_once($file);
-        }
-        }
-        */
-        $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
+        
+        $file = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ranking.php';
         require_once($file);
         
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r(self::$classname,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item->query['view'],true).'</pre>'),'Notice');
-        
+       
         $params = $menu->getParams($item->id);
 
-        //$menu = &JSite::getMenu();
-        //$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
         if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
             $this->debug_info = true;
         } else {
@@ -109,11 +94,10 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
         // diddipoeler
         // menueeintrag vorhanden    
 
-$registry = new JRegistry();
+$registry = new Registry();
 $registry->loadArray($params);
-//$newparams = $registry->toString('ini');
 $newparams = $registry->toArray();
-//echo "<b>menue newparams</b><pre>" . print_r($newparams, true) . "</pre>";  
+ 
 foreach ($newparams['data'] as $key => $value ) {
             
             $this->_params[$key] = $value;
@@ -122,32 +106,23 @@ foreach ($newparams['data'] as $key => $value ) {
         }
         else
         {
-//$strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'settings'.DS.'default'.DS.'rankingalltime.xml';    
-        $strXmlFile = JPATH_SITE.DS.JSM_PATH.DS.'views'.DS.'rankingalltime'.DS.'tmpl'.DS.'default.xml';
+//$strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';    
+        $strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'rankingalltime'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'default.xml';
         //$xml = simplexml_load_file($strXmlFile);
         
-//        $xml = JFactory::getXMLParser( 'Simple' );
-//        $xml->loadFile($strXmlFile);
-        $xml=JFactory::getXML($strXmlFile);
+        $xml=Factory::getXML($strXmlFile);
         $children = $xml->document->children();
 
  // We can now step through each element of the file 
 foreach( $xml->children() as $field ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' field<br><pre>'.print_r($field ,true).'</pre>'),'Notice');
-//$attr = $field->field->attributes();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attr <br><pre>'.print_r($attr ,true).'</pre>'),'Notice'); 
+
 foreach( $field->fieldset  as $fieldset ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>'),'Notice');
 
 foreach( $fieldset->field  as $param ) 
 {
 $attributes = $param->attributes();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attributes<br><pre>'.print_r($attributes,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attributes name<br><pre>'.print_r($attributes['name'],true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attributes default<br><pre>'.print_r($attributes['default'],true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attributes name<br><pre>'.print_r((string)$param->attributes()->name[0],true).'</pre>'),'Notice');
 
 $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attributes()->default[0];
 
@@ -156,13 +131,8 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
 }  
 
    }
-		
-
         
 }        
-
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'Notice');
         
         parent::__construct();
 
@@ -177,13 +147,12 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
      */
     function getAllTeamsIndexedByPtid($project_ids)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $result = self::getAllTeams($project_ids);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'Notice');
         
         $count_teams = count($result);
-    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
+Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    
 
         if (count($result)) {
             foreach ($result as $r) {
@@ -228,15 +197,14 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
      */
     function getAllTeams($project_ids)
     {
-$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->clear();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
-        
+       
 if ( $project_ids )
 {        
         $query->select('tl.id AS projectteamid,tl.division_id');
@@ -263,7 +231,6 @@ $query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standa
 $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = tl.project_id' );
             
 $query->where('tl.project_id IN (' . $project_ids . ')' );
-//$query->group('tl.team_id' );
 $query->group('st.team_id' );
             
 
@@ -272,15 +239,14 @@ $query->group('st.team_id' );
         
         if ( !$this->_teams )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+
         }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->_teams;
 }
 else
 {
-JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
 			return false;    
 }
 
@@ -294,15 +260,14 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllMatches($projects)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $res = '';
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->clear();
    
-   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projects<br><pre>'.print_r($projects,true).'</pre>'),'');
    
    if ( $projects )
    {     
@@ -334,19 +299,17 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     
     if ( !$res )
         {
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-	    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_RANKINGALL_MATCHES'),'Error');
+	    Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::ERROR, 'jsmerror');
         }
               
     $this->_matches = $res;
     
     $count_matches = count($res);
-    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_matches.' Spiele !'),'');
+Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsmerror');	    
     }
     else
     {
-    JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
 			return false;    
     }  
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
@@ -361,13 +324,11 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllTimeRanking()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     
     $arr = explode(",",$this->alltimepoints);
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' alltimepoints<br><pre>'.print_r($arr,true).'</pre>'),'');
-    
+   
     foreach ((array)$this->_matches as $match)
 		{
 		$resultType = $match->match_result_type;
@@ -392,8 +353,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     $home = &$this->teams[$homeId];
     $away = &$this->teams[$awayId];
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' home<br><pre>'.print_r($home,true).'</pre>'),'');
-    
+   
     $home->cnt_matches++;
 		$away->cnt_matches++;
     
@@ -653,7 +613,6 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     }
     
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
 
 /**
  * hier werden die werte aus dem projekt dem team dazu addiert
@@ -686,7 +645,6 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
         
     }
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
     return $this->teams;
      
@@ -730,7 +688,47 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 		}
 		return $colors;
 	}
-    
+
+	
+    function getAllProjectNames()
+    {
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $jinput = $app->input;
+        $league = $jinput->request->get('l', 0, 'INT');
+       
+	$db = Factory::getDBO();
+	$query = Factory::getDbo()->getQuery(true);
+
+        if (!$league) 
+        {
+        $projekt = $jinput->request->get('p', 0, 'INT');
+        $query->clear();
+	$query->select('league_id');
+	$query->from('#__sportsmanagement_project');
+        $query->where('id = ' . $projekt);
+        $query->order('name ');
+        $db->setQuery($query);
+        $league = $db->loadResult();
+
+        }
+
+$query->clear();
+$query->select('p.id,p.name,s.name as seasonname');
+$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');	    
+$query->from('#__sportsmanagement_project as p');
+$query->join('INNER','#__sportsmanagement_season AS s ON p.season_id = s.id '); 	    
+$query->where('p.league_id = ' . $league);
+$query->order('s.name DESC ');
+$db->setQuery($query);
+$result = $db->loadObjectList();        
+       
+
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $result;
+
+    }
+	
     /**
      * sportsmanagementModelRankingAllTime::getAllProject()
      * 
@@ -738,21 +736,14 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllProject()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $jinput = $app->input;
         $league = $jinput->request->get('l', 0, 'INT');
-        
-        //$search	= $this->getState('filter.search');
-        
-        //$this->_project_id	= JFactory::getApplication()->input->getVar('pid');
-        //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
-        
+       
         // Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = JFactory::getDbo()->getQuery(true);
-
-        //$league = JFactory::getApplication()->input->getInt("l", 0);
+		$db = Factory::getDBO();
+		$query = Factory::getDbo()->getQuery(true);
 
         if (!$league) 
         {
@@ -764,10 +755,6 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 		$query->from('#__sportsmanagement_project');
         $query->where('id = ' . $projekt);
         $query->order('name ');
-        
-//            $query = 'select league_id 
-//  from #__sportsmanagement_project
-//  where id = ' . $projekt . ' order by name ';
             $db->setQuery($query);
             $league = $db->loadResult();
 
@@ -780,14 +767,7 @@ $query->clear();
 		$query->from('#__sportsmanagement_project');
         $query->where('league_id = ' . $league);
         $query->order('name ');
-        
-//        $query = 'select id 
-//  from #__sportsmanagement_project
-//  where league_id = ' . $league . ' order by name ';
-  
         $db->setQuery($query);
-        //$result = $this->_db->loadObjectList();
-        //$result = $db->loadResultArray();
         
          if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -802,14 +782,9 @@ $query->clear();
         
         $this->project_ids = implode(",", $result);
         $this->project_ids_array = $result;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' league<br><pre>'.print_r($league,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt<br><pre>'.print_r($projekt,true).'</pre>'),'Notice');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+       
         $count_project = count($result);
-    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
+Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::INFO, 'jsmerror');	    
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 
@@ -832,13 +807,10 @@ $query->clear();
      */
     function getCurrentRanking()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-    
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+   
         $newranking = array();
-
 
         foreach ($this->teams as $key) 
         {
@@ -864,15 +836,9 @@ $query->clear();
             $new->_pid = $key->project_id;
 
             $newranking[0][$key->team_id] = $new;
-
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($key->team_id,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new<br><pre>'.print_r($new,true).'</pre>'),'');
         
         }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newranking<br><pre>'.print_r($newranking,true).'</pre>'),'');
-        
+       
         $newranking[0] = self::_sortRanking($newranking[0]);
 
         $oldpoints = 0;
@@ -905,7 +871,7 @@ $query->clear();
     function _sortRanking(&$ranking)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'DESC', 'STR');
@@ -913,16 +879,9 @@ $query->clear();
         $arr2 = array();
         
         foreach ($ranking as $row) {
-                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
+                $arr2[$row->_teamid] = ArrayHelper::fromObject($row);
             }
-
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order_dir<br><pre>'.print_r($order_dir,true).'</pre>'),'Notice');
-        
-        //$order = JFactory::getApplication()->input->getVar('order', '');
-        //$order_dir = JFactory::getApplication()->input->getVar('dir', 'DESC');
-
+       
         if (!$order) 
         {
             $order_dir = 'DESC';
@@ -958,21 +917,12 @@ $query->clear();
 
             foreach ($arr2 as $key => $row) 
             {
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
+
+                $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
 
         } else //     if ( !$order_dir)
         {
-            //     $order_dir = 'DESC';
-            //     }
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r(self::$classname,true).'</pre>'),'Notice');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ranking<br><pre>'.print_r($ranking,true).'</pre>'),'Notice');
-            
             switch ($order) {
                 case 'played':
                     //uasort($ranking, array(self::$classname, "playedCmp"));
@@ -1063,17 +1013,8 @@ $query->clear();
 
             foreach ($arr2 as $key => $row) 
             {
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
+                $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
-            
-//            if ($order_dir == 'DESC') {
-//                $ranking = array_reverse($ranking, true);
-//            }
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ranking<br><pre>'.print_r($ranking,true).'</pre>'),'Notice');
 
         }
 
@@ -1129,9 +1070,7 @@ $query->clear();
  */
 function _getRankingCriteria()
     {
-$app = JFactory::getApplication();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
+$app = Factory::getApplication();
 
         if (empty($this->_criteria)) {
             // get the values from ranking template setting
@@ -1142,7 +1081,7 @@ $app = JFactory::getApplication();
                 if (method_exists($this, '_cmp' . $v)) {
                     $crit[] = '_cmp' . $v;
                 } else {
-                    JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v);
+					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
                 }
             }
             // set a default criteria if empty
@@ -1156,8 +1095,6 @@ $app = JFactory::getApplication();
             $this->dump_header("models function _getRankingCriteria");
             $this->dump_variable("this->_criteria", $this->_criteria);
         }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _criteria<br><pre>'.print_r($this->_criteria,true).'</pre>'),'');
 
         return $this->_criteria;
     }

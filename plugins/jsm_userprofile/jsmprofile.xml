@@ -7,7 +7,7 @@
   <creationDate>Sep 2014</creationDate>
   <version>1.0.0</version>
   <description>PLG_USER_JSMPROFILE_XML_DESCRIPTION</description>
- 
+ <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <files>
     <filename plugin="jsmprofile">jsmprofile.php</filename>
     <filename>index.html</filename>
@@ -17,8 +17,8 @@
    <languages>
 		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_user_jsmprofile.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.plg_user_jsmprofile.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.sys.ini</language>
 		
 	</languages> 
 	

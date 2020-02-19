@@ -4,16 +4,20 @@
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
 * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+* @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
-defined('_JEXEC') or die ;
 
-jimport('joomla.form.formfield');
+defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
+//jimport('joomla.form.formfield');
 
 /**
- * JFormFieldExtensionVersion
+ * FormFieldExtensionVersion
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,32 +25,32 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionVersion extends JFormField {
+class JFormFieldExtensionVersion extends FormField {
 		
 	public $type = 'ExtensionVersion';
 	
 	protected $version;
 
 	/**
-	 * JFormFieldExtensionVersion::getLabel()
+	 * FormFieldExtensionVersion::getLabel()
 	 * 
 	 * @return
 	 */
 	protected function getLabel() 
 	{		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();
         $reload = true;
         $lang->load($extension, $base_dir, $language_tag, $reload);
 		$html = '';
-		$html .= '<div style="clear: both;">'.JText::_('COM_SPORTSMANAGEMENT_VERSION_LABEL').'</div>';
+		$html .= '<div style="clear: both;">'.Text::_('COM_SPORTSMANAGEMENT_VERSION_LABEL').'</div>';
 		return $html;
 	}
 
 	/**
-	 * JFormFieldExtensionVersion::getInput()
+	 * FormFieldExtensionVersion::getInput()
 	 * 
 	 * @return
 	 */
@@ -59,7 +63,7 @@ class JFormFieldExtensionVersion extends JFormField {
 	}
 	
 	/**
-	 * JFormFieldExtensionVersion::setup()
+	 * FormFieldExtensionVersion::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

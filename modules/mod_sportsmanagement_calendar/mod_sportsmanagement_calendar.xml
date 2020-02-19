@@ -26,10 +26,6 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_calendar.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_calendar.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_calendar.sys.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_calendar.ini</language>
-		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_calendar.sys.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_calendar.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_calendar.sys.ini</language>
 	</languages>
 	
 	<config>
@@ -43,7 +39,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Calendar" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
@@ -318,7 +314,7 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-			 <field name="moduleclass_sfx" type="text" default=""
+			 <field name="moduleclass_sfx" type="text" default="container-fluid"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXDESC">
 				</field>
 				<field name="cache" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGLBL"

@@ -19,7 +19,6 @@
 					<option value="btn btn-danger">Danger</option>
 				</field>
 				
-				
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -35,7 +34,8 @@
 			</option>
 			<option value="2">COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY
 			</option>
-			
+			<option value="4">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAN_LAYOUT_SORTED_BY_DATE
+			</option>
 		</field>
 		<field name="MatchesOrderBy" type="extensionradiobutton" default="ASC"
     class="radio btn-group btn-group-yesno"

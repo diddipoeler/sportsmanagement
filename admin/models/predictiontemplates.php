@@ -1,16 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      predictiontemplates.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictiontemplates
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -61,11 +63,17 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
+        if ( $this->jsmjinput->getInt('prediction_id') )
+		{
+		$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id') );
+        $this->jsmapp->setUserState( "com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id') );	
+		}
+		else
+		{
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
 		$this->setState('filter.prediction_id', $temp_user_request);
         $this->jsmapp->setUserState( "com_sportsmanagement.prediction_id", $temp_user_request );
-        
+	}
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);       
@@ -111,43 +119,31 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'tmpl.title')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
- 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-		
+	
 		return $this->jsmquery;
 	}
-
-
-
 	
 	/**
+     * sportsmanagementModelPredictionTemplates::checklist()
 	 * check that all prediction templates in default location have a corresponding record, except if game has a master template
 	 *
 	 */
 	function checklist($prediction_id)
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
         
-		//$prediction_id	= $this->_prediction_id;
-		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DS.'settings';
-		$defaultpath	= JPATH_COMPONENT_SITE.DS.'settings';
-    //$extensionspath	= JPATH_COMPONENT_SITE . DS . 'extensions' . DS;
+		$defaultpath	= JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
     // Get the views for this component.
 	$path = JPATH_SITE.'/components/'.$option.'/views';
         
 		$templatePrefix	= 'prediction';
-//    $defaultvalues = array();
     
 		if (!$prediction_id)
         {
@@ -161,12 +157,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$query->from('#__sportsmanagement_prediction_game ');
         $query->where('id = ' . $prediction_id );
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-//		$query = 'SELECT master_template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game 
-//					WHERE id = ' . (int) $prediction_id;
-
 		$db->setQuery($query);
 		$params = $db->loadObject();
 
@@ -183,12 +173,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		// From table
 		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-//		$query = 'SELECT template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
-//					WHERE prediction_id = ' . (int) $prediction_id;
 
 		$db->setQuery($query);
 		if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -207,16 +191,18 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
     
 		// add default folder
-		$xmldirs[] = $defaultpath . DS . 'default';
+		$xmldirs[] = $defaultpath .DIRECTORY_SEPARATOR. 'default';
 
 		// now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
 		{
 			if ($handle = opendir($xmldir))
 			{
-				/* check that each xml template has a corresponding record in the
-				database for this project. If not, create the rows with default values
-				from the xml file */
+				/**
+                 *  check that each xml template has a corresponding record in the
+                 * 	database for this project. If not, create the rows with default values
+                 * 	from the xml file 
+                 */
 				while ($file = readdir($handle))
 				{
 					if ($file!='.'&&$file!='..'&&strtolower(substr($file,(-3)))=='xml'&&
@@ -224,55 +210,50 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					{
 						$template = substr($file,0,(strlen($file)-4));
                         
-                        //$app->enqueueMessage(JText::_('PredictionGame template -> '.$template),'');
-                        
-						// Determine if a metadata file exists for the view.
-				        //$metafile = $path.'/'.$template.'/metadata.xml';
+/**
+ * Determine if a metadata file exists for the view.
+ */
                         $metafile = $path.'/'.$template.'/tmpl/default.xml';
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
-                        // Attempt to load the xml file.
+/**
+ * Attempt to load the xml file.
+ */
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
-                        //$app->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
-                        // This will save the value of the attribute, and not the objet
-                        //$attributetitle = (string)$metaxml->view->attributes()->title;
+
+/**
+ * This will save the value of the attribute, and not the objet
+ */
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        //$app->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
+                        
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
-                            //$app->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
                             }
                         }
                         }
                         
                         if ((empty($records)) || (!in_array($template,$records)))
 						{
-						  $jRegistry = new JRegistry();
-							$form = JForm::getInstance($file, $xmldir.DS.$file);
+						  $jRegistry = new Registry();
+							$form = JForm::getInstance($file, $xmldir.DIRECTORY_SEPARATOR.$file);
 							$fieldsets = $form->getFieldsets();
-							
-							//echo 'fieldsets<br /><pre>~' . print_r($fieldsets,true) . '~</pre><br />';
-							//echo 'form<br /><pre>~' . print_r($form,true) . '~</pre><br />';
-							
+						
 							$defaultvalues = array();
 							foreach ($fieldsets as $fieldset) 
               {
 								foreach($form->getFieldset($fieldset->name) as $field) 
                 {
-									//echo 'field<br /><pre>~' . print_r($field,true) . '~</pre><br />';
                   $jRegistry->set($field->name, $field->value);
                   $defaultvalues[] = $field->name.'='.$field->value;
 								}				
 							}
 							
                             $defaultvalues = $jRegistry->toString('ini');
-                            
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
-                            
-                            $parameter = new JRegistry;
+                           
+                            $parameter = new Registry;
 			                if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $ini = $parameter->loadString($defaultvalues);
@@ -283,18 +264,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
-                            	
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
-
                             
-							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
-                            //$defaultvalues = preg_replace('"', '', $defaultvalues);
-							//$defaultvalues = implode('\n', $defaultvalues);
-							//echo 'defaultvalues<br /><pre>~' . print_r($defaultvalues,true) . '~</pre><br />';
-							
-							//$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
-                            
-                            // otherwise, compare the records with the files // get records
+/**
+ * otherwise, compare the records with the files
+ */ 
         $query->clear('');
         // Select some fields
         $query->select('id');
@@ -302,18 +275,11 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
         $query->where('template LIKE '.$db->Quote(''.$template.''));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-//		$query = 'SELECT template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
-//					WHERE prediction_id = ' . (int) $prediction_id;
-
 		$db->setQuery($query);
 		$record_tpl = $db->loadResult();
         if( !$record_tpl )
         {
-                            $mdl = JModelLegacy::getInstance("predictiontemplate", "sportsmanagementModel");
+                            $mdl = BaseDatabaseModel::getInstance("predictiontemplate", "sportsmanagementModel");
                             $tblTemplate_Config = $mdl->getTable();
 							
                             $tblTemplate_Config->template = $template;
@@ -336,8 +302,39 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 								return false;
 							}
 							array_push($records,$template);
-		}					
+		}	
+                          else
+                          {
+$newround = new stdClass();
+$newround->id = $record_tpl;
+$newround->title = $attributetitle;
+// update the object
+$result = $db->updateObject('#__sportsmanagement_prediction_template', $newround, 'id',true);                            
+                            
+                            
+                          }
 							
+						}
+                      else
+						{
+// Select some fields
+                        $query->clear('');
+        $query->select('id');
+		// From table
+		$query->from('#__sportsmanagement_prediction_template ');
+        $query->where('prediction_id = ' . $prediction_id );
+        $query->where('template LIKE '.$db->Quote(''.$template.''));
+		$db->setQuery($query);
+		$record_tpl = $db->loadResult();
+if( $record_tpl )
+        {
+  $newround = new stdClass();
+$newround->id = $record_tpl;
+$newround->title = $attributetitle;
+// update the object
+$result = $db->updateObject('#__sportsmanagement_prediction_template', $newround, 'id',true);   
+}
+                        
 						}
 					}
 				}

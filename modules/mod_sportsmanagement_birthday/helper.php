@@ -4,19 +4,19 @@
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
  
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-$mainframe = JFactory::getApplication();
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
+$mainframe = Factory::getApplication();
 $database = sportsmanagementHelper::getDBConnection();
 $players = array();
 $crew = array();
-
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
 if (!function_exists('jsm_birthday_sort')) {
 
@@ -29,7 +29,7 @@ if (!function_exists('jsm_birthday_sort')) {
      * @return
      */
     function jsm_birthday_sort($array, $arguments = '-', $keys = true) {
-     $mainframe = JFactory::getApplication(); 
+     $mainframe = Factory::getApplication(); 
 
 // Hole eine Liste von Spalten
 foreach ($array as $key => $row) {
@@ -38,29 +38,14 @@ foreach ($array as $key => $row) {
 }
 
 $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
-
-//array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' array<br><pre>'.print_r($array,true).'</pre>'),''); 
-     
+    
         return $array;
     }
-
-
- 
- 
  
 }
 
-$usedp = $params->get('projects', '0');
+$usedp = $params->get('p', '0');
 $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
-
-
-//$usedp = $params->get('teams','0');
-//$usedteams = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' usedteams<br><pre>'.print_r($usedteams,true).'</pre>'),'');
 
 $usedteams = "";
 
@@ -78,29 +63,26 @@ if ( $params->get('use_fav') ) {
 
     $database->setQuery($query);
 
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
     $temp = $database->loadResultArray();
 
     if (!$temp) {
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($database->getErrorMsg(),true).'</pre>'),'Error');
+
     }
 
     if (!empty($temp)) {
         $usedteams = join(',', array_filter($temp));
     }
 } else {
-    //$usedteams = $params->get('teams');
     $usedp = $params->get('teams', '0');
     $usedteams = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
 }
 
 $birthdaytext = '';
 
-// get player info, we have to make a function for this
+/** get player info, we have to make a function for this */
 $dateformat = "DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth";
 
-if ($params->get('use_which') <= 1) {
+if ( $params->get('use_which') <= 1 ) {
     $query = $database->getQuery(true);
     $query->clear();
     $subquery1 = $database->getQuery(true);
@@ -119,6 +101,7 @@ if ($params->get('use_which') <= 1) {
     $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+ $query->select('CONCAT_WS(\':\',s.id,s.alias) AS season_slug');
     $query->select('t.name as team_name');
 
     $query->from('#__sportsmanagement_person AS p ');
@@ -126,16 +109,24 @@ if ($params->get('use_which') <= 1) {
     $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id and st.season_id = stp.season_id ');
     $query->join('INNER', '#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
     $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
+ $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = pro.season_id');
     $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
+ if ( $params->get('use_which') == 1 )
+ {
     $query->where('stp.persontype = 1');
-    
+ }
+ elseif ( $params->get('use_which') == 0 )
+ {
+    $query->where(' ( stp.persontype = 1 OR stp.persontype = 2 ) ');
+ }
     $subquery1->select('pos.name');
     $subquery1->from('#__sportsmanagement_position AS pos ');
     $subquery1->join('INNER', '#__sportsmanagement_project_position as ppos ON ppos.position_id = pos.id ');
     $subquery1->join('INNER', '#__sportsmanagement_person_project_position as pppos ON pppos.project_position_id = ppos.id ');
     $subquery1->where('pppos.person_id = p.id');
     $subquery1->where('pppos.project_id = pro.id');
+    $subquery1->setLimit(1);
     $query->select('(' . $subquery1 . ') AS position_name');
 
 
@@ -165,16 +156,17 @@ if ($params->get('use_which') <= 1) {
     } else {
         $database->setQuery($query);
     }
-    //$query->setLimit($params->get('limit'));
-    //$database->setQuery($query);
-    //echo("<hr>".$database->getQuery($query));
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
+    
+ try{
     $players = $database->loadAssocList();
+ } catch (Exception $e) {
+                $mainframe->enqueueMessage(__FILE__.' '. __LINE__ . Text::_($e->getMessage()), 'Error');
+             }
+ 
 }
 
-//get staff info, we have to make a function for this
-if ($params->get('use_which') == 2 || $params->get('use_which') == 0) {
+/** get staff info, we have to make a function for this */
+if ( $params->get('use_which') == 2 ) {
     $query = $database->getQuery(true);
     $query->clear();
 
@@ -204,7 +196,7 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0) {
     if ($params->get('agegrouplist')) {
         $query->where('p.agegroup_id = ' . $params->get('agegrouplist'));
     }
-    // Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
+    /** Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff) */
     if (count($players) > 0) {
         $ids = "0";
         foreach ($players AS $player) {
@@ -234,8 +226,11 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0) {
         $database->setQuery($query);
     }
 
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-    //echo("<hr>".$database->getQuery($query));
+try{
     $crew = $database->loadAssocList();
+ } catch (Exception $e) {
+                $mainframe->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+             }
+
 }
 ?>

@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldMultiList
@@ -74,7 +75,7 @@ class JFormFieldMultiList extends JFormField
 		{
 			$val	= $option->attributes('value');
 			$text	= $option->data();
-			$options[] = JHtml::_('select.option', $val, JText::_($text));
+			$options[] = HTMLHelper::_('select.option', $val, Text::_($text));
 		}
  
 		// Construct the various argument calls that are supported.
@@ -94,7 +95,7 @@ class JFormFieldMultiList extends JFormField
 		}
  
 		// Render the HTML SELECT list.
-		//return JHtml::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $value, $control_name.$name );
-		return JHtml::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', array_map('trim', explode(',', $value)), $control_name.$name );
+		//return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $value, $control_name.$name );
+		return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', array_map('trim', explode(',', $value)), $control_name.$name );
 	}
 }

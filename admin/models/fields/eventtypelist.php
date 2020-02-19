@@ -4,20 +4,24 @@
  * @file      eventtypelist.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fields
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldeventtypelist
+ * FormFieldeventtypelist
  * 
  * @package   
  * @author 
@@ -25,7 +29,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldeventtypelist extends JFormFieldList
+class JFormFieldeventtypelist extends \JFormFieldList
 {
     
 	/**
@@ -44,15 +48,13 @@ class JFormFieldeventtypelist extends JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
-    //$vartable = (string) $this->element['targettable'];
-//		$select_id = JFactory::getApplication()->input->getVar('id');
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');
@@ -65,15 +67,12 @@ class JFormFieldeventtypelist extends JFormFieldList
 			$options = $db->loadObjectList();
             }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-
+Log::add(Text::_($e->getMessage()), Log::NOTICE, 'jsmerror');
 }
             
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

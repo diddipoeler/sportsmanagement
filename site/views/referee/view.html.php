@@ -4,12 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage referee
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 
@@ -34,11 +36,11 @@ class sportsmanagementViewReferee extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         $option = $jinput->getCmd('option');
 
 		$model = $this->getModel();
@@ -53,11 +55,11 @@ class sportsmanagementViewReferee extends JViewLegacy
 		$ref = sportsmanagementModelPerson::getReferee();
 		if ($ref)
 		{
-			$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
+			$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
 		}
 		else
 		{
-			$titleStr = JText::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
+			$titleStr = Text::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
 		}
 
 		$this->referee = $ref;
@@ -75,16 +77,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 			$extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
 			$this->extended = $extended;
 		}
-
-
-/**
- * 		das benötigen wir nicht, da wir bootstrap verwenden
- *         $document->setTitle($titleStr);
- *         $view = JFactory::getApplication()->input->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
-        
+       
         if ( !isset($this->config['history_table_class']) )
         {
             $this->config['history_table_class'] = 'table';
@@ -96,8 +89,6 @@ class sportsmanagementViewReferee extends JViewLegacy
         
         $this->headertitle = $this->title;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-
 		parent::display($tpl);
 	}
 

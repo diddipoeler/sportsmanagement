@@ -1,13 +1,10 @@
 <?xml version="1.0" ?>
 <form>
-  
 
 	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 	name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-
-	
 
     <field 	name="table_class" type="list" default="table" 
 		class=""
@@ -20,12 +17,7 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-		
-
-
 
 	</fieldset>
-
-
 
 </form>

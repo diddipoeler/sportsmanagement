@@ -4,16 +4,15 @@
  * @file      default_rosterplayground.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$startfade = $this->config['roster_playground_player_fade'];
+use Joomla\CMS\Factory;
 
-//echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
-//echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
+$startfade = $this->config['roster_playground_player_fade'];
 
 if ( $this->config['roster_playground_player_jquery_fade'] )
 {
@@ -40,25 +39,6 @@ else
 {
     $div_display ="";
 }
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-
-$my_text = 'formation1 <pre>'.print_r($this->formation1,true).'</pre>';
-$my_text .= 'formation2 <pre>'.print_r($this->formation2,true).'</pre>';
-$my_text .= 'extended2 <pre>'.print_r($this->extended2,true).'</pre>';
-$my_text .= 'schemahome <pre>'.print_r($this->schemahome,true).'</pre>';
-$my_text .= 'schemaaway <pre>'.print_r($this->schemaaway,true).'</pre>';
-$my_text .= 'matchplayerpositions <pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-$my_text .= 'matchplayers <pre>'.print_r($this->matchplayers,true).'</pre>';
-$my_text .= 'match <pre>'.print_r($this->match,true).'</pre>';
-$my_text .= 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';
-$my_text .= 'config <pre>'.print_r($this->config,true).'</pre>';
-sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementViewMatchReportdefault_rosterplayground',__LINE__,$my_text);
-
-}
-
-
 
 $favteams1 = explode(",",$this->project->fav_team);
 $favteams = array();
@@ -102,35 +82,51 @@ $schemahome = $this->formation1;
 $schemaguest = $this->formation2;
 }
 
-//$backgroundimage = 'media/com_sportsmanagement/rosterground/spielfeld_578x1050.png';
 $backgroundimage = 'media/com_sportsmanagement/rosterground/'.$this->config['roster_playground_select'];
 
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 $spielfeldhaelfte = $height / 2;
 
+echo "<div id=\"gesamt\" >";
 if ( $schemahome  && $schemaguest )
 {
-// heim und gast
-//echo "<div id=\"heimgast\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
+/**
+ * heim und gast
+ */
+
 echo "<div id=\"heimgast\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
 else if ( !$schemahome && $schemaguest )
 {
-// nur gast
+/**
+ * nur gast
+ */
 ?>
 <style>
 #gast{
-clip:rect(<?PHP echo $spielfeldhaelfte; ?>px <?PHP echo $width; ?>px <?PHP echo $height; ?>px 0px);
 height:<?PHP echo $height; ?>px;
 width:<?PHP echo $width; ?>px;
 top: -<?PHP echo $spielfeldhaelfte; ?>px;
 overflow:hidden;
 position:relative;
 }
+
+div img.bild_s {
+   clip:rect(<?PHP echo $spielfeldhaelfte; ?>px,<?PHP echo $width; ?>px,<?PHP echo $height; ?>px,0px);
+   position: absolute;
+   left: 0px;
+}
+
+#gesamt{
+height:<?PHP echo $spielfeldhaelfte; ?>px;
+width:<?PHP echo $width; ?>px;
+overflow:hidden;
+position:relative;
+}
 </style>
+
 <?PHP
-//echo "<div id=\"gast\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;top:-".$spielfeldhaelfte."px;overflow: hidden;\">";
 echo "<div id=\"gast\" >";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -147,16 +143,22 @@ width:<?PHP echo $width; ?>px;
 overflow:hidden;
 position:relative;
 }
+#gesamt{
+height:<?PHP echo $spielfeldhaelfte; ?>px;
+width:<?PHP echo $width; ?>px;
+overflow:hidden;
+position:relative;
+}
 </style>
 <?PHP
-//echo "<div id=\"heim\"  style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;overflow: hidden;\">";
 echo "<div id=\"heim\" >";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
 else
 {
-// garnichts angegeben
-//echo "<div id=\"nichts\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
+/**
+ * garnichts angegeben
+ */
 echo "<div id=\"nichts\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -164,7 +166,9 @@ echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundima
 //echo "<div style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 
 
-// positionen aus der rostertabelle benutzen
+/**
+ * positionen aus der rostertabelle benutzen
+ */
 ?>
 
 <table class="taktischeaufstellung" summary="Taktische Aufstellung">
@@ -175,7 +179,9 @@ echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundima
 <td>
 
 <?PHP
-// die logos
+/**
+ * die logos
+ */
 if ( $schemahome )
 {
 ?>
@@ -184,8 +190,16 @@ if ( $schemahome )
 
 
 <?PHP
-//echo JHtml::image($this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',$this->team1_club->logo_big,$this->team1_club->name,'50');     
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',
+$this->team1_club->logo_big,
+$this->team1_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);     
 ?>
 
 
@@ -201,8 +215,16 @@ if ( $schemaguest )
 
 
 <?PHP
-//echo JHtml::image($this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',$this->team2_club->logo_big,$this->team2_club->name,'50');  
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',
+$this->team2_club->logo_big,
+$this->team2_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);  
 ?>
 
 
@@ -213,7 +235,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamawa
 
 if ( $schemahome )
 {
-// hometeam
+/**
+ * hometeam
+ */
 $testlauf = 0;
 foreach ($this->matchplayerpositions as $pos)
 		{
@@ -226,11 +250,6 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->heim personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
-}
-
 if ($personCount > 0)
 {
 
@@ -239,35 +258,38 @@ foreach ($this->matchplayers as $player)
 
 if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id )
 {
-// player->ppic = person picture
-// player->picture = teamplay picture
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-$picture = ($player->ppic != $picture2) ? $player->ppic : $player->picture ;
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->heim person_id<br /> ~' . $player->person_id . ' ~<br />';
-echo 'this->heim lastname<br /> ~' . $player->lastname . ' ~<br />';
-echo 'this->heim firstname<br /> ~' . $player->firstname . ' ~<br />';
-echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
-}
-
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['links']; ?>px; top:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['oben']; ?>px; text-align:center;">
 
-
-
-
-
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);    
+	
+if ( $this->config['show_player_profile_link'] )
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $player->team_slug;
+$routeparameter['pid'] = $player->person_slug;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);	
 ?>
- 
-
-
-<a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
+<a class="link" href="<?php echo $player_link; ?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
+<?php
+} 
+?> 
 </div>
                                       
 <?PHP
@@ -283,7 +305,9 @@ $testlauf++;
 
 if ( $schemaguest )
 {
-// guestteam
+/**
+ * guestteam
+ */
 $testlauf = 0;
 foreach ($this->matchplayerpositions as $pos)
 		{
@@ -296,11 +320,6 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->gast personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
-}
-
 if ($personCount > 0)
 {			
 
@@ -312,18 +331,38 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-$picture = ($player->ppic != $picture2) ? $player->ppic : $player->picture ;
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">
 
 <?PHP
-//echo JHtml::image($picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
-?>
 
-<a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);    
+
+if ( $this->config['show_player_profile_link'] )
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $player->team_slug;
+$routeparameter['pid'] = $player->person_slug;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);	
+?>
+<a class="link" href="<?php echo $player_link;?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
+<?php
+}	
+?>	
 </div>
                                       
 <?PHP
@@ -347,7 +386,7 @@ $testlauf++;
 
                             
 echo "</div>";
-
+echo "</div>";
 
 
 ?>

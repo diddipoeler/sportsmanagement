@@ -4,20 +4,14 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage predictionentry
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-//echo 'project_id<pre>'.print_r($this->model->predictionProject->project_id, true).'</pre><br>';
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
 <div class="row-fluid">
 <?php
@@ -49,7 +43,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo $this->model->createHelptText($predictionProject->mode);
                 }
                 echo $this->loadTemplate('view_tippentry_do');
-                //echo $this->loadTemplate('matchday_nav');
             if (($this->config['show_help']==1)||($this->config['show_help']==2))
 			{
 				echo $this->model->createHelptText($predictionProject->mode);
@@ -62,16 +55,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			}
 		}
 	}
-	
+	echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?PHP
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
-<?PHP
-
-?>
-
 </div>

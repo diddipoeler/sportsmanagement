@@ -4,13 +4,15 @@
  * @file      sportsmanagement.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_calendar
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * SportsmanagementConnector
@@ -23,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class SportsmanagementConnector extends JSMCalendar
 {
-	//var $database = JFactory::getDbo();
+	
 	static $xparams;
     static $params;
 	static $prefix;
@@ -71,7 +73,7 @@ class SportsmanagementConnector extends JSMCalendar
 	static function getFavs()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -81,35 +83,17 @@ class SportsmanagementConnector extends JSMCalendar
         $query->from('#__sportsmanagement_project');
         $query->where("fav_team != ''");
 
-
-//		$query = "SELECT id, fav_team FROM #__joomleague_project
-//      where fav_team != '' ";
-
 		$projectid = SportsmanagementConnector::$xparams->get('p') ;
 
 		if ($projectid)
 		{
 			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid) ) : (int)$projectid;
-			//$query .= " AND id IN(".$projectids.")";
             $query->where("id IN(".$projectids.")");
 		}
-
-		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
-		//$database = JFactory::getDbo();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
 		$db->setQuery($query);
 		$fav = $db->loadObjectList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'fav <br><pre>'.print_r($fav,true).'</pre>'),'Notice');
-
-		// echo '<pre>';
-		// print_r($fav);
-		// echo '</pre>';
-		//	exit(0);
-		return $fav;
-		//	return implode(',', $fav);
+    	return $fav;
 	}
 
 	/**
@@ -122,7 +106,7 @@ class SportsmanagementConnector extends JSMCalendar
 	static function getBirthdays ( $caldates, $ordering='ASC' )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -160,7 +144,6 @@ class SportsmanagementConnector extends JSMCalendar
 			$limitingconditions[] = implode(' OR ', $favConds);
 		}
 
-
 		// new insert for user select a club
 		$clubid	= SportsmanagementConnector::$xparams->get('club_ids') ;
 
@@ -172,9 +155,6 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if (count($limitingconditions) > 0)
 		{
-//			$limitingcondition .=' AND (';
-//			$limitingcondition .= implode(' OR ', $limitingconditions);
-//			$limitingcondition .=')';
             $query->where(" ( ".implode(' OR ', $limitingconditions)." ) ");
 		}
         
@@ -220,12 +200,7 @@ class SportsmanagementConnector extends JSMCalendar
 
 		$query->group('p.id');
         $query->order('p.birthday');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-        
+       
 		$db->setQuery($query);
 
 		$players = $db->loadObjectList();
@@ -257,21 +232,17 @@ class SportsmanagementConnector extends JSMCalendar
 			$newrows[$key]['headingtitle'] = SportsmanagementConnector::$xparams->get('birthday_text', 'Birthday');
 			$newrows[$key]['name'] = '';
 
-			if ($row->picture != '' AND file_exists(JPATH_BASE.DS.$row->picture))
+			if ($row->picture != '' AND file_exists(JPATH_BASE.DIRECTORY_SEPARATOR.$row->picture))
 			{
 				$linkit = 1;
-				$newrows[$key]['name'] = '<img src="'.JUri::root(true).'/'.$row->picture.'" alt="Picture" style="height:40px; vertical-align:middle;margin:0 5px;" />';
-
-				//echo $newrows[$key]['name'].'<br />';
+				$newrows[$key]['name'] = '<img src="'.Uri::root(true).'/'.$row->picture.'" alt="Picture" style="height:40px; vertical-align:middle;margin:0 5px;" />';
 			}
 			$newrows[$key]['name'] .= parent::jl_utf8_convert ($row->firstname, 'iso-8859-1', 'utf-8').' ';
 			$newrows[$key]['name'] .= parent::jl_utf8_convert ($row->lastname, 'iso-8859-1', 'utf-8').' - '.parent::jl_utf8_convert ($row->short_name, 'iso-8859-1', 'utf-8');
-			//$newrows[$key]['name'] .= ' ('..')';
 			$newrows[$key]['matchcode'] = 0;
 			$newrows[$key]['project_id'] = $row->project_id;
 
 			// new insert for link to player profile
-			//$newrows[$key]['link'] = 'index.php?option=com_joomleague&view=player&p='.$row->project_id.'&pid='.$row->id;
             $routeparameter = array();
 $routeparameter['cfg_which_database'] = self::$params->get('cfg_which_database');
 $routeparameter['s'] = self::$params->get('s');
@@ -306,11 +277,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 			$newrows[$key]['type'] = 'jlm';
 			$newrows[$key]['homepic'] = SportsmanagementConnector::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = SportsmanagementConnector::buildImage($teams[$row->projectteam2_id]);
-
 			$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row);
-            //$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row->match_date);
-			
-            //$newrows[$key]['result'] = (!is_null($row->matchpart1_result)) ? $row->matchpart1_result . ':' . $row->matchpart2_result : '-:-';
 			$newrows[$key]['result'] = (!is_null($row->team1_result)) ? $row->team1_result . ':' . $row->team2_result : '-:-';
 			$newrows[$key]['headingtitle'] = parent::jl_utf8_convert ($row->name.'-'.$row->roundname, 'iso-8859-1', 'utf-8');
 			$newrows[$key]['homename'] = SportsmanagementConnector::formatTeamName($teams[$row->projectteam1_id]);
@@ -321,8 +288,8 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 			// insert matchdetaillinks
 			$routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $row->project_slug;
 $routeparameter['mid'] = $row->match_slug;
 $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
@@ -383,9 +350,6 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
     $team->$image = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
 
-		//if ($team->$image != '' && file_exists(JPATH_BASE.'/'.$team->$image))
-        //if ( $team->$image != '' )
-		//{
 			$h = self::$xparams->get('logo_height', 20);
 			$logo = '<img src="'.$team->$image.'" alt="'
 			.parent::jl_utf8_convert ($team->short_name, 'iso-8859-1', 'utf-8').'" title="'
@@ -395,7 +359,6 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 				$logo .= ' style="height:'.$h.'px;"';
 			}
 			$logo .= ' />';
-		//}
 		return $logo;
 	}
 
@@ -410,14 +373,12 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
     static function getMatches($caldates, $ordering='ASC')
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' caldates<br><pre>'.print_r($caldates,true).'</pre>'),'Notice');
-
 		$where = '';
         $teamCondition = '';
 		$clubCondition = '';
@@ -433,7 +394,6 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		if($customteam != 0)
 		{
 			$limitingconditions[] = "( m.projectteam1_id = ".$customteam." OR m.projectteam2_id = ".$customteam.")";
-            //$query->where("( m.projectteam1_id = ".$customteam." OR m.projectteam2_id = ".$customteam.")");
 		}
 
 		if ($teamid && $customteam == 0)
@@ -475,7 +435,6 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 		$limit = (isset($caldates['limitstart'])&&isset($caldates['limitend'])) ? ' LIMIT '.$caldates['limitstart'].', '.$caldates['limitend'] :'';
 
-		//$query->select('m.*,p.*');
         $query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.match_date,m.team1_result,m.team2_result,m.match_date as gamematchdate ');
         $query->select('p.timezone,p.name,p.alias');
         $query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
@@ -496,12 +455,10 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
                
 		if (isset($caldates['start']))
         { 
-        //$query->where("r.round_date_first >= ".$db->Quote(''.$caldates['roundstart'].'')."");
         $query->where("m.match_timestamp >= ".$caldates['starttimestamp'] );
         }
 		if (isset($caldates['end'])) 
         {
-        //$query->where("r.round_date_last <= ".$db->Quote(''.$caldates['roundend'].'')."");
         $query->where("m.match_timestamp <= ".$caldates['endtimestamp'] );
         }
 		if (isset($caldates['matchcode']))
@@ -509,12 +466,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $query->where("r.matchcode LIKE ".$db->Quote(''.$caldates['matchcode'].'')."");
         }
 		$projectid = SportsmanagementConnector::$xparams->get('p') ;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');
-        
-        //$integerIDs = array_map('intval', $projectid );
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' integerIDs<br><pre>'.print_r($integerIDs,true).'</pre>'),'Notice');
-        
+       
         if ( is_array($projectid) )
         {
         foreach( $projectid as $key => $value )
@@ -541,14 +493,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         
         $query->group('m.id');
         $query->order('m.match_date '.$ordering);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-
+       
         $db->setQuery($query,0,$limit);
         
 		$result = $db->loadObjectList();
@@ -560,9 +505,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
                 sportsmanagementHelper::convertMatchDateToTimezone($match);
 			}
 		}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
@@ -576,7 +519,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 	static function getTeamsFromMatches( &$games )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -607,12 +550,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $query->where("tl.project_id = p.id");
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-        
+       
 		if ( !$result = $db->loadObjectList('teamtoolid') ) $result = Array();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
@@ -629,29 +567,4 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 	}
 
-	/**
-	 * SportsmanagementConnector::getGlobalTeams()
-	 * 
-	 * @return void
-	 */
-	function getGlobalTeams ()
-	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
-        
-		$teamnames = SportsmanagementConnector::$xparams->get('team_names', 'short_name');
-		//$database = JFactory::getDbo();
-		$query = "SELECT t.".$teamnames." AS name, t.id AS value
-    FROM #__joomleague_teams t, #__joomleague p
-    WHERE t.id IN(p.fav_team)";
-		$db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query,true).'</pre>'),'Notice');
-        
-		$result = $db->loadObjectList();
-	}
 }

@@ -4,17 +4,23 @@
  * @file      editevents.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage editmatch
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+HTMLHelper::_('behavior.framework');
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
-$savenewcomment[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
-$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$savenewcomment[] = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
+$baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
 
 ?>
 <script>
@@ -34,7 +40,7 @@ foreach ($this->rosters['home'] as $player)
 			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
 			break;
 		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			$obj->text  = '('.Text::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
 			break;
 	}
 	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
@@ -56,7 +62,7 @@ foreach ($this->rosters['away'] as $player)
 			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
 			break;
 		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			$obj->text  = '('.Text::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
 			break;
 	}
 	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
@@ -71,15 +77,18 @@ jQuery('#team_id').change(updatePlayerSelect);
 
 </script>	
 <?php
-
+/*
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
+*/
 ?>
           
-<form  action="<?php echo $uri->toString(); ?>" id='editevents' method='post' style='display:inline' name='editevents' >
+<form  action="<?php echo $this->uri->toString(); ?>" id='editevents' method='post' name='editevents' >
+<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+<?php echo Text::_('JCANCEL');?></button>	
 <div id="gamesevents">
 
 <div id="UserError" ></div>
@@ -88,24 +97,24 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 <div id="ajaxresponse" ></div>
 	<fieldset>
 		<div class="configuration" >
-			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
+			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
 		</div>
 	</fieldset>
 	
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
 			<!-- Dont remove this -->
 			<div id="ajaxresponse"></div>
 			<table id="table-event" class='adminlist'>
 				<thead>
 					<tr>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TEAM'); ?></th>
-						<th colspan=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TEAM'); ?></th>
+						<th colspan=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -125,7 +134,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 								echo preg_replace('/\'\' /', "", $event->player1);
 								?>
 								</td>
-								<td style='text-align:center; ' ><?php echo JText::_($event->event); ?></td>
+								<td style='text-align:center; ' ><?php echo Text::_($event->event); ?></td>
 								<td style='text-align:center; ' ><?php echo $event->event_sum; ?></td>
 								<td style='text-align:center; ' ><?php echo $event->event_time; ?></td>
 								<td title="" class="hasTip">
@@ -133,7 +142,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 								</td>
 								<td style='text-align:center; ' >
 									<input	id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
-											value="<?php echo JText::_('JACTION_DELETE'); ?>" />
+									onClick="deleteevent(<?php echo $event->id; ?>)" value="<?php echo Text::_('JACTION_DELETE'); ?>" />
 								</td>
 							</tr>
 							<?php
@@ -150,7 +159,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
 					<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
 					<td style='text-align:center; ' >
-                    <input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
+                    <input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo Text::_('JSAVE' ); ?>" />							
 					</td>
 					</tr>
 				</tbody>
@@ -159,14 +168,14 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 			<br>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_LIVE_COMMENTARY_DESCR'); ?></legend>		
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_LIVE_COMMENTARY_DESCR'); ?></legend>		
 		<table class='adminlist' id="table-commentary">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE' ); ?></th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' ); ?></th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION' ); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE' ); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' ); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -174,8 +183,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 					<td>
 						<select name="ctype" id="ctype" class="inputbox select-commenttype">
-                            <option value="1"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' ); ?></option>
-                            <option value="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' ); ?></option>
+                            <option value="1"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' ); ?></option>
+                            <option value="2"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' ); ?></option>
                         </select> 
 					</td>
 					<td style='text-align:center; ' >
@@ -185,7 +194,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
 					</td>
 					<td style='text-align:center; ' >
-<input id="save-new-comment" onclick="save_new_comment(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JSAVE' ); ?>" />
+<input id="save-new-comment" onclick="save_new_comment(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-comment" value="<?php echo Text::_('JSAVE' ); ?>" />
 					</td>
 				</tr>
 				<?php
@@ -201,10 +210,10 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 								<?php 
 								switch ($event->type) {
                                     case 2:
-                                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' );
+                                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2' );
                                         break;
                                     case 1:
-                                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' );
+                                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1' );
                                         break;
 		                        } ?>
 							</td>
@@ -221,7 +230,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 							</td>
 							<td style='text-align:center; ' >
 <input onclick="button_delete_commentary(<?php echo $event->id; ?>,<?php echo $baseurl; ?>)" id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
-										value="<?php echo JText::_('JACTION_DELETE' ); ?>" />
+										value="<?php echo Text::_('JACTION_DELETE' ); ?>" />
 							</td>
 						</tr>
 						<?php
@@ -237,20 +246,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 		</fieldset>
 </div>
 <div style="clear: both"></div>
-<?php //echo JHtml::_('form.token')."\n"; ?>
-
-<input type="hidden" id="token" name="token" value="
-<?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
-
-
-?>" />	
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="view" value="" />
+<?php echo HTMLHelper::_('form.token'); ?>	
 </form>
 

@@ -4,13 +4,14 @@
  * @file      referee.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage referee
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelReferee
@@ -21,7 +22,7 @@ jimport('joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelReferee extends JModelLegacy
+class sportsmanagementModelReferee extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $personid = 0;
@@ -47,18 +48,16 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         
 		parent::__construct();
-		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
-		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
-        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
-        sportsmanagementModelPerson::$projectid = JFactory::getApplication()->input->getInt('p',0);
-		sportsmanagementModelPerson::$personid = JFactory::getApplication()->input->getInt('pid',0);
+		self::$projectid = Factory::getApplication()->input->getInt('p',0);
+		self::$personid = Factory::getApplication()->input->getInt('pid',0);
+        self::$cfg_which_database = Factory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+        sportsmanagementModelPerson::$projectid = Factory::getApplication()->input->getInt('p',0);
+		sportsmanagementModelPerson::$personid = Factory::getApplication()->input->getInt('pid',0);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
 	}
 
 	/**
@@ -71,8 +70,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getHistory($order='ASC')
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
        
@@ -101,9 +100,7 @@ class sportsmanagementModelReferee extends JModelLegacy
             $query->order('s.ordering ASC');
             $query->order('l.ordering ASC');
             $query->order('p.name '.$order);
-			
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
+           
             $db->setQuery($query);
 			self::$_history = $db->loadObjectList();
 		}
@@ -119,8 +116,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
 //       // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -144,8 +141,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getGames()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -181,9 +178,7 @@ class sportsmanagementModelReferee extends JModelLegacy
        $query->where('m.published = 1');
        
        $query->order('m.match_date');
-
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');             
-                    
+                   
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

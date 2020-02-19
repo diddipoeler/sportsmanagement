@@ -4,19 +4,20 @@
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matches
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-$massadd=JFactory::getApplication()->input->getInt('massadd',0);
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+
+$massadd=Factory::getApplication()->input->getInt('massadd',0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-//echo 'selectlist <br><pre>'.print_r($this->selectlist,true).'</pre>';
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -33,7 +34,7 @@ echo $this->loadTemplate('massadd');
 echo $this->loadTemplate('matches'); 
 ?>	
 <?php 
-if ( JComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
+if ( ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
 {
 echo $this->loadTemplate('matrix'); 
 }

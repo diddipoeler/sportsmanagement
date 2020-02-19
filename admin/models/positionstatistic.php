@@ -1,48 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      positionstatistic.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table; 
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Utilities\ArrayHelper; 
 
 /**
  * sportsmanagementModelpositionstatistic
@@ -53,7 +24,7 @@ jimport('joomla.application.component.modeladmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelpositionstatistic extends JModelAdmin
+class sportsmanagementModelpositionstatistic extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -67,7 +38,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -82,7 +53,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**
@@ -123,7 +94,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.positionstatistic.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.positionstatistic.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -170,10 +141,10 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	{
  		$result	= true;
 		$peid	= (isset($data['position_statistic']) ? $data['position_statistic'] : array());
-		JArrayHelper::toInteger( $peid );
+		ArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 		
-		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic '
+		$query = ' DELETE	FROM #__sportsmanagement_position_statistic '
 		       . ' WHERE position_id = ' . $position_id
 		       ;
 		if (count($peid)) {
@@ -189,7 +160,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 
 		for ( $x = 0; $x < count($peid); $x++ )
 		{
-			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
+			$query = "UPDATE #__sportsmanagement_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
  			$this->_db->setQuery( $query );
 			if( !$this->_db->execute() )
 			{
@@ -199,7 +170,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 		}
 		for ( $x = 0; $x < count($peid); $x++ )
 		{
-			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
+			$query = "INSERT IGNORE INTO #__sportsmanagement_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )
 			{

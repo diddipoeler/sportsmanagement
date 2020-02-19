@@ -4,16 +4,16 @@
  * @file      team.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage models
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Factory; 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelteam
@@ -34,20 +34,17 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
         
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         $this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
-        
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id ,true).'</pre>'),'');
-	
 	}
     
     /**
@@ -58,9 +55,9 @@ class sportsmanagementModelteam extends JSMModelAdmin
      */
     public static function getTeamLogo($team_id, $club_logo = 'small')
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$db = JFactory::getDbo();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$db = Factory::getDbo();
 	$query = $db->getQuery(true);
         
         // Select some fields
@@ -79,7 +76,6 @@ catch (Exception $e){
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$result = false;
 }	
 	    
@@ -94,9 +90,9 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 	 */
 	function getTeam($team_id=0,$pro_team_id=0)
 	{
-//	   $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
-//		$db		= JFactory::getDbo();
+//	   $app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
+//		$db		= Factory::getDbo();
 //		$query	= $db->getQuery(true);
         $this->jsmquery->clear();
         // Select some fields
@@ -114,10 +110,8 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
         $this->jsmquery->where('st.id = '.$pro_team_id); 
         }
         
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
-
 		$this->jsmdb->setQuery($this->jsmquery);
-		//return $this->jsmdb->loadObject();
+
 try{
             $result = $this->jsmdb->loadObject();
 		 }
@@ -142,35 +136,38 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // com
 	*/
     function DeleteTrainigData($id)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
-        
-    $db = JFactory::getDbo();
- 
-$query = $db->getQuery(true);
- 
+//        $option = Factory::getApplication()->input->getCmd('option');
+//		$app	= Factory::getApplication();
+//        
+//    $db = Factory::getDbo();
+// 
+//$query = $db->getQuery(true);
+$this->jsmquery->clear(); 
 // delete all custom keys
 $conditions = array(
-    $db->quoteName('id') . '='.$id
+    $this->jsmdb->quoteName('id') . '='.$id
 );
  
-$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'));
-$query->where($conditions);
- 
-$db->setQuery($query);    
-if (!$db->execute())
-		{
-			
-            $app->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			$result = false;
-		}
+$this->jsmquery->delete($this->jsmdb->quoteName('#__sportsmanagement_team_trainingdata'));
+$this->jsmquery->where($conditions);
+
+try{ 
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();    
+	}
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
         
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
-        self::$change_training_date = true; 
-        $app->setUserState( "$option.change_training_date", self::$change_training_date);
+        self::$change_training_date = $result; 
+        $this->jsmapp->setUserState( "$this->jsmoption.change_training_date", self::$change_training_date);
         
-     return true;           
+     return $result;           
     }
         
     /**
@@ -182,17 +179,10 @@ if (!$db->execute())
 	*/
     function UpdateTrainigData($post)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-        
-        //$db		= $this->getDbo();
-		//$query	= $db->getQuery(true);
-    
+$this->jsmquery->clear();    
     for($a=0; $a < count($post['tdids']); $a++ )    
     {
-        $rowtraining = JTable::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
+        $rowtraining = Table::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
         $rowtraining->load( (int)$post['tdids'][$a] );
   
         // Create an object for the record we are going to update.
@@ -206,7 +196,7 @@ if (!$db->execute())
             $object->dayofweek = $post['dayofweek'][$post['tdids'][$a]];
                        
         // Update their details in the table using id as the primary key.
-        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata', $object, 'id', true);
+        $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_team_trainingdata', $object, 'id', true);
         
         if( $object->time_start <> $rowtraining->time_start ||
         $object->time_end <> $rowtraining->time_end ||
@@ -222,7 +212,7 @@ if (!$db->execute())
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $app->setUserState( "$option.change_training_date", self::$change_training_date);
+    $this->jsmapp->setUserState( "$this->jsmoption.change_training_date", self::$change_training_date);
        
     return true; 
     }
@@ -236,35 +226,44 @@ if (!$db->execute())
 	*/
 	function getTrainigData($team_id=0,$pro_team_id=0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
-        //$db		= $this->getDbo();
-		$query	= JFactory::getDbo()->getQuery(true);
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		$app	= Factory::getApplication();
+//        //$db		= $this->getDbo();
+//		$query	= Factory::getDbo()->getQuery(true);
+$this->jsmquery->clear();        
         // Select some fields
-		$query->select('tt.*');
+		$this->jsmquery->select('tt.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata as tt');
+		$this->jsmquery->from('#__sportsmanagement_team_trainingdata as tt');
         
-        if ( $team_id)
+        if ( $team_id )
         {
-        $query->where('tt.team_id = '.$team_id);
+        $this->jsmquery->where('tt.team_id = '.$team_id);
         }
-        else
+        elseif ( $pro_team_id )
         {
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tt.team_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');   
-        $query->where('pt.id = '.$pro_team_id); 
+        $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tt.team_id');
+        $this->jsmquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');   
+        $this->jsmquery->where('pt.id = '.$pro_team_id); 
         }
+                
+        $this->jsmquery->order('dayofweek ASC');
         
-        
-        $query->order('dayofweek ASC');
-        JFactory::getDbo()->setQuery($query);
-		
-		if (!$result = JFactory::getDbo()->loadObjectList())
+        try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadObjectList();
+        }
+        catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+
+		if ( !$result )
 		{
-			$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'),'Notice');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-			return false;
+			$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'),'Notice');
+			return $result;
 		}
 		return $result;
 	}
@@ -276,41 +275,45 @@ if (!$db->execute())
 	* @return	array
 	* @since	0.1
 	*/
-    function addNewTrainigData($team_id)
+    function addNewTrainigData($team_id=0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
-        
-        // Get a db connection.
-        $db = JFactory::getDbo();
-        // Create a new query object.
-        $query = $db->getQuery(true);
+		//$option = Factory::getApplication()->input->getCmd('option');
+//		$app	= Factory::getApplication();
+//        
+//        // Get a db connection.
+//        $db = Factory::getDbo();
+//        // Create a new query object.
+//        $query = $db->getQuery(true);
+$this->jsmquery->clear();        
         // Insert columns.
-        $columns = array('team_id');
+        $columns = array('team_id','notes');
         // Insert values.
-        $values = array($team_id);
+        $values = array($team_id,$this->jsmdb->quote('-') );
         // Prepare the insert query.
-        $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'))
-            ->columns($db->quoteName($columns))
+        $this->jsmquery
+            ->insert($this->jsmdb->quoteName('#__sportsmanagement_team_trainingdata'))
+            ->columns($this->jsmdb->quoteName($columns))
             ->values(implode(',', $values));
+            try{
         // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
-
-		if (!$db->execute())
-		{
-			
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-			$result = false;
+        $this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();  
 		}
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'),'Notice');
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+		
+        $this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'),'Notice');
         
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
-        self::$change_training_date = true; 
-        $app->setUserState( "$option.change_training_date", self::$change_training_date);
+        self::$change_training_date = $result; 
+        $this->jsmapp->setUserState( "$this->jsmoption.change_training_date", self::$change_training_date);
     
-		return true;
+		return $result;
 	}
     
     
@@ -321,29 +324,17 @@ if (!$db->execute())
      */
     public function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+$this->jsmquery->clear();        
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
         }
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
+        $post = Factory::getApplication()->input->post->getArray(array());
         
         //$result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -359,7 +350,7 @@ if (!$db->execute())
 				return false;
 			}
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE');
 	}
     
     

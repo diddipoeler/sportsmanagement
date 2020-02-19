@@ -1,14 +1,23 @@
 <?php
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagement.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   sportsmanagement
+ * @subpackage models
+ */
  
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table; 
+use Joomla\CMS\MVC\Model\AdminModel;
  
 /**
  * SportsManagement Model
  */
-class sportsmanagementModelsportsmanagement extends JModelAdmin
+class sportsmanagementModelsportsmanagement extends AdminModel
 {
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -22,7 +31,7 @@ class sportsmanagementModelsportsmanagement extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -36,7 +45,7 @@ class sportsmanagementModelsportsmanagement extends JModelAdmin
 	public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 	/**
 	 * Method to get the record form.
@@ -74,7 +83,7 @@ class sportsmanagementModelsportsmanagement extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.sportsmanagement.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.sportsmanagement.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();

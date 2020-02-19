@@ -20,23 +20,27 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $dispatcher = JDispatcher::getInstance();
-JPluginHelper::importPlugin('gcalendar');
+PluginHelper::importPlugin('gcalendar');
 
 $data = array();
 $SECSINDAY=86400;
 if (!empty($this->calendars)) {
-	$itemID = JFactory::getApplication()->input->getVar('Itemid', null);
+	$itemID = Factory::getApplication()->input->getVar('Itemid', null);
 	foreach ($this->calendars as $calendar) {
 		if($itemID == null){
 			$itemID = jsmGCalendarUtil::getItemId($calendar->id);
 		}
-		$params = JFactory::getApplication()->getMenu()->getParams($itemID);
-		$tmp = clone JComponentHelper::getParams('com_sportsmanagement');
+		$params = Factory::getApplication()->getMenu()->getParams($itemID);
+		$tmp = clone ComponentHelper::getParams('com_sportsmanagement');
 		if (empty($params)) {
 			$params = $tmp;
 		} else {
@@ -53,7 +57,7 @@ if (!empty($this->calendars)) {
 			if (!empty($itemID)) {
 				$itemID = '&Itemid='.$itemID;
 			} else {
-				$menu = JFactory::getApplication()->getMenu();
+				$menu = Factory::getApplication()->getMenu();
 				$activemenu = $menu->getActive();
 				if($activemenu != null){
 					$itemID = '&Itemid='.$activemenu->id;
@@ -69,7 +73,7 @@ if (!empty($this->calendars)) {
 					'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
 					'start' => $event->getStartDate()->format('c', true),
 					'end' => $event->getEndDate()->format('c', true),
-					'url' => JRoute::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
+					'url' => Route::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
 					'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
 					'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
 					'description' => $description

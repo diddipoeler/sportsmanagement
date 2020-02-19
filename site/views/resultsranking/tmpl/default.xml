@@ -77,10 +77,30 @@
 			<field	name="what_to_show_first" type="extensionradiobutton" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_DESCR">
-			    <option value="0">Results</option>
-			    <option value="1">Ranking</option>
+			    <option value="0">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING</option>
+			    <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RESULTS</option>
 			</field>
 
+<field	name="show_ranking_reiter" type="extensionradiobutton" default="1"
+			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER"
+			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING_REITER_DESRC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>		
+		
+<field	name="show_allranking" type="extensionradiobutton" default="0"
+			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_LABEL"
+			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_DESCR">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>
+<field	name="show_map" type="extensionradiobutton" default="0"
+			    	label="COM_SPORTSMANAGEMENT_TABS_MAP"
+			    	description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>
+			
         </fieldset>
     </fields>
 </metadata>

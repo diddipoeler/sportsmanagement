@@ -2,15 +2,10 @@
 <form>
 	<name><![CDATA[COM_SPORTSMANAGEMENT_FES_TEAMPLAN_NAME]]></name>
 	<description><![CDATA[COM_SPORTSMANAGEMENT_FES_TEAMPLAN_DESCR]]></description>
-
+<!-- reiter 1 -->
 	<fieldset name="details" 
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_MODE"
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_MODE">
-
-		<!-- <field name="mode" type="list" default="0" label="Type of match schedule" 
-			description="The basic match schedule displays a simple list of all matches, the 
-			extended version shows the match schedule in the same style as the results."> <option 
-			value="0">Basic</option> <option value="1">Extended</option> </field> -->
 
 		<field name="plan_order" type="extensionradiobutton" default="ASC"
     class="radio btn-group btn-group-yesno"
@@ -20,11 +15,19 @@
 		</field>
 
 	</fieldset>
-
+<!-- reiter 2-->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
-
+		
+<field name="show_historylink" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_HISTORY"
+			description="COM_SPORTSMANAGEMENT_HISTORY">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -66,7 +69,7 @@
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-
+<!-- reiter 3-->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS2">
@@ -84,6 +87,13 @@
             <option value="1">JYES</option>
         </field>
         
+		<field name="show_date_image" type="extensionradiobutton" default="1"
+        class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_DATE_IMAGES" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_DATE_IMAGES">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+		
 		<field name="show_time" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_TIME" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_TIME">
@@ -112,7 +122,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_referee" type="list" default="0"
+		<field name="show_referee" type="extensionradiobutton" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_REFEREE" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_REFEREE">
 			<option value="0">JNO</option>
 			<option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_REFEREE</option>

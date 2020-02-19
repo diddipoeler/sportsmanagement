@@ -4,13 +4,17 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage jlextcountries
  */
 
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextcountries
@@ -34,17 +38,10 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 		
         $inputappend = '';
 
-        $starttime = microtime(); 
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
-        $this->table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
+        $this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
         
          //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 		if ($res = $this->get('Federation') )
         {
             $nation = array_merge($nation,$res);
@@ -72,11 +69,11 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		JToolbarHelper::addNew('jlextcountry.add');
-		JToolbarHelper::editList('jlextcountry.edit');
-		JToolbarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-        JToolbarHelper::custom('jlextcountries.importplz','upload','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),true);
-		JToolbarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('jlextcountry.add');
+		ToolbarHelper::editList('jlextcountry.edit');
+		ToolbarHelper::custom('jlextcountry.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+        ToolbarHelper::custom('jlextcountries.importplz','upload','upload',Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),true);
+		ToolbarHelper::archiveList('jlextcountry.export',Text::_('JTOOLBAR_EXPORT'));
 
         parent::addToolbar();
 	}

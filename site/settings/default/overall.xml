@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+<!-- register 1 -->
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
+		<field name="divclasscontainer" type="list" default="container-fluid" 
+class=""
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER" 
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
+<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_NON</option>
+<option value="container">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_CONTAINER</option>
+<option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
+</field>
+
+<field name="divclassrow" type="list" default="row-fluid" 
+class=""
+label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW" 
+description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
+<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_NON</option>
+<option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
+<option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
+</field>
+		<field	name="use_which_map" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_WHICH_MAP"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_WHICH_MAP">
+			<option value="0">Google Map</option>
+			<option value="1">OpenStreetMap</option>
+		</field>
 		
-		<field	name="use_jquery_modal" type="extensionradiobutton" default="0"
+		<field	name="use_jquery_modal" type="extensionradiobutton" default="2"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
@@ -13,7 +38,7 @@
 			<option value="2">JCE Modal</option>
 		</field>
 		
-		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="0"
+		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_SQUEEZEBOX_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_SQUEEZEBOX_MODAL">
@@ -104,12 +129,7 @@
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PROJECT_PICTURE_WIDTH"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PROJECT_PICTURE_WIDTH">
 		</field>
-		<!--
-		<field name="picture_height" type="text" default="50"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PROJECT_PICTURE_HEIGHT"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PROJECT_PICTURE_HEIGHT">
-		</field>
-		-->
+
 		<field name="show_icons" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_ICONS"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_ICONS">
@@ -123,10 +143,24 @@
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-	
+<!-- register 2 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+<field name="show_pictures" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PICTURES"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PICTURES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_pictures_width" type="text" default="100"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PICTURES_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PICTURES_WIDTH">
+		</field>
+		<field name="show_pictures_columns" type="text" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_PICTURES_COLUMNS"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_PICTURES_COLUMNS">
+</field>		
 		<field name="seperator" type="text" default="-"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_WHICH_SEPARATOR"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_WHICH_SEPARATOR">
@@ -175,7 +209,7 @@
 		</field>
 		
 	</fieldset>
-	
+<!-- register 3 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_DATA"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_DATA"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_DATA"
@@ -199,7 +233,7 @@
 	</fieldset>
 	
 
-	
+<!-- register 4 -->	
 	<fieldset	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_RSSFEED_PRO_DATA"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_RSSFEED_PRO_DATA"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_RSSFEED_PRO_DATA">
@@ -250,4 +284,35 @@
 		</field>    	
         	
 	</fieldset>	
+	
+<!-- register 5 -->	
+ <fieldset 
+        name="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
+	 
+<field	name="show_extended_text" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_TEXT"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_TEXT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	 
+<field name="extended_cols" type="text" default="12"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_COLS">
+</field>	   
+<field name="extended_description_cols" type="text" default="3"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_DESCRIPTION_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_DESCRIPTION_COLS">
+</field>	   
+<field name="extended_value_cols" type="text" default="2"
+label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_EXTENDED_VALUE_COLS"
+description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_EXTENDED_VALUE_COLS">
+</field>
+
+	   
+</fieldset>	
+	
+	
 </form>

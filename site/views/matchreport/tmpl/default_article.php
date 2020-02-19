@@ -4,35 +4,38 @@
  * @file      default_article.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-?>
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
+?>
 <!-- START of match summary -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 if (!empty($this->match_article->introtext))
 {
     
 	?>
-	<table class="table table-responsive" >
+	<table class="table " >
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE' );
 				?>
 			</td>
 		</tr>
 	</table>
-	<table class="table table-responsive" >
+	<table class="table " >
 		<tr>
 			<td>
 			<?php
 			$summary = $this->match_article->introtext;
-			$summary = JHtml::_('content.prepare', $summary);
+			$summary = HTMLHelper::_('content.prepare', $summary);
 
 			echo $summary;
 
@@ -45,4 +48,4 @@ if (!empty($this->match_article->introtext))
 
 ?>
 <!-- END of match summary -->
-
+</div>

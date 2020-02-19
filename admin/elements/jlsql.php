@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -37,16 +37,18 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
-// welche joomla version
+// welche version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 
@@ -79,7 +81,7 @@ class JFormFieldJLSQL extends JFormField
 		$db->setQuery($this->elements['query']);
 		$key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
 		$val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		$updates = $this->elements['updates'];
 		$depends = $this->elements['depends'];
 		if($updates){
@@ -118,7 +120,7 @@ class JFormFieldJLSQL extends JFormField
 				theAjax.request();
 			}");
 		}
-		$html = JHtml::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
+		$html = HTMLHelper::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
 		return $html;
 	}
 }

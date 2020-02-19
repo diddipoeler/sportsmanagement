@@ -4,15 +4,14 @@
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_act_season
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
-require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php');
-require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
+use Joomla\CMS\Factory;
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
  * modJSMActSeasonHelper
@@ -35,10 +34,10 @@ class modJSMActSeasonHelper
 	public static function getData($season_ids)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-    $db = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
+    $db = Factory::getDBO();
     $query = $db->getQuery(true);
         $result = array();
     

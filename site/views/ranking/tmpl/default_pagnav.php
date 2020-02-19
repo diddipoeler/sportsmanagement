@@ -4,13 +4,14 @@
  * @file      deaful_pagnavt.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- matchdays pageNav -->
+<div class="row" id="pagnav">
 <br />
 <table class="table">
     <tr>
@@ -25,4 +26,5 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
 </table>
+</div>
 <!-- matchdays pageNav END -->

@@ -4,13 +4,13 @@
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_playgroundplan
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementPlaygroundplanHelper
@@ -32,7 +32,7 @@ class modSportsmanagementPlaygroundplanHelper
 	 */
 	public static function getData(&$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
 		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : (int)$usedp;
@@ -113,8 +113,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$info = false;
 }
 
@@ -130,7 +128,7 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 	 */
 	public static function getTeams( $team1_id, $teamformat)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        
@@ -148,8 +146,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$team_name = false;
 }
 
@@ -166,7 +162,7 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 	 */
 	public static function getTeamLogo($team_id,$logo = 'logo_big')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        
@@ -203,8 +199,6 @@ catch (Exception $e){
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$club_logo = false;
 }
         

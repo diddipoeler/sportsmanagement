@@ -4,13 +4,14 @@
  * @file      playground.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage playground
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementModelPlayground
@@ -77,14 +78,15 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
      */
     function getNextGames( $project = 0, $pgid = 0, $played = 0, $allproject = 0 )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
         $result = array();
         $starttime = microtime(); 
+	$d2 = new Datetime("now");
 
         $playground = self::getPlayground($pgid);
         if ( $playground->id > 0 )
@@ -103,11 +105,11 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             $query->where('m.playground_id = '. (int)$playground->id);
 		if ( $played )
 		{
-		$query->where('m.match_date < NOW()');
+		$query->where('m.match_timestamp < '.$d2->format('U'));
 		}
 		else
 		{
-            $query->where('m.match_date > NOW()');
+            $query->where('m.match_timestamp > '.$d2->format('U'));
 		}
             $query->where('m.published = 1');
             $query->where('p.published = 1');
@@ -148,9 +150,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
      */
     public static function updateHits($pgid=0,$inserthits=0)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  
  if ( $inserthits )
@@ -162,7 +164,7 @@ $db->setQuery($query);
 $result = $db->execute();
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+     
     }
     
     /**
@@ -174,30 +176,18 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      */
     public static function getPlayground( $pgid = 0,$inserthits=0 )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'playground <br><pre>'.print_r(self::$playground,true).'</pre>'; 
-        
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        /*
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');    
-        }
-        */
         self::updateHits($pgid,$inserthits); 
         
         if ( is_null( self::$playground ) )
         {
             if ( $pgid < 1 )
             {
-            $pgid = JFactory::getApplication()->input->getInt( "pgid", 0 );
+            $pgid = Factory::getApplication()->input->getInt( "pgid", 0 );
             }    
             
             if ( $pgid > 0 )
@@ -206,12 +196,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
                 $query->from('#__sportsmanagement_playground');
                 $query->where('id = '. $pgid);
                 $db->setQuery( $query );
-                
-                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'query <br><pre>'.print_r($query->dump(),true).'</pre>'; 
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-                }
                 
                 self::$playground = $db->loadObject();
 

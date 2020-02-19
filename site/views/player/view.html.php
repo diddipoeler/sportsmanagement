@@ -4,13 +4,14 @@
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage player
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewPlayer
@@ -30,9 +31,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
      * @return void
      */
     function init() {
-
+  
         $model = $this->model;
-
         $model::$projectid = $this->jinput->getInt('p', 0);
         $model::$personid = $this->jinput->getInt('pid', 0);
         $model::$teamplayerid = $this->jinput->getInt('pt', 0);
@@ -54,9 +54,11 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         }
 
         if (isset($this->overallconfig['person_events'])) {
-            // alles ok    
+/**
+ *              alles ok
+ */    
         } else {
-            $person_events = sportsmanagementModelEventtypes::getEvents($project->sports_type_id);
+            $person_events = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id);
             if (is_array($person_events) || is_object($person_events)) {
                 foreach ($person_events as $events) {
                     $this->overallconfig['person_events'][] = $events->value;
@@ -89,8 +91,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $sportstype = $this->config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
 
         $this->teamPlayer = $teamPlayer;
-        $this->historyPlayer = $model->getPlayerHistory($sportstype, 'ASC', 1, $model::$cfg_which_database);
-        $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, 'ASC', 2, $model::$cfg_which_database);
+        $this->historyPlayer = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 1, $model::$cfg_which_database);
+        $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 2, $model::$cfg_which_database);
         $this->AllEvents = $model->getAllEvents($sportstype);
         $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
         $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
@@ -113,11 +115,12 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $this->projectstats = $model->getPlayerStatsByProject($sportstype);
         }
 
-        $extended = '';
-        $extended = sportsmanagementHelper::getExtended($person->extended, 'person');
-        $this->extended = $extended;
+        $this->extended = sportsmanagementHelper::getExtended($person->extended, 'player');
         unset($form_value);
+        if ( $this->extended )
+        {
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
+        }
 
 /**
  * nebenposition vorhanden ?
@@ -125,7 +128,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $this->person_parent_positions = $form_value;
 
         unset($form_value);
+        if ( $this->extended )
+        {
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
+        }
 
         if ($form_value) {
         } else {
@@ -155,10 +161,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $hasData = false;
             $fields = $this->extended->getFieldset($fieldset->name);
             foreach ($fields as $field) {
-                // TODO: backendonly was a feature of JLGExtraParams, and is not yet available.
-                //       (this functionality probably has to be added later)
-                $value = $field->value; // Remark: empty($field->value) does not work, using an extra local var does
-                if (!empty($value)) { // && !$field->backendonly
+                $value = $field->value; 
+                if (!empty($value)) { 
                     $hasData = true;
                     break;
                 }
@@ -178,10 +182,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $name = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
         }
         $this->playername = $name;
-        $this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
+        $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
         $view = $this->jinput->getVar("view");
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
         $this->document->addCustomTag($stylelink);
 
         if (!isset($this->config['table_class'])) {

@@ -4,7 +4,7 @@
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
+* @license                GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -37,12 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla table library
-jimport('joomla.database.table');
- 
+use Joomla\CMS\Table\Table; 
+use Joomla\Registry\Registry; 
 
 /**
  * sportsmanagementTablesportsmanagement
@@ -53,7 +50,7 @@ jimport('joomla.database.table');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablesportsmanagement extends JTable
+class sportsmanagementTablesportsmanagement extends JSMTable
 {
 	/**
 	 * Constructor
@@ -77,7 +74,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 		if (isset($array['params']) && is_array($array['params'])) 
 		{
 			// Convert the params field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($array['params']);
 			$array['params'] = (string)$parameter;
 		}
@@ -97,7 +94,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 		if (parent::load($pk, $reset)) 
 		{
 			// Convert the params field to a registry.
-			$params = new JRegistry;
+			$params = new Registry;
 			$params->loadJSON($this->params);
 			$this->params = $params;
 			return true;
@@ -140,7 +137,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 	 */
 	protected function _getAssetParentId()
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_sportsmanagement');
 		return $asset->id;
 	}

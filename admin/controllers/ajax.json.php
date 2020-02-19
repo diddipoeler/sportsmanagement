@@ -1,18 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      ajax.json.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   This file is part of SportsManagement.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerAjax
@@ -23,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JControllerLegacy
+class sportsmanagementControllerAjax extends BaseController
 {
 
         /**
@@ -34,7 +34,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         public function __construct()
         {
                 parent::__construct();
-                $this->app = JFactory::getApplication();
+                $this->app = Factory::getApplication();
                 // JInput object
         $this->jinput = $this->app->input;
         }
@@ -65,11 +65,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 $this->app->enqueueMessage('Projekte gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -99,11 +99,11 @@ $this->app->enqueueMessage('Projekte gefunden','Message');
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -123,11 +123,11 @@ try
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                      
         }   
@@ -156,11 +156,11 @@ try
 $this->app->enqueueMessage('Benutzer gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }         
             
             
@@ -192,13 +192,53 @@ try
 //$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
             
+        } 
+        
+        
+         public function getCcountryName()
+        {
+                    
+try
+    {
+      $result = $this->getModel('ajax')->getCcountryName($this->jinput->get->getString('country'));
+      //echo new JsonResponse($result);
+      echo json_encode($result);
+    }
+    catch(Exception $e)
+    {
+      //echo new JsonResponse($e);
+      echo json_encode($e);
+    }                
+        
+        } 
+        
+        /**
+         * sportsmanagementControllerAjax::getCcountryAlpha2()
+         * 
+         * @return void
+         */
+        public function getCcountryAlpha2()
+        {
+                    
+try
+    {
+      $result = $this->getModel('ajax')->getCcountryAlpha2($this->jinput->get->getString('country'));
+      //echo new JsonResponse($result);
+      echo json_encode($result);
+    }
+    catch(Exception $e)
+    {
+      //echo new JsonResponse($e);
+      echo json_encode($e);
+    }                
+        
         } 
         
         
@@ -228,11 +268,11 @@ try
 //$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }                
         
         } 
@@ -265,11 +305,11 @@ try
 $this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
             
         }
@@ -293,18 +333,18 @@ $this->app->enqueueMessage('Altersgruppen gefunden','Message');
      
  if ( count($result) == 1 )
  {
- $this->app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ $this->app->enqueueMessage('Keine LandesverbÃ¤nde gefunden','Error');
  }
  else
  {
-$this->app->enqueueMessage('Landesverbände gefunden','Message');    
+$this->app->enqueueMessage('LandesverbÃ¤nde gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }    
             
             
@@ -325,7 +365,7 @@ $this->app->enqueueMessage('Landesverbände gefunden','Message');
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug'),
        $this->jinput->get->getString('dbase') );
-      
+$this->app->enqueueMessage(__METHOD__.' '.__LINE__.' saison '.$this->jinput->get->getString('s'),'');      
  if ( count($result) == 1 )
  {
  $this->app->enqueueMessage('Keine Projekte gefunden','Error');
@@ -335,11 +375,11 @@ $this->app->enqueueMessage('Landesverbände gefunden','Message');
 $this->app->enqueueMessage('Projekte gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -361,11 +401,11 @@ try
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                      
         }    
@@ -384,11 +424,11 @@ try
       $this->jinput->get->getString('required'),
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
-        echo new JResponseJson($result);
+        echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -418,11 +458,11 @@ try
 $this->app->enqueueMessage('Positionen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }    
                     
         }
@@ -454,11 +494,11 @@ $this->app->enqueueMessage('Positionen gefunden','Message');
 $app->enqueueMessage('Altersgruppe gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
         
         }
@@ -488,11 +528,11 @@ $app->enqueueMessage('Altersgruppe gefunden','Message');
  {
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
           
         }
@@ -520,11 +560,11 @@ $this->app->enqueueMessage('Gruppen gefunden','Message');
  {
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }                
         }
 
@@ -551,11 +591,11 @@ $this->app->enqueueMessage('Gruppen gefunden','Message');
  {
 //$this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
                    
         }
@@ -577,11 +617,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                     
         }
@@ -602,11 +642,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
         
         
@@ -628,11 +668,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }      
             
         }
@@ -653,11 +693,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }            
         
         }
@@ -677,12 +717,23 @@ try
       $this->jinput->get->getString('required'),
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
- 
-      echo new JResponseJson($result);
+        
+$this->app->enqueueMessage(__METHOD__.' '.__LINE__.' projekte '.$this->jinput->get->getString('p'),'');
+        
+        
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Projektteams gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Projektteams gefunden','Message');    
+ }
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                     
         }
@@ -704,11 +755,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
         }
@@ -729,11 +780,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
        
@@ -755,11 +806,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -780,11 +831,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -805,11 +856,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -830,11 +881,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -855,11 +906,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
         }
@@ -890,11 +941,11 @@ try
  {
 $this->app->enqueueMessage('Runden gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
                 
         }
@@ -916,11 +967,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -932,8 +983,20 @@ try
          */
         public function sportstypesoptions()
         {
-                echo json_encode((array) JoomleagueModelSportsTypes::getSportsTypes());
-                JFactory::getApplication()->close();
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getsportstypes($this->jinput->get->getString('cfg_which_database'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug') );
+ 
+      echo new JsonResponse($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JsonResponse($e);
+    }
+
         }
 
 }
