@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+
+<agegroups><agegroup country="CZE" info="Muži" picture="" >Muži</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší dorost U19" picture="" >U19</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší dorost U18" picture="" >U18</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší dorost U17" picture="" >U17</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší dorost U16" picture="" >U16</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší žáci U15" picture="" >U15</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší žáci U14" picture="" >U14</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší žáci U13" picture="" >U13</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší žáci U12" picture="" >U12</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší přípravka U11" picture="" >U11</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Starší přípravka U10" picture="" >U10</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší přípravka U9" picture="" >U9</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší přípravka U8" picture="" >U8</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší přípravka U7" picture="" >U7</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Mladší přípravka U6" picture="" >U6</agegroup></agegroups>
+<agegroups><agegroup country="CZE" info="Ženy" picture="" >Ženy</agegroup></agegroups>
+
+</structur>
