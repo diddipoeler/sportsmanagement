@@ -31,7 +31,7 @@ if (!function_exists('jsm_birthday_sort')) {
     function jsm_birthday_sort($array, $arguments = '-', $keys = true) {
      $mainframe = Factory::getApplication(); 
 
-// Hole eine Liste von Spalten
+/** Hole eine Liste von Spalten */
 foreach ($array as $key => $row) {
     $days_to_birthday[$key] = $row['days_to_birthday'];
     $age[$key] = $row['age'];
@@ -49,9 +49,7 @@ $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $use
 
 $usedteams = "";
 
-/**
- * get favorite team(s), we have to make a function for this
- */
+/** get favorite team(s), we have to make a function for this */
 if ( $params->get('use_fav') ) {
     $query = $database->getQuery(true);
     $query->select('fav_team');

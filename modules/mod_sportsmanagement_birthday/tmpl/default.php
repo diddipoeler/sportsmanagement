@@ -15,21 +15,16 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 
 switch ($mode) {
-    // bootstrap mode template
+    /** bootstrap mode template */
     case 'B':
         ?>    
         <div class="row">
-
-            <!--        <div class="row"> -->
-            <!--            <div class="col-md-12"> -->
             <!-- Controls -->
             <div class="controls pull-right hidden-xs">
                 <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                    data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                    data-slide="next"></a>
             </div>
-            <!--            </div> -->
-            <!--        </div> -->
 
             <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs" data-ride="carousel">
                 <!-- Wrapper for slides -->
@@ -104,7 +99,7 @@ switch ($mode) {
         </div>         
         <?PHP
         break;
-    // bootstrap mode template
+    /** bootstrap mode template */
     case 'B2':
         ?>
         <div id="myBirthday<?php echo $module->id; ?>" class="carousel slide" data-interval="3000" data-ride="carousel">
