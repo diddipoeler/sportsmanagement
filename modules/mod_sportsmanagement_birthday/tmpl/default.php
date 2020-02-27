@@ -13,23 +13,26 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
+$birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+$dayformat = htmlentities(trim($params->get('dayformat')));
+$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+$lang = Factory::getLanguage(); 
+$locales = $lang->getLocale(); 
+setlocale (LC_ALL, $locales[0]);
 
 switch ($mode) {
-    // bootstrap mode template
+    /** bootstrap mode template */
     case 'B':
         ?>    
         <div class="row">
-
-            <!--        <div class="row"> -->
-            <!--            <div class="col-md-12"> -->
             <!-- Controls -->
             <div class="controls pull-right hidden-xs">
                 <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                    data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                    data-slide="next"></a>
             </div>
-            <!--            </div> -->
-            <!--        </div> -->
 
             <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs" data-ride="carousel">
                 <!-- Wrapper for slides -->
@@ -60,9 +63,9 @@ switch ($mode) {
                                 break;
                         }
 
-                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-                        $dayformat = htmlentities(trim($params->get('dayformat')));
-                        $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+//                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+//                        $dayformat = htmlentities(trim($params->get('dayformat')));
+  //                      $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                         $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                         $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                         $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
@@ -104,7 +107,7 @@ switch ($mode) {
         </div>         
         <?PHP
         break;
-    // bootstrap mode template
+    /** bootstrap mode template */
     case 'B2':
         ?>
         <div id="myBirthday<?php echo $module->id; ?>" class="carousel slide" data-interval="3000" data-ride="carousel">
@@ -145,9 +148,9 @@ switch ($mode) {
                             break;
                     }
 
-                    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-                    $dayformat = htmlentities(trim($params->get('dayformat')));
-                    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+//                    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+  //                  $dayformat = htmlentities(trim($params->get('dayformat')));
+    //                $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                     $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                     $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
@@ -253,9 +256,9 @@ switch ($mode) {
                                 default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
                                     break;
                             }
-                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-                            $dayformat = htmlentities(trim($params->get('dayformat')));
-                            $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+//                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+  //                          $dayformat = htmlentities(trim($params->get('dayformat')));
+    //                        $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                             $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                             $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                             $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);

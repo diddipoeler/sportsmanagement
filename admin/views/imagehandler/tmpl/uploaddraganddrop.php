@@ -73,7 +73,7 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
   language: 'de',
         allowedFileExtensions: ['jpg', 'png', 'gif'],
         overwriteInitial: false,
-        maxFileSize: 6000,
+        maxFileSize: 8000,
         maxFilesNum: 10,
         //allowedFileTypes: ['image', 'video', 'flash'],
         slugCallback: function (filename) {
