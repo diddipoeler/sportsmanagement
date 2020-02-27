@@ -416,14 +416,13 @@ $guestteam->division_id = $division_id;
     public static function showMatchPlayground(&$game, $config = array()) {
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-if ( !isset(self::$teams[$game->projectteam1_id]) )
-{
-self::$teams[$game->projectteam1_id] = new stdClass();
-self::$teams[$game->projectteam1_id]->standard_playground = 0;
-}
-	    
+        if (!isset(self::$teams[$game->projectteam1_id])) {
+            self::$teams[$game->projectteam1_id] = new stdClass();
+            self::$teams[$game->projectteam1_id]->standard_playground = 0;
+        }
+        
         if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id)) {
             if (empty($game->playground_id)) {
                 $game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
@@ -439,19 +438,16 @@ self::$teams[$game->projectteam1_id]->standard_playground = 0;
                 $query->from('#__sportsmanagement_club');
                 // where
                 $query->where('id = ' . self::$teams[$game->projectteam1_id]->club_id);
-                try{
-		    $db->setQuery($query);
-                $cinfo = $db->loadObject();
+                try {
+                    $db->setQuery($query);
+                    $cinfo = $db->loadObject();
 
-                $game->playground_id = $cinfo->standard_playground;
-                self::$teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
-		}
-catch (Exception $e)
-{
-    // keine fehlermeldung ausgeben
-	//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-}
-		    
+                    $game->playground_id = $cinfo->standard_playground;
+                    self::$teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
+                } catch (Exception $e) {
+                    // keine fehlermeldung ausgeben
+                    //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+                }
             }
 
             if (!$config['show_playground'] && $config['show_playground_alert']) {
@@ -465,12 +461,23 @@ catch (Exception $e)
             $boldEnd = '';
             $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
             $toolTipText = '';
+            $show_playground_alert = '';
             $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
 
-            if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id)) {
-                $boldStart = '<b style="color:red; ">';
-                $boldEnd = '</b>';
-                $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+            if (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id) {
+                // check alert config
+                switch ($config['show_playground_alert']) {
+                    case 1: // show_playground_alert should be shown as Tooltip
+                        $boldStart = '<b style="color:red; ">';
+                        $boldEnd = '</b>';
+                        $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+                        break;
+                    case 2: // show_playground_alert should be shown as text in front of location
+                        $show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW') . ':</b> ';
+                        break;
+                    default:
+                        break;
+                }
                 $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
             }
 
@@ -484,15 +491,13 @@ catch (Exception $e)
             $query->from('#__sportsmanagement_playground');
             // where
             $query->where('id = ' . $game->playground_id);
-		try{
-            $db->setQuery($query);
-            $pginfo = $db->loadObject();
-}
-catch (Exception $e)
-{
-	// keine fehlermeldung ausgeben
-    //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-}
+            try {
+                $db->setQuery($query);
+                $pginfo = $db->loadObject();
+            } catch (Exception $e) {
+                // keine fehlermeldung ausgeben
+                //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+            }
             if ($pginfo) {
                 $toolTipText .= $pginfo->name . '&lt;br /&gt;';
                 $toolTipText .= $pginfo->address . '&lt;br /&gt;';
@@ -512,15 +517,15 @@ catch (Exception $e)
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
 
 
-            $playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
-            ?>
+            $playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name; ?>
             <span class='hasTip'
                   title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 
-                <?php echo HTMLHelper::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
+                <?php echo $show_playground_alert. HTMLHelper::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
 
             <?php
         }
     }
+
 
     /**
      * mark currently playing game

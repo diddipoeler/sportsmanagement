@@ -41,7 +41,7 @@ if($this->config['show_match_number']){$nbcols++;}
 if($this->config['show_events']){$nbcols++;}
 if($this->config['show_match_summary']){$nbcols++;}
 if($this->config['show_time']){$nbcols++;}
-if($this->config['show_playground'] || $this->config['show_playground_alert']){$nbcols = $nbcols+2;}
+if($this->config['show_playground'] || $this->config['show_playground_alert']){$nbcols++;}
 if($this->config['show_referee']){$nbcols++;}
 if($this->config['result_style']==2){$nbcols++;}
 if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
@@ -558,18 +558,6 @@ $this->overallconfig['use_jquery_modal']); ?>
             break;
         }
         
-		?>
-
-		<?php
-		if ( $this->config['show_playground'] || $this->config['show_playground_alert'] )
-		{
-			?>
-		<!-- show only playground or playgroundalert if playgrund differs from normal -->
-			<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($game,$this->config); ?>
-			</td>
-		<?php
-		}
 		?>
 
 		<?php
