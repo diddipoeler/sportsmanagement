@@ -18,9 +18,9 @@ use Joomla\CMS\Factory;
 $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
 $dayformat = htmlentities(trim($params->get('dayformat')));
 $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-$lang = Factory::getLanguage(); 
-$locales = $lang->getLocale(); 
-setlocale (LC_ALL, $locales[0]);
+//$lang = Factory::getLanguage(); 
+//$locales = $lang->getLocale(); 
+//setlocale (LC_ALL, $locales[0]);
 
 switch ($mode) {
     /** bootstrap mode template */
