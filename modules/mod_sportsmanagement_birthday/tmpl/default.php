@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-//use Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
 
 switch ($mode) {
     /** bootstrap mode template */
