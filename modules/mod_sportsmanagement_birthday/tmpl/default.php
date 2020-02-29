@@ -15,13 +15,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-$birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-$dayformat = htmlentities(trim($params->get('dayformat')));
-$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-//$lang = Factory::getLanguage(); 
-//$locales = $lang->getLocale(); 
-//setlocale (LC_ALL, $locales[0]);
-
 switch ($mode) {
     /** bootstrap mode template */
     case 'B':
@@ -63,9 +56,9 @@ switch ($mode) {
                                 break;
                         }
 
-//                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-//                        $dayformat = htmlentities(trim($params->get('dayformat')));
-  //                      $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                        $dayformat = htmlentities(trim($params->get('dayformat')));
+                        $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                         $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                         $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                         $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
@@ -148,9 +141,9 @@ switch ($mode) {
                             break;
                     }
 
-//                    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-  //                  $dayformat = htmlentities(trim($params->get('dayformat')));
-    //                $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+                   $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                $dayformat = htmlentities(trim($params->get('dayformat')));
+                $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                     $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                     $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
@@ -256,9 +249,9 @@ switch ($mode) {
                                 default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
                                     break;
                             }
-//                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-  //                          $dayformat = htmlentities(trim($params->get('dayformat')));
-    //                        $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                         $dayformat = htmlentities(trim($params->get('dayformat')));
+                      $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                             $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
                             $birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
                             $birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
