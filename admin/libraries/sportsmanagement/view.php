@@ -91,12 +91,13 @@ Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_l
         /**
          * Check for errors.
          */
+		/*
 		if (count($this->errors = $this->get('Errors')))
 		{
 			$this->app->enqueueMessage(implode("\n",$this->errors));
 			return false;
 		}
-        
+        */
         $this->layout = $this->getLayout();
         
     if(version_compare(JVERSION,'3.0.0','ge')) 
