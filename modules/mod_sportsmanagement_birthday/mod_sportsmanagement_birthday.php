@@ -17,11 +17,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
-/*
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
-}
-*/
+
+$lang = Factory::getLanguage();
+$locales = $lang->getLocale();
+setlocale (LC_ALL, $locales[0]);
 if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
@@ -38,7 +37,7 @@ if (!class_exists('JSMCountries'))
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 }
 if (!class_exists('sportsmanagementHelper')) {
-//add the classes for handling
+/** add the classes for handling */
     $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -48,8 +47,8 @@ if (!class_exists('sportsmanagementHelper')) {
 /**
  * die übersetzungen laden
  */
-$language = Factory::getLanguage();
-$language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+//$language = Factory::getLanguage();
+$lang->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
   
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 /** Include the functions only once */

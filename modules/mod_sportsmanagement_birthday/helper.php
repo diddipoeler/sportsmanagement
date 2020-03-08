@@ -37,8 +37,8 @@ foreach ($array as $key => $row) {
     $age[$key] = $row['age'];
 }
 
-$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
-    
+//$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
+$sort_age = ( $arguments == '-' ) ? array_multisort( $days_to_birthday, SORT_ASC,$age, SORT_DESC, $array )  : array_multisort( $days_to_birthday, SORT_ASC,$age, SORT_ASC, $array );    
         return $array;
     }
  

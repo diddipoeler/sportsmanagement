@@ -2991,7 +2991,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 							'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
 				$my_text .= '<br />';
                 
-                $mdl = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
+                $mdl = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
                 $update_person = $mdl->getTable();
                 
                 $update_person->load($id);
