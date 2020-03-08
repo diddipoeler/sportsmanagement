@@ -57,7 +57,7 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 	$jinput = Factory::getApplication()->input;
 	$jinput->set('hidemainmenu', true);
         
-	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW');
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_NEW');
 	$this->icon = 'pgame';
 
 	parent::addToolbar();  	      

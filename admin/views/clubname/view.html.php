@@ -44,7 +44,7 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	protected function addToolBar() 
 	{ 
 		$this->jinput->setVar('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_CLUBNAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_CLUBNAME_NEW');
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_NEW');
         $this->icon = 'clubname';
         parent::addToolbar();
 	}

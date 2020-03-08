@@ -81,7 +81,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	
 		Factory::getApplication()->input->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_NEW');
         $this->icon = 'statistic';
         
 		parent::addToolbar();

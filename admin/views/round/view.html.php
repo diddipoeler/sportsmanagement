@@ -66,7 +66,7 @@ class sportsmanagementViewRound extends sportsmanagementView
 	{
         $this->jinput->set('hidemainmenu', true);
         $this->jinput->set('pid', $this->project_id);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ROUND_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_NEW');
         $this->icon = 'round';
 	parent::addToolbar();
 	}

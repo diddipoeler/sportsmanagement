@@ -239,7 +239,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
 		$this->jinput->set('hidemainmenu', true);
         
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITION_NEW');
 		$this->icon = 'rosterposition';
         			
     parent::addToolbar();

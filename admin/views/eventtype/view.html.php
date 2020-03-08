@@ -47,7 +47,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	$this->jinput->set('hidemainmenu', true);
-	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_EVENTTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_EVENTTYPE_NEW');
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NEW');
         $this->icon = 'quote';
         parent::addToolbar();
 	}

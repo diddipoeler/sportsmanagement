@@ -66,7 +66,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	protected function addToolbar()
 	{
     	$this->jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_REF_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_REF_NEW');
         $this->icon = 'projectreferee';
         $this->app->setUserState( "$this->option.pid", $this->item->project_id );
         $this->app->setUserState( "$this->option.persontype", $this->_persontype );	

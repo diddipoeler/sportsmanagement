@@ -63,7 +63,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		$jinput	= $app->input;
 		$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_NEW');
         $this->icon = 'extrafield';
 		
         parent::addToolbar();
