@@ -54,7 +54,7 @@ $this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_team
 	{	
 	$this->jinput->set('hidemainmenu', true);
 	$this->jinput->set('pid', $this->project_id);
-    $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
+    $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_NEW');
     $this->icon = 'division';
     parent::addToolbar();
 	}	

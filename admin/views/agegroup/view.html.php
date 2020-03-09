@@ -43,7 +43,7 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	protected function addToolBar() 
 	{ 
 		$this->jinput->setVar('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_NEW');
         $this->icon = 'agegroup';
         parent::addToolbar();
 	}

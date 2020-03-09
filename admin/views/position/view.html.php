@@ -179,7 +179,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	$this->jinput->set('hidemainmenu', true);
-	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_POSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_POSITION_NEW');
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_NEW');
 	$this->icon = 'position';
 	parent::addToolbar();
 	}

@@ -66,7 +66,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		
         $jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_NEW');
         $this->icon = 'predtemplate';
         
         $this->item->name = $this->item->template;

@@ -481,11 +481,11 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 		    {
             if ( $isNew )
             {
-            $this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName()).'_NEW';    
+            $this->title = 'COM_SPORTSMANAGEMENT_ADMIN_' . strtoupper($this->getName()).'_NEW';    
             }
             else
             {
-            $this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName()).'_EDIT';    
+            $this->title = 'COM_SPORTSMANAGEMENT_ADMIN_' . strtoupper($this->getName()).'_EDIT';    
             }
             }
         // Built the actions for new and existing records.
@@ -577,7 +577,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 
 		if (empty($this->title))
 		{
-			$this->title = 'COM_SPORTSMANAGEMENT_' . strtoupper($this->getName());
+			$this->title = 'COM_SPORTSMANAGEMENT_ADMIN_' . strtoupper($this->getName());
 		}
         
         }

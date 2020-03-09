@@ -41,7 +41,7 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	protected function addToolBar() 
 	{
 		$this->jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_NEW');
         $this->icon = 'sportstype';
 	parent::addToolbar();
 	}

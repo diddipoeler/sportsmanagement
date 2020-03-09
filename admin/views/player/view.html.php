@@ -152,7 +152,7 @@ $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/per
 	protected function addToolBar() 
 	{
 	$this->jinput->set('hidemainmenu', true);
-	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW');
 	$this->icon = 'person';
 	parent::addToolbar();
         
