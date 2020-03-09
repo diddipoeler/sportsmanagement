@@ -287,7 +287,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     ?>
     	<table class="table">
 		<tr>
-			<td class=""><a name="division<?php echo $this->divisions;?>"></a>
+			<td class="contentheading"><a name="division<?php echo $this->divisions;?>"></a>
 			
 			<?php 
 				echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');
@@ -305,7 +305,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     ?>
     	<table class="table" >
 		<tr>
-			<td class="">
+			<td class="contentheading">
 				<?php
 				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATRIX' );
 				if ( $this->divisionid )
@@ -327,7 +327,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     ?>
     <table class="table">
 	<tr>
-		<td class="">
+		<td class=" class="contentheading"">
 		<?php
 		if ( $this->config['show_team_shortform'] == 1 && !empty($this->team->short_name))
 		{

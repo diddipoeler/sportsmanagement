@@ -23,7 +23,7 @@ console.log("jquery version : "+jQuery().jquery);
 console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 	
 if( typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null ){
-console.log("bootstrap version ist nicht vorhanden");   
+console.log("bootstrap version ist nicht vorhanden");
 <?php	
 $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
 $document->addCustomTag($stylelink);
@@ -54,7 +54,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					<td colspan="<?php echo $nbcols; ?>">
 					<?php
 					$country = $this->project->country;
-				echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);    
+				echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
 				
 					?>
 					</td>
@@ -107,7 +107,7 @@ $this->overallconfig['use_jquery_modal']
 <?php
 if ( !sportsmanagementHelper::existPicture( $picture ) )
 {
-$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig"); 
+$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',
 $picture,
@@ -133,7 +133,7 @@ echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>'
 			    	if ( $this->overallconfig['show_project_text'] )
 					{
 						?>
-				    	<td>
+				    	<td class="contentheading">
 						<?php
 						echo $this->project->name;
 						if (isset( $this->division))
