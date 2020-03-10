@@ -327,7 +327,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     ?>
     <table class="table">
 	<tr>
-		<td class=" class="contentheading"">
+		<td class="contentheading">
 		<?php
 		if ( $this->config['show_team_shortform'] == 1 && !empty($this->team->short_name))
 		{
