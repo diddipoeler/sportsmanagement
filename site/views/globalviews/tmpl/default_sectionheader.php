@@ -449,11 +449,10 @@ $this->overallconfig['use_jquery_modal']);
     <table class="table" id="sectionheader">
     <tr>
     <td class="contentheading">
-    <h4>
+    
     <?php
     echo $this->headertitle;
     ?>
-    </h4>
     </td>
     </tr>
     </table>
