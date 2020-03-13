@@ -156,36 +156,50 @@ Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsme
 
         if (count($result)) {
             foreach ($result as $r) {
+              if ( !array_key_exists($r->team_id, $this->teams) )
+              {
                 $this->teams[$r->team_id] = $r;
+              }
+              
+              if ( $r->use_finally ) 
+{
+$this->teams[$r->team_id]->sum_points += $r->points_finally;
+$this->teams[$r->team_id]->neg_points += $r->neg_points_finally;
+$this->teams[$r->team_id]->cnt_matches += $r->matches_finally;
+$this->teams[$r->team_id]->cnt_won += $r->won_finally;
+$this->teams[$r->team_id]->cnt_draw += $r->draws_finally;
+$this->teams[$r->team_id]->cnt_lost += $r->lost_finally;
+$this->teams[$r->team_id]->sum_team1_result += $r->homegoals_finally;
+$this->teams[$r->team_id]->sum_team2_result += $r->guestgoals_finally;
+$this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;                
+                
+              }
+              else
+              {
                 $this->teams[$r->team_id]->cnt_matches = 0;
-/**
- * das ist hier nicht richtig
- * $this->teams[$r->team_id]->sum_points = $r->points_finally;
- * $this->teams[$r->team_id]->neg_points = $r->neg_points_finally;
- */
                 $this->teams[$r->team_id]->sum_points = 0;
                 $this->teams[$r->team_id]->neg_points = 0;
-
                 $this->teams[$r->team_id]->cnt_won_home = 0;
                 $this->teams[$r->team_id]->cnt_draw_home = 0;
                 $this->teams[$r->team_id]->cnt_lost_home = 0;
-
                 $this->teams[$r->team_id]->cnt_won = 0;
                 $this->teams[$r->team_id]->cnt_draw = 0;
                 $this->teams[$r->team_id]->cnt_lost = 0;
-
                 $this->teams[$r->team_id]->sum_team1_result = 0;
                 $this->teams[$r->team_id]->sum_team2_result = 0;
                 $this->teams[$r->team_id]->sum_away_for = 0;
                 $this->teams[$r->team_id]->diff_team_results = 0;
-
+              }
                 $this->teams[$r->team_id]->round = 0;
                 $this->teams[$r->team_id]->rank = 0;
 
             }
         }
        
-
+//echo 'result <pre>'.print_r($result,true).'</pre>';
+//echo 'teams <pre>'.print_r($this->teams,true).'</pre>';
+      
+      
         return $this->teams;
     }
     
@@ -231,7 +245,7 @@ $query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standa
 $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = tl.project_id' );
             
 $query->where('tl.project_id IN (' . $project_ids . ')' );
-$query->group('st.team_id' );
+//$query->group('st.team_id' );
             
 
         $db->setQuery($query);
@@ -624,7 +638,7 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
  * 
  * 
  */
-    
+    /*
 foreach ( $this->_teams as $team )
 {
 if ( $team->use_finally ) 
@@ -651,7 +665,7 @@ $this->teams[$team->team_id]->sum_team2_result += $team->guestgoals_finally;
 $this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
 }    
 }
-    
+*/    
     
     return $this->teams;
      
