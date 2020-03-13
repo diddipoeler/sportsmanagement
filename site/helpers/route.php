@@ -36,6 +36,7 @@ static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
 public static $views = array(
 'about' => array('cfg_which_database' => '', 's' => '', 'p' => ''), 
+'calendar' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'division' => '', 'mode' => '', 'ptid' => ''),
 'clubinfo' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'cid' => ''),
 'clubplan' => array('cfg_which_database' => '', 's' => '', 'p' => ''),	
 'curve' => array('cfg_which_database' => '', 's' => '', 'p' => ''),
