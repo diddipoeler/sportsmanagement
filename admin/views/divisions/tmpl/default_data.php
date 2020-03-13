@@ -19,21 +19,16 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'dv.ordering');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-
-<!--	<fieldset class="adminform"> -->
 		<legend>
 			<?php
 			echo Text::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE2',
 									'<i>' . $this->projectws->name . '</i>' );
 			?>
 		</legend>
-		
 
 		<div id="editcell"> 
 			<table class="<?php echo $this->table_data_class; ?>">
@@ -148,9 +143,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							
 							?>
 							<td>
-<input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                            
+<input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                            
 								<?php
-								echo $row->name;
+								//echo $row->name;
 								?>
                                 <p class="smallsub">
 						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
@@ -235,4 +230,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				</tbody>
 			</table>
 		</div> 
-<!--	</fieldset> --> 
+
