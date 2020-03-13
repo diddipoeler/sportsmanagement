@@ -969,8 +969,15 @@ $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text
 				break;				
 				
 			case "teamplan":
-				
-				$link = sportsmanagementHelperRoute::getTeamPlanRoute( self::$_project_id, $team_id, $this->_division_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['tid'] = $this->_team_id;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;			
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);				
 				break;		
 				
 			case "clubinfo":
@@ -1019,7 +1026,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$route
 		switch ($view)
 		{								
 			case "calendar":
-				$link = sportsmanagementHelperRoute::getTeamPlanRoute( $this->_project_slug, $this->_team_slug, $this->_division_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['tid'] = $this->_team_id;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;			
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;	
 				
 			case "curve":
@@ -1150,7 +1165,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				if (!$this->_team_id) {
 					return false;
 				}
-				$link = sportsmanagementHelperRoute::getTeamPlanRoute( $this->_project_slug, $this->_team_slug, $this->_division_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['tid'] = $this->_team_id;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;			
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;		
 				
 			case "clubinfo":
