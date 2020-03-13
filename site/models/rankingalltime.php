@@ -149,10 +149,6 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
     {
         $app = Factory::getApplication();
         $result = self::getAllTeams($project_ids);
-        
-        
-        $count_teams = count($result);
-Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    
 
         if (count($result)) {
             foreach ($result as $r) {
@@ -195,7 +191,9 @@ $this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;
 
             }
         }
-       
+
+$count_teams = count($this->teams);
+Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    	    
 //echo 'result <pre>'.print_r($result,true).'</pre>';
 //echo 'teams <pre>'.print_r($this->teams,true).'</pre>';
       
