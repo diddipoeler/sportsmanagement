@@ -187,14 +187,14 @@ foreach( $current as $ptid => $team )
 	/** START OPTIONAL COLUMNS DISPLAY */
 	foreach ( $columns AS $c )
 	{
-	   $routeparameter = array();
-       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-       $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
-       $routeparameter['p'] = $this->project->slug;
-       $routeparameter['tid'] = $team->team->team_slug;
-       $routeparameter['division'] = 0;
-       $routeparameter['mode'] = 0;
-       $routeparameter['ptid'] = $team->ptid_slug;
+//	   $routeparameter = array();
+//       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+//       $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+//       $routeparameter['p'] = $this->project->slug;
+//       $routeparameter['tid'] = $team->team->team_slug;
+//       $routeparameter['division'] = 0;
+//       $routeparameter['mode'] = 0;
+//       $routeparameter['ptid'] = $team->ptid_slug;
         
 		switch ( trim( strtoupper( $c ) ) )
 		{
@@ -217,9 +217,10 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-				    $routeparameter['mode'] = 1;
-                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
+//				    $routeparameter['mode'] = 1;
+//                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+//					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
+                    printf( $format, $team->cnt_won );
 				}
 				else
 				{
@@ -237,9 +238,10 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-				    $routeparameter['mode'] = 2;
-                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
+//				    $routeparameter['mode'] = 2;
+//                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+//					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
+                    printf( $format, $team->cnt_draw );
 				}
 				else
 				{
@@ -257,9 +259,10 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-				    $routeparameter['mode'] = 3;
-                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
+//				    $routeparameter['mode'] = 3;
+//                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+//					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
+                    printf( $format, $team->cnt_lost );
 				}
 				else
 				{
