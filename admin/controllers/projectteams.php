@@ -32,9 +32,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
      */
     function __construct()
 	{
-	     
 		parent::__construct();
-
 	}
     	
 	/**
@@ -72,18 +70,11 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	 */
   function assign()
 	{
-	   $app = Factory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-		//$post = Factory::getApplication()->input->post->getArray(array());
-        $post = $jinput->post->getArray();
-        $option = $jinput->getCmd('option');
-
+        $post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
        $msg = $model->storeAssign($post);
-       $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+       $this->setRedirect('index.php?option='.$this->option.'&view=close&tmpl=component',$msg);
 	}
-  
   
   /**
    * sportsmanagementControllerprojectteams::matchgroups()
@@ -98,7 +89,6 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
     
-    
     /**
      * sportsmanagementControllerprojectteams::setseasonid()
      * 
@@ -111,7 +101,6 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $model->setseasonid();
        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
-    
     
     /**
      * sportsmanagementControllerprojectteams::use_table_yes()
@@ -189,8 +178,5 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
-	
 
-
-	
 }
