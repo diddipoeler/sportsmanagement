@@ -13,11 +13,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.tooltip');
 
-$current  = &$this->current;
-$previous = &$this->previousRanking[$this->division];
-$config   = &$this->tableconfig;
+$current  = $this->current;
+$previous = $this->previousRanking[$this->division];
+$config   = $this->tableconfig;
 $counter = 1;
 $k = 0;
 $j = 0;

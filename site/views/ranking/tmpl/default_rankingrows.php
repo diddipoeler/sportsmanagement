@@ -17,7 +17,6 @@ use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.tooltip');
 
 $current = &$this->current;
-//$current  = &$this->currentRanking;
 $previous = &$this->previousRanking[$this->division];
 
 $config = &$this->tableconfig;
