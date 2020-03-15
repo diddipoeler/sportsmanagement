@@ -17,21 +17,18 @@ HTMLHelper::_('behavior.tooltip');
 
 $current  = &$this->current;
 $previous = &$this->previousRanking[$this->division];
-
 $config   = &$this->tableconfig;
-
 $counter = 1;
 $k = 0;
 $j = 0;
 $temprank = 0;
-
 $columns = explode( ",", $config['ordered_columns'] );
 
 foreach( $current as $ptid => $team )
 {
 	$team->team = $this->teams[$ptid];
 
-	//Table colors
+	/** Table colors */
 	$color = "";
 
 	if ( isset( $this->colors[$j]["from"] ) && $counter == $this->colors[$j]["from"] )
@@ -50,7 +47,7 @@ foreach( $current as $ptid => $team )
 		$j++;
 	}
 
-	//**********Favorite Team
+	/** Favorite Team */
 	$format = "%s";
 	$favStyle = '';
 	if ( in_array( $team->team->id, explode(",",$this->project->fav_team) ) && $this->project->fav_team_highlight_type == 1 )
@@ -77,7 +74,7 @@ foreach( $current as $ptid => $team )
 	echo '<tr class=""' . $favStyle . '>';
 	echo "\n";
 
-	//**************rank row
+	/** rank row */
 	echo '<td class="rankingrow_rank" ';
 	if($color != '') {
 		echo ' style="background-color: ' . $color . '"';
@@ -96,7 +93,7 @@ foreach( $current as $ptid => $team )
 	echo '</td>';
 	echo "\n";
 
-	//**************Last rank (image)
+	/** Last rank (image) */
 	echo '<td class="rankingrow_lastrankimg" ';
 	if($color != '' && $config['use_background_row_color']) {
 		echo " style='background-color: " . $color . "'";
@@ -106,7 +103,7 @@ foreach( $current as $ptid => $team )
 	echo '</td>';
 	echo "\n";
 
-	//**************Last rank (number)
+	/** Last rank (number) */
 	echo '<td class="rankingrow_lastrank" nowrap="nowrap" ';
 	if($color != '' && $config['use_background_row_color']) {
 		echo 'style="background-color:' . $color . '"';
@@ -120,7 +117,7 @@ foreach( $current as $ptid => $team )
 	echo '</td>';
 	echo "\n";
 
-	//**************logo - jersey
+	/** logo - jersey */
 	if ( $config['show_logo_small_table'] != "no_logo" )
 	{
 		echo '<td class="rankingrow_logo"';
@@ -173,23 +170,31 @@ foreach( $current as $ptid => $team )
 		echo "\n";
 	}
 
-	//**************Team name
+	/** Team name */
 	echo '<td class="rankingrow_teamname" nowrap="nowrap"';
 	if($color != '' && $config['use_background_row_color']) {
 		echo ' style="background-color: ' . $color . '"';
 	}
 	echo ">";
 	$isFavTeam = in_array( $team->team->id, explode(",",$this->project->fav_team) );
-	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
 	echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam, NULL, $this->cfg_which_database );
 	echo ' ('.$team->team->unique_id.')';
 	echo '</td>';
 	echo "\n";
 
-	//**********START OPTIONAL COLUMNS DISPLAY
+	/** START OPTIONAL COLUMNS DISPLAY */
 	foreach ( $columns AS $c )
 	{
+	   $routeparameter = array();
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $team->team->team_slug;
+       $routeparameter['division'] = 0;
+       $routeparameter['mode'] = 0;
+       $routeparameter['ptid'] = $team->ptid_slug;
+        
 		switch ( trim( strtoupper( $c ) ) )
 		{
 			case 'PLAYED':
@@ -213,7 +218,6 @@ foreach( $current as $ptid => $team )
 				{
 				    $routeparameter['mode'] = 1;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 1);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -234,7 +238,6 @@ foreach( $current as $ptid => $team )
 				{
 				    $routeparameter['mode'] = 2;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 2);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -255,7 +258,6 @@ foreach( $current as $ptid => $team )
 				{
 				    $routeparameter['mode'] = 3;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
-					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 3);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
 				}
 				else
