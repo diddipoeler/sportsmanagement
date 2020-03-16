@@ -85,7 +85,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 
         ToolbarHelper::apply('projectreferees.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
-        sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'persons', 3);
+        sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'players', 3);
         parent::addToolbar();
     }
 
