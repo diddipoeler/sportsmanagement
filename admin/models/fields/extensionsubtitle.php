@@ -9,10 +9,9 @@
  * @subpackage fields
  */
 
-
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
-jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldSubtitle
@@ -23,9 +22,9 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldextensionSubtitle extends FormField
+class JFormFieldextensionsubtitle extends FormField
 {
-	public $type = 'extensionSubtitle';
+	public $type = 'extensionsubtitle';
 
 	/**
 	 * FormFieldSubtitle::getLabel()
