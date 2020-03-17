@@ -7,12 +7,10 @@
 * @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldMessage
@@ -23,9 +21,9 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldextensionMessage extends FormField
+class JFormFieldextensionmessage extends FormField
 {
-	public $type = 'extensionMessage';
+	public $type = 'extensionmessage';
 
 	/**
 	 * FormFieldMessage::getLabel()
