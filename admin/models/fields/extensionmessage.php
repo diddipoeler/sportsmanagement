@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version 1.0.58
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
@@ -18,14 +18,14 @@ jimport('joomla.form.formfield');
  * FormFieldMessage
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
  */
-class JFormFieldMessage extends FormField
+class JFormFieldextensionMessage extends FormField
 {
-	public $type = 'Message';
+	public $type = 'extensionMessage';
 
 	/**
 	 * FormFieldMessage::getLabel()
