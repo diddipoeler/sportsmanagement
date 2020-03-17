@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      subtitle.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage fields
@@ -18,14 +18,14 @@ jimport('joomla.form.formfield');
  * FormFieldSubtitle
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
  */
-class JFormFieldSubtitle extends FormField
+class JFormFieldextensionSubtitle extends FormField
 {
-	public $type = 'Subtitle';
+	public $type = 'extensionSubtitle';
 
 	/**
 	 * FormFieldSubtitle::getLabel()
