@@ -9,7 +9,10 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
   >
 
-      
+<field type="extensionsubtitle" title="" color="#2672a6" />
+		
+<field type="extensionsubtitle" title="" color="#2672a6" />
+		
 	<field name="cfg_jl_import" 
     type="extensionradiobutton" 
     default="1"
