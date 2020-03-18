@@ -157,7 +157,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	protected function addToolbar()
 	{
     
-    $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT',$this->project->name) : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
    
         $bar = Toolbar::getInstance('toolbar');
