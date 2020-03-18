@@ -34,9 +34,10 @@ class JFormFieldextensionmessage extends FormField
 	{
 		$html = '';
 
-		$lang = Factory::getLanguage();
-		$lang->load('lib_syw.sys', JPATH_SITE);
-
+		//$lang = Factory::getLanguage();
+		//$lang->load('lib_syw.sys', JPATH_SITE);
+Factory::getLanguage()->load('com_installer', JPATH_ADMINISTRATOR);
+		
 		if ($this->message_type == 'example') 
         {
 			$html .= '<label style="visibility: hidden; margin: 0">'.Text::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
