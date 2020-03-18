@@ -11,7 +11,25 @@
 
 <field type="extensionsubtitle" title="" color="#2672a6" />
 <field type="extensionmessage" style="example" text="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL_DESC" label="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL" />		
+<field name="jsm_deinstall_module" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_INSTALLER_TYPE_MODULE" 
+      description="COM_INSTALLER_TYPE_MODULE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
 		
+<field name="jsm_deinstall_plugin" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_INSTALLER_TYPE_PLUGIN" 
+      description="COM_INSTALLER_TYPE_PLUGIN">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
 		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
