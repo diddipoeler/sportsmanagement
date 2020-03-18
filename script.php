@@ -151,6 +151,12 @@ $this->endPanel = 'endPanel';
 	function uninstall( $adapter) 
 	{
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
+		
+$deinstallmodule = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_module',0);		
+$deinstallplugin = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_plugin',0);
+$deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_database',0);
+		
+		
 	}
  
 	/**
