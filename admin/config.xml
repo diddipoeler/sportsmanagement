@@ -10,6 +10,8 @@
   >
 
 <field type="extensionsubtitle" title="" color="#2672a6" />
+<field type="extensionmessage" style="example" text="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL_DESC" label="COM_SPORTSMANAGEMENT_SETTINGS_JSM_DEINSTALL" />		
+		
 		
 <field type="extensionsubtitle" title="" color="#2672a6" />
 		
