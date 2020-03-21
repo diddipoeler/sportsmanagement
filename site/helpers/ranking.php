@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 /**
  * JSMRanking
@@ -1071,7 +1072,8 @@ $app = Factory::getApplication();
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');				
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');
+Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');				
 				}
 			}
 			// set a default criteria if empty
