@@ -1059,7 +1059,6 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSIN
 	 */
 	function _getRankingCriteria()
 	{
-$app = Factory::getApplication();		
 		if (empty($this->_criteria))
 		{
 			// get the values from ranking template setting
@@ -1072,7 +1071,6 @@ $app = Factory::getApplication();
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');
 Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');				
 				}
 			}
