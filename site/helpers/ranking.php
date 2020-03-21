@@ -975,9 +975,6 @@ $option = $app->input->getCmd('option');
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
-	$app = Factory::getApplication();
-    $option = $app->input->getCmd('option');  
-
 		$res = true;
 		
 		if ($from)
@@ -1018,34 +1015,24 @@ $option = $app->input->getCmd('option');
 	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-            $query = $db->getQuery(true);
-            $starttime = microtime(); 
-            
+        $query = $db->getQuery(true);
+        $starttime = microtime(); 
                
 		if (empty($this->_roundcodes))
 		{
-			
-			$query->select('r.roundcode, r.id ');
-            $query->from('#__sportsmanagement_round AS r ');
-            $query->where('r.project_id = ' . $this->_projectid);
-            $query->order('r.roundcode');
-            
-			$db->setQuery($query);
-            
-            
-        
-			$this->_roundcodes = $db->loadAssocList('id');
-            
-            
+		$query->select('r.roundcode, r.id ');
+        $query->from('#__sportsmanagement_round AS r ');
+        $query->where('r.project_id = ' . $this->_projectid);
+        $query->order('r.roundcode');
+		$db->setQuery($query);
+		$this->_roundcodes = $db->loadAssocList('id');
 		}
-        
-      
         
 		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
-$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'),'error');	
-$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'),'error');				
-			return false;
+        Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'), Log::ERROR, 'jsmerror');
+        Log::add(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'), Log::ERROR, 'jsmerror');
+		return false;
 		}
 		return $this->_roundcodes[(int)$round_id];
 	}
@@ -1061,7 +1048,7 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSIN
 	{
 		if (empty($this->_criteria))
 		{
-			// get the values from ranking template setting
+			/** get the values from ranking template setting */
 			$values = explode(',', $this->_params['ranking_order']);
 			$crit = array();
 			foreach ($values as $v)
@@ -1071,10 +1058,10 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSIN
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');				
+                Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');				
 				}
 			}
-			// set a default criteria if empty
+			/** set a default criteria if empty */
 			if (!count($crit)) {
 				$crit[] = '_cmpPoints';
 			}
