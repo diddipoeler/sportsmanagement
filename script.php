@@ -184,21 +184,15 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 				    {
 					// There was an error in uninstalling the package
 					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    continue;
      				}
                     else
                     {
                     // Package uninstalled successfully
-                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';    
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
+                    continue;    
                     }
-				
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+    
 				}
 
 			}
@@ -232,13 +226,14 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 				    {
 					// There was an error in uninstalling the package
 					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    continue;
      				}
                     else
                     {
                     // Package uninstalled successfully
-                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';    
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
+                    continue;    
                     }
-                    
                     
 				}
 
