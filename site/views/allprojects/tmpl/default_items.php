@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_irems.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojects
@@ -55,7 +55,7 @@ $routeparameter['r'] = 0;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($this->template,$routeparameter);
 echo HTMLHelper::link( $link, $item->name );
 }
 else

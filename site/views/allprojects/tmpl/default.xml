@@ -32,6 +32,14 @@
 			
 		</field>
 
+          <field 	name="template" type="list" default="table" 
+		class="radio btn-group"
+				label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEMPLATE" 
+				description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEMPLATE">
+			<option value="ranking">COM_SPORTSMANAGEMENT_XML_RANKING_LAYOUT_TITLE</option>
+			<option value="resultsranking">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_LAYOUT_TITLE</option>
+			
+		</field>
 
 		</fieldset>
 	</fields>
