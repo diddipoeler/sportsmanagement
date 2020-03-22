@@ -160,17 +160,55 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 		
         if ( $deinstallmodule )
         {
-        $db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "module" AND `element` = "mod_gmap" ');
-        $id = $db->loadResult();
-        if($id){
-            $installer = new Installer;
-            $result = $installer->uninstall('module',$id,1);
-        }         
+        $manifest = $adapter->getParent()->manifest;
+		$modules = $manifest->xpath('modules/module');
+		foreach ($modules as $module) {
+			$name = (string)$module->attributes()->plugin;
+            $query = $db->getQuery(true);
+			$query->select($db->quoteName('extension_id'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('type') . ' = ' . $db->Quote('module'));
+			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
+			$db->setQuery($query);
+			$extensions = $db->loadColumn();
+            if (count($extensions)) {
+				$result = false;
+				foreach ($extensions as $id) {
+					$installer = new Installer;
+					$result = $installer->uninstall('module', $id);
+				}
+
+			}
+
+          }            
+               
         }
+        
         if ( $deinstallplugin )
         {
-            
+        $manifest = $adapter->getParent()->manifest;
+		$plugins = $manifest->xpath('plugins/plugin');
+		foreach ($plugins as $plugin) {
+			$name = (string)$plugin->attributes()->plugin;
+            $query = $db->getQuery(true);
+			$query->select($db->quoteName('extension_id'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('type') . ' = ' . $db->Quote('plugin'));
+			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
+			$db->setQuery($query);
+			$extensions = $db->loadColumn();
+            if (count($extensions)) {
+				$result = false;
+				foreach ($extensions as $id) {
+					$installer = new Installer;
+					$result = $installer->uninstall('plugin', $id);
+				}
+
+			}
+
+          }         
         }
+        
         if ( $deinstalldatabase )
         {
             
