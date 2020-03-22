@@ -161,7 +161,7 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
         {
         $manifest = $adapter->getParent()->manifest;
 		$modules = $manifest->xpath('modules/module');
-        echo 'module <pre>'.print_r($modules,true).'</pre>';
+        //echo 'module <pre>'.print_r($modules,true).'</pre>';
 		foreach ($modules as $module) {
 			$name = (string)$module->attributes()->module;
             $query = $db->getQuery(true);
@@ -171,7 +171,7 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
 			$db->setQuery($query);
 			$extensions = $db->loadColumn();
-            echo 'extensions_id <pre>'.print_r($extensions,true).'</pre>';
+            //echo 'extensions_id <pre>'.print_r($extensions,true).'</pre>';
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
@@ -183,13 +183,13 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
                     if ($result === false)
 				    {
 					// There was an error in uninstalling the package
-					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $rowtype). '</p>';
+					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
      				}
-else
-{
-// Package uninstalled successfully
-echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype). '</p>';    
-}
+                    else
+                    {
+                    // Package uninstalled successfully
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';    
+                    }
 				
                     
                     
@@ -225,7 +225,21 @@ echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype). '</p>';
 				foreach ($extensions as $id) {
                     $installer = Installer::getInstance();
 		            $row = Table::getInstance('extension');
+                    $id = trim($id);
+			        $row->load($id);
 					$result = $installer->uninstall('plugin', $id);
+                    if ($result === false)
+				    {
+					// There was an error in uninstalling the package
+					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+     				}
+                    else
+                    {
+                    // Package uninstalled successfully
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';    
+                    }
+                    
+                    
 				}
 
 			}
