@@ -181,7 +181,7 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 			}
 
           }            
-               
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_MODULE_TEXT') . '</p>';       
         }
         
         if ( $deinstallplugin )
@@ -206,7 +206,8 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 
 			}
 
-          }         
+          } 
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_PLUGIN_TEXT') . '</p>';        
         }
         
         if ( $deinstalldatabase )
