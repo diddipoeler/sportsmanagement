@@ -161,8 +161,9 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
         {
         $manifest = $adapter->getParent()->manifest;
 		$modules = $manifest->xpath('modules/module');
+        echo 'module <pre>'.print_r($modules,true).'</pre>';
 		foreach ($modules as $module) {
-			$name = (string)$module->attributes()->plugin;
+			$name = (string)$module->attributes()->module;
             $query = $db->getQuery(true);
 			$query->select($db->quoteName('extension_id'));
 			$query->from($db->quoteName('#__extensions'));
@@ -170,7 +171,7 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
 			$db->setQuery($query);
 			$extensions = $db->loadColumn();
-            echo '<pre>'.print_r($extensions,true).'</pre>';
+            echo 'extensions_id <pre>'.print_r($extensions,true).'</pre>';
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
