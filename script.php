@@ -170,13 +170,34 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
 			$db->setQuery($query);
 			$extensions = $db->loadColumn();
+            echo '<pre>'.print_r($extensions,true).'</pre>';
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-//					$installer = new Installer;
                     $installer = Installer::getInstance();
 		            $row = Table::getInstance('extension');
+                    $id = trim($id);
+			        $row->load($id);
 					$result = $installer->uninstall('module', $id);
+                    if ($result === false)
+				    {
+					// There was an error in uninstalling the package
+					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $rowtype). '</p>';
+     				}
+else
+{
+// Package uninstalled successfully
+echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $rowtype). '</p>';    
+}
+				
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 				}
 
 			}
@@ -201,7 +222,6 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-//					$installer = new Installer;
                     $installer = Installer::getInstance();
 		            $row = Table::getInstance('extension');
 					$result = $installer->uninstall('plugin', $id);
