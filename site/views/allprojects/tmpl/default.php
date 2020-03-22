@@ -34,6 +34,9 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 </script>
+<div class="componentheading">
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'); ?>
+</div>
 <div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
 <fieldset class="filters">
