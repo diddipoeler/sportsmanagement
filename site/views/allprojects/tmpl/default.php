@@ -36,7 +36,7 @@ function tableOrdering( order, dir, task )
 </script>
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<h1 class="componentheading">
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
+		<?php echo $this->escape($this->params->get('page_title')); ?>
 	</h1>
 <?php endif; ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
