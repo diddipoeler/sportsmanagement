@@ -74,8 +74,9 @@ use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Installer\Installer;
 
-jimport('joomla.installer.installer');
+//jimport('joomla.installer.installer');
  
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -150,12 +151,30 @@ $this->endPanel = 'endPanel';
 	 */
 	function uninstall( $adapter) 
 	{
+	   $db = Factory::getDbo();
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 		
 $deinstallmodule = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_module',0);		
 $deinstallplugin = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_plugin',0);
 $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_database',0);
 		
+        if ( $deinstallmodule )
+        {
+        $db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "module" AND `element` = "mod_gmap" ');
+        $id = $db->loadResult();
+        if($id){
+            $installer = new Installer;
+            $result = $installer->uninstall('module',$id,1);
+        }         
+        }
+        if ( $deinstallplugin )
+        {
+            
+        }
+        if ( $deinstalldatabase )
+        {
+            
+        }
 		
 	}
  
@@ -796,13 +815,13 @@ else
             // plugin ist nicht vorhanden
             // also installieren
             $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name.'_3';
-            $installer = new JInstaller;
+            $installer = new Installer;
             $result = $installer->install($path);    
         }    
         break;
         default:    
         $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
-        $installer = new JInstaller;
+        $installer = new Installer;
         $result = $installer->install($path);
         break;
         }
@@ -860,7 +879,7 @@ else
                 $client = 'site';
             }
             $path = $client == 'administrator' ? $src.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name : $src.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name;
-            $installer = new JInstaller;
+            $installer = new Installer;
             $result = $installer->install($path);
             $ordering = '99';
             
