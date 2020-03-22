@@ -75,8 +75,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Installer\Installer;
-
-//jimport('joomla.installer.installer');
+use Joomla\CMS\Table\Table;
  
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -174,7 +173,9 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-					$installer = new Installer;
+//					$installer = new Installer;
+                    $installer = Installer::getInstance();
+		            $row = Table::getInstance('extension');
 					$result = $installer->uninstall('module', $id);
 				}
 
@@ -200,7 +201,9 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-					$installer = new Installer;
+//					$installer = new Installer;
+                    $installer = Installer::getInstance();
+		            $row = Table::getInstance('extension');
 					$result = $installer->uninstall('plugin', $id);
 				}
 
