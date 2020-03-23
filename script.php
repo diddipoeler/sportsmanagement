@@ -160,10 +160,11 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 
 $installer = Installer::getInstance();
 $row = Table::getInstance('extension');
+$manifest = $adapter->getParent()->manifest;
 		
 if ( $deinstallmodule )
         {
-        $manifest = $adapter->getParent()->manifest;
+//        $manifest = $adapter->getParent()->manifest;
 		$modules = $manifest->xpath('modules/module');
         //echo 'module <pre>'.print_r($modules,true).'</pre>';
 		foreach ($modules as $module) {
@@ -209,7 +210,7 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
         
         if ( $deinstallplugin )
         {
-        $manifest = $adapter->getParent()->manifest;
+//        $manifest = $adapter->getParent()->manifest;
 		$plugins = $manifest->xpath('plugins/plugin');
 		echo 'plugins <pre>'.print_r($plugins,true).'</pre>';
 		foreach ($plugins as $plugin) {
