@@ -212,7 +212,7 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
         {
 //        $manifest = $adapter->getParent()->manifest;
 		$plugins = $manifest->xpath('plugins/plugin');
-		echo 'plugins <pre>'.print_r($plugins,true).'</pre>';
+		//echo 'plugins <pre>'.print_r($plugins,true).'</pre>';
 		foreach ($plugins as $plugin) {
 			$name = (string)$plugin->attributes()->plugin;
             $query = $db->getQuery(true);
