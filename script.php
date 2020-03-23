@@ -198,7 +198,7 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
                     //continue;    
                     }
     
-				}
+				
 
 			}
 
