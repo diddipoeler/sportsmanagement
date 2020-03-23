@@ -18,6 +18,7 @@
         <folder>tmpl</folder>
         <folder>language</folder>
         <folder>css</folder>
+	    <folder>sql</folder>
     </files>
 
     <languages>

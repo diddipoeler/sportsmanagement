@@ -15,20 +15,20 @@
  
 	<!-- Runs on install/uninstall/update; New in 1.6 -->
 	<scriptfile>script.php</scriptfile>
- 
-	<install> <!-- Runs on install -->
+    <!-- Runs on install -->
+	<install> 
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
-	
-	<uninstall> <!-- Runs on uninstall -->
+	<!-- Runs on uninstall -->
+	<uninstall> 
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
-	
-	<update> <!-- Runs on update; New in 1.6 -->
+	<!-- Runs on update; New in 1.6 -->
+	<update> 
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>

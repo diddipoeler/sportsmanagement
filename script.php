@@ -74,9 +74,10 @@ use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Log\Log;
 
-jimport('joomla.installer.installer');
- 
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 jimport('joomla.html.html.bootstrap');
@@ -150,12 +151,110 @@ $this->endPanel = 'endPanel';
 	 */
 	function uninstall( $adapter) 
 	{
+	   $db = Factory::getDbo();
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 		
 $deinstallmodule = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_module',0);		
 $deinstallplugin = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_plugin',0);
 $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_database',0);
+
+$installer = Installer::getInstance();
+$row = Table::getInstance('extension');
+$manifest = $adapter->getParent()->manifest;
 		
+if ( $deinstallmodule )
+        {
+//        $manifest = $adapter->getParent()->manifest;
+		$modules = $manifest->xpath('modules/module');
+        //echo 'module <pre>'.print_r($modules,true).'</pre>';
+		foreach ($modules as $module) {
+			$name = (string)$module->attributes()->module;
+            $query = $db->getQuery(true);
+			$query->select($db->quoteName('extension_id'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('type') . ' = ' . $db->Quote('module'));
+			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
+			$db->setQuery($query);
+			$extensions = $db->loadColumn();
+            //echo 'extensions_id <pre>'.print_r($extensions,true).'</pre>';
+            if (count($extensions)) {
+				$result = false;
+				foreach ($extensions as $id) {
+//                    $installer = Installer::getInstance();
+//		            $row = Table::getInstance('extension');
+                    $id = trim($id);
+			        $row->load($id);
+					try {
+					$result = $installer->uninstall('module', $id);
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
+					// There was an error in uninstalling the package
+		//			echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    
+     				}
+                    catch (Exception $e) {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');			    
+                    // Package uninstalled successfully
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    //continue;    
+                    }
+    
+				
+
+			}
+			}
+		}
+          //}            
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_MODULE_TEXT') . '</p>';       
+        }
+        
+        if ( $deinstallplugin )
+        {
+//        $manifest = $adapter->getParent()->manifest;
+		$plugins = $manifest->xpath('plugins/plugin');
+		//echo 'plugins <pre>'.print_r($plugins,true).'</pre>';
+		foreach ($plugins as $plugin) {
+			$name = (string)$plugin->attributes()->plugin;
+            $query = $db->getQuery(true);
+			$query->select($db->quoteName('extension_id'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('type') . ' = ' . $db->Quote('plugin'));
+			$query->where($db->quoteName('element') . ' = ' . $db->Quote($name));
+			$db->setQuery($query);
+			$extensions = $db->loadColumn();
+            if (count($extensions)) {
+				$result = false;
+				foreach ($extensions as $id) {
+//                    $installer = Installer::getInstance();
+//		            $row = Table::getInstance('extension');
+                    $id = trim($id);
+			        $row->load($id);
+					$result = $installer->uninstall('plugin', $id);
+                    if ($result === false)
+				    {
+					// There was an error in uninstalling the package
+					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    continue;
+     				}
+                    else
+                    {
+                    // Package uninstalled successfully
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
+                    continue;    
+                    }
+                    
+				}
+
+			}
+
+          } 
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_PLUGIN_TEXT') . '</p>';        
+        }
+        
+        if ( $deinstalldatabase )
+        {
+            
+        }
 		
 	}
  
@@ -796,13 +895,13 @@ else
             // plugin ist nicht vorhanden
             // also installieren
             $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name.'_3';
-            $installer = new JInstaller;
+            $installer = new Installer;
             $result = $installer->install($path);    
         }    
         break;
         default:    
         $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
-        $installer = new JInstaller;
+        $installer = new Installer;
         $result = $installer->install($path);
         break;
         }
@@ -860,7 +959,7 @@ else
                 $client = 'site';
             }
             $path = $client == 'administrator' ? $src.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name : $src.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$name;
-            $installer = new JInstaller;
+            $installer = new Installer;
             $result = $installer->install($path);
             $ordering = '99';
             
