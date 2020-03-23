@@ -76,7 +76,8 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
- 
+use Joomla\CMS\Log\Log;
+
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 jimport('joomla.html.html.bootstrap');
