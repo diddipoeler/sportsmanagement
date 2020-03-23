@@ -156,6 +156,9 @@ $this->endPanel = 'endPanel';
 $deinstallmodule = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_module',0);		
 $deinstallplugin = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_plugin',0);
 $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('jsm_deinstall_database',0);
+
+$installer = Installer::getInstance();
+$row = Table::getInstance('extension');
 		
         if ( $deinstallmodule )
         {
@@ -175,8 +178,8 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-                    $installer = Installer::getInstance();
-		            $row = Table::getInstance('extension');
+//                    $installer = Installer::getInstance();
+//		            $row = Table::getInstance('extension');
                     $id = trim($id);
 			        $row->load($id);
 					$result = $installer->uninstall('module', $id);
@@ -217,8 +220,8 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
             if (count($extensions)) {
 				$result = false;
 				foreach ($extensions as $id) {
-                    $installer = Installer::getInstance();
-		            $row = Table::getInstance('extension');
+//                    $installer = Installer::getInstance();
+//		            $row = Table::getInstance('extension');
                     $id = trim($id);
 			        $row->load($id);
 					$result = $installer->uninstall('plugin', $id);
