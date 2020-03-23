@@ -161,7 +161,7 @@ $deinstalldatabase = ComponentHelper::getParams('com_sportsmanagement')->get('js
 $installer = Installer::getInstance();
 $row = Table::getInstance('extension');
 		
-        if ( $deinstallmodule )
+if ( $deinstallmodule )
         {
         $manifest = $adapter->getParent()->manifest;
 		$modules = $manifest->xpath('modules/module');
@@ -201,8 +201,9 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 				
 
 			}
-
-          }            
+			}
+		}
+          //}            
         echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_MODULE_TEXT') . '</p>';       
         }
         
