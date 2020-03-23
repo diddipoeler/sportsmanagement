@@ -77,7 +77,7 @@ $this->app = Factory::getApplication();
 			$data['build']=!empty($build) ? $build : $result->build ;
 			$data['revision']=!empty($revision) ? $revision : $result->revision;			
 		}
-// Create and populate an object.
+
 $object= new stdClass();
 $object->id = $data['id'];
 $object->count = $data['count'];

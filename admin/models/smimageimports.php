@@ -233,21 +233,17 @@ class sportsmanagementModelsmimageimports extends ListModel {
             $i++;
 
             $query->clear();
-            // Select some fields
             $query->select('id');
-            // From the table
             $query->from('#__sportsmanagement_pictures');
             $query->where('name LIKE ' . Factory::getDbo()->Quote('' . $picturedescription . ''));
             Factory::getDbo()->setQuery($query);
             if (!Factory::getDbo()->loadResult()) {
-                // Create and populate an object.
                 $temp = new stdClass();
                 $temp->name = $picturedescription;
                 $temp->file = $file;
                 $temp->directory = $directory;
                 $temp->folder = $folder;
                 $temp->published = 0;
-                // Insert the object
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
             }
         }

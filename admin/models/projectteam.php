@@ -93,11 +93,9 @@ $result = $this->jsmdb->execute();
 		$seasonteam_id	= $proTeam->team_id; 
 		$playground_id = $this->getProjectTeamPlayground($seasonteam_id);
 	if ( $playground_id ) {	 
-        // Create and populate an object.
         $object = new stdClass();
         $object->id = $projectteam_id;
         $object->standard_playground = $playground_id;
-        // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
 	 }
 		 
@@ -220,12 +218,9 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         
         $proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
 		$proTeam->load( $projectteam_id );
-        
-        // Create and populate an object.
         $object = new stdClass();
         $object->id = $proTeam->team_id;
         $object->season_id = $season_id;
-        // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
         
         if ( !$result )
@@ -251,12 +246,9 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
     for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
-                       
-        // Create and populate an object.
         $object = new stdClass();
         $object->id = $projectteam_id;
         $object->is_in_score = $setzer;
-        // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
@@ -282,12 +274,9 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
     for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
-                       
-        // Create and populate an object.
         $object = new stdClass();
         $object->id = $projectteam_id;
         $object->use_finally = $setzer;
-        // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
@@ -407,11 +396,9 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
 		    $team_id = Factory::getDbo()->loadResult();
             if ( !$team_id )
             {
-        // Create and populate an object.
         $profile = new stdClass();
         $profile->project_id = $project_id;
         $profile->team_id = $value;
-        // Insert the object into the user profile table.
         $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
         }
         

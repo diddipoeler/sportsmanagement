@@ -211,11 +211,9 @@ $resultupdate = $this->jsmdb->execute();
             
             if ( !$position )
             {
-            // Create and populate an object.
             $temp = new stdClass();
             $temp->project_id = $project_id;
             $temp->position_id = $row->id;
-            // Insert the object
             $resultquery = $db->insertObject('#__sportsmanagement_project_position', $temp);    
             }	
             

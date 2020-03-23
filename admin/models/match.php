@@ -765,9 +765,7 @@ $query->where($conditions);
     function delete(&$pks)
     {
         $app = Factory::getApplication();
-        /* Ein Datenbankobjekt beziehen */
         $db = Factory::getDbo();
-        /* Ein JDatabaseQuery Objekt beziehen */
         $query = Factory::getDbo()->getQuery(true);
 
         $result = false;
@@ -1715,7 +1713,6 @@ if ( $data['id'] )
         $option = Factory::getApplication()->input->getCmd('option');
         $date = Factory::getDate();
         $user = Factory::getUser();
-// Create a new query object.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $result = true;
@@ -1760,7 +1757,6 @@ if ( $data['id'] )
         foreach ($positions AS $project_position_id => $pos) {
             if (isset($post['position' . $project_position_id])) {
                 foreach ($post['position' . $project_position_id] AS $ordering => $player_id) {
-// Create and populate an object.
                     $temp = new stdClass();
                     $temp->match_id = $mid;
                     $temp->teamplayer_id = $player_id;
@@ -1772,7 +1768,6 @@ if ( $data['id'] )
                     $temp->modified = $date->toSql();
                     $temp->modified_by = $user->get('id');
                     try {
-// Insert the object
                         $resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);
                     } catch (Exception $e) {
                         $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -1803,7 +1798,6 @@ if ( $data['id'] )
         $option = Factory::getApplication()->input->getCmd('option');
         $date = Factory::getDate();
         $user = Factory::getUser();
-// Create a new query object.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $result = true;
@@ -1847,7 +1841,6 @@ if ( $data['id'] )
         foreach ($positions AS $project_position_id => $pos) {
             if (isset($post['staffposition' . $project_position_id])) {
                 foreach ($post['staffposition' . $project_position_id] AS $ordering => $player_id) {
-                    // Create and populate an object.
                     $temp = new stdClass();
                     $temp->match_id = $mid;
                     $temp->team_staff_id = $player_id;
@@ -1856,7 +1849,6 @@ if ( $data['id'] )
                     $temp->modified = $date->toSql();
                     $temp->modified_by = $user->get('id');
                     try {
-// Insert the object
                         $resultquery = $db->insertObject('#__sportsmanagement_match_staff', $temp);
                     } catch (Exception $e) {
                         $msg = $e->getMessage(); // Returns "Normally you would have other code...

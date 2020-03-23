@@ -289,11 +289,9 @@ return false;
 if ( !$season_team_id )
 {
 try {	
-// Create and populate an object.
 $temp_season_team_id = new stdClass();
 $temp_season_team_id->team_id = $team_id;
 $temp_season_team_id->season_id = $pro_result->season_id;
-// Insert the object into the table.
 $result_season_team_id = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...

@@ -317,7 +317,6 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 if ($record_jl) {
                     
                 } else {
-                    // Create and populate an object.
                     $temp = new stdClass();
                     $temp->name = $value;
                     $temp->import = 0;

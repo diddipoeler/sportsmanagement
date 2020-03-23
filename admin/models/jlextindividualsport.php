@@ -480,10 +480,8 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
     function insertevents($match_id,$projectteam1_id,$teamplayer1_id,$event_id)
 	{
 	$app = Factory::getApplication();
-    // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-    // Create and populate an object.
                 $event = new stdClass();
                 $event->match_id = $match_id;
                 $event->projectteam_id = $projectteam1_id;
