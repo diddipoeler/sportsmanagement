@@ -22,11 +22,11 @@
 		</sql>
 	</install>
 	<!-- Runs on uninstall -->
-	<!-- <uninstall> 
+	<uninstall> 
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
-	</uninstall> -->
+	</uninstall>
 	<!-- Runs on update; New in 1.6 -->
 	<update> 
 		<schemas>
