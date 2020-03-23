@@ -183,18 +183,20 @@ $row = Table::getInstance('extension');
 //		            $row = Table::getInstance('extension');
                     $id = trim($id);
 			        $row->load($id);
+					try {
 					$result = $installer->uninstall('module', $id);
-                    if ($result === false)
-				    {
-					// There was an error in uninstalling the package
-					echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
-                    continue;
-     				}
-                    else
-                    {
-                    // Package uninstalled successfully
                     echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
-                    continue;    
+					// There was an error in uninstalling the package
+		//			echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    
+     				}
+                    catch (Exception $e) {
+                    {
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');			    
+                    // Package uninstalled successfully
+                    echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
+                    //continue;    
                     }
     
 				}
