@@ -191,7 +191,6 @@ $row = Table::getInstance('extension');
                     
      				}
                     catch (Exception $e) {
-                    {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');			    
                     // Package uninstalled successfully
