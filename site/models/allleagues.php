@@ -152,7 +152,7 @@ public function getStart()
      */
     function getListQuery()
 	{
-        // Select some fields
+        
         $this->jsmquery->clear();
 		$this->jsmquery->select('v.id,v.name,v.picture,v.country');
         // From table

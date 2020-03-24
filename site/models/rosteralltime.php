@@ -185,7 +185,7 @@ public function getStart()
 	$app = Factory::getApplication();
     $db = Factory::getDbo();
  $query = $db->getQuery(true);
- // Select some fields
+ 
         $query->select('po.*');
         $query->from('#__sportsmanagement_position as po');
         $query->where('po.parent_id != 0 ');
@@ -211,7 +211,7 @@ return $db->loadObjectList();
  $query = $db->getQuery(true);
 		$result = array();
         
-         // Select some fields
+         
         $query->select('pet.*');
 		$query->select('et.name AS name,et.icon AS icon');
         $query->from('#__sportsmanagement_position_eventtype AS pet');
@@ -265,7 +265,7 @@ return $db->loadObjectList();
 				return false;
 			}
             
-            // Select some fields
+            
         $query->select('t.*');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->from('#__sportsmanagement_team AS t');
@@ -304,7 +304,7 @@ return $db->loadObjectList();
         
 //        if (empty($this->_players))
 //		{
-		// Select some fields
+		
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
         $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
         $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');    

@@ -168,7 +168,7 @@ public function getStart()
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
 		
-        // Select some fields
+        
 		$query->select('v.id,v.name,v.picture,v.website,v.address,v.zipcode,v.city,v.country');
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');

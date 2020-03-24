@@ -279,9 +279,6 @@ $db->setQuery($query);
                 {
                 $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
                 } 
-
-                                  
-                // Create and populate an object.
                 $profile = new stdClass();
                 //$profile->person_id = $post['person_id'.$pks[$x]];
                 $profile->person_id = $pks[$x];
@@ -292,7 +289,6 @@ $db->setQuery($query);
 $profile->modified = $this->jsmdate->toSql();
 $profile->modified_by = $this->jsmuser->get('id');
 		    
-                // Insert the object into table.
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
                 
                 if (!$result)
@@ -569,7 +565,6 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 {
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }     
-// Create and populate an object.
 $profile = new stdClass();
 //$profile->person_id = $post['person_id'.$pks[$x]];
 $profile->person_id = $data['person_id'];
@@ -577,7 +572,6 @@ $profile->project_id = $post['pid'];
 $profile->project_position_id = $data['project_position_id'];
 $profile->persontype = $post['persontype'];
 try{		
-// Insert the object into table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
 }
 	catch (Exception $e)

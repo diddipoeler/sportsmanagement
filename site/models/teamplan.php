@@ -98,7 +98,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 		if ( self::$divisionid > 0 )
 		{
 			
-        // Select some fields
+        
         $query->select('d.*,CONCAT_WS(\':\',id,alias) AS slug');
         // From 
 	$query->from('#__sportsmanagement_division AS d');
@@ -135,7 +135,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        // Select some fields
+        
         $query->select('pt.id');
         // From 
 	$query->from('#__sportsmanagement_project_team as pt');
@@ -254,7 +254,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 		if (self::$divisionid > 0)
 		{
 		$query->clear();
-        // Select some fields
+        
         $query->select('id');
         // From 
 	$query->from('#__sportsmanagement_division');
@@ -279,7 +279,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 
 try{
 		$query->clear();
-        // Select some fields
+        
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
         $query->select('t1.id AS team1');
         $query->select('t2.id AS team2');
@@ -405,7 +405,7 @@ try{
 
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
         
-        // Select some fields
+        
         $query->select('matches.*');
         // From 
 		$query->from('#__sportsmanagement_match AS matches');
@@ -488,7 +488,7 @@ try{
 			if ($projekt->teams_as_referees)
 			{
 			 $query->clear();
-			 // Select some fields
+			 
              $query->select('ref.name AS referee_name');
              // From 
              $query->from('#__sportsmanagement_team AS ref');
@@ -502,7 +502,7 @@ try{
 			else
 			{
 			 $query->clear();
-			 // Select some fields
+			 
              $query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id');
              $query->select('ppos.position_id');
              $query->select('pos.name AS referee_position_name');
@@ -556,7 +556,7 @@ try{
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
 	$result = NULL;
-        // Select some fields
+        
         $query->select('et.id as etid,me.event_type_id as id,et.*');
         // From 
 	$query->from('#__sportsmanagement_eventtype as et');

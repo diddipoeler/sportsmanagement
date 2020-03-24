@@ -188,7 +188,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
         $starttime = microtime(); 
         
 		$projectteam = self::getprojectteam();
-        // Select some fields
+        
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
         $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
         $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');    
@@ -284,7 +284,7 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.$query->dump().'</pre
         $starttime = microtime(); 
                 
         $result = array();
-        // Select some fields
+        
 		$query->select('pet.*');
         $query->select('ppos.id AS pposid,ppos.position_id');    
         $query->select('et.name AS name,et.icon AS icon');

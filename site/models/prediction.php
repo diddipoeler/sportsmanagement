@@ -199,7 +199,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   $champTeamsList = array();
   
   // select champion from project
-  // Select some fields
+  
         $query->select('league_champ,points_tipp_champ');
         $query->from('#__sportsmanagement_prediction_project');
         $query->where('prediction_id = ' . (int)self::$predictionGameID);
@@ -263,7 +263,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 			if (self::$predictionGameID > 0)
 			{
 				
-                // Select some fields
+                
                 $query->clear();
         $query->select('*');
         $query->select("CONCAT_WS(':',id,alias) AS slug");
@@ -313,7 +313,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     
     case 'prediction':
 	$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
-    // Select some fields
+    
     $query->clear('select');
     $query->clear('where');
     $query->select('picture');
@@ -420,7 +420,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		if (!self::$_predictionMember)
 		{
 			$query->clear();
-		  // Select some fields
+		  
           //$query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
           $query->select('CONCAT_WS(\':\',pm.id,u.username) AS pmID,CONCAT_WS(\':\',u.id,u.username) AS joomuserID, pm.registerDate AS pmRegisterDate, pm.*');
           $query->from('#__sportsmanagement_prediction_member AS pm');
@@ -513,7 +513,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		{
 			if ( (int)self::$predictionGameID > 0)
 			{
-			 // Select some fields
+			 
 			 $query->clear();
           $query->select('pp.*');
           $query->select('p.name AS projectName, p.start_date');
@@ -574,7 +574,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
-    // Select some fields
+    
     $query->clear();
           $query->select('t.params');
           $query->from('#__sportsmanagement_prediction_template AS t');
@@ -665,7 +665,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
 		if ($project_id > 0)
 		{
-		   // Select some fields
+		   
 		   $query->clear();
         $query->select('*');
         $query->from('#__sportsmanagement_project');
@@ -717,7 +717,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             return '#Error1 teamID==0 in '.__METHOD__;
         }
     
-    // Select some fields
+    
     $query->clear();
         $query->select('t.'.$teamName.' as name');
         $query->from('#__sportsmanagement_team AS t');
@@ -756,7 +756,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         { 
             return '#Error1 in '.__METHOD__; 
         }
-         // Select some fields
+         
         $query->select('c.'.$which_logo);
         $query->from('#__sportsmanagement_club AS c');
         $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
@@ -796,7 +796,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             return '#Error1 in '.__METHOD__; 
         }
         
-         // Select some fields
+         
         $query->select('c.country');
         $query->from('#__sportsmanagement_club AS c');
         $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
@@ -834,7 +834,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
 		if ($pid > 0)
 		{
-		// Select some fields
+		
         $query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
         $query->from('#__sportsmanagement_round as r');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.current_round = r.id');
@@ -880,7 +880,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
 		if ($pid > 0)
 		{
-		  // Select some fields
+		  
         $query->select('max(id)');
         $query->from('#__sportsmanagement_round');
         $query->where('project_id = '.(int)$pid);
@@ -907,7 +907,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('id');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
@@ -937,7 +937,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('user_id,approved');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
@@ -985,7 +985,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
         foreach ($user->groups as $groupId => $value)
         {
-        // Select some fields
+        
         $query->clear();
         $query->select('title');
         $query->from('#__usergroups');
@@ -1050,7 +1050,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('u.email');
         $query->from('#__users AS u');
         $query->where('u.sendEmail = 1');
@@ -1104,7 +1104,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        // Select some fields
+        
         $query->select('u.email');
         $query->from('#__users AS u');
         $query->join('INNER', '#__sportsmanagement_prediction_admin AS pa ON pa.user_id = u.id ');
@@ -1145,7 +1145,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('user_id');
         $query->from('#__sportsmanagement_prediction_admin');
         $query->where('prediction_id = '.(int)$predictionID);
@@ -1182,7 +1182,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('user_id');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('id = '.(int)$predictionMemberID);
@@ -1193,7 +1193,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             return false;
         }
         
-        // Select some fields
+        
         $query->clear();
         $query->select('u.email');
         $query->from('#__users AS u');
@@ -1690,7 +1690,7 @@ if ( $configprediction['admin_debug'] )
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('id AS value, name AS text');
         $query->from('#__sportsmanagement_prediction_groups ');
         $query->order('name ASC');
@@ -1728,7 +1728,7 @@ if ( $configprediction['admin_debug'] )
                 $nameType='name';
             }
             
-            // Select some fields
+            
         $query->select('pm.id AS value');
         $query->select('u.'.$nameType.' AS text');
         $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
@@ -1765,7 +1765,7 @@ if ( $configprediction['admin_debug'] )
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        // Select some fields
+        
         $query->select('count(*)');
         $query->from('#__sportsmanagement_prediction_result AS pr');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
@@ -1794,7 +1794,7 @@ if ( $configprediction['admin_debug'] )
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        // Select some fields
+        
         $query->select('count(id)');
         $query->from('#__sportsmanagement_prediction_result');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
@@ -1966,7 +1966,7 @@ if ( $configprediction['admin_debug'] )
             $round1ID = 1;
         }
         
-        // Select some fields
+        
     $query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
     // normale spielzeit
     $query->select('m.team1_result_split AS homeResultSplit,m.team2_result_split AS awayResultSplit');
@@ -2080,7 +2080,7 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        // Select some fields
+        
         $query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName,CONCAT_WS(\':\',pj.id,pj.alias) AS slug');
         $query->from('#__sportsmanagement_project AS pj');
         $query->join('LEFT', '#__sportsmanagement_prediction_project AS ppj ON ppj.project_id = pj.id');
@@ -2328,7 +2328,7 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
    
 		if (empty(self::$_roundNames))
 		{
-		  // Select some fields
+		  
     //$query->select('id AS value, name AS text');
     $query->select("CONCAT_WS(':',id,alias) AS value");
     $query->select('name AS text');
@@ -2485,7 +2485,7 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
                 $nameType='name';
             }
 		
-        // Select some fields
+        
     $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
     $query->select('u.'.$nameType.' AS name');
     $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
@@ -2497,7 +2497,7 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 		switch ( $configavatar['show_image_from'] )
 		{
     case 'com_cbe':
-    // Select some fields
+    
     $query->select('cbeu.latitude,cbeu.longitude');
     $query->join('INNER', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
     break;

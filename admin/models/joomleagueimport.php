@@ -129,7 +129,6 @@ $my_text .= '<br />';
                 $new_id = $db->loadResult();
                 if ( !$new_id )
                 {
-                // Create and populate an object.
                 $temp = new stdClass();
                 $temp->season_id = $row->season_id;
                 $temp->team_id = $row->team_id;
@@ -256,7 +255,6 @@ $my_text .= '<br />';
                 if ( !$new_id )
                 {
                 // als erstes wird der spieler der saison zugeordnet
-                // Create and populate an object.
                 $temp = new stdClass();
                 $temp->person_id = $row->person_id;
                 $temp->season_id = $row->season_id;
@@ -282,7 +280,6 @@ $my_text .= '<br />';
                 
                 if ( !$new_id )
                 {
-                    // Create and populate an object.
                     $temp = new stdClass();
                     $temp->season_id = $row->season_id;
                     $temp->team_id = $row->team_id;
@@ -401,7 +398,6 @@ $my_text .= '<br />';
                 if ( !$new_id )
                 {
                 // als erstes wird der spieler der saison zugeordnet
-                // Create and populate an object.
                 $temp = new stdClass();
                 $temp->person_id = $row->person_id;
                 $temp->season_id = $row->season_id;
@@ -427,7 +423,6 @@ $my_text .= '<br />';
                 
                 if ( !$new_id )
                 {
-                    // Create and populate an object.
                     $temp = new stdClass();
                     $temp->season_id = $row->season_id;
                     $temp->team_id = $row->team_id;
@@ -543,7 +538,6 @@ foreach ( $result as $row )
                 if ( !$new_id )
                 {
                 // als erstes wird der spieler der saison zugeordnet
-                // Create and populate an object.
                 $temp = new stdClass();
                 $temp->person_id = $row->person_id;
                 $temp->season_id = $row->season_id;

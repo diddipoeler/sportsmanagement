@@ -189,7 +189,7 @@ public function getStart()
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
 		
-        // Select some fields
+        
         if ( $select_columns )
         {
         $query->select(implode(",",$select_columns)); 

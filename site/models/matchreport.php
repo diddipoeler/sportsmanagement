@@ -91,7 +91,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
-        // Select some fields
+        
 		$query->select('id,match_id,teamplayer_id,project_position_id');
         // From table
 		$query->from('#__sportsmanagement_match_player');
@@ -114,7 +114,7 @@ catch (Exception $e)
         foreach ($result as $row)
 			{
 			$query->clear();
-            // Select some fields
+            
 		    $query->select('ppp.project_position_id');
             // From table
 		    $query->from('#__sportsmanagement_person_project_position as ppp');

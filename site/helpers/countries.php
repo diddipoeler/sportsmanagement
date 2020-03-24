@@ -84,7 +84,7 @@ class JSMCountries {
 
 // Create a new query object.
         $query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('alpha3,name');
         // From table
         $query->from('#__sportsmanagement_countries');
@@ -116,7 +116,7 @@ class JSMCountries {
 
 // Create a new query object.
         $query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('alpha3');
         // From table
         $query->from('#__sportsmanagement_countries');
@@ -146,7 +146,7 @@ class JSMCountries {
 
 // Create a new query object.
         $query = $db->getQuery(true);
-// Select some fields
+
         $query->select('alpha2');
         // From table
         $query->from('#__sportsmanagement_countries');
@@ -203,7 +203,7 @@ class JSMCountries {
         if (!$src) {
             // Create a new query object.
             $query = $db->getQuery(true);
-            // Select some fields
+            
             $query->select('picture');
             // From table
             $query->from('#__sportsmanagement_countries');
@@ -244,7 +244,7 @@ class JSMCountries {
 
 // Create a new query object.
         $query = $db->getQuery(true);
-// Select some fields
+
         $query->select('name');
         // From table
         $query->from('#__sportsmanagement_countries');

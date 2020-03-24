@@ -264,17 +264,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						}
 else
 						{
-						// Select some fields
 						$this->jsmquery->clear();
         $this->jsmquery->select('id');
-	// From the table
 	$this->jsmquery->from('#__sportsmanagement_template_config');
         $this->jsmquery->where('template LIKE '.$this->jsmdb->Quote(''.$template.''));
         $this->jsmquery->where('project_id = '.(int)$project_id);
 	$this->jsmdb->setQuery($this->jsmquery);
 	$resulttemplate = $this->jsmdb->loadResult();
 						
-// Create and populate an object.
 $object_template = new stdClass();
 $object_template->id = $resulttemplate;	
 $object_template->title = $attributetitle;	

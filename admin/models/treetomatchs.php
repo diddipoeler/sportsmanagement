@@ -101,11 +101,9 @@ $this->jsmquery->where($conditions);
 
 		for ( $x = 0; $x < count( $data['node_matcheslist'] ); $x++ )
 		{
-// Create and populate an object.
 $profile = new stdClass();
 $profile->node_id = $data['id'];
 $profile->match_id = $data['node_matcheslist'][$x];
-// Insert the object into the user profile table.
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $profile);
 			
 			if ( !$result )

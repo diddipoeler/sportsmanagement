@@ -112,7 +112,6 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
            
             for ($i=0; $i < $insertmatch; $i++)
 		    {
-		      // Create and populate an object.
               $temp = new stdClass();
               $temp->round_id = $rid;
               $temp->projectteam1_id = $projectteam1_id;
@@ -143,7 +142,6 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
             
             for ($i=0; $i < $insertmatch; $i++)
 		    {
-		      // Create and populate an object.
               $temp = new stdClass();
               $temp->round_id = $rid;
               $temp->projectteam1_id = $projectteam1_id;

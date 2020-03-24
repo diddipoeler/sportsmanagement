@@ -141,14 +141,11 @@ $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id'
 						$i--;
 					}
 				}
-// Create and populate an object.
 $profile = new stdClass();
 $profile->treeto_id = $treeto_id;
 $profile->node = $nod;
 $profile->row = $row;
 $profile->bestof = $global_bestof;
- 
-// Insert the object into the user profile table.
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_node', $profile);
                 
 

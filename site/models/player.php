@@ -72,7 +72,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel {
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
 
-        // Select some fields
+        
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
@@ -138,7 +138,7 @@ self::$_teamplayers = $result;
             self::$teamplayerid = $teamplayerid;
         }
 
-        // Select some fields
+        
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
@@ -190,7 +190,7 @@ self::$_inproject = $result;
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-        // Select some fields
+        
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');

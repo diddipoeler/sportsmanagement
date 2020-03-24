@@ -170,7 +170,7 @@ public function getStart()
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
 		
-        // Select some fields
+        
 		$query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id');
 //        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
 //        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');

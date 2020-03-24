@@ -768,7 +768,7 @@ $result = $db->loadObjectList();
         {
             $projekt = $jinput->request->get('p', 0, 'INT');
             $query->clear();
-            // Select some fields
+            
 		$query->select('league_id');
 		// From the rounds table
 		$query->from('#__sportsmanagement_project');
@@ -780,7 +780,7 @@ $result = $db->loadObjectList();
         }
 
 $query->clear();
-// Select some fields
+
 		$query->select('id');
 		// From the rounds table
 		$query->from('#__sportsmanagement_project');

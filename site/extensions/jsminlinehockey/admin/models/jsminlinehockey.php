@@ -120,7 +120,6 @@ else
 $temp_project_team = new stdClass();
 $temp_project_team->team_id = $season_team_id;
 $temp_project_team->project_id = $project_id;
-// Insert the object into the table.
 $result_project_team = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
 
 if ( $result_project_team )
@@ -138,11 +137,9 @@ return 0;
 else
 {
 // team ist nicht der saison zugeordnet  
-// Create and populate an object.
 $temp_season_team_id = new stdClass();
 $temp_season_team_id->team_id = $team_id;
 $temp_season_team_id->season_id = $season_id;
-// Insert the object into the table.
 $result_season_team_id = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
 if ( $result_season_team_id )
 {
@@ -151,7 +148,6 @@ $season_team_id = $db->insertid();
 $temp_project_team = new stdClass();
 $temp_project_team->team_id = $season_team_id;
 $temp_project_team->project_id = $project_id;
-// Insert the object into the table.
 $result_project_team = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
 
 if ( $result_project_team )
@@ -238,8 +234,6 @@ $newround = new stdClass();
 $newround->roundcode = $spieltag;
 $newround->name = $spieltag.'.Spieltag';
 $newround->project_id = $projectid;
-
-// Insert the object
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
 // runde angelegt
 if ( $result )
@@ -312,10 +306,10 @@ $temp->team_info_home = $value_match->home_team->alternate_team_name;
 /**
  * hier überprüfen wir den heimverein
  */
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$temp->club_id_home ); 
 $db->setQuery($query); 
@@ -343,7 +337,6 @@ else
 }
     
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_home;
 $profile->name = $temp->club_name_home;
@@ -360,16 +353,15 @@ if ( $temp->team_id_home )
 /**
  * hier überprüfen wir die heimmannschaft
  */     
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_team'); 
 $query->where('id = '.$temp->team_id_home ); 
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->team_id_home;
 $profile->club_id = $temp->club_id_home;
@@ -419,10 +411,10 @@ $temp->team_info_away = $value_match->away_team->alternate_team_name;
 /**
  * hier überprüfen wir den auswärtsverein
  */
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$temp->club_id_away ); 
 $db->setQuery($query); 
@@ -440,7 +432,6 @@ Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->clu
 if ( !$club_id_away ) 
 {
 $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_away;
 $profile->name = $temp->club_name_away;
@@ -457,16 +448,15 @@ if ( $temp->team_id_away)
 /**
  * hier überprüfen wir die auswärtsmannschaft
  */    
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_team'); 
 $query->where('id = '.$temp->team_id_away ); 
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->team_id_away;
 $profile->club_id = $temp->club_id_away;
@@ -688,7 +678,6 @@ $playground_city = $json_object_club->venue->venue->address->city ;
 /**
  * verein mit dem spielort updaten
  */
-// Create and populate an object. 
 $profile = new stdClass(); 
 $profile->id = $playground_club_id;
 $profile->standard_playground = $playground_id;
@@ -696,10 +685,10 @@ $profile->standard_playground = $playground_id;
 $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $profile,'id');
 
 
-// Select some fields  
+  
 $query->clear();  
 $query->select('id');  
-// From the table  
+  
 $query->from('#__sportsmanagement_playground');  
 $query->where('id = '.$playground_id );  
 try {	
@@ -707,7 +696,6 @@ $db->setQuery($query);
 $result = $db->loadResult();
 if ( !$result ) 
 {
-// Create and populate an object. 
 $profile = new stdClass(); 
 $profile->id = $playground_id; 
 $profile->club_id = $playground_club_id; 
@@ -841,17 +829,16 @@ $current_season = ComponentHelper::getParams($option)->get('current_season');
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_sports_type'); 
 $query->where('name LIKE '.$db->Quote(''.'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY'.'') ); 
 $db->setQuery($query); 
 $sports_type_id = $db->loadResult();
 if ( !$sports_type_id ) 
 {
-// Create and populate an object.
 $profile = new stdClass();
 $profile->name = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
 
@@ -904,10 +891,10 @@ foreach( $json_object_clubs->_embedded->clubs as $key_club => $value_club )
 $club_id = $value_club->id;
 $club_name = $value_club->name;
 
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$club_id ); 
 $db->setQuery($query); 
@@ -927,7 +914,6 @@ Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->clu
 if ( !$club_id_db ) 
 {
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
 $profile->name = $club_name;
@@ -947,10 +933,10 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.
 break;
 
 case 'teams':
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_club'); 
 $db->setQuery($query); 
 
@@ -987,19 +973,16 @@ $team_number_roman = $value_team->team_number_roman;
 $team_age_group = $value_team->team_age_group;
 $team_league = $value_team->team_league;
 
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_team'); 
 $query->where('id = '.$team_id ); 
 $db->setQuery($query); 
 
 if ( !$db->loadResult() ) 
 {
-
-
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $team_id;
 $profile->club_id = $club_id;
@@ -1009,8 +992,6 @@ $profile->middle_name = $team;
 $profile->info = $team_name;
 $profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $team );;
- 
-// Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 }
 else
@@ -1035,10 +1016,10 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, '
 break;
 
 case 'players':
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id,club_id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_team'); 
 $db->setQuery($query); 
 
@@ -1079,18 +1060,16 @@ $player_last_modifcation = $value_player->last_modifcation;
 
 
 $parts = array();
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_person'); 
 $query->where('id = '.$player_id ); 
 $db->setQuery($query); 
 
 if ( !$db->loadResult() ) 
 {
-
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
 $profile->firstname = $player_first_name;
@@ -1101,8 +1080,6 @@ $profile->knvbnr = $player_license_number;
 $profile->published = 1;
 $parts = array( trim( $player_first_name ), trim( $player_last_name ) );
 $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
- 
-// Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
 }
 else
@@ -1137,24 +1114,21 @@ foreach( $xml->children() as $quote )
 $club_id = (string)$quote->club_id;
 $club_name = (string)$quote->club_name;
 
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$club_id ); 
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
 $profile->name = $club_name;
 $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
- 
-// Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.$club_name.'</pre>'),'');
 }
@@ -1188,10 +1162,10 @@ $team_number_roman = (string)$quote_team->team_number_roman;
 $team_age_group = (string)$quote_team->team_age_group;
 $team_league = (string)$quote_team->team_league;
 
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('t.id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_team as t'); 
 $query->join('INNER','#__sportsmanagement_club as c ON c.id = t.club_id ');
 $query->where('c.id = '.$club_id ); 
@@ -1204,14 +1178,11 @@ if ( !$db->loadResult() )
 
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
-// Create and populate an object.
 $profile = new stdClass();
 $profile->club_id = $club_id;
 $profile->name = $team_name;
 $profile->info= $team;
 $profile->alias = JFilterOutput::stringURLSafe( $team_name );;
- 
-// Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
@@ -1262,10 +1233,10 @@ $player_last_modifcation = (string)$quote_player->last_modifcation;
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth),'');
 
 $parts = array();
-// Select some fields 
+ 
 $query->clear(); 
 $query->select('id'); 
-// From the table 
+ 
 $query->from('#__sportsmanagement_person'); 
 $query->where('id = '.$player_id ); 
 $db->setQuery($query); 
@@ -1273,7 +1244,6 @@ $db->setQuery($query);
 if ( !$db->loadResult() ) 
 {
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
-// Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
 $profile->firstname = $player_first_name;
@@ -1285,7 +1255,6 @@ $profile->published = 1;
 $parts = array( trim( $player_first_name ), trim( $player_last_name ) );
 $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
  
-// Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
 }

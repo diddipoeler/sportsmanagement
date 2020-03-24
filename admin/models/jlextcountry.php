@@ -138,7 +138,6 @@ $source	= File::read($file);
     
     foreach ($exportplayer as $value)
 		{
-		// Create and populate an object.
         $profile = new stdClass();
         $profile->country_code = $value->country_code;
             $profile->postal_code = $value->postal_code;
