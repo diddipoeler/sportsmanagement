@@ -117,12 +117,7 @@ foreach ($columns as $k => $column) {
 
         case 'LEGS':
             echo '<th class="headers">';
-            if ($this->config['alternative_legs']) {
-				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $this->config['alternative_legs'] . '">';
-            }
-			else {
-				echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
-			}
+            echo '<span class="hasTip" title="' . $toolTipTitle . '::' . $toolTipText . '">';
             echo $column_names[$k];
             echo '</span></th>';
             break;

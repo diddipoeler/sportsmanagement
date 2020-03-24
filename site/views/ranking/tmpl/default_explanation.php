@@ -29,12 +29,7 @@ $column_names = explode(',', $config['ordered_columns_names']);
                 $c = strtoupper(trim($column));
                 $c = "COM_SPORTSMANAGEMENT_" . $c;
                 echo "<td class=\"\">";
-				if (strtoupper(trim($column)) == "LEGS" && !empty($config['alternative_legs'])) {
-					echo $column_names[$k] . " = " . $config['alternative_legs']; 
-				}
-				else {
-					echo $column_names[$k] . " = " . Text::_($c);
-				}
+                echo $column_names[$k] . " = " . Text::_($c);
                 echo "</td>";
                 //$d=(1-$d);
             }
