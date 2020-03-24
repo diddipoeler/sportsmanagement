@@ -503,8 +503,6 @@ $dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]];
 					
 					if (!empty($dprID))
 					{
-					   // Create and populate an object.
-                        
                         $temp = new stdClass();
                         $temp->id = (int) $dprID ;
                         $temp->tipp = $dTipp;
@@ -513,7 +511,6 @@ $dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]];
                         $temp->joker = $dJoker;
 $temp->modified_by = $joomlaUserID;
                         $temp->modified = Factory::getDate()->toSql();						
-                        // Update the object
                         try{
                         $resultquery = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
                         }
@@ -530,7 +527,6 @@ catch (Exception $e) {
 					}
 					else
 					{
-						// Create and populate an object.
                         $temp = new stdClass();
                         $temp->prediction_id = $predictionGameID;
                         $temp->user_id = $joomlaUserID;

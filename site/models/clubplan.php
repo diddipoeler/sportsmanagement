@@ -95,7 +95,7 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
         
         if (self::$clubid > 0)
 		{
-		// Select some fields
+		
         $query->select('ag.id as value,ag.name as text');
         // From 
 		$query->from('#__sportsmanagement_team as t');
@@ -135,7 +135,7 @@ catch (Exception $e)
         
         if (self::$clubid > 0)
 		{
-		// Select some fields
+		
         $query->select('p.id as value,p.name as text');
         // From 
 		$query->from('#__sportsmanagement_team as t');
@@ -174,7 +174,7 @@ catch (Exception $e)
         
         if (self::$clubid > 0)
 		{
-		// Select some fields
+		
         $query->select('s.id as value,s.name as text');
         // From 
 		$query->from('#__sportsmanagement_team as t');
@@ -215,7 +215,7 @@ catch (Exception $e)
         $teams = array(0);
 		if (self::$clubid > 0)
 		{
-		// Select some fields
+		
         $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
         // From 
 		$query->from('#__sportsmanagement_team');
@@ -383,7 +383,7 @@ $end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59');
         //if ( $round_ids )
         //{
         $query->clear();
-        // Select some fields
+        
 		//$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('m.playground_id,m.alt_decision ,m.team1_result ,m.team2_result ,m.cancel ');
@@ -516,7 +516,7 @@ catch (Exception $e)
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        // Select some fields
+        
 		$query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
         $query->select('mp.project_position_id');
         // From 

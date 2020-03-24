@@ -225,7 +225,7 @@ class sportsmanagementModelMatrix extends BaseDatabaseModel
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        // Select some fields
+        
         $query->select('DISTINCT(m.id),m.show_report,m.cancel,m.division_id AS division_id,m.cancel_reason,m.projectteam1_id,m.projectteam2_id');
 		$query->select('m.team1_result as e1,m.team2_result as e2,m.match_result_type as rtype,m.alt_decision as decision,m.team1_result_decision AS v1');
         $query->select('m.team2_result_decision AS v2,m.new_match_id, m.old_match_id');

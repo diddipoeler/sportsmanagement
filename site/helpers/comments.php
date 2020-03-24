@@ -144,7 +144,7 @@ class sportsmanagementModelComments
 			$database = JFactory::getDBO();
 			$query = $database->getQuery(true);
 			$query->clear();
-			// Select some fields
+			
 			$query->select(' t1.name AS home,t2.name AS away ');
 			// From
 			$query->from('#__sportsmanagement_match AS m');

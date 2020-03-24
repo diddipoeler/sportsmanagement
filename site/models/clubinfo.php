@@ -87,7 +87,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel {
    
     if ( $new_club_id > 0 )
     {
-    // Select some fields
+    
     $query->select('id,new_club_id');
     // From 
     $query->from('#__sportsmanagement_club');
@@ -286,7 +286,7 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel {
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('asoc.*');
         // From 
         $query->from('#__sportsmanagement_associations AS asoc');
@@ -314,7 +314,7 @@ static function getFirstClub($club_id = 0) {
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        // Select some fields
+        
                 $query->select('c.*');
 	$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
 	$query->select('CONCAT_WS(\':\',p.id,p.alias) as pro_slug');
@@ -399,7 +399,7 @@ if ( empty(self::$projectid) )
 
         if (is_null(self::$club)) {
             if (self::$clubid > 0) {
-                // Select some fields
+                
                 $query->select('c.*');
                 // From 
                 $query->from('#__sportsmanagement_club AS c');
@@ -531,7 +531,7 @@ Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
         if (count($teams)>0) {
             foreach ($teams AS $team) {
                 $query->clear();
-                // Select some fields
+                
                 $query->select('distinct(pt.standard_playground)');
                 // From 
                 $query->from('#__sportsmanagement_project_team AS pt');
@@ -581,7 +581,7 @@ Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
 
         foreach ($stadiums AS $stadium) {
             $query->clear();
-            // Select some fields
+            
             $query->select('id AS value, name AS text, pl.*');
             $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
             // From 

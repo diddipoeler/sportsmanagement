@@ -183,7 +183,7 @@ public function getStart()
 		$query	= $db->getQuery(true);
 		$user	= Factory::getUser(); 
 		
-        // Select some fields
+        
 		$query->select('v.id,v.name,v.picture');
         $query->select('l.country,l.name as leaguename');
         $query->select('s.name as seasonname');

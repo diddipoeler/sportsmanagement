@@ -546,7 +546,7 @@ $s = $configcolors;
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        // Select some fields
+        
         $query->select('id');
         // From 
 		$query->from('#__sportsmanagement_division');
@@ -641,7 +641,7 @@ $s = $configcolors;
 		{
 			if (empty(self::$_divisions))
 			{
-				// Select some fields
+				
                 $query->select('*');
                 // From 
 		          $query->from('#__sportsmanagement_division');
@@ -691,7 +691,7 @@ $s = $configcolors;
         
         if (empty(self::$_rounds))
 		{
-			// Select some fields
+			
             if ( $slug )
             {
             $query->select('CONCAT_WS( \':\', id, alias ) AS id');
@@ -752,7 +752,7 @@ catch (Exception $e)
             self::$projectid = Factory::getApplication()->input->getInt('p',0);
         } 
         
-        // Select some fields
+        
         if ( $slug )
         {
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
@@ -1565,7 +1565,7 @@ $use_jquery_modal);
     $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
     $query = $db->getQuery(true);
         
-	// Select some fields
+	
     $query->clear();
     $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
     $query->from('#__sportsmanagement_match_player AS mp');
@@ -1766,7 +1766,7 @@ catch (Exception $e) {
 		    $esort = ' DESC';
             $arrayobjectsort = '-1';
 		}
-        // Select some fields
+        
         $query->select('me.event_type_id,me.id as event_id,me.event_time,me.notice,me.projectteam_id AS ptid,me.event_sum');
 	$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_id');
         $query->select('et.name AS eventtype_name');
@@ -1807,7 +1807,7 @@ catch (Exception $e)
         
     $query = $db->getQuery(true);    
     $query->clear();
-    // Select some fields
+    
         $query->select('*');
         // From 
 		$query->from('#__sportsmanagement_match_commentary');

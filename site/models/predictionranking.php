@@ -177,7 +177,7 @@ function _buildQuery()
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
-    // Select some fields
+    
     $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.group_id,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
     $query->select('u.name AS name');
     $query->select('pg.id as pg_group_id,pg.name as pg_group_name');

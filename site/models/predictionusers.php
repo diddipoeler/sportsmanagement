@@ -168,7 +168,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 	 * und ist die komponente installiert
 	 */
     
-    // Select some fields
+    
     $query->select('element');
     $query->from('#__extensions');
     $query->where("element LIKE '" . self::$config['show_image_from'] . "' ");
@@ -180,7 +180,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
     $app->enqueueMessage(Text::_('Die Komponente '.self::$config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
     }
     
-    // Select some fields
+    
     $query->select('avatar');
     $query->where('userid = ' . (int)$user_id );
 
@@ -355,7 +355,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        // Select some fields
+        
         $query->select('pt.id AS value,t.name AS text');
         $query->from('#__sportsmanagement_project_team AS pt');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
@@ -391,7 +391,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);
 			$uid	= $db->Quote(sportsmanagementModelPrediction::$predictionMemberID);
 
-// Select some fields
+
         $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name');
         $query->select('SUM(pr.points) AS points');
         $query->from('#__sportsmanagement_round AS rounds');
@@ -431,7 +431,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-// Select some fields
+
         $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name,pr.user_id,prmem.id as member_id');
         $query->select('SUM(pr.points) AS points');
         $query->from('#__sportsmanagement_round AS rounds');

@@ -463,7 +463,7 @@ $this->jsmquery->where('c.catid = '. $cat_id );
 	$result = array();
 if ( $project ) 
         {		
-        // select some fields
+        
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
         $query->select('pt1.project_id');

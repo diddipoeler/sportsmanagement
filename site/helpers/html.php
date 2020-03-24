@@ -284,7 +284,7 @@ $guestteam->division_id = $division_id;
         //$thisproject->load($projectid);
 
         $query->clear();
-        // select some fields
+        
         $query->select('*');
         $query->select('CONCAT_WS( \':\', id, alias ) AS project_slug');
         // from table
@@ -300,7 +300,7 @@ $guestteam->division_id = $division_id;
             //$thisround->load($current_round);
 
             $query->clear();
-            // select some fields
+            
             $query->select('*');
             $query->select('CONCAT_WS( \':\', id, alias ) AS round_slug');
             // from table
@@ -432,7 +432,7 @@ $guestteam->division_id = $division_id;
                 //$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
 
                 $query->clear();
-                // select some fields
+                
                 $query->select('*');
                 // from table
                 $query->from('#__sportsmanagement_club');
@@ -485,7 +485,7 @@ $guestteam->division_id = $division_id;
             //$pginfo->load($game->playground_id);
 
             $query->clear();
-            // select some fields
+            
             $query->select('*');
             // from table
             $query->from('#__sportsmanagement_playground');

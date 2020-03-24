@@ -341,7 +341,7 @@ else
         $app = Factory::getApplication();
         $db = Factory::getDbo();
         //$option = Factory::getApplication()->input->getCmd('option');
-        // Select some fields
+        
         $query = $db->getQuery(true);
         $query->select('p.id AS value, p.name AS text, s.name AS season_name, l.name AS league_name');
         $query->from('#__sportsmanagement_project AS p');
