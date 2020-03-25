@@ -531,7 +531,7 @@ class JSMCalendar extends PHPCalendar
         {
 			$day = 0;
 			require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'connectors'.DIRECTORY_SEPARATOR.'jevents.php');
-			JEventsConnector::getEntries($caldates, JSMCalendar::$params, $this->matches);
+			JEventsConnector::getEntries($caldates, JSMCalendar::$params, JSMCalendar::$matches);
 		}
         require_once (dirname(__FILE__).DIRECTORY_SEPARATOR.'connectors'.DIRECTORY_SEPARATOR.'sportsmanagement.php');
 		JSMCalendar::$params->prefix = JSMCalendar::$prefix;
