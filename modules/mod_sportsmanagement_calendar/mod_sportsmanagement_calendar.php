@@ -113,7 +113,7 @@ else
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);
 ?>           
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(ModuleHelper::getLayoutPath($module->module));
 ?>

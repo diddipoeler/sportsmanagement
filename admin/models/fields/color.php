@@ -47,7 +47,7 @@ class JFormFieldColor extends \JFormFieldText
 	 * @param mixed $group
 	 * @return
 	 */
-	public function setup(& $element, $value, $group = null)
+	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		$return= parent::setup($element, $value, $group);
 		$this->element['class'] = $this->element['class'].' color';
