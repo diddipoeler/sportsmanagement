@@ -125,7 +125,7 @@ if ( $cnt )
 $script =  'script';
 $doc->addScript( Uri::base() . 'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js/'.$script.'.js');
 ?>           
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(ModuleHelper::getLayoutPath($module->module, $params->get('template', 'default') ));
 ?>

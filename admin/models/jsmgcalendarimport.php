@@ -143,14 +143,14 @@ $calList = $cal->calendarList->listCalendarList();
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 
-$tok = json_decode($token, true);
+//$tok = json_decode($token, true);
 
 while(true) 
 {
   foreach ($calList->getItems() as $calendarListEntry) 
   {
 $params = new Registry();
-$params->set('refreshToken', $tok['refresh_token']);
+$params->set('refreshToken', $token['refresh_token']);
 $params->set('client-id', $clientId);
 $params->set('client-secret', $clientSecret);
 $params->set('calendarId', $calendarListEntry->getID());

@@ -1,9 +1,10 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      allprojects.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright:  2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
  * @subpackage allprojects
@@ -43,7 +44,8 @@ var $_identifier = "allprojects";
         // JInput object
         $jinput = $app->input;
         $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
-        
+        $this->season = $jinput->request->get('s', 0, 'INT');
+
             $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
@@ -226,6 +228,11 @@ public function getStart()
         $query->where('v.season_id IN ('.implode(',',$filter_season).')');
         }
         
+        if ( $this->season )
+        {
+        $query->where('v.season_id = '.$this->season);
+        }
+
         $query->where('v.published = 1');
         
         $query->group('v.id');

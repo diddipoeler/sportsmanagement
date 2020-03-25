@@ -34,6 +34,11 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 </script>
+<?php if ($this->params->get('show_page_heading', 1)) : ?>
+	<h1 class="componentheading">
+		<?php echo $this->escape($this->params->get('page_title')); ?>
+	</h1>
+<?php endif; ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
 <fieldset class="filters">
