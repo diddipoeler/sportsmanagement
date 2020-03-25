@@ -13,10 +13,11 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-class JEventsConnector extends JLCalendar{
-  var $xparams;
-  var $prefix;
-  var $jevent;
+class JEventsConnector extends JSMCalendar{
+  static $xparams;
+  static $params;
+  static $prefix;
+  static $jevent;
   
   function getEntries ($caldates, $params, &$matches) {
     
@@ -26,7 +27,7 @@ class JEventsConnector extends JLCalendar{
     $year = substr($caldates['start'], 0, 4);
     $month = (substr($caldates['start'], 5, 1)=='0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
     
-    $this->xparams = $params;
+    JEventsConnector::$xparams = $params;
     /**
 	 * Gets calendar data for use in main calendar and module
 	 *
@@ -37,7 +38,7 @@ class JEventsConnector extends JLCalendar{
 	 * @param boolean $veryshort - use true for module which only requires dates and nothing about events
 	 * @return array - calendar data array
 	 */
-    $data = $this->jevent->getCalendarData( $year, $month, 1 );
+    $data = JEventsConnector::$jevent->getCalendarData( $year, $month, 1 );
 
     $formatted = JEventsConnector::formatEntries($data['dates'], $matches);
     return $formatted;
@@ -62,7 +63,7 @@ class JEventsConnector extends JLCalendar{
             $newrow['time'] = strftime('%H:%M', $event->_dtstart);
             $newrow['time'] .= ($event->_dtstart != $event->_dtend AND $event->_noendtime == 0) ? '-'.strftime('%H:%M', $event->_dtend) : '';
           }
-          $newrow['headingtitle'] = $this->xparams->get('jevents_text', 'JEvents');
+          $newrow['headingtitle'] = JEventsConnector::$xparams->get('jevents_text', 'JEvents');
           $newrow['name'] = '';
           $newrow['title'] = $event->_title;
           $newrow['location'] = $event->_location;
@@ -93,13 +94,13 @@ class JEventsConnector extends JLCalendar{
       return false; 
     }
     if (class_exists('JEventsDataModel')) {
-      $this->jevent = new JEventsDataModel();
+      JEventsConnector::$jevent = new JEventsDataModel();
     }
     else {
       JEventsConnector::_raiseError('Required class not found! This connector needs JEvents 1.5.2 installed');
       return false;
     }
-    if (!is_callable(array($this->jevent, 'getCalendarData'))) {
+    if (!is_callable(array(JEventsConnector::$jevent, 'getCalendarData'))) {
       JEventsConnector::_raiseError('Required function "getRangeData" is not callable! This connector needs JEvents 1.5.2 installed');
       return false; 
     }
