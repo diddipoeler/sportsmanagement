@@ -452,7 +452,12 @@ class modMatchesSportsmanagementHelper {
 		}
 		$row['partresults'] = $partresults;
 
-		$row['result'] = $row['homescore'] . $this->params->get('team_separator') . $row['awayscore'];
+		if ($row['cancel'] = 1) {
+			$row['result'] = $row['cancel_reason'];
+		}
+		else {
+			$row['result'] = $row['homescore'] . $this->params->get('team_separator') . $row['awayscore'];	
+		}
 
 /**
  * verlängerung
@@ -598,6 +603,8 @@ class modMatchesSportsmanagementHelper {
 			$rows[$match->match_id]['awayteam'] = $this->getTeamDetails($ateam, $cnt);
 			$rows[$match->match_id]['awayscore'] = (!is_null($match->team2_result)) ? $match->team2_result : '-';
 			$rows[$match->match_id]['awayover'] = $this->buildTeamLinks($ateam, $cnt);
+			$rows[$match->match_id]['cancel'] = $match->cancel;
+			$rows[$match->match_id]['cancel_reason'] = $match->cancel_reason;
 			$this->createMatchInfo($rows[$match->match_id], $match);
 			$this->formatHeading($rows[$match->match_id], $match);
 			$this->formatResults($rows[$match->match_id], $match);

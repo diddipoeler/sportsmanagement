@@ -246,6 +246,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
         $query->select('m.team1_result_ot,m.team2_result_ot,m.team1_result_so,m.team2_result_so');
         $query->select('m.match_result_type');
+        $query->select('m.cancel,m.cancel_reason');
         $query->select('r.name');
         $query->select('m.match_date AS match_date,m.match_timestamp');
         $query->select('UTC_TIMESTAMP() AS currenttime');
