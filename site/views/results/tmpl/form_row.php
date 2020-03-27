@@ -140,12 +140,25 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?> 
 <div class="well">
-<input type="text" class="span2" name='match_date<?php echo $thismatch->id; ?>' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" data-date-format="dd-mm-yyyy" id="<?php echo 'match_date'.$thismatch->id;?>" >
+<?php 
+$attribs = array(
+			"class" => "span2",
+			"onChange" => "document.getElementById('cb".$i."').checked=true",
+			"showTime" => false,
+			"todayBtn" => true,
+			"weekNumbers" => false,
+			"fillTable" => true,
+			"singleHeader" => true,
+		);
+echo JHtml::_(
+'calendar',
+sportsmanagementHelper::convertDate($datum,1),
+'match_date'.$thismatch->id,
+'match_date'.$thismatch->id,
+'%d-%m-%Y',
+$attribs); 
+?>
 </div>
-                    
-<script>
-jQuery('#<?php echo 'match_date'.$thismatch->id;?>').datepicker();
-</script>        
 <?PHP            
 }
 else
