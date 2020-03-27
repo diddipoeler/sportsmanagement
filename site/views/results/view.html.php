@@ -438,7 +438,7 @@ $use_jquery_modal);
 	public function editPartResults($i,$match,$backend=false)
 	{
 		$link="javascript:void(0)";
-		$params=array("onclick" => "switchMenu('part".$match->id."')");
+		$params=array("onclick" => "switchMenuPart('part".$match->id."')");
 		$imgTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
 		$desc=HTMLHelper::image(	Uri::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
