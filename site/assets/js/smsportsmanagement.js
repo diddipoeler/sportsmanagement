@@ -94,6 +94,11 @@ jQuery('.jsmeventsshowhide').each(function(index) {
 	
 }
 
+function switchMenuPart(obj) 
+{
+jQuery('#' + obj).toggle();
+}
+
 /**
  * hide objects
  * @param array objs the objects to hide
