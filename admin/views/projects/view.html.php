@@ -173,6 +173,7 @@ $mdltemplates = BaseDatabaseModel::getInstance('Templates', 'sportsmanagementMod
 $res = $mdltemplates->getMasterTemplates();
 $myoptions = array_merge($myoptions,$res);
 $lists['mastertemplates'] = $myoptions;
+unset($myoptions);
 		
 		$myoptions[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
