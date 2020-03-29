@@ -1,54 +1,72 @@
 .jlmhaslinks {
-  text-decoration:underline;
+    text-decoration: underline;
 }
-td.jlmlteamcol {
-  width:33%;
-  text-align:center !important;
-  vertical-align:middle !important;
-}
-span.jlmlleft {
-  /*float:left;*/
-}
-span.jlmlright {
-  /*float:right;*/
-}
-.jlmlmatchholder, *.jlmlmatchholder {
-  text-align:center;
-}
-.jlmlmatchholder > table {
-  width:100%;
-  text-align:center;
-}
-.jlmlmatchholder > div.contentheading {
-  font-size:120%;
-  font-weight:bold;
-}
-.jlml_livescore {
-  color: #ff0000;
-}
-.jlmlusedteam {
-  font-weight:bold;
-}
-td.jlmlResults{
 
-  text-align:center !important;
+td.jlmlteamcol {
+    width: 33%;
+    text-align: center !important;
+    vertical-align: middle !important;
 }
-span.jlmlResults{
-  font-weight:bold;
-  font-size:150%;
-  text-align:center;
-  display:block;
+
+span.jlmlleft {
+    /*float:left;*/
 }
-span.jlmlMatchLinks{
-  float:none;
-  margin:auto;
-  display:block;
-  text-align:center;
-  font-weight:normal;
-  font-size:80%;
-  white-space: nowrap;
+
+span.jlmlright {
+    /*float:right;*/
 }
-span.jlmlTeamLinks{
-  font-weight:normal;
-  font-size:80%;
+
+.jlmlmatchholder, *.jlmlmatchholder {
+    text-align: center;
+}
+
+.jlmlmatchholder > table {
+    width: 100%;
+    text-align: center;
+}
+
+.jlmlmatchholder > div.contentheading {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.jlml_livescore {
+    color: #ff0000;
+}
+
+.jlmlusedteam {
+    font-weight: bold;
+}
+
+td.jlmlResults {
+
+    text-align: center !important;
+}
+
+span.jlmlResults {
+    font-weight: bold;
+    font-size: 120%;
+    text-align: center;
+    display: block;
+}
+
+span.jsmlCancelR {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+}
+
+span.jlmlMatchLinks {
+    float: none;
+    margin: auto;
+    display: block;
+    text-align: center;
+    font-weight: normal;
+    font-size: 80%;
+    white-space: nowrap;
+}
+
+span.jlmlTeamLinks {
+    font-weight: normal;
+    font-size: 80%;
 }
