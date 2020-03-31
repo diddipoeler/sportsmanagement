@@ -463,7 +463,18 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			class="inputbox"
 			size="8" maxlength="20"
 			default="3,1,0"/>
-			
+
+		<field 
+			name="teams_as_referees" 
+			type="extensionradiobutton" 
+			default="0"   
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEAM_AS_REFEREE" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEAM_AS_REFEREE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+					
 <field 
 name="use_legs" 
 type="extensionradiobutton" 

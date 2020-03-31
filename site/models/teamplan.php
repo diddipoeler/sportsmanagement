@@ -489,15 +489,18 @@ try{
 			{
 			 $query->clear();
 			 
-             $query->select('ref.name AS referee_name');
-             // From 
-             $query->from('#__sportsmanagement_team AS ref');
-             $query->join('LEFT',' #__sportsmanagement_match_referee AS link ON link.project_referee_id=ref.id ');
-             // Where
-             $query->where('link.match_id = '.$matches[$index]->id);
-             // Order
-             $query->order('link.ordering');
-
+			 $query->select('mr.project_referee_id AS value');
+			 $query->select('t.name AS referee_name');
+			 $query->select('pos.name AS position_name');
+			 $query->from('#__sportsmanagement_match_referee AS mr ');
+			 $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.id = mr.project_referee_id');
+			 $query->join('LEFT',' #__sportsmanagement_season_team_id st ON st.id = pt.team_id ');
+			 $query->join('LEFT',' #__sportsmanagement_team AS t ON t.id = st.team_id');
+			 $query->join('LEFT',' #__sportsmanagement_position AS pos ON mr.project_position_id = pos.id');
+ 
+			 $query->where('mr.match_id = '.(int) $matches[$index]->id);
+			 $query->order('pos.name,mr.ordering ASC');
+ 
 			}
 			else
 			{

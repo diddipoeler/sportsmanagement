@@ -658,56 +658,81 @@ $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
                 $inroster[] = $referee->value;
             }
         }
-        $projectreferees = $model->getProjectReferees($inroster, $this->project_id);
+		
+		// projekt positionen                                                    
+		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+		if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
+			$selectpositions = array_merge($selectpositions, $projectpositions);
+		}
+		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
+		
+		$squad = array();
+        
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$this->projectws = $mdlProject->getProject($this->project_id);
+		if($this->projectws->teams_as_referees == 1) {
+			$divhomeid = 0;
+			$projectreferees2 = $mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid);
+			foreach ($projectpositions AS $key => $pos) {
+				// get referees assigned to this position
+				$squad[$key] = $model->getTeamsRefereeRoster($this->item->id);
+				foreach ($squad[$key] as $referee) {
+					foreach($projectreferees2 as $keySearch => $projectreferee) {
+						if ($referee->value == $projectreferee->value) {
+							unset($projectreferees2[$keySearch]);
+						}
+					}
+				}
+			}
+		}
+        else {
+			$projectreferees = $model->getProjectReferees($inroster, $this->project_id);
+			
+			if (count($projectreferees) > 0) {
+				foreach ($projectreferees AS $referee) {
+					$projectreferees2[] = HTMLHelper::_('select.option', $referee->value,
+						sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
+						' - (' . strtolower(Text::_($referee->positionname)) . ')');
+				}
+			}
+			if (!$projectpositions) {
+				Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
+				return;
+			}
 
-        if (count($projectreferees) > 0) {
-            foreach ($projectreferees AS $referee) {
-                $projectreferees2[] = HTMLHelper::_('select.option', $referee->value,
-                    sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
-                    ' - (' . strtolower(Text::_($referee->positionname)) . ')');
-            }
-        }
-        $lists['team_referees'] = HTMLHelper::_('select.genericlist', $projectreferees2, 'roster[]',
-            'style="font-size:12px;height:auto;min-width:15em;" ' .
-            'class="inputbox" multiple="true" size="' . max(10, count($projectreferees2)) . '"',
-            'value', 'text');
-        // projekt positionen                                                    
-        $selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
-        if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
-            $selectpositions = array_merge($selectpositions, $projectpositions);
-        }
-        $lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
+			// generate selection list for each position
+			foreach ($projectpositions AS $key => $pos) {
+				// get referees assigned to this position
+				$squad[$key] = $model->getRefereeRoster($pos->value, $this->item->id);
+			}
+		}
+		$lists['team_referees'] = HTMLHelper::_('select.genericlist', $projectreferees2, 'roster[]',
+			'style="font-size:12px;height:auto;min-width:15em;" ' .
+			'class="inputbox" multiple="true" size="' . max(10, count($projectreferees2)) . '"',
+			'value', 'text');
+		if (count($squad) > 0) {
+			foreach ($squad AS $key => $referees) {
+				$temp[$key] = array();
+				if (isset($referees)) {
+					foreach ($referees AS $referee) {
+						 if($this->projectws->teams_as_referees == 1) {
+							 $temp[$key][] = HTMLHelper::_('select.option', $referee->value, $referee->name);
+						 }
+						 else {
+							 $temp[$key][] = HTMLHelper::_('select.option', $referee->value,
+								 sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));							 
+						 }
+					}
+				}
 
-        $squad = array();
-        if (!$projectpositions) {
-            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS') . '<br /><br />', Log::WARNING, 'jsmerror');
-            return;
-        }
-
-        // generate selection list for each position
-        foreach ($projectpositions AS $key => $pos) {
-            // get referees assigned to this position
-            $squad[$key] = $model->getRefereeRoster($pos->value, $this->item->id);
-        }
-
-        if (count($squad) > 0) {
-            foreach ($squad AS $key => $referees) {
-                $temp[$key] = array();
-                if (isset($referees)) {
-                    foreach ($referees AS $referee) {
-                        $temp[$key][] = HTMLHelper::_('select.option', $referee->value,
-                            sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
-                    }
-                }
-
-                $lists['team_referees' . $key] = HTMLHelper::_('select.genericlist', $temp[$key], 'position' . $key . '[]',
-                    ' style="font-size:12px;height:auto;min-width:15em;" ' .
-                    'class="position-starters" multiple="true" ',
-                    'value', 'text');
+				$lists['team_referees' . $key] = HTMLHelper::_('select.genericlist', $temp[$key], 'position' . $key . '[]',
+					' style="font-size:12px;height:auto;min-width:15em;" ' .
+					'class="position-starters" multiple="true" ',
+					'value', 'text');
 
 
-            }
-        }
+			}
+		}
 
         $this->positions = $projectpositions;
         $this->lists = $lists;
