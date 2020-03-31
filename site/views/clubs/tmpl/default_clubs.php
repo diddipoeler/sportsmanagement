@@ -91,11 +91,6 @@ use Joomla\CMS\Factory;
 						{
 							//dynamic object property string
 							$pic = $this->config['show_picture'];
-//							echo sportsmanagementHelper::getPictureThumb($team->$pic,
-//											$team->name,
-//											$this->config['team_picture_width'],
-//											'auto',
-//											1);
                                             
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$team->id,$team->$pic,$team->name,$this->config['team_picture_width']);
 echo '<br />';

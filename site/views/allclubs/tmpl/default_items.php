@@ -98,7 +98,9 @@ use Joomla\CMS\Filesystem\File;
                 <?PHP
                 if ($this->params->get('picture')) {
                     echo '<td>';
-                    echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub' . $item->id, $item->logo_big, $item->name, '20');
+                    echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub' . $item->id, $item->logo_big, $item->name, '20','',$this->modalwidth,
+$this->modalheight,
+$this->use_jquery_modal);
                     echo '</td>';
                 }
 

@@ -58,7 +58,9 @@ $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 </td>
 <td>
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('allleagues' . $item->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $item->picture, $item->name, '20')
+echo sportsmanagementHelperHtml::getBootstrapModalImage('allleagues' . $item->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $item->picture, $item->name, '20','',$this->modalwidth,
+$this->modalheight,
+$this->use_jquery_modal)
 ?>
 
 </td>

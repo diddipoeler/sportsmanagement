@@ -103,8 +103,7 @@ $team->project_team_picture = sportsmanagementHelper::getDefaultPlaceholder("tea
 echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,
 $team->project_team_picture,
 $team->team_name,
-$this->config['team_picture_width']
-,
+$this->config['team_picture_width'],
 '',							
 $this->modalwidth,
 $this->modalheight,

@@ -19,10 +19,10 @@ if (! defined('JSM_PATH'))
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
 if ( !class_exists('sportsmanagementHelperHtml') ) 
 {
-//add the classes for handling
+/** add the classes for handling */
 $classpath = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'html.php';
 JLoader::register('sportsmanagementHelperHtml', $classpath);
 }
@@ -56,26 +56,27 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         $starttime = microtime(); 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
-		$this->template = $this->jinput->getVar('template', 'table','request','string');
+		$this->template = $this->jinput->getVar('template', 'ranking','request','string');
+        $this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2','request','string');
 
 		$this->state 		= $this->get('State');
 		$this->items 		= $this->get('Items');
        
 		$this->pagination	= $this->get('Pagination');
 		
-        //build the html options for nation
+        /** build the html options for nation */
 		$temp[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
-            $temp = array_merge($temp,$res);
-            }
+        $temp = array_merge($temp,$res);
+        }
 		
-        $lists['nation2'] = JHtmlSelect::genericlist(	$temp,
-																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($temp,
+			'filter_search_nation',
+			$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$this->state->get('filter.search_nation'));
                                                                 
         unset($temp);
         
@@ -83,15 +84,15 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         $modeltemp = BaseDatabaseModel::getInstance("Leagues", "sportsmanagementModel");
 		if ($res = $modeltemp->getLeagues())
         {
-            $temp = array_merge($temp,$res);
-            }
+        $temp = array_merge($temp,$res);
+        }
 		
-        $lists['leagues'] = JHtmlSelect::genericlist(	$temp,
-																'filter_search_leagues',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'id',
-																'name',
-																$this->state->get('filter.search_leagues'));
+        $lists['leagues'] = JHtmlSelect::genericlist($temp,
+			'filter_search_leagues',
+			$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'id',
+			'name',
+			$this->state->get('filter.search_leagues'));
                                                                 
         unset($temp);
         
@@ -99,22 +100,19 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         $modeltemp = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
 		if ($res = $modeltemp->getSeasons())
         {
-            $temp = array_merge($temp,$res);
-            }
+        $temp = array_merge($temp,$res);
+        }
 		
-        //$lists['nation'] = $temp;
-        $lists['seasons'] = JHtmlSelect::genericlist(	$temp,
-																'filter_search_seasons',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'id',
-																'name',
-																$this->state->get('filter.search_seasons'));
+        $lists['seasons'] = JHtmlSelect::genericlist($temp,
+			'filter_search_seasons',
+			$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'id',
+			'name',
+			$this->state->get('filter.search_seasons'));
                                                                 
         unset($temp);
         
-        // Set page title
 		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
-        
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
         $this->filter = $this->state->get('filter.search');

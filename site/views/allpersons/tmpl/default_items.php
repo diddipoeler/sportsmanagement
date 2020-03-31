@@ -70,7 +70,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
     echo JSMCountries::getCountryFlag($item->$value);
     break;
     case 'picture':
-    echo sportsmanagementHelperHtml::getBootstrapModalImage('allperson'.$item->id,$item->$value,$item->lastname,'20');
+    echo sportsmanagementHelperHtml::getBootstrapModalImage('allperson'.$item->id,$item->$value,$item->lastname,'20','',$this->modalwidth,
+$this->modalheight,
+$this->use_jquery_modal);
     break;
     case 'website':
     echo HTMLHelper::link( $item->$value, $item->$value, array( 'target' => '_blank' ) );
