@@ -1239,6 +1239,34 @@ if ( $data['id'] )
     }
 
     /**
+     * returns assigned teams referees id for the specified match
+     *
+     * @param int $match_id
+     * @return array of referee ids
+     */
+    public static function getTeamsRefereeRoster($match_id = 0)
+    {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $result = '';
+
+		$query->select('spi.id AS value,pr.name,pr.middle_name,pr.short_name,pr.alias');
+		$query->from('#__sportsmanagement_match_referee AS mr');
+		$query->join('LEFT', '#__sportsmanagement_project_team AS spi ON mr.project_referee_id=spi.id');
+		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = spi.team_id');
+		$query->join('LEFT', '#__sportsmanagement_team AS pr ON st1.team_id=pr.id AND pr.published = 1');
+		$query->where('mr.match_id = ' . $match_id);			
+        try {
+            $db->setQuery($query);
+            $result = $db->loadObjectList('value');
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
      * Method to return the projects referees array
      *
      * @access    public

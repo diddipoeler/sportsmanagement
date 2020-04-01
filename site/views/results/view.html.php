@@ -727,7 +727,12 @@ $use_jquery_modal);
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> 
                 <?php
-                echo $ref->firstname.' '.$ref->lastname.' ('.$ref->position_name.')';
+				if ($project->teams_as_referees) {
+					echo $ref->teamname;
+				}
+				else {
+					echo $ref->firstname.' '.$ref->lastname.' ('.$ref->position_name.')';
+				}
                 ?>
                 </span>
 				<?php
