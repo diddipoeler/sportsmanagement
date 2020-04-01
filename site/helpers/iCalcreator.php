@@ -1988,6 +1988,7 @@ class vcalendar {
       header( 'Content-Type: text/calendar; charset=utf-8' );
     header( 'Content-Disposition: attachment; filename="'.$filename.'"' );
     header( 'Cache-Control: max-age=10' );
+    ob_clean();
     die( $output );
   }
 /**
