@@ -631,6 +631,8 @@ abstract class sportsmanagementHelper {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $config = Factory::getConfig();
 
+//echo '<pre'.print_r($params,true).'</pre>';
+
         if ($params->get('cfg_dbprefix')) {
             $host = $config->get('host'); //replace your IP or hostname
             $user = $config->get('user'); //database user
@@ -646,7 +648,9 @@ abstract class sportsmanagementHelper {
                 $db = JDatabase::getInstance($options);
             } catch (Exception $e) {
                 // catch any database errors.
-                JErrorPage::render($e);
+                Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+                //JErrorPage::render($e);
             }
 
             if ( !$db ) {
@@ -688,8 +692,12 @@ abstract class sportsmanagementHelper {
                 } catch (Exception $e) {
                     // catch any database errors.
                     //   $db->transactionRollback();
-                    JErrorPage::render($e);
+                    Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+                    Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
+                    //JErrorPage::render($e);
                 }
+
+Log::add(Text::_($user_id), Log::WARNING, 'jsmerror');
 
                 if ($user_id) {
 			try{
