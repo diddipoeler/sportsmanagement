@@ -89,7 +89,7 @@ if ( $show_facebook_link == 3 )
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
 	//echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
-    echo sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion());
+    echo sprintf('%1$s (diddipoeler)',sportsmanagementHelper::getVersion());
 	?>
 	<br />    
       
