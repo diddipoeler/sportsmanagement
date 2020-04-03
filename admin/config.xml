@@ -186,6 +186,12 @@
 			filter="string"
 			size="30" />
 
+<field name="jsm_user_serialnumber" 
+type="serialnumber" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_SERIAL_ACCESS" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_SERIAL_ACCESS_DESC" 
+size="25" />
 			
 		<field
 			name="jsm_dbtype"
