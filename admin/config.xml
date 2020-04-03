@@ -180,18 +180,18 @@
 		<field
 			name="jsm_server_user"
 			type="text"
-		       default=""
+		    default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_DESC"
 			filter="string"
 			size="30" />
 
 <field name="jsm_user_serialnumber" 
-type="serialnumber" 
+type="text" 
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_SERIAL_ACCESS" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_SERIAL_ACCESS_DESC" 
-size="25" />
+size="29" />
 			
 		<field
 			name="jsm_dbtype"

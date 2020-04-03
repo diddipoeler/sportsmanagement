@@ -28,7 +28,7 @@
 <field type="extensionsubtitle" title="" color="#2672a6" />
 <field type="extensionmessage" style="example" text="PLG_USER_JSMPROFILE_FIELD_ACCESS_DESC" label="PLG_USER_JSMPROFILE_FIELD_ACCESS_DESC" />		
 
-<field name="serialnumber" type="serialnumber" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_DESC" size="25" />
+<field name="serialnumber" type="serialnumber" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_DESC" size="29" />
 <field name="access_from" type="calendar" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS_FROM" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_FROM_DESC" format="%d-%m-%Y" />
 <field name="access_to" type="calendar" default="" label="PLG_USER_JSMPROFILE_SERAIL_ACCESS_TO" description="PLG_USER_JSMPROFILE_SERAIL_ACCESS_TO_DESC" format="%d-%m-%Y" />
 	    
