@@ -675,21 +675,65 @@ $query->clear();
                     //$query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
                     $db->setQuery($query);
            
-//Log::add(Text::_('results3 query <pre>'.print_r($query->dump(),true).'</pre>'), Log::WARNING, 'jsmerror');
-           
-  //                  $results3 = $db->loadObjectList(); 
-
-//Log::add(Text::_('results3 <pre>'.print_r($results3,true).'</pre>'), Log::WARNING, 'jsmerror');           
-
 $row = $db->loadAssocList('profile_key');   
-           
-           
-
-           
-           
+       
 //Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');                      
            
-           
+if ( $row['jsmprofile.databaseaccess']['profile_value'] )
+{
+Log::add(Text::_('Sie haben Zugriff.'), Log::INFO, 'jsmerror');    
+
+if ( $row['jsmprofile.serialnumber']['profile_value'] == $params->get('jsm_user_serialnumber') )
+{
+Log::add(Text::_('Die Seriennummer stimmt.'), Log::INFO, 'jsmerror');   
+
+if ( $row['jsmprofile.access_from']['profile_value'] &&  $row['jsmprofile.access_to']['profile_value'] )
+{
+$timestampfrom = self::getTimestamp($row['jsmprofile.access_from']['profile_value']);
+$timestampto = self::getTimestamp($row['jsmprofile.access_to']['profile_value']);
+$timestampaktuell = self::getTimestamp();
+
+$varaccess = filter_var(
+    $timestampaktuell, 
+    FILTER_VALIDATE_INT, 
+    array(
+        'options' => array(
+            'min_range' => $timestampfrom, 
+            'max_range' => $timestampto
+        )
+    )
+);  
+
+//Log::add(Text::_('access '.$varaccess), Log::INFO, 'jsmerror');   
+
+
+if ( $varaccess ) {
+Log::add(Text::_('Der Zeitraum ist freigeschaltet.'), Log::INFO, 'jsmerror');   
+return self::$_jsm_db;  
+}
+else
+{
+Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');    
+}
+
+    
+//Log::add(Text::_('timestamp von '.$timestampfrom), Log::INFO, 'jsmerror');
+//Log::add(Text::_('timestamp bis '.$timestampto), Log::INFO, 'jsmerror');
+//Log::add(Text::_('timestamp aktuell '.$timestampaktuell), Log::INFO, 'jsmerror');
+    
+}    
+else
+{
+Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');    
+}
+ 
+}    
+else
+{
+Log::add(Text::_('Die Seriennummer stimmt nicht.'), Log::ERROR, 'jsmerror');    
+}
+    
+}           
            
            
            
