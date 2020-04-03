@@ -631,62 +631,26 @@ abstract class sportsmanagementHelper {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $config = Factory::getConfig();
 
-//echo '<pre'.print_r($params,true).'</pre>';
+//echo '<pre>'.print_r($params,true).'</pre>';
+//Log::add(Text::_($params->get('cfg_which_database')), Log::ERROR, 'jsmerror');
+        if ($params->get('cfg_which_database')) {
+            $options = array(); //prevent problems
+                $options['driver'] = $params->get('jsm_dbtype');            // Database driver name
+                $options['host'] = $params->get('jsm_host');    // Database host name
+                $options['user'] = $params->get('jsm_user');       // User for database authentication
+                $options['password'] = $params->get('jsm_password');   // Password for database authentication
+                $options['database'] = $params->get('jsm_db');      // Database name
+                $options['prefix'] = $params->get('jsm_dbprefix');             // Database prefix (may be empty)
 
-        if ($params->get('cfg_dbprefix')) {
-            $host = $config->get('host'); //replace your IP or hostname
-            $user = $config->get('user'); //database user
-            $password = $config->get('password'); //database password
-            $database = $config->get('db'); //database name
-            $prefix = $params->get('jsm_dbprefix'); //prefix if any else just give any random value
-            $driver = $config->get('dbtype'); //here u can also have ms sql database driver, postgres, etc
-            $debug = $config->get('config.debug');
-
-            $options = array('driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix);
-
+//Log::add(Text::_('options <pre>'.print_r($options,true).'</pre>'), Log::ERROR, 'jsmerror');
+          
             try {
-                $db = JDatabase::getInstance($options);
-            } catch (Exception $e) {
-                // catch any database errors.
-                Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-                Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
-                //JErrorPage::render($e);
-            }
-
-            if ( !$db ) {
-                header('HTTP/1.1 500 Internal Server Error');
-                jexit('Database Error: ' . $db->toString());
-            } else {
-   
-            }
-            $db->debug($debug);
-            return $db;
-        } else {
-            if ($request) {
-                $cfg_which_database = $value;
-            } else {
-                $cfg_which_database = $params->get('cfg_which_database');
-            }
-
-            if (!$cfg_which_database) {
-                return Factory::getDbo();
-            } else {
-                $option = array(); //prevent problems
-                $option['driver'] = $params->get('jsm_dbtype');            // Database driver name
-                $option['host'] = $params->get('jsm_host');    // Database host name
-                $option['user'] = $params->get('jsm_user');       // User for database authentication
-                $option['password'] = $params->get('jsm_password');   // Password for database authentication
-                $option['database'] = $params->get('jsm_db');      // Database name
-                $option['prefix'] = $params->get('jsm_dbprefix');             // Database prefix (may be empty)
-
-
-                try {
                     // zuerst noch überprüfen, ob der user
                     // überhaupt den zugriff auf die datenbank hat.
                     if (version_compare(JSM_JVERSION, '4', 'eq')) {
-                        self::$_jsm_db = JDatabaseDriver::getInstance($option);
+                        self::$_jsm_db = JDatabaseDriver::getInstance($options);
                     } else {
-                        self::$_jsm_db = JDatabase::getInstance($option);
+                        self::$_jsm_db = JDatabase::getInstance($options);
                     }
                     $user_id = $params->get('jsm_server_user');
                 } catch (Exception $e) {
@@ -697,51 +661,61 @@ abstract class sportsmanagementHelper {
                     //JErrorPage::render($e);
                 }
 
-Log::add(Text::_($user_id), Log::WARNING, 'jsmerror');
-
-                if ($user_id) {
-			try{
-                    // Load the profile data from the database.
+//Log::add(Text::_('user_id '.$user_id), Log::WARNING, 'jsmerror');
+         if ( $user_id ) 
+         {
+// Load the profile data from the database.
                     $db = self::$_jsm_db;
-                    $query = $db->getQuery(true);
+$query = $db->getQuery(true);
+$query->clear();
                     $query->select('up.profile_key, up.profile_value');
                     $query->from('#__user_profiles as up');
                     $query->where('up.user_id = ' . $user_id);
-                    $query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.databaseaccess' . ''));
-                    $query->where('up.profile_value = 1');
+                    $query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
+                    //$query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
                     $db->setQuery($query);
-                    $results = $db->loadResult();
-                    $query->clear();
-                    $query->select('up.profile_key, up.profile_value');
-                    $query->from('#__user_profiles as up');
-                    $query->where('up.user_id = ' . $user_id);
-                    $query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.website' . ''));
-                    $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
-                    $db->setQuery($query);
-                    $results2 = $db->loadResult();
+           
+//Log::add(Text::_('results3 query <pre>'.print_r($query->dump(),true).'</pre>'), Log::WARNING, 'jsmerror');
+           
+  //                  $results3 = $db->loadObjectList(); 
 
-                    if ($results && $results2) {
+//Log::add(Text::_('results3 <pre>'.print_r($results3,true).'</pre>'), Log::WARNING, 'jsmerror');           
 
-                        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-                            return JDatabaseDriver::getInstance($option);
-                        } else {
-                            return JDatabase::getInstance($option);
-                        }
-                    } else {
-                        return Factory::getDbo();
-                    }
-		}
-        catch (Exception $e)
-        {
-        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-        return Factory::getDbo();
-        }	
-			
-                } else {
-                    return Factory::getDbo();
-                }
-            }
+$row = $db->loadAssocList('profile_key');   
+           
+           
+
+           
+           
+//Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');                      
+           
+           
+           
+           
+           
+           
         }
+          
+          
+          
+          
+          
+          
+          
+          
+          
+/*
+            if ( !$db ) {
+                header('HTTP/1.1 500 Internal Server Error');
+                jexit('Database Error: ' . $db->toString());
+            } else {
+   
+            }
+          */
+            //$db->debug($debug);
+            //return $db;
+        } 
+      return Factory::getDbo();
         //return self::$_jsm_db; 
     }
 
