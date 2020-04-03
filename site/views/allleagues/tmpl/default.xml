@@ -12,6 +12,7 @@
         <fieldset	
             name="request"
             label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+			description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
         >
 
 <field name="cfg_which_database" 

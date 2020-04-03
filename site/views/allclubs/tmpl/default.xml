@@ -65,6 +65,16 @@
                 link="http://www.fussballineuropa.de/" 
             />	 
             				
+<field name="cfg_which_database" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
             <field
                 name="use_current_season"
                 type="extensionradiobutton"

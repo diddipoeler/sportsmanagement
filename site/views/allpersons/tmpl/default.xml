@@ -10,8 +10,19 @@
     addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
 					>
 
+<field name="cfg_which_database" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
            <field name="use_current_season" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON"
