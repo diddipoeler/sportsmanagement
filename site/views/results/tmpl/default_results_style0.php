@@ -43,6 +43,7 @@ if($this->config['show_match_summary']){$nbcols++;}
 if($this->config['show_time']){$nbcols++;}
 if($this->config['show_playground'] || $this->config['show_playground_alert']){$nbcols++;}
 if($this->config['show_referee']){$nbcols++;}
+if($this->config['show_scoresheet']){$nbcols++;}
 if($this->config['result_style']==2){$nbcols++;}
 if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
 
@@ -557,7 +558,24 @@ $this->overallconfig['use_jquery_modal']); ?>
 		<?php
             break;
         }
-        
+		if ( $this->config['show_scoresheet'])
+		{
+			?>
+			<td width="" class="" id="">
+			<?php
+			$routeparameter = array();
+			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+			$routeparameter['p'] = $this->project->id;
+			$routeparameter['mid'] = $game->id;
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('scoresheet',$routeparameter);
+				
+			$text = HTMLHelper::_('image','media/com_sportsmanagement/jl_images/pdf_button.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
+			$attribs = array('title' => Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
+			echo HTMLHelper::_('link',$link,$text,$attribs);
+			?>
+			</td>
+			<?php
+		}
 		?>
 
 		<?php

@@ -173,6 +173,9 @@ break;
 case 'ical':
 JLoader::import('components.com_sportsmanagement.helpers.iCalcreator', JPATH_SITE);
 break;
+case 'scoresheet':
+JLoader::import('components.com_sportsmanagement.helpers.scoresheet', JPATH_SITE);
+break;
 case 'predictionrules':
 case 'predictionranking':
 case 'predictionusers':
