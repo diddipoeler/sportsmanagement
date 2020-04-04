@@ -176,7 +176,7 @@ $installer = Installer::getInstance();
 
 /** Get the path to the package to install */
 
-$p_dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR;
+$p_dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-'.str_replace(".zip", "", $file['name']).DIRECTORY_SEPARATOR;
 //$p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement-master'.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
 $p_dir_modules = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
 
