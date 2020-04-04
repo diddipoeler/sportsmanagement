@@ -85,7 +85,9 @@ defined('_JEXEC') or die('Restricted access');
 	      }
       }
       if ($params->get('show_names') == 1) {
+	      echo $match['awayteam']['name'];
       }
+      if (!empty($match['awayover'])) echo $match['awayover'];
       ?>
 </span>
 
