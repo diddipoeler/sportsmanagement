@@ -32,7 +32,7 @@
 *	V1.1 (04.11.2010) Works now under php4 for backward compat.                *
 * 	V1.0 (03.11.2010) First working release                                    *
 *******************************************************************************/
-
+defined('_JEXEC') or die('Restricted access');
 global $FPDM_FILTERS, $FPDM_REGEXPS; //needs explicit global scope, otherwise autoloading will be incomplete.
 $FPDM_FILTERS=array(); //holds all supported filters
 $FPDM_REGEXPS= array(

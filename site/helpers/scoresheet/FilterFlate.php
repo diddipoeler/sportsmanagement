@@ -3,6 +3,7 @@
 //  FPDM - Filter Flate
 //  NOTE: requires ZLIB >= 1.0.9!
 //
+defined('_JEXEC') or die('Restricted access');
 
 $__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterFlateDecode') : array('FilterFlateDecode', false);
 if (!call_user_func_array('class_exists', $__tmp)) {

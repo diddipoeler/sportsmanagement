@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage helpers
  */
+defined('_JEXEC') or die('Restricted access');
 
 define('FPDM_DIRECT', true);
 
