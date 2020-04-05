@@ -16,6 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+defined('_JEXEC') or die('Restricted access');
 
 if (!defined('ORD_z'))
 	define('ORD_z',ord('z'));

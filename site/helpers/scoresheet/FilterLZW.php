@@ -16,6 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+defined('_JEXEC') or die('Restricted access');
 
 $__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterLZW') : array('FilterLZW', false);
 if (!call_user_func_array('class_exists', $__tmp)) {

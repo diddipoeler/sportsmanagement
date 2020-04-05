@@ -4,6 +4,7 @@
 	//  FPDM - Filter ASCII Hex
 	//  NOTE: Not tested but should work.
 	//
+	defined('_JEXEC') or die('Restricted access');
 	
 	if(isset($FPDM_FILTERS)) array_push($FPDM_FILTERS,"ASCIIHexDecode");
 	
@@ -16,7 +17,7 @@
 		*@internal same as _hex2bin ($hexString)
 		*@access public
 		*@note Function was written because PHP has a bin2hex, but not a hex2bin!
-		*@internal note pack(“C”,hexdec(substr($data,$i,2))) DOES NOT WORK
+		*@internal note pack(ï¿½Cï¿½,hexdec(substr($data,$i,2))) DOES NOT WORK
 		*
 		**/
 	  function decode($data) {
