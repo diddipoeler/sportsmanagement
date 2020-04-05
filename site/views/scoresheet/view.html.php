@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @author    ortwin20000, diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @package   sportsmanagement
@@ -64,10 +64,10 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
 			$fields['SpielernummerB'. $position] = $player->knvbnr;
 		}
 		if ($this->match[0]->game_parts == "3") {
-			$pdf = new FPDM('media/Spielbericht_3.pdf');
+			$pdf = new FPDM('media/'.$this->option.DIRECTORY_SEPARATOR.$this->view.DIRECTORY_SEPARATOR.'Spielbericht_3.pdf');
 		}
 		else {
-			$pdf = new FPDM('media/Spielbericht_5.pdf');
+			$pdf = new FPDM('media/'.$this->option.DIRECTORY_SEPARATOR.$this->view.DIRECTORY_SEPARATOR.'Spielbericht_5.pdf');
 		}
 		$pdf->Load($fields, true); // second parameter: false if field values are in ISO-8859-1, true if UTF-8
 		$pdf->Merge();
