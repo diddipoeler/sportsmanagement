@@ -180,6 +180,9 @@ break;
 	case 'ical':
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		break;
+	case 'scoresheet':
+                $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		break;
             case 'resultsranking':
 	    case 'resultsmatrix':
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
