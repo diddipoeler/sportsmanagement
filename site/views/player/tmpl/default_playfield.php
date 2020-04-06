@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage player
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
@@ -25,10 +25,10 @@ use Joomla\CMS\Language\Text;
 
 if (!isset($this->teamPlayer->position_name)  ) {
     $this->teamPlayer->position_name = 'hauptposition.png';
-}    
-                
+}  
+              
 //$backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png';
-$backimage = $this->teamPlayer->position_image ;                     
+$backimage = $this->teamPlayer->position_image ;                   
 $hauptimage = 'images/com_sportsmanagement/database/person_playground/hauptposition.png';
 $nebenimage = 'images/com_sportsmanagement/database/person_playground/nebenposition.png';
 

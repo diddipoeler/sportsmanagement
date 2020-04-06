@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,38 +17,39 @@ use Joomla\CMS\Factory;
 
 /**
  * JFormFieldImageSelect
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class JFormFieldImageSelect extends JFormField
 {
-    protected $type = 'imageselect';
+	protected $type = 'imageselect';
 
-    /**
-     * JFormFieldImageSelect::getInput()
-     * 
-     * @return
-     */
-    function getInput() 
-    {
-        $app    = Factory::getApplication();
-        $option = Factory::getApplication()->input->getCmd('option');
-        
-        $default = $this->value;
-        $arrPathes = explode('/', $default);
-        $filename = array_pop($arrPathes);
-        //$targetfolder = array_pop($arrPathes);
-        $targetfolder = $this->element['targetfolder'];
-        
-        
-        $output  = ImageSelectSM::getSelector($this->name, $this->name.'_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
-        $output .= '<img class="imagepreview" src="'.JURI::root(true).'/media/com_sportsmanagement/jl_images/spinner.gif" '; 
-        $output .= ' name="'.$this->name.'_preview" id="'.$this->id.'_preview" border="3" alt="Preview" title="Preview" />';
-        $output .= '<input type="hidden" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';
-        return $output;
-    }
+	/**
+	 * JFormFieldImageSelect::getInput()
+	 *
+	 * @return
+	 */
+	function getInput()
+	{
+		$app    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+
+			  $default = $this->value;
+		$arrPathes = explode('/', $default);
+		$filename = array_pop($arrPathes);
+
+		// $targetfolder = array_pop($arrPathes);
+		$targetfolder = $this->element['targetfolder'];
+
+			  $output  = ImageSelectSM::getSelector($this->name, $this->name . '_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
+		$output .= '<img class="imagepreview" src="' . JURI::root(true) . '/media/com_sportsmanagement/jl_images/spinner.gif" ';
+		$output .= ' name="' . $this->name . '_preview" id="' . $this->id . '_preview" border="3" alt="Preview" title="Preview" />';
+		$output .= '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . $this->value . '" />';
+
+		return $output;
+	}
 }

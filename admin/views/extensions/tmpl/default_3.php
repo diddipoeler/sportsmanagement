@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage extensions
 */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -35,11 +35,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <div class="row-fluid">
 <div class="span9">
-<div class="well well-small">        
+<div class="well well-small">      
 <div id="dashboard-icons" class="btn-group">
 
-<?php 
-                
+<?php
+              
 foreach ( $this->sporttypes as $key => $value )
 {
     switch ($value)
@@ -61,7 +61,7 @@ foreach ( $this->sporttypes as $key => $value )
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextprofleagimport">
 <img src="components/com_sportsmanagement/assets/icons/profleagueimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
         break;
     case 'basketball':
@@ -69,7 +69,7 @@ foreach ( $this->sporttypes as $key => $value )
     <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdbbimport">
     <img src="components/com_sportsmanagement/assets/icons/dbbimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
         break;
     case 'handball':
@@ -77,7 +77,7 @@ foreach ( $this->sporttypes as $key => $value )
     <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextsisimport">
     <img src="components/com_sportsmanagement/assets/icons/sisimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
         break;
     default:
@@ -85,14 +85,14 @@ foreach ( $this->sporttypes as $key => $value )
     }
 }
 ?>
-     
-        
-</div>        
+   
+      
+</div>      
 </div>
 </div>
 
 <div class="span3">
-    <?php sportsmanagementHelper::jsminfo(); ?>                                               
+    <?php sportsmanagementHelper::jsminfo(); ?>                                             
 </div>
 </section>
 
@@ -103,4 +103,4 @@ foreach ( $this->sporttypes as $key => $value )
 //echo "<div>";
 //echo $this->loadTemplate('footer');
 //echo "</div>";
-?>   
+?> 

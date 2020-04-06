@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      edit_altdecision.php
@@ -19,8 +19,8 @@ use Joomla\CMS\Language\Text;
 				<legend><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD' );?>
 				</legend>
 				<table class='admintable'>
-					<?php 
-                    
+					<?php
+                  
                     foreach ($this->form->getFieldset('altdecision') as $field):
                     ?>
 					<tr>

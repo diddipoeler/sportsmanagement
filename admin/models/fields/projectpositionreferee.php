@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldprojectpositionreferee
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -60,11 +60,11 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
          $project_id = $project_id[0];
         }
         */
-        if ($project_id) {        
+        if ($project_id) {      
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-        
-                
+      
+              
             $query->select('ppos.id AS value,pos.name AS text');
             $query->from('#__sportsmanagement_position AS pos');
             $query->join('inner', '#__sportsmanagement_project_position AS ppos ON pos.id=ppos.position_id');
@@ -73,7 +73,7 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
             $db->setQuery($query);
             $options = $db->loadObjectList();
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;

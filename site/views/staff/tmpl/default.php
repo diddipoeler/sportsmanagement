@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -59,7 +59,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     }
 
     echo $this->loadTemplate('jsminfo');
-    
+  
     ?>
-    
+  
 </div>

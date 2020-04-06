@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -33,7 +33,7 @@ if ($setItems > $actualItems) {
 $j = 0;
 foreach ( $this->matchimages as $images )
 {
-    if (($j % $rssitems_colums) == 0 ) : 
+    if (($j % $rssitems_colums) == 0 ) :
         $row = 'row'.(floor($j / $rssitems_colums) % $rssitems_colums) ;
         ?>
         <tr class="<?php echo $row; ?>">
@@ -50,16 +50,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     $this->modalwidth,
     $this->modalheight,
     $this->overallconfig['use_jquery_modal']
-);                    
+);                  
 ?>
 </a>
 </td>
 <?php if (($j % $rssitems_colums) == ($rssitems_colums-1) ) : ?>
 </tr>
 <?php endif; ?>
-<?php	                    
+<?php	                  
 $j++;
 }
 ?>
-</table>    
+</table>  
 </div>

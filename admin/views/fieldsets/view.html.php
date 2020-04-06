@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementViewFieldsets
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -28,7 +28,7 @@ class sportsmanagementViewFieldsets extends sportsmanagementView
 
     /**
      * sportsmanagementViewFieldsets::init()
-     * 
+     *
      * @return void
      */
     public function init()

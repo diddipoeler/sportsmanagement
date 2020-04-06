@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,14 +11,14 @@
  * @package    sportsmanagement
  * @subpackage allleagues
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 
 ?>
 
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="allleagues">        
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allleagues">      
 <table class="<?php echo $this->tableclass; ?>">
 
 <thead>
@@ -29,16 +29,16 @@ echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_LEAGUES', 'v.name', $t
 ?>
 </th>
 <th class="" id="">
-<?php 
+<?php
 echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
 ?>
 </th>
 
 <th class="" id="">
-<?php 
+<?php
 echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn);
 ?>
-</th>                                 
+</th>                               
 
 </tr>
 </thead>

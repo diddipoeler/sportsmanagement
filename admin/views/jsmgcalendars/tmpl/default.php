@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ function searchPerson(val)
     }
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-    
+  
 
 <?PHP
 echo $this->loadTemplate('joomla_version');
@@ -47,4 +47,4 @@ echo $this->loadTemplate('joomla_version');
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

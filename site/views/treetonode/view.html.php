@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTreetonode
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -30,19 +30,19 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetonode::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
         $config = sportsmanagementModelProject::getTemplateConfig('treetonode');
-        
+      
         $this->project = sportsmanagementModelProject::getProject();
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         $this->config = $config;
         $this->node = $this->model->getTreetonode();
         $this->roundname = $this->model->getRoundName();
-    
+  
         // Set page title
         ///TODO: treeto name, no project name
         $titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_TREETO_PAGE_TITLE'));
@@ -60,10 +60,10 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
         }
         else
         {
-            $this->pagetitle = '';    
+            $this->pagetitle = '';  
         }
         $this->document->setTitle($this->pagetitle);
-        
+      
     }
     //$this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');		
 }

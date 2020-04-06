@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -76,7 +76,7 @@ if ($lightbox == 1 && ( Factory::getApplication()->input->getVar('format') != 'p
 <div id="jlccalendar-<?php echo $module->id ?>">
 <!--jlccalendar-<?php echo $module->id?> start-->
 
-<?php echo $calendar['calendar'] ?> <?php 
+<?php echo $calendar['calendar'] ?> <?php
 } ?> <?php if (count($calendar['teamslist']) > 0) { ?>
 <div style="margin: 0 auto;"><?php
 echo HTMLHelper::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', Factory::getApplication()->input->getVar('jlcteam', 0, 'default', 'POST'));
@@ -98,9 +98,9 @@ $cnt = 0;
 for ($x=0;$x < count($calendar['list']);$x++)
 {
     $row = $calendar['list'][$x];
-   
+ 
     if(isset($row['tag'])) {
-        switch ($row['tag']) 
+        switch ($row['tag'])
         {
         case 'span':
             ?> <span id="<?php echo $row['divid'];?>"
@@ -113,7 +113,7 @@ for ($x=0;$x < count($calendar['list']);$x++)
             break;
         case 'table':
             ?>
-           <div class="table-responsive">    
+           <div class="table-responsive">  
            <table style="margin: 0 auto; min-width: 60%;" cellspacing="0"
             cellpadding="0" class="table table-striped">
             <?php
@@ -143,7 +143,7 @@ for ($x=0;$x < count($calendar['list']);$x++)
         $date = HTMLHelper::date($row['timestamp'], $params->get('dateformat'));
         $uhrzeit = date("H:i", $row['timestamp']);
         $time = date("H:i", $row['timestamp']);
-       
+     
         switch ($row['type']) {
         case 'jevents':
             $style = ($row['color'] != '') ? ' style="border-left:4px '.$row['color'].' solid;"' : '';
@@ -155,7 +155,7 @@ for ($x=0;$x < count($calendar['list']);$x++)
        href="<?php echo $row['link'];?>"><?php echo $row['title'];?></a></span>
         <?php
         if ($row['location'] != '') { ?> - <span
-     class="jlcal_jevents_location"><?php echo $row['location'];?></span> <?php 
+     class="jlcal_jevents_location"><?php echo $row['location'];?></span> <?php
         } ?>
       </td>
      </tr>
@@ -166,14 +166,14 @@ for ($x=0;$x < count($calendar['list']);$x++)
             ?>
            <tr class="<?php echo $sclass;?> jlcal_matchrow">
             <td class="jlcal_birthday" colspan="5"><?php
-            if (!empty($row['image'])) { echo $row['image']; 
+            if (!empty($row['image'])) { echo $row['image'];
             } ?> <span
-            class="jlc_player_name"><?php 
+            class="jlc_player_name"><?php
             if (!empty($row['link'])) { ?> <a href="<?php echo $row['link'];?>"
-          title="<?php echo $row['link'];?>"> <?php 
-            } 
+          title="<?php echo $row['link'];?>"> <?php
+            }
                 echo $row['name'];
-            if (!empty($row['link'])) { ?> </a> <?php 
+            if (!empty($row['link'])) { ?> </a> <?php
             } ?></span> <span
             class="jlc_player_age"><?php echo $row['age'];?></span>
            </td>
@@ -183,7 +183,7 @@ for ($x=0;$x < count($calendar['list']);$x++)
         default:
             ?>
            <tr class="<?php echo $sclass;?> jlcal_matchrow">
-            <td class="jlcal_matchdate"><?php 
+            <td class="jlcal_matchdate"><?php
             // link to matchdetails
             if (!empty($row['link'])) {
         ?> <a href="<?php echo $row['link'];?>"
@@ -222,5 +222,5 @@ for ($x=0;$x < count($calendar['list']);$x++)
 
 
 <?php
-if($ajax && $ajaxmod==$module->id) { exit(); 
+if($ajax && $ajaxmod==$module->id) { exit();
 } ?>

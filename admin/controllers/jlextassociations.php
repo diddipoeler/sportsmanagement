@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementControllerjlextassociations
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,29 +27,30 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementControllerjlextassociations extends JSMControllerAdmin
 {
 
-    /**
- * sportsmanagementControllerjlextassociations::import()
- * 
- * @return void
- */
-    function import()
-    {
-           $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
-           $model = $this->getModel();
-           $msg = $databasetool->checkAssociations();
-           $this->setRedirect('index.php?option=com_sportsmanagement&view=jlextassociations', $msg);
-    
-    }  
-  
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'jlextassociation', $prefix = 'sportsmanagementModel') 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
-    
+	/**
+	 * sportsmanagementControllerjlextassociations::import()
+	 *
+	 * @return void
+	 */
+	function import()
+	{
+		   $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+		   $model = $this->getModel();
+		   $msg = $databasetool->checkAssociations();
+		   $this->setRedirect('index.php?option=com_sportsmanagement&view=jlextassociations', $msg);
+
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'jlextassociation', $prefix = 'sportsmanagementModel')
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
+
 }

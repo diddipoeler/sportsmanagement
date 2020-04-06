@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,7 +26,7 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
 {
     var $_identifier = "pposition";
     var $_project_id = 0;
-    
+  
     /**
      * Method override to check if you can edit an existing record.
      *
@@ -41,7 +41,7 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Method to update project positions list
      *
@@ -80,8 +80,8 @@ class sportsmanagementModelProjectposition extends JSMModelAdmin
         return $result;
     }
 
-    
-    
-    
+  
+  
+  
 }
 ?>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewReferee
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,7 +32,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 
     /**
      * sportsmanagementViewReferee::display()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
@@ -77,16 +77,16 @@ class sportsmanagementViewReferee extends JViewLegacy
             $extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
             $this->extended = $extended;
         }
-       
+     
         if (!isset($this->config['history_table_class']) ) {
             $this->config['history_table_class'] = 'table';
         }
         if (!isset($this->config['career_table_class']) ) {
             $this->config['career_table_class'] = 'table';
         }
-        
+      
         $this->headertitle = $this->title;
-        
+      
         parent::display($tpl);
     }
 

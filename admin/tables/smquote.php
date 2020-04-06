@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTablesmquote
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -37,6 +37,6 @@ class sportsmanagementTablesmquote extends JSMTable
           $db = sportsmanagementHelper::getDBConnection();
         parent :: __construct('#__sportsmanagement_rquote', 'id', $db);
     }
-    
+  
 }
 ?>

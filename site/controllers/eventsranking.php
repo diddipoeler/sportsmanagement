@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerEventsRanking
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Pl�ger
  * @copyright 2016
  * @version   $Id$
@@ -31,14 +31,14 @@ class sportsmanagementControllerEventsRanking extends BaseController
 
     /**
      * sportsmanagementControllerEventsRanking::display()
-     * 
+     *
      * @param  bool $cachable
      * @param  bool $urlparams
      * @return void
      */
-    public function display($cachable = false, $urlparams = false) 
+    public function display($cachable = false, $urlparams = false)
     {
-        
+      
     }
 
 }

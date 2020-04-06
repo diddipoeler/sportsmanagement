@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -40,14 +40,14 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
                                 <?php
                                 if (!$this->config['show_bootstrap_tree']) {
                                     ?>
-                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>    
+                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>  
                                     <?php
                                 }
                                 $color = array_key_exists($rowclub, $this->findclub) ? 'lawngreen' : '';
-                                ?>    
+                                ?>  
                               <span style="background-color:<?php echo $color;?>;">
                                 <a href="<?php echo $this->familyclub[$rowclub]->clublink;?>"><?PHP echo HTMLHelper::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->club_name, array('width' => '30')) . ' ' . $this->familyclub[$rowclub]->club_name; ?></a>
-                                </span>    
+                                </span>  
                                 <?php
                                 echo $rowvalue;
                                 ?>

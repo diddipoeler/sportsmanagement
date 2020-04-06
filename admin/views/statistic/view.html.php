@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,26 +13,26 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewstatistic
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewstatistic extends sportsmanagementView
 {
-    
-    
+  
+  
     /**
      * sportsmanagementViewstatistic::init()
-     * 
+     *
      * @return
      */
     public function init()
@@ -43,7 +43,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         $form = $this->get('Form');
         $item = $this->get('Item');
         $script = $this->get('Script');
- 
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             Log::add(implode('<br />', $errors));
@@ -53,37 +53,37 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         $this->form = $form;
         $this->item = $item;
         $this->script = $script;
-        
-        
+      
+      
         $isNew = $this->item->id == 0;
-        
+      
         if ($isNew ) {
-            $item->class = 'basic';    
+            $item->class = 'basic';  
         }
-        
+      
         if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' ) {
             //$this->setLayout('edit');
         }
 
         $formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
         $this->formparams = $formparams;
-        
+      
     }
- 
-    
+
+  
     /**
      * sportsmanagementViewstatistic::addToolBar()
-     * 
+     *
      * @return void
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
-    
+  
         Factory::getApplication()->input->set('hidemainmenu', true);
-        
+      
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTIC_NEW');
         $this->icon = 'statistic';
-        
+      
         parent::addToolbar();
     }
 

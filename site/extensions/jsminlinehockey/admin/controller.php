@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\MVC\Controller\AdminController;
 
 /**
  * sportsmanagementController
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -29,7 +29,7 @@ class sportsmanagementController extends AdminController
 
     /**
      * sportsmanagementController::display()
-     * 
+     *
      * @param  bool $cachable
      * @param  bool $urlparams
      * @return void
@@ -40,7 +40,7 @@ class sportsmanagementController extends AdminController
         parent::display($cachable, $urlparams);
 
     }
-    
+  
 }
 
 /**

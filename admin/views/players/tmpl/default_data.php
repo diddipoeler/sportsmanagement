@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,11 +26,11 @@ $userId        = $user->get('id');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ($this->assign ) {
-    $this->readonly = ' readonly ';    
+    $this->readonly = ' readonly ';  
 }
 else
 {
-    $this->readonly = '';        
+    $this->readonly = '';      
 }
 ?>
     <div id="editcell">
@@ -41,7 +41,7 @@ else
                     <th width="20">
                         <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                     </th>
-                    
+                  
                     <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME', 'pl.firstname', $this->sortDirection, $this->sortColumn);
@@ -64,13 +64,13 @@ else
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BIRTHDAY', 'pl.birthday', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th class="title">
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY', 'pl.country', $this->sortDirection, $this->sortColumn);
@@ -120,8 +120,8 @@ else
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         </td>
                             <?php
@@ -137,7 +137,7 @@ else
         <?php elseif (!$this->assign ) : ?>
         <?php echo $this->escape($row->firstname.' '.$row->lastname); ?>
         <?php endif; ?>
-                            
+                          
                                 <input    <?php echo $inputappend; ?> type="text" size="15"
                                         class="form-control form-control-inline" name="firstname<?php echo $row->id; ?>"
                                         value="<?php echo stripslashes(htmlspecialchars($row->firstname)); ?>"
@@ -157,21 +157,21 @@ else
                       </td>
                       <td class="center">
                                 <?php
-                                $picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png'; 
+                                $picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png';
                                 $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
-                                
+                              
                                 echo HTMLHelper::_(
                                     'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
                                     $imageTitle, 'title= "'.$imageTitle.'"'
                                 );
                                 $playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0);
-                                echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id, Uri::root().$row->picture, $playerName, '20', Uri::root().$row->picture); 
+                                echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id, Uri::root().$row->picture, $playerName, '20', Uri::root().$row->picture);
                         ?>
                          </td>
                          <td class="nowrap" class="center">
                             <?php
                             $append='';
-                                $date1 = sportsmanagementHelper::convertDate($row->birthday, 1); 
+                                $date1 = sportsmanagementHelper::convertDate($row->birthday, 1);
                             if (($date1 == '00-00-0000') || ($date1 == '')) {
                                 $append=' style="background-color:#FFCCCC;" ';
                                 $date1 = '';
@@ -189,24 +189,24 @@ else
  *    echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
-                                
+                              
                                 $attribs = array(
                             'onChange' => "document.getElementById('cb".$i."').checked=true",
                             'readonly' => trim($this->readonly),
-                            );                          
+                            );                        
                             echo HTMLHelper::calendar(
                                 $date1,
                                 'birthday'.$row->id,
                                 'birthday'.$row->id,
                                 '%d-%m-%Y',
                                 $attribs
-                            );                         
+                            );                       
                             //								}
                             ?>
                          </td>
-                            
+                          
                             <td class="center">
-                                    <?php 
+                                    <?php
                                     $inputappend = $this->readonly;
                                     $append = ' style="background-color:#bbffff"';
                                     echo HTMLHelper::_(
@@ -219,7 +219,7 @@ else
                                     );
                                         ?>
                                           </td>
-                        
+                      
                          <td class="nowrap" class="center">
                             <?php
                             $append='';
@@ -261,10 +261,10 @@ else
                                            echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
                                 }
                     ?>
-                        </div>    
-                            
-                            
-                            
+                        </div>  
+                          
+                          
+                          
                             </td>
                       <td class="center"><?php echo $row->id; ?></td>
          </tr>

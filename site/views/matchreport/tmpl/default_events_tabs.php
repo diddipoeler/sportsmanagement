@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -22,41 +22,41 @@ use Joomla\CMS\Factory;
 <!-- START of match events -->
 
 <h2>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');     
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');   
 ?>
 </h2>	
 <?php
 if ($this->config['show_timeline'] && !$this->config['show_timeline_under_results'] ) {
     echo $this->loadTemplate('timeline');
 }
-    
+  
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
-    $visible = 'text';    
+    $visible = 'text';  
 }
 else
 {
     $visible = 'hidden';
 }
 /**
-* 
- * joomla 3 anfang ------------------------------------------------------------------------ 
+*
+ * joomla 3 anfang ------------------------------------------------------------------------
 */
-if(version_compare(JVERSION, '3.0.0', 'ge')) { 
-    // Joomla! 3.0 code here 
-    $idxTab = 0; 
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    // Joomla! 3.0 code here
+    $idxTab = 0;
 
 ?>
-<!-- This is a list with tabs names. anfang --> 
-<div class="panel with-nav-tabs panel-default"> 
-<!-- Tabs-heading anfang --> 
-<div class="panel-heading"> 
-<!-- Tabs-Navs anfang --> 
-<ul class="nav nav-tabs" role="tablist"> 
+<!-- This is a list with tabs names. anfang -->
+<div class="panel with-nav-tabs panel-default">
+<!-- Tabs-heading anfang -->
+<div class="panel-heading">
+<!-- Tabs-Navs anfang -->
+<ul class="nav nav-tabs" role="tablist">
 <?PHP
 foreach ($this->eventtypes AS $event)
 {
-    $active = ($idxTab==0) ? 'in active' : ''; 
+    $active = ($idxTab==0) ? 'in active' : '';
 
     $pic_tab = $event->icon;
     if ($pic_tab == '/events/event.gif') {
@@ -80,10 +80,10 @@ foreach ($this->eventtypes AS $event)
 $idxTab++;
 }
 ?>
-<!-- Tabs-Navs ende --> 
-</ul> 
-<!-- Tabs-heading ende --> 
-</div> 
+<!-- Tabs-Navs ende -->
+</ul>
+<!-- Tabs-heading ende -->
+</div>
 
 
 <!-- Tab-Inhalte anfang-->
@@ -94,7 +94,7 @@ $idxTab++;
 $idxTab = 0;
 foreach ($this->eventtypes AS $event)
 {
-    $active = ($idxTab==0) ? 'in active' : '';   
+    $active = ($idxTab==0) ? 'in active' : ''; 
     $text = Text::_($event->name);
 
 ?>
@@ -104,26 +104,26 @@ foreach ($this->eventtypes AS $event)
 $idxTab++;
 foreach ($this->matchevents AS $me)
                 {
-    if ($me->event_type_id == $event->id  
+    if ($me->event_type_id == $event->id
         && ( $me->ptid == $this->match->projectteam1_id or $me->ptid == $this->match->projectteam2_id )
     ) {
-                        
+                      
         if ($this->config['show_event_minute'] == 1 && $me->event_time > 0) {
             $prefix = str_pad($me->event_time, 2, '0', STR_PAD_LEFT)."' ";
         } else {
             $prefix = null;
-        } 
-                        
+        }
+                      
         $match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
         if ($this->config['event_link_player'] == 1 && $me->playerid != 0) {
 
-            $routeparameter = array(); 
-            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0); 
-            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0); 
-            $routeparameter['p'] = $this->project->slug; 
-            $routeparameter['tid'] = $me->team_id; 
-            $routeparameter['pid'] = $me->playerid; 
-            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter); 
+            $routeparameter = array();
+            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+            $routeparameter['p'] = $this->project->slug;
+            $routeparameter['tid'] = $me->team_id;
+            $routeparameter['pid'] = $me->playerid;
+            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
             $match_player = HTMLHelper::link($player_link, $match_player);
         }
                         echo $match_player;
@@ -162,13 +162,13 @@ foreach ($this->matchevents AS $me)
 </div>
 <!-- Tab-Inhalte ende-->
 </div>
-<!-- This is a list with tabs names. ende --> 
-</div> 
+<!-- This is a list with tabs names. ende -->
+</div>
 
 <?PHP
 }
 /**
-* 
- * joomla 3 ende ------------------------------------------------------------------------ 
+*
+ * joomla 3 ende ------------------------------------------------------------------------
 */
 

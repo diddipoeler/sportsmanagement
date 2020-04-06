@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjlextsisimport
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,12 +32,12 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 {
     /**
      * sportsmanagementViewjlextsisimport::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
-        
+      
         switch ( $this->getLayout() )
         {
         case 'default':
@@ -47,7 +47,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
             return;
             break;
         }
-       
+     
         // Set toolbar items for the page
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -56,23 +56,23 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $config = ComponentHelper::getParams('com_media');
         $post = $jinput->post->getArray(array());
         $files = $jinput->get('files');
-        
-    
+      
+  
         $revisionDate = '2011-04-28 - 12:00';
         $this->revisionDate    = $revisionDate;
-        
-        
+      
+      
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementViewjlextsisimport::_displayDefault()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayDefault($tpl) 
+    function _displayDefault($tpl)
     {
         //global $option;
         $app = Factory::getApplication();
@@ -81,11 +81,11 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $db = Factory::getDBO();
         $uri = Factory::getURI();
         $user = Factory::getUser();
-        
+      
         // $model = $this->getModel('project') ;
         // $projectdata = $this->get('Data');
         // $this->assignRef( 'name', $projectdata->name);
-        
+      
         $model = $this->getModel();
         $project = $app->getUserState($option . 'project');
         $this->project    = $project;
@@ -94,29 +94,29 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $sis_xmllink    = $params->get('sis_xmllink');
         $sis_nummer    = $params->get('sis_meinevereinsnummer');
         $sis_passwort    = $params->get('sis_meinvereinspasswort');
-       
+     
         $revisionDate = '2011-04-28 - 12:00';
         $this->revisionDate    = $revisionDate;
         $import_version = 'NEW';
         $this->import_version    = $import_version;
-        
-    
+      
+  
     }
-    
-    
+  
+  
     /**
      * sportsmanagementViewjlextsisimport::_displayDefaultUpdate()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayDefaultUpdate($tpl) 
+    function _displayDefaultUpdate($tpl)
     {
         // global $app, $option;
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
+      
         $db = Factory::getDBO();
         $uri = Factory::getURI();
         $user = Factory::getUser();
@@ -124,29 +124,29 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $project = $app->getUserState($option . 'project');
         $this->project    = $project;
         $config = ComponentHelper::getParams('com_media');
-        
+      
         $uploadArray = $app->getUserState($option . 'uploadArray', array ());
         $lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
         $whichfile = $app->getUserState($option . 'whichfile');
-        
+      
         $this->uploadArray    = $uploadArray;
-        
+      
         $this->importData    = $model->getUpdateData();
-        
+      
 
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementViewjlextsisimport::addToolbar()
-     * 
+     *
      * @return void
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
-            
-        parent::addToolbar();            
+          
+        parent::addToolbar();          
 
     }
 }

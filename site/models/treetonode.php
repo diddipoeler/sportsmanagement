@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTreetonode
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -32,7 +32,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 
     /**
      * sportsmanagementModelTreetonode::__construct()
-     * 
+     *
      * @return void
      */
     function __construct( )
@@ -44,7 +44,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 
     /**
      * sportsmanagementModelTreetonode::getTreetonode()
-     * 
+     *
      * @return
      */
     function getTreetonode()
@@ -54,7 +54,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
             return false;
         }
         if (!$this->treetoid ) {
-            $this->treetoid = $this->getTreeNodeID($this->projectid);    
+            $this->treetoid = $this->getTreeNodeID($this->projectid);  
         }
           $this->jsmquery->clear();
         $this->jsmquery->select('ttn.* ');
@@ -72,7 +72,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
         $this->jsmquery->select('ttn.content AS content ');
         $this->jsmquery->select('tt.tree_i AS tree_i ');
         $this->jsmquery->select('tt.hide AS hide ');
-          $this->jsmquery->from('#__sportsmanagement_treeto_node AS ttn ');   
+          $this->jsmquery->from('#__sportsmanagement_treeto_node AS ttn '); 
         $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.id = ttn.team_id ');
           $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on pt.team_id = st.id ');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t ON t.id = st.team_id ');
@@ -85,29 +85,29 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
         $result = $this->jsmdb->loadObjectList();
         return $result;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTreetonode::getTreeNodeID()
-     * 
+     *
      * @param  integer $projectid
      * @return void
      */
     function getTreeNodeID($projectid=0)
     {
-        $this->jsmquery->clear();    
-        $this->jsmquery->select('id');    
+        $this->jsmquery->clear();  
+        $this->jsmquery->select('id');  
         $this->jsmquery->from('#__sportsmanagement_treeto');
-        $this->jsmquery->where('project_id = ' .  (int) $projectid); 
+        $this->jsmquery->where('project_id = ' .  (int) $projectid);
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadResult();
-        return $result;    
+        return $result;  
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTreetonode::getNodeMatches()
-     * 
+     *
      * @param  integer $ttnid
      * @return
      */
@@ -116,11 +116,11 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
          $this->jsmquery->clear();
          $this->jsmquery->select('mc.id AS value ');
          $this->jsmquery->select('CONCAT(t1.name, \'_vs_\', t2.name, \' [round:\',r.roundcode,\']\') AS text');
-         $this->jsmquery->from('#__sportsmanagement_match AS mc ');   
+         $this->jsmquery->from('#__sportsmanagement_match AS mc '); 
          $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON pt1.id = mc.projectteam1_id');
          $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON pt2.id = mc.projectteam2_id');
-         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st1 on pt1.team_id = st1.id');  
-         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st2 on pt2.team_id = st2.id');  
+         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st1 on pt1.team_id = st1.id');
+         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st2 on pt2.team_id = st2.id');
          $this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
          $this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
          $this->jsmquery->join('LEFT', '#__sportsmanagement_round AS r ON r.id = mc.round_id');
@@ -131,17 +131,17 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
          $result = $this->_db->loadObjectList();
         return $result;
     }
-    
+  
     /**
      * sportsmanagementModelTreetonode::getRoundName()
-     * 
+     *
      * @return
      */
     function getRoundName()
     {
         $this->jsmquery->clear();
           $this->jsmquery->select('*');
-          $this->jsmquery->from('#__sportsmanagement_round AS r');   
+          $this->jsmquery->from('#__sportsmanagement_round AS r'); 
           $this->jsmquery->where('r.project_id = ' . (int) $this->projectid);
         $this->jsmquery->where('r.tournement = 1');
           $this->jsmquery->order('r.roundcode');

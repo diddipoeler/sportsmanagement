@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINIS
 
 /**
  * SMStatisticComplexsum
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,28 +32,28 @@ class SMStatisticComplexsum extends SMStatistic
 {
     /**
  * also the name of the associated xml file
- */    
+ */  
     var $_name = 'complexsum';
-    
+  
     var $_calculated = 1;
-    
+  
     var $_showinsinglematchreports = 1;
     var $_ids = 'stat_ids';
-    
+  
     /**
      * SMStatisticComplexsum::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
     {
         parent::__construct();
     }
-    
+  
 
     /**
      * SMStatisticComplexsum::getFactors()
-     * 
+     *
      * @return
      */
     function getFactors()
@@ -61,24 +61,24 @@ class SMStatisticComplexsum extends SMStatistic
         $params  = SMStatistic::getParams();
         $factors = explode(',', $params->get('factors'));
         $stat_ids = SMStatistic::getSids($this->_ids);
-        
+      
         if (count($stat_ids) != count($factors)) {
             Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id), Log::WARNING, 'jsmerror');
             return(array(0));
         }
-        
+      
         $sids = array();
-        foreach ($factors as $s) 
+        foreach ($factors as $s)
         {
             $sids[] = (float)$s;
         }
         return $sids;
     }
-    
-    
+  
+  
     /**
      * SMStatisticComplexsum::getMatchPlayerStat()
-     * 
+     *
      * @param  mixed $gamemodel
      * @param  mixed $teamplayer_id
      * @return
@@ -88,9 +88,9 @@ class SMStatisticComplexsum extends SMStatistic
         $gamestats = $gamemodel->getPlayersStats();
         $stat_ids = SMStatistic::getSids($this->_ids);
         $factors  = $this->getFactors();
-        
+      
         $res = 0;
-        foreach ($stat_ids as $k => $id) 
+        foreach ($stat_ids as $k => $id)
         {
             if (isset($gamestats[$teamplayer_id][$id])) {
                 $res += $factors[$k]*$gamestats[$teamplayer_id][$id];
@@ -101,7 +101,7 @@ class SMStatisticComplexsum extends SMStatistic
 
     /**
      * SMStatisticComplexsum::getPlayerStatsByGame()
-     * 
+     *
      * @param  mixed $teamplayer_ids
      * @param  mixed $project_id
      * @return
@@ -123,7 +123,7 @@ class SMStatisticComplexsum extends SMStatistic
 
     /**
      * SMStatisticComplexsum::getPlayerStatsByProject()
-     * 
+     *
      * @param  mixed   $person_id
      * @param  integer $projectteam_id
      * @param  integer $project_id
@@ -134,15 +134,15 @@ class SMStatisticComplexsum extends SMStatistic
     {
         $sids = SMStatistic::getSids($this->_ids);
         $factors  = $this->getFactors();
-        
+      
         $res = $this->getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors);
         return self::formatValue($res, $this->getPrecision());
     }
 
-    
+  
     /**
      * SMStatisticComplexsum::getRosterStats()
-     * 
+     *
      * @param  mixed $team_id
      * @param  mixed $project_id
      * @param  mixed $position_id
@@ -165,7 +165,7 @@ class SMStatisticComplexsum extends SMStatistic
 
     /**
      * SMStatisticComplexsum::getPlayersRanking()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  mixed   $division_id
      * @param  mixed   $team_id
@@ -175,15 +175,15 @@ class SMStatisticComplexsum extends SMStatistic
      * @return
      */
     function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
-    {        
+    {      
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = SMStatistic::getQuotedSids($this->_ids);
         $factors  = self::getFactors();
-        
+      
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         // get all stats
         $query->select('ms.value, ms.statistic_id, tp.id AS tpid');
         $query->from('#__sportsmanagement_match_statistic AS ms');
@@ -191,23 +191,23 @@ class SMStatisticComplexsum extends SMStatistic
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id');
-    
-        $query->where('pt.project_id = ' . $project_id);   
-        
+  
+        $query->where('pt.project_id = ' . $project_id); 
+      
         if ($division_id != 0) {
             $query->where('pt.division_id = ' . $division_id);
         }
         if ($team_id != 0) {
             $query->where('st.team_id = ' . $team_id);
         }
-        
+      
         $query->where('ms.statistic_id IN ('. implode(',', $sqids) .')');
         $query->where('m.published = 1');
-        
+      
         $db->setQuery($query);
-       
+     
         $stats = $db->loadObjectList();
-        
+      
         // now calculate per player
         $players = array();
         foreach ($stats as $stat)
@@ -231,7 +231,7 @@ class SMStatisticComplexsum extends SMStatistic
 
         $players = array_slice($players, $limitstart, $limit, true);
         $ids = array_keys($players);
-        
+      
         $query->clear();
         $query->select('tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,p.firstname, p.nickname, p.lastname, p.picture, p.country,st.team_id, pt.picture AS projectteam_picture,t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name');
         $query->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -251,8 +251,8 @@ class SMStatisticComplexsum extends SMStatistic
         }
 
         $db->setQuery($query);
-        
-        
+      
+      
         $details = $db->loadObjectList('teamplayer_id');
 
         $res->ranking = array();
@@ -262,19 +262,19 @@ class SMStatisticComplexsum extends SMStatistic
             $previousval = 0;
             $currentrank = 1 + $limitstart;
             $i = 0;
-            foreach ($players as $k => $value) 
+            foreach ($players as $k => $value)
             {
                 $res->ranking[$i] = $details[$k];
                 $res->ranking[$i]->total = self::formatValue($value, $precision);
-                
+              
                 if ($value == $previousval) {
                     $res->ranking[$i]->rank = $currentrank;
-                } 
-                else 
+                }
+                else
                 {
                     $res->ranking[$i]->rank = $i + 1 + $limitstart;
                 }
-                
+              
                 $previousval = $value;
                 $currentrank = $res->ranking[$i]->rank;
 
@@ -287,7 +287,7 @@ class SMStatisticComplexsum extends SMStatistic
 
     /**
      * SMStatisticComplexsum::getTeamsRanking()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  integer $limit
      * @param  integer $limitstart
@@ -299,22 +299,22 @@ class SMStatisticComplexsum extends SMStatistic
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = SMStatistic::getQuotedSids($this->_ids);
         $factors  = SMStatistic::getFactors();
-        
+      
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $select = 'ms.value, ms.statistic_id, st.team_id ';
         $statistic_id = implode(',', $sqids);
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
 
         $db->setQuery($query);
- 
-        try{       
+
+        try{     
              $stats = $db->loadObjectList();
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
             Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-        }        
+        }      
         // now calculate per player
         $teams = array();
         foreach ($stats as $stat)
@@ -324,7 +324,7 @@ class SMStatisticComplexsum extends SMStatistic
                 @$teams[$stat->team_id] += $factors[$key]*$stat->value;
             }
         }
-        
+      
         // now we reorder
         $order = (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC'));
         if ($order == 'ASC') {
@@ -333,9 +333,9 @@ class SMStatisticComplexsum extends SMStatistic
         else {
             arsort($teams);
         }
-        
+      
         $teams = array_slice($teams, $limitstart, $limit, true);
-        
+      
         $res = array();
         foreach ($teams as $id => $value)
         {
@@ -344,13 +344,13 @@ class SMStatisticComplexsum extends SMStatistic
             $obj->total   = $value;
             $res[] = $obj;
         }
-    
+  
         if (!empty($res)) {
             $precision = $this->getPrecision();
             // get ranks
             $previousval = 0;
             $currentrank = 1 + $limitstart;
-            foreach ($res as $k => $row) 
+            foreach ($res as $k => $row)
             {
                 if ($row->total == $previousval) {
                     $res[$k]->rank = $currentrank;
@@ -370,7 +370,7 @@ class SMStatisticComplexsum extends SMStatistic
 
     /**
      * SMStatisticComplexsum::getMatchStaffStat()
-     * 
+     *
      * @param  mixed $gamemodel
      * @param  mixed $team_staff_id
      * @return
@@ -380,9 +380,9 @@ class SMStatisticComplexsum extends SMStatistic
         $gamestats = $gamemodel->getMatchStaffStats();
         $stat_ids = SMStatistic::getSids($this->_ids);
         $factors  = $this->getFactors();
-        
+      
         $res = 0;
-        foreach ($stat_ids as $k => $id) 
+        foreach ($stat_ids as $k => $id)
         {
             if (isset($gamestats[$team_staff_id][$id])) {
                 $res += $factors[$k]*$gamestats[$team_staff_id][$id];
@@ -390,10 +390,10 @@ class SMStatisticComplexsum extends SMStatistic
         }
         return $this->formatValue($res, $this->getPrecision());
     }
-    
+  
     /**
      * SMStatisticComplexsum::getStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @param  mixed $team_id
      * @param  mixed $project_id
@@ -407,15 +407,15 @@ class SMStatisticComplexsum extends SMStatistic
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
 
         $db->setQuery($query);
-        
-        
+      
+      
         $stats = $db->loadObjectList();
-        
+      
         $res = 0;
         foreach ($stats as $stat)
         {
@@ -424,13 +424,13 @@ class SMStatisticComplexsum extends SMStatistic
                 $res += $factors[$key]*$stat->value;
             }
         }
-        
+      
         return self::formatValue($res, SMStatistic::getPrecision());
     }
-    
+  
     /**
      * SMStatisticComplexsum::getHistoryStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @return
      */
@@ -442,14 +442,14 @@ class SMStatisticComplexsum extends SMStatistic
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
 
         $db->setQuery($query);
-        
-        
+      
+      
         $stats = $db->loadObjectList();
-        
+      
         $res = 0;
         foreach ($stats as $stat)
         {
@@ -458,13 +458,13 @@ class SMStatisticComplexsum extends SMStatistic
                 $res += $factors[$key]*$stat->value;
             }
         }
-        
+      
         return self::formatValue($res, SMStatistic::getPrecision());
     }
 
     /**
      * SMStatisticComplexsum::formatValue()
-     * 
+     *
      * @param  mixed $value
      * @param  mixed $precision
      * @return

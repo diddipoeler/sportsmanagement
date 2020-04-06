@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,8 +26,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldsortorder
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -57,13 +57,13 @@ class JFormFieldsortorder extends \JFormFieldList
         $options = array();
         $character = array();
         $languages = $lang->getTag();
-        
+      
         $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0);
 
         for ($i = 1; $i <= $template_sort_orders; $i++) {
             $options[] = HTMLHelper::_('select.option', $i, $i, 'value', 'text');
         }
-           
+         
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
 

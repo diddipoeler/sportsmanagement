@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ FormHelper::loadFieldClass('textarea');
 
 /**
  * FormFieldTextarea2
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -34,7 +34,7 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 
     /**
      * FormFieldTextarea2::getInput()
-     * 
+     *
      * @return
      */
     public function getInput()
@@ -49,7 +49,7 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 
     /**
      * FormFieldTextarea2::setup()
-     * 
+     *
      * @param  mixed $element
      * @param  mixed $value
      * @param  mixed $group

@@ -29,8 +29,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjsmgcalendarImport
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2015
  * @version   $Id$
@@ -38,34 +38,34 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewjsmgcalendarImport::init()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
     function init( $tpl = null )
     {
-        
+      
         if (strpos($this->getLayout(), 'login') === false) {
             $this->onlineItems = $this->get('OnlineData');
             $this->dbItems = $this->get('DBData');
         }
-       
+     
         $this->setLayout('login');
-        
-    }     
+      
+    }   
 
     //	protected $onlineItems = null;
     //	protected $dbItems = null;
 
     /**
      * sportsmanagementViewjsmgcalendarImport::addToolbar()
-     * 
+     *
      * @return void
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         $jinput = Factory::getApplication()->input;
         $option = $jinput->getCmd('option');
@@ -77,7 +77,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         {
             ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
         }
-        
+      
         parent::addToolbar();
     }
 

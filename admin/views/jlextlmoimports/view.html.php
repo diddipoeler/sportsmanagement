@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewjlextlmoimports
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -34,7 +34,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 
     /**
      * sportsmanagementViewjlextlmoimports::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -52,38 +52,38 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
         $countries = JSMCountries::getCountryOptions();
         $lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
         $this->countries = $lists['countries'];
-   
+ 
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ($res = $mdlagegroup->getAgeGroups('', 0)) {
             $myoptions = array_merge($myoptions, $res);
         }
         $lists['agegroup'] = $myoptions;
-        $this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);    
-        
+        $this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);  
+      
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $this->templates = $model->getTemplateList();
-        
-        
-        
+      
+      
+      
     }
-    
+  
     /**
      * sportsmanagementViewjlextlmoimports::addToolbar()
-     * 
+     *
      * @return void
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');
         ToolbarHelper::divider();
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
         parent::addToolbar();
     }
-    
-
-
-
   
+
+
+
+
 }
 ?>

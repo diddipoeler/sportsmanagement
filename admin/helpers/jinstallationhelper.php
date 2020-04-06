@@ -27,7 +27,7 @@ use Joomla\CMS\Client\FtpClient;
  */
 class JInstallationHelper
 {
-    
+  
 
     /**
      * @param array
@@ -579,7 +579,7 @@ class JInstallationHelper
         return $ret;
     }
 
-    function findMigration( &$args ) 
+    function findMigration( &$args )
     {
          jexit();
     }
@@ -748,7 +748,7 @@ class JInstallationHelper
      * @return unpacked filename on success, False on error
      * @since  1.5
      */
-    function unpack($p_filename, &$vars) 
+    function unpack($p_filename, &$vars)
     {
 
         /*
@@ -790,7 +790,7 @@ class JInstallationHelper
 
     }
 
-    function return_bytes($val) 
+    function return_bytes($val)
     {
         $val = trim($val);
         $last = strtolower($val{strlen($val)-1});
@@ -807,7 +807,7 @@ class JInstallationHelper
         return $val;
     }
 
-    function replaceBuffer(&$buffer, $oldPrefix, $newPrefix, $srcEncoding) 
+    function replaceBuffer(&$buffer, $oldPrefix, $newPrefix, $srcEncoding)
     {
 
          $buffer = str_replace($oldPrefix, $newPrefix, $buffer);
@@ -826,7 +826,7 @@ class JInstallationHelper
         }
     }
 
-    function appendFile(&$buffer, $filename) 
+    function appendFile(&$buffer, $filename)
     {
         $fh = fopen($filename, 'a');
         fwrite($fh, $buffer);
@@ -935,7 +935,7 @@ class JInstallationHelper
      * @return error count
      * @since  1.5
      */
-    function postMigrate( $db, & $errors, & $args ) 
+    function postMigrate( $db, & $errors, & $args )
     {
 
         $newPrefix = $args['DBPrefix'];
@@ -1264,7 +1264,7 @@ class JInstallationHelper
             $qry = 'SELECT * FROM '.$newPrefix.'modules_migration WHERE id = "'.$module.'" AND client_id = 0';
             $db->setQuery($qry);
             if ($row = $db->loadObject() ) {
-                if($row->module == '') { $row->module = 'mod_custom'; 
+                if($row->module == '') { $row->module = 'mod_custom';
                 }
                 if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$row->module)) {
                     $nextId++;
@@ -1395,8 +1395,8 @@ class JInstallationHelper
     }
 
     /**
-* 
- * Borrowed from http://au.php.net/manual/en/ini.core.php comments 
+*
+ * Borrowed from http://au.php.net/manual/en/ini.core.php comments
 */
     function let_to_num($v)
     {

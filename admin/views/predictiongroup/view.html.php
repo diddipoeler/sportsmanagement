@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewpredictiongroup
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,10 +29,10 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementViewpredictiongroup extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewpredictiongroup::init()
-     * 
+     *
      * @return
      */
     public function init()
@@ -54,18 +54,18 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
     * @since 1.7
     */
     protected function addToolbar()
-    {    
-       
+    {  
+     
         $jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
-        
+      
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTION_GROUP_NEW');
         $this->icon = 'pgame';
 
-        parent::addToolbar();            
+        parent::addToolbar();          
     }
-    
-   
-            
+  
+ 
+          
 }
 ?>

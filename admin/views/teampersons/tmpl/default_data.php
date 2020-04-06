@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,15 +23,15 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 /**
-* 
- * welche joomla version 
+*
+ * welche joomla version
 */
 if(version_compare(JVERSION, '3.0.0', 'ge')) {
     HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-    HTMLHelper::_('behavior.mootools');    
+    HTMLHelper::_('behavior.mootools');  
 }
 ?>
         <div class="table-responsive">
@@ -144,7 +144,7 @@ else
                         $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
             $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'teampersons.', $canCheckin);
             $inputappend    = '';
-                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamperson.' . $row->id) && $canCheckin;                        
+                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamperson.' . $row->id) && $canCheckin;                      
             ?>
             <tr class="<?php echo "row$k"; ?>">
              <td class="center">
@@ -157,46 +157,46 @@ else
             echo HTMLHelper::_('grid.id', $i, $row->id);
             ?>
              </td>
-                            
+                          
                                 <td>
         <?php if ($row->checked_out) : ?>
             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teampersons.', $canCheckin); ?>
         <?php endif; ?>
-                    
+                  
                     <?php if ($canEdit && !$row->checked_out ) : ?>
-                        
-                        
+                      
+                      
                                     <a href="<?php echo $link; ?>">
             <?php
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS');
             echo HTMLHelper::_(
                 'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
                 $imageTitle,
-                'title= "' . $imageTitle . '"' 
+                'title= "' . $imageTitle . '"'
             );
             ?>
                                     </a>
-                                        
+                                      
 
-                                    
+                                  
         <?php else : ?>
         <?php //echo $this->escape($row->name); ?>
-        <?php endif; ?> 
+        <?php endif; ?>
               </td>
-                            
-                            
-                            
-                            
-                            
+                          
+                          
+                          
+                          
+                          
                             <?php
-                                                      
-                            
-                            
+                                                    
+                          
+                          
                 ?>
              <td>
             <?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>
              </td>
-                            
+                          
       <td class="nowrap" class="center">
         <?php
         $append = '';
@@ -214,8 +214,8 @@ else
         );
         ?>
       </td>
-                            
-                            
+                          
+                          
           <td class="center">
                                 <?php
                                 echo $row->person_id;
@@ -228,7 +228,7 @@ else
                                     echo HTMLHelper::_(
                                         'image', 'administrator/components/com_sportsmanagement/assets/images/delete.png',
                                         $imageTitle,
-                                        'title= "' . $imageTitle . '"' 
+                                        'title= "' . $imageTitle . '"'
                                     );
 
                                 }
@@ -237,13 +237,13 @@ else
                                     echo HTMLHelper::_(
                                         'image', 'administrator/components/com_sportsmanagement/assets/images/information.png',
                                         $imageTitle,
-                                        'title= "' . $imageTitle . '"' 
+                                        'title= "' . $imageTitle . '"'
                                     );
 ?>
 <a href="<?php echo Uri::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo Uri::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
 </a>
-<?PHP                                   
+<?PHP                                 
                                 }
                                 elseif ($row->season_picture == !'') {
                                     $playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0);
@@ -251,9 +251,9 @@ else
 <a href="<?php echo Uri::root().$row->season_picture;?>" title="<?php echo $playerName;?>" class="modal">
 <img src="<?php echo Uri::root().$row->season_picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
 </a>
-<?PHP                                 
-                                
-                                
+<?PHP                               
+                              
+                              
                                 }
                                 ?>
           </td>
@@ -293,19 +293,19 @@ else
                 }
                 if ($row->project_position_id == 0 ) {
                     $append=' style="background-color:#FFCCCC"';
-                                
+                              
                     /**
-* 
- * einen vorschlag generieren 
+*
+ * einen vorschlag generieren
 */
                     $mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
                     $project_person = $mdlPerson->getPerson($row->person_id);
                     $position_id = $project_person->position_id;
                     /**
-* 
- * build the html options for position 
+*
+ * build the html options for position
 */
-                    $position_ids = array();        
+                    $position_ids = array();      
                     $mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
                     $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
                     if ($project_ref_positions) {
@@ -316,7 +316,7 @@ else
                             $selectedvalue = $item->value;
                         }
                     }
-                                
+                              
                 }
                 echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
 
@@ -324,7 +324,7 @@ else
                                 <input type="hidden" name="position_id<?php echo $row->id; ?>"    value="<?php echo $row->position_id; ?>" />
                                 <input type="hidden" name="person_id<?php echo $row->id; ?>"    value="<?php echo $row->tpid; ?>" />
                                 <input type="hidden" name="tpid[<?php echo $row->id; ?>]"    value="<?php echo $row->tpid; ?>" />
-                                
+                              
              </td>
              <td class="nowrap" class="center">
                 <?php
@@ -336,7 +336,7 @@ else
                     echo HTMLHelper::_(
                         'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
                         $imageTitle,
-                        'title= "' . $imageTitle . '"' 
+                        'title= "' . $imageTitle . '"'
                     );
                 }
                 if ($row->suspension > 0 ) {
@@ -344,7 +344,7 @@ else
                     echo HTMLHelper::_(
                         'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
                         $imageTitle,
-                        'title= "' . $imageTitle . '"' 
+                        'title= "' . $imageTitle . '"'
                     );
                 }
                 if ($row->away > 0 ) {
@@ -352,19 +352,19 @@ else
                     echo HTMLHelper::_(
                         'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
                         $imageTitle,
-                        'title= "' . $imageTitle . '"' 
+                        'title= "' . $imageTitle . '"'
                     );
                 }
-                if (!$row->injury 
-                    && !$row->suspension 
-                    && !$row->away 
+                if (!$row->injury
+                    && !$row->suspension
+                    && !$row->away
                 ) {
                     $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS');
                     echo HTMLHelper::_(
                         'image', 'administrator/components/com_sportsmanagement/assets/images/players.png',
                         $imageTitle,
-                        'title= "' . $imageTitle . '"' 
-                    );    
+                        'title= "' . $imageTitle . '"'
+                    );  
                 }
                 ?>
               &nbsp;
@@ -383,21 +383,21 @@ else
                 foreach ($options as $in => $option)
                 {
                     $checked = ( $option->value == $row->project_published) ? ' checked="checked"' : '';
-                    $btn = ( $option->value == $row->project_published && $row->project_published ) ? ' active btn-success' : ' ';    
-                    $btn = ( $option->value == $row->project_published && !$row->project_published ) ? ' active btn-danger' : $btn;          
-    
+                    $btn = ( $option->value == $row->project_published && $row->project_published ) ? ' active btn-success' : ' ';  
+                    $btn = ( $option->value == $row->project_published && !$row->project_published ) ? ' active btn-danger' : $btn;        
+  
                       $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
                       $html[] = '<input type="radio" style="display:none;" id="project_published' .  $row->id  .$in . '" name="project_published' . $row->id . '" value="'
                       . $option->value . '"' . $onchange . ' />';
 
                     $html[] = '<label for="project_published' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
                       . Text::_($option->text) . '</label>';
-  
-                }                        
-                        
-                echo implode($html);                            
+
+                }                      
+                      
+                echo implode($html);                          
         ?>
-          </td>    
+          </td>  
           <td class="center">
       <div class="btn-group">
             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'teampersons.', $canChange, 'cb'); ?>
@@ -408,7 +408,7 @@ else
                 echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
             }
                 ?>
-               </div>                                
+               </div>                              
              </td>
              <td class="order">
               <span>
@@ -441,4 +441,4 @@ else
                 </tbody>
             </table>
         </div>
-    
+  

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,40 +19,38 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementControllercurrentseason
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllercurrentseason extends JController
 {
-    protected $view_list = 'currentseasons';
-    
-    /**
-     * sportsmanagementControllercurrentseason::__construct()
-     * 
-     * @return void
-     */
-    function __construct()
-    {
-        parent::__construct();
+	protected $view_list = 'currentseasons';
 
+	/**
+	 * sportsmanagementControllercurrentseason::__construct()
+	 *
+	 * @return void
+	 */
+	function __construct()
+	{
+		parent::__construct();
 
-    }
-    
-    /**
-     * sportsmanagementControllercurrentseason::display()
-     * 
-     * @return void
-     */
-    function display()
-    {
-    
-        parent::display();
-    }
+	}
+
+	/**
+	 * sportsmanagementControllercurrentseason::display()
+	 *
+	 * @return void
+	 */
+	function display()
+	{
+
+		parent::display();
+	}
 
 }
 
-?>    

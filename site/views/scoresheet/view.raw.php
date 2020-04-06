@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ JLoader::import('joomla.application.component.view');
 class sportsmanagementViewScoresheet extends JViewLegacy
 {
 
-    public function display($tpl = null) 
+    public function display($tpl = null)
     {
         parent::display($tpl);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * modJSMPlaygroundTicker
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -30,7 +30,7 @@ class modJSMPlaygroundTicker
 
     /**
      * modJSMPlaygroundTicker::getData()
-     * 
+     *
      * @param  mixed $params
      * @return void
      */
@@ -46,7 +46,7 @@ class modJSMPlaygroundTicker
         $query = $db->getQuery(true);
 
         /**
-         * Nun möchte man aber manchmal mehrere Datensätze zufällig selektieren und nicht nur einen. 
+         * Nun möchte man aber manchmal mehrere Datensätze zufällig selektieren und nicht nur einen.
          * Zuerst wird die Gesamtanzahl an Datensätzen bestimmt, die die Bedingungen erfüllt.
          * Anschließend müssen x Zufallszahlen gebildet werden. Und mit diesen wird dann eine SQL-Abfrage mit UNIONs gebaut.
          */
@@ -61,7 +61,7 @@ class modJSMPlaygroundTicker
          * Die Schleife beim Erhalten der Zufallszahlen ist deshalb eine while- und keine for-Schleife, weil es sonst passieren kann,
          * dass es zwar mehr als x Datensätze gibt, die die Bedingungen erfüllen, aber dummerweise 2 mal die gleiche Zufallszahl ermittelt wird.
          * Die Bedingung $anz_cnt>count($rands) dient dazu, dass keine Endlosschleife entsteht, wenn weniger als x Datensätze die Bedingung erfüllen.
-         * Bei der abschließenden Abfrage wird UNION ALL benutzt statt UNION, damit MySQL die Einzelergebnisse nicht noch versucht zu gruppieren 
+         * Bei der abschließenden Abfrage wird UNION ALL benutzt statt UNION, damit MySQL die Einzelergebnisse nicht noch versucht zu gruppieren
          * wir wissen ja durch die while-Schleife bereits, dass keine Duplikate selektiert werden können). UNION bedeutet nämlich in Wirklichkeit UNION DISTINCT.
          */
         $rands = array();

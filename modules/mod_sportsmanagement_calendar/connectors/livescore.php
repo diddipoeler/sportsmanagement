@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Factory;
 
 /**
  * LivescoreConnector
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -29,16 +29,16 @@ class LivescoreConnector extends JSMCalendar
 
     var $xparams;
     var $prefix;
-  
+
     /**
    * LivescoreConnector::getMatches()
-   * 
+   *
    * @param  mixed $caldates
    * @param  mixed $params
    * @param  mixed $matches
    * @return
    */
-    function getMatches( &$caldates, &$params, &$matches ) 
+    function getMatches( &$caldates, &$params, &$matches )
     {
         $this->xparams = $params;
         $this->prefix = $params->prefix;
@@ -46,18 +46,18 @@ class LivescoreConnector extends JSMCalendar
         $output = LivescoreConnector::formatRows($rows, $matches);
         return $output;
     }
-  
+
     /**
    * LivescoreConnector::formatRows()
-   * 
+   *
    * @param  mixed $rows
    * @param  mixed $matches
    * @return
    */
-    function formatRows( $rows, &$matches ) 
+    function formatRows( $rows, &$matches )
     {
         $newrows = array();
-    
+  
         foreach ($rows AS $key => $row) {
             $newrows[$key]['type'] = 'ls';
             $newrows[$key]['date'] = $row->mdate;
@@ -73,10 +73,10 @@ class LivescoreConnector extends JSMCalendar
         }
         return $newrows;
     }
-  
+
     /**
    * LivescoreConnector::getRows()
-   * 
+   *
    * @param  mixed  $caldates
    * @param  string $ordering
    * @return
@@ -94,19 +94,19 @@ class LivescoreConnector extends JSMCalendar
         $database->setQuery($query);
         if (!$result = $database->loadObjectList() ) { $result = Array();
         }
-      
+    
         return $result;
     }
-  
+
     /**
    * LivescoreConnector::build_url()
-   * 
+   *
    * @param  mixed $row
    * @return void
    */
-    function build_url( &$row ) 
+    function build_url( &$row )
     {
-    
-    }
   
-}  
+    }
+
+}

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPlayground
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,12 +29,12 @@ class sportsmanagementModelPlayground extends BaseDatabaseModel
     static $playgroundid = 0;
     var $playground = null;
     static $projectid = 0;
-    
+  
     static $cfg_which_database = 0;
 
     /**
      * sportsmanagementModelPlayground::__construct()
-     * 
+     *
      * @return
      */
     function __construct( )
@@ -48,8 +48,8 @@ class sportsmanagementModelPlayground extends BaseDatabaseModel
         self::$playgroundid = $jinput->getInt("pgid", 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
-        
-        parent::__construct(); 
+      
+        parent::__construct();
     }
 
 }

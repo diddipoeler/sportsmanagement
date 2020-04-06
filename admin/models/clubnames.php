@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelclubnames
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -28,16 +28,16 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelclubnames extends JSMModelList
 {
     var $_identifier = "clubnames";
-    
-    
+  
+  
     /**
      * sportsmanagementModelclubnames::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.name',
                         'obj.name_long',
@@ -52,9 +52,9 @@ class sportsmanagementModelclubnames extends JSMModelList
                         );
                 parent::__construct($config);
                 parent::setDbo($this->jsmdb);
-        
+      
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -94,16 +94,16 @@ class sportsmanagementModelclubnames extends JSMModelList
         }
         $this->setState('list.direction', $listOrder);
     }
-    
+  
     /**
      * sportsmanagementModelagegroups::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
     {
         // Create a new query object.		
-        $this->jsmquery->clear();        
+        $this->jsmquery->clear();      
         // Select some fields
         $this->jsmquery->select(implode(",", $this->filter_fields));
         // From table
@@ -116,24 +116,24 @@ class sportsmanagementModelclubnames extends JSMModelList
         if ($this->getState('filter.search_nation')) {
             $this->jsmquery->where('obj.country LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search_nation').'%'));
         }
-       
+     
         if (is_numeric($this->getState('filter.state')) ) {
-            $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));    
+            $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));  
         }
 
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-       
+     
         return $this->jsmquery;
-        
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelclubnames::getClubNames()
-     * 
+     *
      * @param  string $country
      * @return void
      */
@@ -141,19 +141,19 @@ class sportsmanagementModelclubnames extends JSMModelList
     {
         // Create a new query object.		
         $this->jsmquery->clear();
-    
+  
         // Select some fields
         $this->jsmquery->select('name,name_long');
         // From table
         $this->jsmquery->from('#__sportsmanagement_club_names');
-    
+  
         /**
      * wenn das land mitegegeben wurde
      */
         if ($country ) {
             $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote('%'.$country.'%'));
         }
-    
+  
         try{
             $this->jsmdb->setQuery($this->jsmquery);
             return $this->jsmdb->loadObjectList();
@@ -163,7 +163,7 @@ class sportsmanagementModelclubnames extends JSMModelList
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
         }
-                
+              
     }
 
 

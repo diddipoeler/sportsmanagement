@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -55,7 +55,7 @@ $teamnametype = $params->get('teamnametype', 'short_name');
         </tr>
     </thead>
     <tbody>
-    <?php 
+    <?php
     $lastRank = 0;
     $k = 0;
     foreach (array_slice($list['ranking'], 0, $params->get('limit', 5)) as $item) :  ?>
@@ -64,19 +64,19 @@ $teamnametype = $params->get('teamnametype', 'short_name');
          $class = $params->get('style_class2', 0);;
         if ($k == 0 ) { $class = $params->get('style_class1', 0);
         }
-        ?>    
+        ?>  
         <tr class="<?php echo $class; ?>">
          <td class="rank">
-            <?php 
+            <?php
             $rank = ($item->rank == $lastRank) ? "-" : $item->rank;
             $lastRank = $item->rank;
-            echo $rank; 
+            echo $rank;
             ?>
          </td>
          <td class="teamlogo">
         <?php if ($params->get('show_logo', 0)) : ?>
                 <?php echo modSportsmanagementTeamStatHelper::getLogo($team, $params->get('show_logo', 0)); ?>
-        <?php endif; ?>            
+        <?php endif; ?>          
          </td>
          <td class="team">
         <?php if ($params->get('teamlink', '')) : ?>
@@ -87,7 +87,7 @@ $teamnametype = $params->get('teamnametype', 'short_name');
          </td>
          <td class="td_c"><?php echo $item->total; ?></td>
         </tr>
-        <?php $k=(1-$k); ?>    
+        <?php $k=(1-$k); ?>  
     <?php endforeach; ?>
     </tbody>
 </table>

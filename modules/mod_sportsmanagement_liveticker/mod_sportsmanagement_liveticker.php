@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -47,8 +47,8 @@ if (!class_exists('sportsmanagementHelper') ) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modTurtushoutHelper', __DIR__ . '/helper.php');
 
@@ -98,7 +98,7 @@ if ($use_css) {
  */
     $document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$use_css);
 }
-    
+  
 $is_ajaxed = isset($_SERVER["HTTP_X_REQUESTED_WITH"])?($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") : false;
 $cookie = Factory::getApplication()->input->cookie;
 $cookieValue = $cookie->get('tstoken');
@@ -153,7 +153,7 @@ if (!$is_ajaxed || ($action == "turtushout_shouts")) {
     $list = modTurtushoutHelper::getList($params, $display_num);
     $listcomment = modTurtushoutHelper::getListCommentary($list);
     $list_html = "";
-    
+  
     $list_html .= "<div class='turtushout-entry'>";
     $list_html .= "<div class='turtushout-name'>";
     $list_html .= "<table class=\"".$table_class."\">";
@@ -162,8 +162,8 @@ if (!$is_ajaxed || ($action == "turtushout_shouts")) {
     $list_html .= "<td colspan=\"\" align=\"middle\" >" . "aktuelle Zeit" . "</td>";
     $date = new DateTime();
     $config = Factory::getConfig();
-    $date->setTimezone(new DateTimeZone($config->get('offset')));    
-    $list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";    
+    $date->setTimezone(new DateTimeZone($config->get('offset')));  
+    $list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";  
     $list_html .= "</tr>" ;
     $list_html .= "<tr>" ;
 
@@ -283,8 +283,8 @@ if (!$is_ajaxed || ($action == "turtushout_shouts")) {
         $list_html .= "</tr>" ;
 
         if (isset($listcomment[$list[$i]->match_id]) ) {
-             $list_html .= "<tr>" ;  
-             $list_html .= "<td colspan=\"9\">" ; 
+             $list_html .= "<tr>" ;
+             $list_html .= "<td colspan=\"9\">" ;
              $list_html .= "<div style=\"height:80px; overflow:auto;\">";
              $list_html .= "<table width=\"100%\">";
 
@@ -293,13 +293,13 @@ if (!$is_ajaxed || ($action == "turtushout_shouts")) {
                 $list_html .= "<tr>" ;
                 $list_html .= "<td width=\"10%\">" . $value->event_time  . "</td>";
                 $list_html .= "<td width=\"10%\">" . HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
-                $list_html .= "<td width=\"80%\">" . $value->notes  . "</td>";    
+                $list_html .= "<td width=\"80%\">" . $value->notes  . "</td>";  
                 $list_html .= "</tr>" ;
             }
-    
+  
              $list_html .= "</table>";
              $list_html .= "</div>";
-             $list_html .= "</td>" ; 
+             $list_html .= "</td>" ;
              $list_html .= "</tr>" ;
         }
 

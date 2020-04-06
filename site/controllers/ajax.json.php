@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
- * @subpackage 
+ * @subpackage
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerAjax
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,10 +31,10 @@ class sportsmanagementControllerAjax extends BaseController
 
     /**
      * sportsmanagementControllerAjax::__construct()
-     * 
+     *
      * @return
      */
-    public function __construct() 
+    public function __construct()
     {
         // Get the document object.
         $document = Factory::getDocument();
@@ -46,7 +46,7 @@ class sportsmanagementControllerAjax extends BaseController
 
     /**
  * sportsmanagementControllerAjax::getLink()
- * 
+ *
  * @return void
  */
     public function getLink()
@@ -55,7 +55,7 @@ class sportsmanagementControllerAjax extends BaseController
         // Get the document object.
         $document = Factory::getDocument();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         //        $project_id = $jinput->getInt('project_id');
         $linktext = $jinput->getVar('linktext');
         $document->addScriptOptions('linktext', $linktext);
@@ -63,56 +63,56 @@ class sportsmanagementControllerAjax extends BaseController
         $res['linktext'] = $linktext;
         $res['link'] = $model->getLink($jinput->getVar('view'), $jinput->getInt('project_id'));
         echo json_encode($res);
-        $app->close();   
-       
+        $app->close(); 
+     
     }
 
-       
+     
     /**
  * sportsmanagementControllerAjax::getProjectTeams()
- * 
+ *
  * @return void
  */
     public function getProjectTeams()
     {
          $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $project_id = $jinput->getInt('project_id');
         $model = $this->getModel('ajax');
         $res = $model->getProjectTeams($project_id);
         echo json_encode($res);
         $app->close();
     }
-    
+  
     /**
  * sportsmanagementControllerAjax::getProjectSelect()
- * 
+ *
  * @return void
  */
     public function getProjectSelect()
     {
          $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $league_id = $jinput->getInt('league_id');
         $model = $this->getModel('ajax');
         $res = $model->getProjectSelect($league_id);
         echo json_encode($res);
         $app->close();
     }
-    
-    
+  
+  
     /**
  * sportsmanagementControllerAjax::getAssocLeagueSelect()
- * 
+ *
  * @return void
  */
     public function getAssocLeagueSelect()
     {
          $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $assoc_id = $jinput->getInt('assoc_id');
         $country = $jinput->getVar('country');
         $model = $this->getModel('ajax');
@@ -123,63 +123,63 @@ class sportsmanagementControllerAjax extends BaseController
 
     /**
  * sportsmanagementControllerAjax::getCountrySubSubAssocSelect()
- * 
+ *
  * @return void
  */
     public function getCountrySubSubAssocSelect()
     {
            $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $subassoc_id = $jinput->getInt('subassoc_id');
         $model = $this->getModel('ajax');
         $res = $model->getCountrySubSubAssocSelect($subassoc_id);
         echo json_encode($res);
         $app->close();
-        
+      
     }
 
     /**
  * sportsmanagementControllerAjax::getCountrySubAssocSelect()
- * 
+ *
  * @return void
  */
     public function getCountrySubAssocSelect()
     {
            $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $assoc_id = $jinput->getInt('assoc_id');
         $model = $this->getModel('ajax');
         $res = $model->getCountrySubAssocSelect($assoc_id);
         echo json_encode($res);
         $app->close();
-        
+      
     }
 
     /**
  * sportsmanagementControllerAjax::getcountryassoc()
- * 
+ *
  * @return void
  */
     public function getcountryassoc()
     {
            $app = Factory::getApplication();
         // JInput object
-        $jinput = $app->input; 
+        $jinput = $app->input;
         $country = $jinput->getVar('country');
         $model = $this->getModel('ajax');
         $res = $model->getCountryAssocSelect($country);
         echo json_encode($res);
         $app->close();
-        
+      
     }
     /**
      * sportsmanagementControllerAjax::getprojectsoptions()
-     * 
+     *
      * @return
      */
-    public function getprojectsoptions() 
+    public function getprojectsoptions()
     {
         $app = Factory::getApplication();
         // JInput object
@@ -199,10 +199,10 @@ class sportsmanagementControllerAjax extends BaseController
 
     /**
      * sportsmanagementControllerAjax::getroute()
-     * 
+     *
      * @return
      */
-    public function getroute() 
+    public function getroute()
     {
         $view = Factory::getApplication()->input->getCmd('view');
 

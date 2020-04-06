@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionUsers
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -32,7 +32,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
     /**
      * sportsmanagementControllerPredictionUsers::display()
-     * 
+     *
      * @return void
      */
     function display()
@@ -44,7 +44,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
     /**
      * sportsmanagementControllerPredictionUsers::cancel()
-     * 
+     *
      * @return void
      */
     function cancel()
@@ -54,7 +54,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
     /**
      * sportsmanagementControllerPredictionUsers::select()
-     * 
+     *
      * @return void
      */
     function select()
@@ -71,7 +71,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
     /**
      * sportsmanagementControllerPredictionUsers::savememberdata()
-     * 
+     *
      * @return void
      */
     function savememberdata()
@@ -81,7 +81,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
         $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
         $app = Factory::getApplication();
         $document = Factory::getDocument();
-        
+      
         $msg    = '';
         $link    = '';
 
@@ -126,7 +126,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
     /**
      * sportsmanagementControllerPredictionUsers::selectprojectround()
-     * 
+     *
      * @return void
      */
     function selectprojectround()
@@ -143,7 +143,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
         $rID = $jinput->getVar('r', '0');
         $set_pj = $jinput->getVar('set_pj', '0');
         $set_r = $jinput->getVar('set_r', '0');
-        
+      
 
         $link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID, $uID, null, $pjID, $pggroup, $rID);
         //echo '<br />' . $link . '<br />';

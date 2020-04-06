@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelTeams
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -36,7 +36,7 @@ class sportsmanagementModelTeams extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeams::__construct()
-     * 
+     *
      * @return void
      */
     function __construct( )
@@ -45,11 +45,11 @@ class sportsmanagementModelTeams extends BaseDatabaseModel
         $app = Factory::getApplication();
         $jinput = $app->input;
         parent::__construct();
-        
+      
         self::$projectid = $jinput->request->get('p', 0, 'INT');
         self::$divisionid = $jinput->request->get('division', 0, 'INT');
         self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
-        sportsmanagementModelProject::$projectid = self::$projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid;
 
 
     }

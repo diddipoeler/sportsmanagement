@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div class="col-md-8">
         <?php else : ?>
             <div class="col-md-10">
-        <?php endif; ?>      
+        <?php endif; ?>    
             <div id="dashboard-iconss" class="dashboard-icons">
                 <?php
                 foreach ( $this->sporttypes as $key => $value )
@@ -51,7 +51,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextprofleagimport">
 <img src="components/com_sportsmanagement/assets/icons/profleagueimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
                         break;
                     case 'basketball':
@@ -59,7 +59,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdbbimport">
                     <img src="components/com_sportsmanagement/assets/icons/dbbimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
                         break;
                     case 'handball':
@@ -67,13 +67,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextsisimport">
                     <img src="components/com_sportsmanagement/assets/icons/sisimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?></span>
-</a>                        
+</a>                      
 <?PHP
                         break;
                     default:
                         break;
                                 }
-                }                
+                }              
                 ?>
             </div>
         </div>
@@ -81,9 +81,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <?php sportsmanagementHelper::jsminfo(); ?>
         </div>
     </div>
-</div>                
+</div>              
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,11 +12,11 @@
  * @subpackage roster
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster"> 
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster">
     <?php
     // Show team-description if defined.
     if (!isset($this->projectteam->notes) ) {
@@ -54,4 +54,4 @@ use Joomla\CMS\HTML\HTMLHelper;
     }
     ?>
     <br />
-</div>    
+</div>  

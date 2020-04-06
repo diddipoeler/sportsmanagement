@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
  *
  * @version    1.0.05
@@ -33,7 +33,7 @@ $longitude = $this->playground->longitude;
 <script type="text/javascript">
 // https://gist.github.com/stevenzeiler/3660644
 //https://wiki.selfhtml.org/wiki/JavaScript/Geolocation
-            
+          
 jQuery(document).ready(function()  {
 // Create a map and center it on Manhattan.
         var map = new google.maps.Map(document.getElementById('map-route'), {
@@ -41,10 +41,10 @@ jQuery(document).ready(function()  {
           center: {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>}
         });
 
-var button =document.getElementById('los'); 
+var button =document.getElementById('los');
 button.addEventListener ('click', ermittlePosition);
 var ausgabe = document.getElementById('divausgabe');
-  
+
 //get_location();
 
 });
@@ -52,14 +52,14 @@ var ausgabe = document.getElementById('divausgabe');
 function ermittlePosition() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler);
-    } else { 
+    } else {
         ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
     }
 }
 
 function zeigePosition(position) {
-    ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude + 
-    "<br>Länge: " + position.coords.longitude;    
+    ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude +
+    "<br>Länge: " + position.coords.longitude;  
 }
 
 
@@ -113,15 +113,15 @@ function supports_geolocation() {
 function show_map(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-    
+  
 console.log("getLocation : "+ latitude);
-    
+  
     // let's show a map or do something interesting!
-    
+  
 }	
 
 </script>
-<?php 
+<?php
 //$this->document->addScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCL5lnwcI1WJFThmI-q-hj7kfQPF2XP6mE');
 ?>
 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -37,7 +37,7 @@ foreach( $this->get_info_fields as $key => $value )
 ?>
 <tr>
 <td class="nowrap" align="center">
-<?PHP    
+<?PHP  
 $inputappend = '';
 $append = ' style="background-color:#bbffff"';
 echo $value->info;
@@ -60,7 +60,7 @@ echo '<br>';
 <?PHP
 }
 ?>
-</table>                                                    
+</table>                                                  
 </td>
 <td class="nowrap" align="center">
 <img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerPredictionUsers
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,7 +34,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 
     /**
      * sportsmanagementControllerPredictionUsers::display()
-     * 
+     *
      * @param  bool $cachable
      * @param  bool $urlparams
      * @return void
@@ -47,7 +47,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 
     /**
      * sportsmanagementControllerPredictionUsers::cancel()
-     * 
+     *
      * @return
      */
     function cancel()
@@ -57,7 +57,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 
     /**
      * sportsmanagementControllerPredictionUsers::select()
-     * 
+     *
      * @return
      */
     function select()
@@ -74,7 +74,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 
     /**
      * sportsmanagementControllerPredictionUsers::savememberdata()
-     * 
+     *
      * @return
      */
     function savememberdata()
@@ -84,7 +84,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
         $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
         $app = Factory::getApplication();
         $document = Factory::getDocument();
-        
+      
         $msg    = '';
         $link    = '';
 
@@ -131,7 +131,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 
     /**
      * sportsmanagementControllerPredictionUsers::selectprojectround()
-     * 
+     *
      * @return
      */
     function selectprojectround()

@@ -1,6 +1,6 @@
-<?PHP        
+<?PHP      
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * JSMModelAdmin
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -30,10 +30,10 @@ use Joomla\CMS\Log\Log;
  */
 class JSMModelAdmin extends AdminModel
 {
-    
+  
     /**
      * JSMModelAdmin::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -43,10 +43,10 @@ class JSMModelAdmin extends AdminModel
         $this->jsmapp = Factory::getApplication('site');
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmview = $this->jsmjinput->getCmd('view');       
+        $this->jsmview = $this->jsmjinput->getCmd('view');     
         parent::__construct($config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -55,17 +55,17 @@ class JSMModelAdmin extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
-        
+      
     }
-    
+  
 }
 
 /**
  * JSMModelList
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -73,10 +73,10 @@ class JSMModelAdmin extends AdminModel
  */
 class JSMModelList extends ListModel
 {
-    
+  
     /**
      * JSMModelList::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -88,25 +88,25 @@ class JSMModelList extends ListModel
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         parent::setDbo($this->jsmdb);
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
         // Reference global application object
         $this->jsmapp = Factory::getApplication('site');
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmview = $this->jsmjinput->getCmd('view');       
-       
+        $this->jsmview = $this->jsmjinput->getCmd('view');     
+     
     }
-    
-    
+  
+  
 }
 
 
 /**
  * JSMModelLegacy
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -117,15 +117,15 @@ class JSMModelLegacy extends BaseDatabaseModel
 
     /**
  * JSMModelLegacy::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
     {
         /**
-* 
- * Reference global application object 
+*
+ * Reference global application object
 */
         $this->jsmapp = Factory::getApplication('site');
         $this->jsmjinput = $this->jsmapp->input;
@@ -133,12 +133,12 @@ class JSMModelLegacy extends BaseDatabaseModel
         $this->jsmview = $this->jsmjinput->getCmd('view');
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         $this->jsmquery = $this->jsmdb->getQuery(true);
-    
+  
         /**
  * alle fehlermeldungen online ausgeben
- * mit der kategorie: jsmerror    
- * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL   
- */ 
+ * mit der kategorie: jsmerror  
+ * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL 
+ */
         Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
         /**
  * fehlermeldungen datenbankabfragen
@@ -150,9 +150,9 @@ class JSMModelLegacy extends BaseDatabaseModel
         Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
 
-       
+     
            parent::__construct($config);
-    }    
+    }  
 
-    
+  
 }

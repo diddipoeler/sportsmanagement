@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage rivals
  */
- 
+
 defined('_JEXEC') or die;
 
 /**
@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ($this->config['show_sectionheader'] ) {
     echo $this->loadTemplate('sectionheader');
 }
-    
+  
 echo $this->loadTemplate('projectheading');
 
 echo $this->loadTemplate('rivals');

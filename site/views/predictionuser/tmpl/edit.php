@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,7 +21,7 @@ JFormHelper::loadFieldClass('radio');
 HTMLHelper::_('behavior.tooltip');
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
+    $uri = Uri::getInstance(); 
 } else {
     $uri = Factory::getURI();
 }
@@ -90,31 +90,31 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
     echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_APPROVED', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_APPROVED');
     ?>
             <td colspan='2'>
-<?php 
+<?php
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="approved" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->approved);
-echo $field->renderField(array('hiddenLabel'=>true));                
+echo $field->renderField(array('hiddenLabel'=>true));              
 ?>
-            
+          
             </td>
         </tr>
-        
+      
         <tr>
     <?php
     echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_GROUP');
     ?>
             <td colspan='2'>
-            <?php 
+            <?php
             echo $this->lists['grouplist'];
-            
+          
             if (!$this->tippallowed) {
                 echo '<br>';
-                echo '<font size="2" color="red">'.Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NO_GROUP_CHANGE').'</font>';  
-            } 
+                echo '<font size="2" color="red">'.Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NO_GROUP_CHANGE').'</font>';
+            }
             ?>
             </td>
         </tr>
-        
+      
     <?php
     if ($this->config['allow_alias']) {
         ?>
@@ -150,10 +150,10 @@ echo $field->renderField(array('hiddenLabel'=>true));
     echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_SHOW_PROFILE', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_SHOW_PROFILE');
     ?>
             <td colspan='2'>
-<?php 
+<?php
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="show_profile" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->show_profile);
-echo $field->renderField(array('hiddenLabel'=>true));                                                            
+echo $field->renderField(array('hiddenLabel'=>true));                                                          
 ?>
             </td>
         </tr>
@@ -165,10 +165,10 @@ echo $field->renderField(array('hiddenLabel'=>true));
         echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REMINDER', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_REMINDER');
         ?>
       <td colspan='2'>
-    <?php 
+    <?php
     $field = new JFormFieldRadio();
     $field->setup(new SimpleXMLElement('<field name="reminder" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->reminder);
-    echo $field->renderField(array('hiddenLabel'=>true));                                            
+    echo $field->renderField(array('hiddenLabel'=>true));                                          
     ?>
                 </td>
      </tr>
@@ -183,10 +183,10 @@ echo $field->renderField(array('hiddenLabel'=>true));
         echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_RECEIPT', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_RECEIPT');
         ?>
       <td colspan='2'>
-    <?php 
+    <?php
     $field = new JFormFieldRadio();
     $field->setup(new SimpleXMLElement('<field name="receipt" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->receipt);
-    echo $field->renderField(array('hiddenLabel'=>true));                                
+    echo $field->renderField(array('hiddenLabel'=>true));                              
     ?>
                 </td>
      </tr>
@@ -198,10 +198,10 @@ echo $field->renderField(array('hiddenLabel'=>true));
     echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_ALLOW_ADMIN', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_ALLOW_ADMIN');
     ?>
             <td colspan='2'>
-<?php 
+<?php
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field name="admintipp" type="radio" size="1" default="0" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), $this->predictionMember->admintipp);
-echo $field->renderField(array('hiddenLabel'=>true));                    
+echo $field->renderField(array('hiddenLabel'=>true));                  
 ?>
             </td>
         </tr>
@@ -242,20 +242,20 @@ else {echo '&nbsp;';
     <?php
     $rowspan = count($this->predictionProjectS);
 
-            
+          
     echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_CHAMPION', 'COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_CHAMPION', $rowspan);
 
     foreach ($this->predictionProjectS AS $predictionProject)
     {
         ?><td width='10%' style='text-align:right; '><?php
-                        
-                        
+                      
+                      
 echo $this->lists['champ_tipp_enabled'][$predictionProject->project_id];
 echo '<br>';
 if (!$this->tippallowed) {
-            
-    echo '<font size="2" color="red">'.Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NO_GROUP_CHANGE').'</font><br>';    
-} 
+          
+    echo '<font size="2" color="red">'.Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NO_GROUP_CHANGE').'</font><br>';  
+}
 ?><?php
 
 ?><?php
@@ -276,9 +276,9 @@ else {echo '&nbsp;';
         </tr>
     <?php
     if ($this->config['edit_avatar_upload']) {
-        
+      
         ?>
-        
+      
         <tr>
         <td>
     <fieldset class="adminform">
@@ -289,18 +289,18 @@ else {echo '&nbsp;';
                     <tr>
                         <td class="key"><?php echo $field->label; ?></td>
                         <td><?php echo $field->input; ?></td>
-                    </tr>                    
+                    </tr>                  
         <?php endforeach; ?>
      </table>
     </fieldset>
 
      </td>
     </tr>
-        
+      
 
-        
+      
     <?php
-    }        
+    }      
     ?>
         <tr>
             <td>&nbsp;</td>

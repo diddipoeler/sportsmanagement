@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,12 +11,12 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table; 
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
- 
+
 /**
  * SportsManagement Model
  */
@@ -45,9 +45,9 @@ class sportsmanagementModelsportsmanagement extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
     /**
@@ -58,7 +58,7 @@ class sportsmanagementModelsportsmanagement extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.sportsmanagement', 'sportsmanagement', array('control' => 'jform', 'load_data' => $loadData));
@@ -72,7 +72,7 @@ class sportsmanagementModelsportsmanagement extends AdminModel
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
@@ -82,7 +82,7 @@ class sportsmanagementModelsportsmanagement extends AdminModel
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.sportsmanagement.data', array());

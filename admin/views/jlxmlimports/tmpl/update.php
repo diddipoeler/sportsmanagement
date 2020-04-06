@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage jlxmlimports
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -24,8 +24,8 @@ use Joomla\CMS\Component\ComponentHelper;
         <tbody><tr><td><?php echo '&nbsp;'; ?></td></tr></tbody>
     </table>
     <?php
-    
-    
+  
+  
     if (is_array($this->importData)) {
         foreach ($this->importData as $key => $value)
         {
@@ -37,8 +37,8 @@ use Joomla\CMS\Component\ComponentHelper;
                 <?php
         }
     }
-    
-    
+  
+  
     if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend', 0)) {
         ?><fieldset>
          <legend><?php echo Text::_('Post data from importform was:'); ?></legend>

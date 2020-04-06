@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeljlextindividualsport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,13 +35,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 
     /**
  * sportsmanagementModeljlextindividualsport::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
-    {   
- 
+    { 
+
         parent::__construct($config);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -62,7 +62,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
     {
         return Factory::getUser()->authorise('core.edit', $this->jsmoption.'.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -72,20 +72,20 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
      * @return Table    A database object
      * @since  1.6
      */
-    public function getTable($type = 'MatchSingle', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'MatchSingle', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
-    
-    
+  
+  
     /**
      * Method to get the data that should be injected in the form.
      *
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         $data = Factory::getApplication()->getUserState($this->jsmoption.'.edit.jlextindividualsport.data', array());
         if (empty($data)) {
@@ -93,7 +93,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         }
         return $data;
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -102,21 +102,21 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
         $form = $this->loadForm($this->jsmoption.'.jlextindividualsport', 'jlextindividualsport', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
-        
+      
         return $form;
     }
-    
+  
 
     /**
      * sportsmanagementModeljlextindividualsport::saveshort()
-     * 
+     *
      * @return void
      */
     function saveshort()
@@ -125,20 +125,20 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
         $match_id = $post['match_id'];
-        
+      
         $result_tie_break = 0;
-       
+     
         $this->jsmquery->select('use_tie_break,game_parts,sports_type_id');
         $this->jsmquery->from('#__sportsmanagement_project');
         $this->jsmquery->where('id = '.(int) $post['project_id']);
         $this->jsmdb->setQuery($this->jsmquery);
         $use_tie_break = $this->jsmdb->loadObject();
         $result_tie_break = $use_tie_break->game_parts;
-        
+      
         if ($use_tie_break->use_tie_break  ) {
             $result_tie_break = $result_tie_break - 1;
         }
-      
+    
         $this->jsmquery = $this->jsmdb->getQuery(true);
         $this->jsmquery->clear();
         $this->jsmquery->select('name,id');
@@ -153,13 +153,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                // änderungen im datum oder der uhrzeit
             $tbl = $this->getTable();;
             $tbl->load((int) $pks[$x]);
-            
+          
             list($date,$time) = explode(" ", $tbl->match_date);
             $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
             $this->_match_date_new = $post['match_date'.$pks[$x]];
             $this->_match_time_old = $time;
             $this->_match_date_old = sportsmanagementHelper::convertDate($date);
-            
+          
             $post['match_date'.$pks[$x]] = sportsmanagementHelper::convertDate($post['match_date'.$pks[$x]], 0);
             $post['match_date'.$pks[$x]] = $post['match_date'.$pks[$x]].' '.$post['match_time'.$pks[$x]].':00';
 
@@ -178,34 +178,34 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             $tblMatch->double_team1_player2 = $post['double_team1_player2'.$pks[$x]];
             $tblMatch->double_team2_player1 = $post['double_team2_player1'.$pks[$x]];
             $tblMatch->double_team2_player2 = $post['double_team2_player2'.$pks[$x]];
-            
+          
 
                  $tblMatch->team1_result    = null;
                  $tblMatch->team2_result    = null;
-                        
+                      
             foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
                 {
                 if ($post['team1_result_split'.$pks[$x]][$key] != '' && $post['team2_result_split'.$pks[$x]][$key] != ''  ) {
                     if ($post['team1_result_split'.$pks[$x]][$key] > $post['team2_result_split'.$pks[$x]][$key] ) {
                         $tblMatch->team1_result    += 1;
-                        $tblMatch->team2_result    += 0; 
+                        $tblMatch->team2_result    += 0;
                     }
                     if ($post['team1_result_split'.$pks[$x]][$key] < $post['team2_result_split'.$pks[$x]][$key] ) {
                         $tblMatch->team1_result    += 0;
-                        $tblMatch->team2_result    += 1; 
+                        $tblMatch->team2_result    += 1;
                     }
                     if ($post['team1_result_split'.$pks[$x]][$key] == $post['team2_result_split'.$pks[$x]][$key] ) {
                         $tblMatch->team1_result    += 1;
-                        $tblMatch->team2_result    += 1; 
+                        $tblMatch->team2_result    += 1;
                     }
                 }
                 else
                 {
                     //                        $tblMatch->team1_result	= NULL;
-                    //                        $tblMatch->team2_result	= NULL;  
+                    //                        $tblMatch->team2_result	= NULL;
                 }
             }
-            
+          
             $tblMatch->team1_result_split    = implode(";", $post['team1_result_split'.$pks[$x]]);
             $tblMatch->team2_result_split    = implode(";", $post['team2_result_split'.$pks[$x]]);
 
@@ -215,7 +215,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             else
                   {
             }
-            
+          
                   // ereignisse speichern heim
             if ($tblMatch->teamplayer1_id ) {
                 if ($tblMatch->team1_result > $tblMatch->team2_result ) {
@@ -228,9 +228,9 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 }
                 self::deleteevents($post['match_id'], $tblMatch->teamplayer1_id, $event_id);
                 self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->teamplayer1_id, $event_id);
- 
+
             }
-            
+          
                   // ereignisse speichern heim
             if ($tblMatch->double_team1_player1 ) {
                 if ($tblMatch->team1_result > $tblMatch->team2_result ) {
@@ -244,7 +244,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 self::deleteevents($post['match_id'], $tblMatch->double_team1_player1, $event_id);
                 self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player1, $event_id);
             }
-            
+          
                   // ereignisse speichern heim
             if ($tblMatch->double_team1_player2 ) {
                 if ($tblMatch->team1_result > $tblMatch->team2_result ) {
@@ -258,7 +258,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 self::deleteevents($post['match_id'], $tblMatch->double_team1_player2, $event_id);
                 self::insertevents($post['match_id'], $post['projectteam1_id'], $tblMatch->double_team1_player2, $event_id);
             }
-            
+          
                   // ereignisse speichern gast
             if ($tblMatch->teamplayer2_id ) {
                 if ($tblMatch->team1_result < $tblMatch->team2_result ) {
@@ -272,7 +272,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 self::deleteevents($post['match_id'], $tblMatch->teamplayer2_id, $event_id);
                 self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->teamplayer2_id, $event_id);
             }
-            
+          
                   // ereignisse speichern gast
             if ($tblMatch->double_team2_player1 ) {
                 if ($tblMatch->team1_result < $tblMatch->team2_result ) {
@@ -286,7 +286,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 self::deleteevents($post['match_id'], $tblMatch->double_team2_player1, $event_id);
                 self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player1, $event_id);
             }
-            
+          
                   // ereignisse speichern gast
             if ($tblMatch->double_team2_player2 ) {
                 if ($tblMatch->team1_result < $tblMatch->team2_result ) {
@@ -301,38 +301,38 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 self::insertevents($post['match_id'], $post['projectteam2_id'], $tblMatch->double_team2_player2, $event_id);
             }
         }
-        
+      
         // alles ok
-        // jetzt die einzelergebnisse zum hauptspiel addieren 
+        // jetzt die einzelergebnisse zum hauptspiel addieren
         $this->jsmquery->clear();
         $this->jsmquery->select('mc.*');
         $this->jsmquery->from('#__sportsmanagement_match_single AS mc');
         $this->jsmquery->where('mc.match_id = '.$match_id);
         $this->jsmdb->setQuery($this->jsmquery);
-        
+      
         $result = $this->jsmdb->loadObjectList();
         $temp = new stdClass();
         foreach ( $result as $row )
         {
             if ($row->team1_result > $row->team2_result ) {
                 $temp->team1_result    += 1;
-                $temp->team2_result    += 0; 
+                $temp->team2_result    += 0;
             }
             if ($row->team1_result < $row->team2_result ) {
                 $temp->team1_result    += 0;
-                $temp->team2_result    += 1; 
+                $temp->team2_result    += 1;
             }
             if ($row->team1_result == $row->team2_result ) {
                 $temp->team1_result    += 1;
-                $temp->team2_result    += 1; 
+                $temp->team2_result    += 1;
             }
-            
+          
             $temp->team1_single_sets    += $row->team1_result;
-            $temp->team2_single_sets    += $row->team2_result;  
-            
+            $temp->team2_single_sets    += $row->team2_result;
+          
             $team1_result_split    = explode(";", $row->team1_result_split);
-            $team2_result_split    = explode(";", $row->team2_result_split);  
-           
+            $team2_result_split    = explode(";", $row->team2_result_split);
+         
             foreach ( $team1_result_split as $key => $value )
             {
                 if ($use_tie_break->use_tie_break ) {
@@ -357,31 +357,31 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                     $temp->team2_single_games    += $value;
                 }
             }
-            
+          
             if ($use_tie_break->use_tie_break ) {
                 if ($team1_result_split[$result_tie_break] > $team2_result_split[$result_tie_break] ) {
                             $temp->team1_single_games    += 1;
-                            $temp->team2_single_games    += 0; 
+                            $temp->team2_single_games    += 0;
                 }
                 if ($team1_result_split[$result_tie_break] < $team2_result_split[$result_tie_break] ) {
                     $temp->team1_single_games    += 0;
-                    $temp->team2_single_games    += 1; 
+                    $temp->team2_single_games    += 1;
                 }
-                        
+                      
             }
             else
             {
                 if ($team1_result_split[$result_tie_break] > $team2_result_split[$result_tie_break] ) {
                           $temp->team1_single_games    += $team1_result_split[$result_tie_break];
-                          $temp->team2_single_games    += $team2_result_split[$result_tie_break]; 
+                          $temp->team2_single_games    += $team2_result_split[$result_tie_break];
                 }
                 if ($team1_result_split[$result_tie_break] < $team2_result_split[$result_tie_break] ) {
                     $temp->team1_single_games    += $team1_result_split[$result_tie_break];
-                    $temp->team2_single_games    += $team2_result_split[$result_tie_break]; 
+                    $temp->team2_single_games    += $team2_result_split[$result_tie_break];
                 }
             }
         }
-        
+      
         $rowmatch = new stdClass();
         $rowmatch->id = $match_id;
         $rowmatch->team1_result = $temp->team1_result;
@@ -389,7 +389,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $rowmatch->team1_single_matchpoint = $temp->team1_result;
         $rowmatch->team2_single_matchpoint = $temp->team2_result;
         $rowmatch->team1_single_sets = $temp->team1_single_sets;
-        $rowmatch->team2_single_sets = $temp->team2_single_sets; 
+        $rowmatch->team2_single_sets = $temp->team2_single_sets;
         $rowmatch->team1_single_games = $temp->team1_single_games;
         $rowmatch->team2_single_games = $temp->team2_single_games;
         try {
@@ -400,15 +400,15 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
         }
-       
+     
         // Proceed with the save
         //return parent::save($data);
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModeljlextindividualsport::deleteevents()
-     * 
+     *
      * @param  mixed $match_id
      * @param  mixed $teamplayer1_id
      * @param  mixed $event_id
@@ -428,13 +428,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 $resultdel = $db->execute();
         if(!$resultdel) {
         }
-    
-    
+  
+  
     }
-    
+  
     /**
      * sportsmanagementModeljlextindividualsport::insertevents()
-     * 
+     *
      * @param  mixed $match_id
      * @param  mixed $projectteam1_id
      * @param  mixed $teamplayer1_id
@@ -457,10 +457,10 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         if(!$resultins) {
 
         }
-    
-    
+  
+  
     }
-    
+  
     /**
      * Method to remove
      *
@@ -472,13 +472,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
     {
         $app = Factory::getApplication();
           return parent::delete($pk);
-          return true; 
+          return true;
     }
-    
+  
 
     /**
      * sportsmanagementModeljlextindividualsport::save_array()
-     * 
+     *
      * @param  mixed $cid
      * @param  mixed $post
      * @param  bool  $zusatz
@@ -497,12 +497,12 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             $fieldsArray = $this->_db->getTableFields($datatable, true);
             $fields = array_shift($fieldsArray);
         }
-        
+      
           $sporttype = $app->getUserState($this->jsmoption . 'sporttype');
           $defaultvalues = array();
           $game_parts = $app->getUserState($this->jsmoption . 'game_parts');
-    
-        // in abhängigkeit von der sportart wird das ergebnis gespeichert    
+  
+        // in abhängigkeit von der sportart wird das ergebnis gespeichert  
         switch(strtolower($sporttype))
         {
         case 'kegeln':
@@ -522,7 +522,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 }
             }
 
-                    
+                  
             $post['team1_result'.$cid] = 0;
             $post['team2_result'.$cid] = 0;
 
@@ -639,12 +639,12 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
             $query="UPDATE #__sportsmanagement_match_single SET `extended`='".$temp."' WHERE id=".$cid;
             $this->_db->setQuery($query);
             if (!$this->_db->execute()) {
-            
+          
             }
-        
+      
             break;
         }
-        
+      
         foreach($fields as $field)
         {
             $query='';
@@ -683,7 +683,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 								team1_result_decision,team2_result_decision,team1_result_split,
 								team2_result_split,team1_result_ot,team2_result_ot,
 								team1_result_so,team2_result_so,team_won,", $keys.','
-                    ) 
+                    )
                         && $result == '' && isset($post[$keys.$fieldzusatz])
                     ) {
                         $result='NULL';
@@ -697,13 +697,13 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                         }
                         $query .= $keys.'='.$vorzeichen.$result.$vorzeichen;
                     }
-                    
+                  
                     if ($result=='' && $keys=='time_present') {
                         if ($query) {$query .= ',';
                         }
                         $query .= $keys.'=null';
                     }
-                    
+                  
                     if ($result=='' && $keys=='match_number') {
                         if ($query) {$query .= ',';
                         }
@@ -716,9 +716,9 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $query='UPDATE #__sportsmanagement_match_single SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
         $this->_db->setQuery($query);
         $this->_db->query($query);
-        
-    
-        
+      
+  
+      
         // now for ko mode
         $project=&$this->getProject();
         if ($project->project_type == 'TOURNAMENT_MODE') {
@@ -727,10 +727,10 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
 
         return true;
     }
-    
+  
     /**
      * sportsmanagementModeljlextindividualsport::save_round_match_tennis()
-     * 
+     *
      * @return void
      */
     function save_round_match_tennis()
@@ -739,35 +739,35 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $post=Factory::getApplication()->input->post->getArray(array());
         $cid=Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
         ArrayHelper::toInteger($cid);
-        
+      
         $sporttype = $app->getUserState($this->jsmoption . 'sporttype');
         $defaultvalues = array();
-  
-   
+
+ 
         $match_id = $post['match_id'];
-  
-        $query = ' SELECT m.team1_result, 
+
+        $query = ' SELECT m.team1_result,
   m.team2_result,
   team1_result_split,
   team2_result_split,
   extended
   FROM #__sportsmanagement_match_single AS m
 	WHERE m.match_id='.(int) $match_id .' AND m.published = 1';
-        $this->_db->setQuery($query);        
+        $this->_db->setQuery($query);      
         $singlerows = $this->_db->loadObjectList();
-    
+  
         foreach ( $singlerows as $row )
         {
             $update['resulthome'] += $row->team1_result;
             $update['resultaway'] += $row->team2_result;
-  
+
             $params=explode("\n", $row->extended);
             foreach($params AS $param)
             {
                 list ($name,$value) = explode("=", $param);
                 $configvalues[$name] += $value;
             }
-    
+  
         }
 
         foreach ( $configvalues as $key => $value )
@@ -783,14 +783,14 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $rowupdate->extended = $temp;
         if (!$rowupdate->store()) {
             Log::add($rowupdate->getError());
-        }  
-    
+        }
+  
     }
-  
-  
+
+
     /**
    * sportsmanagementModeljlextindividualsport::save_round_match_kegeln()
-   * 
+   *
    * @return void
    */
     function save_round_match_kegeln()
@@ -799,19 +799,19 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $post = Factory::getApplication()->input->post->getArray(array());
         $cid = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
         ArrayHelper::toInteger($cid);
-        
+      
         $sporttype = $app->getUserState($this->jsmoption . 'sporttype');
         $defaultvalues = array();
-   
-        $match_id = $post['match_id'];    
+ 
+        $match_id = $post['match_id'];  
 
-        $query = ' SELECT SUM(m.team1_result) AS resulthome, 
+        $query = ' SELECT SUM(m.team1_result) AS resulthome,
   SUM(m.team2_result) AS resultaway,
   team1_result_split,
   team2_result_split
   FROM #__sportsmanagement_match_single AS m
 	WHERE m.match_id='.(int) $match_id .' AND m.published = 1';
-        $this->_db->setQuery($query);        
+        $this->_db->setQuery($query);      
         $row = $this->_db->loadAssoc();
 
         $row['team1_result_split'] = array();
@@ -820,7 +820,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         for ($x=0; $x < count($cid); $x++)
         {
 
-              $tempteam1 = $post['team1_result_split'.$cid[$x]]; 
+              $tempteam1 = $post['team1_result_split'.$cid[$x]];
               $tempteam2 = $post['team2_result_split'.$cid[$x]];
 
             for ($a=0; $a < 3; $a++)
@@ -834,23 +834,23 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $row['team2_result_split'] = implode(";", $row['team2_result_split']);
 
 
-        $query = ' SELECT 
+        $query = ' SELECT
   extended
   FROM #__sportsmanagement_match_single AS m
 	WHERE m.match_id='.(int) $match_id .' AND m.published = 1';
-        $this->_db->setQuery($query);        
+        $this->_db->setQuery($query);      
         $singlerows = $this->_db->loadObjectList();
-  
+
         foreach ( $singlerows as $singlerow )
         {
-  
+
             $params=explode("\n", $singlerow->extended);
             foreach($params AS $param)
             {
                 list ($name,$value) = explode("=", $param);
                 $configvalues[$name] += $value;
             }
-    
+  
         }
 
         foreach ( $configvalues as $key => $value )
@@ -867,9 +867,9 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $rowupdate->extended = $temp;
         if (!$rowupdate->store()) {
             Log::add($rowupdate->getError());
-        }  
-        
+        }
+      
     }
-  
+
 }
 ?>

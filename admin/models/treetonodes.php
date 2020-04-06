@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -19,8 +19,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTreetonodes
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -31,21 +31,21 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
     /**
      * sportsmanagementModelTreetonodes::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
     {
          parent::__construct($config);
-        
+      
         $limit = 130;
         $this->setState('limit', $limit);
     }
 
     /**
  * sportsmanagementModelTreetonodes::savenode()
- * 
+ *
  * @param  mixed $node
  * @return void
  */
@@ -57,15 +57,15 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         foreach($node as $key => $value)
         {
             /**
-* 
- * update node 
+*
+ * update node
 */
             $object = new stdClass();
             $object->id = $value->id;
             //$object->title = $this->jsmdb->quote($value->title);
             //$object->content = $this->jsmdb->quote($value->content);
             $object->title = $value->title;
-            $object->content = $value->content;    
+            $object->content = $value->content;  
             $object->team_id = $value->team_id;
             $object->roundcode = $value->roundcode;
             $object->modified = $date->toSql();
@@ -76,32 +76,32 @@ class sportsmanagementModelTreetonodes extends JSMModelList
                 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 $result = false;
             }
-            
+          
             /**
-* 
- * insert node mit spiel id 
-*/            
+*
+ * insert node mit spiel id
+*/          
             if ($value->match_id ) {
-                $object = new stdClass();            
-                $object->node_id = $value->id;            
+                $object = new stdClass();          
+                $object->node_id = $value->id;          
                 $object->match_id = $value->match_id;
                 $object->modified = $date->toSql();
-                $object->modified_by = $user->get('id');            
-                try {           
-                    $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object);            
+                $object->modified_by = $user->get('id');          
+                try {         
+                    $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $object);          
                 } catch (Exception $e) {
                     // $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), '');
                     $result = false;
                 }
             }
-    
+  
         }
-    
+  
     }
-    
+  
     /**
  * sportsmanagementModelTreetonodes::getteamsprorunde()
- * 
+ *
  * @param  integer $project_id
  * @param  mixed   $treetows
  * @return
@@ -110,23 +110,23 @@ class sportsmanagementModelTreetonodes extends JSMModelList
     {
         $matches = array();
         /**
-* 
- * alle runden 
-*/    
+*
+ * alle runden
+*/  
         $this->jsmquery->clear();
-        $this->jsmquery->select('*');    
+        $this->jsmquery->select('*');  
         $this->jsmquery->from('#__sportsmanagement_round');
-        $this->jsmquery->where('project_id = ' . $project_id);    
+        $this->jsmquery->where('project_id = ' . $project_id);  
         $this->jsmquery->where('tournement = 1');
         $this->jsmdb->setQuery($this->jsmquery);
         $roundresult = $this->jsmdb->loadObjectList('id');
-    
+  
         $roundresult2 = usort(
             $roundresult, function ($a, $b) {
                 $c = $a->roundcode - $b->roundcode;
                 return $c;
             }
-        );    
+        );  
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');	
 
         $this->jsmquery->clear();
@@ -162,17 +162,17 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
         $start = 1;
         //for($i=$minresult; $i <= $maxresult; $i++) {
-        foreach( $roundresult as $key => $value ) { if ($value->roundcode <= $maxresult  ) {     
+        foreach( $roundresult as $key => $value ) { if ($value->roundcode <= $maxresult  ) {   
                 $projectroundcode[$value->roundcode ] = $start;
-                $projectroundcodeschleife[$start ] = $value->roundcode;  
+                $projectroundcodeschleife[$start ] = $value->roundcode;
                 $start++;
         }
         }
         unset($start);
-        arsort($projectroundcode); 
+        arsort($projectroundcode);
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcode <pre>'.print_r($projectroundcode ,true).'</pre>'  , '');
-        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');  
-    
+        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' projectroundcodeschleife <pre>'.print_r($projectroundcodeschleife ,true).'</pre>'  , '');
+  
         switch ($treetows->tree_i)
         {
         case 7:
@@ -184,7 +184,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
             $mannproroundcode[6] = 4;
             $mannproroundcode[7] = 2;
             $mannproroundcode[8] = 1;
-            break;        
+            break;      
         case 6:
             $mannproroundcode[1] = 64;
             $mannproroundcode[2] = 32;
@@ -219,133 +219,133 @@ class sportsmanagementModelTreetonodes extends JSMModelList
             $mannproroundcode[1] = 4;
             $mannproroundcode[2] = 2;
             $mannproroundcode[3] = 1;
-            break;        
+            break;      
         }
 
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
-        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');  
+        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' maxresult start<pre>'.print_r($mannproroundcode[$projectroundcode[$maxresult]],true).'</pre>'  , '');
 
-        foreach ( $projectroundcode as $key => $value ) 
+        foreach ( $projectroundcode as $key => $value )
         {
             $start = $mannproroundcode[$value];
             $ende = $mannproroundcode[$value - 1];
             if (!$ende ) {
                 $ende = $start * 2;
             }
-            for($i=$start; $i < $ende ; $i++) {  
+            for($i=$start; $i < $ende ; $i++) {
                 $nodeproround[$i] = $key;
             }
 
         }
-  
+
         $starttree = $mannproroundcode[$projectroundcode[$maxresult]];
-        $starttreeteamwon = array();  
-  
+        $starttreeteamwon = array();
+
         foreach ( $result as $key => $value ) { if ($value->roundcode == $maxresult) {
                 $startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];// $projectroundcode[$value->roundcode]
-                $object = new stdClass();    
+                $object = new stdClass();  
                 $object->team_id = $value->projectteam1_id;
-                $object->match_id = $key;    
+                $object->match_id = $key;  
                 $this->jsmquery->clear();
                 $this->jsmquery->select('t.name');
                 $this->jsmquery->from('#__sportsmanagement_team AS t');
                 $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
                 $this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
                 $this->jsmdb->setQuery($this->jsmquery);
-                $object->team_name = $this->jsmdb->loadResult();        
+                $object->team_name = $this->jsmdb->loadResult();      
                 $object->roundcode = $value->roundcode;
                 $object->next_match_id = $value->next_match_id;
-                $object->team_won = $value->team_won;            
+                $object->team_won = $value->team_won;          
                 $matches[$startneu ] = $object;
                 $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
                 $startneu = $mannproroundcode[$projectroundcode[$value->roundcode]];
-                $starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam1_id;  
+                $starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam1_id;
                 $starttree++;
-                $object = new stdClass();    
+                $object = new stdClass();  
                 $object->team_id = $value->projectteam2_id;
-                $object->match_id = $key;    
+                $object->match_id = $key;  
                 $this->jsmquery->clear();
                 $this->jsmquery->select('t.name');
                 $this->jsmquery->from('#__sportsmanagement_team AS t');
                 $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
                 $this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
                 $this->jsmdb->setQuery($this->jsmquery);
-                $object->team_name = $this->jsmdb->loadResult();        
+                $object->team_name = $this->jsmdb->loadResult();      
                 $object->roundcode = $value->roundcode;
                 $object->next_match_id = $value->next_match_id;
-                $object->team_won = $value->team_won;            
+                $object->team_won = $value->team_won;          
                 $matches[$startneu ] = $object;
                 $mannproroundcode[$projectroundcode[$value->roundcode]] += 1;
-                $starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam2_id;  
+                $starttreeteamwon[$value->roundcode][$starttree] = $value->projectteam2_id;
         }
-        }    
+        }  
         /**
-* 
- * damit freilose auch berücksichtgt werden 
+*
+ * damit freilose auch berücksichtgt werden
 */
-        $nextroundcode = $maxresult - 1;    
-        for($i=$maxresult; $i > 0; $i--) {  
-            foreach( $starttreeteamwon[$i] as $node => $value ) {   
-                //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' node<pre>'.print_r($node,true).'</pre>'  , '');  
+        $nextroundcode = $maxresult - 1;  
+        for($i=$maxresult; $i > 0; $i--) {
+            foreach( $starttreeteamwon[$i] as $node => $value ) { 
+                //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' node<pre>'.print_r($node,true).'</pre>'  , '');
 
                 foreach ( $result as $key => $valueresult ) { if ($valueresult->roundcode == $nextroundcode) {
                         if ($valueresult->team_won == $value ) {
                             $nodeneu = $node * 2;
-                            $starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam1_id; 
-                            $object = new stdClass();    
+                            $starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam1_id;
+                            $object = new stdClass();  
                             $object->team_id = $valueresult->projectteam1_id;
-                            $object->match_id = $valueresult->id;    
+                            $object->match_id = $valueresult->id;  
                             $this->jsmquery->clear();
                             $this->jsmquery->select('t.name');
                             $this->jsmquery->from('#__sportsmanagement_team AS t');
                             $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-                            $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+                            $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
                             $this->jsmquery->where('pt.id = ' . $valueresult->projectteam1_id);
                             $this->jsmdb->setQuery($this->jsmquery);
-                            $object->team_name = $this->jsmdb->loadResult();        
+                            $object->team_name = $this->jsmdb->loadResult();      
                             $object->roundcode = $valueresult->roundcode;
                             $object->next_match_id = $valueresult->next_match_id;
-                            $object->team_won = $valueresult->team_won;            
-                            $matches[$nodeneu ] = $object;  
+                            $object->team_won = $valueresult->team_won;          
+                            $matches[$nodeneu ] = $object;
                             $nodeneu++;
-                            $starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam2_id;  
-                            $object = new stdClass();    
+                            $starttreeteamwon[$nextroundcode][$nodeneu] = $valueresult->projectteam2_id;
+                            $object = new stdClass();  
                             $object->team_id = $valueresult->projectteam2_id;
-                            $object->match_id = $valueresult->id;    
+                            $object->match_id = $valueresult->id;  
                             $this->jsmquery->clear();
                             $this->jsmquery->select('t.name');
                             $this->jsmquery->from('#__sportsmanagement_team AS t');
                             $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-                            $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+                            $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
                             $this->jsmquery->where('pt.id = ' . $valueresult->projectteam2_id);
                             $this->jsmdb->setQuery($this->jsmquery);
-                            $object->team_name = $this->jsmdb->loadResult();        
+                            $object->team_name = $this->jsmdb->loadResult();      
                             $object->roundcode = $valueresult->roundcode;
                             $object->next_match_id = $valueresult->next_match_id;
-                            $object->team_won = $valueresult->team_won;            
-                            $matches[$nodeneu ] = $object;  
-  
-  
-                        }  
+                            $object->team_won = $valueresult->team_won;          
+                            $matches[$nodeneu ] = $object;
+
+
+                        }
                 }
-                }  
- 
-            }  
+                }
+
+            }
             $nextroundcode--;
-        }  
-  
-  
-        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' starttreeteamwon<pre>'.print_r($starttreeteamwon,true).'</pre>'  , '');  
+        }
+
+
+        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' starttreeteamwon<pre>'.print_r($starttreeteamwon,true).'</pre>'  , '');
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' result<pre>'.print_r($result,true).'</pre>'  , '');
-  
+
         /*
         //for($i=$maxresult; $i > 0; $i--) {
-        foreach( $projectroundcode as $i => $value ) {  
-        $i = $value - 1;  
+        foreach( $projectroundcode as $i => $value ) {
+        $i = $value - 1;
         $startround = $projectroundcodeschleife[$i];
-        $actround = $projectroundcodeschleife[$value] ; 
+        $actround = $projectroundcodeschleife[$value] ;
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' i <pre>'.print_r($actround,true).'</pre>'. ' startround <pre>'.print_r($startround ,true).'</pre>'  , '');
         foreach ( $matches as $keymatches => $valuematches ) if ($valuematches->roundcode == $actround)
         {
@@ -367,7 +367,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         $this->jsmquery->select('t.name');
         $this->jsmquery->from('#__sportsmanagement_team AS t');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-        $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
         $this->jsmquery->where('pt.id = ' . $value->projectteam1_id);
         $this->jsmdb->setQuery($this->jsmquery);
         $object->team_name = $this->jsmdb->loadResult();		
@@ -385,7 +385,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         $this->jsmquery->select('t.name');
         $this->jsmquery->from('#__sportsmanagement_team AS t');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-        $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
         $this->jsmquery->where('pt.id = ' . $value->projectteam2_id);
         $this->jsmdb->setQuery($this->jsmquery);
         $object->team_name = $this->jsmdb->loadResult();		
@@ -402,16 +402,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 	
         }
         }
-        */    
-  
-        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');  
-  
-        $startcheck = $mannproroundcode[1] * 2; 
-        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startcheck<pre>'.print_r($startcheck,true).'</pre>'  , '');  
+        */  
 
-        for($i=1; $i < $startcheck; $i++) {  
+        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' mannproroundcode<pre>'.print_r($mannproroundcode,true).'</pre>'  , '');
+
+        $startcheck = $mannproroundcode[1] * 2;
+        //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' startcheck<pre>'.print_r($startcheck,true).'</pre>'  , '');
+
+        for($i=1; $i < $startcheck; $i++) {
             if (!array_key_exists($i, $matches)) {
-                $object = new stdClass();    
+                $object = new stdClass();  
                 $object->team_id = 0;
 
                 if ($i % 2 != 0) {
@@ -420,26 +420,26 @@ class sportsmanagementModelTreetonodes extends JSMModelList
                 else
                 {
                     $object->match_id = $i * -1;
-                }    
+                }  
 
                 //$object->match_id = $i * -1;
-                $object->team_name = '';        
+                $object->team_name = '';      
                 $object->roundcode = $nodeproround[$i];
                 $object->next_match_id = 0;
-                $object->team_won = 0;            
-                $matches[$i ] = $object;  
-            }  
-        }  
-  
-  
+                $object->team_won = 0;          
+                $matches[$i ] = $object;
+            }
+        }
+
+
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' matches <pre>'.print_r($matches,true).'</pre>'  , '');
         return $matches;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTreetonodes::populateState()
-     * 
+     *
      * @param  mixed $ordering
      * @param  mixed $direction
      * @return void
@@ -456,7 +456,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
     /**
      * sportsmanagementModelTreetonodes::getStoreId()
-     * 
+     *
      * @param  string $id
      * @return
      */
@@ -467,7 +467,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
     /**
      * sportsmanagementModelTreetonodes::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
@@ -491,7 +491,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
         // join Project-team table
         $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.id = a.team_id');
-        $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on pt.team_id = st.id');  
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on pt.team_id = st.id');
         // join Team table
         $this->jsmquery->select('t.name AS team_name');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t ON t.id = st.team_id');
@@ -510,11 +510,11 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         return $this->jsmquery;
     }
 
-    
-    
+  
+  
     /**
      * sportsmanagementModelTreetonodes::getMaxRound()
-     * 
+     *
      * @param  mixed $project_id
      * @return
      */
@@ -537,13 +537,13 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
     /**
      * sportsmanagementModelTreetonodes::setRemoveNode()
-     * 
+     *
      * @param  mixed $post
      * @return
      */
     function setRemoveNode($post)
     {
-        
+      
         $treeto_id = $post['treeto_id'];
 
         $this->jsmquery->clear();
@@ -555,7 +555,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         $this->jsmdb->setQuery($this->jsmquery);
         //$this->_db->query($query);
 
-        sportsmanagementModeldatabasetool::runJoomlaQuery(); 
+        sportsmanagementModeldatabasetool::runJoomlaQuery();
 
         // Create an object for the record we are going to update.
         $object = new stdClass();
@@ -580,7 +580,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
      */
     /**
      * sportsmanagementModelTreetonodes::storeshortleaf()
-     * 
+     *
      * @param  mixed $cid
      * @param  mixed $post
      * @return
@@ -589,7 +589,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
     {
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($cid,true).'</pre>', '');		
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
-       
+     
         $result = true;
         $project_id = $this->jsmjinput->get('pid');
         $tree_i = $post['tree_i'];
@@ -633,14 +633,14 @@ class sportsmanagementModelTreetonodes extends JSMModelList
                             );
                             // Conditions for which records should be updated.
                             $conditions = array(
-                            $this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($z), 
+                            $this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($z),
                             $this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
                             );
                             $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
                             $this->jsmdb->setQuery($this->jsmquery);
 
-                            sportsmanagementModeldatabasetool::runJoomlaQuery();                             
-                            
+                            sportsmanagementModeldatabasetool::runJoomlaQuery();                           
+                          
                         }
                     }
                 }
@@ -656,16 +656,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
             );
             // Conditions for which records should be updated.
             $conditions = array(
-             $this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($k), 
+             $this->jsmdb->quoteName('node') . ' = ' . $this->jsmdb->quote($k),
              $this->jsmdb->quoteName('treeto_id') . ' = ' . $this->jsmdb->quote($treeto_id)
             );
             $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
             $this->jsmdb->setQuery($this->jsmquery);
 
-            sportsmanagementModeldatabasetool::runJoomlaQuery();            
-            
+            sportsmanagementModeldatabasetool::runJoomlaQuery();          
+          
         }
-        
+      
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
@@ -681,17 +681,17 @@ class sportsmanagementModelTreetonodes extends JSMModelList
     }
 
 
-    
+  
     /**
      * sportsmanagementModelTreetonodes::storefinishleaf()
-     * 
+     *
      * @param  mixed $post
      * @return
      */
     function storefinishleaf($post)
     {
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');
-        
+      
         $treeto_id = $post['treeto_id'];
 
         // Create an object for the record we are going to update.
@@ -706,16 +706,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
     }
 
 
-    
+  
     /**
      * sportsmanagementModelTreetonodes::getProjectTeamsOptions()
-     * 
+     *
      * @param  integer $project_id
      * @return
      */
     function getProjectTeamsOptions($project_id=0)
     {
-                
+              
         if (!$project_id ) {
             $project_id = $this->jsmjinput->get('pid');
         }
@@ -725,15 +725,15 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         $this->jsmquery->select(' CASE WHEN CHAR_LENGTH(t.name) < 45 THEN t.name ELSE t.middle_name END AS text ');
         $this->jsmquery->from('#__sportsmanagement_team AS t');
           $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
-                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');      
+                $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');    
           //. ' LEFT JOIN #__sportsmanagement_project_team AS pt ON pt.team_id = t.id '
           $this->jsmquery->where('pt.project_id = ' . $project_id);
 
           $this->jsmquery->order('text ASC');
 
 
-        
-                
+      
+              
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
         if($result === false) {
@@ -747,10 +747,10 @@ class sportsmanagementModelTreetonodes extends JSMModelList
     }
 
 
-    
+  
     /**
      * sportsmanagementModelTreetonodes::storeshort()
-     * 
+     *
      * @param  mixed $cid
      * @param  mixed $post
      * @return
@@ -761,7 +761,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         //$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($post,true).'</pre>', '');				
         for($x = 0;$x < count($cid);$x ++)
         {
-                    
+                  
             // Create an object for the record we are going to update.
             $object = new stdClass();
             // Must be a valid primary key value.
@@ -774,7 +774,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
                 $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 $result = false;
             }
-            
+          
         }
         return $result;
     }

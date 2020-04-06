@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,8 +11,8 @@
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_rquotes
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -26,10 +26,10 @@ if (!defined('JSM_PATH') ) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
-JLoader::register('modRquotesHelper', __DIR__ . '/helper.php'); 
+JLoader::register('modRquotesHelper', __DIR__ . '/helper.php');
 
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if (!class_exists('sportsmanagementHelper') ) {
@@ -45,12 +45,12 @@ $cfg_which_database = $params->get('cfg_which_database');
 $filename=$params->get('filename', 'rquotes.txt');
 $randomtext=$params->get('randomtext');
 //database params
-$style = $params->get('style', 'default'); 
+$style = $params->get('style', 'default');
 $category = $params->get('category', '');
 $rotate = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
 
-switch ($source) 
+switch ($source)
 {
 case 'db':
     if($rotate=='single_random') {
@@ -103,4 +103,4 @@ default:
 
 
 }
-?> 
+?>

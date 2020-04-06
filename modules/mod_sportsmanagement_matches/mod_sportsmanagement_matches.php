@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -61,8 +61,8 @@ if (!defined('_JSMMATCHLISTMODURL')) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modMatchesSportsmanagementHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');

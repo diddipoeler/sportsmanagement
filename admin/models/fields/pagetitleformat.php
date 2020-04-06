@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ class JFormFieldPageTitleFormat extends FormField
 {
     protected $type = 'pagetitleformat';
 
-    function getInput() 
+    function getInput()
     {
         $lang = Factory::getLanguage();
         $extension = "com_sportsmanagement";
@@ -32,7 +32,7 @@ class JFormFieldPageTitleFormat extends FormField
         ||    $lang->load($extension, $source, null, false, false)
         ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
         ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
-        
+      
         $mitems = array();
         $mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
         $mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
@@ -42,11 +42,11 @@ class JFormFieldPageTitleFormat extends FormField
         $mitems[] = HTMLHelper::_('select.option', 5, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE_SEASON'));
         $mitems[] = HTMLHelper::_('select.option', 6, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
         $mitems[] = HTMLHelper::_('select.option', 7, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
-        
+      
         $output= HTMLHelper::_(
             'select.genericlist',  $mitems,
             $this->name,
-            'class="inputbox" size="1"', 
+            'class="inputbox" size="1"',
             'value', 'text', $this->value, $this->id
         );
         return $output;

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewPlayer
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -28,15 +28,15 @@ use Joomla\CMS\Uri\Uri;
 class sportsmanagementViewPlayer extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewPlayer::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
-  
+
         $model = $this->model;
         $model::$projectid = $this->jinput->getInt('p', 0);
         $model::$personid = $this->jinput->getInt('pid', 0);
@@ -61,7 +61,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         if (isset($this->overallconfig['person_events'])) {
             /**
  *              alles ok
- */    
+ */  
         } else {
             $person_events = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id);
             if (is_array($person_events) || is_object($person_events)) {
@@ -164,8 +164,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
             $hasData = false;
             $fields = $this->extended->getFieldset($fieldset->name);
             foreach ($fields as $field) {
-                $value = $field->value; 
-                if (!empty($value)) { 
+                $value = $field->value;
+                if (!empty($value)) {
                     $hasData = true;
                     break;
                 }
@@ -174,8 +174,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         $this->hasExtendedData = $hasData;
 
         $hasStatus = false;
-        if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) 
-            || ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) 
+        if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
+            || ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 )
             || ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 )
         ) {
             $hasStatus = true;

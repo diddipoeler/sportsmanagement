@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * modJSMStatistikRekordHelper
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -30,7 +30,7 @@ class modJSMStatistikRekordHelper
 
     /**
      * modJSMStatistikRekordHelper::getData()
-     * 
+     *
      * @param  mixed $params
      * @param  mixed $module
      * @return
@@ -49,7 +49,7 @@ class modJSMStatistikRekordHelper
 
              $query->select('count(*) as total');
              $query->from('#__sportsmanagement_match');
-    
+  
              $db->setQuery($query);
              $anzahl  = $db->loadResult();
 
@@ -67,7 +67,7 @@ class modJSMStatistikRekordHelper
 
          $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
-        
+      
     }
-    
+  
 }

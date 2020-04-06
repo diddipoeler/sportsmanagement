@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -43,7 +43,7 @@ $ordering = ($this->sortColumn == 's.ordering');
                     <th width="20">
         <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
                     </th>
-                    
+                  
                     <th width="" class="title">
         <?php
         echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
@@ -54,7 +54,7 @@ $ordering = ($this->sortColumn == 's.ordering');
         echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
         ?>
                     </th>
-                    
+                  
                 </tr>
             </thead>
             <tfoot>
@@ -81,7 +81,7 @@ $ordering = ($this->sortColumn == 's.ordering');
                         <td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
                         <td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
         <?php
-                        
+                      
         $inputappend='';
         ?>
                             <td class="center">
@@ -100,7 +100,7 @@ $ordering = ($this->sortColumn == 's.ordering');
                                 </a>
                             </td>
         <?php
-                        
+                      
         ?>
                         <td><?php echo $row->name; ?></td>
                         <td class="order">
@@ -116,7 +116,7 @@ $ordering = ($this->sortColumn == 's.ordering');
                         </td>
                         <td class="center"><?php echo $row->id; ?></td>
                         <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->username; ?></td> 
+                            <td><?php echo $row->username; ?></td>
                     </tr>
         <?php
         $k=1 - $k;

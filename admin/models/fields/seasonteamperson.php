@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,9 +26,9 @@ jimport('joomla.form.formfield');
 
 /**
  * FormFieldseasonteamperson
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -68,44 +68,44 @@ class JFormFieldseasonteamperson extends FormField
             $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = stp.season_id');
             $query->where($targetid.'='.$select_id);
             $query->order('s.name');
-            $starttime = microtime(); 
+            $starttime = microtime();
             Factory::getDbo()->setQuery($query);
             $options = Factory::getDbo()->loadObjectList();
         }
         else
           {
              $options = '';
-        }        
+        }      
 
         // Initialize variables.
             $html = '';
             $attribs['width'] = '25px';
             $attribs['height'] = '25px';
-            
+          
         if ($options ) {
             $html .= '<table>';
             foreach ($options as $i => $option)
             {
-            
+          
                 $html .= '<tr>';
                 $html .= '<td>'.$option->seasonname.'</td>';
-            
+          
                 $html .= '<td>'.HTMLHelper::image($option->clublogo, '',    $attribs).'</td>';
                 $html .= '<td>'.$option->teamname.'</td>';
-            
-                $html .= '</tr>';    
-            }   
-            
+          
+                $html .= '</tr>';  
+            } 
+          
             $html .= '</table>';
-        } 
+        }
         else
             {
             $html .= '<div class="alert alert-no-items">';
             $html .=Text::_('JGLOBAL_NO_MATCHING_RESULTS');
             $html .= '</div>';
         }
-    
-            return $html;    
-    
+  
+            return $html;  
+  
     }
 }

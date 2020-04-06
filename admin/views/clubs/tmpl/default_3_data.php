@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -146,7 +146,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                         <?php //echo $checked; ?>
                         <?php //echo $row->name;  ?>
                         <div class="small">
-                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>    
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>  
                     </td>
                     <td class="center">
                         <?php
@@ -158,28 +158,28 @@ $joomlaicon = $params->get('show_joomla_icons');
                         ?>
                     </td>
                     <td class="center">
-                    <?php 
+                    <?php
                     if ($row->email ) {
                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
                     }
-                
+              
                     if ($row->facebook ) {
                         ?>
                         <br>
                         <?php
                                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/facebook.png', '', '');
                     }
-                
-                        ?>    
+              
+                        ?>  
                     </td>
                     <td>
-                        <input<?php echo $inputappend; ?>    
+                        <input<?php echo $inputappend; ?>  
                             type="text" size="10" class="form-control form-control-inline"
                             name="unique_id<?php echo $row->id; ?>"
                             value="<?php echo $row->unique_id; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>    
+                        <input<?php echo $inputappend; ?>  
                             type="text" size="10" class="form-control form-control-inline"
                             name="new_club_id<?php echo $row->id; ?>"
                             value="<?php echo $row->new_club_id; ?>"
@@ -189,35 +189,35 @@ $joomlaicon = $params->get('show_joomla_icons');
                     </td>
                     <td class="center">
                         <?php
-                        $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
+                        $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png';
                         $imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
                         echo HTMLHelper::_(
                             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
                             $imageTitle, 'title= "'.$imageTitle.'"'
                         );
-                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id, Uri::root().$row->logo_big, $imageTitle, '20', Uri::root().$row->logo_big);                        
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id, Uri::root().$row->logo_big, $imageTitle, '20', Uri::root().$row->logo_big);                      
                         ?>
                     </td>
                     <td class="center">
                         <?php
-                        $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
+                        $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png';
                         $imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
                         echo HTMLHelper::_(
                             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
                             $imageTitle, 'title= "'.$imageTitle.'"'
                         );
-                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id, Uri::root().$row->logo_middle, $imageTitle, '20', Uri::root().$row->logo_middle);                        
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id, Uri::root().$row->logo_middle, $imageTitle, '20', Uri::root().$row->logo_middle);                      
                         ?>
                     </td>
                     <td class="center">
                         <?php
-                        $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
+                        $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png';
                         $imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
                         echo HTMLHelper::_(
                             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
                             $imageTitle, 'title= "'.$imageTitle.'"'
                         );
-                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id, Uri::root().$row->logo_small, $imageTitle, '20', Uri::root().$row->logo_small);                       
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id, Uri::root().$row->logo_small, $imageTitle, '20', Uri::root().$row->logo_small);                     
                         ?>
                     </td>
                     <td class="">
@@ -227,13 +227,13 @@ $joomlaicon = $params->get('show_joomla_icons');
                             value="<?php echo $row->zipcode; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>    
+                        <input<?php echo $inputappend; ?>  
                             type="text" size="30" class="form-control form-control-inline"
                             name="location<?php echo $row->id; ?>"
                             value="<?php echo $row->location; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>    
+                        <input<?php echo $inputappend; ?>  
                             type="text" size="30" class="form-control form-control-inline"
                             name="address<?php echo $row->id; ?>"
                             value="<?php echo $row->address; ?>"
@@ -245,7 +245,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                         $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                         echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $row->id, 'style="width:150px" class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->country);
                         ?>
-                    </td>         
+                    </td>       
                     <td class="center">
                         <div class="btn-group">
                             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'clubs.', $canChange, 'cb'); ?>
@@ -258,7 +258,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
                     <td class="order">
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'clubs.orderup', 'JLIB_HTML_MOVE_UP', true); ?>

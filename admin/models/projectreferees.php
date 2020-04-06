@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelProjectReferees
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -36,12 +36,12 @@ class sportsmanagementModelProjectReferees extends ListModel
 
     /**
  * sportsmanagementModelProjectReferees::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'p.firstname',
         'p.lastname',
@@ -76,7 +76,7 @@ class sportsmanagementModelProjectReferees extends ListModel
         $option = $jinput->getCmd('option');
         // Initialise variables.
         //$app = Factory::getApplication('administrator');
-        
+      
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') ) {
             $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''), '');
             $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''), '');
@@ -88,13 +88,13 @@ class sportsmanagementModelProjectReferees extends ListModel
 
         $published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
         $this->setState('filter.state', $published);
-        
+      
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
         $this->setState('filter.search_nation', $temp_user_request);
-        
+      
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_position_id', 'filter_project_position_id', '');
         $this->setState('filter.project_position_id', $temp_user_request);
-        
+      
         $value = Factory::getApplication()->input->getUInt('limitstart', 0);
         $this->setState('list.start', $value);
 
@@ -104,26 +104,26 @@ class sportsmanagementModelProjectReferees extends ListModel
 
     /**
      * sportsmanagementModelProjectReferees::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
     {
         $app    = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-       
+     
         $this->_project_id    = $app->getUserState("$option.pid", '0');
         $this->_season_id    = $app->getUserState("$option.season_id", '0');
         $this->_team_id = Factory::getApplication()->input->getVar('team_id');
         $this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
-        
+      
         if (!$this->_team_id ) {
             $this->_team_id    = $app->getUserState("$option.team_id", '0');
         }
         if (!$this->_project_team_id ) {
             $this->_project_team_id    = $app->getUserState("$option.project_team_id", '0');
         }
-       
+     
         // Create a new query object.
         $query = Factory::getDbo()->getQuery(true);
         // Select some fields
@@ -137,11 +137,11 @@ class sportsmanagementModelProjectReferees extends ListModel
         $query->where('p.published = 1');
         $query->where('tp.season_id = '.$this->_season_id);
         $query->where('pref.project_id = '.$this->_project_id);
-        
+      
         if ($this->getState('filter.project_position_id')) {
             $query->where('pref.project_position_id = '.$this->getState('filter.project_position_id'));
         }
-        
+      
         if ($this->getState('filter.search')) {
             $query->where(
                 '(LOWER(p.lastname) LIKE ' . Factory::getDbo()->Quote('%' . $this->getState('filter.search') . '%').
@@ -154,11 +154,11 @@ class sportsmanagementModelProjectReferees extends ListModel
             Factory::getDbo()->escape($this->getState('list.ordering', 'p.lastname')).' '.
             Factory::getDbo()->escape($this->getState('list.direction', 'ASC'))
         );
-        
+      
 
 
         return $query;
-        
+      
 
     }
 
@@ -178,7 +178,7 @@ class sportsmanagementModelProjectReferees extends ListModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $query = Factory::getDbo()->getQuery(true);
-        
+      
         if (!count($cid)) {
             return 0;
         }
@@ -187,11 +187,11 @@ class sportsmanagementModelProjectReferees extends ListModel
         // From the table
         $query->from('#__sportsmanagement_person AS pt');
         $query->join('INNER', '#__sportsmanagement_project_referee AS r ON r.person_id = pt.id');
-        $query->where('r.project_id = '.$project_id);  
+        $query->where('r.project_id = '.$project_id);
         $query->where('pt.published = 1');
 
         $db->setQuery($query);
-    
+  
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $current = $db->loadColumn();
@@ -219,9 +219,9 @@ class sportsmanagementModelProjectReferees extends ListModel
                  $query->select('pl.picture');
                  // From the table
                 $query->from('#__sportsmanagement_person AS pl');
-                 $query->where('pl.id = '.$pid);  
+                 $query->where('pl.id = '.$pid);
                  $query->where('pl.published = 1');
-        
+      
                 Factory::getDbo()->setQuery($query);
                 $player = Factory::getDbo()->loadObject();
                 if ($player) {
@@ -273,13 +273,13 @@ class sportsmanagementModelProjectReferees extends ListModel
           $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $query = Factory::getDbo()->getQuery(true);
-        
+      
         // Select some fields
         $query->select('count(*) AS count');
         // From the table
         $query->from('#__sportsmanagement_project_referee AS pr');
         $query->join('INNER', '#__sportsmanagement_project AS p on p.id = pr.project_id');
-        $query->where('p.id = '.$project_id);  
+        $query->where('p.id = '.$project_id);
 
         Factory::getDbo()->setQuery($query);
         return Factory::getDbo()->loadResult();

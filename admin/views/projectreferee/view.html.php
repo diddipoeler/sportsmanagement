@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewProjectReferee
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -30,23 +30,23 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 
     /**
      * sportsmanagementViewProjectReferee::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
         $lists = array();
-        
+      
         $this->_persontype = $this->jinput->get('persontype');
         if (empty($this->_persontype) ) {
             $this->_persontype    = $this->app->getUserState("$this->option.persontype", '0');
         }
-        
+      
         $this->project_id    = $this->item->project_id;
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
         $this->project    = $project;
-        
+      
         $person_id    = $this->item->person_id;
         $mdlPerson = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
         $project_person = $mdlPerson->getPerson(0, $person_id);
@@ -55,14 +55,14 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
  */
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
         $this->project_person    = $project_person;
-        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectreferee');        
+        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectreferee');      
         $this->extended    = $extended;
     }
 
-    
+  
     /**
      * sportsmanagementViewProjectReferee::addToolbar()
-     * 
+     *
      * @return void
      */
     protected function addToolbar()
@@ -71,9 +71,9 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_REF_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_REF_NEW');
         $this->icon = 'projectreferee';
         $this->app->setUserState("$this->option.pid", $this->item->project_id);
-        $this->app->setUserState("$this->option.persontype", $this->_persontype);    
+        $this->app->setUserState("$this->option.persontype", $this->_persontype);  
         parent::addToolbar();
     }
-    
+  
 }
 ?>

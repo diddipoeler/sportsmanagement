@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,8 +24,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelJLXMLExports
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -40,7 +40,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
      * @since  1.5.0a
      */
     private $_project_id = 0;
-    
+  
     /**
      * @var int
      *
@@ -233,29 +233,29 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
      */
     private $_statistic = array();
 
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelJLXMLExports::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
 
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
         $this->app = Factory::getApplication();
-        $this->user    = Factory::getUser();     
+        $this->user    = Factory::getUser();   
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
         $this->jsmdb = $this->getDbo();
         $this->query = $this->jsmdb->getQuery(true);
     }
-        
+      
     /**
      * exportData
      *
@@ -278,42 +278,42 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
             //  das ist neu
              $filename = $this->_getIdFromData('name', $this->_project);
-        
+      
             if(empty($filename)) {
                 if (empty($this->_project_id) || $this->_project_id == 0) {
                     Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
                 }
-                else 
+                else
                 {
                     /**
-* 
- * get the project datas 
+*
+ * get the project datas
 */
                     $this->_getProjectData();
                     $filename = $this->_getIdFromData('name', $this->_project);
                     $filename[0] = $filename[0]."-".$table;
                 }
-            }            
+            }          
              $l98filename = OutputFilter::stringURLSafe($filename[0])."-".date("ymd-His");
-             $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg';   
+             $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username.DIRECTORY_SEPARATOR.OutputFilter::stringURLSafe($filename[0]).'.jlg'; 
              $userpath = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$this->user->username;
             if (Folder::exists($userpath) ) {
             }
             else
              {
                 Folder::create($userpath);
-            }  
-      
+            }
+    
                $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-      
-      
+    
+    
             // open the project
             $output .= "<project>\n";
-            
+          
 
             if ($this->_update ) {
                      // get the matches data
-                $output .= $this->_addToXml($this->_getMatchData());    
+                $output .= $this->_addToXml($this->_getMatchData());  
             }
             else
             {
@@ -424,7 +424,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
             // mal als test
             $xmlfile = $xmlfile.$output;
-    
+  
             // download the generated xml
             $this->downloadXml($output, "");
 
@@ -454,7 +454,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         $option = $jinput->getCmd('option');
         $db    = $this->getDbo();
         $this->query = $this->jsmdb->getQuery(true);
-        
+      
         jimport('joomla.filter.output');
         $filename = $this->_getIdFromData('name', $this->_project);
         if(empty($filename)) {
@@ -477,7 +477,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         header("Cache-Control: no-cache, must-revalidate");
         header("Pragma: no-cache");
         /**/
-        ob_clean(); 
+        ob_clean();
         echo $data;
     }
 
@@ -499,11 +499,11 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         for ($i=0; $i < $length; $i++)
         {
             $current = ord($value{$i});
-            if (($current == 0x9) 
-                || ($current == 0xA) 
-                || ($current == 0xD) 
-                || (($current >= 0x20) && ($current <= 0xD7FF)) 
-                || (($current >= 0xE000) && ($current <= 0xFFFD)) 
+            if (($current == 0x9)
+                || ($current == 0xA)
+                || ($current == 0xD)
+                || (($current >= 0x20) && ($current <= 0xD7FF))
+                || (($current >= 0xE000) && ($current <= 0xFFFD))
                 || (($current >= 0x10000) && ($current <= 0x10FFFF))
             ) {
                 $ret .= chr($current);
@@ -575,10 +575,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getSportsManagementVersion()
-     * 
+     *
      * @return
      */
     private function _getSportsManagementVersion()
@@ -589,7 +589,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         $this->query->where('name LIKE '.$this->jsmdb->Quote(''.'com_sportsmanagement'.''));
         $this->jsmdb->setQuery($this->query);
           $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
-       
+     
         if ($manifest_cache['version'] ) {
             $result[0]['version'] = $manifest_cache['version'];
             $result[0]['exportversion'] = $manifest_cache['version'];
@@ -601,8 +601,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             }
             else
             {
-                  $result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');    
-            }            
+                  $result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');  
+            }          
 
             $result[0]['object'] = 'SportsManagementVersion';
             return $result;
@@ -610,10 +610,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getProjectData()
-     * 
+     *
      * @return
      */
     private function _getProjectData()
@@ -621,7 +621,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         $this->query->select('*');
         $this->query->from('#__sportsmanagement_project');
         $this->query->where('id = ' . $this->_project_id);
-        
+      
         $this->jsmdb->setQuery($this->query);
         $this->jsmdb->execute();
         if ($this->jsmdb->getNumRows() > 0) {
@@ -633,10 +633,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getTemplateData()
-     * 
+     *
      * @return
      */
     private function _getTemplateData()
@@ -649,7 +649,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         {
             $master_template_id = $this->_project[0]['master_template'];
         }
-        
+      
         $this->query->select('*');
         $this->query->from('#__sportsmanagement_template_config');
         $this->query->where('project_id = ' . $master_template_id);
@@ -664,10 +664,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getLeagueData()
-     * 
+     *
      * @return
      */
     private function _getLeagueData()
@@ -686,10 +686,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getSportsTypeData()
-     * 
+     *
      * @return
      */
     private function _getSportsTypeData()
@@ -708,10 +708,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getSeasonData()
-     * 
+     *
      * @return
      */
     private function _getSeasonData()
@@ -730,10 +730,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getDivisionData()
-     * 
+     *
      * @return
      */
     private function _getDivisionData()
@@ -752,10 +752,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getProjectTeamData()
-     * 
+     *
      * @return
      */
     private function _getProjectTeamData()
@@ -801,7 +801,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getProjectPositionData()
-     * 
+     *
      * @return
      */
     private function _getProjectPositionData()
@@ -820,10 +820,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getProjectRefereeData()
-     * 
+     *
      * @return
      */
     private function _getProjectRefereeData()
@@ -842,10 +842,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getTeamData()
-     * 
+     *
      * @return
      */
     private function _getTeamData()
@@ -874,10 +874,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getClubData()
-     * 
+     *
      * @return
      */
     private function _getClubData()
@@ -907,10 +907,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getRoundData()
-     * 
+     *
      * @return
      */
     private function _getRoundData()
@@ -932,7 +932,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getMatchData()
-     * 
+     *
      * @return
      */
     private function _getMatchData()
@@ -952,10 +952,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getPlaygroundData()
-     * 
+     *
      * @return
      */
     private function _getPlaygroundData()
@@ -991,10 +991,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getTeamPlayerData()
-     * 
+     *
      * @return
      */
     private function _getTeamPlayerData()
@@ -1006,7 +1006,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             $this->query->select('*');
             $this->query->from('#__sportsmanagement_team_player');
             $this->query->where('projectteam_id IN (' . $ids .')');
-            
+          
             $this->jsmdb->setQuery($this->query);
             $this->jsmdb->execute();
             if ($this->jsmdb->getNumRows() > 0) {
@@ -1021,10 +1021,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getTeamTrainingData()
-     * 
+     *
      * @return
      */
     private function _getTeamTrainingData()
@@ -1036,7 +1036,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             $this->query->select('*');
             $this->query->from('#__sportsmanagement_team_trainingdata');
             $this->query->where('project_team_id IN (' . $ids .')');
-            try{ 
+            try{
                   $this->jsmdb->setQuery($this->query);
                   $this->jsmdb->execute();
                 if ($this->jsmdb->getNumRows() > 0) {
@@ -1057,10 +1057,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getTeamStaffData()
-     * 
+     *
      * @return
      */
     private function _getTeamStaffData()
@@ -1094,10 +1094,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getMatchPlayerData()
-     * 
+     *
      * @return
      */
     private function _getMatchPlayerData()
@@ -1124,10 +1124,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getMatchStaffData()
-     * 
+     *
      * @return
      */
     private function _getMatchStaffData()
@@ -1157,7 +1157,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getMatchRefereeData()
-     * 
+     *
      * @return
      */
     private function _getMatchRefereeData()
@@ -1184,10 +1184,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getPositionData()
-     * 
+     *
      * @return
      */
     private function _getPositionData()
@@ -1217,7 +1217,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getParentPositionData()
-     * 
+     *
      * @return
      */
     private function _getParentPositionData()
@@ -1247,7 +1247,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getPersonData()
-     * 
+     *
      * @return
      */
     private function _getPersonData()
@@ -1289,7 +1289,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getMatchEvent()
-     * 
+     *
      * @return
      */
     private function _getMatchEvent()
@@ -1315,10 +1315,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getEventType()
-     * 
+     *
      * @return
      */
     private function _getEventType()
@@ -1347,7 +1347,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLExports::_getPositionEventType()
-     * 
+     *
      * @return
      */
     private function _getPositionEventType()
@@ -1362,7 +1362,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
             $this->query->from('#__sportsmanagement_position_eventtype');
             $this->query->where('eventtype_id IN (' . $event_ids .')');
             $this->query->where('position_id IN (' . $position_ids .')');
-            
+          
             $this->jsmdb->setQuery($this->query);
             $this->jsmdb->execute();
             if ($this->jsmdb->getNumRows() > 0) {
@@ -1375,10 +1375,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getPositionStatistic()
-     * 
+     *
      * @return
      */
     private function _getPositionStatistic()
@@ -1404,10 +1404,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getMatchStatistic()
-     * 
+     *
      * @return
      */
     private function _getMatchStatistic()
@@ -1433,10 +1433,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getMatchStaffStatistic()
-     * 
+     *
      * @return
      */
     private function _getMatchStaffStatistic()
@@ -1462,10 +1462,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
         return false;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLExports::_getStatistic()
-     * 
+     *
      * @return
      */
     private function _getStatistic()

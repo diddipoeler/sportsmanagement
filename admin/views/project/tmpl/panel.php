@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version   1.0.05
@@ -8,7 +8,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
- */ 
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
@@ -38,7 +38,7 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
 <div class="row-fluid">
 <div class="span7">
 
-<div class="well well-small">  
+<div class="well well-small">
 <div id="dashboard-icons" class="btn-group">
             <div id="element-box">
                 <div class="m">
@@ -52,7 +52,7 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
         $linkParams = "<span>$text</span>&nbsp;";
         $image = HTMLHelper::_('image.administrator', $imageFile, $path, null, null, $text).$linkParams;
         ?>
-                            <div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link, $image); ?></div></div>                                    
+                            <div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link, $image); ?></div></div>                                  
         <?php
                              $link = Route::_('index.php?option=com_sportsmanagement&view=templates&pid='.$this->project->id);
         $text = Text::_('COM_SPORTSMANAGEMENT_P_PANEL_FES');
@@ -62,8 +62,8 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
         ?>
                             <div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link, $image); ?></div></div>
         <?php
-        if ((isset($this->project->project_type)) 
-            && (($this->project->project_type == 'PROJECT_DIVISIONS') 
+        if ((isset($this->project->project_type))
+            && (($this->project->project_type == 'PROJECT_DIVISIONS')
             || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
         ) {
             $link = Route::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project->id);
@@ -75,8 +75,8 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
           <div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link, $image); ?></div></div>
             <?php
         }
-        if ((isset($this->project->project_type)) 
-            && (($this->project->project_type == 'TOURNAMENT_MODE') 
+        if ((isset($this->project->project_type))
+            && (($this->project->project_type == 'TOURNAMENT_MODE')
             || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
         ) {
             $link = Route::_('index.php?option=com_sportsmanagement&view=treetos&pid='.$this->project->id);
@@ -88,7 +88,7 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
           <div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link, $image); ?></div></div>
             <?php
         }
-                            
+                          
         if ($this->project->project_art_id != 3 ) {
             $link = Route::_('index.php?option=com_sportsmanagement&view=projectpositions&pid='.$this->project->id);
             $text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions);
@@ -158,4 +158,4 @@ ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

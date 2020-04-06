@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * modJSMRandomplayerHelper
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -47,11 +47,11 @@ class modJSMRandomplayerHelper
 
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('tt.id');
         $query->from('#__sportsmanagement_project_team tt ');
         $query->where('tt.project_id > 0');
-                    
+                  
         if($projectstring != "" && $projectstring > 0 ) {
             $query->where('tt.project_id IN ('.$projectstring.')');
         }
@@ -62,18 +62,18 @@ class modJSMRandomplayerHelper
 
         $query->order('rand()');
         $query->setLimit('1');
-        
+      
         $db->setQuery($query);
         $projectteamid = $db->loadResult();
-       
-        if ($params['debug_modus'] ) {        
+     
+        if ($params['debug_modus'] ) {      
 
         }
 
-       
+     
         $query = $db->getQuery(true);
-        
-                
+      
+              
         $query->clear();
 
         $query->select('stp1.person_id');
@@ -83,26 +83,26 @@ class modJSMRandomplayerHelper
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         $query->where('pt.id = ' . $projectteamid);
-        
+      
         $query->where('stp1.season_id = ' . $season_id);
         $query->where('st1.season_id = ' . $season_id);
-        
+      
         $query->order('rand()');
-        
+      
         $db->setQuery($query, 0, 1);
         $res = $db->loadRow();
 
         if (!$res ) {
-            Log::add('Keine Spieler vorhanden');      
+            Log::add('Keine Spieler vorhanden');    
         }
         else
         {
         }
 
-        if ($params['debug_modus'] ) {        
+        if ($params['debug_modus'] ) {      
 
         }
-        
+      
 
         if (!class_exists('sportsmanagementModelPlayer')) {
             JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
@@ -110,7 +110,7 @@ class modJSMRandomplayerHelper
         if (!class_exists('sportsmanagementModelPerson')) {
             JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);
         }
-        
+      
         sportsmanagementModelProject::$projectid = $res[1];
         sportsmanagementModelPerson::$projectid = $res[1];
         sportsmanagementModelPerson::$personid = $res[0];
@@ -124,15 +124,15 @@ class modJSMRandomplayerHelper
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         $playerresult = array('project' => $project,
-         'player' => $person, 
+         'player' => $person,
          'inprojectinfo'    => is_array($info) && count($info) ? $info[0] : $info,
          'infoteam' => $infoteam);
-        if ($params['debug_modus'] ) {        
+        if ($params['debug_modus'] ) {      
 
         }
         return $playerresult;
-      
+    
         //      $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-      
+    
     }
 }

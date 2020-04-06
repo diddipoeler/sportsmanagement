@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="resultsmatrix">
-<?php 
+<?php
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
     echo $this->loadTemplate('debug');
 }
@@ -32,7 +32,7 @@ echo $this->loadTemplate('selectround');
  * aufbau der templates
  */
 $this->output = array();
-  
+
 $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
 if(isset($this->divisions) && count($this->divisions) > 1) {
     $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
@@ -44,7 +44,7 @@ else
 
 echo $this->loadTemplate('show_tabs');
 
-if ($this->params->get('show_map', 0) ) { 
+if ($this->params->get('show_map', 0) ) {
     echo $this->loadTemplate('googlemap');
 }
 

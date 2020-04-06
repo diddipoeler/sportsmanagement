@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -33,13 +33,13 @@ JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementModelMatch
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
- * 
+ *
  * https://docs.joomla.org/Sending_email_from_extensions
  */
 class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
@@ -49,7 +49,7 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
     const MATCH_ROSTER_SUBSTITUTE_IN    = 1;
     const MATCH_ROSTER_SUBSTITUTE_OUT    = 2;
     const MATCH_ROSTER_RESERVE            = 3;
-    
+  
     var $teams = null;
     static $_season_id = 0;
     static $_project_id = 0;
@@ -65,15 +65,15 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
     public function __construct($config = array())
     {
         parent::__construct($config);
-   
-    }       
-    
-    
+ 
+    }     
+  
+  
 
-    
+  
     /**
      * sportsmanagementModelMatch::insertgooglecalendar()
-     * 
+     *
      * @return void
      * https://packagist.org/packages/joomla/google
      */
@@ -85,17 +85,17 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         //$params = \ComponentHelper::getParams($option);
-    
+  
         $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid', '');
         $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret', '');
-        
-        $options = new Registry();  
-        $input = new JInput;  
-    
+      
+        $options = new Registry();
+        $input = new JInput;
+  
         //$options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
         //$options->set('clientsecret', $google_client_secret);
         $google = new JGoogle($options);
-   
+ 
 
 
         $oauth = new JOAuth2Client($options, null, $input);
@@ -106,20 +106,20 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
 
         $result = $auth->authenticate();
 
-    
+  
         //$oauth = new JOAuth2Client($options, $http, $input);
         //$auth = new JGoogleAuthOauth2($options, $oauth);
         //$object = new JGoogleDataCalendar($options, $auth);
         $object = new JGoogleDataCalendar($options);
 
-        /*    
+        /*  
         $token['access_token'] = 'accessvalue';
         $token['refresh_token'] = 'refreshvalue';
         $token['created'] = time() - 1800;
         $token['expires_in'] = 3600;
         $this->oauth->setToken($token);
         */
-            
+          
         // Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/).
         //$options->set('clientid', 'google_client_id.apps.googleusercontent.com');
         //$options->set('clientsecret', 'google_client_secret');
@@ -147,7 +147,7 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
         }
         */
 
-        //$ini_google_calendar = $calendar->listCalendars($options);    
+        //$ini_google_calendar = $calendar->listCalendars($options);  
 
         //$url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList?' . http_build_query($options);
 
@@ -157,13 +157,13 @@ class sportsmanagementModelmatchgooglecalendar extends JSMModelAdmin
 
 
 
+  
     
-      
-    }  
+    }
+  
+  
     
-    
-      
-            
-    
+          
+  
 }
 ?>

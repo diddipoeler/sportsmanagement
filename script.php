@@ -17,52 +17,52 @@
  * https://github.com/joomla/joomla-cms/issues/14330
  * https://api.joomla.org/cms-3/deprecated.html
  * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
- * 
+ *
  * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
- * 
- * 
+ *
+ *
  */
 
 /**
  * wichtige links
- * 
+ *
  * bootstrap beispiele
  * http://bootsnipp.com/
- * 
+ *
  * bootstrap css
  * http://getbootstrap.com/css/
- * 
+ *
  * bootstrap javascript
  * http://getbootstrap.com/javascript/
- * 
+ *
  * Retrieving request data using JInput
  * https://docs.joomla.org/Retrieving_request_data_using_JInput
- * 
+ *
  * https://docs.joomla.org/J2.5:Managing_Component_Updates_(Script.php)
- * 
+ *
  * Joomla developer network
  * https://developer.joomla.org/coding-standards/php-code.html
- * 
+ *
  * Google Calendar API nutzen
  * http://www.codefreaks.net/google-calendar-api-mit-php-nuetzen/
- * 
- * 
+ *
+ *
  * https://github.com/google/google-api-php-client
  * https://github.com/google/google-api-php-client-services
- * 
- * 
+ *
+ *
  * https://vi-solutions.de/de/tips-vom-joomla-spezialist/265-joomla-komponente-mit-sql-update
- * 
+ *
  * Time difference between php timestamps
  * https://stackoverflow.com/questions/9732553/time-difference-between-php-timestamps-in-hours
  * https://stackoverflow.com/questions/40330156/timestampdiff-how-to-use-it-in-php-mysql-to-calculate-difference-between-date
  * http://php.net/manual/de/datetime.diff.php
- * 
+ *
  * protokollierung von fehlern
  * http://eddify.me/posts/logging-in-joomla-with-jlog.html
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -78,16 +78,16 @@ use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if(version_compare(JVERSION,'3.0.0','ge'))
 {
 jimport('joomla.html.html.bootstrap');
 }
-        
+      
 /**
  * com_sportsmanagementInstallerScript
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version 2014
  * @access public
@@ -101,16 +101,16 @@ class com_sportsmanagementInstallerScript
      */
     private $release = '3.3.00';
     //$language_update = '';
-    
+  
     /**
 	 * Constructor
 	 *
 	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
-	 */    
+	 */  
     public function __construct( $adapter)
     {
     // https://api.joomla.org/cms-3/deprecated.html
-if(version_compare( substr(JVERSION,0,5) ,'4.0.0','ge')) 
+if(version_compare( substr(JVERSION,0,5) ,'4.0.0','ge'))
 {
 $this->startPane = 'startTabSet';
 $this->endPane = 'endTabSet';
@@ -127,11 +127,11 @@ $this->endPanel = 'endPanel';
 //$this->release = $adapter->get( "manifest" )->version;
 }
 
-    
+  
     }
 
 	
-    
+  
     /**
 	 * Called on installation
 	 *
@@ -139,17 +139,17 @@ $this->endPanel = 'endPanel';
 	 *
 	 * @return  boolean  True on success
 	 */
-	function install( $adapter) 
+	function install( $adapter)
 	{
 
 	}
- 
+
 	/**
 	 * Called on uninstallation
 	 *
 	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 */
-	function uninstall( $adapter) 
+	function uninstall( $adapter)
 	{
 	   $db = Factory::getDbo();
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
@@ -189,25 +189,25 @@ if ( $deinstallmodule )
                     echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
 					// There was an error in uninstalling the package
 		//			echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
-                    
+                  
      				}
                     catch (Exception $e) {
 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
-Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');			    
+Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');			  
                     // Package uninstalled successfully
                     echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_ERROR', $name). '</p>';
-                    //continue;    
+                    //continue;  
                     }
-    
+  
 				
 
 			}
 			}
 		}
-          //}            
-        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_MODULE_TEXT') . '</p>';       
+          //}          
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_MODULE_TEXT') . '</p>';     
         }
-        
+      
         if ( $deinstallplugin )
         {
 //        $manifest = $adapter->getParent()->manifest;
@@ -240,24 +240,24 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
                     {
                     // Package uninstalled successfully
                     echo '<p>' . Text::sprintf('COM_INSTALLER_UNINSTALL_SUCCESS', $name). '</p>';
-                    continue;    
+                    continue;  
                     }
-                    
+                  
 				}
 
 			}
 
-          } 
-        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_PLUGIN_TEXT') . '</p>';        
+          }
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_PLUGIN_TEXT') . '</p>';      
         }
-        
+      
         if ( $deinstalldatabase )
         {
-            
+          
         }
 		
 	}
- 
+
 	/**
 	 * Called on update
 	 *
@@ -265,11 +265,11 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 	 *
 	 * @return  boolean  True on success
 	 */
-	function update( $adapter) 
+	function update( $adapter)
 	{
 		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
 	}
- 
+
 
 	/**
 	 * Called before any type of action
@@ -279,10 +279,10 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
 	 *
 	 * @return  boolean  True on success
 	 */
-	function preflight($route,  $adapter) 
+	function preflight($route,  $adapter)
 	{
-	    
-    if ( $route == 'update' ) 
+	  
+    if ( $route == 'update' )
     {
         $this->oldRelease = $this->getParam('version');
         if (version_compare($this->oldRelease, $this->release, 'lt'))
@@ -303,10 +303,10 @@ Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsm
                 $query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
                 $query->values($eid . ', ' . $db->quote($this->oldRelease));
                 $db->setQuery($query);
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if(version_compare(JVERSION,'3.0.0','ge'))
 {
-    $db->execute();        
-}    
+    $db->execute();      
+}  
 else
 {
     $db->query();
@@ -319,17 +319,17 @@ else
             }
         }
     }
-    
-    
-    
-    
-       
-       if(version_compare(JVERSION,'3.0.0','ge')) 
+  
+  
+  
+  
+     
+       if(version_compare(JVERSION,'3.0.0','ge'))
         {
             // Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
             "active" => "tab1_id" // It is the ID of the active tab.
-        );  
+        );
             $image1 = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
             $image2 = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
             $image3 = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
@@ -349,16 +349,16 @@ else
             <li>
         		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.Text::_(' Create/Update Images Folders'); ?></a>
     		</li>
-            
+          
         </ul>
-            
+          
             <?PHP
             echo HTMLHelper::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
-            echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component')); 
+            echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component'));
             echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
             echo HTMLHelper::_('bootstrap.'.$this->endPanel);
- 
-             
+
+           
             }
             else
             {
@@ -369,8 +369,8 @@ else
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
 		echo HTMLHelper::_('sliders.panel', $image.' Component', 'panel-component');
         echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
-        }                      
-        
+        }                    
+      
         ?>
 		
 		<img
@@ -391,15 +391,15 @@ else
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png"
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
-         <?php       
+         <?php     
         echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
-        
-        
-        
-        
-        
+      
+      
+      
+      
+      
 	}
- 
+
 
 	/**
 	 * com_sportsmanagementInstallerScript::getParam()
@@ -422,11 +422,11 @@ else
 	 *
 	 * @return  boolean  True on success
 	 */
-	function postflight($route,  $adapter) 
+	function postflight($route,  $adapter)
 	{
 	$mainframe = Factory::getApplication();
     $db = Factory::getDbo();
-    
+  
     // sicherheitshalber dateien löschen, die ich falsch angelegt habe.
     // aber nur wenn sie vorhanden sind
 $files = array(
@@ -467,7 +467,7 @@ $files = array(
             '/administrator/components/com_sportsmanagement/views/round/tmpl/edit_3.php',
             '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_details.php',
-            '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_description.php', 
+            '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_description.php',
             '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_extended.php',
             '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_picture.php',
             '/administrator/components/com_sportsmanagement/views/projectreferee/tmpl/edit_3.php',
@@ -493,7 +493,7 @@ $files = array(
             '/administrator/components/com_sportsmanagement/views/template/tmpl/edit_3.php',
             '/administrator/components/com_sportsmanagement/views/treeto/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/treeto/tmpl/edit_3.php',
-            
+          
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3.php',
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_description.php',
@@ -502,15 +502,15 @@ $files = array(
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_extended.php',
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_picture.php',
             '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3_picture.php',
-            
+          
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/edit_3.php',
-            
+          
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/edit_3_description.php',
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form.php',
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form_description.php',
 		);
-            
+          
 foreach ($files as $file)
 		{
 			if (File::exists(JPATH_ROOT . $file) && !File::delete(JPATH_ROOT . $file))
@@ -522,13 +522,13 @@ foreach ($files as $file)
 
 
 		
-    if(version_compare(JVERSION,'3.0.0','ge')) 
+    if(version_compare(JVERSION,'3.0.0','ge'))
         {
 
             echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = ComponentHelper::getParams('com_sportsmanagement');
-$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';  
+$xmlfile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'config.xml';
 $jRegistry = new Registry;
 $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
@@ -542,59 +542,59 @@ foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
-    switch ($route)        
+    switch ($route)      
     {
     case "install":
-    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules')); 
-    self::installModules($adapter);
-    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
-    
-    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
-    self::installPlugins($adapter);
-    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
-
-    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
-    self::createImagesFolder();
-    /** führt zu fehlern */
-    //self::installJoomlaExtensions($adapter);
-    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
-    
-    self::setParams($newparams);   
-    self::deleteinstallfiles(); 
-    break;
-    case "update":
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
     self::installModules($adapter);
-    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
-    
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
+  
     echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
-    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
 
-    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));
     self::createImagesFolder();
     /** führt zu fehlern */
     //self::installJoomlaExtensions($adapter);
     echo HTMLHelper::_('bootstrap.'.$this->endPanel);
-    
+  
+    self::setParams($newparams); 
+    self::deleteinstallfiles();
+    break;
+    case "update":
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
+    self::installModules($adapter);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
+  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
+    self::installPlugins($adapter);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
+
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));
+    self::createImagesFolder();
+    /** führt zu fehlern */
+    //self::installJoomlaExtensions($adapter);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
+  
     self::setParams($newparams);
     self::deleteinstallfiles();
     break;
     case "discover_install":
     break;
-        
+      
     }
     echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
     }
-    
-    
-    
+  
+  
+  
 	}
 
 
 /**
  * com_sportsmanagementInstallerScript::deleteinstallfiles()
- * 
+ *
  * @return void
  */
 public function deleteinstallfiles()
@@ -613,14 +613,14 @@ public function deleteinstallfiles()
     $folder = '/tmp/sportsmanagement-master';
     if(Folder::exists(JPATH_ROOT.$folder))
 	{
-	Folder::delete(JPATH_ROOT.$folder);	  
-    }    
-    
+	Folder::delete(JPATH_ROOT.$folder);	
+    }  
+  
 }
 
     /**
      * com_sportsmanagementInstallerScript::createImagesFolder()
-     * 
+     *
      * @return void
      */
     public function createImagesFolder()
@@ -683,7 +683,7 @@ public function deleteinstallfiles()
 		File::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
 		}
 		
-        foreach ($folders as $folder) 
+        foreach ($folders as $folder)
         {
 		if(!Folder::exists(JPATH_ROOT.'/images/com_sportsmanagement/database'.$folder))
 		{	
@@ -700,7 +700,7 @@ public function deleteinstallfiles()
 		echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' vorhanden!</p>';	
 		}
 		}
-        
+      
 		foreach ($folders as $folder) {
 			$from = Path::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
 			if(Folder::exists($from)) {
@@ -712,7 +712,7 @@ public function deleteinstallfiles()
 				}
 			}
 		}
-        
+      
         foreach ($folders as $folder) {
 			try{
 		switch ( $folder )
@@ -773,62 +773,62 @@ File::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeh
 		}
 
 	}
-    
-    
+  
+  
     /**
      * com_sportsmanagementInstallerScript::setParams()
      * sets parameter values in the component's row of the extension table
      * @param mixed $param_array
      * @return void
      */
-    function setParams($param_array) 
+    function setParams($param_array)
     {
-        
+      
         $mainframe = Factory::getApplication();
         $db = Factory::getDbo();
-        
-                if ( count($param_array) > 0 ) 
+      
+                if ( count($param_array) > 0 )
                 {
                         try{
                         // read the existing component value(s)
                         $db = Factory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
-                       
+                     
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
                         }
-                       
+                     
                         // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $params );
                         $db->setQuery('UPDATE #__extensions SET params = ' .
                                 $db->quote( $paramsString ) .
                                 ' WHERE name = "com_sportsmanagement"' );
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if(version_compare(JVERSION,'3.0.0','ge'))
 {
-    $db->execute();        
-}    
+    $db->execute();      
+}  
 else
 {
     $db->query();
 }
-                
+              
                         } catch (Exception $e) {
                         $msg = $e->getMessage(); // Returns "Normally you would have other code...
                         $code = $e->getCode(); // Returns '500';
                         Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                         }
                 }
-                
+              
         }
-        
+      
 
-    
-    
+  
+  
 //    /**
 //     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
-//     * 
+//     *
 //     * @param mixed $adapter
 //     * @return void
 //     */
@@ -838,16 +838,16 @@ else
 //  $src = $adapter->getParent()->getPath('source');
 //  $manifest = $adapter->getParent()->manifest;
 //  $db = Factory::getDBO();
-//  
+//
 //  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
-//  
+//
 //  }
-  
-  
+
+
 	
 	/**
 	 * com_sportsmanagementInstallerScript::installPlugins()
-	 * 
+	 *
 	 * @param mixed $adapter
 	 * @return void
 	 */
@@ -860,16 +860,16 @@ else
 
   $plugins = $manifest->xpath('plugins/plugin');
   $plugins3 = $manifest->xpath('plugins3/plugin');
-  
-  if(version_compare(JVERSION,'3.0.0','ge')) 
+
+  if(version_compare(JVERSION,'3.0.0','ge'))
         {
   foreach ($plugins3 as $plugin)
         {
         $name = (string)$plugin->attributes()->plugin;
         $group = (string)$plugin->attributes()->group;
-        
+      
         echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
-       
+     
         // Select some fields
         $query = $db->getQuery(true);
         $query->clear();
@@ -896,43 +896,43 @@ else
             // also installieren
             $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name.'_3';
             $installer = new Installer;
-            $result = $installer->install($path);    
-        }    
+            $result = $installer->install($path);  
+        }  
         break;
-        default:    
+        default:  
         $path = $src.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.$name;
         $installer = new Installer;
         $result = $installer->install($path);
         break;
         }
-        
+      
 /**
  * das ein- und ausschalten den anwendern überlassen
  */
         /*
-        // auf alle faelle erst mal nicht einschalten        
+        // auf alle faelle erst mal nicht einschalten      
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
         $object->extension_id = $plugin_id;
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
+        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');
         */
         }
   }
-       
-        
+     
+      
 
-    
+  
     }
-    
-    
+  
+  
 
 	
 	/**
 	 * com_sportsmanagementInstallerScript::installModules()
-	 * 
+	 *
 	 * @param mixed $adapter
 	 * @return void
 	 */
@@ -948,12 +948,12 @@ else
         {
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
-            
+          
             $position = (string)$module->attributes()->position;
             $published = (string)$module->attributes()->published;
-            
+          
             echo '<p>' . Text::_('Modul : ' ) . $name . ' installiert!</p>';
-            
+          
             if (is_null($client))
             {
                 $client = 'site';
@@ -962,22 +962,22 @@ else
             $installer = new Installer;
             $result = $installer->install($path);
             $ordering = '99';
-            
+          
             if( $client == 'administrator' )
 			{
 				$position = version_compare(JVERSION, '3.0', '<') && $name == 'mod_sportsmanagement_quickicon' ? 'icon' : 'cpanel';
                 $ordering = '1';
-            }    
-            
+            }  
+          
             if ( $position )
             {
                 try{
                 $query = "UPDATE #__modules SET position='".$position."', ordering=".$ordering.", published=".$published." WHERE module='".$name."' ";
                 $db->setQuery($query);
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if(version_compare(JVERSION,'3.0.0','ge'))
 {
-    $db->execute();        
-}    
+    $db->execute();      
+}  
 else
 {
     $db->query();
@@ -1005,23 +1005,23 @@ else
 									);
 									$db->insertObject('#__modules_menu', $o);
 								}
-                
-                
+              
+              
                 }
                 } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns '500';
                 Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-                }   
-                
+                } 
+              
             }
-        }    
-  
-  
-  
+        }  
+
+
+
 
     }
-    
-    
-                  
+  
+  
+                
 }

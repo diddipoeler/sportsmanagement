@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,13 +15,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-use Joomla\Registry\Registry; 
-use Joomla\CMS\Filter\OutputFilter; 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelsmquote
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,9 +29,9 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementModelsmquote extends JSMModelAdmin
 {
-    
+  
     static $db_num_rows  = 0;
-    
+  
     /**
      * Method to save the form data.
      *
@@ -51,7 +51,7 @@ class sportsmanagementModelsmquote extends JSMModelAdmin
           // Set the values
           $data['modified'] = $date->toSql();
           $data['modified_by'] = $user->get('id');
-      
+    
         if (isset($post['extended']) && is_array($post['extended'])) {
             // Convert the extended field to a string.
             $parameter = new Registry;
@@ -69,35 +69,35 @@ class sportsmanagementModelsmquote extends JSMModelAdmin
                 $data['alias'] = OutputFilter::stringURLSafe($data['name']);
             }
         }
-      
+    
         // zuerst sichern, damit wir bei einer neuanlage die id haben
         if (parent::save($data) ) {
             $id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+          
             if ($isNew ) {
                 //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
             }
-           
+         
             // Fields to update.
             $fields = array(
             $db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
             );
- 
+
             // Conditions for which records should be updated.
             $conditions = array(
             $db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
             );
- 
+
             $query->update($db->quoteName('#__sportsmanagement_rquote'))->set($fields)->where($conditions);
- 
+
             $db->setQuery($query);
-            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);            
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);          
         }
-        
-        return true;   
+      
+        return true; 
     }
-    
+  
 }

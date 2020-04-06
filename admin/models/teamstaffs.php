@@ -38,23 +38,23 @@ class sportsmanagementModelTeamStaffs extends ListModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $this->_project_id    = $app->getUserState("$option.pid", '0');
         $this->_season_id    = $app->getUserState("$option.season_id", '0');
         $this->_team_id        = Factory::getApplication()->input->getVar('team_id');
         $this->_project_team_id        = Factory::getApplication()->input->getVar('project_team_id');
-        
+      
         if (!$this->_team_id ) {
             $this->_team_id    = $app->getUserState("$option.team_id", '0');
         }
         if (!$this->_project_team_id ) {
             $this->_project_team_id    = $app->getUserState("$option.project_team_id", '0');
         }
-        
+      
         // Get the WHERE and ORDER BY clauses for the query
         $where = self::_buildContentWhere();
         $orderby = self::_buildContentOrderBy();
-        
+      
         if (COM_SPORTSMANAGEMENT_USE_NEW_TABLE ) {
             $query->select(
                 array('ppl.firstname',
@@ -68,7 +68,7 @@ class sportsmanagementModelTeamStaffs extends ListModel
             )
                 ->from('#__sportsmanagement_person AS ppl')
                 ->join('INNER', '#__sportsmanagement_season_team_person_id AS ts on ts.person_id = ppl.id')
-                ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
+                ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');  
         }
         else
         {
@@ -81,9 +81,9 @@ class sportsmanagementModelTeamStaffs extends ListModel
             )
                 ->from('#__sportsmanagement_person AS ppl')
                 ->join('INNER', '#__sportsmanagement_team_staff AS ts on ts.person_id = ppl.id')
-                ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');    
+                ->join('LEFT', '#__users AS u ON u.id = ts.checked_out');  
         }
-        
+      
 
         if ($where) {
             $query->where($where);
@@ -91,7 +91,7 @@ class sportsmanagementModelTeamStaffs extends ListModel
         if ($orderby) {
             $query->order($orderby);
         }
-        
+      
         return $query;
     }
 
@@ -134,7 +134,7 @@ class sportsmanagementModelTeamStaffs extends ListModel
             $where[]='ts.projectteam_id='.$this->_project_team_id;
             $where[]="ppl.published = '1'";
         }
-        
+      
         if ($search) {
             if ($search_mode) {
                 $where[]='LOWER(lastname) LIKE '.$this->_db->Quote($search.'%');
@@ -158,7 +158,7 @@ class sportsmanagementModelTeamStaffs extends ListModel
         return $where;
     }
 
-    
+  
 
 
     /**

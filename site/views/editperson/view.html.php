@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEditPerson
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,16 +27,16 @@ use Joomla\CMS\Uri\Uri;
 class sportsmanagementViewEditPerson extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewEditPerson::init()
-     * 
+     *
      * @return
      */
-    function init() 
+    function init()
     {
 
-       
+     
         $this->item = $this->model->getData();
         $this->form = $this->get('Form');
         if ($this->item->id ) {
@@ -49,14 +49,14 @@ class sportsmanagementViewEditPerson extends sportsmanagementView
                 $this->item->deathday = '';
                 $this->form->setValue('deathday', '');
             }
-            
+          
         }
         else
         {
             $this->form->setValue('birthday', '');
             $this->form->setValue('deathday', '');
         }
-        
+      
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);

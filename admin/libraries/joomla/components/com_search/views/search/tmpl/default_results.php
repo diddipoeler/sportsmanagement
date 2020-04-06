@@ -31,15 +31,15 @@ if (isset($result->picture) && $result->picture != '') {
     <dt class="result-title">
     <?php echo $this->pagination->limitstart + $result->count . '. ';?>
     <?php if ($result->href) :?>
-            <a href="<?php echo Route::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php 
+            <a href="<?php echo Route::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php
            endif;?>>
-                <?php 
+                <?php
                 //echo $this->escape($result->title);
                 echo $result->title;
                 ?>
             </a>
     <?php else:?>
-    <?php 
+    <?php
             //echo $this->escape($result->title);
             echo $result->title;
             ?>
@@ -64,7 +64,7 @@ if (isset($result->picture) && $result->picture != '') {
 <?php if (isset($result->picture) && $result->picture != '') {
     echo '<div style="clear:both"></div>';
 } ?>
-    
+  
 <?php endforeach; ?>
 </dl>
 

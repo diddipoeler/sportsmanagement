@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,11 +11,11 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
+
 /**
  * SportsManagement Model
  */

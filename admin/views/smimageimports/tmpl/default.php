@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,7 +28,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 ?>
@@ -49,7 +49,7 @@ else
                 <input    type="text" name="filter_search" id="filter_search"
                                 value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
                                 class="text_area" onchange="$('adminForm').submit(); " />
-                                
+                              
                 <button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
         <?php
@@ -57,13 +57,13 @@ else
         ?>
                 </button>
             </td>
-            
+          
             <td class="nowrap" align="right"><?php echo $this->lists['folders']; ?></td>
-            
+          
             <td class="nowrap" align="right">
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php 
+                <?php
                 echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
             </select>
@@ -78,24 +78,24 @@ else
                         <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                     </th>
                     <th>
-                    <?php 
-                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'); 
+                    <?php
+                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE');
                     echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'), 'name', $this->sortDirection, $this->sortColumn);
-                    
+                  
                     ?>
                     </th>
-                    <th><?php 
-                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'); 
+                    <th><?php
+                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH');
                     echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'), 'folder', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
-                    <th><?php 
-                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'); 
+                    <th><?php
+                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY');
                     echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'), 'directory', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
-                    <th><?php 
-                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'); 
+                    <th><?php
+                    //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE');
                     echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'), 'file', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
@@ -104,7 +104,7 @@ else
 </thead>
 
 <tfoot><tr><td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
-                    
+                  
 <?PHP
 $k=0;
 for ($i=0,$n=count($this->items); $i < $n; $i++)
@@ -125,13 +125,13 @@ for ($i=0,$n=count($this->items); $i < $n; $i++)
 <td><?php echo $row->file; ?></td>
 <input type='hidden' name='file[<?php echo $row->id; ?>]' value='<?php echo $row->file; ?>' />
 <td class="center">
-<?php 
+<?php
 if ($row->published ) {
     $imageTitle = Text::_('bereits installiert');
     echo HTMLHelper::_(
         'image', 'administrator/components/com_sportsmanagement/assets/images/ok.png',
         $imageTitle, 'title= "'.$imageTitle.'"'
-    );    
+    );  
 }
 else
 {
@@ -139,9 +139,9 @@ else
     echo HTMLHelper::_(
         'image', 'administrator/components/com_sportsmanagement/assets/images/error.png',
         $imageTitle, 'title= "'.$imageTitle.'"'
-    );      
+    );    
 }
- 
+
 ?>
 </td>
 </tr>
@@ -166,4 +166,4 @@ $k=1 - $k;
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

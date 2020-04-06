@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,9 +16,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 ) 
-    || ( isset($this->inprojectinfo->suspension) && $this->inprojectinfo->suspension > 0 ) 
-    || ( isset($this->inprojectinfo->away) && $this->inprojectinfo->away > 0 ) 
+if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
+    || ( isset($this->inprojectinfo->suspension) && $this->inprojectinfo->suspension > 0 )
+    || ( isset($this->inprojectinfo->away) && $this->inprojectinfo->away > 0 )
 ) {
     ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="staff">
@@ -53,7 +53,7 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
                 ?>
@@ -76,7 +76,7 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
              </td>
@@ -95,11 +95,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             </tr>
             <tr>
              <td class="label">
-                        
+                      
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURY_END');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -112,11 +112,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
         ?>
        <tr>
       <td class="label">
-                    
+                  
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURY_TYPE');
         ?>
-                    
+                  
         </td>
         <td class="data">
             <?php
@@ -149,17 +149,17 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             ?>
             <tr>
             <td class="label">
-                        
+                      
             <?php
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -174,25 +174,25 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             ?>
             <tr>
             <td class="label">
-                        
+                      
             <?php
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
-                        
+                      
              </td>
             </tr>
             <tr>
              <td class="label">
-                        
+                      
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_DATE');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -202,11 +202,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             </tr>
             <tr>
              <td class="label">
-                        
+                      
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_END');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -219,11 +219,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
         ?>
        <tr>
       <td class="label">
-                    
+                  
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_REASON');
         ?>
-                    
+                  
         </td>
         <td class="data">
             <?php
@@ -256,17 +256,17 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             ?>
             <tr>
             <td class="label">
-                        
+                      
             <?php
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -281,25 +281,25 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             ?>
             <tr>
             <td class="label">
-                        
+                      
             <?php
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
-                        
+                      
              </td>
             </tr>
             <tr>
              <td class="label">
-                        
+                      
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_DATE');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -309,11 +309,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
             </tr>
             <tr>
              <td class="label">
-                        
+                      
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_END');
                 ?>
-                        
+                      
              </td>
              <td class="data">
                 <?php
@@ -326,11 +326,11 @@ if (( isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0 )
         ?>
        <tr>
       <td class="label">
-                    
+                  
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_REASON');
         ?>
-                    
+                  
         </td>
         <td class="data">
             <?php

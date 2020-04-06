@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -36,7 +36,7 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
                 ?>&nbsp;<input    type="text" name="filter_search" id="filter_search"
                                 value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
                                 class="text_area" onchange="$('adminForm').submit(); " />
-                                
+                              
                 <button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
         <?php
@@ -44,23 +44,23 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
         ?>
                 </button>
             </td>
-            
+          
             <?PHP
-            
+          
             switch ($view)
             {
             case 'projectteams':
-               
+             
             ?>
             <td nowrap='nowrap' align='right'><?php echo $this->lists['nationpt'].'&nbsp;&nbsp;'; ?></td>
             <?PHP
-            
+          
                 break;
-            default:    
+            default:  
                 if (isset($this->lists) ) {
                     foreach ( $this->lists as $key  => $value)
                     {
-                        if (!is_array($value) ) {    
+                        if (!is_array($value) ) {  
                             ?>
                             <td nowrap='nowrap' align='right'><?php echo $this->lists[$key].'&nbsp;&nbsp;'; ?></td>
                 <?PHP
@@ -69,7 +69,7 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
                 }
                 break;
             }
-            
+          
             switch ($view)
             {
             case 'projects':
@@ -79,19 +79,19 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
             <td nowrap='nowrap' align='right'>
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php 
+                <?php
                 echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
             </select>
             </td>
             <?PHP
-                break;    
+                break;  
             case 'smquotes':
             ?>
             <td nowrap='nowrap' align='right'>
             <select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo Text::_('JOPTION_SELECT_CATEGORY');?></option>
-                <?php 
+                <?php
                 echo HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
                 ?>
             </select>
@@ -99,7 +99,7 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
             <td nowrap='nowrap' align='right'>
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
                 <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php 
+                <?php
                 echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
             </select>
@@ -107,9 +107,9 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
             <?PHP
                 break;
             }
-            
+          
             ?>
-            
+          
             <?PHP
             switch ($view)
             {
@@ -124,19 +124,19 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
                 {
                         printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#'.$i.';', '&#'.$i.';');
                 }
-                
+              
                 ?>
             </td>
     <?PHP
                 break;
-            
+          
             default:
                 break;
             }
-            
-            
-            
+          
+          
+          
             ?>
         </tr>
     </table>
-  
+

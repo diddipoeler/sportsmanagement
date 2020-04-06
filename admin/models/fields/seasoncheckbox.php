@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ jimport('joomla.form.formfield');
 
 /**
  * FormFieldseasoncheckbox
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -61,11 +61,11 @@ class JFormFieldseasoncheckbox extends FormField
         $query->select('id AS value, name AS text');
         $query->from('#__sportsmanagement_season');
         $query->order('name DESC');
-            
-        $starttime = microtime(); 
+          
+        $starttime = microtime();
         Factory::getDbo()->setQuery($query);
         $options = Factory::getDbo()->loadObjectList();
-    
+  
           // teilnehmende saisons selektieren
         if ($select_id ) {
             $query = Factory::getDbo()->getQuery(true);
@@ -74,7 +74,7 @@ class JFormFieldseasoncheckbox extends FormField
             $query->from('#__sportsmanagement_'.$targettable);
             $query->where($targetid.'='.$select_id);
             $query->group('season_id');
-            $starttime = microtime(); 
+            $starttime = microtime();
             Factory::getDbo()->setQuery($query);
             $this->value = Factory::getDbo()->loadColumn();
         }
@@ -102,15 +102,15 @@ class JFormFieldseasoncheckbox extends FormField
                 $html[] = '<li>';
                 $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[]"' . ' value="'
                 . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
-    
+  
                 $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
                 $html[] = '</li>';
         }
             $html[] = '</ul>';
             // End the checkbox field output.
             $html[] = '</fieldset>';
-    
-            return implode($html);    
-    
+  
+            return implode($html);  
+  
     }
 }

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -72,4 +72,4 @@ foreach ($this->templates AS $row)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

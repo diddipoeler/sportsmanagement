@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,9 +31,9 @@ JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTR
 
 /**
  * sportsmanagementModelPrediction
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -54,27 +54,27 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
     static $_predictionProject        = null;
     static $predictionProjectID    = null;
     static $show_debug_info    = false;
-    
+  
     static $joomlaUserID        = 0;
     static $roundID        = 0;
     static $pggroup        = 0;
     static $pggrouprank        = 0;
     static $pjID        = 0;
     static $isNewMember        = 0;
-    
+  
     static $tippEntryDone        = 0;
     static $from        = 0;
     static $to        = 0;
     static $type        = 0;
     static $page        = 0;
     static $cfg_which_database = 0;
-    
+  
     static $table_config = '';
-    
+  
 
     /**
      * sportsmanagementModelPrediction::__construct()
-     * 
+     *
      * @return
      */
     function __construct()
@@ -101,13 +101,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         self::$page    = $jinput->getInt('page', 1);
         parent::__construct();
     }
-  
-  
-  
-  
+
+
+
+
     /**
    * sportsmanagementModelPrediction::checkRoundID()
-   * 
+   *
    * @param  mixed $project_id
    * @param  mixed $roundID
    * @return void
@@ -118,12 +118,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $option = $jinput->getCmd('option'); 
+        $option = $jinput->getCmd('option');
         $document    = Factory::getDocument();
 
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);    
+        $query = $db->getQuery(true);  
 
         $query->select('roundcode');
         $query->from('#__sportsmanagement_round');
@@ -132,9 +132,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $db->setQuery($query);
 
         $results = $db->loadResult();
-        
+      
         if (!$results ) {
-              $query->clear();    
+              $query->clear();  
               $query->select('current_round');
               $query->from('#__sportsmanagement_project');
               $query->where('id = '.(int)$project_id);
@@ -153,7 +153,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         }
 
         if ((int)$roundID == 0 ) {
-            $query->clear();    
+            $query->clear();  
             $query->select('current_round');
             $query->from('#__sportsmanagement_project');
             $query->where('id = '.(int)$project_id);
@@ -170,12 +170,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
         }
-    
+  
     }
 
     /**
    * sportsmanagementModelPrediction::getChampionPoints()
-   * 
+   *
    * @param  mixed $champ_tipp
    * @return
    */
@@ -189,18 +189,18 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $ChampPoints = 0;
-  
+
         $resultchamp = 0;
         $resultchamppoints = 0;
-  
+
         $sChampTeamsList = array();
         $dChampTeamsList = array();
         $champTeamsList = array();
-  
+
         // select champion from project
-  
+
         $query->select('league_champ,points_tipp_champ');
         $query->from('#__sportsmanagement_prediction_project');
         $query->where('prediction_id = ' . (int)self::$predictionGameID);
@@ -208,11 +208,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $query->where('champ = 1');
         $db->setQuery($query);
         $result = $db->loadObject();
-        
+      
         if ($result ) {
             $resultchamp = $result->league_champ;
             $resultchamppoints = $result->points_tipp_champ;
-        }    
+        }  
 
         // user hat auch champion tip abgegeben
         if ($champ_tipp ) {
@@ -221,24 +221,24 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             }
             foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]] = $value[1];
             }
-    
+  
             if (isset($champTeamsList[(int)self::$pjID]) ) {
                 if ($champTeamsList[(int)self::$pjID] == $resultchamp ) {
                     $ChampPoints = $resultchamppoints;
                 }
             }
-  
+
         }
-  
-            
+
+          
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect				
         return $ChampPoints;
     }
-  
- 
+
+
     /**
      * sportsmanagementModelPrediction::getPredictionGame()
-     * 
+     *
      * @return
      */
     static function getPredictionGame($predictionGameID=0)
@@ -249,47 +249,47 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         if ($predictionGameID ) {
-            self::$predictionGameID = $predictionGameID;    
+            self::$predictionGameID = $predictionGameID;  
         }
-       
+     
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-    
+  
         if (!self::$_predictionGame) {
             if (self::$predictionGameID > 0) {
-                
-                
+              
+              
                 $query->clear();
                  $query->select('*');
                  $query->select("CONCAT_WS(':',id,alias) AS slug");
                  $query->from('#__sportsmanagement_prediction_game');
                  $query->where('id = '.(int)self::$predictionGameID);
                  $query->where('published = 1');
-        
+      
                 $db->setQuery($query, 0, 1);
                 self::$_predictionGame = $db->loadObject();
-                
+              
                 if (!self::$_predictionGame) {
 
-                }  
-                
+                }
+              
             }
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect      
         return self::$_predictionGame;
     }
 
     /**
    * sportsmanagementModelPrediction::getPredictionMemberAvatar()
-   * 
+   *
    * @param  mixed $members
    * @param  mixed $configavatar
    * @return
    */
     static function getPredictionMemberAvatar($members, $configavatar)
     {
-  
+
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -298,60 +298,60 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $picture = '';
         $query->select('avatar');
-        $query->where('userid = ' . (int)$members); 
-  
+        $query->where('userid = ' . (int)$members);
+
         switch ( $configavatar )
         {
-    
+  
         case 'prediction':
             $picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
-    
+  
             $query->clear('select');
             $query->clear('where');
             $query->select('picture');
-            $query->from('#__sportsmanagement_prediction_member');  
+            $query->from('#__sportsmanagement_prediction_member');
             $query->where('user_id = ' . (int)$members);
             $query->where('prediction_id = '.(int)self::$predictionGameID);
             break;
-    
+  
         case 'com_sportsmanagement':
             // alles ok
             break;
-    
+  
         case 'com_cbe15':
             $picture = 'images/cbe/'.$members.'.png';
             break;
-    
+  
         case 'com_cbe25':
             $picture = 'components/com_cbe/assets/user.png';
-            $query->from('#__cbe_users');  
+            $query->from('#__cbe_users');
             break;
-    
+  
         case 'com_cbe':
             $picture = 'components/com_cbe/assets/user.png';
-            $query->from('#__cbe_users'); 
+            $query->from('#__cbe_users');
             break;
-    
+  
         case 'com_kunena':
             $picture = 'media/kunena/avatars/resized/size200/nophoto.jpg';
-            $query->from('#__kunena_users'); 
+            $query->from('#__kunena_users');
             break;
-    
+  
         case 'com_community':
-            $query->from('#__community_users'); 
+            $query->from('#__community_users');
             break;
-    
+  
         case 'com_comprofiler':
             $query->clear('where');
-            $query->from('#__comprofiler'); 
+            $query->from('#__comprofiler');
             $query->where('user_id = ' . (int)$members);
             break;
-    
+  
         }
-    
+  
         switch ( $configavatar )
         {
         case 'prediction':
@@ -370,8 +370,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
-            }        
-            break;  
+            }      
+            break;
         case 'com_kunena':
             try {
                        $db->setQuery($query);
@@ -384,19 +384,19 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
-            }        
+            }      
             break;
-        }  
- 
+        }
+
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $picture;
-  
-    } 
+
+    }
 
 
     /**
      * sportsmanagementModelPrediction::getPredictionMember()
-     * 
+     *
      * @param  mixed $configavatar
      * @return
      */
@@ -410,24 +410,24 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-       
+      
+     
         if (!self::$_predictionMember) {
             $query->clear();
-          
+        
                 //$query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
                 $query->select('CONCAT_WS(\':\',pm.id,u.username) AS pmID,CONCAT_WS(\':\',u.id,u.username) AS joomuserID, pm.registerDate AS pmRegisterDate, pm.*');
                 $query->from('#__sportsmanagement_prediction_member AS pm');
                 $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
                 $query->where('pm.prediction_id = '.(int)self::$predictionGameID);
-          
+        
             if ((int)self::$predictionMemberID > 0) {
                 //$query->clear();
                 $query->select('u.name, u.username');
                       $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
                       $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
                       $query->where('pm.id = '.(int)self::$predictionMemberID);
-        
+      
 
                 $db->setQuery($query, 0, 1);
                 self::$_predictionMember = $db->loadObject();
@@ -451,11 +451,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                     self::$_predictionMember = $db->loadObject();
                     if (isset(self::$_predictionMember->pmID)) {
                         self::$predictionMemberID = self::$_predictionMember->pmID;
-                        self::$joomlaUserID = self::$_predictionMember->joomuserID; 
+                        self::$joomlaUserID = self::$_predictionMember->joomuserID;
                     }
                     else
                     {
-                       
+                     
                         self::$_predictionMember = new stdclass();
                         self::$_predictionMember->id = 0;
                         self::$_predictionMember->pmID = 0;
@@ -475,13 +475,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         if (isset(self::$_predictionMember->user_id) ) {
             self::$_predictionMember->picture = self::getPredictionMemberAvatar(self::$_predictionMember->user_id, $configavatar['show_image_from']);
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect  
           return self::$_predictionMember;
     }
 
     /**
      * sportsmanagementModelPrediction::getPredictionProjectS()
-     * 
+     *
      * @return
      */
     static function getPredictionProjectS($predictionGameID=0)
@@ -495,11 +495,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         if ($predictionGameID ) {
-            self::$predictionGameID = $predictionGameID;    
+            self::$predictionGameID = $predictionGameID;  
         }
         if (!(int)self::$_predictionProjectS) {
             if ((int)self::$predictionGameID > 0) {
-             
+           
                       $query->clear();
                    $query->select('pp.*');
                    $query->select('p.name AS projectName, p.start_date');
@@ -521,10 +521,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $query->select('min(round_date_first)');
                 $query->from('#__sportsmanagement_round');
                 $query->where('project_id = '.$row->project_id);
-            
+          
                   $db->setQuery($query);
                   $row->start_date = $db->loadResult();
-            } 
+            }
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$_predictionProjectS;
@@ -532,7 +532,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getPredictionOverallConfig()
-     * 
+     *
      * @return
      */
     static function getPredictionOverallConfig()
@@ -542,7 +542,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getPredictionTemplateConfig()
-     * 
+     *
      * @param  mixed $template
      * @return
      */
@@ -558,8 +558,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-    
-    
+  
+  
           $query->clear();
           $query->select('t.params');
           $query->from('#__sportsmanagement_prediction_template AS t');
@@ -593,13 +593,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
         $jRegistry = new JRegistry;
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
-              $jRegistry->loadString($result); 
+              $jRegistry->loadString($result);
         }
         else
         {
             $jRegistry->loadJSON($result);
         }
-        $configvalues = $jRegistry->toArray(); 
+        $configvalues = $jRegistry->toArray();
 
         // check some defaults and init data for quicker access
         switch ($template)
@@ -628,7 +628,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getPredictionProject()
-     * 
+     *
      * @param  integer $project_id
      * @return
      */
@@ -642,10 +642,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        
+      
+      
         if ($project_id > 0) {
-           
+         
               $query->clear();
               $query->select('*');
               $query->from('#__sportsmanagement_project');
@@ -655,7 +655,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             if (!$result = $db->loadObject() ) {
                 return false;
             }
-            
+          
             if ($result->start_date == '0000-00-00' ) {
                 $query->clear();
                 $query->select('min(round_date_first)');
@@ -663,9 +663,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $query->where('project_id = '.(int)$project_id);
 
                 $db->setQuery($query);
-                $result->start_date = $db->loadResult();    
+                $result->start_date = $db->loadResult();  
             }
-   
+ 
             return $result;
         }
         return false;
@@ -673,7 +673,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getMatchTeam()
-     * 
+     *
      * @param  integer $teamID
      * @param  string  $teamName
      * @return
@@ -688,13 +688,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         //$teamName='name';
         if ($teamID==0 ) {
             return '#Error1 teamID==0 in '.__METHOD__;
         }
-    
-    
+  
+  
           $query->clear();
         $query->select('t.'.$teamName.' as name');
         $query->from('#__sportsmanagement_team AS t');
@@ -713,7 +713,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getMatchTeamClubLogo()
-     * 
+     *
      * @param  integer $teamID
      * @return
      */
@@ -727,18 +727,18 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        if ($teamID == 0 ) { 
-            return '#Error1 in '.__METHOD__; 
+      
+        if ($teamID == 0 ) {
+            return '#Error1 in '.__METHOD__;
         }
-         
+       
         $query->select('c.'.$which_logo);
         $query->from('#__sportsmanagement_club AS c');
         $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
         $query->where('pt.id = '.(int)$teamID);
-                    
+                  
         $db->setQuery($query);
         $db->execute();
         if ($object = $db->loadObject() ) {
@@ -747,10 +747,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         return '#Error2 in '.__METHOD__;
 
     }
-  
+
     /**
    * sportsmanagementModelPrediction::getMatchTeamClubFlag()
-   * 
+   *
    * @param  integer $teamID
    * @return
    */
@@ -764,19 +764,19 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        if ($teamID == 0) { 
-            return '#Error1 in '.__METHOD__; 
+      
+        if ($teamID == 0) {
+            return '#Error1 in '.__METHOD__;
         }
-        
-         
+      
+       
         $query->select('c.country');
         $query->from('#__sportsmanagement_club AS c');
         $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
         $query->where('pt.id = '.(int)$teamID);
-                    
+                  
         $db->setQuery($query);
         $db->execute();
         if ($object = $db->loadObject()) {
@@ -785,11 +785,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         return '#Error2 in '.__METHOD__;
 
     }
-  
+
 
     /**
      * sportsmanagementModelPrediction::getProjectSettings()
-     * 
+     *
      * @param  integer $pid
      * @return
      */
@@ -803,9 +803,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         if ($pid > 0) {
-        
+      
               $query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
               $query->from('#__sportsmanagement_round as r');
               $query->join('INNER', '#__sportsmanagement_project AS p ON p.current_round = r.id');
@@ -813,7 +813,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
             $db->setQuery($query, 0, 1);
               $result = $db->loadResult();
-        
+      
             if (!$result ) {
                 $query->clear();
                 $query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
@@ -822,10 +822,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $query->where('p.id = '.(int)$pid);
 
                 $db->setQuery($query, 0, 1);
-                $result = $db->loadResult();    
+                $result = $db->loadResult();  
             }
-        
-        
+      
+      
             return $result;
         }
         return false;
@@ -833,7 +833,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getProjectRounds()
-     * 
+     *
      * @param  integer $pid
      * @return
      */
@@ -847,9 +847,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         if ($pid > 0) {
-          
+        
               $query->select('max(id)');
               $query->from('#__sportsmanagement_round');
               $query->where('project_id = '.(int)$pid);
@@ -863,7 +863,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::checkPredictionMembership()
-     * 
+     *
      * @return
      */
     static function checkPredictionMembership()
@@ -876,7 +876,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('id');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
@@ -892,7 +892,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember()
-     * 
+     *
      * @return
      */
     static function checkIsNotApprovedPredictionMember()
@@ -905,7 +905,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('user_id,approved');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
@@ -923,7 +923,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getAllowed()
-     * 
+     *
      * @param  integer $pmUID
      * @return
      */
@@ -937,21 +937,21 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $allowed = false;
         $groupNames = '';
         // Application Instanz holen
         $app = Factory::getApplication();
         // JUserobjekt holen
         $user = Factory::getUser();
-        
+      
         $authorised = JAccess::getAuthorisedViewLevels(Factory::getUser()->get('id'));
 
         $authorisedgroups = $user->getAuthorisedGroups();
-        
+      
         foreach ($user->groups as $groupId => $value)
         {
-        
+      
             $query->clear();
             $query->select('title');
             $query->from('#__usergroups');
@@ -961,11 +961,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             $groupNames .= $db->loadResult();
             $groupNames .= '<br/>';
         }
-        
+      
         $groups = JAccess::getGroupsByUser($user->id, false);
-    
+  
         if ($user->id > 0) {
-            
+          
             //$aro_group = $acl->getAroGroup($user->id);
 
             if (($groups[0] == 7) || ($groups[0] == 8)) {
@@ -998,7 +998,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getSystemAdminsEMailAdresses()
-     * 
+     *
      * @return
      */
     function getSystemAdminsEMailAdresses()
@@ -1011,12 +1011,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('u.email');
         $query->from('#__users AS u');
         $query->where('u.sendEmail = 1');
         $query->where('u.block = 0');
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $query->join('INNER', '#__user_usergroup_map AS um ON um.user_id = u.id');
@@ -1027,12 +1027,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             // Joomla! 2.5 code here
             $query->where('u.usertype LIKE '.$db->Quote(''.'Super Administrator'.''));
         }
-        
-        
+      
+      
         $query->order('u.email');
 
         $db->setQuery($query);
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $res = $db->loadColumn();
@@ -1040,14 +1040,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
-        
+        }
+      
         return $res;
     }
 
     /**
      * sportsmanagementModelPrediction::getPredictionGameAdminsEMailAdresses()
-     * 
+     *
      * @return
      */
     function getPredictionGameAdminsEMailAdresses()
@@ -1060,8 +1060,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        
+      
+      
         $query->select('u.email');
         $query->from('#__users AS u');
         $query->join('INNER', '#__sportsmanagement_prediction_admin AS pa ON pa.user_id = u.id ');
@@ -1071,7 +1071,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $query->order('u.email');
 
         $db->setQuery($query);
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $res = $db->loadColumn();
@@ -1079,14 +1079,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
-        
+        }
+      
         return $res;
     }
 
     /**
      * sportsmanagementModelPrediction::getPredictionGameAdmins()
-     * 
+     *
      * @param  mixed $predictionID
      * @return
      */
@@ -1100,13 +1100,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('user_id');
         $query->from('#__sportsmanagement_prediction_admin');
         $query->where('prediction_id = '.(int)$predictionID);
 
         $db->setQuery($query);
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $res = $db->loadColumn();
@@ -1114,14 +1114,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
-        
+        }
+      
         return $res;
     }
 
     /**
      * sportsmanagementModelPrediction::getPredictionMemberEMailAdress()
-     * 
+     *
      * @param  mixed $predictionMemberID
      * @return
      */
@@ -1135,7 +1135,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('user_id');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('id = '.(int)$predictionMemberID);
@@ -1144,8 +1144,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         if (!$user_id = $db->loadResult()) {
             return false;
         }
-        
-        
+      
+      
         $query->clear();
         $query->select('u.email');
         $query->from('#__users AS u');
@@ -1154,7 +1154,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $query->order('u.email');
 
         $db->setQuery($query);
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $res = $db->loadColumn();
@@ -1162,14 +1162,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
+        }
         return $res;
     }
 
 
     /**
    * sportsmanagementModelPrediction::sendMemberTipResults()
-   * 
+   *
    * @param  mixed $predictionMemberID
    * @param  mixed $predictionGameID
    * @param  mixed $RoundID
@@ -1177,9 +1177,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
    * @param  mixed $joomlaUserID
    * @return
    */
-    public static function sendMemberTipResults($predictionMemberID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID) 
+    public static function sendMemberTipResults($predictionMemberID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID)
     {
-  
+
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -1187,7 +1187,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $option = $jinput->getCmd('option');
         $document    = Factory::getDocument();
         $app = Factory::getApplication();
- 
+
         $configprediction    = self::getPredictionTemplateConfig('predictionentry');
         $overallConfig = self::getPredictionOverallConfig();
         $configprediction    = array_merge($overallConfig, $configprediction);
@@ -1196,15 +1196,15 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $predictionProjectS = self::getPredictionProjectS();
         $match_ids = array();
         $round_ids = array();
-  
+
         if ($configprediction['use_pred_select_matches'] ) {
             $match_ids = $configprediction['predictionmatchid'];
         }
-      
+    
         if ($configprediction['use_pred_select_rounds'] ) {
             $round_ids = $configprediction['predictionroundid'];
-        }    
-      
+        }  
+    
         $roundResults = sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry(
             (int)$predictionGameID,
             (int)$ProjectID,
@@ -1213,7 +1213,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             $match_ids,
             $round_ids
         );
-                                          
+                                        
         $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
         //Fetch the mail object
@@ -1235,7 +1235,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
         //$sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
         $mailer->setSender($sender);
-  
+
         $recipient = $predictionGameMemberMail;
 
         /**
@@ -1243,8 +1243,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
  * template: overall
  * parameter: send_admin_user_tipentry
  */
-        if ($configprediction['send_admin_user_tipentry'] ) {  
-            $recipient[] = $sender[0];  
+        if ($configprediction['send_admin_user_tipentry'] ) {
+            $recipient[] = $sender[0];
         }
         //$mailer->addRecipient($predictionGameMemberMail);				
         $mailer->addRecipient($recipient);
@@ -1253,17 +1253,17 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
  * Create the mail
  */
         $mailer->setSubject(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_TITLE'));
-  
-  
+
+
         foreach ($predictionProjectS AS $predictionProject)
         {
-    
+  
             $body = '';
             $totalPoints = 0;
             /**
  * jetzt die ergebnisse
- */  
-            $body .= "<html>"; 
+ */
+            $body .= "<html>";
 
             $body .= "<table class='blog' cellpadding='0' cellspacing='0' width='100%'>";
             $body .= "<tr>";
@@ -1272,9 +1272,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             $body .= "</td>";
             $body .= "</tr>";
             $body .= "</table>";
-          
+        
             $body .= "<table width='100%' cellpadding='0' cellspacing='0'>";
-  
+
             $body .= "<tr>";
             $body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
             $body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
@@ -1285,7 +1285,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
             /**
  * schleife über die ergebnisse in der runde
- */    
+ */  
             foreach ($roundResults AS $result)
             {
                  $class = '';
@@ -1302,19 +1302,19 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date, 1, $predictionProjectSettings->timezone);
                 $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
                 $matchTimeDate = $matchTimeDate - $closingtime;
-                        
+                      
                  $body .= "<tr class='" . $class ."'>";
                 $body .= "<td class='td_c'>";
                 $jdate = Factory::getDate($result->match_date);
                 $jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
-                $body .= $jdate->format('d.m.Y H:i'); 
+                $body .= $jdate->format('d.m.Y H:i');
 
                 $body .= "</td>";
 
                  $homeName = self::getMatchTeam($result->projectteam1_id);
                 $awayName = self::getMatchTeam($result->projectteam2_id);
                 /**
- * clublogo oder vereinsflagge hometeam    
+ * clublogo oder vereinsflagge hometeam  
  */
                 $body .= "<td nowrap='nowrap' class='td_r'>";
                 $body .= $homeName;
@@ -1333,11 +1333,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                     $country_home = self::getMatchTeamClubFlag($result->projectteam1_id);
                     $body .=  JSMCountries::getCountryFlag($country_home);
                 }
-                $body .= "</td>";    
+                $body .= "</td>";  
 
-                $body .= "<td nowrap='nowrap' class='td_c'>";    
+                $body .= "<td nowrap='nowrap' class='td_c'>";  
                 $body .= "<b>" . $configprediction['seperator'] . "</b>";
-                $body .= "</td>";    
+                $body .= "</td>";  
                 /**
  * clublogo oder vereinsflagge awayteam
  */
@@ -1355,10 +1355,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                     $country_away = self::getMatchTeamClubFlag($result->projectteam2_id);
                     $body .=  JSMCountries::getCountryFlag($country_away);
                 }
-                $body .= "</td>";                
+                $body .= "</td>";              
                 $body .= "<td nowrap='nowrap' class='td_l'>";
                 $body .= $awayName;
-                $body .= "</td>";    
+                $body .= "</td>";  
 
                 /**
  * spielergebnisse
@@ -1395,13 +1395,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $body .= "</td>";
                 $body .= "</tr>";
                 /**
- * tendencen im tippspiel  
+ * tendencen im tippspiel
  */
                 if ($configprediction['show_tipp_tendence'] ) {
 
                     $body .= "<tr class='tipp_tendence'>";
                     $body .= "<td class='td_c'>";
-                    $body .= "&nbsp;"; 
+                    $body .= "&nbsp;";
                     $body .= "</td>";
 
                     $body .= "<td class='td_l' colspan='8'>";
@@ -1443,24 +1443,24 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             $body .= "<tr>";
             $body .= "<td colspan='8'>&nbsp;</td>";
             $body .= "<td class='td_c'>" . Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT', $totalPoints) ."</td>";
-            $body .= "</tr>";                
-    
-            $body .= "<table>";
+            $body .= "</tr>";              
   
+            $body .= "<table>";
+
             if (($configprediction['show_help']==1)||($configprediction['show_help']==2)) {
                 $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProject->mode);
-            }  
-  
-  
+            }
+
+
             $body .= "</html>";
-  
+
         }
-  
+
         $mailer->setBody($body);
 
         if ($configprediction['admin_debug'] ) {
-        
-        }        
+      
+        }      
 
         /**
  * Sending the mail
@@ -1474,12 +1474,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
              $emailadresses = implode(",", $predictionGameMemberMail);
              $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $emailadresses), 'notice');
         }
-                                          
+                                        
     }
-  
+
     /**
      * sportsmanagementModelPrediction::sendMembershipConfirmation()
-     * 
+     *
      * @param  mixed $cid
      * @return
      */
@@ -1490,8 +1490,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
-    
+  
+  
         if (count($cid)) {
             $cids = implode(',', $cid);
             // create and send mail about registration in Prediction game
@@ -1515,7 +1515,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                         // Joomla! 2.5 code here
                         $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
                     }
-                    
+                  
                     $mailer->setSender($sender);
 
                     //set Member as recipient
@@ -1558,7 +1558,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                     $body = Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MEMBERSHIP');
 
                     $mailer->setBody($body);
-                    
+                  
                     // Optional file attached
                     //$mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
 
@@ -1587,7 +1587,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::echoLabelTD()
-     * 
+     *
      * @param  mixed   $labelText
      * @param  mixed   $labelTextHelp
      * @param  integer $rowspan
@@ -1601,7 +1601,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
    * sportsmanagementModelPrediction::getPredictionGroupList()
-   * 
+   *
    * @return
    */
     static function getPredictionGroupList()
@@ -1614,7 +1614,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->select('id AS value, name AS text');
         $query->from('#__sportsmanagement_prediction_groups ');
         $query->order('name ASC');
@@ -1623,11 +1623,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $results = $db->loadObjectList();
         return $results;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelPrediction::getPredictionMemberList()
-     * 
+     *
      * @param  mixed $config
      * @param  mixed $actUserId
      * @return
@@ -1642,7 +1642,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         if ($config['show_full_name']==0) {
             $nameType='username';
         }
@@ -1650,8 +1650,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             {
             $nameType='name';
         }
-            
-            
+          
+          
         $query->select('pm.id AS value');
         $query->select('u.'.$nameType.' AS text');
         $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
@@ -1672,7 +1672,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getMemberPredictionTotalCount()
-     * 
+     *
      * @param  mixed $user_id
      * @return
      */
@@ -1686,8 +1686,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        
+      
+      
         $query->select('count(*)');
         $query->from('#__sportsmanagement_prediction_result AS pr');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
@@ -1700,7 +1700,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getMemberPredictionJokerCount()
-     * 
+     *
      * @param  mixed   $user_id
      * @param  integer $project_id
      * @return
@@ -1715,8 +1715,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        
+      
+      
         $query->select('count(id)');
         $query->from('#__sportsmanagement_prediction_result');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
@@ -1735,7 +1735,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::createResultsObject()
-     * 
+     *
      * @param  mixed   $home
      * @param  mixed   $away
      * @param  mixed   $tipp
@@ -1763,7 +1763,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch()
-     * 
+     *
      * @param  mixed $predictionProject
      * @param  mixed $result
      * @return
@@ -1772,11 +1772,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
     {
         if ($predictionProject->mode==0)    // Standard prediction Mode
         {
-        
+      
             if ((!isset($result->team1_result)) || (!isset($result->team2_result)) || (!isset($result->tipp_home)) || (!isset($result->tipp_away))) {
                 return 0;
             }
-        
+      
             if (!$result->joker)    // No Joker was used for this prediction
             {
                 //Prediction Result is the same as the match result / Top Tipp
@@ -1786,7 +1786,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
                 //Prediction Result is not the same as the match result but the correct difference between home and
                 //away result was tipped and the matchresult is draw
-                if (($result->team1_result==$result->team2_result) 
+                if (($result->team1_result==$result->team2_result)
                     && ($result->team1_result - $result->team2_result)==($result->tipp_home - $result->tipp_away)
                 ) {
                     return $predictionProject->points_correct_draw;
@@ -1799,7 +1799,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 }
 
                 //Prediction Result is not the same as the match result but the tendence of the result is correct
-                if    (((($result->team1_result - $result->team2_result)>0)&&(($result->tipp_home - $result->tipp_away)>0)) 
+                if    (((($result->team1_result - $result->team2_result)>0)&&(($result->tipp_home - $result->tipp_away)>0))
                     || ((($result->team1_result - $result->team2_result)<0)&&(($result->tipp_home - $result->tipp_away)<0))
                 ) {
                     return $predictionProject->points_correct_tendence;
@@ -1817,7 +1817,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
                 //With Joker - Prediction Result is not the same as the match result but the correct difference between home and
                 //away result was tipped and the matchresult is draw
-                if (($result->team1_result==$result->team2_result) 
+                if (($result->team1_result==$result->team2_result)
                     && ($result->team1_result - $result->team2_result)==($result->tipp_home - $result->tipp_away)
                 ) {
                     return $predictionProject->points_correct_draw_joker;
@@ -1830,7 +1830,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 }
 
                 //Prediction Result is not the same as the match result but the tendence of the result is correct
-                if    (((($result->team1_result - $result->team2_result)>0)&&(($result->tipp_home - $result->tipp_away)>0)) 
+                if    (((($result->team1_result - $result->team2_result)>0)&&(($result->tipp_home - $result->tipp_away)>0))
                     || ((($result->team1_result - $result->team2_result)<0)&&(($result->tipp_home - $result->tipp_away)<0))
                 ) {
                     return $predictionProject->points_correct_tendence_joker;
@@ -1844,8 +1844,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         {
             if ((!isset($result->team1_result)) || (!isset($result->team2_result))) {
                 return 0;
-            }        
-        
+            }      
+      
             if (($result->team1_result > $result->team2_result) && ($result->tipp=="1")) {return $predictionProject->points_tipp;
             }
             if (($result->team1_result < $result->team2_result) && ($result->tipp=="2")) {return $predictionProject->points_tipp;
@@ -1860,7 +1860,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getPredictionMembersResultsList()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  mixed   $round1ID
      * @param  integer $round2ID
@@ -1878,12 +1878,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         if ((int)$round1ID == 0 ) {
             $round1ID = 1;
         }
-        
-        
+      
+      
           $query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
           // normale spielzeit
           $query->select('m.team1_result_split AS homeResultSplit,m.team2_result_split AS awayResultSplit');
@@ -1901,13 +1901,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         }
 
         $query->where('r.id >= '.(int)$round1ID);
-        
+      
         if ((isset($round2ID)) && ( (int)$round2ID > 0) ) {
                         $query->where('r.id <= '.(int)$round2ID);
         }
 
         $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id');
-        
+      
         if (isset($user_id) &&  (int)$user_id > 0 ) {
                         $query->where('pr.user_id = '.(int)$user_id);
         }
@@ -1917,9 +1917,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $query->where('pm.prediction_id = '.(int)self::$predictionGameID);
         $query->where('pr.prediction_id = '.(int)self::$predictionGameID);
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
-        
+      
         $query->order('pm.id,m.match_date,m.id ASC');
-       
+     
         $db->setQuery($query);
         $results = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1928,7 +1928,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::createProjectSelector()
-     * 
+     *
      * @param  mixed $predictionProjects
      * @param  mixed $current
      * @param  mixed $addTotalSelect
@@ -1941,13 +1941,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-       
+      
+     
         //$output='<select class="inputbox" name="set_pj" onchange="this.form.submit();" >';
-        
+      
           //$output='<select class="inputbox" id="p" name="p" onchange="document.forms[\'resultsRoundSelector\'].r.value=0;submit();" >';
         $output='<select class="inputbox" id="pj" name="pj" onchange="this.form.submit();" >';
-        
+      
         //$output='<select class="inputbox" id="pj" name="pj" onchange="this.form.submit();" >';
 
         if (isset($addTotalSelect)) {
@@ -1979,7 +1979,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getPredictionProjectNames()
-     * 
+     *
      * @param  mixed   $predictionID
      * @param  string  $ordering
      * @param  integer $limit
@@ -1990,8 +1990,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        
+      
+      
         $query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName,CONCAT_WS(\':\',pj.id,pj.alias) AS slug');
         $query->from('#__sportsmanagement_project AS pj');
         $query->join('LEFT', '#__sportsmanagement_prediction_project AS ppj ON ppj.project_id = pj.id');
@@ -2003,7 +2003,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::savePredictionPoints()
-     * 
+     *
      * @param  mixed $memberResult
      * @param  mixed $predictionProject
      * @param  bool  $returnArray
@@ -2019,7 +2019,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
           //$show_debug = $this->getDebugInfo();
         //[matchID] => 14501
         //[match_date] => 2010-08-21 15:30:00
@@ -2039,7 +2039,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         //[pmID] => 46
 
         $result = true;
-        
+      
         $result_home = $memberResult->homeResult;
         $result_away = $memberResult->awayResult;
 
@@ -2057,9 +2057,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $diff = $memberResult->prDiff;
         $tend = $memberResult->prTend;
 
-        
+      
         if ($predictionProject->mode == 1 ) {
-    
+  
         }
         else
           {
@@ -2077,7 +2077,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $top        = 0;
         $diff        = 0;
         $tend        = 0;
-        
+      
 
         if ($predictionProject->mode == 1 )    // TOTO prediction Mode
         {
@@ -2091,11 +2091,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             if (( $result_home == $result_away ) && ( $tipp == '0' ) ) {
                   $points = 1;
             }
-      
+    
             if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
                 $app->enqueueMessage(Text::_('toto points -> '.$points.'<br>'), 'Notice');
             }
-    
+  
         }
 
 
@@ -2128,7 +2128,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                         $points = $predictionProject->points_correct_diff_joker;
                         $diff = 1;
                     }
-                    elseif (((($result_home - $result_away)>0)&&(($tipp_home - $tipp_away)>0)) 
+                    elseif (((($result_home - $result_away)>0)&&(($tipp_home - $tipp_away)>0))
                         || ((($result_home - $result_away)<0)&&(($tipp_home - $tipp_away)<0))
                     ) {
                         //Prediction Result is not the same as the match result but the tendence of the result is correct
@@ -2162,7 +2162,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                         $points = $predictionProject->points_correct_diff;
                         $diff = 1;
                     }
-                    elseif (((($result_home - $result_away)>0)&&(($tipp_home - $tipp_away)>0)) 
+                    elseif (((($result_home - $result_away)>0)&&(($tipp_home - $tipp_away)>0))
                         || ((($result_home - $result_away)<0)&&(($tipp_home - $tipp_away)<0))
                     ) {
                         //Prediction Result is not the same as the match result but the tendence of the result is correct
@@ -2177,7 +2177,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 }
             }
         }
-        
+      
         // Must be a valid primary key value.
         $object = new stdClass();
         $object->id = $memberResult->prID;
@@ -2191,7 +2191,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $object->tend = $tend;
 
         // Update their details in the table using id as the primary key.
-        $result = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_result', $object, 'id'); 
+        $result = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_result', $object, 'id');
 
         if ($returnArray) {
             $memberResult->tipp    = $tipp;
@@ -2202,7 +2202,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
             return $memberResult;
         }
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $result;
@@ -2210,7 +2210,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::getRoundNames()
-     * 
+     *
      * @param  mixed  $project_id
      * @param  string $ordering
      * @return
@@ -2226,20 +2226,20 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-  
-   
+
+ 
         if (empty(self::$_roundNames)) {
-          
+        
              //$query->select('id AS value, name AS text');
              $query->select("CONCAT_WS(':',id,alias) AS value");
              $query->select('name AS text');
              $query->from('#__sportsmanagement_round');
              $query->where('project_id = '.(int)$project_id);
-    
+  
             if ($round_ids ) {
-                $query->where('id IN (' . implode(',', $round_ids) . ')');   
+                $query->where('id IN (' . implode(',', $round_ids) . ')'); 
             }
-    
+  
              $query->order('id '.$ordering);
 
             $db->setQuery($query);
@@ -2256,7 +2256,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
     // ranking rules are described inside the code
     /**
      * sportsmanagementModelPrediction::compare()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -2268,7 +2268,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
+  
         $res    = 0;
         $i        = 1;
 
@@ -2313,7 +2313,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPrediction::computeMembersRanking()
-     * 
+     *
      * @param  mixed $membersResultsArray
      * @param  mixed $config
      * @return
@@ -2325,7 +2325,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
+  
         self::$table_config = $config;
         $dummy = $membersResultsArray;
 
@@ -2335,10 +2335,10 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
         $lfdnumber = 1;
         foreach ($dummy AS $key => $value)
         {
-        
-            if ($lfdnumber > 1 && ( $dummy[$array_pos]['totalPoints'] == $dummy[$key]['totalPoints'] ) ) {
       
-                  // gleiche punkte 
+            if ($lfdnumber > 1 && ( $dummy[$array_pos]['totalPoints'] == $dummy[$key]['totalPoints'] ) ) {
+    
+                  // gleiche punkte
                   $dummy[$key]['rank'] = '-';
             }
             else
@@ -2346,18 +2346,18 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
                 $dummy[$key]['rank'] = $i;
             }
             $i++;
-            
+          
             $lfdnumber++;
             $array_pos = $key;
         }
-        
-        
+      
+      
         return $dummy;
     }
 
     /**
      * sportsmanagementModelPrediction::getPredictionMembersList()
-     * 
+     *
      * @param  mixed $config
      * @param  mixed $configavatar
      * @param  bool  $total
@@ -2382,8 +2382,8 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             {
             $nameType='name';
         }
-        
-        
+      
+      
           $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
           $query->select('u.'.$nameType.' AS name');
           $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
@@ -2391,18 +2391,18 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
           $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
           $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg on pg.id = pm.group_id');
           $query->where('pm.prediction_id = '.(int)self::$predictionGameID);
-   
+ 
         switch ( $configavatar['show_image_from'] )
         {
         case 'com_cbe':
-    
+  
             $query->select('cbeu.latitude,cbeu.longitude');
             $query->join('INNER', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
             break;
         case 'com_users':
         case 'prediction':
             break;
-    
+  
         case 'com_comprofiler':
             $query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
             $query->join('INNER', '#__comprofiler AS cf ON cf.user_id = u.id');
@@ -2411,13 +2411,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             $query->join('INNER', '#__kunena_users AS cf ON cf.userid = u.id');
             break;
         }
-        
+      
         if (self::$pggroup ) {
-             $query->where('pm.group_id = '.(int)self::$pggroup);  
+             $query->where('pm.group_id = '.(int)self::$pggroup);
         }
 
         $query->order('pm.id ASC');
-        
+      
         if ($total ) {
             return $query;
         }
@@ -2443,7 +2443,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
             }
             return $results;
         }
-        
+      
     }
 
 

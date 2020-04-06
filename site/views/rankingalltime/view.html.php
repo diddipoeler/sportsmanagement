@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage rankingalltime
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -19,8 +19,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewRankingAllTime
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,13 +29,13 @@ use Joomla\CMS\Factory;
 class sportsmanagementViewRankingAllTime extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewRankingAllTime::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->projectids = $this->model->getAllProject();
@@ -51,8 +51,8 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         $this->action = $this->uri->toString();
         $this->colors = $this->model->getColors($this->config['colors']);
         /**
-* 
- * Set page title 
+*
+ * Set page title
 */
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
         $this->document->setTitle($pageTitle);

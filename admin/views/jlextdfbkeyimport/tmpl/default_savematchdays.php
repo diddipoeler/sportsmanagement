@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -60,7 +60,7 @@ HTMLHelper::_('behavior.tooltip');
 
 <?PHP
 $i=0;
-foreach($this->import as $rowdays) 
+foreach($this->import as $rowdays)
 {
 ?>
 <tr>
@@ -77,7 +77,7 @@ foreach($this->import as $rowdays)
 <input type="hidden" name="projectteam2_id[]" value="<?php echo $rowdays->projectteam2_id;?> " />
 <td><?php echo $rowdays->projectteam2_name;?></td>
 
-<td> 
+<td>
 <?php
 $date1 =  Factory::getDate($rowdays->match_date)->format('%d-%m-%Y');
 $append = ' style="background-color:#bbffff;" ';
@@ -88,7 +88,7 @@ echo HTMLHelper::calendar(
     'match_date['.$i.']',
     '%d-%m-%Y',
     'size="10" ' . $append .
-            'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' 
+            'onchange="document.getElementById(\'cb' . $i . '\').checked=true"'
 );
 
 ?>
@@ -103,7 +103,7 @@ $i++;
 
 /*
 <input type="hidden" name="controller"	value="dfbkeys" />
-<input type="hidden" name="view"	value="dfbkeys" /> 
+<input type="hidden" name="view"	value="dfbkeys" />
 <input type="hidden" name="task"			value="addNewX" />
 */
 ?>
@@ -114,11 +114,11 @@ $i++;
 </div>
 
 <fieldset class="actions">
-                        
-                            
+                      
+                          
 </fieldset>
 <input type="hidden" name="sent"			value="3" />
 <input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
 <input type="hidden" name="task"			value="" />
 </form>
-           
+         

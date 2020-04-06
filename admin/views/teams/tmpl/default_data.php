@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,11 +22,11 @@ use Joomla\CMS\Router\Route;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ($this->assign ) {
-    $this->readonly = ' readonly ';    
+    $this->readonly = ' readonly ';  
 }
 else
 {
-    $this->readonly = '';        
+    $this->readonly = '';      
 }
 ?>
 <!--	<div id="editcell"> -->
@@ -74,8 +74,8 @@ else
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
                         ?>
                     </br>
-                    <?php 
-                    echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO');    
+                    <?php
+                    echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_INFO');  
                     ?>
                 </th>
                 <th class="title">
@@ -241,7 +241,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
                     <td class="order">
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'teams.orderup', 'JLIB_HTML_MOVE_UP', true); ?>

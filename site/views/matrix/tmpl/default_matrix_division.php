@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,12 +22,12 @@ use Joomla\CMS\Factory;
 
     // $this->config['highlight_fav_team'] = 1;
     // $this->project->fav_team_text_color = "#FFFFFF";
-  
+
     if ($this->project->project_type == 'DIVISIONS_LEAGUE'  && !$this->divisionid  ) {
-  
-        foreach ( $this->divisions as $divisions ) 
+
+        foreach ( $this->divisions as $divisions )
         {
-    
+  
             ?>
             <table class="<?php echo $this->config['table_class'];?>">
             <tr>
@@ -35,49 +35,49 @@ use Joomla\CMS\Factory;
             <?php
             if ($this->config['show_division_picture'] == "1" ) {
                 ?>
-                        
+                      
                 <?php
                 echo sportsmanagementHelper::getPictureThumb(
                     $divisions->picture,
                     $divisions->name,
                     $this->overallconfig['picture_width'],
-                    $this->overallconfig['picture_height'], 
+                    $this->overallconfig['picture_height'],
                     2
                 );
                 ?>
-                        
+                      
                 <?php	
             }
              echo " " . $divisions->name;
             ?>
              </td>
             </tr>
-        
+      
             <?PHP
             if ($this->config['show_division_desc'] == "1" ) {
                 ?>
          <tr class="contentheading">
-           <td>                
+           <td>              
                 <?PHP
                 echo $divisions->notes;
                 ?>
            </td>
           </tr>
                 <?PHP
-                    
+                  
             }
         ?>
-        
+      
          </table>
         <?PHP
-  
+
         $matrix = '<table class="matrix">';
          $k = 1;
          $crosstable_icons_horizontal = (isset($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
          $crosstable_icons_vertical = (isset($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
         $k_r = 0; // count rows
-  
-        foreach ($this->teams as $team_row_id => $team_row) 
+
+        foreach ($this->teams as $team_row_id => $team_row)
         {
             if ($divisions->id == $team_row->division_id ) {
                 if ($k_r == 0) // Header rows
@@ -90,7 +90,7 @@ use Joomla\CMS\Factory;
                         $matrix .= '<th class="headerspacer">&nbsp;</th>';
                     }
 
-                    foreach ($this->teams as $team_row_header) 
+                    foreach ($this->teams as $team_row_header)
                         {
                         if ($divisions->id == $team_row_header->division_id ) {
                              $title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
@@ -121,7 +121,7 @@ use Joomla\CMS\Factory;
                 $matrix .= '<tr class="">';
                 $k_c = 0; //count columns
 
-                foreach ($this->teams as $team_col_id => $team_col) 
+                foreach ($this->teams as $team_col_id => $team_col)
                 {
                     if ($divisions->id == $team_col->division_id ) {
                         if ($k_c == 0) // Header columns
@@ -160,7 +160,7 @@ use Joomla\CMS\Factory;
 
                         // find the corresponding game
                         $Allresults = '';
-                        foreach ($this->results as $result) 
+                        foreach ($this->results as $result)
                         {
                             if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) {
                                 $ResultType = '';
@@ -181,7 +181,7 @@ use Joomla\CMS\Factory;
                                     case 0 :
                                         break;
 
-                                    } 
+                                    }
                                 } else {
                                     $e1 = $result->v1;
                                     $e2 = $result->v2;
@@ -267,7 +267,7 @@ use Joomla\CMS\Factory;
                                                 $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
                                                 $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
                                                 $new_match = HTMLHelper::link($link, $desc);
-                                            } 
+                                            }
                                             $match_result .= $new_match;
                                         } else {
                                             $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
@@ -334,7 +334,7 @@ use Joomla\CMS\Factory;
                                 $title = '' ;
                                 $picture = 'media/com_sportsmanagement/jl_images/bullet_red.png';
                                 $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
-                                $value .= $desc; 
+                                $value .= $desc;
                         } else {
                             if (($this->config['highlight_fav_team'] > 0) && (in_array($trow->team_id, $this->favteams) || in_array($tcol->team_id, $this->favteams))) {
                                 if ($this->config['highlight_fav_team'] == 1) {
@@ -358,18 +358,18 @@ use Joomla\CMS\Factory;
                 $k_r++;
                 $matrix .= "</tr>";
             }
-        }  
-  
+        }
+
         if (isset($k_c) ) {
             //$k_c++;
             //$matrix .= '<tr class="contentheading"><td colspan="'.$k_c.'">'.$divisions->notes.'</td></tr>';
         }
-      
+    
           $matrix .= '</table>';
-         echo $matrix;      
+         echo $matrix;    
         }
-  
-  
+
+
     }
     else
     {
@@ -380,7 +380,7 @@ use Joomla\CMS\Factory;
 
 
         $k_r = 0; // count rows
-        foreach ($this->teams as $team_row_id => $team_row) 
+        foreach ($this->teams as $team_row_id => $team_row)
         {
             if ($k_r == 0) // Header rows
             {
@@ -420,7 +420,7 @@ use Joomla\CMS\Factory;
               $matrix .= '<tr class="">';
               $k_c = 0; //count columns
 
-            foreach ($this->teams as $team_col_id => $team_col) 
+            foreach ($this->teams as $team_col_id => $team_col)
                 {
                 if ($k_c == 0) // Header columns
                  {
@@ -458,7 +458,7 @@ use Joomla\CMS\Factory;
 
                 // find the corresponding game
                 $Allresults = '';
-                foreach ($this->results as $result) 
+                foreach ($this->results as $result)
                  {
                     if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) {
                         $ResultType = '';
@@ -479,7 +479,7 @@ use Joomla\CMS\Factory;
                             case 0 :
                                 break;
 
-                            } 
+                            }
                         } else {
                             $e1 = $result->v1;
                             $e2 = $result->v2;
@@ -565,7 +565,7 @@ use Joomla\CMS\Factory;
                                         $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
                                         $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
                                         $new_match = HTMLHelper::link($link, $desc);
-                                    } 
+                                    }
                                     $match_result .= $new_match;
                                 } else {
                                     $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
@@ -632,7 +632,7 @@ use Joomla\CMS\Factory;
                     $title = '' ;
                     $picture = 'media/com_sportsmanagement/jl_images/bullet_red.png';
                     $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
-                    $value .= $desc; 
+                    $value .= $desc;
                 } else {
                     if (($this->config['highlight_fav_team'] > 0) && (in_array($trow->team_id, $this->favteams) || in_array($tcol->team_id, $this->favteams))) {
                         if ($this->config['highlight_fav_team'] == 1) {
@@ -658,8 +658,8 @@ use Joomla\CMS\Factory;
         $matrix .= '</table>';
         echo $matrix;
     }
-    
-    
+  
+  
 ?>
 </div>
- 
+

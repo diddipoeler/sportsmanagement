@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelspecialextensions
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -28,10 +28,10 @@ use Joomla\CMS\Filesystem\Folder;
  */
 class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 {
-    
+  
     /**
      * sportsmanagementModelspecialextensions::getSpecialExtensions()
-     * 
+     *
      * @return
      */
     function getSpecialExtensions()
@@ -39,7 +39,7 @@ class sportsmanagementModelspecialextensions extends BaseDatabaseModel
             $option='com_sportsmanagement';
         $arrExtensions = array();
         $excludeExtension = array();
-        
+      
         if(Folder::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions')) {
                $folderExtensions  = Folder::folders(
                    JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'extensions',
@@ -55,7 +55,7 @@ class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 
         return $arrExtensions;
     }
-    
+  
 }
 
 ?>

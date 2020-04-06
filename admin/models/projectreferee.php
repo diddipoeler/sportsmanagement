@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,16 +13,16 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\Utilities\ArrayHelper; 
+use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
+
 /**
  * SportsManagement Model
  */
 class sportsmanagementModelprojectreferee extends JSMModelAdmin
 {
-    
+  
     /**
      * Method to update checked project referees
      *
@@ -35,7 +35,7 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        
+      
         $result=true;
         for ($x=0; $x < count($pks); $x++)
         {
@@ -49,7 +49,7 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
         }
         return $result;
     }
-    
+  
     /**
      * Method to remove projectreferee
      *
@@ -61,36 +61,36 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
     {
         $app = Factory::getApplication();
           /**
-* 
- * Ein Datenbankobjekt beziehen 
+*
+ * Ein Datenbankobjekt beziehen
 **/
           $db = Factory::getDbo();
           /**
-* 
- * Ein JDatabaseQuery Objekt beziehen 
+*
+ * Ein JDatabaseQuery Objekt beziehen
 /*/
           $query = $db->getQuery(true);
-    
+  
         $result = false;
         if (count($pks)) {
             $cids = implode(',', $pks);
             // wir löschen mit join
             $query = 'DELETE mre
-            FROM #__sportsmanagement_project_referee as m    
+            FROM #__sportsmanagement_project_referee as m  
             LEFT JOIN #__sportsmanagement_match_referee as mre
             ON mre.project_referee_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
             $db->execute();
             if (!$db->execute()) {
-                return false; 
+                return false;
             }
-            
-            
-        }  
-            return parent::delete($pks);   
-    } 
-   
+          
+          
+        }
+            return parent::delete($pks); 
+    }
+ 
 
-    
+  
 }

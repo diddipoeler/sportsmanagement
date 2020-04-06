@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage fieldsets
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -35,26 +35,26 @@ $fieldsets = $this->form->getFieldsets();
 
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
- 
+
 <div class="width-60 fltlft">
         <fieldset class="adminform">
             <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
             <ul class="adminformlist">
     <?php foreach($this->form->getFieldset('details') as $field) :?>
                 <li><?php echo $field->label; ?>
-                <?php echo $field->input; 
-                
+                <?php echo $field->input;
+              
                 if ($field->name == 'jform[country]' ) {
-                    echo JSMCountries::getCountryFlag($field->value);    
+                    echo JSMCountries::getCountryFlag($field->value);  
                 }
                 if ($field->name == 'jform[website]' ) {
-                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';
                 }
-                
+              
                 $suchmuster = array ("jform[","]");
                 $ersetzen = array ('', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
+              
                 switch ($var_onlinehelp)
                 {
                 case 'id':
@@ -72,11 +72,11 @@ echo HTMLHelper::_(
 );
             ?>
             </a>
-                
+              
             <?PHP
                     break;
                 }
-                
+              
                 ?></li>
     <?php endforeach; ?>
             </ul>

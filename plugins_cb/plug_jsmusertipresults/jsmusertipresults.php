@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -41,10 +41,10 @@
 */
 
 /**
-* 
- * ensure this file is being included by a parent file 
+*
+ * ensure this file is being included by a parent file
 */
-if (! ( defined('_VALID_CB') || defined('_JEXEC') || defined('_VALID_MOS') ) ) {    die('Direct Access to this location is not allowed.'); 
+if (! ( defined('_VALID_CB') || defined('_JEXEC') || defined('_VALID_MOS') ) ) {    die('Direct Access to this location is not allowed.');
 }
 
 
@@ -58,11 +58,11 @@ class getjsmusertipresultsTab extends cbTabHandler
     /**
      * Construnctor
      */
-    function getjsmusertipresultsTab() 
+    function getjsmusertipresultsTab()
     {
         $this->cbTabHandler();
     }
-    
+  
     /**
     * Generates the HTML to display the user profile tab
      *
@@ -71,15 +71,15 @@ class getjsmusertipresultsTab extends cbTabHandler
     * @param   int 1 for front-end, 2 for back-end
     * @returns mixed : either string HTML for tab content, or false if ErrorMSG generated
     */
-    function getDisplayTab($tab,$user,$ui) 
+    function getDisplayTab($tab,$user,$ui)
     {
         $return = null;
-        
+      
         $params = $this->params; // get parameters (plugin and related tab)
-        
+      
         $is_helloworld_plug_enabled = $params->get('hwPlugEnabled', "1");
         $helloworld_tab_message = $params->get('hwTabMessage', "JSM SportsManagement TipResults!");
-        
+      
         if ($is_helloworld_plug_enabled != "0") {
             if($tab->description != null) {
                 $return .= "\t\t<div class=\"tab_Description\">"
@@ -92,7 +92,7 @@ class getjsmusertipresultsTab extends cbTabHandler
              . "</p>"
              . "</div>\n";
         }
-        
+      
         return $return;
     } // end or getDisplayTab function
 } // end of getjsmusertipresultsTab class

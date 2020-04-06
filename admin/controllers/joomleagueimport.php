@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,12 +14,12 @@
 
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * sportsmanagementControllerjoomleagueimport
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,16 +27,16 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerjoomleagueimport extends JSMControllerAdmin
 {
 
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 }
 
-?>

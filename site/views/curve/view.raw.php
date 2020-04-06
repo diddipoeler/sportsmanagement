@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewCurve
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -30,7 +30,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 
     /**
      * sportsmanagementViewCurve::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -56,7 +56,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
             $this->division = $model->getDivision($division);
             $this->team1 = $model->getTeam1($division);
             $this->team2 = $model->getTeam2($division);
-            
+          
             $this->_setChartdata(array_merge($flashconfig, $rankingconfig));
         }
         //parent::display( $tpl );
@@ -78,7 +78,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
         }
         $division    = $this->get('division');
         $data = $model->getDataByDivision($division->id);
- 
+
     }
 }
 

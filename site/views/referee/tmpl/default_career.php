@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 if (count($this->history) > 0) {
 ?>
 <h2>
-<?php 
+<?php
 echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');
 ?>
 </h2>

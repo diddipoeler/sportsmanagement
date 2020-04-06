@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,9 +27,9 @@ JLoader::import('components.com_sportsmanagement.models.treetonode', JPATH_SITE)
 
 /**
  * sportsmanagementModeljltournamenttree
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -54,7 +54,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::__construct()
- * 
+ *
  * @return void
  */
     function __construct( )
@@ -66,17 +66,17 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getWhichJQuery()
- * 
+ *
  * @return
  */
     function getWhichJQuery()
     {
-        return $this->jl_tree_jquery_version;    
+        return $this->jl_tree_jquery_version;  
     }
 
     /**
  * sportsmanagementModeljltournamenttree::getWhichShowFirstRound()
- * 
+ *
  * @return
  */
     function getWhichShowFirstRound()
@@ -86,18 +86,18 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getTreeBracketRoundWidth()
- * 
+ *
  * @return
  */
     function getTreeBracketRoundWidth()
     {
- 
-        return $this->jl_tree_bracket_round_width;    
+
+        return $this->jl_tree_bracket_round_width;  
     }
 
     /**
  * sportsmanagementModeljltournamenttree::getTreeBracketTeambWidth()
- * 
+ *
  * @return
  */
     function getTreeBracketTeambWidth()
@@ -108,7 +108,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getTreeBracketWidth()
- * 
+ *
  * @return
  */
     function getTreeBracketWidth()
@@ -120,37 +120,37 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getFontSize()
- * 
+ *
  * @return
  */
     function getFontSize()
     {
-        return $this->font_size;    
+        return $this->font_size;  
     }
 
     /**
  * sportsmanagementModeljltournamenttree::getColorFrom()
- * 
+ *
  * @return
  */
     function getColorFrom()
     {
-        return $this->color_from;    
+        return $this->color_from;  
     }
 
     /**
  * sportsmanagementModeljltournamenttree::getColorTo()
- * 
+ *
  * @return
  */
     function getColorTo()
     {
-        return $this->color_to;    
+        return $this->color_to;  
     }
 
     /**
  * sportsmanagementModeljltournamenttree::getTournamentRounds()
- * 
+ *
  * @return
  */
     function getTournamentRounds()
@@ -168,7 +168,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
         $query->order("ro.roundcode DESC");
         $db->setQuery($query);
 
-        $this->count_tournament_round = count($db->loadObjectList());    
+        $this->count_tournament_round = count($db->loadObjectList());  
         $result = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
         return $result;
@@ -176,7 +176,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getTournamentBracketRounds()
- * 
+ *
  * @param  mixed $rounds
  * @return
  */
@@ -186,20 +186,20 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
         foreach ( $rounds as $round )
         {
-            $temp_rounds[$round->roundcode] = '{roundname: "'.$round->name.'"}';   
-        }    
+            $temp_rounds[$round->roundcode] = '{roundname: "'.$round->name.'"}'; 
+        }  
 
         ksort($temp_rounds);
 
         return '['.implode(",", $temp_rounds).']';
-    
+  
     }
 
 
 
     /**
  * sportsmanagementModeljltournamenttree::getTournamentMatches()
- * 
+ *
  * @param  mixed $rounds
  * @return
  */
@@ -255,9 +255,9 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
                     $temp->team1_result = '';
                     $temp->team2_result = '';
                     $temp->node = $value->node;
-                    $this->bracket[$value->roundcode][$value->match_id] = $temp;    
-                } 
-    
+                    $this->bracket[$value->roundcode][$value->match_id] = $temp;  
+                }
+  
         }
         }
 
@@ -270,9 +270,9 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
             Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'.print_r($this->bracket[$minresult], true).'</pre>', '');
         }
 
-        foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  ) 
+        foreach ( $this->bracket[$minresult] as $keybracket => $valuebracket  )
         {
-            $valuebracket->firstname = '';    
+            $valuebracket->firstname = '';  
             $valuebracket->firstlogo = Uri::base().sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
             $valuebracket->secondname = '';
             $valuebracket->secondlogo = Uri::base().sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
@@ -280,25 +280,25 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
             $team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam1_id);
             //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
             if ($team ) {
-                $valuebracket->firstname = $team->name;   
+                $valuebracket->firstname = $team->name; 
                 $valuebracket->firstcountry = $team->country;
                 $valuebracket->firstlogo = Uri::base().$team->logo_big;
-            }    
+            }  
             $team = sportsmanagementModelProject::getTeaminfo($valuebracket->projectteam2_id);
             //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' firstteam <pre>'.print_r($firstteam ,true).'</pre>'  , '');
             if ($team ) {
-                $valuebracket->secondname = $team->name;   
+                $valuebracket->secondname = $team->name; 
                 $valuebracket->secondcountry = $team->country;
-                $valuebracket->secondlogo = Uri::base().$team->logo_big;    
+                $valuebracket->secondlogo = Uri::base().$team->logo_big;  
             }
         }
 
 
 
         /*
-        foreach ( $this->bracket as $keybracket => $valuebracket  ) 
+        foreach ( $this->bracket as $keybracket => $valuebracket  )
         {
-        foreach ( $valuebracket as $bracket  ) 
+        foreach ( $valuebracket as $bracket  )
         {
         //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket  <pre>'.print_r($bracket  ,true).'</pre>'  , '');
         foreach ( $result as $key => $value  ) if ( $bracket->match_id == $value->match_id )
@@ -306,9 +306,9 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
         //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' match_id<pre>'.print_r($value->match_id,true).'</pre>'  , '');
         if ( $value->match_id < 0 )
         {
-        $this->bracket[$keybracket][$bracket->match_id]->firstname = ''; 
+        $this->bracket[$keybracket][$bracket->match_id]->firstname = '';
         $this->bracket[$keybracket][$bracket->match_id]->secondname = '';
-        $this->bracket[$keybracket][$bracket->match_id]->firstlogo = 'freilos'; 
+        $this->bracket[$keybracket][$bracket->match_id]->firstlogo = 'freilos';
         $this->bracket[$keybracket][$bracket->match_id]->secondlogo = 'freilos';
         $this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
         $this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
@@ -317,17 +317,17 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
         }
         if ( $value->team_id == $bracket->projectteam1_id )
         {
-        $this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name;   
+        $this->bracket[$keybracket][$bracket->match_id]->firstname = $value->team_name; 
         $this->bracket[$keybracket][$bracket->match_id]->firstcountry = $value->country;
-        $this->bracket[$keybracket][$bracket->match_id]->firstlogo = Uri::base().$value->logo_big;    
-        }    
+        $this->bracket[$keybracket][$bracket->match_id]->firstlogo = Uri::base().$value->logo_big;  
+        }  
         if ( $value->team_id == $bracket->projectteam2_id )
         {
-        $this->bracket[$keybracket][$bracket->match_id]->secondname = $value->team_name;   
+        $this->bracket[$keybracket][$bracket->match_id]->secondname = $value->team_name; 
         $this->bracket[$keybracket][$bracket->match_id]->secondcountry = $value->country;
-        $this->bracket[$keybracket][$bracket->match_id]->secondlogo = Uri::base().$value->logo_big;    
-        }    
-        }    
+        $this->bracket[$keybracket][$bracket->match_id]->secondlogo = Uri::base().$value->logo_big;  
+        }  
+        }  
         }
         }
         */
@@ -339,16 +339,16 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
             Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'.print_r($this->bracket[$minresult], true).'</pre>', '');
         }
         /**
-* 
- * jetzt die teams und ergebnisse zusammenstellen 
+*
+ * jetzt die teams und ergebnisse zusammenstellen
 */
         $varteams = array();
         $this->request['tree_logo'] = 3;
 
-        foreach ( $rounds as $keyround ) { if ($keyround->roundcode == $minresult ) {    
+        foreach ( $rounds as $keyround ) { if ($keyround->roundcode == $minresult ) {  
                 /**
-* 
- * die mannschaften 
+*
+ * die mannschaften
 */
                 foreach ( $this->bracket[$keyround->roundcode] as $key  )
                 {
@@ -356,16 +356,16 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
                     {
                     case 1:
                         if ($key->firstname != '' && $key->secondname != '' ) {
-                            $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';    
+                            $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';  
                         }
                         elseif ($key->firstname == '' && $key->secondname != '' ) {
-                            $varteams[] = '[null, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';    
+                            $varteams[] = '[null, {name: "'.$key->secondname.'", flag: "'.$key->secondlogo.'"}]';  
                         }
                         elseif ($key->firstname != '' && $key->secondname == '' ) {
-                            $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, null]';    
+                            $varteams[] = '[{name: "'.$key->firstname.'", flag: "'.$key->firstlogo.'"}, null]';  
                         }
                         elseif ($key->firstname == '' && $key->secondname == '' ) {
-                            $varteams[] = '[null,null]';    
+                            $varteams[] = '[null,null]';  
                         }
                         break;
                     case 2:
@@ -374,16 +374,16 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
                     case 3:
                         if ($key->firstname != '' && $key->secondname != '' ) {
-                            $varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';    
+                            $varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';  
                         }
                         elseif ($key->firstname == '' && $key->secondname != '' ) {
-                            $varteams[] = '[null, "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';    
+                            $varteams[] = '[null, "<img src=\"'.$key->secondlogo.'\" width=\"16\"> '.$key->secondname.'"]';  
                         }
                         elseif ($key->firstname != '' && $key->secondname == '' ) {
-                            $varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", null]';    
+                            $varteams[] = '["<img src=\"'.$key->firstlogo.'\" width=\"16\"> '.$key->firstname.'", null]';  
                         }
                         elseif ($key->firstname == '' && $key->secondname == '' ) {
-                            $varteams[] = '[null,null]';    
+                            $varteams[] = '[null,null]';  
                         }
                         break;
                     }
@@ -402,7 +402,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::getTournamentResults()
- * 
+ *
  * @param  mixed $rounds
  * @return
  */
@@ -416,17 +416,17 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
             foreach ( $this->bracket[$round->roundcode] as $key  )
             {
                 if ($key->team1_result != '' && $key->team2_result != '' ) {
-                    $vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';    
-                }    
+                    $vartempresults[] = '['.$key->team1_result.','.$key->team2_result.']';  
+                }  
                 elseif ($key->team1_result == '' && $key->team2_result ) {
-                    $vartempresults[] = '[null,'.$key->team2_result.']';    
-                }    
+                    $vartempresults[] = '[null,'.$key->team2_result.']';  
+                }  
                 elseif ($key->team1_result && $key->team2_result == '' ) {
-                    $vartempresults[] = '['.$key->team1_result.',null]';    
-                }    
+                    $vartempresults[] = '['.$key->team1_result.',null]';  
+                }  
                 elseif ($key->team1_result == '' && $key->team2_result == '' ) {
-                    $vartempresults[] = '[null,null]';    
-                }        
+                    $vartempresults[] = '[null,null]';  
+                }      
 
             }
 
@@ -445,7 +445,7 @@ class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljltournamenttree::checkStartExtension()
- * 
+ *
  * @return void
  */
     function checkStartExtension()

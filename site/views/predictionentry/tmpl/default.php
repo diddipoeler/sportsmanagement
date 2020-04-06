@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,7 +44,7 @@ else
             if (($this->config['show_help']==1)||($this->config['show_help']==2)) {
                 echo $this->model->createHelptText($predictionProject->mode);
             }
-            
+          
         }
         else
         {

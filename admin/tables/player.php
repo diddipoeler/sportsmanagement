@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableplayer
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -28,10 +28,10 @@ use Joomla\CMS\Filter\OutputFilter;
 class sportsmanagementTableplayer extends JSMTable
 {
 
-    
+  
     /**
      * sportsmanagementTableplayer::__construct()
-     * 
+     *
      * @param  mixed $db
      * @return
      */
@@ -41,11 +41,11 @@ class sportsmanagementTableplayer extends JSMTable
         parent::__construct('#__sportsmanagement_person', 'id', $db);
     }
 
-    
-    
+  
+  
     /**
      * sportsmanagementTableplayer::check()
-     * 
+     *
      * @return
      */
     function check()
@@ -56,7 +56,7 @@ class sportsmanagementTableplayer extends JSMTable
         }
         $parts = array( trim($this->firstname), trim($this->lastname) );
         $alias = OutputFilter::stringURLSafe(implode(' ', $parts));
-    
+  
         if (empty($this->alias) ) {
             $this->alias = $alias;
         }
@@ -66,10 +66,10 @@ class sportsmanagementTableplayer extends JSMTable
 
         return true;
     }
-    
-    
-    
-       
+  
+  
+  
+     
 
 }
 ?>

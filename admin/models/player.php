@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelplayer
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -29,34 +29,34 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelplayer extends JSMModelAdmin
 {
+
   
-    
-    
-    
+  
+  
     /**
      * sportsmanagementModelplayer::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return
      */
     public function __construct($config = array())
     {
         parent::__construct($config);
-    
-    }    
   
- 
-  
- 
+    }  
+
+
+
+
     /**
    * sportsmanagementModelplayer::getAgeGroupID()
-   * 
+   *
    * @param  mixed $age
    * @return
    */
-    public function getAgeGroupID($age) 
+    public function getAgeGroupID($age)
     {
-    
+  
         if (is_numeric($age) ) {
             $this->jsmquery->clear();
               $this->jsmquery->select('id');
@@ -70,25 +70,25 @@ class sportsmanagementModelplayer extends JSMModelAdmin
               {
                 $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
                 return false;
-            }    
+            }  
         }
         else
             {
-            $person_range = 0;    
+            $person_range = 0;  
         }
             return $person_range;
-            
+          
     }
-    
   
 
-    
-    
-    
-    
+
+  
+  
+  
+  
     /**
      * sportsmanagementModelplayer::getPerson()
-     * 
+     *
      * @param  integer $person_id
      * @param  integer $season_person_id
      * @param  integer $inserthits
@@ -116,24 +116,24 @@ class sportsmanagementModelplayer extends JSMModelAdmin
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
         }
-        
-        
+      
+      
     }
-    
-    
-    
-    
-    
+  
+  
+  
+  
+  
     /**
      * sportsmanagementModelplayer::saveshort()
-     * 
+     *
      * @return
      */
     function saveshort()
     {
         $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
         $post = $this->jsmjinput->post->getArray(array());
-                        
+                      
         $result = true;
         for ($x=0; $x < count($pks); $x++)
         {
@@ -153,7 +153,7 @@ class sportsmanagementModelplayer extends JSMModelAdmin
             $tblPerson->country        = $post['country'.$pks[$x]];
             $tblPerson->position_id    = $post['position'.$pks[$x]];
             $tblPerson->agegroup_id    = $post['agegroup'.$pks[$x]];
-            try{  
+            try{
                 $result = Factory::getDbo()->updateObject('#__sportsmanagement_person', $tblPerson, 'id');
             }
             catch (Exception $e)
@@ -161,8 +161,8 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
                 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
                 return false;
-            }            
-            //if(!$tblPerson->store()) 
+            }          
+            //if(!$tblPerson->store())
             //            {
             //				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
             //				$result = false;
@@ -170,14 +170,14 @@ class sportsmanagementModelplayer extends JSMModelAdmin
         }
         return $result;
     }
-    
-    
-    
-    
-   
+  
+  
+  
+  
+ 
     /**
      * sportsmanagementModelplayer::storeAssign()
-     * 
+     *
      * @param  mixed $post
      * @return
      */
@@ -193,16 +193,16 @@ class sportsmanagementModelplayer extends JSMModelAdmin
         $user = Factory::getUser();
         $modified = Factory::getDate();
         $modified_by = $user->get('id');
-       
+     
         $this->_project_id    = $app->getUserState("$option.pid", '0');
         $this->_team_id = $app->getUserState("$option.team_id", '0');
         $this->_project_team_id = $app->getUserState("$option.project_team_id", '0');
         $this->_season_id = $app->getUserState("$option.season_id", '0');
         $cid = $post['cid'];
-          
+        
         $mdlPerson = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
         $mdlPersonTable = $mdlPerson->getTable();
-    
+  
         switch ($post['persontype'])
             {
                 /**
@@ -213,19 +213,19 @@ class sportsmanagementModelplayer extends JSMModelAdmin
             $mdlTable = $mdl->getTable();
             for ($x=0; $x < count($cid); $x++)
             {
-                $mdlPersonTable->load($cid[$x]);    
+                $mdlPersonTable->load($cid[$x]);  
                 $mdlTable = $mdl->getTable();
                 $mdlTable->team_id = $this->_team_id;
                 $mdlTable->season_id = $this->_season_id;
                 $mdlTable->persontype = 1;
-                
+              
                 $mdlTable->modified = $date->toSql();
                 $mdlTable->modified_by = $modified_by;
-                
+              
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
-                $mdlTable->person_id = $cid[$x]; 
+                $mdlTable->person_id = $cid[$x];
                 try{
                     if ($mdlTable->store() === false ) {
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
@@ -237,10 +237,10 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                     $msg = $e->getMessage(); // Returns "Normally you would have other code...
                     $code = $e->getCode(); // Returns '500';
                     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-                }                
+                }              
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
-                $this->jsmquery->clear();  
+                $this->jsmquery->clear();
                 $this->jsmquery->select('id');
                 $this->jsmquery->from('#__sportsmanagement_project_position');
                 $this->jsmquery->where('project_id = '. $this->_project_id);
@@ -276,9 +276,9 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                 catch (Exception $e){
                     $msg = $e->getMessage(); // Returns "Normally you would have other code...
                     $code = $e->getCode(); // Returns '500';
-                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error 
                 }
-                 
+               
             }
             break;
                 /**
@@ -289,19 +289,19 @@ class sportsmanagementModelplayer extends JSMModelAdmin
             $mdlTable = $mdl->getTable();
             for ($x=0; $x < count($cid); $x++)
             {
-                $mdlPersonTable->load($cid[$x]); 
+                $mdlPersonTable->load($cid[$x]);
                 $mdlTable = $mdl->getTable();
                 $mdlTable->team_id = $this->_team_id;
                 $mdlTable->season_id = $this->_season_id;
                 $mdlTable->persontype = 2;
-                
+              
                 $mdlTable->modified = $date->toSql();
                 $mdlTable->modified_by = $modified_by;
-                
+              
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
-                $mdlTable->person_id = $cid[$x];  
+                $mdlTable->person_id = $cid[$x];
                 try{
                     if ($mdlTable->store() === false ) {
                         sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
@@ -313,10 +313,10 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                     $msg = $e->getMessage(); // Returns "Normally you would have other code...
                     $code = $e->getCode(); // Returns '500';
                     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-                }            
+                }          
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
-                $this->jsmquery->clear();  
+                $this->jsmquery->clear();
                 $this->jsmquery->select('id');
                 $this->jsmquery->from('#__sportsmanagement_project_position');
                 $this->jsmquery->where('project_id = '. $this->_project_id);
@@ -328,9 +328,9 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                 catch (Exception $e){
                     $msg = $e->getMessage(); // Returns "Normally you would have other code...
                     $code = $e->getCode(); // Returns '500';
-                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error 
                 }
-            
+          
                 if (!$res ) {
                              $res = 0;
                 }
@@ -354,30 +354,30 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                 catch (Exception $e){
                     $msg = $e->getMessage(); // Returns "Normally you would have other code...
                     $code = $e->getCode(); // Returns '500';
-                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+                    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error 
                 }
-                 
+               
             }
             break;
                 /**
                  * schiedsrichter
-                 */                
+                 */              
         case 3:
             $mdl = BaseDatabaseModel::getInstance("seasonperson", "sportsmanagementModel");
             $mdlTable = $mdl->getTable();
             for ($x=0; $x < count($cid); $x++)
             {
                 $query = $db->getQuery(true);
-                $query->select('id'); 
-                $query->from('#__sportsmanagement_season_person_id'); 
-                $query->where('person_id = '.$cid[$x]); 
+                $query->select('id');
+                $query->from('#__sportsmanagement_season_person_id');
+                $query->where('person_id = '.$cid[$x]);
                 //$query->where('team_id = 0');
                 $query->where('season_id = '.$this->_season_id);
                 //$query->where('persontype = 3');
-                $db->setQuery($query); 
-                $season_person_id = $db->loadResult(); 
-          
-                $mdlPersonTable->load($cid[$x]);   
+                $db->setQuery($query);
+                $season_person_id = $db->loadResult();
+        
+                $mdlPersonTable->load($cid[$x]); 
 
                 $mdlTable = new stdClass();
                 $mdlTable->id = $season_person_id;
@@ -410,14 +410,14 @@ class sportsmanagementModelplayer extends JSMModelAdmin
                 catch (Exception $e){
                     $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
                 }
-                
+              
             }
             break;
         }
-    
-    
-    
-        return true;    
+  
+  
+  
+        return true;  
     }
-    
+  
 }

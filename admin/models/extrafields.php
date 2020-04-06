@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelextrafields
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -28,15 +28,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelextrafields extends JSMModelList
 {
     var $_identifier = "extrafields";
-    
+  
     /**
      * sportsmanagementModelextrafields::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'objcountry.name',
                         'objcountry.template_backend',
@@ -51,12 +51,12 @@ class sportsmanagementModelextrafields extends JSMModelList
                         'objcountry.views_backend_field',
                         'objcountry.select_columns',
                         'objcountry.select_values'
-                        
+                      
                         );
                 parent::__construct($config);
                 parent::setDbo($this->jsmdb);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -85,7 +85,7 @@ class sportsmanagementModelextrafields extends JSMModelList
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
         $this->setState('list.start', $value);
-        
+      
         // Filter.order
         $orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
         if (!in_array($orderCol, $this->filter_fields)) {
@@ -97,12 +97,12 @@ class sportsmanagementModelextrafields extends JSMModelList
             $listOrder = 'ASC';
         }
         $this->setState('list.direction', $listOrder);
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModelextrafields::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -111,7 +111,7 @@ class sportsmanagementModelextrafields extends JSMModelList
         $this->jsmquery->clear();
         $this->jsmsubquery1->clear();
         $this->jsmsubquery2->clear();
-        
+      
         // Select some fields
         $this->jsmquery->select(implode(",", $this->filter_fields));
         // From the hello table
@@ -119,26 +119,26 @@ class sportsmanagementModelextrafields extends JSMModelList
         // Join over the users for the checked out user.
         $this->jsmquery->select('uc.name AS editor');
         $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where('LOWER(objcountry.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-        
+      
         if (is_numeric($this->getState('filter.state')) ) {
-            $this->jsmquery->where('objcountry.published = '.$this->getState('filter.state'));    
+            $this->jsmquery->where('objcountry.published = '.$this->getState('filter.state'));  
         }
-        
+      
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'objcountry.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-        
+      
            return $this->jsmquery;
     }
 
     /**
  * sportsmanagementModelextrafields::getExtraFieldsProject()
- * 
+ *
  * @param  integer $project_id
  * @return
  */
@@ -153,14 +153,14 @@ class sportsmanagementModelextrafields extends JSMModelList
         $this->jsmquery->join('INNER', '#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
         $this->jsmquery->where('ev.jl_id = '.$project_id);
         $this->jsmquery->where('ef.template_backend LIKE '.$this->jsmdb->Quote(''.'project'.''));
-        $this->jsmquery->where('ev.fieldvalue != '.$this->jsmdb->Quote(''.'')); 
+        $this->jsmquery->where('ev.fieldvalue != '.$this->jsmdb->Quote(''.''));
         try {
             $this->jsmdb->setQuery($this->jsmquery);
             $column = $this->jsmdb->loadColumn(0);
             if ($column ) {
                 $result = implode('<br>', $column);
             }
-            return $result; 
+            return $result;
         }
         catch (Exception $e) {
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
@@ -171,7 +171,7 @@ class sportsmanagementModelextrafields extends JSMModelList
 
     /**
  * sportsmanagementModelextrafields::getExtraFields()
- * 
+ *
  * @param  string $template_backend
  * @param  string $template_frontend
  * @return
@@ -201,10 +201,10 @@ class sportsmanagementModelextrafields extends JSMModelList
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
         }
-    }        
+    }      
 
 
 
-    
+  
 }
 ?>

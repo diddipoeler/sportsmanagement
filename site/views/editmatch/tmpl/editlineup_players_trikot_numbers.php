@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,14 +19,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <fieldset class="adminform">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_TRIKOT_NUMBER'); ?></legend>
-<?php    
-if (isset($this->positions) ) {  
+<?php  
+if (isset($this->positions) ) {
     foreach ($this->positions AS $position_id => $pos)
     {
         ?>
         <fieldset class="adminform">
         <legend><?php echo Text::_($pos->text); ?></legend>
-    <table>    
+    <table>  
     <?PHP
     // get players assigned to this position
     foreach ($this->starters[$position_id] AS $player)
@@ -42,7 +42,7 @@ if (isset($this->positions) ) {
 <td><input type='' name='trikot_number[<?php echo $player->value;?>]' value="<?php echo $player->trikot_number; ?>" />
 </td>
 <td>
-<?PHP    
+<?PHP  
 $append=' style="background-color:#bbffff"';
     echo HTMLHelper::_(
         'select.genericlist',
@@ -51,16 +51,16 @@ $append=' style="background-color:#bbffff"';
         'class="inputbox" size="1" '.$append,
         'value', 'text', $player->captain
     );
-    ?> 
-    </td>                                                       
+    ?>
+    </td>                                                     
     </tr>
     <?PHP
     }
     ?>
     </table>
-    </fieldset>   
+    </fieldset> 
     <?PHP	
     }
 }
-?>      
-</fieldset>      
+?>    
+</fieldset>    

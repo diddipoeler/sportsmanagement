@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,15 +16,15 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 /**
-* 
- * welche joomla version 
+*
+ * welche joomla version
 */
 if(version_compare(JVERSION, '3.0.0', 'ge')) {
     HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-    HTMLHelper::_('behavior.mootools');    
+    HTMLHelper::_('behavior.mootools');  
 }
 
 ?>

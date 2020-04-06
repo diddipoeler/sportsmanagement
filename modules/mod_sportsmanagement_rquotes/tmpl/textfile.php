@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -45,11 +45,11 @@ use Joomla\CMS\Factory;
 
 $css = Uri::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
 $document = Factory::getDocument();
-$document->addStyleSheet($css); 
- 
+$document->addStyleSheet($css);
+
 echo '<span class="mod_rquote_quote_text_file">'. $rows[$num].'</span>';
- 
-  
+
+
 //echo( $rows[$num]);
 
 ?>

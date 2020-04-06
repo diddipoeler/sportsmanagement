@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -48,18 +48,18 @@ else
     foreach ( $list as $row )
     {
 
-        if($zeile <  10 ) { 
+        if($zeile <  10 ) {
 
 
-            if($zeile % 2 == 0 ) { 
-                 // Zahl ist gerade 
+            if($zeile % 2 == 0 ) {
+                 // Zahl ist gerade
                 echo '</tr><tr>';
-            } 
-            else 
-            { 
-                 // Zahl ist ungerade 
+            }
+            else
+            {
+                 // Zahl ist ungerade
                 echo '</tr><tr>';
-            } 
+            }
 
             echo '<td width="" >';
             echo JSMCountries::getCountryFlag($row->country);
@@ -104,20 +104,20 @@ if (sizeof($list)  ) {
     foreach ( $list as $row )
     {
 
-        if($zeile >  9 ) { 
+        if($zeile >  9 ) {
 
-            if($lfdnummer >  9 ) { 
+            if($lfdnummer >  9 ) {
 
-                if($zeile % 2 == 0 ) { 
-                     // Zahl ist gerade 
+                if($zeile % 2 == 0 ) {
+                     // Zahl ist gerade
                     echo '</tr><tr>';
-                } 
+                }
                 /*
-                else 
-                { 
-                 // Zahl ist ungerade 
+                else
+                {
+                 // Zahl ist ungerade
                 echo '<tr>';
-                } 
+                }
                 */
 
                 echo '<td width="" >';

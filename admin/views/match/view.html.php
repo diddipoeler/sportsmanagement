@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -183,7 +183,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
                 }
                 else
                 {
-                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;                
+                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;              
                 }
             }
             $oldmatches = array_merge($oldmatches, $res);
@@ -200,7 +200,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
                 }
                 else
                 {
-                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;                
+                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;              
                 }
             }
             $newmatches = array_merge($newmatches, $res);
@@ -259,8 +259,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         }
 
         /**
-* 
- * build the html options for referee positions 
+*
+ * build the html options for referee positions
 */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
         if ($res = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
@@ -274,7 +274,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         unset($position_id);
 
         /**
-* 
+*
  * build the html options for player position
 */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
@@ -291,8 +291,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         unset($position_id);
 
         /**
-* 
- * build the html options for staff position 
+*
+ * build the html options for staff position
 */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
         if ($res = $model->getProjectPositionsOptions(0, 2, $this->project_id)) {
@@ -306,8 +306,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         unset($position_id);
 
         /**
-* 
- * events 
+*
+ * events
 */
         $events = $model->getEventsOptions($this->project_id);
         if (!$events) {
@@ -321,8 +321,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         unset($eventlist);
 
         /**
-* 
- * build the html select booleanlist 
+*
+ * build the html select booleanlist
 */
         $myoptions = array();
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
@@ -454,7 +454,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $matchCommentary = $model->getMatchCommentary($this->item->id);
         $matchevents = $model->getMatchEvents($this->item->id);
         $this->document->addScriptDeclaration($javascript);
-        
+      
         $this->matchevents = $matchevents;
         $this->matchcommentary = $matchCommentary;
         $this->teams = $teams;
@@ -696,16 +696,16 @@ class sportsmanagementViewMatch extends sportsmanagementView
                 $inroster[] = $referee->value;
             }
         }
-        
-        // projekt positionen                                                    
+      
+        // projekt positionen                                                  
         $selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
         if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
                $selectpositions = array_merge($selectpositions, $projectpositions);
         }
         $lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
-        
+      
         $squad = array();
-        
+      
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $this->projectws = $mdlProject->getProject($this->project_id);
         if($this->projectws->teams_as_referees == 1) {
@@ -725,7 +725,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         }
         else {
             $projectreferees = $model->getProjectReferees($inroster, $this->project_id);
-            
+          
             if (count($projectreferees) > 0) {
                 foreach ($projectreferees AS $referee) {
                     $projectreferees2[] = HTMLHelper::_(
@@ -764,7 +764,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
                             $temp[$key][] = HTMLHelper::_(
                                 'select.option', $referee->value,
                                 sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format)
-                            );                             
+                            );                           
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementViewJlextassociation
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,25 +29,25 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 
     /**
      * sportsmanagementViewJlextassociation::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
-        
+      
     }
- 
-    
+
+  
     /**
      * sportsmanagementViewJlextassociation::addToolBar()
-     * 
+     *
      * @return void
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
         $this->jinput->set('hidemainmenu', true);
         parent::addToolbar();
     }
-    
-    
+  
+  
 }

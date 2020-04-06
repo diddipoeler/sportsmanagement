@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,8 +16,8 @@ defined('_JEXEC') or die();
 
 /**
  * sportsmanagementControllerjsmGCalendars
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -26,18 +26,19 @@ defined('_JEXEC') or die();
 class sportsmanagementControllerjsmGCalendars extends JSMControllerAdmin
 {
 
-    /**
-     * sportsmanagementControllerjsmGCalendars::getModel()
-     * 
-     * @param  string $name
-     * @param  string $prefix
-     * @param  mixed  $config
-     * @return
-     */
-    public function getModel($name = 'jsmGCalendar', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
-    
+	/**
+	 * sportsmanagementControllerjsmGCalendars::getModel()
+	 *
+	 * @param   string $name
+	 * @param   string $prefix
+	 * @param   mixed  $config
+	 * @return
+	 */
+	public function getModel($name = 'jsmGCalendar', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
+
 }

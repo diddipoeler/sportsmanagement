@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.05
@@ -73,13 +73,13 @@ use Joomla\CMS\Factory;
 
         echo HTMLHelper::_('bootstrap.endAccordion');
     } elseif (version_compare(JSM_JVERSION, '2', 'eq')) {
-        // Joomla! 2.5 code here    
+        // Joomla! 2.5 code here  
         ?>
 
         <div class="panel-group" id="accordion-nextmatch">
             <?PHP
             foreach ($this->output as $key => $templ) {
-                ?>    
+                ?>  
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -110,7 +110,7 @@ use Joomla\CMS\Factory;
             }
             ?>
         </div>
-    
+  
     <?PHP
     } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
         // Joomla! 1.7 code here

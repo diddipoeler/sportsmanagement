@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewsmextxmleditor
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -29,7 +29,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 {
     /**
      * sportsmanagementViewsmextxmleditor::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -38,7 +38,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
         $this->form        = $this->get('Form');
         $this->source    = $this->get('Source');
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
@@ -53,7 +53,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
         ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
         $this->title = $this->file_name;
         $this->icon = 'xml-edit';
-    }    
-    
+    }  
+  
 }
 ?>

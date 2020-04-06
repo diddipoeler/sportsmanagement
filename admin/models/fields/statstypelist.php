@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,9 +25,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldStatstypelist
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -69,7 +69,7 @@ class JFormFieldStatstypelist extends \JFormFieldList
                 $options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
             }
         }
-        
+      
         /*
         // check for statistic in extensions
         $extensions = sportsmanagementHelper::getExtensions(0);		
@@ -89,7 +89,7 @@ class JFormFieldStatstypelist extends \JFormFieldList
          }	
         }
         */
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
 

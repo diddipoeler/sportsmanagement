@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage treeto
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -22,13 +22,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form method="post" name="adminForm" id="adminForm" class="">
 <?PHP
 //
-//if(version_compare(JVERSION,'3.0.0','ge')) 
+//if(version_compare(JVERSION,'3.0.0','ge'))
 //{
 //echo $this->loadTemplate('joomla3');
 //}
 //else
 //{
-//echo $this->loadTemplate('joomla2');    
+//echo $this->loadTemplate('joomla2');  
 //}
 
 
@@ -47,4 +47,4 @@ echo $this->loadTemplate('data');
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

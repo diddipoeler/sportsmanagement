@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -99,9 +99,9 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     ?>
 <!--    <div class="container-fluid no-gutters">-->
         <div class="row no-gutters">
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
-            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>  
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>  
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>  
             <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
         </div>
         <?php
@@ -121,7 +121,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
                 echo ' : ';
             ?>
             <?php echo $summary->goalsagain; ?></div>
-            </div>    
+            </div>  
         <?php
         }
     ?>
@@ -129,4 +129,4 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     <!--</div>-->
     <?php
 }
-?> 
+?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -16,9 +16,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementControllerpredictiongame
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -26,21 +26,20 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerpredictiongame extends JSMControllerForm
 {
 
-    /**
-     * Class Constructor
-     *
-     * @param  array $config An optional associative array of configuration settings.
-     * @return void
-     * @since  1.5
-     */
-    function __construct($config = array())
-    {
-        parent::__construct($config);
-    }    
+	/**
+	 * Class Constructor
+	 *
+	 * @param   array $config An optional associative array of configuration settings.
+	 * @return void
+	 * @since  1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
 
 
 
 
 
 }
-?>

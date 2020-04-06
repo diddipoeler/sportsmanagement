@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,32 +13,32 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementModeltemplate
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModeltemplate extends JSMModelAdmin
 {
-  
+
     /**
      * sportsmanagementModeltemplate::getAllTemplatesList()
-     * 
+     *
      * @param  mixed $project_id
      * @param  mixed $master_id
      * @return
      */
     function getAllTemplatesList($project_id,$master_id)
     {
-        
+      
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
@@ -48,7 +48,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
         $query3    = $db->getQuery(true);
         $result1 = array();
         $result2 = array();
-                
+              
         // Select some fields
         $query1->select('template');
         // From table
@@ -68,24 +68,24 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
         if ($current ) {
             $current = implode("','", $current);
         }
-        
+      
         // Select some fields
         $query2->select('id as value, title as text');
         // From table
         $query2->from('#__sportsmanagement_template_config');
         $query2->where('project_id = '.$master_id);
         if ($current ) {
-            $query2->where('template NOT IN (\''.$current.'\') ');    
+            $query2->where('template NOT IN (\''.$current.'\') ');  
         }
         $db->setQuery($query2);
         $result1 = $db->loadObjectList();
-        
+      
         foreach ($result1 as $template)
         {
             $template->text = Text::_($template->text);
         }
-        
-        
+      
+      
         // Select some fields
         $query3->select('id as value, title as text');
         // From table
@@ -94,27 +94,27 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
         $query3->order('title');
         $db->setQuery($query3);
         $result2 = $db->loadObjectList();
-        
+      
         foreach ($result2 as $template)
         {
             $template->text = Text::_($template->text);
         }
-        
-        
+      
+      
         if ($result1 ) {
-            return array_merge($result2, $result1);    
+            return array_merge($result2, $result1);  
         }
         else
         {
-            return ($result2);    
+            return ($result2);  
         }
-        
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModeltemplate::import()
-     * 
+     *
      * @param  mixed $templateid
      * @param  mixed $projectid
      * @return
@@ -145,24 +145,24 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
              return false;
         }
         return true;
-    }    
+    }  
 
 
     /**
      * sportsmanagementModeltemplate::delete()
-     * 
+     *
      * @param  mixed $pks
      * @return
      */
     public function delete(&$pks)
     {
         $app = Factory::getApplication();
-    
-    
+  
+  
           return parent::delete($pks);
-    
-         
-    } 
+  
+       
+    }
 
     /**
      * Method to update one or more records.

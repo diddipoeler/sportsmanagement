@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,12 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
- 
+
 /**
  * SportsManagement View
  */
@@ -35,7 +35,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
         $form = $this->get('Form');
         $item = $this->get('Item');
         $script = $this->get('Script');
- 
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             Log::add(implode('<br />', $errors));
@@ -45,21 +45,21 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
         $this->form = $form;
         $this->item = $item;
         $this->script = $script;
- 
+
         // Set the toolbar
         $this->addToolBar();
 
         // Display the template
         parent::display($tpl);
- 
+
         // Set the document
         $this->setDocument();
     }
- 
+
     /**
      * Setting the toolbar
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
@@ -89,7 +89,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
                 // We can save the new record
                 ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
                 ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
- 
+
                 // We can save this record, but check the create permission to see if we can return to make a new one.
                 if ($canDo->get('core.create')) {
                     ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
@@ -106,7 +106,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
      *
      * @return void
      */
-    protected function setDocument() 
+    protected function setDocument()
     {
         $isNew = $this->item->id == 0;
         $document = Factory::getDocument();

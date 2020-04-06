@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,37 +21,37 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextcountries
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewjlextcountries extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewjlextcountries::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-        
+      
         $inputappend = '';
 
         $this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
-        
+      
          //build the html options for nation
         $nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
         if ($res = $this->get('Federation') ) {
             $nation = array_merge($nation, $res);
             $this->federation = $res;
-        
+      
 
         }
-        
+      
         $lists['federation'] = JHtmlSelect::genericlist(
             $nation,
             'filter_federation',
@@ -64,7 +64,7 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
         $this->lists = $lists;
 
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *

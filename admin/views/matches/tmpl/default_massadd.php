@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-    
-        
+  
+      
             <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TITLE', '<i>'.$this->projectws->name.'</i>'); ?></legend>
             <form name='copyform' method='post' style='display:inline' id='copyform'>
                 <input type='hidden' name='match_date' value='<?php echo $this->roundws->round_date_first.' '.$this->projectws->start_time; ?>' />
@@ -121,7 +121,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                                         <td><input type="text" name="start_round_name" size="50" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td width="100" align="right" class="key">                                        
+                                        <td width="100" align="right" class="key">                                      
                                                 <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CREATE_NEW'); ?>
                                         </td>
                                         <td><input type="checkbox" name="create_new" value="1" class="inputbox" checked="checked" /></td>
@@ -138,7 +138,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="100" colspan='2'>                                                                    
+                                        <td width="100" colspan='2'>                                                                  
                                             <input type='submit' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_COPY_MATCHES'); ?>' onclick='copymatches();' />
                                         </td>
                                     </tr>
@@ -149,4 +149,4 @@ use Joomla\CMS\HTML\HTMLHelper;
                 </table>
             </form>
 
-    
+  

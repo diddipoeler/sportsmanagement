@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,14 +14,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table; 
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\Utilities\ArrayHelper; 
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelpositionstatistic
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -43,7 +43,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -53,12 +53,12 @@ class sportsmanagementModelpositionstatistic extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -67,7 +67,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.positionstatistic', 'positionstatistic', array('control' => 'jform', 'load_data' => $loadData));
@@ -76,24 +76,24 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         }
         return $form;
     }
-    
+  
     /**
      * Method to get the script that have to be included on the form
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.positionstatistic.data', array());
@@ -102,7 +102,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         }
         return $data;
     }
-    
+  
     /**
      * Method to save item order
      *
@@ -113,7 +113,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
     function saveorder($pks = null, $order = null)
     {
         $row = $this->getTable();
-        
+      
         // update ordering values
         for ($i=0; $i < count($pks); $i++)
         {
@@ -128,10 +128,10 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         }
         return true;
     }
-    
+  
     /**
      * sportsmanagementModelpositionstatistic::store()
-     * 
+     *
      * @param  mixed $data
      * @param  mixed $position_id
      * @return
@@ -142,7 +142,7 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         $peid    = (isset($data['position_statistic']) ? $data['position_statistic'] : array());
         ArrayHelper::toInteger($peid);
         $peids = implode(',', $peid);
-        
+      
         $query = ' DELETE	FROM #__sportsmanagement_position_statistic '
                . ' WHERE position_id = ' . $position_id
                ;
@@ -176,6 +176,6 @@ class sportsmanagementModelpositionstatistic extends AdminModel
         }
         return $result;
     }
-    
-    
+  
+  
 }

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -32,7 +32,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th width="20" style="vertical-align: top; ">
                         <input  type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
                     </th>
-                    
+                  
                     <th class="title" nowrap="nowrap" style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME', 'objassoc.name', $this->sortDirection, $this->sortColumn);
@@ -42,22 +42,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME', 'objassoc.short_name', $this->sortDirection, $this->sortColumn);
         ?>
-                    </th>                    
+                    </th>                  
                     <th width="10%" class="title" style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_COUNTRY', 'objassoc.country', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-          
+        
           <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
           <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
-          
+        
           <th width="" class="title">
         <?php
         echo HTMLHelper::_('grid.sort', 'JSTATUS', 'objassoc.published', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th width="85" nowrap="nowrap" style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'objassoc.ordering', $this->sortDirection, $this->sortColumn);
@@ -96,12 +96,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         </td>
         <?php
-                        
+                      
         $inputappend='';
         ?>
                             <td style="text-align:center; ">
@@ -114,25 +114,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <?php else : ?>
         <?php echo $this->escape($row->name); ?>
         <?php endif; ?>
-                        
-                        
-                        
-                        <?php 
+                      
+                      
+                      
+                        <?php
                         if ($row->website != '') {
                             echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
                         } else {
                             echo '<span class="label">' . Text::_('JNO') . '</span>';
-                        }                                
+                        }                              
                                 ?>
-                        
+                      
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
                             </td>
         <?php
-                        
+                      
         ?>
-                        
+                      
                         <td><?php echo $row->short_name; ?></td>
                         <td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td style="text-align:center; ">
@@ -150,12 +150,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             }
             else
             {
-                        ?>                                    
+                        ?>                                  
                         <a href="<?php echo Uri::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
             <img src="<?php echo Uri::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
             </a>
             <?PHP
-            }                    
+            }                  
             ?>
             </td>
             <td style="text-align:center; ">
@@ -173,11 +173,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             }
             else
             {
-                        ?>                                    
+                        ?>                                  
                         <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
             <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
             </a>
-            <?PHP	                
+            <?PHP	              
             }
             ?>
             </td>
@@ -192,7 +192,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             }
                                 ?>
             </div>
-            
+          
             </td>
             <td class="order">
                             <span>
@@ -214,4 +214,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </tbody>
         </table>
     </div>
-    
+  

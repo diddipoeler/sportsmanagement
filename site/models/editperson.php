@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,36 +23,36 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
 
 /**
  * sportsmanagementModelEditPerson
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelEditPerson extends AdminModel
 {
-  
+
     /* interfaces */
     var $latitude    = null;
     var $longitude    = null;
-    
-    
+  
+  
     /**
      * sportsmanagementModelEditPerson::updItem()
-     * 
+     *
      * @param  mixed $data
      * @return void
      */
     function updItem($data)
     {
         $app = Factory::getApplication();
-        
+      
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
         }
-        
+      
         // Specify which columns are to be ignored. This can be a string or an array.
         //$ignore = 'id';
         $ignore = '';
@@ -65,13 +65,13 @@ class sportsmanagementModelEditPerson extends AdminModel
         }
         catch (Exception $e)
         {
-            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
-            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
+            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');  
+            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');  
         }
-        
+      
     }
-    
-    
+  
+  
     /**
      * Method to load content person data
      *
@@ -87,7 +87,7 @@ class sportsmanagementModelEditPerson extends AdminModel
         //		{
           $this->_data = $this->getTable('person', 'sportsmanagementTable');
          $this->_data->load($this->_id);
-            
+          
         //			$query='SELECT * FROM #__sportsmanagement_person WHERE id='.(int) $this->_id;
         //			$this->_db->setQuery($query);
         //			$this->_data = $this->_db->loadObject();
@@ -110,7 +110,7 @@ class sportsmanagementModelEditPerson extends AdminModel
     {
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -128,14 +128,14 @@ class sportsmanagementModelEditPerson extends AdminModel
         if (empty($form)) {
             return false;
         }
-        
+      
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('ph_player', ''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+      
         return $form;
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -151,5 +151,5 @@ class sportsmanagementModelEditPerson extends AdminModel
         }
         return $data;
     }
-    
+  
 }

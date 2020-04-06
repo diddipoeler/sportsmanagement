@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,18 +16,20 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-if (! defined('JSM_PATH')) {
-    DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (! defined('JSM_PATH'))
+{
+	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-if (!class_exists('sportsmanagementHelper') ) {
-    JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
-} 
+if (!class_exists('sportsmanagementHelper'))
+{
+	JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
+}
 
 /**
  * SportsManagementController
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -35,33 +37,35 @@ if (!class_exists('sportsmanagementHelper') ) {
  */
 class SportsManagementController extends BaseController
 {
-    
-    /**
-     * SportsManagementController::display()
-     * 
-     * @param  bool $cachable
-     * @param  bool $urlparams
-     * @return void
-     */
-    function display($cachable = false, $urlparams = false) 
-    {
-        $jinput = Factory::getApplication()->input;
-        
-        /**
+
+	/**
+	 * SportsManagementController::display()
+	 *
+	 * @param   bool $cachable
+	 * @param   bool $urlparams
+	 * @return void
+	 */
+	function display($cachable = false, $urlparams = false)
+	{
+		$jinput = Factory::getApplication()->input;
+
+			  /**
  * set default view if not set
  */
-        $view = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
-        $layout = $jinput->getCmd('layout', 'default');
-        /**
+		$view = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
+		$layout = $jinput->getCmd('layout', 'default');
+		/**
  * call parent behavior
  */
-        parent::display($cachable);
-        if ($layout != 'edit' ) {
-            /**
+		parent::display($cachable);
+
+		if ($layout != 'edit')
+		{
+			/**
  * Set the submenu
  */
-            sportsmanagementHelper::addSubmenu('messages');
-        }
-        
-    }
+			sportsmanagementHelper::addSubmenu('messages');
+		}
+
+	}
 }

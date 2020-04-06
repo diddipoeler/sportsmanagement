@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewsmquotetxt
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -31,7 +31,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 {
     /**
      * sportsmanagementViewsmquotetxt::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -41,19 +41,19 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
         $option = $jinput->getCmd('option');
         $model = $this->getModel();
         $this->file_name = $jinput->getString('file_name');
-        
+      
         // Initialise variables.
         $this->form        = $this->get('Form');
         $this->source    = $this->get('Source');
-      
-        $this->option = $option;
-        
-    }
     
-   
+        $this->option = $option;
+      
+    }
+  
+ 
     /**
      * sportsmanagementViewsmquotetxt::addToolbar()
-     * 
+     *
      * @return void
      */
     protected function addToolbar()
@@ -64,9 +64,9 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
         $this->icon = 'quote';
 
         parent::addToolbar();
-    }    
-    
-    
-    
+    }  
+  
+  
+  
 }
 ?>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage stats
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
@@ -37,15 +37,15 @@ if ($this->config['show_sectionheader']) {
 }
 
 if ($this->config['show_general_stats']) {
-    echo $this->loadTemplate('stats'); 
+    echo $this->loadTemplate('stats');
 }
 
 if ($this->config['show_goals_stats']) {
-    echo $this->loadTemplate('goals_stats'); 
+    echo $this->loadTemplate('goals_stats');
 }
 
 if ($this->config['show_attendance_stats']) {
-    echo $this->loadTemplate('attendance_stats'); 
+    echo $this->loadTemplate('attendance_stats');
 }
 
 if ($this->config['show_goals_stats_flash'] ) {

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,7 +33,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?php echo Text::_('JCANCEL');?></button>
         </div>
     </fieldset>
-    
+  
         <fieldset class="adminform">
             <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_LEGEND', '<i>'.$this->project->name.'</i>');?></legend>
             <table class="<?php echo $this->table_data_class; ?>">
@@ -42,11 +42,11 @@ use Joomla\CMS\HTML\HTMLHelper;
                     <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
                     <th width="20"></th>
                     <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
-                    
+                  
                 </tr>
             </thead>
-                <tr>        
-                    <td><?php echo $this->lists['positions']; ?></td>                
+                <tr>      
+                    <td><?php echo $this->lists['positions']; ?></td>              
                     <td style="text-align:center;">
 <input id="moveright" type="button" value="Move Right" onclick="move_list_items('positionslist','project_positionslist');" />
 <input id="moverightall" type="button" value="Move Right All" onclick="move_list_items_all('positionslist','project_positionslist');" />

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="allprojects">       
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allprojects">     
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>
@@ -31,22 +31,22 @@ use Joomla\CMS\Filesystem\File;
 
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_PROJECTS_LEAGUE_NAME', 'l.name', $this->sortDirection, $this->sortColumn); ?>
-</th> 
+</th>
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_PROJECTS_SEASON', 's.name', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-                 
+</th>
+               
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
-</th>                                 
-                
+</th>                               
+              
 </tr>
 </thead>
 
 <?php foreach ($this->items as $i => $item) : ?>
 <tr class="row<?php echo $i % 2; ?>">
 <td>
-<?php 
+<?php
 if ($item->slug ) {
     $routeparameter = array();
     $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -62,7 +62,7 @@ if ($item->slug ) {
 }
 else
 {
-    echo $item->name;    
+    echo $item->name;  
 }
 
 if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
@@ -72,7 +72,7 @@ if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
 ?>
 </td>
 <td>
-<?PHP 
+<?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage(
     'allproject'.$item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
     $this->modalheight,

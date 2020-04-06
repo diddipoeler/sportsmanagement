@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -28,15 +28,15 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 <?php
-//save and close 
+//save and close
 $close = Factory::getApplication()->input->getInt('close', 0);
 if($close == 1) {
     ?><script>
     window.addEvent('domready', function() {
-        $('cancel').onclick();    
+        $('cancel').onclick();  
     });
     </script>
-    <?php 
+    <?php
 }
 ?>
 <div id="lineup">
@@ -65,9 +65,9 @@ if($close == 1) {
                     </th>
                     <th>
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
-                    </th>                    
+                    </th>                  
                 </tr>
-            </thead>            
+            </thead>          
                 <tr>
                     <td style="text-align:center; ">
         <?php
@@ -85,11 +85,11 @@ if($close == 1) {
            <td style='text-align:center; vertical-align:middle; '>
             <!-- left / right buttons -->
             <br />
-                                        
-                                        
+                                      
+                                      
                                         <input id="moveright" type="button" value="<?php echo Text::_('JGLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
                                         <input id="moveleft" type="button" value="<?php echo Text::_('JGLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
-                                        
+                                      
           </td>
           <td>
            <!-- player affected to this position -->
@@ -121,7 +121,7 @@ if($close == 1) {
         <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
         <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
         <input type="hidden" name="changes_check" value="0" id="changes_check" />
-        
+      
         <input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
         <input type="hidden" name="component" value="com_sportsmanagement" />
     <?php echo HTMLHelper::_('form.token')."\n"; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
+Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css'); 
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -37,17 +37,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <div class="row-fluid">
 <div class="span7">
-<div class="well well-small">   
+<div class="well well-small"> 
 <div class="module-title nav-header">
 <h2>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_WELCOME') ?>
 </h2>
 <p>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_INTRO'); ?>
-</p> 
+</p>
 
 </div>
-     
+   
 <div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendars">
@@ -63,9 +63,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?></span>
 </a>
 
-     
-        
-</div>        
+   
+      
+</div>      
 </div>
 </div>
 
@@ -78,23 +78,23 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <dl class="dl-horizontal">
                             <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
                             <dd><?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?></dd>
-                            
+                          
                             <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
                             <dd><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
 
-                            
+                          
                             <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
                             <dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
-                            
+                          
                             <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
                             <dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
-                            
+                          
                             <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
                             <dd>GNU General Public License</dd>
                         </dl>
                     </div>
 
-                    
+                  
 
                 </div>
 

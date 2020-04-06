@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,8 +28,8 @@ if (!defined('JSM_PATH') ) {
 }
 
 /**
-* 
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist 
+*
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
 */
 if (!class_exists('JSMModelLegacy')) {
     JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -39,7 +39,7 @@ if (!class_exists('JSMCountries')) {
 }
 if (!class_exists('sportsmanagementHelper') ) {
     /**
- * add the classes for handling 
+ * add the classes for handling
 */
     $classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
@@ -54,21 +54,21 @@ if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
 }
 
 /**
-* 
- * die übersetzungen laden 
+*
+ * die übersetzungen laden
 */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 /**
-* 
- * Reference global application object 
+*
+ * Reference global application object
 */
 $app = Factory::getApplication();
 
 /**
-* 
- * Include the syndicate functions only once 
+*
+ * Include the syndicate functions only once
 */
 JLoader::register('modSMEventsrankingHelper', __DIR__ . '/helper.php');
 
@@ -76,14 +76,14 @@ $list = modSMEventsrankingHelper::getData($params);
 
 $document = Factory::getDocument();
 /**
-* 
- * add css file 
+*
+ * add css file
 */
 $document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
 
 /**
-* 
- * Layout 
+*
+ * Layout
 */
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">

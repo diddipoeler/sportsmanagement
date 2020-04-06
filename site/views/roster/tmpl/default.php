@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage roster
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -23,7 +23,7 @@ use Joomla\CMS\Factory;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ($this->config['show_staff_layout'] == 'staff_johncage' 
+if ($this->config['show_staff_layout'] == 'staff_johncage'
     || $this->config['show_players_layout'] == 'player_johncage'
 ) {
     // johncage css:
@@ -48,12 +48,12 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
         $InOutStats[3] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/in.png');
         $InOutStats[4] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png');
         for ($x = count($InOutStats); $x >= 1; $x--) {
-            $css .= ".jl_roster_in_out$x { 
+            $css .= ".jl_roster_in_out$x {
 		background: #0a0 url('" . Uri::base() . $InOutStats[$x]['icon'] . "') left top  no-repeat;
 		-moz-background-size: 14px;
 		-o-background-size: 14px;
-		-webkit-background-size: 14px; 
-		-khtml-background-size: 14px;  
+		-webkit-background-size: 14px;
+		-khtml-background-size: 14px;
 		background-size: 14px;
 	}\n";
         }//for ($x=count($InOutStats);$x>=1;$x--) ends
@@ -68,12 +68,12 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
                         if (!strpos(' ' . $iconPath, '/')) {
                             $iconPath = 'media/com_sportsmanagement/event_icons/' . $iconPath;
                         }
-                        $css .= ".jl_roster_event" . $eventtype->eventtype_id . " { 
+                        $css .= ".jl_roster_event" . $eventtype->eventtype_id . " {
 					background: #ddd url('" . Uri::base() . $iconPath . "') left top  no-repeat;
 					-moz-background-size: 12px;
 					-o-background-size: 12px;
-					-webkit-background-size: 12px; 
-					-khtml-background-size: 12px;  
+					-webkit-background-size: 12px;
+					-khtml-background-size: 12px;
 					background-size: 12px;
 					}\n";
                         $eventtypes_done[] = $eventtype->eventtype_id;
@@ -102,7 +102,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
         $doc = Factory::getDocument();
         $doc->addStyleDeclaration($css);
     }
-    // johncage css ends    
+    // johncage css ends  
 }
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="roster">

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
 * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelTeams
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,11 +33,11 @@ class sportsmanagementModelTeams extends JSMModelList
 
     /**
      * sportsmanagementModelTeams::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
-    public function __construct($config = array()) 
+    public function __construct($config = array())
     {
         $config['filter_fields'] = array(
             't.name',
@@ -81,7 +81,7 @@ class sportsmanagementModelTeams extends JSMModelList
      *
      * @since 1.6
      */
-    protected function populateState($ordering = 't.name', $direction = 'asc') 
+    protected function populateState($ordering = 't.name', $direction = 'asc')
     {
 
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
@@ -111,10 +111,10 @@ class sportsmanagementModelTeams extends JSMModelList
 
     /**
      * sportsmanagementModelTeams::getListQuery()
-     * 
+     *
      * @return
      */
-    function getListQuery() 
+    function getListQuery()
     {
         // Select some fields
         $this->query->select('t.*');
@@ -157,25 +157,25 @@ class sportsmanagementModelTeams extends JSMModelList
                 $this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
                 $this->jsmsubquery1->where('stp.season_id = '.$this->_season_id);
                 $this->query->where('t.id NOT IN ('.$this->jsmsubquery1.')');
-        
-        } 
-        
+      
+        }
+      
         $this->query->order(
             $this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
 
-       
+     
 
         return $this->query;
     }
 
     /**
      * sportsmanagementModelTeams::getTeamListSelect()
-     * 
+     *
      * @return
      */
-    public function getTeamListSelect() 
+    public function getTeamListSelect()
     {
 
         $starttime = microtime();
@@ -200,11 +200,11 @@ class sportsmanagementModelTeams extends JSMModelList
 
     /**
      * sportsmanagementModelTeams::getTeams()
-     * 
+     *
      * @param  mixed $playground_id
      * @return
      */
-    function getTeams($playground_id) 
+    function getTeams($playground_id)
     {
 
         $teams = array();
@@ -214,7 +214,7 @@ class sportsmanagementModelTeams extends JSMModelList
             $this->jsmquery->clear();
             // Select some fields
             $this->jsmquery->select('pt.id, st.team_id, pt.project_id');
-            $this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');  
+            $this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
             // From table
             $this->jsmquery->from('#__sportsmanagement_project_team as pt');
             $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
@@ -231,7 +231,7 @@ class sportsmanagementModelTeams extends JSMModelList
                 // Select some fields
                 $this->jsmquery->clear();
                 $this->jsmquery->select('t.name, t.short_name, t.notes');
-                $this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');    
+                $this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');  
                 // From table
                 $this->jsmquery->from('#__sportsmanagement_team as t');
                 $this->jsmquery->where('t.id=' . (int) $row->team_id);
@@ -256,11 +256,11 @@ class sportsmanagementModelTeams extends JSMModelList
 
     /**
      * sportsmanagementModelTeams::getTeamsFromMatches()
-     * 
+     *
      * @param  mixed $games
      * @return
      */
-    function getTeamsFromMatches(& $games) 
+    function getTeamsFromMatches(& $games)
     {
 
         $teams = Array();

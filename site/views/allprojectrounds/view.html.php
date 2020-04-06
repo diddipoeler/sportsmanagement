@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage allprojectrounds
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -19,9 +19,9 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewallprojectrounds
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,11 +31,11 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 
     /**
      * sportsmanagementViewallprojectrounds::display()
-     * 
+     *
      * @param  mixed $tpl
      * @return
      */
-    function init() 
+    function init()
     {
 
         // Reference global application object

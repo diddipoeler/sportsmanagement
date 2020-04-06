@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
 * @version    1.0.05
@@ -23,9 +23,9 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewTeams
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,10 +35,10 @@ class sportsmanagementViewTeams extends sportsmanagementView
 
     /**
      * sportsmanagementViewTeams::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
 
         $starttime = microtime();
@@ -92,7 +92,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
 
         // Set toolbar items for the page

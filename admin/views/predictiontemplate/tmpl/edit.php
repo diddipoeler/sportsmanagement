@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -36,9 +36,9 @@ $i    = 1;
     -->
 </style>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-    
+  
     <?php
-    
+  
     ?>
     <fieldset class="adminform">
         <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
@@ -72,13 +72,13 @@ $i    = 1;
                 <?php endforeach; ?>
                 </ul>
             </fieldset>
- 
+
     <div class="clr"></div>
     <?php endforeach; ?>
     <?php echo HTMLHelper::_('tabs.end'); ?>
-    
-</fieldset>    
-    <div>        
+  
+</fieldset>  
+    <div>      
         <input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
         <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
         <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
@@ -91,4 +91,4 @@ $i    = 1;
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

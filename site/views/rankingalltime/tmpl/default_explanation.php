@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ $column_names    = explode(',', $config['ordered_columns_names']);
     foreach (  $columns as $k => $column)
     {
         if (empty($column_names[$k])) {$column_names[$k]='???';
-        }    
+        }  
         $c=strtoupper(trim($column));
         $c="COM_SPORTSMANAGEMENT_".$c;
         echo "<td class=\"col$d\">";

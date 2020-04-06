@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewagegroup
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,28 +27,28 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewagegroup extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewagegroup::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
 
     }
-    
+  
     /**
      * sportsmanagementViewagegroup::addToolBar()
-     * 
+     *
      * @return void
      */
-    protected function addToolBar() 
-    { 
+    protected function addToolBar()
+    {
         $this->jinput->setVar('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_NEW');
         $this->icon = 'agegroup';
         parent::addToolbar();
     }
-    
+  
 }

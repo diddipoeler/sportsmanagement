@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablePosition
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -60,10 +60,10 @@ class sportsmanagementTablePosition extends JSMTable
         else {
             $this->alias = OutputFilter::stringURLSafe($this->alias); // make sure the user didn't modify it to something illegal...
         }
-        
+      
         return true;
     }
-    
+  
 
 }
 ?>

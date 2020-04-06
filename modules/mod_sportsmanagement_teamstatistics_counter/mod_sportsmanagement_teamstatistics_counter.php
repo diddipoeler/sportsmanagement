@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -35,8 +35,8 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.teamstats', JPATH_SITE);
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMTeamStatisticsCounter', __DIR__ . '/helper.php');
 

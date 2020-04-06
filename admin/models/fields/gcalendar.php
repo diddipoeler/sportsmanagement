@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldGCalendar
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -31,12 +31,12 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldGCalendar extends \JFormFieldList
 {
-    
+  
     protected $type = 'GCalendar';
 
     /**
      * FormFieldGCalendar::getOptions()
-     * 
+     *
      * @return
      */
     protected function getOptions()
@@ -53,5 +53,5 @@ class JFormFieldGCalendar extends \JFormFieldList
         $options = array_merge(parent::getOptions(), $options);
         return $options;
     }
-    
+  
 }

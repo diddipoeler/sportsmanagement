@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -38,7 +38,7 @@ foreach ($this->divisions as $division)
     if(empty($this->allteams) || count($this->allteams)==0) { continue;
     }
     ?>
-<form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">        
+<form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">      
     <table class="table">
     <tr>
         <td class="contentheading"><?php echo $division->name; ?></td>
@@ -46,26 +46,26 @@ foreach ($this->divisions as $division)
     <tr>
     <td style="text-align: right">
     <?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TEAMS').' '.$division->name; ?>
-    </td>    
-    <td style="text-align: right">    
+    </td>  
+    <td style="text-align: right">  
         <?php echo $this->team1select[$division->id]; ?>
     </td>
-    <td style="text-align: right">    
+    <td style="text-align: right">  
         <?php echo $this->team2select[$division->id]; ?>
     </td>
-    <td style="text-align: right">    
+    <td style="text-align: right">  
             <input type="hidden" name="option" value="com_sportsmanagement" />
             <input type="hidden" name="view" value="curve" />
-            <input type="hidden" name="cfg_which_database" value="<?php echo $this->cfg_which_database; ?>" />  
-            <input type="hidden" name="s" value="<?php echo $this->season_id; ?>" />  
-            <input type="hidden" name="p" value="<?php echo $this->project->id; ?>" />  
-            <input type="hidden" name="tid1" value="<?php echo sportsmanagementModelCurve::$teamid1; ?>" /> 
-            <input type="hidden" name="tid2" value="<?php echo sportsmanagementModelCurve::$teamid2; ?>" />  
-            <input type="hidden" name="division" value="<?php echo $division->id; ?>" /> 
+            <input type="hidden" name="cfg_which_database" value="<?php echo $this->cfg_which_database; ?>" />
+            <input type="hidden" name="s" value="<?php echo $this->season_id; ?>" />
+            <input type="hidden" name="p" value="<?php echo $this->project->id; ?>" />
+            <input type="hidden" name="tid1" value="<?php echo sportsmanagementModelCurve::$teamid1; ?>" />
+            <input type="hidden" name="tid2" value="<?php echo sportsmanagementModelCurve::$teamid2; ?>" />
+            <input type="hidden" name="division" value="<?php echo $division->id; ?>" />
             <input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
                 value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
     <?php echo HTMLHelper::_('form.token'); ?>
-        
+      
     </td>
     </tr>
     </table>
@@ -85,23 +85,23 @@ var chart = new Chart(ctx, {
     // The data for our dataset
     data: {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
-<?php        
+<?php      
 $teamcount = sizeof($this->teamranking[$division->id]);
 foreach ( $this->teamranking[$division->id] as $key => $value )
-{    
+{  
     if ($value->team_id == sportsmanagementModelCurve::$teamid1 ) {
-        ?>        
+        ?>      
         datasets: [{
             label: "<?php echo $value->name; ?>",
             fill: false,
       borderColor: '<?php echo $this->flashconfig['curve_team1_color']; ?>',
             data: [<?php echo implode(",", $value->rankings); ?>],
         },
-    <?php        
-    }    
-} 
+    <?php      
+    }  
+}
 foreach ( $this->teamranking[$division->id] as $key => $value )
-{ 
+{
     if ($value->team_id == sportsmanagementModelCurve::$teamid2 ) {
         ?>
         {
@@ -113,7 +113,7 @@ foreach ( $this->teamranking[$division->id] as $key => $value )
     <?php
     }
 }
-?>        
+?>      
     ]},
 
     // Configuration options go here
@@ -131,8 +131,8 @@ foreach ( $this->teamranking[$division->id] as $key => $value )
     scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 1,   
-suggestedMax: <?php echo $teamcount; ?>, 
+suggestedMin: 1, 
+suggestedMax: <?php echo $teamcount; ?>,
 beginAtZero:false,
 reverse: true,
 stepSize:1,

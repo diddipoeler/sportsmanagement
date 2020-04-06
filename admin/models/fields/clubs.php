@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * FormFieldClubs
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -32,27 +32,27 @@ class JFormFieldClubs extends FormField
 {
 
     protected $type = 'clubs';
-    
+  
     /**
      * FormFieldClubs::getInput()
-     * 
+     *
      * @return
      */
-    function getInput() 
+    function getInput()
     {
         $db = sportsmanagementHelper::getDBConnection();
         $lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $database_table    = $params->get('cfg_which_database_table');
-        
+      
         $extension = "com_sportsmanagement";
         $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
         $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
         ||    $lang->load($extension, $source, null, false, false)
         ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
         ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
-        
+      
         $query = 'SELECT c.id, c.name FROM #__'.$database_table.'_club c ORDER BY name';
         $db->setQuery($query);
         $clubs = $db->loadObjectList();
@@ -61,9 +61,9 @@ class JFormFieldClubs extends FormField
         foreach ( $clubs as $club ) {
             $mitems[] = HTMLHelper::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')');
         }
-        
+      
         $output= HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id);
         return $output;
     }
 }
- 
+

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelagegroups
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -28,15 +28,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelagegroups extends JSMModelList
 {
     var $_identifier = "agegroups";
-    
+  
     /**
      * sportsmanagementModelagegroups::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.name',
                         'obj.alias',
@@ -57,9 +57,9 @@ class sportsmanagementModelagegroups extends JSMModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-        
+      
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -83,7 +83,7 @@ class sportsmanagementModelagegroups extends JSMModelList
            $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
         $this->setState('filter.search_nation', $temp_user_request);
            $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $this->setState('list.limit', $value);    
+        $this->setState('list.limit', $value);  
 
         // List state information.
         parent::populateState($ordering, $direction);
@@ -91,10 +91,10 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->setState('list.start', $value);
 
     }
-    
+  
     /**
      * sportsmanagementModelagegroups::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -108,55 +108,55 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_agegroup as obj');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
         $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-  
+
         if ($this->getState('filter.search') ) {
             $this->jsmquery->where('LOWER(obj.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-        
+      
         if ($this->getState('filter.search_nation')) {
             $this->jsmquery->where('obj.country LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search_nation').'%'));
         }
-        
+      
         if ($this->getState('filter.sports_type')) {
             $this->jsmquery->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
         }
-        
+      
         if (is_numeric($this->getState('filter.state')) ) {
-            $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));    
+            $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));  
         }
 
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-        
+      
         return $this->jsmquery;
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModelagegroups::getAgeGroups()
-     * 
+     *
      * @return
      */
     function getAgeGroups($country = '', $infotext = 0)
     {
         $this->jsmquery->clear();
         $this->jsmquery->select('a.id AS value');
-    
+  
         if ($infotext ) {
             $this->jsmquery->select('concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
         }
         else
         {
-            $this->jsmquery->select('a.name AS text');    
+            $this->jsmquery->select('a.name AS text');  
         }
         if ($country ) {
             $this->jsmquery->where('a.country LIKE '.$this->jsmdb->Quote('%'.$country.'%'));
         }
-        
+      
         $this->jsmquery->from('#__sportsmanagement_agegroup as a');
-                       
+                     
         $this->jsmquery->order('a.name ASC');
 
         $this->jsmdb->setQuery($this->jsmquery);

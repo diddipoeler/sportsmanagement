@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,19 +30,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  */
 ?>
 <div id="matchdetails">
-    
+  
     <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
         <!-- Score Table START -->
     <?php
-    //save and close 
+    //save and close
     $close = Factory::getApplication()->input->getInt('close', 0);
     if($close == 1) {
         ?><script>
        window.addEvent('domready', function() {
-      $('cancel').onclick();    
+      $('cancel').onclick();  
        });
        </script>
-        <?php 
+        <?php
     }
     ?>
             <fieldset>
@@ -64,7 +64,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     if (strtotime($this->match->match_date) < time() ) {
         $startOffset = 4;
     }
-        
+      
         // welche joomla version
     if(version_compare(JVERSION, '3.0.0', 'ge')) {
         // Define tabs options for version of Joomla! 3.1
@@ -91,39 +91,39 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel7', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'));
         echo $this->loadTemplate('matchextended');
         echo HTMLHelper::_('bootstrap.endTab');
-        echo HTMLHelper::_('bootstrap.endTabSet');    
+        echo HTMLHelper::_('bootstrap.endTabSet');  
     }
     else
     {
         echo HTMLHelper::_('tabs.start', 'tabs', array('startOffset'=>$startOffset));
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW'), 'panel1');
         echo $this->loadTemplate('matchpreview');
-        
+      
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS'), 'panel2');
         echo $this->loadTemplate('matchdetails');
-        
+      
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
         echo $this->loadTemplate('scoredetails');
-        
+      
 
-        
+      
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
         echo $this->loadTemplate('matchreport');
-        
+      
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION'), 'panel6');
         echo $this->loadTemplate('matchrelation');
-        
+      
         echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel7');
         echo $this->loadTemplate('matchextended');
-        
+      
 
-        
+      
         echo HTMLHelper::_('tabs.end');
-    }    
+    }  
     ?>
         <!-- Additional Details Table END -->
         <div class="clr"></div>
-        
+      
         <input type="hidden" name="task" value="match.edit"/>
         <input type="hidden" name="close" id="close" value="0"/>
         <input type="hidden" name="id" id="close" value="<?php echo $this->item->id; ?>"/>
@@ -135,4 +135,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

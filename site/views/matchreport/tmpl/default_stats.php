@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
@@ -31,7 +31,7 @@ if (!empty($this->matchplayerpositions)) {
                 }
             }
         }
-    }    
+    }  
     foreach ( $this->matchstaffpositions as $pos )
     {
         if(isset($this->stats[$pos->position_id]) && count($this->stats[$pos->position_id])>0) {
@@ -46,7 +46,7 @@ if (!empty($this->matchplayerpositions)) {
         ?>
 
        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
-    
+  
         <?php
         // Define tabs options for version of Joomla! 4.0
         $tabsOptions = array(
@@ -60,7 +60,7 @@ if (!empty($this->matchplayerpositions)) {
         echo $this->loadTemplate('stats_away');
         echo HTMLHelper::_('bootstrap.endTab');
         echo HTMLHelper::_('bootstrap.endTabSet', 'ID-Tabs-Group-Stats');
-    
+  
     endif;
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ if (!empty($this->matches)) {
     $teamid = Factory::getApplication()->input->getInt('tid');
     $nbcols = 0;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplan">   
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplan"> 
 <table class="<?php echo $this->config['table_class']; ?>">
     <thead>
     <tr >
@@ -246,16 +246,16 @@ if (!empty($this->matches)) {
 
     foreach( $this->matches as $match )
     {
-        
+      
         if ($this->config['show_historylink'] ) {
              $routeparameter = array();
              $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
              $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
              $routeparameter['p'] = $this->project->slug;
              $routeparameter['mid'] = $match->id;
-             $history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);    
+             $history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);  
         }
-        
+      
         $hometeam = $this->teams[$match->projectteam1_id];
         $home_projectteam_id = $hometeam->projectteamid;
 
@@ -341,10 +341,10 @@ if (!empty($this->matches)) {
                             if ($this->config['use_tabs_events']) {
                                 $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
                             } else {
-             
+           
                                 /**
  * no subs are shown when not using tabs for displaying events so don't check for that
- */             
+ */           
                                 $hasEvents = (count($events) > 0 && $this->config['show_events']);
                             }
 
@@ -383,7 +383,7 @@ if (!empty($this->matches)) {
         $routeparameter['order'] = '';
         $routeparameter['layout'] = '';
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-            
+          
         echo HTMLHelper::link($link, $match->roundcode);
         ?>
         </td>
@@ -414,7 +414,7 @@ if (!empty($this->matches)) {
             </td>
     <?php
         }
-        
+      
         ?>
 
         <?php
@@ -424,19 +424,19 @@ if (!empty($this->matches)) {
             <?php
             if ($this->config['show_date_image'] && !strstr($match->match_date, "0000-00-00") ) {
                 $jdate = Factory::getDate($match->match_date);
-                $jdate->setTimezone(new DateTimeZone($this->project->timezone));    
-                //$jdate->format('d.m.Y H:i');  
+                $jdate->setTimezone(new DateTimeZone($this->project->timezone));  
+                //$jdate->format('d.m.Y H:i');
                 $temp1 = $jdate->format('M');
                 $temp2 = $jdate->format('d');
-                $temp3 = $jdate->format('D');      
+                $temp3 = $jdate->format('D');    
                 ?>
        <div class="jsmcalendar">
        <div class="jsmcalendar-month"><?php echo $temp1; ?></div>
        <div class="jsmcalendar-day"><?php echo $temp2; ?></div>
        <div class="jsmcalendar-dayname"><?php echo $temp3; ?></div>
        </div>
-            <?php    
-            }    
+            <?php  
+            }  
             else
              {
                 if (!strstr($match->match_date, "0000-00-00") ) {
@@ -445,9 +445,9 @@ if (!empty($this->matches)) {
                 else
                 {
                     echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
-                }    
-            }    
-            
+                }  
+            }  
+          
         ?>
         </td>
         <?php
@@ -481,7 +481,7 @@ if (!empty($this->matches)) {
         /**
  * Define some variables which will be used
  */
- 
+
         $teamA    = '';
         $teamB    = '';
         $score    = "";
@@ -525,7 +525,7 @@ if (!empty($this->matches)) {
         /**
  * Check if the user wants to show the club logo or country flag
  */
- 
+
         switch ($this->config['show_logo_small'])
         {
         case 1 :
@@ -559,7 +559,7 @@ if (!empty($this->matches)) {
             $teamB .= '</td>';
 }
         break;
-                
+              
         case 5 :
         {
             $teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
@@ -591,7 +591,7 @@ if (!empty($this->matches)) {
             $teamB .= '</td>';
 }
         break;
-            
+          
         case 6 :
         {
             $teamA .= '<td class="'.$class1.'" id="teamplan-spielheimlogo">';
@@ -664,7 +664,7 @@ if (!empty($this->matches)) {
 
         $isFavTeam = in_array($guestteam->id, $this->favteams);
         $away = sportsmanagementHelper::formatTeamName($guestteam, "g".$match->id."t".$guestteam->id, $this->config, $isFavTeam, $awaylink, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-        
+      
         $teamB .= '<td class="'.$class2.'" id="teamplan-spielgast">'.$away.'</td>';
 
         if (!$match->cancel) {
@@ -674,7 +674,7 @@ if (!empty($this->matches)) {
  * 'No part results available' occurs when teamX_result_split ONLY consists of zero or more ";"
  * (zero for projects with a single playing period, one or more for projects with two or more playing periods)
  */
-            
+          
             $team1_result_split_present = preg_match('/^;*$/', $match->team1_result_split) == 0;
             $team2_result_split_present = preg_match('/^;*$/', $match->team2_result_split) == 0;
 
@@ -755,16 +755,16 @@ if (!empty($this->matches)) {
             }
 
             //Link
-            $routeparameter = array();                    
+            $routeparameter = array();                  
             $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
             $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
             $routeparameter['p'] = $this->project->slug;
-            $routeparameter['mid'] = $match->match_slug;            
+            $routeparameter['mid'] = $match->match_slug;          
             if (isset($match->team1_result)) {
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-                    
-            } 
-            else 
+                  
+            }
+            else
             {
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
             }
@@ -777,9 +777,9 @@ if (!empty($this->matches)) {
 
             if ($team1_result_split_present && $team2_result_split_present) {
                 //Part results
-                if (!is_array($part_results_left)) { $part_results_left = array($part_results_left); 
+                if (!is_array($part_results_left)) { $part_results_left = array($part_results_left);
                 }
-                if (!is_array($part_results_right)) { $part_results_right = array($part_results_right); 
+                if (!is_array($part_results_right)) { $part_results_right = array($part_results_right);
                 }
 
                 for ($i = 0; $i < count($part_results_left); $i++)
@@ -852,7 +852,7 @@ if (!empty($this->matches)) {
           break;
         }
         if ($history_link ) {
-                ?>   
+                ?> 
            <td>
              <a href='<?php echo $history_link; ?>'>
            <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
@@ -861,9 +861,9 @@ if (!empty($this->matches)) {
            title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
            </a>
           </td>
-            <?php    
-        }        
-        
+            <?php  
+        }      
+      
         ?>
 
         <?php
@@ -916,7 +916,7 @@ if (!empty($this->matches)) {
                             $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                             $routeparameter['p'] = $this->project->slug;
                             $routeparameter['pid'] = $match->referees[$i]->referee_id;
-                            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);                                
+                            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);                              
                             //$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
                             $ref = HTMLHelper::link($link, $ref);
                         }
@@ -974,7 +974,7 @@ if (!empty($this->matches)) {
                 $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                 $routeparameter['p'] = $this->project->slug;
                 $routeparameter['mid'] = $match->id;
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);                
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);              
                 $viewReport = HTMLHelper::link($link, $href_text);
                 echo $viewReport;
             }
@@ -1032,7 +1032,7 @@ if (!empty($this->matches)) {
             $this->projectevents,
             $events,
             $subs,
-            $this->config 
+            $this->config
         );
             ?>
          </td>

@@ -57,7 +57,7 @@
 * @link      http://pear.php.net/pepr/pepr-proposal-show.php?id=198
 */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 if(!defined('SERVICES_JSON_SLICE')) {
 
@@ -124,10 +124,10 @@ if(!defined('SERVICES_JSON_SLICE')) {
     * constructs a new JSON instance
     *
     * @param int $use object behavior flags; combine with boolean-OR
-    *                 possible values: - SERVICES_JSON_LOOSE_TYPE: 
+    *                 possible values: - SERVICES_JSON_LOOSE_TYPE:
     *                 loose typing. "{...}" syntax creates
     *                 associative arrays instead of objects in
-    *                 decode(). - SERVICES_JSON_SUPPRESS_ERRORS: 
+    *                 decode(). - SERVICES_JSON_SUPPRESS_ERRORS:
     *                 error suppression. Values which can't be
     *                 encoded (e.g. resources) appear as NULL
     *                 instead of throwing errors. By default, a
@@ -573,7 +573,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
                         case $substr_chrs_c_2 == '\\\'':
                         case $substr_chrs_c_2 == '\\\\':
                         case $substr_chrs_c_2 == '\\/':
-                            if (($delim == '"' && $substr_chrs_c_2 != '\\\'') 
+                            if (($delim == '"' && $substr_chrs_c_2 != '\\\'')
                                 || ($delim == "'" && $substr_chrs_c_2 != '\\"')
                             ) {
                                 $utf8 .= $chrs{++$c};
@@ -694,7 +694,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
                                 // element in an associative array,
                                 // for now
                                 $parts = array();
-                                
+                              
                                 if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
                                     // "name":value pair
                                     $key = $this->decode($parts[1]);
@@ -724,8 +724,8 @@ if(!defined('SERVICES_JSON_SLICE')) {
                             array_push($stk, array('what' => SERVICES_JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
                             //print("Found start of string at {$c}\n");
 
-                        } elseif (($chrs{$c} == $top['delim']) 
-                            && ($top['what'] == SERVICES_JSON_IN_STR) 
+                        } elseif (($chrs{$c} == $top['delim'])
+                            && ($top['what'] == SERVICES_JSON_IN_STR)
                             && ((strlen(substr($chrs, 0, $c)) - strlen(rtrim(substr($chrs, 0, $c), '\\'))) % 2 != 1)
                         ) {
                             // found a quote, we're in a string, and it's not escaped
@@ -734,7 +734,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
                             array_pop($stk);
                             //print("Found end of string at {$c}: ".substr($chrs, $top['where'], (1 + 1 + $c - $top['where']))."\n");
 
-                        } elseif (($chrs{$c} == '[') 
+                        } elseif (($chrs{$c} == '[')
                             && in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))
                         ) {
                             // found a left-bracket, and we are in an array, object, or slice
@@ -746,7 +746,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
                             array_pop($stk);
                             //print("Found end of array at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
-                        } elseif (($chrs{$c} == '{') 
+                        } elseif (($chrs{$c} == '{')
                             && in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))
                         ) {
                             // found a left-brace, and we are in an array, object, or slice
@@ -758,7 +758,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
                             array_pop($stk);
                             //print("Found end of object at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
-                        } elseif (($substr_chrs_c_2 == '/*') 
+                        } elseif (($substr_chrs_c_2 == '/*')
                             && in_array($top['what'], array(SERVICES_JSON_SLICE, SERVICES_JSON_IN_ARR, SERVICES_JSON_IN_OBJ))
                         ) {
                             // found a comment start, and we are in an array, object, or slice
@@ -800,7 +800,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
         {
             if (class_exists('pear')) {
                 return PEAR::isError($data, $code);
-            } elseif (is_object($data) && (get_class($data) == 'jsmservices_json_error' 
+            } elseif (is_object($data) && (get_class($data) == 'jsmservices_json_error'
                 || is_subclass_of($data, 'jsmservices_json_error'))
             ) {
                 return true;
@@ -817,7 +817,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
             function Services_JSON_Error($message = 'unknown error', $code = null,
                 $mode = null, $options = null, $userinfo = null
             ) {
-            
+          
                 parent::PEAR_Error($message, $code, $mode, $options, $userinfo);
             }
         }
@@ -832,7 +832,7 @@ if(!defined('SERVICES_JSON_SLICE')) {
             function Services_JSON_Error($message = 'unknown error', $code = null,
                 $mode = null, $options = null, $userinfo = null
             ) {
-            
+          
 
             }
         }

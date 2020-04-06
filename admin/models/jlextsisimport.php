@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -50,9 +50,9 @@ jimport('joomla.utilities.utility');
 
 /**
  * sportsmanagementModeljlextsisimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -72,7 +72,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljlextsisimport::getData()
- * 
+ *
  * @return void
  */
     function getData()
@@ -84,7 +84,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
           $post = Factory::getApplication()->input->get('post');
 
         $country = '';
-        $exportpositioneventtype = array();  
+        $exportpositioneventtype = array();
         $exportplayer = array();
         $exportpersons = array();
         $exportpersonstemp = array();
@@ -107,8 +107,8 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         $exportmatch = array();
         $exportmatchplayer = array();
         $exportmatchevent = array();
-        $exportevent = array();  
-        $exportpositiontemp = array(); 
+        $exportevent = array();
+        $exportpositiontemp = array();
         $exportposition = array();
         $exportparentposition = array();
         $exportprojectposition = array();
@@ -131,7 +131,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
          * test herren : 001514505501506501000000000000000003000
          * test damen :  001514505501506502000000000000000004000
          */
-        
+      
         switch ($sis_xmllink)
         {
         case 'http://www.sis-handball.de':
@@ -140,9 +140,9 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         case 'http://www.sis-handball.at':
             $country = 'AUT';
             break;
-    
-        }        
-        
+  
+        }      
+      
         $liganummer = $post ['liganummer'];
         $teamart = substr($liganummer, 17, 4);
 
@@ -151,7 +151,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         $query = $db->getQuery(true);
         $query->select(array('id'))
             ->from('#__sportsmanagement_sports_type')
-            ->where('name LIKE '."'COM_SPORTSMANAGEMENT_ST_HANDBALL'");    
+            ->where('name LIKE '."'COM_SPORTSMANAGEMENT_ST_HANDBALL'");  
         $db->setQuery($query);
           $sp_id = $db->loadResult();
 
@@ -159,12 +159,12 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         $query->select(array('id,name'))
             ->from('#__sportsmanagement_agegroup')
             ->where('info LIKE '."'".$teamart."'")
-            ->where('country LIKE '."'".$country."'");    
+            ->where('country LIKE '."'".$country."'");  
         $db->setQuery($query);
           $agegroup = $db->loadObject();
         $linkresults = self::getLink($sis_nummer, $sis_passwort, $liganummer, $this->_sis_art, $sis_xmllink);
         $linkspielplan = self::getSpielplan($linkresults, $liganummer, $this->_sis_art);
-  
+
           $temp = new stdClass();
           $temp->name = '';
           $this->_datas['season'] = $temp;
@@ -174,11 +174,11 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
           $temp->name = 'COM_SPORTSMANAGEMENT_ST_HANDBALL';
           $this->_datas['sportstype'] = $temp;
 
-        $projectname = (string) $linkspielplan->Spielklasse->Name;        
-        
+        $projectname = (string) $linkspielplan->Spielklasse->Name;      
+      
         $temp = new stdClass();
           $temp->name = $projectname;
-          $temp->exportRoutine = '2010-09-19 23:00:00';  
+          $temp->exportRoutine = '2010-09-19 23:00:00';
           $this->_datas['exportversion'] = $temp;
 
         $temp = new stdClass();
@@ -188,7 +188,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
           $temp->middle_name = $projectname;
           $temp->country = $country;
           $this->_datas['league'] = $temp;
-  
+
           $temp = new stdClass();
           $temp->name = $projectname;
           $temp->staffel_id = $liganummer;
@@ -197,7 +197,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
           $temp->project_type = 'SIMPLE_LEAGUE';
           $temp->current_round_auto = '2';
           $temp->auto_time = '2880';
-          $temp->start_date = '';  
+          $temp->start_date = '';
           $temp->start_time = '';
           $temp->game_regular_time = '60';
           $temp->game_parts = '2';
@@ -211,7 +211,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
           $this->_datas['project'] = $temp;
 
         // spielplan auswerten
-        foreach ($linkspielplan->Spiel as $tempspiel) 
+        foreach ($linkspielplan->Spiel as $tempspiel)
         {
             // das spiele
             $tempmatch = new stdClass();
@@ -227,9 +227,9 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 
             if ((string) $tempspiel->Tore1 && (string) $tempspiel->Tore2 ) {
                 $tore_team_1 = array();
-                $tore_team_2 = array();    
-                $tore_team_1[] = (string) $tempspiel->Tore01; 
-                $tore_team_1[] = (string) $tempspiel->Tore1; 
+                $tore_team_2 = array();  
+                $tore_team_1[] = (string) $tempspiel->Tore01;
+                $tore_team_1[] = (string) $tempspiel->Tore1;
                 $tore_team_2[] = (string) $tempspiel->Tore02;
                 $tore_team_2[] = (string) $tempspiel->Tore2;
                 $tempmatch->team1_result = (string) $tempspiel->Tore1;
@@ -237,13 +237,13 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 $tempmatch->team2_result = (string) $tempspiel->Tore2;
                 $tempmatch->team2_result_split = implode(";", $tore_team_2);
             }
-    
+  
             $tempmatch->summary = '';
             $tempmatch->preview = (string) $tempspiel->Anmerkung;
             $tempmatch->playground_id = (string) $tempspiel->Halle;
 
-            $exportmatch[] = $tempmatch;  
-      
+            $exportmatch[] = $tempmatch;
+    
             // runden
             if (array_key_exists((string) $tempspiel->Spieltag, $exportround)) {
             }
@@ -258,13 +258,13 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 $temp->round_date_last = '';
                 $exportround[(string) $tempspiel->Spieltag] = $temp;
             }
-    
+  
             // personen
             if (array_key_exists((string) $tempspiel->Schiri, $exportpersonstemp)) {
             }
             else
             {
-                $exportpersonstemp[(string) $tempspiel->Schiri] = (string) $tempspiel->GespannName; 
+                $exportpersonstemp[(string) $tempspiel->Schiri] = (string) $tempspiel->GespannName;
                 $temp = new stdClass();
                 $temp->id = (string) $tempspiel->Schiri;
                 $temp->person_id = (string) $tempspiel->Schiri;
@@ -283,15 +283,15 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 $temp->country = $country;
                 $temp->position_id = 1000;
                 $temp->info = 'Schiri';
-                $exportpersons[] = $temp;    
+                $exportpersons[] = $temp;  
             }
 
             //schiedsrichter
             $tempmatchreferee = new stdClass();
-            $tempmatchreferee->id = (string) $tempspiel->Schiri; 
-            $tempmatchreferee->match_id = (string) $tempspiel->Nummer; 
-            $tempmatchreferee->project_referee_id = (string) $tempspiel->Schiri; 
-            $tempmatchreferee->project_position_id = 1000; 
+            $tempmatchreferee->id = (string) $tempspiel->Schiri;
+            $tempmatchreferee->match_id = (string) $tempspiel->Nummer;
+            $tempmatchreferee->project_referee_id = (string) $tempspiel->Schiri;
+            $tempmatchreferee->project_position_id = 1000;
             $exportmatchreferee[] = $tempmatchreferee;
 
             // sporthallen
@@ -332,7 +332,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
             {
                 $exportteamstemp[(string) $tempspiel->Gast] = (string) $tempspiel->GastNr;
             }
-            
+          
         }
 
 
@@ -600,8 +600,8 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         $this->_datas['match'] = array_merge($exportmatch);
 
         /**
-* 
- * das ganze für den standardimport aufbereiten 
+*
+ * das ganze für den standardimport aufbereiten
 */
         $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         // open the project
@@ -687,10 +687,10 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
         if (isset($this->_datas['playground']) ) {
             $app->enqueueMessage(Text::_('playground Daten '.'generiert'), '');
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
-        }            
+        }          
 
 
-            
+          
         // close the project
         $output .= '</project>';
 
@@ -700,12 +700,12 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 
 
 
-    }  
+    }
 
 
     /**
      * sportsmanagementModeljlextsisimport::getLink()
-     * 
+     *
      * @param  mixed $vereinsnummer
      * @param  mixed $vereinspasswort
      * @param  mixed $liganummer
@@ -713,36 +713,36 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
      * @param  mixed $sis_xmllink
      * @return
      */
-    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
+    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink)
     {
         $sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
-        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);    
+        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);  
         return $link;
     }
-    
-    
+  
+  
 
     /**
      * sportsmanagementModeljlextsisimport::getSpielplan()
-     * 
+     *
      * @param  mixed $linkresults
      * @param  mixed $liganummer
      * @param  mixed $sis_art
      * @return
      */
-    function getSpielplan($linkresults,$liganummer,$sis_art) 
+    function getSpielplan($linkresults,$liganummer,$sis_art)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         /**
-* 
- * XML File 
+*
+ * XML File
 */
         $filepath='components/'.$option.'/sisdata/';
-        
+      
         /**
-* 
- * File laden 
+*
+ * File laden
 */
         $datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
         if (file_exists($datei)) {
@@ -751,8 +751,8 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 if (function_exists('curl_version')) {
                     $curl = curl_init();
                     /**
-* 
- * Define header array for cURL requestes 
+*
+ * Define header array for cURL requestes
 */
                     $header = array('Contect-Type:application/xml');
                     curl_setopt($curl, CURLOPT_URL, $linkresults);
@@ -772,33 +772,33 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
                 }
                 /**
-* 
- * Parsen 
+*
+ * Parsen
 */
                 $doc = DOMDocument::loadXML($content);
                 /**
-* 
- * Altes File löschen 
+*
+ * Altes File löschen
 */
                 unlink($datei);
                 /**
-* 
- * Speichern 
+*
+ * Speichern
 */
                 $doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
             }
-        } 
-        else 
+        }
+        else
         {
             /**
-* 
- * Laden 
+*
+ * Laden
 */
             if (function_exists('curl_version')) {
                 $curl = curl_init();
                 /**
-* 
- * Define header array for cURL requestes 
+*
+ * Define header array for cURL requestes
 */
                 $header = array('Contect-Type:application/xml');
                 curl_setopt($curl, CURLOPT_URL, $linkresults);
@@ -818,22 +818,22 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
             }
             /**
-* 
- * Parsen 
+*
+ * Parsen
 */
             $doc = DOMDocument::loadXML($content);
             /**
-* 
- * Speichern 
+*
+ * Speichern
 */
             $doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
         }
         $result = simplexml_load_file($datei);
         /**
-* 
- * XML File end 
+*
+ * XML File end
 */
-        foreach ($result->Spiel as $temp) 
+        foreach ($result->Spiel as $temp)
         {
             $nummer = substr($temp->Liga, -3);
             $datum = substr($temp->SpielVon, 0, 10);

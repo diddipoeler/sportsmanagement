@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldAssociationsList
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -60,61 +60,61 @@ class JFormFieldAssociationsList extends \JFormFieldList
         if (is_array($select_id)) {
             $select_id = $select_id[0];
         }
-        
-        
-        if ($select_id) {        
+      
+      
+        if ($select_id) {      
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            $query->select('country');        
+            $query->select('country');      
             $query->from('#__sportsmanagement_'.$vartable.' AS t');
             $query->where('t.id = '.$select_id);
             $db->setQuery($query);
             $country = $db->loadResult();
-            
+          
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            
+          
             $query->select('t.id AS value, t.name AS text');
             $query->from('#__sportsmanagement_associations AS t');
             $query->where("t.country = '".$country."'");
             $query->where('t.parent_id = 0');
             $query->order('t.name');
             $db->setQuery($query);
-        
+      
             $sections = $db->loadObjectList();
-           
+         
             $categoryparent = empty($sections) ? 0 : $sections[0]->value;
 
             $list = $this->JJ_categoryArray(0, $country);
 
             $preoptions = array();
             $name = 'parent_id';
-            foreach ( $list as $item ) 
+            foreach ( $list as $item )
              {
                 if (!$preoptions && !$selected && ($sections || !$item->section)) {
                     $selected = $item->id;
                 }
                   $options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
             }
-        
-        
+      
+      
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;
     }
-    
+  
     /**
  * FormFieldAssociationsList::JJ_categoryArray()
- * 
+ *
  * @param  integer $admin
  * @param  mixed   $country
  * @return
  */
-    function JJ_categoryArray($admin=0,$country) 
+    function JJ_categoryArray($admin=0,$country)
     {
-        $db = sportsmanagementHelper::getDBConnection(); 
+        $db = sportsmanagementHelper::getDBConnection();
         // get a list of the menu items
          $query = "SELECT * FROM #__sportsmanagement_associations where country = '".$country."'";
 
@@ -125,7 +125,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
         $children = array ();
 
         // first pass - collect children
-        foreach ($items as $v) 
+        foreach ($items as $v)
         {
             $pt = $v->parent_id;
             $list = isset($children[$pt]) ? $children[$pt] : array ();
@@ -136,11 +136,11 @@ class JFormFieldAssociationsList extends \JFormFieldList
         // second pass - get an indent list of the items
         $array = $this->fbTreeRecurse(0, '', array (), $children, 10, 0, 1);
         return $array;
-    }        
-    
+    }      
+  
     /**
  * FormFieldAssociationsList::fbTreeRecurse()
- * 
+ *
  * @param  mixed   $id
  * @param  mixed   $indent
  * @param  mixed   $list
@@ -150,7 +150,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
  * @param  integer $type
  * @return
  */
-    function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 ) 
+    function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 )
     {
 
         if (isset($children[$id]) && $level <= $maxlevel) {
@@ -179,19 +179,19 @@ class JFormFieldAssociationsList extends \JFormFieldList
             }
         }
         return $list;
-    }    
-    
+    }  
+  
     /**
  * FormFieldAssociationsList::sm_htmlspecialchars()
- * 
+ *
  * @param  mixed  $string
  * @param  mixed  $quote_style
  * @param  string $charset
  * @return
  */
-    function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
+    function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8')
     {
          return htmlspecialchars($string, $quote_style, $charset);
-    }    
-    
+    }  
+  
 }

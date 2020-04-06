@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default_plan_sorted_by_date.php
@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 $history_link = '';
-if ( !isset($this->config['show_matchreport_column']) ) 
+if ( !isset($this->config['show_matchreport_column']) )
 {
     $this->config['show_matchreport_column'] = 0;
 }
@@ -51,7 +51,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				if ( substr( $match->match_date, 0, 10 ) != $pr_id)
 				{			
 				?>
-                <div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplansbd">   
+                <div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplansbd"> 
 				<table class="<?php echo $this->config['table_class']; ?>">
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
@@ -238,7 +238,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			$class2	= 'left';
 		}
 				
-if ( $this->config['show_historylink'] ) 
+if ( $this->config['show_historylink'] )
 {
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
@@ -316,7 +316,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			case 3:
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture, 
+					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture,
 										$hometeam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
@@ -324,7 +324,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture, 
+					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture,
 										$guestteam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
@@ -342,20 +342,20 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		
 		if (!$match->cancel)
 		{
-        
+      
             // In case show_part_results is true, then first check if the part results are available;
             // 'No part results available' occurs when teamX_result_split ONLY consists of zero or more ";"
             // (zero for projects with a single playing period, one or more for projects with two or more playing periods)
             $team1_result_split_present = preg_match('/^;*$/', $match->team1_result_split) == 0;
             $team2_result_split_present = preg_match('/^;*$/', $match->team2_result_split) == 0;
-            
+          
             if ($this->config['switch_home_guest'])
                 {
                     $result=$match->team2_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team1_result;
-                    
+                  
                     $part_results_left = explode(";", $match->team2_result_split);
                     $part_results_right = explode(";", $match->team1_result_split);
-                    
+                  
                     $leftResultOT	= $match->team2_result_ot;
                     $rightResultOT	= $match->team1_result_ot;
                     $leftResultSO	= $match->team2_result_so;
@@ -366,10 +366,10 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                 else
                 {
                     $result=$match->team1_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team2_result;
-                    
+                  
                     $part_results_left = explode(";", $match->team1_result_split);
                     $part_results_right = explode(";", $match->team2_result_split);
-                    
+                  
                     $rightResultOT	= $match->team2_result_ot;
                     $leftResultOT	= $match->team1_result_ot;
                     $rightResultSO	= $match->team2_result_so;
@@ -377,10 +377,10 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                     $rightResultDEC	= $match->team2_result_decision;
                     $leftResultDEC	= $match->team1_result_decision;
                 }
-        
+      
             $SOTresult = '';
             $SOTtolltip = '';
-            
+          
             switch ($match->match_result_type)
             {
                 case 2 :
@@ -392,7 +392,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                         }
                         $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                         $result .= ')';
-                        
+                      
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
@@ -407,7 +407,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                             }
                     }
                     break;
-    
+  
                 case 1 :
                     {
                         if ($this->config['result_style']==1){
@@ -415,10 +415,10 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                         }else{
                             $result .= ' ';
                         }
-                        
+                      
                         $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                         $result .= ')';
-                        
+                      
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
@@ -426,34 +426,34 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                                         $SOTtolltip = ' | ' . $OTresultS ;
                             }
                     }
-                    break; 
+                    break;
             }
-            
+          
             //Link
-            $routeparameter = array();                    
+            $routeparameter = array();                  
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $match->match_slug; 
+$routeparameter['mid'] = $match->match_slug;
             if (isset($match->team1_result))
                 {
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
             } else {
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
                 }
-            
+          
             $ResultsTooltipTitle = $result;
             $result = HTMLHelper::link($link,$result);
-            
+          
             $ResultsTooltipTp = '( ';
             $PartResult = '';
-            
+          
             if ($team1_result_split_present && $team2_result_split_present)
             {
             //Part results
             if (!is_array($part_results_left))  { $part_results_left = array($part_results_left); }
             if (!is_array($part_results_right)) { $part_results_right = array($part_results_right); }
-                    
+                  
             for ($i = 0; $i < count($part_results_left); $i++)
             {
                 if (isset($part_results_left[$i]))
@@ -469,9 +469,9 @@ $routeparameter['mid'] = $match->match_slug;
                     }
             }
             }
-            
+          
             $ResultsTooltipTp .= $SOTtolltip . ' )';
-            
+          
             if ($team1_result_split_present && $team2_result_split_present)
             {
                 if ($this->config['show_part_results'])
@@ -484,15 +484,15 @@ $routeparameter['mid'] = $match->match_slug;
                         $result = '<span class="hasTip" title="' .$ResultsTooltipTitle . '::' . $ResultsTooltipTp . '" >' . $result . '</span>';
                     }
             }
-                
+              
             if ($match->alt_decision)
             {
                 $result='<b style="color:red;">';
                 $result .= $leftResultDEC.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$rightResultDEC;
                 $result .= '</b>';
-        
+      
             }
-                
+              
 			$score = "<td align='center' id='teamplanresult'>".$result;
 			$score .= '</td>';
 		}
@@ -532,7 +532,7 @@ $routeparameter['mid'] = $match->match_slug;
 		}
 if ( $history_link )
         {
-        ?>    
+        ?>  
 		<td id ="teamplanhistory">
         <a href='<?php echo $history_link; ?>'>
 		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
@@ -541,7 +541,7 @@ if ( $history_link )
 		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
 		</a>
 					</td>
-        <?php    
+        <?php  
         }				
 		?>
 
@@ -577,9 +577,9 @@ if ( $history_link )
 				}
 				elseif ($this->config['show_referee']==2)
 				{
-				?> 
+				?>
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
+					<img src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span>
 				<?php
 				}
 			}
@@ -654,7 +654,7 @@ $ref = HTMLHelper::link($link,$ref);
 			?>
 		<td><?php
 		if (!$match->cancel) {
-$routeparameter = array();                    
+$routeparameter = array();                  
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;

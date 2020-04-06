@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage extensions
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
@@ -22,8 +22,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <tr>
         <td width="100%" valign="top">
             <div id="cpanel">
-                <?php 
-                
+                <?php
+              
                 foreach ( $this->sporttypes as $key => $value )
                 {
                     switch ($value)
@@ -54,4 +54,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

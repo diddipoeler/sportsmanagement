@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -176,7 +176,7 @@ use Joomla\CMS\Router\Route;
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
                     <td class="order">
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'jlextcountries.orderup', 'JLIB_HTML_MOVE_UP', 'objcountry.ordering'); ?>

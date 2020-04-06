@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldprojectrounds
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$

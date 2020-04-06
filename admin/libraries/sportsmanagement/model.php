@@ -1,6 +1,6 @@
-<?PHP        
+<?PHP      
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,8 +28,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * JSMModelAdmin
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -37,32 +37,32 @@ use Joomla\CMS\Log\Log;
  */
 class JSMModelAdmin extends AdminModel
 {
-    
+  
 
     /**
  * JSMModelAdmin::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
-    {   
- 
+    { 
+
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         parent::setDbo($this->jsmdb);
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
         $this->jsmapp = Factory::getApplication();
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview = $this->jsmjinput->getCmd('view');
         $this->jsmdocument = Factory::getDocument();
-        $this->jsmuser = Factory::getUser(); 
+        $this->jsmuser = Factory::getUser();
         $this->jsmdate = Factory::getDate();
          $this->jsmmessage = '';
          $this->jsmmessagetype = 'notice';
@@ -79,17 +79,17 @@ class JSMModelAdmin extends AdminModel
         }
         $this->jsmjinput->set('pid', $this->project_id);
         $this->jsmapp->setUserState("$this->jsmoption.pid", $this->project_id);
-    
+  
         /**
- * abfrage nach backend und frontend  
- */ 
+ * abfrage nach backend und frontend
+ */
         if ($this->jsmapp->isClient('administrator') ) {
 
-        }  
+        }
         if($this->jsmapp->isClient('site') ) {
 
-        }    
-    }    
+        }  
+    }  
 
     /**
      * Method to save the form data.
@@ -118,13 +118,13 @@ class JSMModelAdmin extends AdminModel
             )
         );
 
-          $postData = new Input($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));        
-        
-        if (array_key_exists('notes', $data)) {    
+          $postData = new Input($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));      
+      
+        if (array_key_exists('notes', $data)) {  
              $html = $postData->get('notes', '', 'raw');
              $data['notes'] = $html;
         }
-       
+     
         if (isset($post['extended']) && is_array($post['extended'])) {
             /**
  *              Convert the extended field to a string.
@@ -133,7 +133,7 @@ class JSMModelAdmin extends AdminModel
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string)$parameter;
         }
-        
+      
         if (isset($post['extendeduser']) && is_array($post['extendeduser'])) {
             /**
  *              Convert the extended field to a string.
@@ -142,7 +142,7 @@ class JSMModelAdmin extends AdminModel
             $parameter->loadArray($post['extendeduser']);
             $data['extendeduser'] = (string)$parameter;
         }
-       
+     
         /**
  *         Set the values
  */
@@ -153,15 +153,15 @@ class JSMModelAdmin extends AdminModel
 
         /**
  * differenzierung zwischen den views
- */       
+ */     
           switch ( $this->jsmview )
           {
         /**
- * gruppen 
- */        
-        case 'division': 
+ * gruppen
+ */      
+        case 'division':
             if (!$data['id'] ) {
-                $data['project_id'] = $this->project_id;       
+                $data['project_id'] = $this->project_id;     
             }
             if (isset($post['extended']) && is_array($post['extended'])) {
                 // Convert the extended field to a string.
@@ -172,8 +172,8 @@ class JSMModelAdmin extends AdminModel
 
             break;
         /**
- * runde 
- */        
+ * runde
+ */      
         case 'round':
             if ($data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '' ) {
                 $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
@@ -183,8 +183,8 @@ class JSMModelAdmin extends AdminModel
             }
             break;
         /**
- * runden 
- */       
+ * runden
+ */     
         case 'rounds':
             $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
             $data['round_date_last']    = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
@@ -195,8 +195,8 @@ class JSMModelAdmin extends AdminModel
             }
             break;
         /**
- * projektteam 
- */        
+ * projektteam
+ */      
         case 'projectteam':
             if (array_key_exists('copy_jform', $post)) {
                 $data['picture'] = $post['copy_jform']['picture'];
@@ -207,22 +207,22 @@ class JSMModelAdmin extends AdminModel
                  $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
                  $mdlTeam->DeleteTrainigData($post['delete'][0]);
             }
-        
+      
             if ($post['add_trainingData'] ) {
                 $row = Table::getInstance('seasonteam', 'sportsmanagementTable');
                 $row->load((int)$post['jform']['team_id']);
                 $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
                 $mdlTeam->addNewTrainigData($row->team_id);
             }
-        
+      
             if ($post['tdids'] ) {
                 $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
                 $mdlTeam->UpdateTrainigData($post);
             }
-        
+      
             /**
  * das mannschaftsfoto wird zusätzlich abgespeichert,
- * damit man die historischen kader sieht        
+ * damit man die historischen kader sieht      
  */
             // Create an object for the record we are going to update.
             $object = new stdClass();
@@ -232,23 +232,23 @@ class JSMModelAdmin extends AdminModel
             $object->modified = $this->jsmdate->toSql();
             $object->modified_by = $this->jsmuser->get('id');
             // Update their details in the table using id as the primary key.
-            $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
+            $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
 
-            break;  
+            break;
         /**
- * liga 
- */       
-        case 'league': 
+ * liga
+ */     
+        case 'league':
             if (array_key_exists('copy_jform', $post)) {
                 $data['picture'] = $post['copy_jform']['picture'];
             }
             $data['sports_type_id'] = $data['request']['sports_type_id'];
             $data['agegroup_id'] = $data['request']['agegroup_id'];
-            break; 
+            break;
         /**
- * person 
- */       
-        case 'player': 
+ * person
+ */     
+        case 'player':
             if ($data['height'] == '' ) {
                 $data['height'] = null;
             }
@@ -257,11 +257,11 @@ class JSMModelAdmin extends AdminModel
             }
             if ($data['contact_id'] == '' ) {
                 $data['contact_id'] = null;
-            }           
+            }         
             if ($data['birthday'] == '' ) {
                 $data['birthday'] = '0000-00-00';
             }
-               
+             
             if ($data['deathday'] == '' ) {
                 $data['deathday'] = '0000-00-00';
             }
@@ -310,9 +310,9 @@ class JSMModelAdmin extends AdminModel
                     $data['firstname'] = '';
                 }
                 break;
-            
+          
             }
-        
+      
             /**
  * hat der user die bildfelder geleert, werden die standards gesichert.
  */
@@ -321,7 +321,7 @@ class JSMModelAdmin extends AdminModel
                  {
                 case 0:
                       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player', '');
-                    break;    
+                    break;  
                 case 1:
                     $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small', '');
                     break;
@@ -356,9 +356,9 @@ class JSMModelAdmin extends AdminModel
             }
             break;
         /**
- * template 
- */       
-        case 'template': 
+ * template
+ */     
+        case 'template':
             if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) {
                 $colors = array();
                 foreach ( $post['params']['colors_ranking'] as $key => $value )
@@ -367,12 +367,12 @@ class JSMModelAdmin extends AdminModel
                         $colors[] = implode(",", $value);
                     }
                 }
-                $post['params']['colors'] = implode(";", $colors); 
-            }       
-            break; 
+                $post['params']['colors'] = implode(";", $colors);
+            }     
+            break;
         /**
- * verein 
- */       
+ * verein
+ */     
         case 'club':
             /**
  * gibt es vereinsnamen zum ändern ?
@@ -380,8 +380,8 @@ class JSMModelAdmin extends AdminModel
             if (isset($post['team_id']) && is_array($post['team_id'])) {
                 foreach ( $post['team_id'] as $key => $value )
                  {
-                    $team_id = $post['team_id'][$key];  
-                    $team_name = $post['team_value_id'][$key];  
+                    $team_id = $post['team_id'][$key];
+                    $team_name = $post['team_value_id'][$key];
                     // Create an object for the record we are going to update.
                     $object = new stdClass();
                     // Must be a valid primary key value.
@@ -391,9 +391,9 @@ class JSMModelAdmin extends AdminModel
                     // Update their details in the table using id as the primary key.
                     $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
                 }
-        
+      
             }
-       
+     
             /**
  * hat der user die bildfelder geleert, werden die standards gesichert.
  */
@@ -413,7 +413,7 @@ class JSMModelAdmin extends AdminModel
             if (empty($data['logo_small']) ) {
                 $data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small', '');
             }
- 
+
             /**
  * wurden jahre mitgegeben ?
  */
@@ -423,9 +423,9 @@ class JSMModelAdmin extends AdminModel
             if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != ''  ) {
                 $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
             }
-       
+     
             if ($data['founded'] == '0000-00-00' || $data['founded'] == '' ) {
-                 $data['founded'] = '0000-00-00';   
+                 $data['founded'] = '0000-00-00'; 
             }
             if ($data['founded'] != '0000-00-00' && $data['founded'] != ''  ) {
                  $data['founded_year'] = date('Y', strtotime($data['founded']));
@@ -435,11 +435,11 @@ class JSMModelAdmin extends AdminModel
             {
                 $data['founded_year'] = $data['founded_year'];
             }
-        
+      
             if ($data['dissolved'] == '0000-00-00' || $data['dissolved'] == '' ) {
-                $data['dissolved'] = '0000-00-00';   
+                $data['dissolved'] = '0000-00-00'; 
             }
-        
+      
             if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '' ) {
                 $data['dissolved_year'] = date('Y', strtotime($data['dissolved']));
                 $data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
@@ -450,8 +450,8 @@ class JSMModelAdmin extends AdminModel
             }
             break;
         /**
- * mannschaft 
- */       
+ * mannschaft
+ */     
         case 'team':
             if (array_key_exists('copy_jform', $post)) {
                 $data['picture'] = $post['copy_jform']['picture'];
@@ -459,16 +459,16 @@ class JSMModelAdmin extends AdminModel
             if ($post['delete'] ) {
                  sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
             }
-        
+      
             if ($post['tdids'] ) {
                 sportsmanagementModelteam::UpdateTrainigData($post);
             }
-        
+      
             if ($post['add_trainingData'] ) {
                 sportsmanagementModelteam::addNewTrainigData($data[id]);
             }
-            break;  
-       
+            break;
+     
         /**
  * playground
  */
@@ -478,10 +478,10 @@ class JSMModelAdmin extends AdminModel
             }
             break;
 
-       
+     
         /**
- * projekt 
- */        
+ * projekt
+ */      
         case 'project':
             if (array_key_exists('copy_jform', $post)) {
                 $data['picture'] = $post['copy_jform']['picture'];
@@ -497,24 +497,24 @@ class JSMModelAdmin extends AdminModel
             {
                 $data['fav_team'] = implode(',', $post['jform']['fav_team']);
             }
-            break; 
+            break;
         /**
- * tippspiel 
- */         
+ * tippspiel
+ */       
         case 'predictiongame':
-            $data['alias'] = OutputFilter::stringURLSafe($data['name']); 
+            $data['alias'] = OutputFilter::stringURLSafe($data['name']);
             if (isset($data['notify_to']) ) {
-        
+      
             }
             else
             {
-                $data['notify_to'] = '-'; 
+                $data['notify_to'] = '-';
             }
             break;
         default:
-            break; 
+            break;
 }
-       
+     
             if (isset($post['params']) && is_array($post['params'])) {
                 /**
  *              Convert the params field to a string.
@@ -522,56 +522,56 @@ class JSMModelAdmin extends AdminModel
                 $paramsString = json_encode($post['params']);
                 $data['params'] = $paramsString;
             }
-               
+             
             /**
  * Alter the title for Save as Copy
- */ 
-            if ($this->jsmjinput->get('task') == 'save2copy') { 
-                $orig_table = $this->getTable(); 
-                $orig_table->load((int) $this->jsmjinput->getInt('id')); 
-                $data['id'] = 0; 
+ */
+            if ($this->jsmjinput->get('task') == 'save2copy') {
+                $orig_table = $this->getTable();
+                $orig_table->load((int) $this->jsmjinput->getInt('id'));
+                $data['id'] = 0;
                 /**
  * differenzierung zwischen den views
- */       
+ */     
                 switch ( $this->jsmview )
                 {
                 /**
- * template 
- */                
-                case 'template': 
+ * template
+ */              
+                case 'template':
                     $data['project_id'] = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
-                    $data['title'] = $post['title'];      
+                    $data['title'] = $post['title'];    
                     $data['template'] = $post['template'];
                     break;
                 /**
- * projekt 
- */              
+ * projekt
+ */            
                 case 'project':
                     $data['current_round'] = 0;
-                    $project_old = (int) $this->jsmjinput->getInt('id');            
-                    break;  
+                    $project_old = (int) $this->jsmjinput->getInt('id');          
+                    break;
                 default:
-                    break; 
+                    break;
                 }
-            
-                if ($data['name'] == $orig_table->name) { 
-                    $data['name'] .= ' ' . Text::_('JGLOBAL_COPY'); 
-                    $data['alias'] = OutputFilter::stringURLSafe($data['name']); 
-                } 
-            } 
+          
+                if ($data['name'] == $orig_table->name) {
+                    $data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
+                    $data['alias'] = OutputFilter::stringURLSafe($data['name']);
+                }
+            }
 
             /**
  * zuerst sichern, damit wir bei einer neuanlage die id haben
- */         
-            try{   
+ */       
+            try{ 
                 $parentsave = parent::save($data);
                 $table = $this->getTable();
                 foreach ($table->getErrors() as $error)
                 {
-                    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$error), 'error');     
+                    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$error), 'error');   
                 }
-       
-       
+     
+     
             }
             catch (Exception $e)
             {
@@ -579,32 +579,32 @@ class JSMModelAdmin extends AdminModel
                      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
                      $parentsave = false;
             }
-    
+  
             //    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' parentsave '.$parentsave), '');
             //    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState id '.$this->getState($this->getName().'.id') ), '');
-            //    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');  
+            //    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$this->jsmjinput->getInt('id') ), '');
             if ($parentsave ) {
                 $id = (int) $this->getState($this->getName().'.id');
                 $isNew = $this->getState($this->getName() . '.new');
                 $data['id'] = $id;
                 $this->jsmapp->setUserState("$this->jsmoption.club_id", $id);
-                $this->jsmapp->setUserState("$this->jsmoption.person_id", $id);   
+                $this->jsmapp->setUserState("$this->jsmoption.person_id", $id); 
                 $this->jsmjinput->set('insert_id', $id);
-                $this->jsmjinput->set('person_id', $id);   
+                $this->jsmjinput->set('person_id', $id); 
                 if ($isNew ) {
                     /**
  * Here you can do other tasks with your newly saved record...
- */                
+ */              
                     $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
 
                     if ($this->jsmjinput->get('task') == 'save2copy') {
                                 /**
  * differenzierung zwischen den views
- */       
+ */     
                             switch ( $this->jsmview )
                             {
                         case 'project':
-                            $this->jsmquery->clear(); 
+                            $this->jsmquery->clear();
                             $this->jsmquery->select('*');
                             $this->jsmquery->from('#__sportsmanagement_division');
                             $this->jsmquery->where('project_id ='. $project_old);
@@ -626,30 +626,30 @@ class JSMModelAdmin extends AdminModel
 
                             }
 
-                            break;  
+                            break;
                         default:
-                            break; 
+                            break;
                             }
-                    }            
-        
-        
+                    }          
+      
+      
                 }
 
                 /**
  * differenzierung zwischen den views
- */       
+ */     
                 switch ( $this->jsmview )
                 {
                    /**
- * person 
- */          
+ * person
+ */        
                 case 'player':
                     if (isset($data['season_ids']) && is_array($data['season_ids'])) {
-                        $message = '';  
+                        $message = '';
                         $delete_season = array();
                         foreach( $data['season_ids'] as $key => $value )
                         {
-                              $this->jsmquery->clear();  
+                              $this->jsmquery->clear();
                               $this->jsmquery->select('spi.id,s.name');
                               $this->jsmquery->from('#__sportsmanagement_season_person_id as spi');
                               $this->jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = spi.season_id ');
@@ -671,42 +671,42 @@ class JSMModelAdmin extends AdminModel
                                     ->columns($this->jsmdb->quoteName($columns))
                                     ->values(implode(',', $values));
                                 $this->jsmdb->setQuery($this->jsmquery);
-        
+      
                                 try{
                                         sportsmanagementModeldatabasetool::runJoomlaQuery();
                                 }
                                 catch (Exception $e) {
-    
+  
                                 }
 
                                 $message .= 'Saisonzuordnung : '.$res->name.' angelegt.<br>';
                             }
                             else
                               {
-                                $message .= 'Saisonzuordnung : '.$res->name.' schon vorhanden.<br>';    
+                                $message .= 'Saisonzuordnung : '.$res->name.' schon vorhanden.<br>';  
                             }
-          
+        
                         }
                         // delete all custom keys
-                        $this->jsmquery->clear();    
+                        $this->jsmquery->clear();  
                         $this->jsmquery->delete()->from('#__sportsmanagement_season_person_id')->where('season_id NOT IN (' . implode(",", $delete_season) . ') AND person_id = '.$data['id']);
                         $this->jsmdb->setQuery($this->jsmquery);
-                        $result = $this->jsmdb->execute();        
-        
+                        $result = $this->jsmdb->execute();      
+      
                         $this->jsmapp->enqueueMessage($message, 'message');
 
                     }
-        
+      
                       /**
-* 
- * -------extra fields----------- 
+*
+ * -------extra fields-----------
 */
                       sportsmanagementHelper::saveExtraFields($post, $data['id']);
-        
+      
                     break;
                    /**
- * position 
- */        
+ * position
+ */      
                 case 'position':
                     /**
          * ereignisse der positionen speichern
@@ -731,21 +731,21 @@ class JSMModelAdmin extends AdminModel
                     }
                     break;
                    /**
- * verein 
- */        
+ * verein
+ */      
                 case 'club':
                     sportsmanagementHelper::saveExtraFields($post, $data['id']);
-                    $this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);        
+                    $this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);      
                     break;
                    /**
- * projekt 
- */        
+ * projekt
+ */      
                 case 'project':
                     sportsmanagementHelper::saveExtraFields($post, $data['id']);
                     break;
                    /**
- * mannschaft 
- */        
+ * mannschaft
+ */      
                 case 'team':
                     $delete_season = array();
                     if (isset($data['season_ids']) && is_array($data['season_ids'])) {
@@ -764,7 +764,7 @@ class JSMModelAdmin extends AdminModel
                                 $this->jsmquery->clear();
                                   // Insert columns.
                                 $modified = $this->jsmdate->toSql();
-                                   $modified_by = $this->jsmuser->get('id');    
+                                   $modified_by = $this->jsmuser->get('id');  
                                 $columns = array('team_id','season_id','modified','modified_by');
                                 // Insert values.
                                 $values = array($data['id'],$value,$this->jsmdb->Quote(''.$modified.''),$modified_by);
@@ -779,23 +779,23 @@ class JSMModelAdmin extends AdminModel
                                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
 
                                 }
-          
+        
                             }
 
                         }
                         // delete all custom keys
-                        $this->jsmquery->clear();    
+                        $this->jsmquery->clear();  
                         $this->jsmquery->delete()->from('#__sportsmanagement_season_team_id')->where('season_id NOT IN (' . implode(",", $delete_season) . ') AND team_id = '.$data['id']);
                         $this->jsmdb->setQuery($this->jsmquery);
-                        $result = $this->jsmdb->execute();            
+                        $result = $this->jsmdb->execute();          
                     }
                     sportsmanagementHelper::saveExtraFields($post, $data['id']);
-                      $this->jsmapp->setUserState("$this->jsmoption.team_id", $data['id']);    
+                      $this->jsmapp->setUserState("$this->jsmoption.team_id", $data['id']);  
                     break;
                 default:
                     break;
                 }
-     
+   
                 return true;
             }
             else
@@ -804,14 +804,14 @@ class JSMModelAdmin extends AdminModel
                 //        $isNew = $this->getState($this->getName() . '.new');
                 //        $data['id'] = $id;
                   $this->jsmapp->setUserState("$this->jsmoption.club_id", $id);
-                  $this->jsmapp->setUserState("$this->jsmoption.person_id", $id);   
+                  $this->jsmapp->setUserState("$this->jsmoption.person_id", $id); 
                   $this->jsmjinput->set('insert_id', $id);
-                  $this->jsmjinput->set('person_id', $id);  
-          
+                  $this->jsmjinput->set('person_id', $id);
+        
                 return false;
             }
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -820,7 +820,7 @@ class JSMModelAdmin extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
         $show_team_community = ComponentHelper::getParams($this->jsmoption)->get('show_team_community', 0);
@@ -830,19 +830,19 @@ class JSMModelAdmin extends AdminModel
         if (empty($form)) {
             return false;
         }
-        
+      
         $joomladirectory = '';
         if ($cfg_which_media_tool == 'media' ) {
             /**
-* 
- * welche joomla version ? 
+*
+ * welche joomla version ?
 */
             if(version_compare(substr(JVERSION, 0, 3), '4.0', 'ge')) {
                 $joomladirectory = 'local-0:/';
             }
         }
         $prefix = $this->jsmapp->getCfg('dbprefix');
-        
+      
         switch ($this->getName())
         {
         case 'position':
@@ -851,12 +851,12 @@ class JSMModelAdmin extends AdminModel
               $this->jsmquery->select('*');
                $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_position' ");
-            
+          
                $this->jsmdb->setQuery($this->jsmquery);
-            
+          
                $result = $this->jsmdb->loadObjectList();
 
-            
+          
             foreach($result as $field )
               {
 
@@ -866,8 +866,8 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
+          
+            }
             break;
         case 'statistic':
             $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon', ''));
@@ -877,12 +877,12 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_statistic' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
-            
+          
             $result = $this->jsmdb->loadObjectList();
 
-            
+          
             foreach($result as $field )
             {
 
@@ -892,8 +892,8 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
+          
+            }
             break;
         case 'projectreferee':
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
@@ -919,7 +919,7 @@ class JSMModelAdmin extends AdminModel
             //$form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
             //$form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
             $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
-        
+      
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
             //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
             $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -928,12 +928,12 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_federations' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
-            
+          
             $result = $this->jsmdb->loadObjectList();
 
-            
+          
             foreach($result as $field )
             {
 
@@ -943,8 +943,8 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
+          
+            }
             break;
         case 'jlextcountry':
             $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags', ''));
@@ -967,8 +967,8 @@ class JSMModelAdmin extends AdminModel
                         $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                         break;
                     }
-            
-                } 
+          
+                }
             }
             catch (Exception $e) {
                         //    // catch any database errors.
@@ -976,22 +976,22 @@ class JSMModelAdmin extends AdminModel
                         //    JErrorPage::render($e);
             }
 
-            
+          
             break;
         case 'jlextassociation':
             //$form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
             //$form->setFieldAttribute('assocflag', 'directory', $joomladirectory.'com_sportsmanagement/database/flags_associations');
             $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
-        
+      
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
             //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/associations');
             $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-       
+     
             $this->jsmquery->clear();
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_jlextassociation' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
 
             $result = $this->jsmdb->loadObjectList();
@@ -1007,7 +1007,7 @@ class JSMModelAdmin extends AdminModel
                     break;
                 }
 
-            } 
+            }
             break;
         case 'eventtype':
             $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon', ''));
@@ -1018,11 +1018,11 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_eventtype' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
- 
+
             $result = $this->jsmdb->loadObjectList();
-            
+          
             foreach($result as $field )
             {
 
@@ -1032,19 +1032,19 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
-            break;  
+          
+            }
+            break;
         case 'round':
               $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team', ''));
               $form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/rounds');
               $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-            break;  
+            break;
         case 'project':
             if(version_compare(substr(JVERSION, 0, 3), '4.0', 'ge')) {
-                 $form->setFieldAttribute('use_legs', 'type', 'radio');                    
-                 $form->setFieldAttribute('use_legs', 'class', 'switcher');                    
-            }                        
+                 $form->setFieldAttribute('use_legs', 'type', 'radio');                  
+                 $form->setFieldAttribute('use_legs', 'class', 'switcher');                  
+            }                      
                       $sports_type_id = $form->getValue('sports_type_id');
                       $this->jsmquery->clear();
                       // select some fields
@@ -1078,22 +1078,22 @@ class JSMModelAdmin extends AdminModel
 
                 break;
 }
-        
+      
                         //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
                         //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projects');
                         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
-        
+      
+      
             break;
         case 'projectteam':
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
             //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams');
             $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+      
             //$form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
             //$form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_home');
             $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
-        
+      
             //$form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
             //$form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/projectteams/trikot_away');
             $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
@@ -1102,31 +1102,31 @@ class JSMModelAdmin extends AdminModel
             $row = $this->getTable();
             $row->load((int) $form->getValue('id'));
             $country = $row->country;
-        
+      
             /**
          * soll die postleitzahlendatentabelle genutzt werden ?
-         */        
+         */      
             if ($cfg_use_plz_table ) {
                 /**
         * wenn es aber zu dem land keine einträge
         * in der plz tabelle gibt, dann die normale
-        * eingabe dem user anbieten        
+        * eingabe dem user anbieten      
         */
                 $this->jsmquery->clear();
                 $this->jsmquery->select('count(*) as anzahl');
                 $this->jsmquery->from('#__sportsmanagement_countries_plz as a');
-                $this->jsmquery->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+                $this->jsmquery->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code');
                 $this->jsmquery->where('c.alpha3 LIKE ' . $this->jsmdb->Quote(''.$country.''));
                 $this->jsmdb->setQuery($this->jsmquery);
                 $result = $this->jsmdb->loadResult();
 
-                if ($result ) {    
+                if ($result ) {  
                     $form->setFieldAttribute('zipcode', 'type', 'dependsql', 'request');
-                    $form->setFieldAttribute('zipcode', 'size', '10', 'request');     
+                    $form->setFieldAttribute('zipcode', 'size', '10', 'request');   
                     $form->setFieldAttribute('location', 'type', 'dependsql', 'request');
                     $form->setFieldAttribute('location', 'size', '10', 'request');
                 }
-        
+      
             }
 
             if (!$show_team_community ) {
@@ -1136,19 +1136,19 @@ class JSMModelAdmin extends AdminModel
             //        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
             //        $form->setFieldAttribute('logo_small', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/small');
             $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
-        
+      
             //        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
             //        $form->setFieldAttribute('logo_middle', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/medium');
             $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
-        
+      
             //        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
             //        $form->setFieldAttribute('logo_big', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/large');
             $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
-        
+      
             //        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
             //        $form->setFieldAttribute('trikot_home', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
             $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
-        
+      
             //        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
             //        $form->setFieldAttribute('trikot_away', 'directory', $joomladirectory.'com_sportsmanagement/database/clubs/trikot');
             $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
@@ -1157,7 +1157,7 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_club' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
 
             $result = $this->jsmdb->loadObjectList();
@@ -1179,7 +1179,7 @@ class JSMModelAdmin extends AdminModel
                     }
                     break;
                 }
-            } 
+            }
             break;
         case 'team':
             if (!$show_team_community ) {
@@ -1195,7 +1195,7 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_team' ");
             $this->jsmdb->setQuery($this->jsmquery);
             $result = $this->jsmdb->loadObjectList();
-        
+      
             foreach($result as $field )
             {
                 switch ($field->COLUMN_NAME)
@@ -1212,19 +1212,19 @@ class JSMModelAdmin extends AdminModel
                     }
                     break;
                 }
-            } 
-       
+            }
+     
             break;
         case 'sportstype':
             //$form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
             //$form->setFieldAttribute('icon', 'directory', $joomladirectory.'com_sportsmanagement/database/sport_types');
             $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
-        
+      
             $this->jsmquery->clear();
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_sports_type' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
 
             $result = $this->jsmdb->loadObjectList();
@@ -1238,11 +1238,11 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
-        
+          
+            }
+      
             break;
-        
+      
         case 'playground':
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
             //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/playgrounds');
@@ -1252,7 +1252,7 @@ class JSMModelAdmin extends AdminModel
             $this->jsmquery->select('*');
             $this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_playground' ");
-            
+          
             $this->jsmdb->setQuery($this->jsmquery);
 
             $result = $this->jsmdb->loadObjectList();
@@ -1266,8 +1266,8 @@ class JSMModelAdmin extends AdminModel
                     $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                     break;
                 }
-            
-            } 
+          
+            }
             break;
         case 'agegroup':
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
@@ -1277,64 +1277,64 @@ class JSMModelAdmin extends AdminModel
         case 'league':
             //$form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
             //$form->setFieldAttribute('picture', 'directory', $joomladirectory.'com_sportsmanagement/database/leagues');
-            $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
+            $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
             break;
-        case 'predictionproject':        
+        case 'predictionproject':      
             if(version_compare(substr(JVERSION, 0, 3), '4.0', 'ge')) {
-                 $form->setFieldAttribute('champ', 'type', 'radio');                    
-                 $form->setFieldAttribute('champ', 'class', 'switcher');                    
-                 $form->setFieldAttribute('joker', 'type', 'radio');                    
-                 $form->setFieldAttribute('joker', 'class', 'switcher');                
-            }            
-            
+                 $form->setFieldAttribute('champ', 'type', 'radio');                  
+                 $form->setFieldAttribute('champ', 'class', 'switcher');                  
+                 $form->setFieldAttribute('joker', 'type', 'radio');                  
+                 $form->setFieldAttribute('joker', 'class', 'switcher');              
+            }          
+          
             break;
         case 'player':
                 switch($form->getValue('person_art'))
             {
             case 1:
                 //            $form->setFieldAttribute('person_id1', 'type', 'hidden');
-                //            $form->setFieldAttribute('person_id2', 'type', 'hidden');            
+                //            $form->setFieldAttribute('person_id2', 'type', 'hidden');          
                 break;
             case 2:
                 //            $form->setFieldAttribute('person_id1', 'type', 'personlist');
                 //            $form->setFieldAttribute('person_id2', 'type', 'personlist');
                 break;
-            
+          
                 }
-            
+          
                 //        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
                 //        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
                 $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
                 if(version_compare(substr(JVERSION, 0, 3), '4.0', 'ge')) {
-                                $form->setFieldAttribute('injury', 'type', 'radio');                    
-                                $form->setFieldAttribute('injury', 'class', 'switcher');                    
-                                $form->setFieldAttribute('suspension', 'type', 'radio');                    
-                                $form->setFieldAttribute('suspension', 'class', 'switcher');                
-                                $form->setFieldAttribute('away', 'type', 'radio');                    
-                                $form->setFieldAttribute('away', 'class', 'switcher');                
+                                $form->setFieldAttribute('injury', 'type', 'radio');                  
+                                $form->setFieldAttribute('injury', 'class', 'switcher');                  
+                                $form->setFieldAttribute('suspension', 'type', 'radio');                  
+                                $form->setFieldAttribute('suspension', 'class', 'switcher');              
+                                $form->setFieldAttribute('away', 'type', 'radio');                  
+                                $form->setFieldAttribute('away', 'class', 'switcher');              
                 }
-        
+      
                 $this->jsmquery->clear();
                 $this->jsmquery->select('*');
                 $this->jsmquery->from('information_schema.columns');
                 $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_person' ");
-            
+          
                 $this->jsmdb->setQuery($this->jsmquery);
-            
+          
                 $result = $this->jsmdb->loadObjectList();
-            
+          
                 foreach($result as $field )
                 {
-            
+          
                     switch ($field->DATA_TYPE)
                     {
                     case 'varchar':
                         $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
                         break;
                     }
-            
-                } 
-        
+          
+                }
+      
             break;
         }
         return $form;
@@ -1346,18 +1346,18 @@ class JSMModelAdmin extends AdminModel
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->getName().'.data', array());
         if (empty($data)) {
             $data = $this->getItem();
         }
-        
+      
         switch ( $this->getName() )
           {
-     
-        case 'league': 
+   
+        case 'league':
             if (!$data->middle_name ) {
                 $data->middle_name = $data->name;
             }
@@ -1366,8 +1366,8 @@ class JSMModelAdmin extends AdminModel
             }
             break;
         }
-        
-        
+      
+      
         return $data;
     }
 
@@ -1376,7 +1376,7 @@ class JSMModelAdmin extends AdminModel
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
@@ -1405,12 +1405,12 @@ class JSMModelAdmin extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = '', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = '', $prefix = 'sportsmanagementTable', $config = array())
     {
           $config['dbo'] = sportsmanagementHelper::getDBConnection();
         if (empty($type) ) {
             $type = $this->getName();
-        } 
+        }
         return Table::getInstance($type, $prefix, $config);
     }
 
@@ -1425,7 +1425,7 @@ class JSMModelAdmin extends AdminModel
     {
 
         $row = $this->getTable();
-        
+      
         // update ordering values
         for ($i=0; $i < count($pks); $i++)
         {
@@ -1461,18 +1461,18 @@ class JSMModelAdmin extends AdminModel
                     }
                     break;
                 }
-                
+              
             }
         }
         return Text::_('JGLOBAL_SAVE_SORT_YES');
     }
-                
+              
 }
 
 /**
  * JSMModelList
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -1480,34 +1480,34 @@ class JSMModelAdmin extends AdminModel
  */
 class JSMModelList extends ListModel
 {
-    
+  
     /**
  * JSMModelList::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
-    {   
- 
+    { 
+
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         parent::setDbo($this->jsmdb);
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
         // Reference global application object
         $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = Factory::getDocument();
-        $this->jsmuser = Factory::getUser(); 
+        $this->jsmuser = Factory::getUser();
          $this->jsmpks = $this->jsmjinput->get('cid', array(), 'array');
-        $this->jsmpost = $this->jsmjinput->post->getArray(array());  
+        $this->jsmpost = $this->jsmjinput->post->getArray(array());
          $this->jsmmessage = '';
          $this->jsmmessagetype = 'notice';
         $this->project_id = $this->jsmjinput->getint('pid');
@@ -1520,33 +1520,33 @@ class JSMModelList extends ListModel
         $this->jsmapp->setUserState("$this->jsmoption.pid", $this->project_id);
 
         /**
- * abfrage nach backend und frontend  
- */ 
+ * abfrage nach backend und frontend
+ */
          /*
         if ( $this->jsmapp->isClient('administrator') )
         {
-    
-        }  
+  
+        }
         if( $this->jsmapp->isClient('site') )
         {
-    
-        }   
+  
+        } 
          */
         /**
  * alle fehlermeldungen online ausgeben
- * mit der kategorie: jsmerror       
- */ 
+ * mit der kategorie: jsmerror     
+ */
         Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
-    
-    }    
-    
+  
+    }  
+  
 }
 
 
 /**
  * JSMModelLegacy
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -1554,54 +1554,54 @@ class JSMModelList extends ListModel
  */
 class JSMModelLegacy extends BaseDatabaseModel
 {
-    
+  
     /**
  * JSMModelLegacy::__construct()
- * 
+ *
  * @param  mixed $config
  * @return void
  */
     public function __construct($config = array())
-    {   
- 
+    { 
+
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         parent::setDbo($this->jsmdb);
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
         // Reference global application object
         $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = Factory::getDocument();
-        $this->jsmuser = Factory::getUser(); 
+        $this->jsmuser = Factory::getUser();
          $this->jsmpks = $this->jsmjinput->get('cid', array(), 'array');
-        $this->jsmpost = $this->jsmjinput->post->getArray(array()); 
+        $this->jsmpost = $this->jsmjinput->post->getArray(array());
          $this->jsmmessage = '';
          $this->jsmmessagetype = 'notice';
-        
+      
         /**
- * abfrage nach backend und frontend  
- */        
+ * abfrage nach backend und frontend
+ */      
          /*
         if ( $this->jsmapp->isClient('administrator') )
         {
-        
-        }  
+      
+        }
         if( $this->jsmapp->isClient('site') )
         {
-        
-        } 
+      
+        }
          */
-        
-    }    
-    
+      
+    }  
+  
 }
 
 
-?>    
+?>  

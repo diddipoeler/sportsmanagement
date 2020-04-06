@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 
 ?>
-<div class="row-fluid table-responsive">        
+<div class="row-fluid table-responsive">      
     <table class="<?php echo $this->tableclass; ?>">
         <thead>
             <tr>
@@ -28,7 +28,7 @@ use Joomla\CMS\Filesystem\File;
                     ?>
                     <th class="" id="">
                         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID', 'v.unique_id', $this->sortDirection, $this->sortColumn); ?>
-                    </th>    
+                    </th>  
                     <?PHP
                 }
 
@@ -67,7 +67,7 @@ use Joomla\CMS\Filesystem\File;
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
-                ?>                                
+                ?>                              
 
             </tr>
         </thead>
@@ -94,7 +94,7 @@ use Joomla\CMS\Filesystem\File;
                         <?php
                         echo $item->unique_id;
                         ?>
-                    </td>    
+                    </td>  
                     <?PHP
                 }
                 ?>

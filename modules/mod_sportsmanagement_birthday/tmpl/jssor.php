@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -41,18 +41,18 @@
 */
 
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 ?>
 <script>
 
 jQuery(document).ready(function ($) {
-    
+  
     var _SlideshowTransitions = [
         //Fade
 <?php echo $params->get('jssor_transition'); ?>
-//{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}        
+//{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}      
         ];
-    
+  
     var _CaptionTransitions = [];
         //Left to Right
         _CaptionTransitions["L-R"] = { $Duration: 800, $FlyDirection: 1 };
@@ -62,14 +62,14 @@ jQuery(document).ready(function ($) {
         _CaptionTransitions["T-B"] = { $Duration: 800, $FlyDirection: 4 };
         //Bottom to Top
         _CaptionTransitions["B-T"] = { $Duration: 800, $FlyDirection: 8 };
-            
+          
         var options = {$AutoPlay: true,                     //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
         $PlayOrientation: <?php echo $params->get('jssor_playorientation'); ?>,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
         $FillMode: 4,
         //$SlideWidth: 150,
         //$SlideHeight: 150,
 
-        
+      
         $SlideshowOptions: {                                //[Optional] Options to specify and enable slideshow or not
                 $Class: $JssorSlideshowRunner$,                 //[Required] Class to create instance of slideshow
                 $Transitions: _SlideshowTransitions,            //[Required] An array of slideshow transitions to play slideshow
@@ -99,8 +99,8 @@ jQuery(document).ready(function ($) {
 //                    $DisableDrag: false                            //[Optional] Disable drag or not, default value is false
 //                }
 
-          
-          };                            
+        
+          };                          
         var jssor_slider1 = new $JssorSlider$('<?php echo $container; ?>', options);
 
         //responsive code begin
@@ -116,28 +116,28 @@ jQuery(document).ready(function ($) {
         }
         //Scale slider after document ready
         ScaleSlider();
-                                        
+                                      
         //Scale slider while window load/resize/orientationchange.
         $(window).bind("load", ScaleSlider);
         $(window).bind("resize", ScaleSlider);
         $(window).bind("orientationchange", ScaleSlider);
         //responsive code end
     });
-    
+  
 </script>
 
 <div id="<?php echo $container; ?>" style="position: relative; top: 0px; left: 0px; width: 600px; height: 300px;">
 <!-- Slides Container -->
 <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 600px; height: 300px;">
-        
-<?php echo $html_li; ?>        
-        
+      
+<?php echo $html_li; ?>      
+      
 </div>
 
-<!-- Trigger --> 
+<!-- Trigger -->
 <script>
 jssor_slider1_starter('<?php echo $container; ?>');
-</script> 
+</script>
 
 </div>
 

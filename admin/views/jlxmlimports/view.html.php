@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage jlxmlimports
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -25,9 +25,9 @@ jimport('joomla.html.parameter.element.timezones');
 
 /**
  * sportsmanagementViewJLXMLImports
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -37,11 +37,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     /**
      * sportsmanagementViewJLXMLImports::init()
-     * 
+     *
      * @param  mixed $tpl
      * @return
      */
-    public function init($tpl = null) 
+    public function init($tpl = null)
     {
         $app = Factory::getApplication();
         $lang = Factory::getLanguage();
@@ -73,14 +73,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $teile = explode("-", $lang->getTag());
         $country = JSMCountries::convertIso2to3($teile[1]);
         $this->country = $country;
-        
+      
         $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
         $seasons = $mdl->getSeasons(true);
-        
+      
         $countries = JSMCountries::getCountryOptions();
         $lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
         $this->countries = $lists['countries'];
-        
+      
         unset($myoptions);
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
@@ -88,16 +88,16 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
             $myoptions = array_merge($myoptions, $res);
         }
         $lists['agegroup'] = $myoptions;
-        $this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);    
+        $this->agegroup = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);  
         unset($myoptions);
-        
+      
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'));
         $myoptions = array_merge($myoptions, $seasons);
         $lists['seasons'] = $myoptions;
         $this->seasons = HTMLHelper::_('select.genericlist', $lists['seasons'], 'seasons', 'class="inputbox" size="1"', 'value', 'text', 0);
-        
-        
-        
+      
+      
+      
         switch ($this->getLayout()) {
         case 'form';
         case 'form_3';
@@ -124,11 +124,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     /**
      * sportsmanagementViewJLXMLImports::_displayUpdate()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    private function _displayUpdate($tpl) 
+    private function _displayUpdate($tpl)
     {
         $app = Factory::getApplication();
         $post = Factory::getApplication()->input->post->getArray(array());
@@ -153,11 +153,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     /**
      * sportsmanagementViewJLXMLImports::_displayForm()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    private function _displayForm($tpl) 
+    private function _displayForm($tpl)
     {
         $mtime = microtime();
         $mtime = explode(" ", $mtime);
@@ -246,7 +246,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
             $this->search_agegroup = $res;
         }
         $this->agegroup_id = $data['project']->agegroup_id ? $data['project']->agegroup_id : $this->state->get('filter.search_agegroup');
-        $this->master_template = $data['project']->master_template ? $data['project']->master_template : 0 ;   
+        $this->master_template = $data['project']->master_template ? $data['project']->master_template : 0 ; 
         $lists['agegroup'] = $myoptions;
         $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions, 'filter_search_agegroup', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->agegroup_id);
         unset($myoptions);
@@ -269,11 +269,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     /**
      * sportsmanagementViewJLXMLImports::_displayInfo()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    private function _displayInfo($tpl) 
+    private function _displayInfo($tpl)
     {
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -302,11 +302,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     /**
      * sportsmanagementViewJLXMLImports::_displaySelectpage()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    private function _displaySelectpage($tpl) 
+    private function _displaySelectpage($tpl)
     {
         $app = Factory::getApplication();
         $jinput = $app->input;

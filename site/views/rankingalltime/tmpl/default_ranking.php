@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,14 +11,14 @@
  * @package    sportsmanagement
  * @subpackage rankingalltime
  */
-  
-use Joomla\CMS\Language\Text; 
+
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 defined('_JEXEC') or die('Restricted access');?>
- 
+
 <div class="<?php echo $this->divclassrow;?> table-responsive">
 <!-- content -->
-  
+
 <div class="panel-group" id="projectnames">
 
 <div class="panel panel-default">
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');?>
 <div class="panel-body">
 <table class="table">
     <?php
- 
+
     foreach($this->projectnames as $value )
     {
         $createroute = array("option" => "com_sportsmanagement",
@@ -45,32 +45,32 @@ defined('_JEXEC') or die('Restricted access');?>
         "to" => 0,
         "division" => 0, );
         $query = sportsmanagementHelperRoute::buildQuery($createroute);
-        $link = Route::_('index.php?' . $query, false);     
-    
+        $link = Route::_('index.php?' . $query, false);   
+  
     ?>
     <tr>
     <td>
-    <a href="<?PHP echo $link;  ?>" class="btn btn-primary btn-lg btn-block" role="button">  
+    <a href="<?PHP echo $link;  ?>" class="btn btn-primary btn-lg btn-block" role="button">
     <?PHP
     echo Text::_($value->name);
-    ?>    
+    ?>  
   </a>
   </td>
   </tr>
     <?php
     }
 ?>
-</table>  
+</table>
+</div>                    
+</div>                    
 </div>                      
-</div>                      
-</div>                        
-  
-</div>  
-  
-  
-  
-  
-  
+
+</div>
+
+
+
+
+
 <?php
 foreach ( $this->currentRanking as $division => $cu_rk )
 {
@@ -80,7 +80,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
         <tr>
         <td class="contentheading">
         <?php
-        //get the division name from the first team of the division 
+        //get the division name from the first team of the division
         foreach( $cu_rk as $ptid => $team )
         {
             echo $this->divisions[$division]->name;

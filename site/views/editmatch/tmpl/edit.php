@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -37,20 +37,20 @@ $fieldsets = $this->form->getFieldsets();
 <script type="text/javascript">
 <!--
 //window.addEvent('domready', function() {
-jQuery(document).ready(function() {    
+jQuery(document).ready(function() {  
     // altered decision fields management
     toggle_altdecision();
     //jQuery('alt_decision').addEvent('change', toggle_altdecision);
-    
+  
     jQuery('#alt_decision').change(function() {
   toggle_altdecision() ;
 });
-    
+  
 });
 
-function toggle_altdecision() 
+function toggle_altdecision()
 {
-    if ( jQuery('#alt_decision').val() == 0) 
+    if ( jQuery('#alt_decision').val() == 0)
     {
     //jQuery('alt_decision_enter').style.display='none';
     jQuery("#alt_decision_enter").css("display", "none");
@@ -58,7 +58,7 @@ function toggle_altdecision()
     jQuery('#team2_result_decision').disabled = true;
     jQuery('#decision_info').disabled = true;
     }
-    else 
+    else
     {
     //jQuery('alt_decision_enter').style.display='block';
     jQuery("#alt_decision_enter").css("display", "block");
@@ -87,35 +87,35 @@ function toggle_altdecision()
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 <legend>
-<?php 
+<?php
 
 ?>
 </legend>
 </fieldset>
 <?php
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));     
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));   
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS', true));
 echo $this->loadTemplate('matchdetails');
-echo HTMLHelper::_('bootstrap.endTab');            
+echo HTMLHelper::_('bootstrap.endTab');          
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu1', Text::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION', true));
 echo $this->loadTemplate('altdecision');
-echo HTMLHelper::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');  
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu2', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW', true));
 echo $this->loadTemplate('matchpreview');
-echo HTMLHelper::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');  
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu3', Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS', true));
 echo $this->loadTemplate('scoredetails');
-echo HTMLHelper::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');  
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu4', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT', true));
 echo $this->loadTemplate('matchreport');
-echo HTMLHelper::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');  
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu5', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION', true));
 echo $this->loadTemplate('matchrelation');
-echo HTMLHelper::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');  
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu6', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED', true));
 echo $this->loadTemplate('matchextended');
-echo HTMLHelper::_('bootstrap.endTab');        
-echo HTMLHelper::_('bootstrap.endTabSet');        
+echo HTMLHelper::_('bootstrap.endTab');      
+echo HTMLHelper::_('bootstrap.endTabSet');      
 ?>
 <div class="clr"></div>
 
@@ -132,7 +132,7 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type='hidden' name='mode' value='<?php echo sportsmanagementModelEditMatch::$mode; ?>' />
 <input type='hidden' name='order' value='<?php echo sportsmanagementModelEditMatch::$order; ?>' />
 <input type='hidden' name='task' value='editmatch.saveshort' />
-<input type='hidden' name='matchid' value='<?php echo $this->match->id; ?> ' />    
+<input type='hidden' name='matchid' value='<?php echo $this->match->id; ?> ' />  
 <input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelEditMatch::$roundid; ?>' />
 <input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 <input type='hidden' name='boxchecked' value='0' id='boxchecked' />

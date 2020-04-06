@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @subpackage playground
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
@@ -20,10 +20,10 @@ if ($this->playground->notes ) {
 ?>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_description">
-<?php 
+<?php
 $description = $this->playground->notes;
 $description = HTMLHelper::_('content.prepare', $description);
-echo $description; 
+echo $description;
 ?>
 </div>
 <?php

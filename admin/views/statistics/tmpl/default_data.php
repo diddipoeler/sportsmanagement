@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -87,11 +87,11 @@ use Joomla\CMS\Router\Route;
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         </td>
-                        
+                      
                         <td class="center">
                             <?php if ($row->checked_out) : ?>
         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
@@ -102,16 +102,16 @@ use Joomla\CMS\Router\Route;
         <?php else : ?>
         <?php echo $this->escape($row->name); ?>
         <?php endif; ?>
-                        
-                        
-                        
+                      
+                      
+                      
                         <?php //echo $checked; ?>
-                        
+                      
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
                             </td>
-                        
+                      
                         <td><?php echo $row->short; ?></td>
                         <td class="center">
         <?php

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelReferee
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -31,7 +31,7 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
     static $personid = 0;
     static $cfg_which_database = 0;
 
-    
+  
     /**
      * cache for data query
      *
@@ -48,21 +48,21 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelReferee::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
     {
           $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
-        
+      
         parent::__construct();
         self::$projectid = Factory::getApplication()->input->getInt('p', 0);
         self::$personid = Factory::getApplication()->input->getInt('pid', 0);
         self::$cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         sportsmanagementModelPerson::$projectid = Factory::getApplication()->input->getInt('p', 0);
         sportsmanagementModelPerson::$personid = Factory::getApplication()->input->getInt('pid', 0);
-        
+      
     }
 
     /**
@@ -79,12 +79,12 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
           $option = Factory::getApplication()->input->getCmd('option');
           // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-       
+     
           $query = $db->getQuery(true);
-       
+     
         if (empty(self::$_history)) {
             //$personid = self::$personid;
-            
+          
             $query->select('per.id AS pid,per.firstname,per.lastname,CONCAT_WS(\':\',per.id,per.alias) AS person_slug');
             $query->select('pr.person_id,pr.project_id');
             $query->select('pos.name AS position_name');
@@ -100,11 +100,11 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
             $query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
             $query->where('per.id = '.self::$personid);
             $query->where('per.published = 1');
-            
+          
             $query->order('s.ordering ASC');
             $query->order('l.ordering ASC');
             $query->order('p.name '.$order);
-           
+         
             $db->setQuery($query);
             self::$_history = $db->loadObjectList();
         }
@@ -113,7 +113,7 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelReferee::getPresenceStats()
-     * 
+     *
      * @param  mixed $project_id
      * @param  mixed $person_id
      * @return
@@ -125,14 +125,14 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
         //       // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
           $query->select('count(mr.id) AS present');
           $query->from('#__sportsmanagement_match_referee AS mr ');
           $query->join('INNER', '#__sportsmanagement_match AS m ON mr.match_id=m.id');
           $query->join('INNER', '#__sportsmanagement_project_referee AS pr ON pr.id=mr.project_referee_id');
           $query->where('pr.person_id = '.$personid);
           $query->where('pr.project_id = '.$project_id);
-        
+      
         $db->setQuery($query, 0, 1);
         $inoutstat = $db->loadResult();
         return $inoutstat;
@@ -140,7 +140,7 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelReferee::getGames()
-     * 
+     *
      * @return
      */
     function getGames()
@@ -150,7 +150,7 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
           // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
           //$query->select('m.*');
           $query->select('m.id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
           $query->select('t1.id AS team1,t1.name AS home_name');
@@ -162,27 +162,27 @@ class sportsmanagementModelReferee extends BaseDatabaseModel
           $query->join('INNER', '#__sportsmanagement_match_referee AS mr ON mr.match_id = m.id');
           $query->join('INNER', '#__sportsmanagement_project_referee AS pr ON pr.id = mr.project_referee_id');
           $query->join('INNER', '#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
-       
+     
           $query->join('INNER', '#__sportsmanagement_round as r ON m.round_id = r.id');
-       
+     
           $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
           $query->join('INNER', '#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
           $query->join('INNER', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
           $query->join('INNER', '#__sportsmanagement_club AS c1 ON t1.club_id = c1.id  ');
-       
+     
           $query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
           $query->join('INNER', '#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
           $query->join('INNER', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
           $query->join('INNER', '#__sportsmanagement_club AS c2 ON t2.club_id = c2.id  ');
-       
+     
           $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
-       
+     
           $query->where('o.person_id = '.self::$personid);
           $query->where('r.project_id = '.self::$projectid);
           $query->where('m.published = 1');
-       
+     
           $query->order('m.match_date');
-                   
+                 
         $db->setQuery($query);
         return $db->loadObjectList();
     }

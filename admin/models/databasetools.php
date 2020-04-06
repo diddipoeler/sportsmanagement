@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementModelDatabaseTools
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -48,7 +48,7 @@ class sportsmanagementModelDatabaseTools extends BaseDatabaseModel
         $app = Factory::getApplication('administrator');
         $value = Factory::getApplication()->input->getUInt('limitstart', 0);
         $this->setState('list.start', $value);
-    }        
+    }      
 
 }
 ?>

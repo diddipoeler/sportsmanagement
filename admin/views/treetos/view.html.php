@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreetos
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -32,16 +32,16 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetos::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-        
+      
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $projectws = $mdlProject->getProject($this->project_id);
-        
+      
         $division = $this->app->getUserStateFromRequest($this->option.'tt_division', 'division', '', 'string');
 
         //build the html options for divisions
@@ -52,7 +52,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
         }
         $lists['divisions'] = $divisions;
         unset($divisions);
-    
+  
         //$this->user = $user;
         $this->lists = $lists;
         //$this->items = $items;
@@ -61,7 +61,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
         //$this->total = $total;
         //$this->pagination = $pagination;
         //$this->request_url = $uri;
-        
+      
         //$this->setLayout('default');
 
         //$this->addToolbar();
@@ -70,7 +70,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetos::addToolbar()
-     * 
+     *
      * @return void
      */
     protected function addToolbar()
@@ -85,10 +85,10 @@ class sportsmanagementViewTreetos extends sportsmanagementView
         ToolbarHelper::addNew('treetos.save');
         ToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
         ToolbarHelper::divider();
-        
+      
         parent::addToolbar();
 
-        
+      
     }
 }
 ?>

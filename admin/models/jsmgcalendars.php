@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,10 +29,10 @@ if (! defined('JSM_PATH')) {
 }
 
 if (!class_exists('sportsmanagementHelper')) {
-    include_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';  
+    include_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 }
 
-//if( version_compare(JSM_JVERSION,'3','eq') ) 
+//if( version_compare(JSM_JVERSION,'3','eq') )
 //{
 //jimport('joomla.filesystem.archive');	
 //}
@@ -41,8 +41,8 @@ Table::addIncludePath(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY
 
 /**
  * sportsmanagementModeljsmGCalendars
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -53,7 +53,7 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 
     /**
      * sportsmanagementModeljsmGCalendars::check_google_api()
-     * 
+     *
      * @return void
      */
     function check_google_api()
@@ -61,15 +61,15 @@ class sportsmanagementModeljsmGCalendars extends ListModel
         $importFile = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/composer.json';
 
         if (File::exists($importFile)) {
-             Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');        
+             Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');      
         }
         else
         {
-             Log::add(Text::_('Google API nicht vorhanden'), Log::ERROR, 'jsmerror');    
-             $link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', 0);    
+             Log::add(Text::_('Google API nicht vorhanden'), Log::ERROR, 'jsmerror');  
+             $link = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', 0);  
              /**
-* 
- * set the target directory 
+*
+ * set the target directory
 */
              $base_Dir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR;
              $file['name'] = basename($link);
@@ -78,8 +78,8 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 
             if(version_compare(JSM_JVERSION, '3', 'eq') ) {
                 /**
-* 
- * Get the handler to download the package 
+*
+ * Get the handler to download the package
 */
                 try
                 {
@@ -87,24 +87,24 @@ class sportsmanagementModeljsmGCalendars extends ListModel
                 }
                 catch (RuntimeException $e)
                 {
-                    Log::add($e->getMessage(), Log::WARNING, 'jsmerror');    
+                    Log::add($e->getMessage(), Log::WARNING, 'jsmerror');  
                     return false;
                 }
 
                 /**
-* 
- * Download the package 
+*
+ * Download the package
 */
                 try
                 {
                     $result = $http->get($link);
-                    Log::add(Text::_('Google API heruntergeladen'), Log::NOTICE, 'jsmerror');    
+                    Log::add(Text::_('Google API heruntergeladen'), Log::NOTICE, 'jsmerror');  
                 }
                 catch (RuntimeException $e)
                 {
                     $my_text = '<span style="color:'.$this->storeFailedColor.'">';
                     $my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>".$link."</strong>");
-                    $my_text .= '<br />';    
+                    $my_text .= '<br />';  
                     return false;
                 }
                 if (!$result || ($result->code != 200 && $result->code != 310)) {
@@ -112,10 +112,10 @@ class sportsmanagementModeljsmGCalendars extends ListModel
                 }
 
                 try
-                {    
+                {  
                     /**
-* 
- * Write the file to disk 
+*
+ * Write the file to disk
 */
                     File::write($filepath, $result->body);
                     Log::add(Text::_('Google API in´s tmp Verzeichnis geladen'), Log::NOTICE, 'jsmerror');
@@ -123,25 +123,25 @@ class sportsmanagementModeljsmGCalendars extends ListModel
                 catch (RuntimeException $e)
                 {
                     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-                    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');    
+                    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');  
                     return false;
                 }
 
             }
-            elseif(version_compare(JSM_JVERSION, '4', 'eq') ) {    
+            elseif(version_compare(JSM_JVERSION, '4', 'eq') ) {  
                 /**
-* 
- * Download the package at the URL given. 
+*
+ * Download the package at the URL given.
 */
                 $p_file = InstallerHelper::downloadPackage($link);
                 /**
-* 
- * Was the package downloaded? 
+*
+ * Was the package downloaded?
 */
                 if (!$p_file) {
                     $my_text = '<span style="color:'.$this->storeFailedColor.'">';
                     $my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!', "</span><strong>".$p_file."</strong>");
-                    $my_text .= '<br />';    
+                    $my_text .= '<br />';  
                     Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
                     return false;
                 }
@@ -149,14 +149,14 @@ class sportsmanagementModeljsmGCalendars extends ListModel
                 {
                     $my_text = '<span style="color:'.$this->storeSuccessColor.'">';
                     $my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!', "</span><strong>".$p_file."</strong>");
-                    $my_text .= '<br />';        
+                    $my_text .= '<br />';      
                 }
 
             }
 
              /**
-* 
- * zip entpacken 
+*
+ * zip entpacken
 */
              $extractdir = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp';
              $dest = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file['name'];
@@ -170,30 +170,30 @@ class sportsmanagementModeljsmGCalendars extends ListModel
             }
 
              /**
-* 
- * kopieren 
+*
+ * kopieren
 */
             try {
                 Folder::copy(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp/google-api-php-client-2.4.0/', JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'google-php/', '', true);
                 Log::add(Text::_('Google API kopiert'), Log::NOTICE, 'jsmerror');
             } catch (Exception $e) {
-                Log::add($e->getCode().' - '.$e->getMessage(), Log::ERROR, 'jsmerror'); 
+                Log::add($e->getCode().' - '.$e->getMessage(), Log::ERROR, 'jsmerror');
                 $result = false;
-            }    
-    
-        }        
-        
+            }  
+  
+        }      
+      
     }
-    
+  
     /**
      * sportsmanagementModeljsmGCalendars::_getList()
-     * 
+     *
      * @param  mixed   $query
      * @param  integer $limitstart
      * @param  integer $limit
      * @return
      */
-    protected function _getList($query, $limitstart = 0, $limit = 0) 
+    protected function _getList($query, $limitstart = 0, $limit = 0)
     {
         $items = parent::_getList($query, $limitstart, $limit);
         if ($items === null) {
@@ -210,10 +210,10 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 
     /**
      * sportsmanagementModeljsmGCalendars::getListQuery()
-     * 
+     *
      * @return
      */
-    protected function getListQuery() 
+    protected function getListQuery()
     {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);

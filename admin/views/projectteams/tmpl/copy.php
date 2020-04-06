@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
-    
+  
     <fieldset>
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_COPY_DEST')?></legend>
     <table class="admintable">
@@ -31,7 +31,7 @@ use Joomla\CMS\Language\Text;
         </tr>
     </table>
     </fieldset>
-    
+  
     <?php foreach ($this->ptids as $ptid): ?>
     <input type="hidden" name="ptids[]" value="<?php echo $ptid; ?>"/>
     <?php endforeach; ?>

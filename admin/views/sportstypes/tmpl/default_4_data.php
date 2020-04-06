@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage sportstypes
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -151,7 +151,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_i
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
 
                     <td class="order">
                         <span>

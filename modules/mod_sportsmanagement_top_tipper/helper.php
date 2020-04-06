@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * modJSMTopTipper
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -27,7 +27,7 @@ use Joomla\CMS\Factory;
  */
 class modJSMTopTipper
 {
-    
+  
 }
-        
+      
 ?>

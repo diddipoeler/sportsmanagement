@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
     // Define slides options
         $slidesOptions = array(
             "active" => "slide2_id" // It is the ID of the active tab.
-        );    
+        );  
     echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
     echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
     foreach (sportsmanagementHelper::$_success_text as $key => $value)
@@ -41,7 +41,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
     echo HTMLHelper::_('bootstrap.endAccordion');
 }
 else
-{   
+{ 
 ?>
 
 
@@ -51,14 +51,14 @@ $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
 
 for($a=0; $a < sizeof($array_schluessel); $a++ )
 {
-?>    
+?>  
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
 <a data-toggle="collapse" data-parent="#accordion" href="#<?php echo Text::_($array_schluessel[$a]); ?>"><?php echo Text::_($array_schluessel[$a]); ?></a>
 </h4>
 </div>
-<?PHP    
+<?PHP  
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
@@ -73,7 +73,7 @@ foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 ?>
 </div>
 
-<?PHP	      
+<?PHP	    
 }
 ?>
 </div>

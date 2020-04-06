@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
- * @subpackage 
+ * @subpackage
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -26,8 +26,8 @@ require_once JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEP
 
 /**
  * sportsmanagementControllerImagehandler
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -41,7 +41,7 @@ class sportsmanagementControllerImagehandler extends BaseController
      *
      * @since 0.9
      */
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
 
@@ -55,7 +55,7 @@ class sportsmanagementControllerImagehandler extends BaseController
      * @return void
      * @since  0.9
      */
-    function upload() 
+    function upload()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -138,11 +138,11 @@ class sportsmanagementControllerImagehandler extends BaseController
      * @return void
      * @since  0.9
      */
-    function delete() 
+    function delete()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
         ClientHelper::setCredentialsFromRequest('ftp');

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -32,7 +32,7 @@ if ($this->config['show_sectionheader'] ) {
 //if ( $this->config['show_curve'] )
 //{
 if ($this->config['which_curve'] ) {
-    echo $this->loadTemplate('curvejs');    
+    echo $this->loadTemplate('curvejs');  
 }
 //else
 //{

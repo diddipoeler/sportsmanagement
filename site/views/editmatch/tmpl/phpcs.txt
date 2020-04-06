@@ -1,0 +1,630 @@
+Processing ruleset C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\ruleset.xml
+	Adding sniff files from "/.../Joomla/Sniffs/" directory
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Classes\InstantiateNewClassesSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Commenting\ClassCommentSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Commenting\FileCommentSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Commenting\FunctionCommentSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Commenting\SingleCommentSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\ControlStructures\ControlSignatureSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\ControlStructures\ControlStructuresBracketsSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\ControlStructures\WhiteSpaceBeforeSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Functions\StatementNotFunctionSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\NamingConventions\ValidFunctionNameSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\NamingConventions\ValidVariableNameSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\Operators\ValidLogicalOperatorsSniff.php
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\joomla\coding-standards\Joomla\Sniffs\WhiteSpace\MemberVarSpacingSniff.php
+	Processing rule "Generic.Arrays.DisallowShortArraySyntax"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowShortArraySyntaxSniff.php
+	Processing rule "Generic.ControlStructures.InlineControlStructure"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\ControlStructures\InlineControlStructureSniff.php
+	Processing rule "Generic.Files.EndFileNewline"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Files\EndFileNewlineSniff.php
+	Processing rule "Generic.Files.LineEndings"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Files\LineEndingsSniff.php
+		=> property "eolChar" set to "\n"
+	Processing rule "Generic.Files.LineLength"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff.php
+		=> property "lineLimit" set to "150"
+		=> property "absoluteLineLimit" set to "0"
+	Processing rule "Generic.Formatting.DisallowMultipleStatements"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Formatting\DisallowMultipleStatementsSniff.php
+	Processing rule "Generic.Formatting.SpaceAfterCast"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff.php
+	Processing rule "Generic.Functions.FunctionCallArgumentSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Functions\FunctionCallArgumentSpacingSniff.php
+	Processing rule "Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Functions\FunctionCallArgumentSpacingSniff.php
+		=> severity set to 0
+	Processing rule "Generic.NamingConventions.UpperCaseConstantName"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff.php
+	Processing rule "Generic.PHP.DisallowShortOpenTag"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowShortOpenTagSniff.php
+	Processing rule "Generic.PHP.DeprecatedFunctions"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff.php
+	Processing rule "Generic.PHP.ForbiddenFunctions"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff.php
+	Processing rule "Generic.PHP.LowerCaseConstant"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\PHP\LowerCaseConstantSniff.php
+	Processing rule "Generic.Strings.UnnecessaryStringConcat"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\Strings\UnnecessaryStringConcatSniff.php
+		=> property "allowMultiline" set to "true"
+	Processing rule "Generic.WhiteSpace.DisallowSpaceIndent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\DisallowSpaceIndentSniff.php
+	Processing rule "Generic.WhiteSpace.ScopeIndent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff.php
+		=> property "indent" set to "4"
+		=> property "tabIndent" set to "true"
+	Processing rule "PEAR.Classes.ClassDeclaration"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Classes\ClassDeclarationSniff.php
+	Processing rule "PEAR.Commenting.InlineComment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Commenting\InlineCommentSniff.php
+	Processing rule "PEAR.ControlStructures.MultiLineCondition"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\ControlStructures\MultiLineConditionSniff.php
+		Excluding rule "PEAR.ControlStructures.MultiLineCondition.NewlineBeforeOpenBrace"
+		=> severity set to 0
+		Excluding rule "PEAR.ControlStructures.MultiLineCondition.SpaceBeforeOpenBrace"
+		=> severity set to 0
+		Excluding rule "PEAR.ControlStructures.MultiLineCondition.CloseBracketNewLine"
+		=> severity set to 0
+		=> property "indent" set to "4"
+	Processing rule "PEAR.ControlStructures.MultiLineCondition.Alignment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\ControlStructures\MultiLineConditionSniff.php
+		=> message set to Multi-line IF statement not indented correctly; expected %s spaces but found %s. Note: the autofixer will convert spaces to tabs
+		=> property "indent" set to "4"
+	Processing rule "PEAR.Formatting.MultiLineAssignment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Formatting\MultiLineAssignmentSniff.php
+	Processing rule "PEAR.Functions.FunctionCallSignature"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff.php
+		Excluding rule "PEAR.Functions.FunctionDeclaration.BraceOnNewLine"
+		=> severity set to 0
+		Excluding rule "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"
+		=> severity set to 0
+		=> property "indent" set to "4"
+	Processing rule "PEAR.Functions.FunctionCallSignature.Indent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff.php
+		=> message set to Multi-line function call not indented correctly; expected %s spaces but found %s. Note: the autofixer will convert spaces to tabs
+		=> property "indent" set to "4"
+	Processing rule "PEAR.Functions.FunctionDeclaration"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff.php
+		Excluding rule "PEAR.Functions.FunctionDeclaration.NewlineBeforeOpenBrace"
+		=> severity set to 0
+		=> property "indent" set to "4"
+	Processing rule "PEAR.Functions.FunctionDeclaration.Indent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff.php
+		=> message set to Multi-line function declaration not indented correctly; expected %s spaces but found %s. Note: the autofixer will convert spaces to tabs
+		=> property "indent" set to "4"
+	Processing rule "PEAR.Functions.ValidDefaultValue"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\Functions\ValidDefaultValueSniff.php
+	Processing rule "PEAR.NamingConventions.ValidClassName"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidClassNameSniff.php
+	Processing rule "PEAR.WhiteSpace.ObjectOperatorIndent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff.php
+		=> property "indent" set to "4"
+	Processing rule "PEAR.WhiteSpace.ObjectOperatorIndent.Incorrect"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff.php
+		=> message set to Object operator not indented correctly; expected %s spaces but found %s. Note: the autofixer will convert spaces to tabs
+		=> property "indent" set to "4"
+	Processing rule "PSR2.ControlStructures.ElseIfDeclaration"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ElseIfDeclarationSniff.php
+	Processing rule "PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ElseIfDeclarationSniff.php
+		=> message type set to error
+	Processing rule "Squiz.CSS.ColonSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\ColonSpacingSniff.php
+	Processing rule "Squiz.CSS.DuplicateClassDefinition"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\DuplicateClassDefinitionSniff.php
+	Processing rule "Squiz.CSS.EmptyClassDefinition"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\EmptyClassDefinitionSniff.php
+	Processing rule "Squiz.CSS.EmptyStyleDefinition"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\EmptyStyleDefinitionSniff.php
+	Processing rule "Squiz.CSS.MissingColon"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\MissingColonSniff.php
+	Processing rule "Squiz.CSS.SemicolonSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\CSS\SemicolonSpacingSniff.php
+	Processing rule "Squiz.Classes.SelfMemberReference"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Classes\SelfMemberReferenceSniff.php
+	Processing rule "Squiz.Commenting.BlockComment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Commenting\BlockCommentSniff.php
+		Excluding rule "Squiz.Commenting.BlockComment.FirstLineIndent"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.LineIndent"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.LastLineIndent"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.HasEmptyLineBefore"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.NoEmptyLineBefore"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.NoEmptyLineAfter"
+		=> severity set to 0
+		Excluding rule "Squiz.Commenting.BlockComment.WrongStart"
+		=> severity set to 0
+	Processing rule "Squiz.Commenting.DocCommentAlignment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Commenting\DocCommentAlignmentSniff.php
+	Processing rule "Squiz.Commenting.VariableComment"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Commenting\VariableCommentSniff.php
+		Excluding rule "Squiz.Commenting.VariableComment.TagNotAllowed"
+		=> severity set to 0
+	Processing rule "Squiz.Operators.IncrementDecrementUsage"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Operators\IncrementDecrementUsageSniff.php
+		Excluding rule "Squiz.Operators.IncrementDecrementUsage.processAssignment"
+		=> severity set to 0
+	Processing rule "Squiz.PHP.GlobalKeyword"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\PHP\GlobalKeywordSniff.php
+		=> message set to Do not use global variables. Use static class properties or constants instead of globals.
+	Processing rule "Squiz.Scope.StaticThisUsage"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Scope\StaticThisUsageSniff.php
+	Processing rule "Squiz.Scope.MemberVarScope"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Scope\MemberVarScopeSniff.php
+	Processing rule "Squiz.Scope.MethodScope"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Scope\MethodScopeSniff.php
+		=> message set to No scope modifier specified for function "%s
+	Processing rule "Squiz.Scope.StaticThisUsage"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Scope\StaticThisUsageSniff.php
+	Processing rule "Squiz.Strings.ConcatenationSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\Strings\ConcatenationSpacingSniff.php
+		=> property "spacing" set to "1"
+		=> property "ignoreNewlines" set to "true"
+	Processing rule "Squiz.WhiteSpace.ScopeClosingBrace"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ScopeClosingBraceSniff.php
+	Processing rule "Squiz.WhiteSpace.ScopeClosingBrace.Indent"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ScopeClosingBraceSniff.php
+		=> message set to Closing brace indented incorrectly; expected %s spaces, found %s. Note: the autofixer will convert spaces to tabs
+	Processing rule "Squiz.WhiteSpace.CastSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\CastSpacingSniff.php
+	Processing rule "Squiz.WhiteSpace.ControlStructureSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff.php
+		Excluding rule "Squiz.WhiteSpace.ControlStructureSpacing.LineAfterClose"
+		=> severity set to 0
+	Processing rule "Squiz.WhiteSpace.OperatorSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\OperatorSpacingSniff.php
+		=> property "ignoreNewlines" set to "true"
+	Processing rule "Squiz.WhiteSpace.SuperfluousWhitespace"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff.php
+	Processing rule "Squiz.WhiteSpace.SemicolonSpacing"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SemicolonSpacingSniff.php
+	Processing rule "Zend.Files.ClosingTag"
+		=> C:\Users\ortwin20001\AppData\Roaming\Composer\vendor\squizlabs\php_codesniffer\CodeSniffer\Standards\Zend\Sniffs\Files\ClosingTagSniff.php
+	=> set command line value --tab-width=4
+	=> set command line value --encoding=utf-8
+	=> set command line value -p
+=> Ruleset processing complete; included 62 sniffs and excluded 0
+Creating file list... DONE (1 files in queue)
+Changing into directory C:\Users\ortwin20001\Documents\GitHub\sportsmanagement\site\views\editmatch\tmpl
+Processing edit_matchpreview.php 
+	*** START PHP TOKENIZING ***
+	Process token [0]: T_OPEN_TAG => <?php\n
+	Process token [1]: T_DOC_COMMENT => /**\n * SportsManagement ein Programm zur Verwaltung für alle Sportarten\n *\n * @version    1.0.05\n * @file       edit_matchpreview.php\n * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)\n * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.\n * @license    GNU General Public License version 2 or later; see LICENSE.txt\n * @package    sportsmanagement\n * @subpackage editmatch\n */
+		*** START COMMENT TOKENIZING ***
+		Create comment token: T_DOC_COMMENT_OPEN_TAG => /**
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STRING => SportsManagement ein Programm zur Verwaltung für alle Sportarten
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @version
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>     
+		Create comment token: T_DOC_COMMENT_STRING => 1.0.05
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @file
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>        
+		Create comment token: T_DOC_COMMENT_STRING => edit_matchpreview.php
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @author
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>      
+		Create comment token: T_DOC_COMMENT_STRING => diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @copyright
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>   
+		Create comment token: T_DOC_COMMENT_STRING => Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @license
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>     
+		Create comment token: T_DOC_COMMENT_STRING => GNU General Public License version 2 or later; see LICENSE.txt
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @package
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>     
+		Create comment token: T_DOC_COMMENT_STRING => sportsmanagement
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STAR => *
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_TAG => @subpackage
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_STRING => editmatch
+		Create comment token: T_DOC_COMMENT_WHITESPACE => \n
+		Create comment token: T_DOC_COMMENT_WHITESPACE =>  
+		Create comment token: T_DOC_COMMENT_CLOSE_TAG => */
+		*** END COMMENT TOKENIZING ***
+	Process token [2]: T_WHITESPACE => \n\n
+	Process token [3]: T_STRING => defined
+	Process token  4 : T_OPEN_PARENTHESIS => (
+	Process token [5]: T_CONSTANT_ENCAPSED_STRING => '_JEXEC'
+	Process token  6 : T_CLOSE_PARENTHESIS => )
+	Process token [7]: T_WHITESPACE =>  
+	Process token [8]: T_LOGICAL_OR => or
+	Process token [9]: T_WHITESPACE =>  
+	Process token [10]: T_EXIT => die
+	Process token  11 : T_OPEN_PARENTHESIS => (
+	Process token [12]: T_CONSTANT_ENCAPSED_STRING => 'Restricted access'
+	Process token  13 : T_CLOSE_PARENTHESIS => )
+	Process token  14 : T_SEMICOLON => ;
+	Process token [15]: T_WHITESPACE => \n
+	Process token [16]: T_USE => use
+	Process token [17]: T_WHITESPACE =>  
+	Process token [18]: T_STRING => Joomla
+	Process token [19]: T_NS_SEPARATOR => \
+	Process token [20]: T_STRING => CMS
+	Process token [21]: T_NS_SEPARATOR => \
+	Process token [22]: T_STRING => Language
+	Process token [23]: T_NS_SEPARATOR => \
+	Process token [24]: T_STRING => Text
+	Process token  25 : T_SEMICOLON => ;
+	Process token [26]: T_WHITESPACE => \n
+	Process token [27]: T_CLOSE_TAG => ?>
+	Process token [28]: T_INLINE_HTML =>           \n<fieldset class="adminform">\n    <legend>
+	Process token [29]: T_OPEN_TAG => <?php 
+	Process token [30]: T_ECHO => echo
+	Process token [31]: T_WHITESPACE =>  
+	Process token [32]: T_STRING => Text
+	Process token [33]: T_DOUBLE_COLON => ::
+	Process token [34]: T_STRING => _
+	Process token  35 : T_OPEN_PARENTHESIS => (
+	Process token [36]: T_CONSTANT_ENCAPSED_STRING => 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP'
+	Process token  37 : T_CLOSE_PARENTHESIS => )
+	Process token  38 : T_SEMICOLON => ;
+	Process token [39]: T_WHITESPACE =>  
+	Process token [40]: T_CLOSE_TAG => ?>\n
+	Process token [41]: T_INLINE_HTML =>     </legend>\n    <table class="admintable">\n    
+	Process token [42]: T_OPEN_TAG => <?php\n
+	Process token [43]: T_WHITESPACE =>                   \n    
+	Process token [44]: T_FOREACH => foreach
+	Process token [45]: T_WHITESPACE =>  
+	Process token  46 : T_OPEN_PARENTHESIS => (
+	Process token [47]: T_VARIABLE => $this
+	Process token [48]: T_OBJECT_OPERATOR => ->
+	Process token [49]: T_STRING => form
+	Process token [50]: T_OBJECT_OPERATOR => ->
+	Process token [51]: T_STRING => getFieldset
+	Process token  52 : T_OPEN_PARENTHESIS => (
+	Process token [53]: T_CONSTANT_ENCAPSED_STRING => 'matchpreview'
+	Process token  54 : T_CLOSE_PARENTHESIS => )
+	Process token [55]: T_WHITESPACE =>  
+	Process token [56]: T_AS => as
+	Process token [57]: T_WHITESPACE =>  
+	Process token [58]: T_VARIABLE => $field
+	Process token  59 : T_CLOSE_PARENTHESIS => )
+	Process token  60 : T_COLON => :
+	Process token [61]: T_WHITESPACE => \n    
+	Process token [62]: T_CLOSE_TAG => ?>\n
+	Process token [63]: T_INLINE_HTML => <tr>\n<td class="key">
+	Process token [64]: T_OPEN_TAG => <?php 
+	Process token [65]: T_ECHO => echo
+	Process token [66]: T_WHITESPACE =>  
+	Process token [67]: T_VARIABLE => $field
+	Process token [68]: T_OBJECT_OPERATOR => ->
+	Process token [69]: T_STRING => label
+	Process token  70 : T_SEMICOLON => ;
+	Process token [71]: T_WHITESPACE =>  
+	Process token [72]: T_CLOSE_TAG => ?>
+	Process token [73]: T_INLINE_HTML => </td>\n<td>
+	Process token [74]: T_OPEN_TAG => <?php 
+	Process token [75]: T_ECHO => echo
+	Process token [76]: T_WHITESPACE =>  
+	Process token [77]: T_VARIABLE => $field
+	Process token [78]: T_OBJECT_OPERATOR => ->
+	Process token [79]: T_STRING => input
+	Process token  80 : T_SEMICOLON => ;
+	Process token [81]: T_WHITESPACE =>  
+	Process token [82]: T_CLOSE_TAG => ?>
+	Process token [83]: T_INLINE_HTML => </td>\n</tr>\t\t\t\t\t\n    
+	Process token [84]: T_OPEN_TAG => <?php 
+	Process token [85]: T_ENDFOREACH => endforeach
+	Process token  86 : T_SEMICOLON => ;
+	Process token [87]: T_WHITESPACE =>  
+	Process token [88]: T_CLOSE_TAG => ?>\n
+	Process token [89]: T_INLINE_HTML =>     </table>\n</fieldset>\t\t\n
+	*** END PHP TOKENIZING ***
+	*** START TOKEN MAP ***
+	*** END TOKEN MAP ***
+	*** START SCOPE MAP ***
+	Start scope map at 77:T_USE => use
+	=> Begin scope map recursion at token 77 with depth 1
+	Process token 78 on line 15 []: T_WHITESPACE =>  
+	Process token 79 on line 15 []: T_STRING => Joomla
+	Process token 80 on line 15 []: T_NS_SEPARATOR => \
+	Process token 81 on line 15 []: T_STRING => CMS
+	Process token 82 on line 15 []: T_NS_SEPARATOR => \
+	Process token 83 on line 15 []: T_STRING => Language
+	Process token 84 on line 15 []: T_NS_SEPARATOR => \
+	Process token 85 on line 15 []: T_STRING => Text
+	Process token 86 on line 15 []: T_SEMICOLON => ;
+	=> Found semicolon before scope opener for 77:T_USE, bailing
+	Start scope map at 110:T_FOREACH => foreach
+	=> Begin scope map recursion at token 110 with depth 1
+	Process token 111 on line 23 []: T_WHITESPACE =>  
+	Process token 112 on line 23 []: T_OPEN_PARENTHESIS => (
+	Process token 113 on line 23 []: T_VARIABLE => $this
+	Process token 114 on line 23 []: T_OBJECT_OPERATOR => ->
+	Process token 115 on line 23 []: T_STRING => form
+	Process token 116 on line 23 []: T_OBJECT_OPERATOR => ->
+	Process token 117 on line 23 []: T_STRING => getFieldset
+	Process token 118 on line 23 []: T_OPEN_PARENTHESIS => (
+	Process token 119 on line 23 []: T_CONSTANT_ENCAPSED_STRING => 'matchpreview'
+	Process token 120 on line 23 []: T_CLOSE_PARENTHESIS => )
+	Process token 121 on line 23 []: T_WHITESPACE =>  
+	Process token 122 on line 23 []: T_AS => as
+	Process token 123 on line 23 []: T_WHITESPACE =>  
+	Process token 124 on line 23 []: T_VARIABLE => $field
+	Process token 125 on line 23 []: T_CLOSE_PARENTHESIS => )
+	Process token 126 on line 23 []: T_COLON => :
+	=> Found scope opener for 110:T_FOREACH
+	Process token 127 on line 23 [opener:126;]: T_WHITESPACE => \n
+	Process token 128 on line 24 [opener:126;]: T_WHITESPACE =>     
+	Process token 129 on line 24 [opener:126;]: T_CLOSE_TAG => ?>\n
+	Process token 130 on line 25 [opener:126;]: T_INLINE_HTML => <tr>\n
+	Process token 131 on line 26 [opener:126;]: T_INLINE_HTML => <td class="key">
+	Process token 132 on line 26 [opener:126;]: T_OPEN_TAG => <?php 
+	Process token 133 on line 26 [opener:126;]: T_ECHO => echo
+	Process token 134 on line 26 [opener:126;]: T_WHITESPACE =>  
+	Process token 135 on line 26 [opener:126;]: T_VARIABLE => $field
+	Process token 136 on line 26 [opener:126;]: T_OBJECT_OPERATOR => ->
+	Process token 137 on line 26 [opener:126;]: T_STRING => label
+	Process token 138 on line 26 [opener:126;]: T_SEMICOLON => ;
+	Process token 139 on line 26 [opener:126;]: T_WHITESPACE =>  
+	Process token 140 on line 26 [opener:126;]: T_CLOSE_TAG => ?>
+	Process token 141 on line 26 [opener:126;]: T_INLINE_HTML => </td>\n
+	Process token 142 on line 27 [opener:126;]: T_INLINE_HTML => <td>
+	Process token 143 on line 27 [opener:126;]: T_OPEN_TAG => <?php 
+	Process token 144 on line 27 [opener:126;]: T_ECHO => echo
+	Process token 145 on line 27 [opener:126;]: T_WHITESPACE =>  
+	Process token 146 on line 27 [opener:126;]: T_VARIABLE => $field
+	Process token 147 on line 27 [opener:126;]: T_OBJECT_OPERATOR => ->
+	Process token 148 on line 27 [opener:126;]: T_STRING => input
+	Process token 149 on line 27 [opener:126;]: T_SEMICOLON => ;
+	Process token 150 on line 27 [opener:126;]: T_WHITESPACE =>  
+	Process token 151 on line 27 [opener:126;]: T_CLOSE_TAG => ?>
+	Process token 152 on line 27 [opener:126;]: T_INLINE_HTML => </td>\n
+	Process token 153 on line 28 [opener:126;]: T_INLINE_HTML => </tr>                   \n
+	Process token 154 on line 29 [opener:126;]: T_INLINE_HTML =>     
+	Process token 155 on line 29 [opener:126;]: T_OPEN_TAG => <?php 
+	Process token 156 on line 29 [opener:126;]: T_ENDFOREACH => endforeach
+	=> Found scope closer (156:T_ENDFOREACH) for 110:T_FOREACH
+	*** END SCOPE MAP ***
+	*** START LEVEL MAP ***
+	Process token 0 on line 1 [col:1;len:5;lvl:0;]: T_OPEN_TAG => <?php\n
+	Process token 1 on line 2 [col:1;len:3;lvl:0;]: T_DOC_COMMENT_OPEN_TAG => /**
+	Process token 2 on line 2 [col:4;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 3 on line 3 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 4 on line 3 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 5 on line 3 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 6 on line 3 [col:4;len:64;lvl:0;]: T_DOC_COMMENT_STRING => SportsManagement ein Programm zur Verwaltung für alle Sportarten
+	Process token 7 on line 3 [col:68;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 8 on line 4 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 9 on line 4 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 10 on line 4 [col:3;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 11 on line 5 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 12 on line 5 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 13 on line 5 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 14 on line 5 [col:4;len:8;lvl:0;]: T_DOC_COMMENT_TAG => @version
+	Process token 15 on line 5 [col:12;len:4;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>     
+	Process token 16 on line 5 [col:16;len:6;lvl:0;]: T_DOC_COMMENT_STRING => 1.0.05
+	Process token 17 on line 5 [col:22;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 18 on line 6 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 19 on line 6 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 20 on line 6 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 21 on line 6 [col:4;len:5;lvl:0;]: T_DOC_COMMENT_TAG => @file
+	Process token 22 on line 6 [col:9;len:7;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>        
+	Process token 23 on line 6 [col:16;len:21;lvl:0;]: T_DOC_COMMENT_STRING => edit_matchpreview.php
+	Process token 24 on line 6 [col:37;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 25 on line 7 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 26 on line 7 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 27 on line 7 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 28 on line 7 [col:4;len:7;lvl:0;]: T_DOC_COMMENT_TAG => @author
+	Process token 29 on line 7 [col:11;len:5;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>      
+	Process token 30 on line 7 [col:16;len:63;lvl:0;]: T_DOC_COMMENT_STRING => diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+	Process token 31 on line 7 [col:79;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 32 on line 8 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 33 on line 8 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 34 on line 8 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 35 on line 8 [col:4;len:10;lvl:0;]: T_DOC_COMMENT_TAG => @copyright
+	Process token 36 on line 8 [col:14;len:2;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>   
+	Process token 37 on line 8 [col:16;len:85;lvl:0;]: T_DOC_COMMENT_STRING => Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+	Process token 38 on line 8 [col:101;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 39 on line 9 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 40 on line 9 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 41 on line 9 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 42 on line 9 [col:4;len:8;lvl:0;]: T_DOC_COMMENT_TAG => @license
+	Process token 43 on line 9 [col:12;len:4;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>     
+	Process token 44 on line 9 [col:16;len:62;lvl:0;]: T_DOC_COMMENT_STRING => GNU General Public License version 2 or later; see LICENSE.txt
+	Process token 45 on line 9 [col:78;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 46 on line 10 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 47 on line 10 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 48 on line 10 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 49 on line 10 [col:4;len:8;lvl:0;]: T_DOC_COMMENT_TAG => @package
+	Process token 50 on line 10 [col:12;len:4;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>     
+	Process token 51 on line 10 [col:16;len:16;lvl:0;]: T_DOC_COMMENT_STRING => sportsmanagement
+	Process token 52 on line 10 [col:32;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 53 on line 11 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 54 on line 11 [col:2;len:1;lvl:0;]: T_DOC_COMMENT_STAR => *
+	Process token 55 on line 11 [col:3;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 56 on line 11 [col:4;len:11;lvl:0;]: T_DOC_COMMENT_TAG => @subpackage
+	Process token 57 on line 11 [col:15;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 58 on line 11 [col:16;len:9;lvl:0;]: T_DOC_COMMENT_STRING => editmatch
+	Process token 59 on line 11 [col:25;len:0;lvl:0;]: T_DOC_COMMENT_WHITESPACE => \n
+	Process token 60 on line 12 [col:1;len:1;lvl:0;]: T_DOC_COMMENT_WHITESPACE =>  
+	Process token 61 on line 12 [col:2;len:2;lvl:0;]: T_DOC_COMMENT_CLOSE_TAG => */
+	Process token 62 on line 12 [col:4;len:0;lvl:0;]: T_WHITESPACE => \n
+	Process token 63 on line 13 [col:1;len:0;lvl:0;]: T_WHITESPACE => \n
+	Process token 64 on line 14 [col:1;len:7;lvl:0;]: T_STRING => defined
+	Process token 65 on line 14 [col:8;len:1;lvl:0;]: T_OPEN_PARENTHESIS => (
+	Process token 66 on line 14 [col:9;len:8;lvl:0;]: T_CONSTANT_ENCAPSED_STRING => '_JEXEC'
+	Process token 67 on line 14 [col:17;len:1;lvl:0;]: T_CLOSE_PARENTHESIS => )
+	Process token 68 on line 14 [col:18;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 69 on line 14 [col:19;len:2;lvl:0;]: T_LOGICAL_OR => or
+	Process token 70 on line 14 [col:21;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 71 on line 14 [col:22;len:3;lvl:0;]: T_EXIT => die
+	Process token 72 on line 14 [col:25;len:1;lvl:0;]: T_OPEN_PARENTHESIS => (
+	Process token 73 on line 14 [col:26;len:19;lvl:0;]: T_CONSTANT_ENCAPSED_STRING => 'Restricted access'
+	Process token 74 on line 14 [col:45;len:1;lvl:0;]: T_CLOSE_PARENTHESIS => )
+	Process token 75 on line 14 [col:46;len:1;lvl:0;]: T_SEMICOLON => ;
+	Process token 76 on line 14 [col:47;len:0;lvl:0;]: T_WHITESPACE => \n
+	Process token 77 on line 15 [col:1;len:3;lvl:0;]: T_USE => use
+	Process token 78 on line 15 [col:4;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 79 on line 15 [col:5;len:6;lvl:0;]: T_STRING => Joomla
+	Process token 80 on line 15 [col:11;len:1;lvl:0;]: T_NS_SEPARATOR => \
+	Process token 81 on line 15 [col:12;len:3;lvl:0;]: T_STRING => CMS
+	Process token 82 on line 15 [col:15;len:1;lvl:0;]: T_NS_SEPARATOR => \
+	Process token 83 on line 15 [col:16;len:8;lvl:0;]: T_STRING => Language
+	Process token 84 on line 15 [col:24;len:1;lvl:0;]: T_NS_SEPARATOR => \
+	Process token 85 on line 15 [col:25;len:4;lvl:0;]: T_STRING => Text
+	Process token 86 on line 15 [col:29;len:1;lvl:0;]: T_SEMICOLON => ;
+	Process token 87 on line 15 [col:30;len:0;lvl:0;]: T_WHITESPACE => \n
+	Process token 88 on line 16 [col:1;len:2;lvl:0;]: T_CLOSE_TAG => ?>
+	Process token 89 on line 16 [col:3;len:10;lvl:0;]: T_INLINE_HTML =>           \n
+	Process token 90 on line 17 [col:1;len:28;lvl:0;]: T_INLINE_HTML => <fieldset class="adminform">\n
+	Process token 91 on line 18 [col:1;len:12;lvl:0;]: T_INLINE_HTML =>     <legend>
+	Process token 92 on line 18 [col:13;len:6;lvl:0;]: T_OPEN_TAG => <?php 
+	Process token 93 on line 18 [col:19;len:4;lvl:0;]: T_ECHO => echo
+	Process token 94 on line 18 [col:23;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 95 on line 18 [col:24;len:4;lvl:0;]: T_STRING => Text
+	Process token 96 on line 18 [col:28;len:2;lvl:0;]: T_DOUBLE_COLON => ::
+	Process token 97 on line 18 [col:30;len:1;lvl:0;]: T_STRING => _
+	Process token 98 on line 18 [col:31;len:1;lvl:0;]: T_OPEN_PARENTHESIS => (
+	Process token 99 on line 18 [col:32;len:39;lvl:0;]: T_CONSTANT_ENCAPSED_STRING => 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP'
+	Process token 100 on line 18 [col:71;len:1;lvl:0;]: T_CLOSE_PARENTHESIS => )
+	Process token 101 on line 18 [col:72;len:1;lvl:0;]: T_SEMICOLON => ;
+	Process token 102 on line 18 [col:73;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 103 on line 18 [col:74;len:2;lvl:0;]: T_CLOSE_TAG => ?>\n
+	Process token 104 on line 19 [col:1;len:13;lvl:0;]: T_INLINE_HTML =>     </legend>\n
+	Process token 105 on line 20 [col:1;len:30;lvl:0;]: T_INLINE_HTML =>     <table class="admintable">\n
+	Process token 106 on line 21 [col:1;len:4;lvl:0;]: T_INLINE_HTML =>     
+	Process token 107 on line 21 [col:5;len:5;lvl:0;]: T_OPEN_TAG => <?php\n
+	Process token 108 on line 22 [col:1;len:18;lvl:0;]: T_WHITESPACE =>                   \n
+	Process token 109 on line 23 [col:1;len:4;lvl:0;]: T_WHITESPACE =>     
+	Process token 110 on line 23 [col:5;len:7;lvl:0;]: T_FOREACH => foreach
+	Process token 111 on line 23 [col:12;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 112 on line 23 [col:13;len:1;lvl:0;]: T_OPEN_PARENTHESIS => (
+	Process token 113 on line 23 [col:14;len:5;lvl:0;]: T_VARIABLE => $this
+	Process token 114 on line 23 [col:19;len:2;lvl:0;]: T_OBJECT_OPERATOR => ->
+	Process token 115 on line 23 [col:21;len:4;lvl:0;]: T_STRING => form
+	Process token 116 on line 23 [col:25;len:2;lvl:0;]: T_OBJECT_OPERATOR => ->
+	Process token 117 on line 23 [col:27;len:11;lvl:0;]: T_STRING => getFieldset
+	Process token 118 on line 23 [col:38;len:1;lvl:0;]: T_OPEN_PARENTHESIS => (
+	Process token 119 on line 23 [col:39;len:14;lvl:0;]: T_CONSTANT_ENCAPSED_STRING => 'matchpreview'
+	Process token 120 on line 23 [col:53;len:1;lvl:0;]: T_CLOSE_PARENTHESIS => )
+	Process token 121 on line 23 [col:54;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 122 on line 23 [col:55;len:2;lvl:0;]: T_AS => as
+	Process token 123 on line 23 [col:57;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 124 on line 23 [col:58;len:6;lvl:0;]: T_VARIABLE => $field
+	Process token 125 on line 23 [col:64;len:1;lvl:0;]: T_CLOSE_PARENTHESIS => )
+	Process token 126 on line 23 [col:65;len:1;lvl:0;]: T_COLON => :
+	=> Found scope opener for 110:T_FOREACH
+		* level increased *
+		* token 110:T_FOREACH added to conditions array *
+		Process token 127 on line 23 [col:66;len:0;lvl:1;conds;T_FOREACH;]: T_WHITESPACE => \n
+		Process token 128 on line 24 [col:1;len:4;lvl:1;conds;T_FOREACH;]: T_WHITESPACE =>     
+		Process token 129 on line 24 [col:5;len:2;lvl:1;conds;T_FOREACH;]: T_CLOSE_TAG => ?>\n
+		Process token 130 on line 25 [col:1;len:4;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => <tr>\n
+		Process token 131 on line 26 [col:1;len:16;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => <td class="key">
+		Process token 132 on line 26 [col:17;len:6;lvl:1;conds;T_FOREACH;]: T_OPEN_TAG => <?php 
+		Process token 133 on line 26 [col:23;len:4;lvl:1;conds;T_FOREACH;]: T_ECHO => echo
+		Process token 134 on line 26 [col:27;len:1;lvl:1;conds;T_FOREACH;]: T_WHITESPACE =>  
+		Process token 135 on line 26 [col:28;len:6;lvl:1;conds;T_FOREACH;]: T_VARIABLE => $field
+		Process token 136 on line 26 [col:34;len:2;lvl:1;conds;T_FOREACH;]: T_OBJECT_OPERATOR => ->
+		Process token 137 on line 26 [col:36;len:5;lvl:1;conds;T_FOREACH;]: T_STRING => label
+		Process token 138 on line 26 [col:41;len:1;lvl:1;conds;T_FOREACH;]: T_SEMICOLON => ;
+		Process token 139 on line 26 [col:42;len:1;lvl:1;conds;T_FOREACH;]: T_WHITESPACE =>  
+		Process token 140 on line 26 [col:43;len:2;lvl:1;conds;T_FOREACH;]: T_CLOSE_TAG => ?>
+		Process token 141 on line 26 [col:45;len:5;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => </td>\n
+		Process token 142 on line 27 [col:1;len:4;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => <td>
+		Process token 143 on line 27 [col:5;len:6;lvl:1;conds;T_FOREACH;]: T_OPEN_TAG => <?php 
+		Process token 144 on line 27 [col:11;len:4;lvl:1;conds;T_FOREACH;]: T_ECHO => echo
+		Process token 145 on line 27 [col:15;len:1;lvl:1;conds;T_FOREACH;]: T_WHITESPACE =>  
+		Process token 146 on line 27 [col:16;len:6;lvl:1;conds;T_FOREACH;]: T_VARIABLE => $field
+		Process token 147 on line 27 [col:22;len:2;lvl:1;conds;T_FOREACH;]: T_OBJECT_OPERATOR => ->
+		Process token 148 on line 27 [col:24;len:5;lvl:1;conds;T_FOREACH;]: T_STRING => input
+		Process token 149 on line 27 [col:29;len:1;lvl:1;conds;T_FOREACH;]: T_SEMICOLON => ;
+		Process token 150 on line 27 [col:30;len:1;lvl:1;conds;T_FOREACH;]: T_WHITESPACE =>  
+		Process token 151 on line 27 [col:31;len:2;lvl:1;conds;T_FOREACH;]: T_CLOSE_TAG => ?>
+		Process token 152 on line 27 [col:33;len:5;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => </td>\n
+		Process token 153 on line 28 [col:1;len:24;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML => </tr>                   \n
+		Process token 154 on line 29 [col:1;len:4;lvl:1;conds;T_FOREACH;]: T_INLINE_HTML =>     
+		Process token 155 on line 29 [col:5;len:6;lvl:1;conds;T_FOREACH;]: T_OPEN_TAG => <?php 
+		Process token 156 on line 29 [col:11;len:10;lvl:1;conds;T_FOREACH;]: T_ENDFOREACH => endforeach
+		=> Found scope closer for 126:T_COLON
+		* token T_FOREACH removed from conditions array *
+		* level decreased *
+	Process token 157 on line 29 [col:21;len:1;lvl:0;]: T_SEMICOLON => ;
+	Process token 158 on line 29 [col:22;len:1;lvl:0;]: T_WHITESPACE =>  
+	Process token 159 on line 29 [col:23;len:2;lvl:0;]: T_CLOSE_TAG => ?>\n
+	Process token 160 on line 30 [col:1;len:12;lvl:0;]: T_INLINE_HTML =>     </table>\n
+	Process token 161 on line 31 [col:1;len:16;lvl:0;]: T_INLINE_HTML => </fieldset>     \n
+	*** END LEVEL MAP ***
+	*** START ADDITIONAL PHP PROCESSING ***
+	*** END ADDITIONAL PHP PROCESSING ***
+[PHP => 162 tokens in 31 lines]... 
+DONE in 20ms (18 errors, 0 warnings)
+
+FILE: ...sportsmanagement\site\views\editmatch\tmpl\edit_matchpreview.php
+----------------------------------------------------------------------
+FOUND 18 ERRORS AFFECTING 14 LINES
+----------------------------------------------------------------------
+  6 | ERROR | [ ] The tag in position 2 should be the @package tag
+  7 | ERROR | [ ] The tag in position 3 should be the @subpackage tag
+  7 | ERROR | [ ] Content of the @author tag must be in the form
+    |       |     "Display Name <username@example.com>"
+  8 | ERROR | [ ] The tag in position 4 should be the @author tag
+  9 | ERROR | [ ] The tag in position 5 should be the @copyright tag
+ 10 | ERROR | [ ] Package name "sportsmanagement" is not valid;
+    |       |     consider "Sportsmanagement" instead
+ 10 | ERROR | [ ] The tag in position 6 should be the @license tag
+ 18 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 19 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 20 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 21 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 22 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 22 | ERROR | [x] Whitespace found at end of line
+ 23 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 23 | ERROR | [x] Opening brace of a foreach must be on the line
+    |       |     after the definition
+ 24 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 29 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+ 30 | ERROR | [x] Tabs must be used to indent lines; spaces are not
+    |       |     allowed
+----------------------------------------------------------------------
+PHPCBF CAN FIX THE 11 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------
+
+Time: 103ms; Memory: 4Mb
+

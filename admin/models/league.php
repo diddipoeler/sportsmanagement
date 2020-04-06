@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelleague
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -27,7 +27,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelleague extends JSMModelAdmin
 {
-    
+  
     /**
      * Override parent constructor.
      *
@@ -39,8 +39,8 @@ class sportsmanagementModelleague extends JSMModelAdmin
     public function __construct($config = array())
     {
         parent::__construct($config);
-    }       
-    
+    }     
+  
     /**
      * Method to update checked leagues
      *
@@ -78,5 +78,5 @@ class sportsmanagementModelleague extends JSMModelAdmin
 
 
 
-        
+      
 }

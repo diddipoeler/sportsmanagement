@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -25,18 +25,18 @@ if (!function_exists('jsm_birthday_sort')) {
 
     /**
      * jsm_birthday_sort()
-     * 
+     *
      * @param  mixed $array
      * @param  mixed $arguments
      * @param  bool  $keys
      * @return
      */
-    function jsm_birthday_sort($array, $arguments = '-', $keys = true) 
+    function jsm_birthday_sort($array, $arguments = '-', $keys = true)
     {
-        $mainframe = Factory::getApplication(); 
+        $mainframe = Factory::getApplication();
 
         /**
- * Hole eine Liste von Spalten 
+ * Hole eine Liste von Spalten
 */
         foreach ($array as $key => $row) {
             $days_to_birthday[$key] = $row['days_to_birthday'];
@@ -44,10 +44,10 @@ if (!function_exists('jsm_birthday_sort')) {
         }
 
         //$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
-        $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array)  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array);    
+        $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array)  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array);  
         return $array;
     }
- 
+
 }
 
 $usedp = $params->get('p', '0');
@@ -56,8 +56,8 @@ $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $use
 $usedteams = "";
 
 /**
-* 
- * get favorite team(s), we have to make a function for this 
+*
+ * get favorite team(s), we have to make a function for this
 */
 if ($params->get('use_fav') ) {
     $query = $database->getQuery(true);
@@ -87,8 +87,8 @@ if ($params->get('use_fav') ) {
 $birthdaytext = '';
 
 /**
-* 
- * get player info, we have to make a function for this 
+*
+ * get player info, we have to make a function for this
 */
 $dateformat = "DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth";
 
@@ -164,18 +164,18 @@ if ($params->get('use_which') <= 1 ) {
     } else {
         $database->setQuery($query);
     }
-    
+  
     try{
           $players = $database->loadAssocList();
     } catch (Exception $e) {
                 $mainframe->enqueueMessage(__FILE__.' '. __LINE__ . Text::_($e->getMessage()), 'Error');
     }
- 
+
 }
 
 /**
-* 
- * get staff info, we have to make a function for this 
+*
+ * get staff info, we have to make a function for this
 */
 if ($params->get('use_which') == 2 ) {
     $query = $database->getQuery(true);
@@ -208,8 +208,8 @@ if ($params->get('use_which') == 2 ) {
         $query->where('p.agegroup_id = ' . $params->get('agegrouplist'));
     }
     /**
-* 
- * Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff) 
+*
+ * Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
 */
     if (count($players) > 0) {
         $ids = "0";

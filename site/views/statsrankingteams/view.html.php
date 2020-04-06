@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,8 +16,8 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewStatsRankingTeams
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -25,20 +25,20 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewStatsRankingTeams extends sportsmanagementView
 {
-  
+
     function init()
-    {  
+    {
            $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $this->cfg_which_database);
-  
+
           $teams = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->cfg_which_database);
           $this->teams = $teams;
         $this->stats = $this->model->getProjectUniqueStats();
         $this->playersstats = $this->model->getPlayersStats();
-        $this->teamsstats = $this->model->getTeamsStats();    
+        $this->teamsstats = $this->model->getTeamsStats();  
         $this->teamstotal = $this->model->getTeamsTotal($this->teamsstats);
 
     }
-  
+
 }
 ?>

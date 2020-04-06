@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -34,22 +34,22 @@ $fieldsets = $this->form->getFieldsets();
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
 <div class="form-horizontal">
-<?php 
+<?php
 
 if ($this->change_training_date ) {
-    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
+    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));   
 }
 else
 {
-    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
-} 
+    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+}
 
 ?>
 
-<?PHP    
-foreach ($fieldsets as $fieldset) 
+<?PHP  
+foreach ($fieldsets as $fieldset)
 {
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));  
 
     switch ($fieldset->name)
     {
@@ -60,7 +60,7 @@ foreach ($fieldsets as $fieldset)
                 <div class="row-fluid form-horizontal-desktop">
                     <div class="span6">
     <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    foreach( $this->form->getFieldset($fieldset->name) as $field )
     {
         ?>
                     <div class="control-group">
@@ -85,16 +85,16 @@ foreach ($fieldsets as $fieldset)
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
         break;
-    }    
-    echo HTMLHelper::_('bootstrap.endTab');    
-}    
+    }  
+    echo HTMLHelper::_('bootstrap.endTab');  
+}  
 
-?>    
-    
+?>  
+  
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
-</div> 
+</div>
 <div class="clr"></div>
-<div>        
+<div>      
 <input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
 <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
 <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
@@ -106,4 +106,4 @@ foreach ($fieldsets as $fieldset)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

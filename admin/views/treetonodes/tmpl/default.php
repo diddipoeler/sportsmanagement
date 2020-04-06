@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 
@@ -49,12 +49,12 @@ echo $this->loadTemplate('data');
     <input type="hidden" name="task" value="treetonode.display" />
     <input type="hidden" name="boxchecked" value="0" />
     <?php echo HTMLHelper::_('form.token')."\n"; ?>
-    
+  
 <?php echo $this->table_data_div; ?>
-    
+  
 </form>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

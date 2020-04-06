@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -48,7 +48,7 @@ class JSMControllerAdmin extends AdminController
 
      /**
       * JSMControllerAdmin::cancel()
-      * 
+      *
       * @return void
       */
     function cancel()

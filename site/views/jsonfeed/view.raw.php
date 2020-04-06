@@ -31,7 +31,7 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 class sportsmanagementViewJSONFeed extends JViewLegacy
 {
 
-    public function display($tpl = null) 
+    public function display($tpl = null)
     {
         $tz = new DateTimeZone(jsmGCalendarUtil::getComponentParameter('timezone', 'UTC'));
         $start = Factory::getDate(Factory::getApplication()->input->getInt('start', 0, 'GET'), $tz);

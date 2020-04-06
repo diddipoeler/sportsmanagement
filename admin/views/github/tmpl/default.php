@@ -1,6 +1,6 @@
 <?PHP
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,13 +26,13 @@ $attribs['height'] = 'auto';
 
 /*
 // welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if(version_compare(JVERSION,'3.0.0','ge'))
 {
 echo $this->loadTemplate('joomla3');
 }
 else
 {
-echo $this->loadTemplate('joomla2');    
+echo $this->loadTemplate('joomla2');  
 }
 */
 
@@ -53,7 +53,7 @@ $timestamp = sportsmanagementHelper::getTimestamp($new_date);
 
 //echo $date;
 //echo $new_date;
-echo date("d.m.Y H:i:s", $timestamp);  
+echo date("d.m.Y H:i:s", $timestamp);
 ?>
 </td>
 <td>
@@ -66,7 +66,7 @@ echo $value->commit->author->name;
 <a class="btn btn-small btn-info" href="<?php echo $value->html_url; ?>" target="_blank">
 <span class="octicon octicon-mark-github"></span> <?php echo $value->commit->message; ?>
 </a>
-        
+      
 </td>
 <td>
 

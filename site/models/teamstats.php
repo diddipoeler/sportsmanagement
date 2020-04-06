@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelTeamStats
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -50,7 +50,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::__construct()
-     * 
+     *
      * @return
      */
     function __construct( )
@@ -71,7 +71,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getTeam()
-     * 
+     *
      * @return
      */
     public static function getTeam( )
@@ -81,7 +81,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-       
+     
         // it should be checked if any tid is given in the params of the url
         // if ( is_null( $this->team ) )
         if (!isset(self::$team) ) {
@@ -98,18 +98,18 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                                 self::$team = false;
                 }
-                
+              
             }
         }
-        
-        
+      
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$team;
     }
 
     /**
      * sportsmanagementModelTeamStats::getHighest()
-     * 
+     *
      * @return
      */
     public static function getHighest($homeaway, $which)
@@ -119,37 +119,37 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
          $query->select('matches.id AS matchid, t1.name AS hometeam');
             $query->select('t2.name AS guestteam');
             $query->select('team1_result AS homegoals');
             $query->select('team2_result AS guestgoals');
             $query->select('t1.id AS team1_id');
             $query->select('t2.id AS team2_id');
-            
+          
             $query->select('CONCAT_WS(\':\',t1.id,t1.alias) AS team1_slug');
             $query->select('CONCAT_WS(\':\',t2.id,t2.alias) AS team2_slug');
-        
+      
         $query->select('pt1.id AS pt1_id');
         $query->select('pt2.id AS pt2_id');
-        
+      
         $query->select('st1.id AS st1_id');
         $query->select('st2.id AS st2_id');
         $query->select('CONCAT_WS(\':\',matches.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->from('#__sportsmanagement_match as matches ');
-        
+      
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
-           
+         
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-           
+         
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-        
+      
         $query->where('pt1.project_id = '.self::$projectid);
-        
+      
         $query->where('matches.published = 1');
         $query->where('alt_decision = 0');
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
@@ -157,7 +157,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         {
         case 'HOME':
             $query->where('t1.id = '. self::$team->id);
-            
+          
             switch ($which)
             {
             case 'WIN':
@@ -173,12 +173,12 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 $query->order('team1_result DESC');
                 break;
             }
-            
+          
             break;
-            
+          
         case 'AWAY':
             $query->where('t2.id = '. self::$team->id);
-            
+          
             switch ($which)
             {
             case 'WIN':
@@ -194,7 +194,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 $query->order('team2_result DESC');
                 break;
             }
-                        
+                      
             break;
         }
 
@@ -207,18 +207,18 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
             Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             $result = false;
         }
-       
+     
               $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
               return $result;
-        
-        
-        
+      
+      
+      
     }
 
-    
+  
     /**
      * sportsmanagementModelTeamStats::getNoGoalsAgainst()
-     * 
+     *
      * @return
      */
     public static function getNoGoalsAgainst( )
@@ -228,8 +228,8 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
         if ((!isset(self::$nogoals_against)) || is_null(self::$nogoals_against) ) {
               $query->select('COUNT( round_id ) AS totalzero ');
               $query->select('SUM( t1.id = '.self::$team->id.' AND team2_result=0 ) AS homezero ');
@@ -238,17 +238,17 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
               $query->join('INNER', ' #__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam1_id ');
               $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
               $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-           
+         
               $query->join('INNER', ' #__sportsmanagement_project_team pt2 ON pt2.id = matches.projectteam2_id ');
               $query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
               $query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-        
+      
               $query->where('pt1.project_id = '.self::$projectid);
               $query->where('matches.published = 1 ');
               $query->where('alt_decision = 0');
               $query->where('( (t1.id = '.self::$team->id.' AND team2_result=0 ) OR (t2.id = '.self::$team->id.' AND team1_result=0 ) ) ');
               $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
-            try{  
+            try{
                 $db->setQuery($query);
                 self::$nogoals_against = $db->loadObject();
             } catch (Exception $e) {
@@ -258,14 +258,14 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 self::$nogoals_against = false;
             }
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect  
         return self::$nogoals_against;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTeamStats::getSeasonTotals()
-     * 
+     *
      * @param  mixed $which
      * @return
      */
@@ -276,7 +276,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
+        $starttime = microtime();
 
         $query->select('COUNT(matches.id) AS totalmatches ');
         $query->select('COUNT(team1_result) AS playedmatches ');
@@ -284,7 +284,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         $query->select('COUNT(crowd) AS attendedmatches ');
         $query->select('SUM(crowd) AS sumspectators ');
         $query->from('#__sportsmanagement_match AS matches');
-        
+      
         switch ($which)
         {
         case 'HOME':
@@ -296,10 +296,10 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
             $query->join('INNER', ' #__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam2_id ');
             break;
         }
-        
+      
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = pt1.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t ON st.team_id = t.id ');
-        
+      
         $query->where('pt1.project_id = '.self::$projectid);
         $query->where('matches.published = 1');
         $query->where('t.id = '.self::$team->id);
@@ -311,14 +311,14 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
             case 'HOME':
                 if (is_null(self::$totalshome) ) {
                     self::$totalshome = $db->loadObject();
-                    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+                    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                        return self::$totalshome;
-                }   
+                } 
                 break;
             case 'AWAY':
                 if (is_null(self::$totalsaway) ) {
                     self::$totalsaway = $db->loadObject();
-                    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+                    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                        return self::$totalsaway;
                 }
                 break;
@@ -326,16 +326,16 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 return false;
         }
-        
-        
+      
+      
     }
-    
+  
     /**
          * sportsmanagementModelTeamStats::getChartData()
-         * 
+         *
          * @return
          */
     function getChartData( )
@@ -345,32 +345,32 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         $query->select('rounds.id');
         $query->select('SUM(CASE WHEN st1.team_id ='.self::$teamid.' THEN matches.team1_result ELSE matches.team2_result END) AS goalsfor');
         $query->select('SUM(CASE WHEN st1.team_id ='.self::$teamid.' THEN matches.team2_result ELSE matches.team1_result END) AS goalsagainst');
         $query->select('rounds.roundcode');
-        
+      
         $query->from('#__sportsmanagement_round AS rounds ');
-        
+      
         $query->join('INNER', ' #__sportsmanagement_match AS matches ON rounds.id = matches.round_id ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
-           
+         
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-           
+         
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-        
+      
         $query->where('rounds.project_id = '.self::$projectid);
         $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )');
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
         $query->where('team1_result IS NOT NULL');
-        $query->group('rounds.roundcode');   
+        $query->group('rounds.roundcode'); 
 
 
-        try{   
+        try{ 
             $db->setQuery($query);
             self::$matchdaytotals = $db->loadObjectList();
         } catch (Exception $e) {
@@ -379,14 +379,14 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
             Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             self::$matchdaytotals = false;
         }
-            
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect         
+          
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect       
         return self::$matchdaytotals;
     }
-    
+  
     /**
      * sportsmanagementModelTeamStats::getMatchDayTotals()
-     * 
+     *
      * @return
      */
     public static function getMatchDayTotals( )
@@ -396,7 +396,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         if (is_null(self::$matchdaytotals) ) {
               $query->select('rounds.id');
               $query->select('COUNT(matches.round_id) AS totalmatchespd');
@@ -409,18 +409,18 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
               $query->join('INNER', ' #__sportsmanagement_match AS matches ON rounds.id = matches.round_id ');
               $query->join('INNER', ' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
               $query->join('INNER', ' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
-           
+         
               $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
               $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-           
+         
               $query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
               $query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-           
+         
               $query->where('rounds.project_id = '.self::$projectid);
               $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )');
               $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
               $query->group('rounds.roundcode');
-        
+      
             try{
                 $db->setQuery($query);
                 self::$matchdaytotals = $db->loadObjectList();
@@ -430,15 +430,15 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 self::$matchdaytotals = false;
             }
-            
+          
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect   
         return self::$matchdaytotals;
     }
 
     /**
      * sportsmanagementModelTeamStats::getTotalRounds()
-     * 
+     *
      * @return
      */
     public static function getTotalRounds( )
@@ -448,28 +448,28 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
         if (is_null(self::$totalrounds) ) {
             $query->select('COUNT(id)');
             $query->from('#__sportsmanagement_round ');
             $query->where('project_id = '.self::$projectid);
             $db->setQuery($query);
             self::$totalrounds = $db->loadResult();
-            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect   
         }
-        
+      
         if (!self::$totalrounds ) {
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), Log::INFO, 'jsmerror');     
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS'), Log::INFO, 'jsmerror');   
         }
-        
+      
         return self::$totalrounds;
     }
 
-   
+ 
     /**
      * sportsmanagementModelTeamStats::_getAttendance()
-     * 
+     *
      * @return
      */
     public static function _getAttendance( )
@@ -479,8 +479,8 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
         if (is_null(self::$attendanceranking) ) {
               $query->select('matches.crowd');
 
@@ -489,11 +489,11 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
               $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
               $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
               $query->join('LEFT', ' #__sportsmanagement_playground AS playground ON pt1.standard_playground = playground.id ');
-        
+      
               $query->where('st1.team_id = '.self::$teamid);
               $query->where('matches.crowd > 0 ');
               $query->where('matches.published = 1');
-            try{     
+            try{   
                 $db->setQuery($query);
                 if(version_compare(JVERSION, '3.0.0', 'ge')) {
                         // Joomla! 3.0 code here
@@ -502,16 +502,16 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
                         // Joomla! 2.5 code here
                         self::$attendanceranking = $db->loadResultArray();
-                } 
+                }
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 self::$attendanceranking = false;
             }
-        
-        
-        
+      
+      
+      
         }
 
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -520,7 +520,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getBestAttendance()
-     * 
+     *
      * @return
      */
     public static function getBestAttendance( )
@@ -531,7 +531,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getWorstAttendance()
-     * 
+     *
      * @return
      */
     public static function getWorstAttendance( )
@@ -542,7 +542,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getTotalAttendance()
-     * 
+     *
      * @return
      */
     public static function getTotalAttendance( )
@@ -550,10 +550,10 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         $attendance = self::_getAttendance();
         return (count($attendance)>0) ? array_sum($attendance) : 0;
     }
-    
+  
     /**
      * sportsmanagementModelTeamStats::getAverageAttendance()
-     * 
+     *
      * @return
      */
     public static function getAverageAttendance( )
@@ -564,7 +564,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getChartURL()
-     * 
+     *
      * @return
      */
     public static function getChartURL( )
@@ -576,7 +576,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getLogo()
-     * 
+     *
      * @return
      */
     public static function getLogo( )
@@ -586,7 +586,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         $query->select('logo_big');
         $query->from('#__sportsmanagement_club AS clubs ');
         $query->join('LEFT', ' #__sportsmanagement_team AS teams ON clubs.id = teams.club_id ');
@@ -599,7 +599,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamStats::getResults()
-     * 
+     *
      * @return
      */
     public static function getResults()
@@ -609,8 +609,8 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
         $query->select('m.id, m.projectteam1_id, m.projectteam2_id, pt1.team_id AS steam1_id, pt2.team_id AS steam2_id');
         $query->select('m.team1_result, m.team2_result');
         $query->select('m.alt_decision, m.team1_result_decision, m.team2_result_decision');
@@ -619,30 +619,30 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
         $query->join('INNER', ' #__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id  ');
-           
+         
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-         
+       
         $query->join('INNER', ' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER', ' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-           
+         
         $query->where('pt1.project_id = '.self::$projectid);
         $query->where('( (st1.team_id = '.self::$teamid.' ) OR (st2.team_id = '.self::$teamid.' ) )');
-           
+         
         $query->where('(m.team1_result IS NOT NULL OR m.alt_decision > 0)');
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
-           
+         
 
 
         $db->setQuery($query);
         $matches = $db->loadObjectList();
-        
+      
         if (!$matches ) {
 
         }
-        
+      
         $results = array(    'win' => array(), 'tie' => array(), 'loss' => array(), 'forfeit' => array(),
-          'home_wins' => 0, 'home_draws' => 0, 'home_losses' => 0, 
+          'home_wins' => 0, 'home_draws' => 0, 'home_losses' => 0,
           'away_wins' => 0, 'away_draws' => 0, 'away_losses' => 0,);
         foreach ($matches as $match)
         {
@@ -732,25 +732,25 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 }
             }
         }
-        
+      
         return $results;
     }
-    
+  
     /**
      * sportsmanagementModelTeamStats::getStats()
-     * 
+     *
      * @return
      */
     function getStats()
     {
         $stats = sportsmanagementModelProject::getProjectStats(0, 0, self::$cfg_which_database);
-        
+      
         // those are per positions, group them so that we have team globlas stats
-        
+      
         $teamstats = array();
         foreach ($stats as $pos => $pos_stats)
         {
-            foreach ($pos_stats as $k => $stat) 
+            foreach ($pos_stats as $k => $stat)
             {
                 if ($stat->getParam('show_in_teamstats', 1)) {
                     if (!isset($teamstats[$k])) {
@@ -760,7 +760,7 @@ class sportsmanagementModelTeamStats extends BaseDatabaseModel
                 }
             }
         }
-        
+      
         return $teamstats;
     }
 }

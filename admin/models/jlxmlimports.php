@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelJLXMLImports
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,20 +27,20 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelJLXMLImports extends BaseDatabaseModel
 {
-    
+  
         /**
          * sportsmanagementModelJLXMLImports::__construct()
-         * 
+         *
          * @param  mixed $config
          * @return void
          */
     public function __construct($config = array())
-    {   
+    { 
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
-        
+      
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldSYWOnlineHelp
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -33,7 +33,7 @@ class JFormFieldSYWOnlineHelp extends FormField
 
     /**
      * FormFieldSYWOnlineHelp::getLabel()
-     * 
+     *
      * @return
      */
     protected function getLabel()
@@ -62,7 +62,7 @@ class JFormFieldSYWOnlineHelp extends FormField
 
     /**
      * FormFieldSYWOnlineHelp::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()

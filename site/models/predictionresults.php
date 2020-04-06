@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage predictionresults
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -20,9 +20,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPredictionResults
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -53,10 +53,10 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 
     /**
      * sportsmanagementModelPredictionResults::__construct()
-     * 
+     *
      * @return
      */
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
         $prediction = new sportsmanagementModelPrediction();
@@ -90,7 +90,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 
     /**
  * sportsmanagementModelPredictionResults::getStart()
- * 
+ *
  * @return
  */
     public function getStart()
@@ -101,7 +101,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
         $jinput = $app->input;
         //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
         $this->setState('list.start', self::$limitstart);
-    
+  
         $store = $this->getStoreId('getstart');
         // Try to load the data from internal storage.
         if (isset($this->cache[$store])) {
@@ -117,11 +117,11 @@ class sportsmanagementModelPredictionResults extends JSMModelList
         // Add the total to the internal cache.
         $this->cache[$store] = $start;
         return $this->cache[$store];
-    }    
-    
+    }  
+  
     /**
  * sportsmanagementModelPredictionResults::populateState()
- * 
+ *
  * @param  mixed $ordering
  * @param  mixed $direction
  * @return void
@@ -135,32 +135,32 @@ class sportsmanagementModelPredictionResults extends JSMModelList
         $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
         self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
         $this->setState('list.start', self::$limitstart);
-    
+  
     }
-    
+  
     /**
  * sportsmanagementModelPredictionResults::getLimit()
- * 
+ *
  * @return
  */
     function getLimit()
     {
           return $this->getState('list.limit');
     }
-    
+  
     /**
      * sportsmanagementModelPredictionResults::getLimitStart()
-     * 
+     *
      * @return
      */
     function getLimitStart()
     {
         return $this->getState('list.start');
     }
- 
+
     /**
      * sportsmanagementModelPredictionResults::getPagination()
-     * 
+     *
      * @return
      */
     /*
@@ -175,10 +175,10 @@ class sportsmanagementModelPredictionResults extends JSMModelList
     */
     /**
      * sportsmanagementModelPredictionResults::getTotal()
-     * 
+     *
      * @return
      */
-    function getTotal() 
+    function getTotal()
     {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
@@ -191,10 +191,10 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 
     /**
      * sportsmanagementModelPredictionResults::getData()
-     * 
+     *
      * @return
      */
-    function getData() 
+    function getData()
     {
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
@@ -207,7 +207,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 
     /**
      * sportsmanagementModelPredictionResults::getMatches()
-     * 
+     *
      * @param  mixed $roundID
      * @param  mixed $project_id
      * @param  mixed $match_ids
@@ -215,7 +215,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList
      * @param  mixed $proteams_ids
      * @return
      */
-    static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '') 
+    static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '')
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -302,12 +302,12 @@ class sportsmanagementModelPredictionResults extends JSMModelList
 
     /**
      * sportsmanagementModelPredictionResults::showClubLogo()
-     * 
+     *
      * @param  mixed $clubLogo
      * @param  mixed $teamName
      * @return
      */
-    function showClubLogo($clubLogo, $teamName) 
+    function showClubLogo($clubLogo, $teamName)
     {
         // Reference global application object
         $app = Factory::getApplication();

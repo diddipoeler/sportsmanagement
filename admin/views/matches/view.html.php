@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage matches
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -25,9 +25,9 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewMatches
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -37,10 +37,10 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatches::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -50,7 +50,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
-        
+      
         if (version_compare(JVERSION, '3.0', 'ge')) {
             $table_info = $_db->getTableColumns('#__sportsmanagement_match', true);
         }
@@ -59,8 +59,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
                $fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
                $table_info = array_shift($fieldsArray);
         }
-        
-     
+      
+   
         $this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
 
         $table = Table::getInstance('match', 'sportsmanagementTable');
@@ -240,7 +240,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
 
         $app = Factory::getApplication();

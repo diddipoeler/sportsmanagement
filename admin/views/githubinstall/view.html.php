@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,25 +13,25 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri; 
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewgithubinstall
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewgithubinstall extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewgithubinstall::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -41,13 +41,13 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
           $this->_success_text = $this->model->CopyGithubLink($github_link);
           $this->setDocument();
     }
-     
+   
     /**
      * Method to set up the document properties
      *
      * @return void
      */
-    protected function setDocument() 
+    protected function setDocument()
     {
         $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'));
         $this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");

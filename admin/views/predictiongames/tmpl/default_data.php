@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -51,7 +51,7 @@ use Joomla\CMS\Uri\Uri;
         echo HTMLHelper::_('grid.sort', Text::_('JSTATUS'), 'pre.published', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th width="" class="title">
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
@@ -67,13 +67,13 @@ use Joomla\CMS\Uri\Uri;
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
         ?>
                     </th>
-                    
+                  
                     <th class='title' width='20' nowrap='nowrap'>
         <?php
         echo HTMLHelper::_('grid.sort', Text::_('JGRID_HEADING_ID'), 'pre.id', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th width="" class="title">
         <?php
         echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
@@ -84,7 +84,7 @@ use Joomla\CMS\Uri\Uri;
         echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
         ?>
                     </th>
-                    
+                  
                 </tr>
             </thead>
     <?php
@@ -130,7 +130,7 @@ use Joomla\CMS\Uri\Uri;
              title='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS'); ?>'>
           </a>
             <?php
-                        
+                      
         ?></td>
        <td>
         <?php
@@ -140,7 +140,7 @@ use Joomla\CMS\Uri\Uri;
         //						}
         //						else
         //						{
-        $link = Route::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$row->id);  
+        $link = Route::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$row->id);
         ?><a href="<?php echo $link; ?>"
                                 title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME', $row->name); ?>">
                                 <?php
@@ -154,9 +154,9 @@ use Joomla\CMS\Uri\Uri;
        <td style='text-align:center; ' colspan='2'><?php echo count($pred_projects); ?></td>
        <td style='text-align:center; ' colspan='2'><?php echo count($pred_admins); ?></td>
        <td style='text-align:center; '><?php echo $published; ?></td>
-                    
+                  
        <td style='text-align:center; '>
-        <?php 
+        <?php
         $image = 'players.png';
                         $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
         $link2 = Route::_('index.php?option=com_sportsmanagement&view=predictionmembers&prediction_id='.$row->id);
@@ -169,11 +169,11 @@ use Joomla\CMS\Uri\Uri;
         $title, $attribs
     );
     ?>
-  </a>                        
+  </a>                      
                     </td>
-                    
+                  
   <td style='text-align:center; '>
-        <?php 
+        <?php
         $image = 'division.png';
                         $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
         $link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiongroups&prediction_id='.$row->id);
@@ -186,14 +186,14 @@ use Joomla\CMS\Uri\Uri;
         $title, $attribs
     );
     ?>
-  </a>                        
+  </a>                      
                     </td>
-                    
+                  
                     <td style='text-align:center; '>
-        <?php 
+        <?php
         $image = 'templates.png';
                         $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
-        $link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id='.$row->id);    
+        $link2 = Route::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id='.$row->id);  
         ?>
   <a href="<?php echo $link2; ?>">
     <?php
@@ -203,12 +203,12 @@ use Joomla\CMS\Uri\Uri;
         $title, $attribs
     );
     ?>
-  </a>                        
+  </a>                      
                     </td>
-                    
+                  
                     <td style='text-align:center; '><?php echo $row->id; ?></td>
                     <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->username; ?></td> 
+                            <td><?php echo $row->username; ?></td>
                 </tr>
                 <?php
                 $k = 1 - $k;
@@ -227,11 +227,11 @@ use Joomla\CMS\Uri\Uri;
        <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER'); ?></th>
        <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP'); ?></th>
        <th class='title'><?php echo Text::_('JSTATUS'); ?></th>
-                        
+                      
                         <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS'); ?></th>
                         <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES'); ?></th>
                         <th class='title'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS'); ?></th>
-                        
+                      
        <th class='title'><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
       </tr>
      </thead>
@@ -244,10 +244,10 @@ use Joomla\CMS\Uri\Uri;
                 $link = Route::_(
                     'index.php?option=com_sportsmanagement&' .
                     '' .
-                    'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'].'&project_id='.$pred_project['project_id'] 
+                    'task=predictionproject.edit&tmpl=component&id=' . $pred_project['id'].'&project_id='.$pred_project['project_id']
                 );
-                                            
-                                            
+                                          
+                                          
                 ?>
           <tr class='<?php echo "row$k"; ?>'>
           <td style='text-align:right; '>&nbsp;</td>
@@ -263,17 +263,17 @@ use Joomla\CMS\Uri\Uri;
                 $link,
                 $this->modalwidth,
                 $this->modalheight
-            );                        
-                        
+            );                      
+                      
             ?>
-          <!--    
-          <a class="modal"    
+          <!--  
+          <a class="modal"  
           rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
        href='<?php echo $link; ?>'
        title='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS'); ?>' />
         <?php echo $pred_project['project_name']; ?>
        </a>
-       -->                
+       -->              
        </td>
        <td style='text-align:center; '><?php
         if ($pred_project['mode'] == '0' ) {
@@ -351,7 +351,7 @@ use Joomla\CMS\Uri\Uri;
                             }
                             echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
                     ?>
-                                
+                              
                             </td>
                             <td style="">
                             <?php
@@ -381,7 +381,7 @@ use Joomla\CMS\Uri\Uri;
                             echo HTMLHelper::_('image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"');
                     ?>
                             </td>
-                            
+                          
                  <td style='text-align:center; ' nowrap='nowrap'><?php echo $pred_project['project_id']; ?></td>
           </tr>
                 <?php

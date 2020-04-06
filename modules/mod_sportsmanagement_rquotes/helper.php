@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_rquotes
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
@@ -21,8 +21,8 @@ use Joomla\CMS\Input\Cookie;
 
 /**
  * modRquotesHelper
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -31,24 +31,24 @@ use Joomla\CMS\Input\Cookie;
 class modRquotesHelper
 {
 
- 
+
 
     //-----------------------------------------------------------------------------------------------------------------------------
     /**
  * modRquotesHelper::renderRquote()
- * 
+ *
  * @param  mixed $rquote
  * @param  mixed $params
  * @return void
  */
     static function renderRquote(&$rquote, &$params,$module)
-    {    
+    {  
          include ModuleHelper::getLayoutPath($module->module, '_rquote');
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------------	
     /**
  * modRquotesHelper::getRandomRquote()
- * 
+ *
  * @param  mixed $category
  * @return
  */
@@ -58,23 +58,23 @@ class modRquotesHelper
         $catid = 0;
         $row = array();
         $app = Factory::getApplication();
-    
+  
         if ($params->get('cfg_which_database') ) {
             $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
         }
         else
         {
-            $db = sportsmanagementHelper::getDBConnection();    
-        } 
-        
+            $db = sportsmanagementHelper::getDBConnection();  
+        }
+      
         if (isset($category) ) {
-            
+          
             if(is_array($category)) // get $catid when one category is selected 	
             {
                 $x = count($category);
             }
 
-    
+  
             if($x == 1) // get $catid when one category is selected 	
             {
                          $catid = $category[0];
@@ -83,14 +83,14 @@ class modRquotesHelper
             {
                 if(is_array($category) && count($category) != 0 ) // get $catid when one category is selected 	
                         {
-                    $value = array($category);            
+                    $value = array($category);          
                     $rand_keys = array_rand($category, 1);
                     $catid = $category[$rand_keys];
                 }
-            }    
-    
-        
-        
+            }  
+  
+      
+      
             $query = $db->getQuery(true);
             // Select some fields
             $query->select('obj.*,p.picture as person_picture');
@@ -102,28 +102,28 @@ class modRquotesHelper
             if ($catid ) {
                 $query->where('obj.catid = '.$catid);
             }
-            
+          
 
             $db->setQuery($query);
             $rows = $db->loadObjectList();
-        
+      
             $i = rand(0, count($rows) - 1);
 
             if ($rows ) {
                   $row = array( $rows[$i] );
             }
 
-        
+      
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
           return $row;
-        
+      
     }
-    
+  
     //----------------------------------------------------------------------------------------------------
     /**
  * modRquotesHelper::getMultyRandomRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $num_of_random
  * @return
@@ -134,15 +134,15 @@ class modRquotesHelper
         $x = 0;
            $catid = 0;
            $qrows = null;
-        
+      
         if ($params->get('cfg_which_database') ) {
             $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
         }
         else
         {
-            $db = sportsmanagementHelper::getDBConnection();    
-        } 
-        
+            $db = sportsmanagementHelper::getDBConnection();  
+        }
+      
         if(is_array($category)) // get $catid when one category is selected 	
           {
             $x = count($category);
@@ -159,8 +159,8 @@ class modRquotesHelper
                 $rand_keys = array_rand($category, 1);
                 $catid = $category[$rand_keys];
             }
-        }    
-            
+        }  
+          
             $query = $db->getQuery(true);
           // Select some fields
           $query->select('obj.*,p.picture as person_picture');
@@ -173,7 +173,7 @@ class modRquotesHelper
             $query->where('obj.catid = '.$catid);
         }
 
-                
+              
           $db->setQuery($query);
           $rows = $db->loadObjectList();
 
@@ -188,7 +188,7 @@ class modRquotesHelper
             * Get  unique random keys from $numbers array.
             * change  to number of desired random quotes
             */
-            
+          
                $rand_keys = array_rand($numbers, "$num_of_random");
 
                /**
@@ -196,25 +196,25 @@ class modRquotesHelper
             */
                $qrows = array();
 
-            foreach ($rand_keys as $key => $value) 
+            foreach ($rand_keys as $key => $value)
                 {
                 $qrows[] = $rows[$value];
             }
         }
-            
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect            
+          
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect          
           return $qrows;
     }
     //-----------------------------------------------
 
 
-        
-            
-    
+      
+          
+  
     //--------------------------------------------------------------------------------------------------------------------------------
     /**
  * modRquotesHelper::getSequentialRquote()
- * 
+ *
  * @param  mixed $category
  * @return
  */
@@ -226,25 +226,25 @@ class modRquotesHelper
         $x = 0;
            $row = null;
            $catid = 0;
- 
+
         if ($params->get('cfg_which_database') ) {
             $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
         }
         else
             {
-            $db = sportsmanagementHelper::getDBConnection();    
-        } 
-        
+            $db = sportsmanagementHelper::getDBConnection();  
+        }
+      
         if(is_array($category)) // get $catid when one category is selected 	
           {
             $x = count($category);
         }
         if($x == 1) {
-            
+          
              $catid = $category[0];
-            
-        }    
-        elseif($x > 1) { 
+          
+        }  
+        elseif($x > 1) {
             echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
         }
         $query = $db->getQuery(true);
@@ -257,7 +257,7 @@ class modRquotesHelper
             $query->where('obj.published = 1');
         if ($catid ) {
             $query->where('obj.catid = '.$catid);
-        } 
+        }
          $db->setQuery($query);
 
 
@@ -270,16 +270,16 @@ class modRquotesHelper
                  $i = intval($cookieValue);
                 if ($i < $numRows) {
                     $i++;
-                } else { 
+                } else {
                     $i = 0;
                 }
- 
+
                  setcookie('rquote', $i, time()+3600);
 
                  $row = array( $rows[$i] );
 
             }
-            else 
+            else
               {
                 // pick a random value
                 $i = rand(0, $numRows);
@@ -287,7 +287,7 @@ class modRquotesHelper
                 $row = array( $rows[$i] );
             }
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
          return $row;
 
     }
@@ -296,7 +296,7 @@ class modRquotesHelper
     //-------------------------------------------------------------------------------------------------------------
     /**
  * getTextFile()
- * 
+ *
  * @param  mixed $params
  * @param  mixed $filename
  * @return
@@ -312,16 +312,16 @@ class modRquotesHelper
           $count = count($lines);
           $rows = explode("\n", $contents);
           $num = rand(0, $count-1);
-        
+      
          include ModuleHelper::getLayoutPath($module->module, 'textfile');
 
          return $rows;
     }
- 
-    //----------------------------------------------------------------------------------------------------------------------- 
+
+    //-----------------------------------------------------------------------------------------------------------------------
     /**
  * getTextFile2()
- * 
+ *
  * @param  mixed $params
  * @param  mixed $filename
  * @return void
@@ -345,19 +345,19 @@ class modRquotesHelper
     //------------------------------------------------------------------------------------------------	
     /**
  * getDailyRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $x
  * @return
  */
     function getDailyRquote($category,$x, &$params)
     {
-    
+  
          $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
          $query = $db->getQuery(true);
 
         $xx= count($category);
-        if($xx =='1') { 
+        if($xx =='1') {
             $catid = $category[0];
         }
          $query->clear();
@@ -367,20 +367,20 @@ class modRquotesHelper
         $query->where('catid = '.$catid);
          $db->setQuery($query, 0);
          $no_of_quotes = $db->loadResult();
-    
+  
         $query->clear();
         $query->select('*');
         $query->from('#__rquote_meta');
         $query->where('id = 1');
          $db->setQuery($query, 0);
          $row = $db->loadRow();
-    
+  
          $number_reached = $row[1];
          $date_modified= $row[2];
-    
+  
          // get the current day of the month (from 1 to 31)
          $day_today = date("j");
-    
+  
         if ($date_modified != $day_today) {
             // we have reached the end of the quotes
             if ($number_reached >($no_of_quotes - 1)) {
@@ -392,7 +392,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             } else {
                 // we haven't reached the end of the quotes	- therefore we increment $number_reached
                 $number_reached = $number_reached + 1;
@@ -403,7 +403,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             }
         }
          // we get the quote with 'catid = $number_reached' from the database
@@ -421,7 +421,7 @@ class modRquotesHelper
     //------------------------------------------------------------------------------------------------	
     /**
  * getWeeklyRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $x
  * @return
@@ -431,7 +431,7 @@ class modRquotesHelper
          $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
          $query = $db->getQuery(true);
         $xx= count($category);
-        if($xx == '1' ) { 
+        if($xx == '1' ) {
             $catid = $category[0];
         }
          $query->clear();
@@ -448,15 +448,15 @@ class modRquotesHelper
         $query->where('id = 2');
          $db->setQuery($query, 0);
          $row = $db->loadRow();
-    
+  
          $number_reached = $row[1];
          $date_modified= $row[2];
-    
+  
          // get the current day of the month (from 1 to 31)
 
          $day_today = date("W");
 
-    
+  
         if ($date_modified != $day_today) {
             // we have reached the end of the quotes
             if ($number_reached >($no_of_quotes - 1)) {
@@ -468,7 +468,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             } else {
                 // we haven't reached the end of the quotes	- therefore we increment $number_reached
                 $number_reached = $number_reached + 1;
@@ -479,7 +479,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             }
         }
          // we get the quote with 'catid = $number_reached' from the database
@@ -497,18 +497,18 @@ class modRquotesHelper
     //------------------------------------------------------------------------------------------------	
     /**
  * getMonthlyRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $x
  * @return
  */
     function getMonthlyRquote($category,$x, &$params)
     {
-    
+  
          $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
          $query = $db->getQuery(true);
         $xx= count($category);
-        if($xx == '1' ) { 
+        if($xx == '1' ) {
             $catid = $category[0];
         }
          $query->clear();
@@ -518,20 +518,20 @@ class modRquotesHelper
         $query->where('catid = '.$catid);
          $db->setQuery($query, 0);
          $no_of_quotes = $db->loadResult();
-    
+  
          $query->clear();
         $query->select('*');
         $query->from('#__rquote_meta');
         $query->where('id = 3');
          $db->setQuery($query, 0);
          $row = $db->loadRow();
-    
+  
          $number_reached = $row[1];
          $date_modified= $row[2];
-    
+  
          // get the current day of the month (from 1 to 31)
          $day_today = date("n");
-    
+  
         if ($date_modified != $day_today) {
             // we have reached the end of the quotes
             if ($number_reached >($no_of_quotes - 1)) {
@@ -543,7 +543,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             } else {
                 // we haven't reached the end of the quotes	- therefore we increment $number_reached
                 $number_reached = $number_reached + 1;
@@ -554,7 +554,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             }
         }
          // we get the quote with 'catid = $number_reached' from the database
@@ -572,18 +572,18 @@ class modRquotesHelper
     //------------------------------------------------------------------------------------------------	
     /**
  * getYearlyRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $x
  * @return
  */
     function getYearlyRquote($category,$x, &$params)
     {
-    
+  
          $db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
          $query = $db->getQuery(true);
         $xx= count($category);
-        if($xx == '1' ) { 
+        if($xx == '1' ) {
             $catid = $category[0];
         }
          $query->clear();
@@ -593,17 +593,17 @@ class modRquotesHelper
         $query->where('catid = '.$catid);
          $db->setQuery($query, 0);
          $no_of_quotes = $db->loadResult();
-    
+  
          $query->clear();
         $query->select('*');
         $query->from('#__rquote_meta');
         $query->where('id = 4');
          $db->setQuery($query, 0);
          $row = $db->loadRow();
-    
+  
          $number_reached = $row[1];
          $date_modified = $row[2];
-    
+  
          // get the current day of the month (from 1 to 31)
          $day_today = date("Y");
 
@@ -618,10 +618,10 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             } else {
                 // we haven't reached the end of the quotes	- therefore we increment $number_reached
-        
+      
                 $number_reached = $number_reached + 1;
                 // Create an object for the record we are going to update.
                   $object = new stdClass();
@@ -630,7 +630,7 @@ class modRquotesHelper
                   $object->date_modified = $day_today;
                   $object->number_reached = $number_reached;
                   // Update their details in the table using id as the primary key.
-                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id'); 
+                  $result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
             }
         }
          // we get the quote with 'catid = $number_reached' from the database
@@ -648,7 +648,7 @@ class modRquotesHelper
     //------------------------------------------------------------------------------------------------	
     /**
  * getTodayRquote()
- * 
+ *
  * @param  mixed $category
  * @param  mixed $x
  * @return
@@ -659,7 +659,7 @@ class modRquotesHelper
         $query = $db->getQuery(true);
          $catid = $category[0];
          $day_today = date("z");
-    
+  
         $query->clear();
         $query->select('*');
         $query->from('#__sportsmanagement_rquote');
@@ -668,7 +668,7 @@ class modRquotesHelper
         $query->where('daily_number = '.$day_today);
          $db->setQuery($query, 0);
          $row = $db->loadObjectList();
-    
+  
         if(!$row) {
             $query->clear();
               $query->select('*');

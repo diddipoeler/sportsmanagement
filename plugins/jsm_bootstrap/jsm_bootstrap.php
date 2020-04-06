@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -54,8 +54,8 @@ jimport('joomla.html.parameter');
 
 /**
  * PlgSystemjsm_bootstrap
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -68,7 +68,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::__construct()
-     * 
+     *
      * @param  mixed $subject
      * @param  mixed $params
      * @return void
@@ -85,7 +85,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onBeforeRender()
-     * 
+     *
      * @return void
      */
     public function onBeforeRender()
@@ -95,7 +95,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onAfterRender()
-     * 
+     *
      * @return void
      */
     public function onAfterRender()
@@ -105,7 +105,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onAfterRoute()
-     * 
+     *
      * @return void
      */
     public function onAfterRoute()
@@ -138,12 +138,12 @@ class PlgSystemjsm_bootstrap extends JPlugin
                 }
             }
                 Factory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
-        }            
+        }          
     }
 
     /**
      * PlgSystemjsm_bootstrap::onAfterDispatch()
-     * 
+     *
      * @return void
      */
     public function onAfterDispatch()
@@ -167,28 +167,28 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-            
+          
             if ($this->params->def('load_bootstrap_carousel', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
                 }
             }
-            
+          
             if ($this->params->def('load_bootstrap_modal', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
                 }
             }
-            
+          
             if ($this->params->def('load_bootstrap_tab', 1)) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
                     Factory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
                 }
             }
-        
+      
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
@@ -202,11 +202,11 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-            
+          
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
-                 * dazu gibt es diesen hilfreichen link: 
+                 * dazu gibt es diesen hilfreichen link:
                  * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
                  */
 
@@ -237,7 +237,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-            
+          
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
@@ -251,11 +251,11 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     );
                 }
             }
-            
+          
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
-                 * dazu gibt es diesen hilfreichen link: 
+                 * dazu gibt es diesen hilfreichen link:
                  * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
                  */
 
@@ -278,7 +278,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
     /**
      * PlgSystemjsm_bootstrap::onAfterInitialise()
-     * 
+     *
      * @return void
      */
     public function onAfterInitialise()

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.00
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_new_project
- */ 
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
@@ -20,8 +20,8 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
  * modJSMNewProjectHelper
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2015
  * @version   $Id$
@@ -30,10 +30,10 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 class modJSMNewProjectHelper
 {
 
-    
+  
     /**
      * modJSMNewProjectHelper::getData()
-     * 
+     *
      * @return
      */
     public static function getData($new_project_article,$mycategory)
@@ -45,11 +45,11 @@ class modJSMNewProjectHelper
           $db = Factory::getDBO();
           $query = $db->getQuery(true);
         $result = array();
-    
-        $heutestart = date("Y-m-d");        
+  
+        $heutestart = date("Y-m-d");      
         $heuteende = date("Y-m-d");
-        
-        $heutestart .= ' 00:00:00';        
+      
+        $heutestart .= ' 00:00:00';      
         $heuteende .= ' 23:59:00';
 
         $query->select('pro.id,pro.name,pro.current_round as roundcode,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
@@ -63,7 +63,7 @@ class modJSMNewProjectHelper
         $anzahl = $db->loadObjectList();
 
 
-        
+      
         foreach ( $anzahl as $row )
         {
 
@@ -144,29 +144,29 @@ class modJSMNewProjectHelper
                     $profile->publish_up = $date->toSql();
 
 
-                    $resultinsert = Factory::getDbo()->insertObject('#__content', $profile);  
+                    $resultinsert = Factory::getDbo()->insertObject('#__content', $profile);
 
                     if ($resultinsert ) {
                                    // Create and populate an object.
                                    $profile = new stdClass();
                                    $profile->content_id = $db->insertid();
                                    $profile->ordering = $db->insertid();
-                                   $resultfrontpage = Factory::getDbo()->insertObject('#__content_frontpage', $profile);    
+                                   $resultfrontpage = Factory::getDbo()->insertObject('#__content_frontpage', $profile);  
                     }
-  
+
                 }
 
-    
+  
             }
 
 
         }
 
         return $result;
-        
+      
     }
-    
-    
+  
+  
 
-    
+  
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,16 +22,16 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldpositionlist
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class JFormFieldpositionlist extends \JFormFieldList
 {
-    
+  
     /**
      * field type
      *
@@ -59,15 +59,15 @@ class JFormFieldpositionlist extends \JFormFieldList
         $select_id = Factory::getApplication()->input->getVar('id');
           $db = Factory::getDbo();
          $query = $db->getQuery(true);
-            
+          
          $query->select('pos.id AS value, pos.name AS text');
          $query->from('#__sportsmanagement_position as pos');
          $query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
          $query->where('pos.published = 1');
          $query->order('pos.ordering,pos.name');
          $db->setQuery($query);
-                    
-        try { 
+                  
+        try {
             $options = $db->loadObjectList();
         }
         catch (Exception $e) {
@@ -76,12 +76,12 @@ class JFormFieldpositionlist extends \JFormFieldList
              //    JErrorPage::render($e);
 
         }
-            
+          
         foreach ( $options as $row )
             {
             $row->text = Text::_($row->text);
         }
-    
+  
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;

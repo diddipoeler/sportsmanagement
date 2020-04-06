@@ -1,6 +1,6 @@
 <?PHP
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.00
@@ -9,7 +9,7 @@
  * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
- */ 
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -31,13 +31,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 </script>
 
 <div id="scroller" class="row">
-  
-  
+
+
 <?PHP
 foreach( $slidermatches as $match )
 {
-    
-?>  
+  
+?>
   <div class="section">
     <div class="hp-highlight" >
     <div class="feature-headline">
@@ -61,19 +61,19 @@ echo '<img style="float: right;" src="'.$module->picture_server.$match->logoaway
 ?>
 </p>
 
-<p style="text-align: center;"> 
+<p style="text-align: center;">
 <?PHP
 echo $match->teamhome;
 echo ' - ';
 echo $match->teamaway;
 ?>
 </p>
-   
+ 
     </div>
     </div>
   </div>
 <?PHP
 }
 ?>
-  
-</div>    
+
+</div>  

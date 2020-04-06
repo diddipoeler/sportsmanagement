@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <form method="post" id="adminForm" action="<?php echo $this->request_url; ?>">
-    <fieldset class='adminform'>    
+    <fieldset class='adminform'>  
     <fieldset class="adminform">
     <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_DESC'); ?>
     </fieldset>
@@ -27,42 +27,42 @@ use Joomla\CMS\HTML\HTMLHelper;
     <?php echo HTMLHelper::_('form.token')."\n"; ?>
         <table class='admintable'>
         <tbody>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TIP'); ?>">
                 <label for="scheduling"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL'); ?></label>
             </td>
             <td><?php echo $this->lists['scheduling']; ?></td>
         </tr>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_TIP'); ?>">
                 <label for="time"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL'); ?></label>
             </td>
             <td><input type="text" name="time" value="20:00"/></td>
         </tr>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_TIP'); ?>">
                 <label for="interval"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL'); ?></label>
             </td>
             <td><input type="text" name="interval" value="7"/></td>
         </tr>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_TIP'); ?>">
                 <label for="start"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL'); ?></label>
             </td>
             <td><?php echo HTMLHelper::calendar(strftime('%Y-%m-%d'), 'start', 'start', '%Y-%m-%d'); ?></td>
         </tr>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_TIP'); ?>">
                 <label for="roundname"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL'); ?></label>
             </td>
             <td><input type="text" name="roundname" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME'); ?>"/></td>
         </tr>
-        
+      
         <tr>
             <td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_TIP'); ?>">
                 <label for="roundname"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL'); ?></label>
@@ -75,10 +75,10 @@ use Joomla\CMS\HTML\HTMLHelper;
                 </div>
             </td>
         </tr>
-        
+      
         </tbody></table>
     </fieldset>
-    
+  
     <input type="hidden" name="task" value="" />
     <input type='hidden' name='project_id' value='<?php echo $this->projectws->id; ?>' />
 </form>

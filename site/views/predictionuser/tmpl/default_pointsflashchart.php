@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -49,7 +49,7 @@ datasets: [{
                 borderWidth: 1,
                 data: [<?php echo implode(',', $this->userpoints); ?>
                 ]
-            }            
+            }          
             ]
 },
 
@@ -68,8 +68,8 @@ datasets: [{
     scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 0,   
-suggestedMax: <?php echo $this->PointsCountMax; ?>, 
+suggestedMin: 0, 
+suggestedMax: <?php echo $this->PointsCountMax; ?>,
 beginAtZero:false,
 reverse: false,
 stepSize:1,

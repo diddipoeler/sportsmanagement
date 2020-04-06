@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,20 +11,20 @@
  * @package    sportsmanagement
  * @subpackage player
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <?php
-if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) 
-    || ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) 
-    || ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 ) 
+if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
+    || ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 )
+    || ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 )
 ) {
     ?>
     <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS');    ?></h2>
-    
+  
     <table class="<?PHP echo $this->config['player_table_class']; ?>" >
     <?php
     if ($this->teamPlayer->injury > 0) {
@@ -51,7 +51,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
                 ?>
@@ -74,7 +74,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
              </td>
@@ -130,12 +130,12 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
         if(isset($this->teamPlayer->rsusp_from)) {
             $suspension_date .= " - ".$this->teamPlayer->rsusp_from;
         }
-            
+          
         $suspension_end = HTMLHelper::date($this->teamPlayer->suspension_end, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
         if(isset($this->teamPlayer->rsusp_to)) {
             $suspension_end .= " - ".$this->teamPlayer->rsusp_to;
         }
-            
+          
 
         if ($this->teamPlayer->suspension_date == $this->teamPlayer->suspension_end) {
             ?>
@@ -146,7 +146,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
                 ?>
@@ -169,7 +169,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
              </td>
@@ -242,7 +242,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
               echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
                 ?>
@@ -265,7 +265,7 @@ if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 )
             echo "&nbsp;&nbsp;" . HTMLHelper::image(
                 'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
                 $imageTitle,
-                array( 'title' => $imageTitle ) 
+                array( 'title' => $imageTitle )
             );
                 ?>
              </td>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,8 +11,8 @@
  * @package    sportsmanagement
  * @subpackage allprojectrounds
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
+
+defined('_JEXEC') or die('Restricted access');
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
@@ -27,15 +27,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <?php echo $this->loadTemplate('projectheading'); ?>
 
-<?php 
+<?php
 
 if ($this->config['show_sectionheader'] ) {
-    echo $this->loadTemplate('sectionheader'); 
+    echo $this->loadTemplate('sectionheader');
 }
 
 ?>
-<?php 
-echo $this->loadTemplate('results_all'); 
+<?php
+echo $this->loadTemplate('results_all');
 echo $this->loadTemplate('jsminfo');
 ?>
 

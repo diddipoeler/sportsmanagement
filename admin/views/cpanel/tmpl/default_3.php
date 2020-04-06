@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,12 +11,12 @@
  * @package    sportsmanagement
  * @subpackage cpanel
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.html.bootstrap');
-?> 
+?>
 <div id="jsm" class="admin override">
     <?php if (!empty($this->sidebar)) : ?>
         <div id="j-sidebar-container" class="span2">
@@ -29,10 +29,10 @@ jimport('joomla.html.html.bootstrap');
             <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="well well-small">  
+                        <div class="well well-small">
                             <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
                             </div>
-                            <hr class="hr-condensed">      
+                            <hr class="hr-condensed">    
                             <div id="dashboard-icons" class="btn-group">
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=sportstypes">
                                     <img src="components/com_sportsmanagement/assets/icons/sportarten.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?>" /><br />
@@ -90,16 +90,16 @@ jimport('joomla.html.html.bootstrap');
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=agegroups">
                                         <img src="components/com_sportsmanagement/assets/icons/altersklassen.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?>" /><br />
                                         <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?></span>
-                                    </a>     
+                                    </a>   
                                     <?PHP
                                 }
-                                ?>        
-                            </div> 
+                                ?>      
+                            </div>
 
-                            <hr class="hr-condensed"> 
+                            <hr class="hr-condensed">
                             <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_PERSONAL_DATA') ?>
                             </div>
-                            <hr class="hr-condensed">    
+                            <hr class="hr-condensed">  
                             <div id="dashboard-icons" class="btn-group">
 
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=clubs">
@@ -121,7 +121,7 @@ jimport('joomla.html.html.bootstrap');
                                     <?PHP
                                 }
                                 if ($this->params->get('show_option_playground', 1)) {
-                                    ?>  
+                                    ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=playgrounds">
                                         <img src="components/com_sportsmanagement/assets/icons/spielorte.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?>" /><br />
                                         <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?></span>
@@ -129,23 +129,23 @@ jimport('joomla.html.html.bootstrap');
                                     <?PHP
                                 }
                                 if ($this->params->get('show_option_rosterposition', 1)) {
-                                    ?> 
+                                    ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=rosterpositions">
                                         <img src="components/com_sportsmanagement/assets/icons/spielfeldpositionen.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?>" /><br />
                                         <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?></span>
                                     </a>
                                     <?PHP
                                 }
-                                ?> 
-                            </div> 
-                            <hr class="hr-condensed"> 
+                                ?>
+                            </div>
+                            <hr class="hr-condensed">
                             <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_SPECIAL_FUNCTION') ?>
                             </div>
-                            <hr class="hr-condensed">    
+                            <hr class="hr-condensed">  
                             <div id="dashboard-icons" class="btn-group">
                                 <?PHP
                                 if ($this->params->get('show_option_extrafields', 1)) {
-                                    ?> 
+                                    ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=extrafields">
                                         <img src="components/com_sportsmanagement/assets/icons/extrafelder.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?>" /><br />
                                         <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?></span>
@@ -178,10 +178,10 @@ jimport('joomla.html.html.bootstrap');
                                 }
                                 ?>
                             </div>
-                            <hr class="hr-condensed"> 
+                            <hr class="hr-condensed">
                             <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_IMPORT_EXPORT_FUNCTION') ?>
                             </div>
-                            <hr class="hr-condensed">    
+                            <hr class="hr-condensed">  
                             <div id="dashboard-icons" class="btn-group">
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default">
                                     <img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
@@ -200,11 +200,11 @@ jimport('joomla.html.html.bootstrap');
                                     <img src="components/com_sportsmanagement/assets/icons/joomleague.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT') ?>" /><br />
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT') ?></span>
                                 </a>
-                            </div> 
-                            <hr class="hr-condensed"> 
+                            </div>
+                            <hr class="hr-condensed">
                             <div class="module-title nav-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
                             </div>
-                            <hr class="hr-condensed">    
+                            <hr class="hr-condensed">  
                             <div id="dashboard-icons" class="btn-group">
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=updates">
                                     <img src="components/com_sportsmanagement/assets/icons/updates.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_UPDATES') ?>" /><br />
@@ -228,11 +228,11 @@ jimport('joomla.html.html.bootstrap');
 <a class="btn" href="index.php?option=com_sportsmanagement&view=transifex">
 <img src="components/com_sportsmanagement/assets/icons/transifex.png" width="48" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?></span>
-</a>                               
-                             
-                             
-                            </div> 
-                            <hr class="hr-condensed">  
+</a>                             
+                           
+                           
+                            </div>
+                            <hr class="hr-condensed">
                         </div>
                     </div>
                     <div class="span3">
@@ -269,8 +269,8 @@ jimport('joomla.html.html.bootstrap');
                             }
                             echo HTMLHelper::_('bootstrap.endAccordion');
                             ?>
-                        </div>                         
-                    </div>                   
+                        </div>                       
+                    </div>                 
                 </div>
             </section>
         </div>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage referee
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -27,11 +27,11 @@ use Joomla\CMS\Factory;
 <div class="col-md-6">
 
 
-    
+  
     <?php
     if ($this->config['show_photo'] ) {
         ?>
-            
+          
         <?php
         $picturetext=Text::_('COM_SPORTSMANAGEMENT_PERSON_PICTURE');
         $imgTitle = Text::sprintf($picturetext, sportsmanagementHelper::formatName(null, $this->referee->firstname, $this->referee->nickname, $this->referee->lastname, $this->config["name_format"]));
@@ -42,7 +42,7 @@ use Joomla\CMS\Factory;
         if (!curl_init($picture) ) {
             $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
         }
-            
+          
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'referee'.$this->referee->id,
             $picture,
@@ -53,18 +53,18 @@ use Joomla\CMS\Factory;
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
         );
-                
+              
     }
     ?>
-</div>        
+</div>      
 
 <div class="col-md-6">
-        
+      
                 <?php
                 if(!empty($this->person->country) && ($this->config["show_nationality"] == 1)) {
                 ?>
-                               
-                
+                             
+              
                 <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
     <?php
@@ -72,11 +72,11 @@ use Joomla\CMS\Factory;
                         Text::_(JSMCountries::getCountryName($this->person->country));
         ?>
             </address>
-            
+          
                 <?php
                 }
                 ?>
-                
+              
         <?php
         $outputName = Text::sprintf('%1$s %2$s', $this->referee->firstname, $this->referee->lastname);
         if ($this->referee->user_id ) {
@@ -91,47 +91,47 @@ use Joomla\CMS\Factory;
                 $link = sportsmanagementHelperRoute::getUserProfileRouteCBE(
                     $this->referee->user_id,
                     $this->project->id,
-                    $this->referee->id 
+                    $this->referee->id
                 );
                 $outputName = HTMLHelper::link($link, $outputName);
                 break;
 
-            default:    
+            default:  
                 break;
             }
         }
         //echo $outputName;
         ?>
-                
-                
+              
+              
                 <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NAME'); ?></strong>
     <?php
                         echo $outputName;
         ?>
             </address>
-                
+              
                 <?php
                 if (! empty($this->referee->nickname) ) {
                     ?>
-                            
+                          
                         <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NICKNAME'); ?></strong>
                 <?php
                 echo $this->referee->nickname;
                 ?>
                     </address>
-                            
-                            
+                          
+                          
                     <?php
                 }
-                if (( $this->config[ 'show_birthday' ] > 0 ) 
-                    && ( $this->config[ 'show_birthday' ] < 5 ) 
-                    && ( $this->referee->birthday != '0000-00-00' ) 
+                if (( $this->config[ 'show_birthday' ] > 0 )
+                    && ( $this->config[ 'show_birthday' ] < 5 )
+                    && ( $this->referee->birthday != '0000-00-00' )
                 ) {
         // $this->config['show_birthday'] = 4;
         ?>
-                    
+                  
 
 <?php
 switch ( $this->config['show_birthday'] )
@@ -177,19 +177,19 @@ default:
 }
 
 ?>
-                        
-                    
+                      
+                  
                     <address>
             <strong><?php echo Text::_($outputStr); ?></strong>
     <?php echo $birthdateStr; ?>
             </address>
-            
+          
         <?php
                 }
 
                 if (( $this->referee->address != "" ) && ( $this->config[ 'show_person_address' ] ==1  )) {
         ?>
-                                        
+                                      
 <address>
 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ADDRESS'); ?></strong>
 <?php echo Countries::convertAddressString(
@@ -199,40 +199,40 @@ default:
     $this->referee->zipcode,
     $this->referee->location,
     $this->referee->address_country,
-    'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' 
+    'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM'
 ); ?>
 </address>
-                    
-                    
+                  
+                  
         <?php
                 }
 
                 if (( $this->referee->phone != "" ) && ( $this->config[ 'show_person_phone' ] ==1  )) {
         ?>
-                                        
+                                      
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PHONE'); ?></strong>
     <?php echo $this->referee->phone; ?>
             </address>
-            
+          
         <?php
                 }
 
                 if (( $this->referee->mobile != "" ) && ( $this->config[ 'show_person_mobile' ] ==1  )) {
         ?>
-                
-                    
+              
+                  
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_MOBILE'); ?></strong>
     <?php echo $this->referee->mobile; ?>
             </address>
-                    
+                  
         <?php
                 }
 
                 if (($this->config['show_person_email'] == 1) && ( $this->referee->email != "" )) {
                     ?>
-                                    
+                                  
                     <address>
                  <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
                     <?php
@@ -252,21 +252,21 @@ default:
                     }
                     ?>
                         </address>
-                    
-                    
+                  
+                  
                     <?php
                 }
 
                 if (( $this->referee->website != "" ) && ($this->config['show_person_website'] == 1)) {
         ?>
-                                        
+                                      
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_WEBSITE'); ?></strong>
     <?php echo HTMLHelper::_(
         'link',
         $this->referee->website,
         $this->referee->website,
-        array( 'target' => '_blank' ) 
+        array( 'target' => '_blank' )
     ); ?>
             </address>
         <?php
@@ -274,8 +274,8 @@ default:
 
                 if(( $this->referee->height > 0 ) && ($this->config['show_person_height'] == 1)) {
         ?>
-                    
-                    
+                  
+                  
                      <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_HEIGHT'); ?></strong>
     <?php echo str_replace("%HEIGHT%", $this->referee->height, Text::_('COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM')); ?>
@@ -284,8 +284,8 @@ default:
                 }
                 if (( $this->referee->weight > 0 ) && ($this->config['show_person_weight'] == 1)) {
         ?>
-                    
-                    
+                  
+                  
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_WEIGHT'); ?></strong>
     <?php echo str_replace("%WEIGHT%", $this->referee->weight, Text::_('COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM')); ?>
@@ -294,19 +294,19 @@ default:
                 }
                 if ($this->referee->position_name != "" ) {
         ?>
-                    
-                    
+                  
+                  
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></strong>
     <?php echo Text::_($this->referee->position_name); ?>
             </address>
-            
+          
         <?php
                 }
                 if (( ! empty($this->referee->knvbnr) ) && ($this->config['show_person_regnr'] == 1)) {
         ?>
-                    
-                    
+                  
+                  
                     <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR'); ?></strong>
     <?php echo $this->referee->knvbnr; ?>
@@ -314,9 +314,9 @@ default:
         <?php
                 }
                 ?>
-            
-</div>         
-    
+          
+</div>       
+  
 
 
 </div>

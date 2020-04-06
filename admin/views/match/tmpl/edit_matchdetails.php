@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Uri\Uri;
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
 //$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
 //$this->document->addScript(Uri::root() . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-    
-?>    
+  
+?>  
 <script type="text/javascript">
 (function() {
     // altered decision fields management
@@ -29,20 +29,20 @@ use Joomla\CMS\Uri\Uri;
 });
 
 </script>
-    
+  
 <fieldset class="adminform">
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
     </legend>
     <table class="admintable">
-    <?php 
-                    
+    <?php
+                  
     foreach ($this->form->getFieldset('matchdetails') as $field):
     ?>
 <tr>
 <td class="key"><?php echo $field->label; ?></td>
 <td><?php echo $field->input; ?></td>
 </tr>					
-    <?php endforeach; ?>    
+    <?php endforeach; ?>  
     </table>
 </fieldset>	
 
@@ -51,7 +51,7 @@ use Joomla\CMS\Uri\Uri;
                 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD');?>
                 </legend>
                 <table class='admintable'>
-                <?php 
+                <?php
                 echo $this->form->renderField('count_result');
                 echo $this->form->renderField('alt_decision');
 
@@ -59,17 +59,17 @@ use Joomla\CMS\Uri\Uri;
                 echo $this->form->renderField('team1_result_decision');
                 echo $this->form->renderField('team2_result_decision');
                 echo $this->form->renderField('team_won');
-                    
+                  
                 foreach ($this->form->getFieldset('matchalternativ') as $field):
                 ?>
             <tr>
 
-            </tr>                    
-                <?php endforeach; ?>    
-                    
-                    
-                    
-                    
+            </tr>                  
+                <?php endforeach; ?>  
+                  
+                  
+                  
+                  
                     <tr>
                         <td colspan="4">
                         <!--
@@ -80,7 +80,7 @@ use Joomla\CMS\Uri\Uri;
                                         <td>
                                             <input    type="text" class="inputbox" id="team1_result_decision" name="team1_result_decision"
                                                     size="4"
-                                                    value="<?php if ($this->match->alt_decision == 1) { if (isset($this->match->team1_result_decision)) { echo $this->match->team1_result_decision; 
+                                                    value="<?php if ($this->match->alt_decision == 1) { if (isset($this->match->team1_result_decision)) { echo $this->match->team1_result_decision;
                                                    } else { echo 'X';
 }
 } ?>" <?php if ($this->match->alt_decision == 0) { echo 'DISABLED ';
@@ -92,7 +92,7 @@ use Joomla\CMS\Uri\Uri;
                                         <td>
                                             <input    type="text" class="inputbox" id="team2_result_decision" name="team2_result_decision"
                                                     size="4" value="<?php
-                                                    if ($this->match->alt_decision == 1 ) { if (isset($this->match->team2_result_decision) ) { echo $this->match->team2_result_decision; 
+                                                    if ($this->match->alt_decision == 1 ) { if (isset($this->match->team2_result_decision) ) { echo $this->match->team2_result_decision;
                                                     } else { echo 'X';
                                                     }
                                                     } ?>" <?php
@@ -125,4 +125,4 @@ if ($this->match->alt_decision == 0 ) {echo 'DISABLED ';
                         </td>
                     </tr>
                 </table>
-            </fieldset>    
+            </fieldset>  

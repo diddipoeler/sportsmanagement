@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage stats
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -59,7 +59,7 @@ use Joomla\CMS\Language\Text;
     ?>
         </td>
     </tr>
-    
+  
     <?php	if ($this->config['home_away_stats'] ) : ?>
     <tr  class="sectiontableentry2">
         <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS_HOME');?></td>

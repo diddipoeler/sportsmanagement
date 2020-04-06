@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Factory;
 
 /**
  * modJSMTrainingsData
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -26,10 +26,10 @@ use Joomla\CMS\Factory;
  */
 class modJSMTrainingsData
 {
-   
+ 
     /**
      * modJSMTrainingsData::getData()
-     * 
+     *
      * @param  mixed $params
      * @return
      */
@@ -42,19 +42,19 @@ class modJSMTrainingsData
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
-        
+      
         $result = array();
-        
+      
         $query->select('*');
-        $query->from('#__sportsmanagement_team_trainingdata'); 
-        $query->where('team_id = '. (int) $params->get('teams'));  
+        $query->from('#__sportsmanagement_team_trainingdata');
+        $query->where('team_id = '. (int) $params->get('teams'));
         $query->order('dayofweek ASC');
-        
+      
         $db->setQuery($query);
         $result = $db->loadObjectList();
 
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-        
+      
         return $result;
 
     }

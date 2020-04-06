@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,7 +15,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
+
 // Include dependancy of the main model form
 jimport('joomla.application.component.modelform');
 // import Joomla modelitem library
@@ -26,8 +26,8 @@ jimport('joomla.event.dispatcher');
 
 /**
  * sportsmanagementModelUpdsportsmanagement
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -88,7 +88,7 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 
     /**
      * sportsmanagementModelUpdsportsmanagement::updItem()
-     * 
+     *
      * @param  mixed $data
      * @return
      */

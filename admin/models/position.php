@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelposition
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -39,7 +39,7 @@ class sportsmanagementModelposition extends JSMModelAdmin
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-       
+     
         $result = true;
         for ($x=0; $x < count($pks); $x++)
         {
@@ -54,7 +54,7 @@ class sportsmanagementModelposition extends JSMModelAdmin
         }
         return $result;
     }
-    
+  
 
-    
+  
 }

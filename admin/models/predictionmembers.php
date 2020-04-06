@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelPredictionMembers
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,15 +27,15 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementModelPredictionMembers extends JSMModelList
 {
     var $_identifier = "predmembers";
-    
+  
      /**
       * sportsmanagementModelPredictionMembers::__construct()
-      * 
+      *
       * @param  mixed $config
       * @return void
       */
     public function __construct($config = array())
-    {   
+    { 
               $config['filter_fields'] = array(
                       'u.username',
                       'u.name',
@@ -52,7 +52,7 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
               parent::__construct($config);
               parent::setDbo($this->jsmdb);
     }
-    
+  
     /**
      * Method to auto-populate the model state.
      *
@@ -70,7 +70,7 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
         $this->setState('filter.state', $published);
         if ($this->jsmjinput->getInt('prediction_id') ) {
             $this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id'));
-            $this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id'));    
+            $this->jsmapp->setUserState("com_sportsmanagement.prediction_id", $this->jsmjinput->getInt('prediction_id'));  
         }
         else
         {
@@ -79,7 +79,7 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
         }
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
-        $this->setState('list.start', $value);       
+        $this->setState('list.start', $value);     
         // Filter.order
         $orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
         if (!in_array($orderCol, $this->filter_fields)) {
@@ -94,10 +94,10 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
 
 
     }
-        
+      
     /**
      * sportsmanagementModelPredictionMembers::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -116,7 +116,7 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
         if (is_numeric($this->getState('filter.state'))) {
             $this->jsmquery->where('tmb.approved = ' . $this->getState('filter.state'));
         }
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where('(LOWER(u.username) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
         }
@@ -125,13 +125,13 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
              $this->jsmdb->escape($this->getState('list.ordering', 'u.username')).' '.
              $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
          );
- 
+
         return $this->jsmquery;
     }
-    
+  
     /**
      * sportsmanagementModelPredictionMembers::getPredictionProjectName()
-     * 
+     *
      * @param  mixed $predictionID
      * @return
      */
@@ -139,12 +139,12 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
     {
         // Create a new query object.		
         $this->jsmquery->clear();
-    
+  
           // Select some fields
         $this->jsmquery->select('ppj.name AS pjName');
         $this->jsmquery->from('#__sportsmanagement_prediction_game AS ppj ');
         $this->jsmquery->where('ppj.id = ' . $predictionID);
-        
+      
         try{
              $this->jsmdb->setQuery($this->jsmquery);
              $result = $this->jsmdb->loadResult();
@@ -156,10 +156,10 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
             return false;
         }
     }
-    
+  
     /**
      * sportsmanagementModelPredictionMembers::getPredictionMembers()
-     * 
+     *
      * @param  mixed $prediction_id
      * @return
      */
@@ -167,13 +167,13 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
     {
         // Create a new query object.		
         $this->jsmquery->clear();
-        
+      
         // Select some fields
         $this->jsmquery->select('pm.user_id AS value, u.name AS text');
         $this->jsmquery->from('#__sportsmanagement_prediction_member AS pm ');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = pm.user_id');
         $this->jsmquery->where('prediction_id = ' . (int) $prediction_id);
-       
+     
         try{
             $this->jsmdb->setQuery($this->jsmquery);
             $results = $this->jsmdb->loadObjectList();
@@ -183,12 +183,12 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
         {
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
-        }    
+        }  
     }
-    
+  
     /**
      * sportsmanagementModelPredictionMembers::getJLUsers()
-     * 
+     *
      * @param  mixed $prediction_id
      * @return
      */
@@ -196,15 +196,15 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
     {
         // Create a new query object.		
         $this->jsmquery->clear();
-        
+      
         // Select some fields
         $this->jsmquery->select('pm.user_id AS value');
         $this->jsmquery->from('#__sportsmanagement_prediction_member AS pm ');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = pm.user_id');
         $this->jsmquery->where('prediction_id = ' . (int) $prediction_id);
-        
+      
         $this->jsmdb->setQuery($this->jsmquery);
-    
+  
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $records = $this->jsmdb->loadColumn();
@@ -221,7 +221,7 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
             $this->jsmquery->from('#__users ');
             $this->jsmquery->where('id not in (' . implode(",", $records) .')');
             $this->jsmquery->order('name');
-        
+      
 
         }
         else
@@ -232,8 +232,8 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
              $this->jsmquery->from('#__users ');
              $this->jsmquery->order('name');
 
-        }   
-        
+        } 
+      
         try{
              $this->jsmdb->setQuery($this->jsmquery);
              $result = $this->jsmdb->loadObjectList();
@@ -245,8 +245,8 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
             return false;
         }
     }
-    
-    
+  
+  
 
 }
 ?>

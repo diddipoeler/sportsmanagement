@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelTeamPlayers
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -41,23 +41,23 @@ class sportsmanagementModelTeamPlayers extends ListModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-                
+              
         $this->_project_id    = $app->getUserState("$option.pid", '0');
         $this->_season_id    = $app->getUserState("$option.season_id", '0');
         $this->_team_id = Factory::getApplication()->input->getVar('team_id');
         $this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
-        
+      
         if (!$this->_team_id ) {
             $this->_team_id    = $app->getUserState("$option.team_id", '0');
         }
         if (!$this->_project_team_id ) {
             $this->_project_team_id    = $app->getUserState("$option.project_team_id", '0');
         }
-        
+      
         // Get the WHERE and ORDER BY clauses for the query
         $where = self::_buildContentWhere();
         $orderby = self::_buildContentOrderBy();
-        
+      
         if (COM_SPORTSMANAGEMENT_USE_NEW_TABLE ) {
             $query->select(
                 array('ppl.firstname',
@@ -65,11 +65,11 @@ class sportsmanagementModelTeamPlayers extends ListModel
                 'ppl.nickname',
                             'ppl.height',
                             'ppl.weight',
-                            
+                          
                             'ppl.injury',
                             'ppl.suspension',
                             'ppl.away',
-                            
+                          
                             'ppl.id',
                             'ppl.id AS person_id',
                 'tp.*',
@@ -81,7 +81,7 @@ class sportsmanagementModelTeamPlayers extends ListModel
                 ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
         }
         else
-        {    
+        {  
             $query->select(
                 array('ppl.firstname',
                 'ppl.lastname',
@@ -99,7 +99,7 @@ class sportsmanagementModelTeamPlayers extends ListModel
                 ->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
         }
 
-        
+      
         if ($where) {
             $query->where($where);
         }
@@ -130,16 +130,16 @@ class sportsmanagementModelTeamPlayers extends ListModel
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
-        
+      
         //$project_id=$app->getUserState($option.'project');
         //$team_id=$app->getUserState($option.'project_team_id');
-        
+      
         $filter_state    = $app->getUserStateFromRequest($option . '.'.$this->_identifier.'.tp_filter_state', 'filter_state', '', 'word');
         $search            = $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search', 'search', '', 'string');
         $search_mode    = $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search_mode', 'search_mode', '', 'string');
         $search=JString::strtolower($search);
         $where=array();
-        
+      
         if (COM_SPORTSMANAGEMENT_USE_NEW_TABLE ) {
             $where[]="ppl.published = '1'";
             $where[]='tp.team_id='.$this->_team_id;
@@ -151,8 +151,8 @@ class sportsmanagementModelTeamPlayers extends ListModel
             $where[]='tp.projectteam_id= '.$this->_project_team_id;
             $where[]="ppl.published = '1'";
         }
-        
-        
+      
+      
         if ($search) {
             if ($search_mode) {
                 $where[]='(LOWER(ppl.lastname) LIKE '.$this->_db->Quote($search.'%') .
@@ -182,7 +182,7 @@ class sportsmanagementModelTeamPlayers extends ListModel
 
     /**
      * sportsmanagementModelTeamPlayers::getProjectTeamplayers()
-     * 
+     *
      * @param  integer $project_team_id
      * @return
      */
@@ -193,7 +193,7 @@ class sportsmanagementModelTeamPlayers extends ListModel
         // Create a new query object.
         $db        = sportsmanagementHelper::getDBConnection();
         $query    = $db->getQuery(true);
-        $user    = Factory::getUser(); 
+        $user    = Factory::getUser();
 
         // Select some fields
         $query->select('pl.*');
@@ -204,13 +204,13 @@ class sportsmanagementModelTeamPlayers extends ListModel
         $query->where('pt.team_id = '.$project_team_id);
         $db->setQuery($query);
         $result = $db->loadObjectList();
-               
+             
         if (!$result) {
             return false;
         }
         return $result;
     }
-    
+  
     /**
      * remove specified players from team
      *

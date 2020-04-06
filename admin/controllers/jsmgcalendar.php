@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerjsmgcalendar
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,16 +27,15 @@ use Joomla\CMS\MVC\Controller\FormController;
  */
 class sportsmanagementControllerjsmgcalendar extends FormController
 {
-    
-    /**
-     * sportsmanagementControllerjsmGCalendar::insertgooglecalendar()
-     * 
-     * @return void
-     */
-    function insertgooglecalendar()
-    {
-        
-        
-    }
-    
+
+	/**
+	 * sportsmanagementControllerjsmGCalendar::insertgooglecalendar()
+	 *
+	 * @return void
+	 */
+	function insertgooglecalendar()
+	{
+
+	}
+
 }

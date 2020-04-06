@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @subpackage playground
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -21,9 +21,9 @@ use Joomla\CMS\Factory;
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
 <!-- Now show teams of this club -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="playground_teams">
-    <?php foreach ((array)$this->teams AS $key => $value): ?>    
-    <?php $projectname = $value->project; ?> 
-    <?php foreach ($value->project_team AS $team): 
+    <?php foreach ((array)$this->teams AS $key => $value): ?>  
+    <?php $projectname = $value->project; ?>
+    <?php foreach ($value->project_team AS $team):
         $teaminfo = $value->teaminfo[0][0];
             $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,16 +24,16 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewClose extends sportsmanagementView
 {
-    
+  
     /**
      * Display the view
      */
     function init()
     {
-       
+     
         $this->jsminfo = $this->jinput->getCmd('info');
         $this->onlymodal = $this->jinput->getCmd('onlymodal');
- 
+
         if (!$this->onlymodal ) {
             // close a modal window
                $this->document->addScriptDeclaration(
@@ -46,7 +46,7 @@ var msg = {
     success: [\'It works!!\']
 };
 Joomla.renderMessages( msg );
-            
+          
 		'
                );
         }
@@ -62,19 +62,19 @@ var msg = {
     success: [\'It works!!\']
 };
 Joomla.renderMessages( msg );
-            
+          
 		'
-              );        
+              );      
         }
-        
-        
+      
+      
         switch($this->jsminfo)
         {
         case 'truncate':
 
             break;
         }
-        
-        
+      
+      
     }
 }

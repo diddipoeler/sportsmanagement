@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?PHP
-foreach ($this->model_hits as $key => $values) 
+foreach ($this->model_hits as $key => $values)
 {
 ?>
 <table class="<?php echo $this->tableclass;?>">
@@ -25,14 +25,14 @@ foreach ($this->model_hits as $key => $values)
 <th class="" colspan="2"><?php echo $key;?></th>
 </tr>
 <?PHP
-foreach ($values as $row) 
+foreach ($values as $row)
 {
 ?>
 <tr class="">
 <td class=""><?php echo $row->name;?></td>
 <td class=""><?php echo $row->hits;?></td>
-</tr>    
-<?PHP    
+</tr>  
+<?PHP  
 }
 ?>
 </table>

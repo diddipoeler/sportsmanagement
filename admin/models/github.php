@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,20 +23,20 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
- 
+
 if(version_compare(JSM_JVERSION, '4', 'eq') ) {
-    
+  
 }
 else
-{    
+{  
     JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
 }
 
 
 /**
  * sportsmanagementModelgithub
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -45,29 +45,29 @@ else
 class sportsmanagementModelgithub extends BaseDatabaseModel
 {
     var $client = '';
-    
-    
+  
+  
     /**
      * sportsmanagementModelgithub::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {  
+    {
             parent::__construct($config);
         $this->app = Factory::getApplication();
-        $this->user    = Factory::getUser();     
+        $this->user    = Factory::getUser();   
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
         $this->pks = $this->jinput->get('cid', array(), 'array');
-        $this->post = $this->jinput->post->getArray(array());    
-            
+        $this->post = $this->jinput->post->getArray(array());  
+          
     }
-            
+          
     /**
      * sportsmanagementModelgithub::addissue()
-     * 
+     *
      * @return void
      */
     function addissue()
@@ -80,13 +80,13 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
             /**
      * wenn nicht kann es aber einen user mit passwort geben
      */
-            if (empty($this->post['api_username']) && empty($this->post['api_password']) ) { 
+            if (empty($this->post['api_username']) && empty($this->post['api_password']) ) {
                 $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'), 'Error');
                 return false;
-            } 
+            }
             else
             {
-                $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'), 'Notice');    
+                $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'), 'Notice');  
 
 
                 /**
@@ -94,65 +94,65 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
      */
                 if (empty($this->post['title']) ) {
                         $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'), 'Error');
-                        return false;    
+                        return false;  
                 }
                 else
                 {
                         /**
     * ist die nachricht auch ausgefüllt ?
-    */    
+    */  
                     if (empty($this->post['message']) ) {
                         $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'), 'Error');
-                        return false;    
+                        return false;  
                     }
                     else
                         {
-                        $insertresult = $this->insertissue();    
-                    }    
-        
+                        $insertresult = $this->insertissue();  
+                    }  
+      
                 }
-            
+          
             }
-            
-            return false; 
-        }    
-        
+          
+            return false;
+        }  
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelgithub::insertissue()
-     * 
+     *
      * @return void
      */
     function insertissue()
     {
         $github_user = ComponentHelper::getParams($this->option)->get('cfg_github_username', '');
-        $github_repo = ComponentHelper::getParams($this->option)->get('cfg_github_repository', '');    
+        $github_repo = ComponentHelper::getParams($this->option)->get('cfg_github_repository', '');  
         $gh_options = new Registry();
-        // If an API token is set in the params, use it for authentication 
-        if ($this->post['gh_token'] ) { 
-              $gh_options->set('gh.token', $this->post['gh_token']); 
-        } 
-        // Set the username and password if set in the params 
+        // If an API token is set in the params, use it for authentication
+        if ($this->post['gh_token'] ) {
+              $gh_options->set('gh.token', $this->post['gh_token']);
+        }
+        // Set the username and password if set in the params
         else
-        { 
-              $gh_options->set('api.username', $this->post['api_username']); 
-              $gh_options->set('api.password', $this->post['api_password']); 
-            
-        } 
+        {
+              $gh_options->set('api.username', $this->post['api_username']);
+              $gh_options->set('api.password', $this->post['api_password']);
+          
+        }
 
         $github = new JGithub($gh_options);
         // Create an issue
         $labels = array($this->post['labels']);
-        return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);    
-       
-    }    
-        
-    
+        return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);  
+     
+    }  
+      
+  
     /**
      * sportsmanagementModelgithub::getGithubList()
-     * 
+     *
      * @return
      */
     function getGithubList()
@@ -162,21 +162,21 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
         $this->client = JApplicationHelper::getClientInfo();
         $github_user = ComponentHelper::getParams($option)->get('cfg_github_username', '');
         $github_repo = ComponentHelper::getParams($option)->get('cfg_github_repository', '');
-        
+      
         $params = ComponentHelper::getParams($option);
 
 
         $gh_options = new Registry();
-        // If an API token is set in the params, use it for authentication 
-        if ($params->get('gh_token', '')) { 
-              $gh_options->set('gh.token', $params->get('gh_token', '')); 
-        } 
-        // Set the username and password if set in the params 
+        // If an API token is set in the params, use it for authentication
+        if ($params->get('gh_token', '')) {
+              $gh_options->set('gh.token', $params->get('gh_token', ''));
+        }
+        // Set the username and password if set in the params
         else
-        { 
-              $gh_options->set('api.username', $params->get('gh_user', '')); 
-              $gh_options->set('api.password', $params->get('gh_password', '')); 
-        } 
+        {
+              $gh_options->set('api.username', $params->get('gh_user', ''));
+              $gh_options->set('api.password', $params->get('gh_password', ''));
+        }
 
         $github = new JGithub($gh_options);
         // List pull requests
@@ -210,11 +210,11 @@ class sportsmanagementModelgithub extends BaseDatabaseModel
         $page = 0;
         $perPage = 20;
         //$issues = $github->issues->getList($filter, $state, $labels, $sort, $direction, $since, $page, $perPage);
-        
-        
-        return $commits;    
+      
+      
+        return $commits;  
     }
-    
-}    
+  
+}  
 
 ?>

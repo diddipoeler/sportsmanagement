@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,7 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="alert alert-success ">
-<?php 
-echo $this->jsmmessage; 
+<?php
+echo $this->jsmmessage;
 ?>
 </div>

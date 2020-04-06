@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,19 +16,19 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewTeamInfo
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewTeamInfo extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewTeamInfo::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -58,12 +58,12 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
              7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
             );
             $this->daysOfWeek = $daysOfWeek;
-                  
+                
             if ($this->team->merge_clubs ) {
                    $this->merge_clubs = sportsmanagementModelTeamInfo::getMergeClubs($this->team->merge_clubs);
             }
 
-     
+   
             //	if ( $this->config['show_history_leagues'] )
             //	{
             $this->seasons = sportsmanagementModelTeamInfo::getSeasons($this->config, 1);
@@ -72,16 +72,16 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
             //	}
 
         }
-        
+      
         $this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
-    
+  
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE');
         if (isset($this->team) ) {
             $pageTitle .= ': ' . $this->team->tname;
         }
         $this->document->setTitle($pageTitle);
-       
+     
         if (!isset($this->config['table_class']) ) {
             $this->config['table_class'] = 'table';
         }

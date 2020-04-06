@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage predictionrules
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -20,9 +20,9 @@ jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewPredictionRules
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,7 +31,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 {
     /**
      * sportsmanagementViewPredictionRules::display()
-     * 
+     *
      * @param  mixed $tpl
      * @return
      */
@@ -41,7 +41,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
         $document    = Factory::getDocument();
         $model        = $this->getModel();
           $option = Factory::getApplication()->input->getCmd('option');
-    
+  
         $app = Factory::getApplication();
 
         $this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
@@ -70,7 +70,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
         {
             Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'), Log::INFO, 'jsmerror');
         }
-        
+      
     }
 
 }

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,5 +24,5 @@ ToolbarHelper::title(Text::_(Text::_('DFB-Keys Mass-Add')));
 
 
 echo 'projekt ->'.$this->project_id.'<br>';
-                                                    
+                                                  
 ?>

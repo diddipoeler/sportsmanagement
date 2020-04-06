@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage player
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -52,8 +52,8 @@ use Joomla\CMS\Factory;
         }
         ?>
         <br />
-    </div>    
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">    
+    </div>  
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">  
         <?php
         if (!empty($this->person->country) && $this->config["show_nationality"]) {
             ?>
@@ -82,7 +82,7 @@ use Joomla\CMS\Factory;
                 $outputName = HTMLHelper::link($link, $outputName);
                 break;
 
-            default: 
+            default:
                 break;
             }
         }
@@ -105,8 +105,8 @@ use Joomla\CMS\Factory;
         $timestamp_birth = strtotime($this->person->birthday);
         $timestamp_death = strtotime($this->person->deathday);
 
-        if (( $this->config['show_birthday'] > 0 ) 
-            && ( $this->config['show_birthday'] < 5 ) 
+        if (( $this->config['show_birthday'] > 0 )
+            && ( $this->config['show_birthday'] < 5 )
             && ( $timestamp_birth )
         ) {
             // $this->config['show_birthday'] = 4;
@@ -170,7 +170,7 @@ use Joomla\CMS\Factory;
                 $deathdateStr = HTMLHelper::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE'));
                 echo '&dagger; ' . $deathdateStr;
                 ?>
-            </address>    
+            </address>  
             <?php
         }
         if (( $this->person->address != "" ) && $this->config['show_person_address'] && ($this->isContactDataVisible)) {
@@ -245,8 +245,8 @@ use Joomla\CMS\Factory;
             </address>
             <?php
         }
-        if (( $this->config['show_player_number'] ) 
-            && isset($this->teamPlayer->jerseynumber) 
+        if (( $this->config['show_player_number'] )
+            && isset($this->teamPlayer->jerseynumber)
             && ( $this->teamPlayer->jerseynumber > 0 )
         ) {
             ?>
@@ -280,5 +280,5 @@ use Joomla\CMS\Factory;
             <?php
         }
         ?>
-    </div>  
-</div>  
+    </div>
+</div>

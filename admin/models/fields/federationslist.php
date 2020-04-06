@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,9 +25,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldFederationsList
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -60,11 +60,11 @@ class JFormFieldFederationsList extends \JFormFieldList
         if (is_array($select_id)) {
             $select_id = $select_id;
         }
-        
-        if ($select_id) {        
+      
+        if ($select_id) {      
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            
+          
             $query->select('t.id,t.id AS value, t.name AS text');
             $query->from('#__sportsmanagement_federations AS t');
             $query->where('t.parent_id = 0');
@@ -75,43 +75,43 @@ class JFormFieldFederationsList extends \JFormFieldList
 
             $preoptions = array();
             $name = 'parent_id';
-            foreach ( $list as $item ) 
+            foreach ( $list as $item )
              {
                 if (!$preoptions && !$selected && ($sections || !$item->section)) {
                     $selected = $item->id;
                 }
                   $options [] = HTMLHelper::_('select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
             }
-        
-        
+      
+      
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;
     }
-    
+  
     /**
  * FormFieldFederationsList::JJ_categoryArray()
- * 
+ *
  * @param  integer $admin
  * @return
  */
-    function JJ_categoryArray($admin=0) 
+    function JJ_categoryArray($admin=0)
     {
-        $db = sportsmanagementHelper::getDBConnection(); 
+        $db = sportsmanagementHelper::getDBConnection();
         // get a list of the menu items
          $query = "SELECT * FROM #__sportsmanagement_federations ";
 
         $query .= " ORDER BY ordering, name";
         $db->setQuery($query);
         $items = $db->loadObjectList();
-   
+ 
         // establish the hierarchy of the menu
         $children = array ();
 
         // first pass - collect children
-        foreach ($items as $v) 
+        foreach ($items as $v)
         {
             $pt = $v->parent_id;
             $list = isset($children[$pt]) ? $children[$pt] : array ();
@@ -123,11 +123,11 @@ class JFormFieldFederationsList extends \JFormFieldList
         $array = $this->fbTreeRecurse(0, '', array (), $children, 10, 0, 1);
 
         return $array;
-    }        
-    
+    }      
+  
     /**
  * FormFieldFederationsList::fbTreeRecurse()
- * 
+ *
  * @param  mixed   $id
  * @param  mixed   $indent
  * @param  mixed   $list
@@ -137,7 +137,7 @@ class JFormFieldFederationsList extends \JFormFieldList
  * @param  integer $type
  * @return
  */
-    function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 ) 
+    function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 )
     {
 
         if (isset($children[$id]) && $level <= $maxlevel) {
@@ -166,19 +166,19 @@ class JFormFieldFederationsList extends \JFormFieldList
             }
         }
         return $list;
-    }    
-    
+    }  
+  
     /**
  * FormFieldFederationsList::sm_htmlspecialchars()
- * 
+ *
  * @param  mixed  $string
  * @param  mixed  $quote_style
  * @param  string $charset
  * @return
  */
-    function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
+    function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8')
     {
          return htmlspecialchars($string, $quote_style, $charset);
-    }    
-    
+    }  
+  
 }

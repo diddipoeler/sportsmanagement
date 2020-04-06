@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldJSMSubtitle
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -29,7 +29,7 @@ use Joomla\CMS\Form\FormField;
  */
 class JFormFieldJSMSubtitle extends FormField
 {
-        
+      
     public $type = 'JSMSubtitle';
 
     /**
@@ -38,9 +38,9 @@ class JFormFieldJSMSubtitle extends FormField
      * @return array    The field option objects.
      * @since  1.6
      */
-    protected function getLabel() 
+    protected function getLabel()
     {
-        
+      
         $html = '';
         $value = trim($this->element['title']);
 
@@ -60,7 +60,7 @@ class JFormFieldJSMSubtitle extends FormField
      * @return string    The field input markup.
      * @since  1.6
      */
-    protected function getInput() 
+    protected function getInput()
     {
         return '';
     }

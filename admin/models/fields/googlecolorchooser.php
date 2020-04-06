@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Form\FormField;
 
 /**
  * JFormFieldGoogleColorChooser
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -55,7 +55,7 @@ class JFormFieldGoogleColorChooser extends \JFormFieldText
 
     /**
      * JFormFieldGoogleColorChooser::getInput()
-     * 
+     *
      * @return
      */
     public function getInput()

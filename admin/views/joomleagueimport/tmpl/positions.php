@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -36,7 +36,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th width="" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_JOOMLEAGUE_POSITIONS'); ?></th>
                     <th width="" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_POSITIONS'); ?></th>
                     </tr>
-            </thead>        
+            </thead>      
             <tbody>
                 <?php
                 $k=0;
@@ -48,29 +48,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <tr class="<?php echo "row$k"; ?>">
                         <td class="center"><?php echo $i; ?></td>
                         <td class="center"><?php echo $checked; ?></td>
-                        
+                      
                         <td><?php echo $row->name; ?>
-                        
+                      
                         </td>
                         <td class="center">
-                        <?php 
+                        <?php
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo HTMLHelper::_(
                             'select.genericlist', $this->lists['position'], 'position'.$row->id,
                             'class="inputbox" size="1"'.$append, 'value', 'text', 0
-                        ); 
+                        );
                         ?>
                         </td>
-                        
-                        
+                      
+                      
                     </tr>
         <?php
         $k=1 - $k;
                 }
                 ?>
             </tbody>
-        </table>        
-                        
+        </table>      
+                      
 <?PHP
 
 
@@ -88,4 +88,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>    
+?>  

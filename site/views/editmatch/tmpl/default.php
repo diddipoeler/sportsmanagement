@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      deafult.php
@@ -41,18 +41,18 @@ $fieldsets = $this->form->getFieldsets();
 <?php echo Text::_('JCANCEL');?></button>
 				</div>
 	<legend>
-  <?php 
+  <?php
 
   ?>
   </legend>
   </fieldset>
-    
+  
 <fieldset class="adminform">
 	<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
 	</legend>
 	<table class="admintable">
-			<?php 
-                    
+			<?php
+                  
                     foreach ($this->form->getFieldset('matchdetails') as $field):
                     ?>
 					<tr>
@@ -134,10 +134,10 @@ $fieldsets = $this->form->getFieldsets();
 
 <div class="clr"></div>
 
-    
+  
 	<input type="hidden" name="assignperson" value="0" id="assignperson" />
-	<input type="hidden" name="option" value="com_sportsmanagement" /> 
-	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
+	<input type="hidden" name="option" value="com_sportsmanagement" />
+	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	

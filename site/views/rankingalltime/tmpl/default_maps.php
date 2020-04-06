@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage rankingalltime
  */
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -27,9 +27,9 @@ $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.km
     </div>
     <?php
     $arrPluginParams = array();
-        
+      
     $arrPluginParams[] = "zoomWheel='1'";
-        
+      
     $param = 'default_map_type';
     if($this->mapconfig[$param]) {
         $arrPluginParams[] = "mapType='".$this->mapconfig[$param]."'";
@@ -46,7 +46,7 @@ $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.km
     if($this->mapconfig[$param]) {
         $arrPluginParams[] = "$param='".$this->mapconfig[$param]."'";
     }
-        
+      
     foreach ( $this->allteams as $row )
     {
         if($row->address_string != '') {
@@ -61,16 +61,16 @@ $kmlpath = Uri::root().'tmp'.DIRECTORY_SEPARATOR.$this->project->id.'-ranking.km
         if($icon!='') {
                $arrPluginParams[] = "icon='".$icon."'";
         }
-    
+  
     }
-    
+  
     $params  = '{mosmap ';
     $params .= implode('|', $arrPluginParams);
     $params .= "}";
-        
-    $params  = "{mosmap mapType='HYBRID'|dir='1'|zoomWheel='1'|zoom='10'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$kmlpath."'|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='100%'|height='".$this->mapconfig['height']."' |overview='1'  }";    
-    echo HTMLHelper::_('content.prepare', $params);        
-        
-        
+      
+    $params  = "{mosmap mapType='HYBRID'|dir='1'|zoomWheel='1'|zoom='10'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$kmlpath."'|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='100%'|height='".$this->mapconfig['height']."' |overview='1'  }";  
+    echo HTMLHelper::_('content.prepare', $params);      
+      
+      
     ?>
 </div>

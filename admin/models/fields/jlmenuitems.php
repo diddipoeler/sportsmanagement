@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ JFormHelper::loadFieldClass('list');
 
 /**
  * JFormFieldJLMenuItems
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -77,7 +77,7 @@ class JFormFieldJLMenuItems extends \JFormFieldList
         HTMLHelper::_('select.option', 'jlallprojectrounds', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLALLPROJECTROUNDS')),
         HTMLHelper::_('select.option', 'jlxmlexports', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
         );
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModeldivision
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -32,13 +32,13 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 
     /**
  * sportsmanagementModeldivision::divisiontoproject()
- * 
+ *
  * @return void
  */
     function divisiontoproject()
     {
-        $post = $this->jsmjinput->post->getArray(array());    
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');    
+        $post = $this->jsmjinput->post->getArray(array());  
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post -> <pre>'.print_r($post,true).'</pre>'),'');  
 
         $divisions = $post['cid'];
         $project_id = $post['pid'];
@@ -63,7 +63,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
             //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resultdvname -> <pre>'.print_r($resultdvname,true).'</pre>'),'');
 
             //$orig_table = $this->getTable('project');
-            $orig_table = clone $this->getTable('project');  
+            $orig_table = clone $this->getTable('project');
             $orig_table->load((int) $project_id);
             $orig_table->id = null;
             $orig_table->name = $resultdvname.' '.$reaulseasonname;
@@ -76,18 +76,18 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 
             } catch (Exception $e) {
                 Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
-                Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
-            }                            
+                Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');  
+            }                          
 
             if ($new_project_id ) {
-                $this->jsmquery->clear();    
+                $this->jsmquery->clear();  
                 // Fields to update.
                 $fields = array(
                 $this->jsmdb->quoteName('project_id') . ' = ' . $new_project_id
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
-                    $this->jsmdb->quoteName('id') . ' = '.$value, 
+                    $this->jsmdb->quoteName('id') . ' = '.$value,
                     $this->jsmdb->quoteName('project_id') . ' = ' . $project_id
                 );
                 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
@@ -96,8 +96,8 @@ class sportsmanagementModeldivision extends JSMModelAdmin
                             $resultupdate1 = $this->jsmdb->execute();
                 } catch (Exception $e) {
                             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
-                            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
-                }                       
+                            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');  
+                }                     
                 $this->jsmquery->clear();
                 // Conditions for which records should be updated.
                 $conditions = array(
@@ -110,26 +110,26 @@ class sportsmanagementModeldivision extends JSMModelAdmin
                             $resultupdate2 = $this->jsmdb->execute();
                 } catch (Exception $e) {
                             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
-                            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');    
-                }                       
-    
+                            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');  
+                }                     
+  
             }
 
         }
-    
+  
     }
 
     /**
  * sportsmanagementModeldivision::count_teams_division()
- * 
+ *
  * @param  integer $division_id
  * @return void
  */
     function count_teams_division($division_id = 0)
     {
-        $results = array();    
+        $results = array();  
         $division_teams = array();
-        try {    
+        try {  
             $this->jsmquery->clear();
             $this->jsmquery->select('m.projectteam1_id');
             $this->jsmquery->from('#__sportsmanagement_match as m');
@@ -143,8 +143,8 @@ class sportsmanagementModeldivision extends JSMModelAdmin
             $code = $e->getCode(); // Returns '500';
             $results = array();
         }
-    
-        foreach ( $results as $key => $value ) 
+  
+        foreach ( $results as $key => $value )
         {
             $division_teams[$key] = $key;
         }
@@ -164,7 +164,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
             $results = array();
             //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
         }
-    
+  
         foreach ( $results as $key => $value )
         {
             $division_teams[$key] = $key;
@@ -188,14 +188,14 @@ class sportsmanagementModeldivision extends JSMModelAdmin
         {
             $division_teams[$key] = $key;
         }
-    
+  
         return count($division_teams);
 
     }
-    
+  
         /**
          * sportsmanagementModeldivision::saveshort()
-         * 
+         *
          * @return
          */
     public function saveshort()
@@ -207,7 +207,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-       
+     
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if (!$pks ) {
@@ -220,7 +220,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
                $tblRound = & $this->getTable();
                $tblRound->id = $pks[$x];
                $tblRound->name    = $post['name'.$pks[$x]];
-            
+          
             $tblRound->alias = OutputFilter::stringURLSafe($post['name'.$pks[$x]]);
             // Set the values
             $tblRound->modified = $date->toSql();
@@ -233,8 +233,8 @@ class sportsmanagementModeldivision extends JSMModelAdmin
         }
         return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
     }
-    
-    
+  
+  
     /**
      * Method to remove division
      *
@@ -245,11 +245,11 @@ class sportsmanagementModeldivision extends JSMModelAdmin
     public function delete(&$pks)
     {
         $app = Factory::getApplication();
-    
+  
           return parent::delete($pks);
-    
-         
-    } 
-   
-    
+  
+       
+    }
+ 
+  
 }

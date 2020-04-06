@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementModelImagehandler
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -64,7 +64,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelImagehandler::getState()
-     * 
+     *
      * @param  mixed $property
      * @param  mixed $default
      * @return
@@ -138,8 +138,8 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app    = Factory::getApplication();
-        // JInput object 
-         $jinput = $app->input; 
+        // JInput object
+         $jinput = $app->input;
 
         static $list;
 
@@ -157,7 +157,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
         $basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
         $images     = array ();
-        
+      
         // Get the list of files and folders from the given folder
         $fileList     = Folder::files($basePath);
 
@@ -260,9 +260,9 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
             }
         }
     }
-    
-    
-    
-    
+  
+  
+  
+  
 }
 ?>

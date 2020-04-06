@@ -182,10 +182,10 @@ use Joomla\CMS\Uri\Uri;
 			    <br>
 			    <?php
 		    echo sportsmanagementHelper::getBootstrapModalImage('matchpicturedelete' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/delete.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DELETE_MATCHPICTURE'), '20', Uri::base() . $pcture_delete, $this->modalwidth, $this->modalheight);
-		    
+		  
                         // diddipoeler einzelsportart
                         if ($this->projectws->project_art_id == 2) {
-$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=".$row->id."&team1=".$row->projectteam1_id."&team2=".$row->projectteam2_id."&rid=".$row->round_id;                            
+$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=".$row->id."&team1=".$row->projectteam1_id."&team2=".$row->projectteam2_id."&rid=".$row->round_id;                          
 echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
                             ?>
 
@@ -552,9 +552,9 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                             } else {
                                 $image = 'icon-16-Referees.png';
                             }
-echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/'.$image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);                    
+echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/'.$image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);                  
                     ?>
-                        
+                      
                     </td>
                     <td style='text-align:center; '>
                         <?php

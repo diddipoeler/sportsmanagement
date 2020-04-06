@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-?>            
+?>          
         <fieldset class="adminform">
             <legend>
                 <?php
@@ -70,7 +70,7 @@ use Joomla\CMS\Language\Text;
                 }
                 ?>
                 <!-- END match legs -->
-                
+              
                 <!-- Bonus points -->
                 <tr>
                     <td class="key">

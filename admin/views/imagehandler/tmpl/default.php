@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    HTMLHelper::_('behavior.mootools');    
+    HTMLHelper::_('behavior.mootools');  
 }
 
 ?>

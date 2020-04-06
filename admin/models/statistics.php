@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelStatistics
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,15 +29,15 @@ use Joomla\CMS\MVC\Model\ListModel;
 class sportsmanagementModelStatistics extends ListModel
 {
     var $_identifier = "statistics";
-    
+  
     /**
      * sportsmanagementModelStatistics::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.name',
                         'obj.short',
@@ -51,7 +51,7 @@ class sportsmanagementModelStatistics extends ListModel
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -69,17 +69,17 @@ class sportsmanagementModelStatistics extends ListModel
         $this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
         $this->setState('filter.sports_type', $temp_user_request);
-        
+      
         $value = Factory::getApplication()->input->getUInt('limitstart', 0);
         $this->setState('list.start', $value);
 
         // List state information.
         parent::populateState('obj.name', 'asc');
     }
-    
+  
     /**
      * sportsmanagementModelStatistics::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -93,8 +93,8 @@ class sportsmanagementModelStatistics extends ListModel
         // Create a new query object.
         $db        = $this->getDbo();
         $query    = $db->getQuery(true);
-        $user    = Factory::getUser(); 
-        
+        $user    = Factory::getUser();
+      
         // Select some fields
         $query->select('obj.*');
         // From table
@@ -105,8 +105,8 @@ class sportsmanagementModelStatistics extends ListModel
         // Join over the users for the checked out user.
         $query->select('uc.name AS editor');
         $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        
-        
+      
+      
         if ($this->getState('filter.search')) {
             $query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
         }
@@ -121,10 +121,10 @@ class sportsmanagementModelStatistics extends ListModel
             $db->escape($this->getState('list.ordering', 'obj.name')).' '.
             $db->escape($this->getState('list.direction', 'ASC'))
         );
-       
+     
         return $query;
     }
-    
+  
     /**
     * Method to return the position stats array (value,text)
     *
@@ -139,7 +139,7 @@ class sportsmanagementModelStatistics extends ListModel
         // Create a new query object.
         $db = sportsmanagementHelper::getDBConnection();
         $query    = $db->getQuery(true);
-        
+      
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
         $query->from('#__sportsmanagement_statistic AS s');
         $query->join('INNER', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id ');
@@ -148,10 +148,10 @@ class sportsmanagementModelStatistics extends ListModel
         $query->order('ps.ordering ASC');
 
         $db->setQuery($query);
-        
+      
         return $db->loadObjectList();
     }
-    
+  
     /**
     * Method to return the stats not yet assigned to position (value,text)
     *
@@ -175,11 +175,11 @@ class sportsmanagementModelStatistics extends ListModel
         $db->setQuery($query);
         return $db->loadObjectList();
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelStatistics::getStatisticListSelect()
-     * 
+     *
      * @return
      */
     public function getStatisticListSelect()

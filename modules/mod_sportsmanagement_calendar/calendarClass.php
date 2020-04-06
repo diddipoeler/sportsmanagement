@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -16,18 +16,18 @@
 //this is the PHP Calendar Class
 
 // PHP Calendar Class Version 1.4 (5th March 2001)
-//  
+//
 // Copyright David Wilkinson 2000 - 2001. All Rights reserved.
-// 
+//
 // This software may be used, modified and distributed freely
-// providing this copyright notice remains intact at the head 
+// providing this copyright notice remains intact at the head
 // of the file.
 //
 // This software is freeware. The author accepts no liability for
-// any loss or damages whatsoever incurred directly or indirectly 
-// from the use of this script. The author of this software makes 
-// no claims as to its fitness for any purpose whatsoever. If you 
-// wish to use this software you should first satisfy yourself that 
+// any loss or damages whatsoever incurred directly or indirectly
+// from the use of this script. The author of this software makes
+// no claims as to its fitness for any purpose whatsoever. If you
+// wish to use this software you should first satisfy yourself that
 // it meets your requirements.
 //
 // URL:   http://www.cascade.org.uk/software/php/calendar/
@@ -40,7 +40,7 @@ class PHPCalendar
 {
 
 
-  
+
     function getDayNames()
     {
         return $this->dayNames;
@@ -63,7 +63,7 @@ class PHPCalendar
     }
     function setStartDay($day)
     {
-        $this->startDay = $day;    
+        $this->startDay = $day;  
     }
     function getStartMonth()
     {
@@ -73,7 +73,7 @@ class PHPCalendar
     {
         $this->startMonth = $month;
     }
-     
+   
     /*
         Return the HTML for a specified month
     */
@@ -81,16 +81,16 @@ class PHPCalendar
     {
         return $this->getMonthHTML($month, $year);
     }
-    
-   
-    
-    
+  
+ 
+  
+  
     /********************************************************************************
-    
+  
         The rest are private methods. No user-servicable parts inside.
-        
+      
         You shouldn't need to call any of these functions directly.
-        
+      
     *********************************************************************************/
 
 
@@ -102,13 +102,13 @@ class PHPCalendar
         if ($month < 1 || $month > 12) {
             return 0;
         }
-   
+ 
         $d = $this->daysInMonth[$month - 1];
-   
+ 
         if ($month == 2) {
             // Check for leap year
             // Forget the 4000 rule, I doubt I'll be around then...
-        
+      
             if ($year%4 == 0) {
                 if ($year%100 == 0) {
                     if ($year%400 == 0) {
@@ -121,7 +121,7 @@ class PHPCalendar
                 }
             }
         }
-    
+  
         return $d;
     }
 
@@ -131,23 +131,23 @@ class PHPCalendar
     */
     function getMonthHTML($m, $y, $showYear = 1)
     {
-      
-        $doc = Factory::getDocument();  
+    
+        $doc = Factory::getDocument();
         $s = "";
-        
+      
         $a = $this->adjustDate($m, $y);
         $month = $a[0];
-        $year = $a[1];        
-        
+        $year = $a[1];      
+      
         $daysInMonth = $this->getDaysInMonth($month, $year);
         $date = getdate(mktime(12, 0, 0, $month, 1, $year));
         $daysInLastMonth = $this->getDaysInMonth(($month-1), $year);
         $first = $date["wday"];
         $monthName = $this->monthNames[$month - 1];
-      
+    
         $prev = $this->adjustDate($month - 1, $year);
         $next = $this->adjustDate($month + 1, $year);
-      
+    
         if ($showYear == 1) {
             $prevMonth = JSMCalendar::getCalendarLink($prev[0], $prev[1]);
             $nextMonth = JSMCalendar::getCalendarLink($next[0], $next[1]);
@@ -168,33 +168,33 @@ class PHPCalendar
         $s .= '<table id="jlctableCalendar-'.$this->modid.'" class="jlcCalendar">'."\n";
         $s .= "   <tr>\n";
         $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR').'" id="jlcprevYear-' . $this->modid 
+           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR').'" id="jlcprevYear-' . $this->modid
            .  '" href="javascript:void(0)" onclick="jlcnewDate('.$month.",". ($year-1).",".$this->modid
            .  ');">&lt;&lt;</a>'  . "</td>\n";
         $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH').'" id="jlcprevMonth-' . $this->modid 
+           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH').'" id="jlcprevMonth-' . $this->modid
            .  '" href="javascript:void(0)" onclick="jlcnewDate('.$prev[0].",". $prev[1].",".$this->modid
            .  ');">&lt;</a>'  . "</td>\n";
         $s .= '<td align="center" class="jlcCalendarHeader jlcheaderDate" colspan="3">'.$header."</td>\n";
         $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH').'" id="jlcnextMonth-' . $this->modid 
+           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH').'" id="jlcnextMonth-' . $this->modid
            .  '" href="'.'javascript:void(0)'.'" onclick="'."jlcnewDate(".$next[0].",". $next[1].",".$this->modid
            .');" >&gt;</a>'  . "</td>\n";
         $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR').'" id="jlcnextYear-' . $this->modid 
+           .  $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR').'" id="jlcnextYear-' . $this->modid
            .  '" href="'.'javascript:void(0)'.'" onclick="'."jlcnewDate(".$month.",". ($year+1).",".$this->modid
            .');" >&gt;&gt;</a>'  . "</td>\n";
         $s .= "</tr>\n";
-      
+    
         $s .= "<tr>\n";
         for($i=0;$i<7;$i++)
         {
-        
+      
             $s .= '<td class="jlcdayName">' . $this->dayNames[($this->startDay+$i)%7] . "</td>\n";
-        
+      
         }
         $s .= "</tr>\n";
-      
+    
         $d = $this->startDay + 1 - $first;
         while ($d > 1)
         {
@@ -205,11 +205,11 @@ class PHPCalendar
           $today = getdate(time());
         //}
         //else{$today = array("year"=>$y,"mon"=>$m,"mday"=>$day);}
-      
     
+  
         while ($d <= $daysInMonth)
         {
-          
+        
             $s .= "<tr>\n";
             for ($i = 0; $i < 7; $i++)
             {
@@ -222,16 +222,16 @@ class PHPCalendar
                     $divid = 'jlcal_' . $year.'-'.$divm.'-'.$divday;
                     $link = JSMCalendar::getDateLink($d, $month, $year);
                     $click = JSMCalendar::getDateClick($d, $month, $year);
-                
+              
                     //echo $link.'<br>';
                     //echo $click.'<br>';
-                
+              
                     $modalrel = '';
                     //$modalrel = ($link == "") ? '' : " rel=\"{handler: 'adopt', adopt:'jlCalList-".$this->modid."_temp'}\"";
                     if($link && $class=="highlight jlcCalendarDay jlcCalendarToday ") {
                         $todaylink=$click;
-                        $s .= $class . 'jlcCalendarTodayLink' . $tdEnd 
-                         . '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid. '"' 
+                        $s .= $class . 'jlcCalendarTodayLink' . $tdEnd
+                         . '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid. '"'
                          . ' href="' . $link . '" onclick="' . $click . '"';
                         $s .= $modalrel . " >$divday</a>";
                     }
@@ -245,17 +245,17 @@ class PHPCalendar
                 }
                 else
                 {
-                    if($d <= 0) { 
+                    if($d <= 0) {
                         $do = ($daysInLastMonth + $d);
                     }
                     else { $do = '0'.($d - $daysInMonth);
                     }
                     $s .= "jlcCalendarDay jlcCalendarDayEmpty " . $tdEnd . "$do";
                 }
-                $s .= "</td>\n";       
+                $s .= "</td>\n";     
                 $d++;
             }
-            $s .= "</tr>\n";    
+            $s .= "</tr>\n";  
         }
 
         $s .= "</table>\n";
@@ -272,40 +272,40 @@ class PHPCalendar
         $output['calendar'] = $s;
         $output['list'] = JSMCalendar::matches_output($m, $y, $d);
         $output['teamslist'] = JSMCalendar::output_teamlist();
-   
+ 
         return $output;
     }
-    
- 
+  
+
     function adjustDate($month, $year)
     {
-        $a = array();  
+        $a = array();
         $a[0] = $month;
         $a[1] = $year;
-        
+      
         while ($a[0] > 12)
         {
             $a[0] -= 12;
             $a[1]++;
         }
-        
+      
         while ($a[0] <= 0)
         {
             $a[0] += 12;
             $a[1]--;
         }
-        
+      
         return $a;
     }
 
 
-    /* 
+    /*
         The start day of the week. This is the day that appears in the first column
         of the calendar. Sunday = 0.
     */
     var $startDay = 0;
 
-    /* 
+    /*
         The start month of the year. This is the month that appears in the first slot
         of the calendar in the year view. January = 1.
     */
@@ -316,21 +316,21 @@ class PHPCalendar
         represents Sunday.
     */
     var $dayNames = array("S", "M", "T", "W", "T", "F", "S");
-    
+  
     /*
         The labels to display for the months of the year. The first entry in this array
         represents January.
     */
     var $monthNames = array("January", "February", "March", "April", "May", "June",
                             "July", "August", "September", "October", "November", "December");
-                            
-                            
+                          
+                          
     /*
         The number of days in each month. You're unlikely to want to change this...
         The first entry in this array represents January.
     */
     var $daysInMonth = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-  
+
     var $modid = "";
     var $ajax = 0;
     var $lightbox = 0;

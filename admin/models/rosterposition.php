@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,16 +20,16 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelrosterposition
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelrosterposition extends JSMModelAdmin
 {
-    
+  
     /**
      * Method to save the form data.
      *
@@ -46,36 +46,36 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
           // Get a db connection.
         $db = Factory::getDbo();
           $post=Factory::getApplication()->input->post->getArray(array());
-    
-    
+  
+  
         if (isset($post['extended']) && is_array($post['extended'])) {
             // Convert the extended field to a string.
             $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string)$parameter;
         }
-    
+  
           // Set the values
         $data['modified'] = $date->toSql();
         $data['modified_by'] = $user->get('id');
            $data['alias'] = OutputFilter::stringURLSafe($data['name']);
-        
+      
           // zuerst sichern, damit wir bei einer neuanlage die id haben
         if (parent::save($data) ) {
             $id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+          
             if ($isNew ) {
                 //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
             }
-           
+         
         }
-        
-           return true;       
-    }    
-    
-    
+      
+           return true;     
+    }  
+  
+  
 }
 ?>

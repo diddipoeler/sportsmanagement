@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -364,7 +364,7 @@ use Joomla\CMS\Factory;
 <h4><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></h4>
 <table class="table table-striped">
 <thead>
-<tr>    
+<tr>  
 <td>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE'); ?>
 </td>
@@ -392,155 +392,155 @@ use Joomla\CMS\Factory;
 foreach ( $this->gesamtspiele as $key => $value )
 {
 ?>
-<tr>    
+<tr>  
 <td>
 <?php
-echo $key;    
-?>    
+echo $key;  
+?>  
 </td>
-<td> 
+<td>
 <?php
-echo $value->gesamtspiele;    
-?>     
+echo $value->gesamtspiele;  
+?>   
 </td>
-<td> 
+<td>
 <?php
-echo $value->gewonnen;    
-?>     
-</td> 
-<td> 
-<?php
-echo $value->unentschieden;    
-?>     
-</td> 
-<td> 
-<?php
-echo $value->verloren;    
-?>     
-</td>     
-<td> 
-<?php
-echo $value->plustore;    
-?>     
+echo $value->gewonnen;  
+?>   
 </td>
-<td> 
+<td>
 <?php
-echo $value->minustore;    
-?>     
+echo $value->unentschieden;  
+?>   
 </td>
-</tr>  
-<?php    
-}    
+<td>
+<?php
+echo $value->verloren;  
+?>   
+</td>   
+<td>
+<?php
+echo $value->plustore;  
+?>   
+</td>
+<td>
+<?php
+echo $value->minustore;  
+?>   
+</td>
+</tr>
+<?php  
+}  
 ?>
 </table>
-    
+  
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
-<div class="panel-group" id="countresult">    
+<div class="panel-group" id="countresult">  
 
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
 <a data-toggle="collapse" data-parent="#countresult" href="#countall"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></a>
 </h4>
-</div>  
+</div>
 <div id="countall" class="panel-collapse collapse">
 <div class="panel-body">
 <table class="table <?php echo $this->config['table_class'] ?>">
-<?php    
-ksort($this->statgames['gesamt']);    
+<?php  
+ksort($this->statgames['gesamt']);  
 foreach ( $this->statgames['gesamt'] as $key => $value )
 {
 ?>
-<tr>    
+<tr>  
 <td>
 <?php
-echo $key;    
-?>    
+echo $key;  
+?>  
 </td>
-<td> 
+<td>
 <?php
-echo $value;    
-?>     
-</td>    
-</tr>    
-<?php    
+echo $value;  
+?>   
+</td>  
+</tr>  
+<?php  
 }
-?>    
-</table>  
+?>  
+</table>
 </div>
 </div>
 </div>
 
-    
+  
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
 <a data-toggle="collapse" data-parent="#countresult" href="#counthome"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></a>
 </h4>
-</div>  
+</div>
 <div id="counthome" class="panel-collapse collapse">
-<div class="panel-body">    
+<div class="panel-body">  
 <table class="table <?php echo $this->config['table_class'] ?>">
-<?php    
-ksort($this->statgames['home']);    
+<?php  
+ksort($this->statgames['home']);  
 foreach ( $this->statgames['home'] as $key => $value )
 {
 ?>
-<tr>    
+<tr>  
 <td>
 <?php
-echo $key;    
-?>    
+echo $key;  
+?>  
 </td>
-<td> 
+<td>
 <?php
-echo $value;    
-?>     
-</td>    
-</tr>    
-<?php    
+echo $value;  
+?>   
+</td>  
+</tr>  
+<?php  
 }
-?>    
-</table>      
+?>  
+</table>    
 </div>
 </div>
-</div>    
-    
+</div>  
+  
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
 <a data-toggle="collapse" data-parent="#countresult" href="#countaway"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></a>
 </h4>
-</div>  
+</div>
 <div id="countaway" class="panel-collapse collapse">
-<div class="panel-body">    
+<div class="panel-body">  
 <table class="table <?php echo $this->config['table_class'] ?>">
-<?php    
-ksort($this->statgames['away']);    
+<?php  
+ksort($this->statgames['away']);  
 foreach ( $this->statgames['away'] as $key => $value )
 {
 ?>
-<tr>    
+<tr>  
 <td>
 <?php
-echo $key;    
-?>    
+echo $key;  
+?>  
 </td>
-<td> 
+<td>
 <?php
-echo $value;    
-?>     
-</td>    
-</tr>    
-<?php    
+echo $value;  
+?>   
+</td>  
+</tr>  
+<?php  
 }
-?>    
-</table>      
+?>  
+</table>    
 </div>
 </div>
-</div>      
-    
 </div>    
+  
+</div>  
 </div>
 <!-- Main END -->
 <br/>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,10 +22,10 @@ $fieldsets = $this->form->getFieldsets();
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?>
 </legend>
 <table class="admintable">
-<?php 
-                    
+<?php
+                  
 foreach ($this->form->getFieldset('details') as $field):
-                    
+                  
     if ($field->type == 'Radio' ) {
     }
 ?>
@@ -33,6 +33,6 @@ foreach ($this->form->getFieldset('details') as $field):
 <td class="key"><?php echo $field->label; ?></td>
 <td><?php echo $field->input; ?></td>
 </tr>					
-<?php endforeach; ?>    
+<?php endforeach; ?>  
 </table>
-</fieldset> 
+</fieldset>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ echo "".HTMLHelper::_('select.genericlist', $this->lists['fromteamart'], 'teamar
 </td>
 <td>
 <?PHP
-echo "".HTMLHelper::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel', 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel)."";                
+echo "".HTMLHelper::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel', 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel)."";              
 ?>
 </td>
 </tr>
@@ -57,7 +57,7 @@ echo "".HTMLHelper::_('select.genericlist', $this->lists['type'], 'type', 'class
 if ($this->club ) {
     $picture = $this->club->logo_big;
     if (!sportsmanagementHelper::existPicture($picture) ) {
-        $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+        $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');  
     }
     echo sportsmanagementHelperHtml::getBootstrapModalImage(
         'clplan'.$this->club->id,

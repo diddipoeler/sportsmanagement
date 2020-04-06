@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewTeamPlan
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,21 +31,21 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
     /**
      * sportsmanagementViewTeamPlan::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-            
+          
         $this->document->addScript(Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js');
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
-        
+      
         sportsmanagementHelperHtml::$project = $this->project;
-        
+      
         if ($this->config['show_date_image'] ) {
             $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/calendar.css');
-        }    
-        
+        }  
+      
         if (isset($this->project)) {
             $this->rounds = sportsmanagementModelProject::getRounds($this->config['plan_order'], sportsmanagementModelTeamPlan::$cfg_which_database);
             $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelTeamPlan::$cfg_which_database);
@@ -57,7 +57,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
             $this->matches_refering = sportsmanagementModelTeamPlan::getMatchesRefering($this->config);
             $this->matchesperround = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config, $this->rounds);
         }
-   
+ 
         // Set page title
         if (empty($this->ptid)) {
             $pageTitle = (!empty($this->project->id)) ? $this->project->name : '';
@@ -71,7 +71,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
             }
         }
         $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE', $pageTitle));
-       
+     
         if (!isset($this->config['table_class']) ) {
             $this->config['table_class'] = 'table';
         }
@@ -94,9 +94,9 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
         $result = '';
 
         if ($this->config['use_tabs_events'] ) {
-            $iPanel = 1; 
-              $selector = 'teamplan'; 
-              echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'panel'.$iPanel)); 
+            $iPanel = 1;
+              $selector = 'teamplan';
+              echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'panel'.$iPanel));
 
             // Size of the event icons in the tabs (when used)
             $width = 20; $height = 20; $type = 4;
@@ -117,7 +117,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
                 }
                 if($cnt==0) {continue;
                 }
-                
+              
                 if ($this->config['show_events_with_icons'] == 1) {
                     // Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
                     $imgTitle = Text::_($event->name);
@@ -235,11 +235,11 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
         return $output;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementViewTeamPlan::_formatEventContainerInResults()
-     * 
+     *
      * @param  mixed $matchevent
      * @param  mixed $event
      * @param  mixed $projectteamId
@@ -267,7 +267,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
             $event_minute = str_pad($matchevent->event_time, 2, '0', STR_PAD_LEFT);
             if ($this->config['show_event_minute'] && $matchevent->event_time > 0) {
                 $output .= '<b>'.$event_minute.'\'</b> ';
-            } 
+            }
 
             if ($showEventInfo == 2) {
                 $output .= Text::_($event->name).' ';
@@ -280,7 +280,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
             {
                 $output .= Text :: _('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
             }
-            
+          
             // only show event sum and match notice when set to on in template cofig
             if($this->config['show_event_sum'] || $this->config['show_event_notice'] == 1) {
                 if (( $this->config['show_event_sum'] && $matchevent->event_sum > 0) || ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0)) {
@@ -297,7 +297,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
                     $output .= ')';
                 }
             }
-            
+          
             $output .= '</li>';
         }
         return $output;
@@ -305,7 +305,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
     /**
      * sportsmanagementViewTeamPlan::_formatSubstitutionContainerInResults()
-     * 
+     *
      * @param  mixed $subs
      * @param  mixed $projectteamId
      * @param  mixed $imgTime

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default_results.php
@@ -51,10 +51,10 @@ break;
 </div>
 <!-- Main END -->
 <?php
-if ( $this->config['show_dnp_teams'] ) 
-{ 
-echo $this->loadTemplate('freeteams'); 
+if ( $this->config['show_dnp_teams'] )
+{
+echo $this->loadTemplate('freeteams');
 }
-        
+      
 }
 ?>

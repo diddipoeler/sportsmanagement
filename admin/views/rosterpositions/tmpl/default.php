@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ $ordering=($this->sortColumn == 'obj.ordering');
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-    
+  
 <?PHP
 // welche joomla version ?
 if(version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -33,7 +33,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 echo $this->loadTemplate('data');

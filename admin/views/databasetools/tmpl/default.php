@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 ?>
 
@@ -59,13 +59,13 @@ else
                 </tr>
             </tfoot>
             <tbody>
-            
+          
             <tr>
                     <td class="nowrap" valign="top">
         <?php
         $link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate');
         ?>
-                        
+                      
                         <a href="<?php echo $link; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2'); ?>">
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE');
@@ -78,13 +78,13 @@ else
         ?>
                     </td>
                 </tr>
-                
+              
                 <tr>
                     <td class="nowrap" valign="top">
         <?php
         $link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl');
         ?>
-                        
+                      
                         <a href="<?php echo $link; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL'); ?>">
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL');
@@ -97,7 +97,7 @@ else
         ?>
                     </td>
                 </tr>
-                
+              
                 <tr>
                     <td class="nowrap" valign="top">
         <?php
@@ -121,7 +121,7 @@ else
         <?php
                         $link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair');
         ?>
-                        
+                      
                             <a href="<?php echo $link; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2'); ?>">
                             <?php
                             echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR');
@@ -134,13 +134,13 @@ else
         ?>
                     </td>
                 </tr>
-                
+              
                 <tr>
                     <td class="nowrap" valign="top">
         <?php
         $link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath');
         ?>
-                        
+                      
                         <a  href="<?php echo $link; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2'); ?>">
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION');
@@ -153,13 +153,13 @@ else
         ?>
                     </td>
                 </tr>
-                
+              
                 <tr>
                     <td class="nowrap" valign="top">
         <?php
         $link = Route::_('index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters');
         ?>
-                        
+                      
                         <a  href="<?php echo $link; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2'); ?>">
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS');
@@ -184,4 +184,4 @@ else
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

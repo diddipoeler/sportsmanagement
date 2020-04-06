@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,22 +18,22 @@ use Joomla\CMS\Factory;
 $startfade = $this->config['roster_playground_player_fade'];
 
 if ($this->config['roster_playground_player_jquery_fade'] ) {
-    $div_display ="none";    
+    $div_display ="none";  
 ?>
 <script>
 jQuery(document).ready(function() {
-setTimeout(function(){    
+setTimeout(function(){  
 <?php
 foreach ($this->matchplayers as $player)
 {
-?>    
+?>  
 jQuery("#<?PHP echo $player->person_id; ?>").delay(<?PHP echo $startfade; ?>).slideToggle("slow");
 <?php
-$startfade += $this->config['roster_playground_player_fade'];    
-}    
+$startfade += $this->config['roster_playground_player_fade'];  
+}  
 ?>
 }, 2000);
-});    
+});  
 </script>
 <?php
 }
@@ -195,7 +195,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     $this->modalwidth,
     $this->modalheight,
     $this->overallconfig['use_jquery_modal']
-);     
+);   
 ?>
 
 
@@ -204,7 +204,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 }
 
 if ($schemaguest ) {
-    
+  
 ?>
 <div style="position:absolute; width:103px; left:0px; top:950px; text-align:center;">
 
@@ -219,8 +219,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     '',
     $this->modalwidth,
     $this->modalheight,
-    $this->overallconfig['use_jquery_modal']                               
-);  
+    $this->overallconfig['use_jquery_modal']                             
+);
 ?>
 
 
@@ -266,9 +266,9 @@ if ($schemahome ) {
         '',
         $this->modalwidth,
         $this->modalheight,
-        $this->overallconfig['use_jquery_modal']                               
-    );    
-    
+        $this->overallconfig['use_jquery_modal']                             
+    );  
+  
     if ($this->config['show_player_profile_link'] ) {
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -276,14 +276,14 @@ if ($schemahome ) {
         $routeparameter['p'] = $this->project->slug;
         $routeparameter['tid'] = $player->team_slug;
         $routeparameter['pid'] = $player->person_slug;
-        $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);    
+        $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);  
     ?>
     <a class="link" href="<?php echo $player_link; ?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
 <?php
-    } 
-                ?> 
+    }
+                ?>
                 </div>
-                                      
+                                    
                 <?PHP
                 $testlauf++;
                 }
@@ -310,7 +310,7 @@ if ($schemaguest ) {
             }
         }
 
-        if ($personCount > 0) {            
+        if ($personCount > 0) {          
 
             foreach ($this->matchplayers as $player)
             {
@@ -335,8 +335,8 @@ if ($schemaguest ) {
         '',
         $this->modalwidth,
         $this->modalheight,
-        $this->overallconfig['use_jquery_modal']                               
-    );    
+        $this->overallconfig['use_jquery_modal']                             
+    );  
 
     if ($this->config['show_player_profile_link'] ) {
         $routeparameter = array();
@@ -345,14 +345,14 @@ if ($schemaguest ) {
         $routeparameter['p'] = $this->project->slug;
         $routeparameter['tid'] = $player->team_slug;
         $routeparameter['pid'] = $player->person_slug;
-        $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);    
+        $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);  
     ?>
     <a class="link" href="<?php echo $player_link;?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
 <?php
-    }    
-                ?>    
+    }  
+                ?>  
                 </div>
-                                      
+                                    
                 <?PHP
                 $testlauf++;
                 }
@@ -361,7 +361,7 @@ if ($schemaguest ) {
 
         }
 
-    }    
+    }  
 
 }
 ?>
@@ -370,9 +370,9 @@ if ($schemaguest ) {
 </tr>
 </table>
 
-<?PHP 
+<?PHP
 
-                            
+                          
 echo "</div>";
 echo "</div>";
 

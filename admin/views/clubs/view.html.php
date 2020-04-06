@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,32 +23,32 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewClubs
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewClubs::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-    
+  
         $inputappend = '';
         $this->search_nation = '';
         $this->association = '';
         $this->table = Table::getInstance('club', 'sportsmanagementTable');
-        
+      
         /**
-* 
- * build the html select list for seasons 
+*
+ * build the html select list for seasons
 */
         $seasons[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
@@ -66,17 +66,17 @@ class sportsmanagementViewClubs extends sportsmanagementView
         );
 
         unset($seasons);
-       
+     
         /**
-* 
- * build the html options for nation 
+*
+ * build the html options for nation
 */
         $nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
         if ($res = JSMCountries::getCountryOptions()) {
                $nation = array_merge($nation, $res);
                $this->search_nation = $res;
         }
-        
+      
         $lists['nation'] = $nation;
         $lists['nation2'] = JHtmlSelect::genericlist(
             $nation,
@@ -93,9 +93,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
         }
         $this->lists = $lists;
 
-        
+      
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
@@ -104,19 +104,19 @@ class sportsmanagementViewClubs extends sportsmanagementView
     protected function addToolbar()
     {
         /**
-* 
-  * Set toolbar items for the page 
+*
+  * Set toolbar items for the page
 */
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
         ToolbarHelper::apply('clubs.saveshort');
-        
+      
         ToolbarHelper::divider();
         ToolbarHelper::addNew('club.add');
         ToolbarHelper::editList('club.edit');
         ToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::archiveList('club.export', Text::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
-        
+      
     }
 }
 ?>

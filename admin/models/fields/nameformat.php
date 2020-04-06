@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Factory;
 
 /**
  * FormFieldNameFormat
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -34,10 +34,10 @@ class JFormFieldNameFormat extends FormField
 
     /**
      * FormFieldNameFormat::getInput()
-     * 
+     *
      * @return
      */
-    function getInput() 
+    function getInput()
     {
         $lang = Factory::getLanguage();
         $extension = "com_sportsmanagement";
@@ -46,7 +46,7 @@ class JFormFieldNameFormat extends FormField
         ||    $lang->load($extension, $source, null, false, false)
         ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
         ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
-        
+      
         $mitems = array();
         $mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
         $mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
@@ -67,11 +67,11 @@ class JFormFieldNameFormat extends FormField
         $mitems[] = HTMLHelper::_('select.option', 16, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NEWLINE_LAST'));
         $mitems[] = HTMLHelper::_('select.option', 17, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
         $mitems[] = HTMLHelper::_('select.option', 18, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
-        
+      
         $output= HTMLHelper::_(
             'select.genericlist',  $mitems,
             $this->name,
-            'class="inputbox" size="1"', 
+            'class="inputbox" size="1"',
             'value', 'text', $this->value, $this->id
         );
         return $output;

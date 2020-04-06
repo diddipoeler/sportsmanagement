@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -15,7 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Form\FormRule;
- 
+
 /**
  * Form Rule class for the Joomla Framework.
  */
@@ -29,7 +29,7 @@ class JFormRuleTime extends FormRule
      * @since  2.5
      */
     protected $regex = '^[0-9]{1,2}:[0-9]{1,2}$';
-    
+  
     public function test(SimpleXMLElement &$element, $value, $group = null, &$input = null, &$form = null)
     {
         if ($value == null or $value == '') {

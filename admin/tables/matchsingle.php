@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,16 +17,16 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTableMatchSingle
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementTableMatchSingle extends JSMTable
 {
-    
+  
     /**
      * Constructor
      *
@@ -54,7 +54,7 @@ class sportsmanagementTableMatchSingle extends JSMTable
         if (!is_numeric($this->team2_result_decision)) {
             $this->team2_result_decision = null;
         }
-        
+      
         return true;
     }
 

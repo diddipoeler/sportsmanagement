@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -30,7 +30,7 @@ use Joomla\CMS\Language\Text;
 
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="well well-small">        
+                        <div class="well well-small">      
                             <div id="dashboard-icons" class="btn-group">
 
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=predictiongames">
@@ -49,7 +49,7 @@ use Joomla\CMS\Language\Text;
                                     <img src="components/com_sportsmanagement/assets/icons/tippspieltemplates.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES') ?>" /><br />
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES') ?></span>
                                 </a>
-                            </div>        
+                            </div>      
                         </div>
                     </div>
                     <div class="span3">

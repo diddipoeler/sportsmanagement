@@ -28,12 +28,12 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelEvent extends BaseDatabaseModel
 {
 
-    public function getGCalendar() 
+    public function getGCalendar()
     {
         $app = Factory::getApplication();
-        
+      
         $results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
-       
+     
         if (empty($results) || Factory::getApplication()->input->getVar('eventID', null) == null) {
             return null;
         }
@@ -41,7 +41,7 @@ class sportsmanagementModelEvent extends BaseDatabaseModel
         return jsmGCalendarZendHelper::getEvent($results[0], Factory::getApplication()->input->getVar('eventID', null));
     }
 
-    protected function populateState() 
+    protected function populateState()
     {
         $app = Factory::getApplication();
 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -32,16 +32,16 @@ if (!empty($this->matchcommentary)) {
             </td>
         </tr>
     </table>
-    
+  
 <table class="table table-responsive" >
     <?php
     foreach ( $this->matchcommentary as $commentary )
     {
-                
+              
                 echo $farbe = ($farbe == '<tr class="weiss">') ? '<tr class="grau">' : '<tr class="weiss">';
                 ?>
-                
-                
+              
+              
        <td class="list">
         <dl>
             <?php echo $commentary->event_time; ?>
@@ -49,8 +49,8 @@ if (!empty($this->matchcommentary)) {
        </td>
                     <td class="list">
         <dl>
-            <?php 
-                            echo HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
+            <?php
+                            echo HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'));
                             ?>
         </dl>
        </td>
@@ -63,8 +63,8 @@ if (!empty($this->matchcommentary)) {
         <?php
     }
     ?>
-</table>        
-<?PHP    
-}    
+</table>      
+<?PHP  
+}  
 
 ?>

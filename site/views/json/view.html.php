@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ jimport('joomla.html.html');
 class sportsmanagementViewjson extends JViewLegacy
 {
     // Overwriting JViewLegacy display method
-    function display($tpl = null) 
+    function display($tpl = null)
     {
         $app        = Factory::getApplication();
         $params        = $app->getParams();

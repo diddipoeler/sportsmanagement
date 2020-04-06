@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -68,13 +68,13 @@ foreach ($persons AS $person) {
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
     }
-    
+  
     $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
     $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
     $usedname = $flag . $text;
     $params_com = ComponentHelper::getParams('com_sportsmanagement');
     $usefontawesome = $params_com->get('use_fontawesome');
-    
+  
     $showname = HTMLHelper::link($person_link, $usedname);
     ?>
     <div class="card">
@@ -91,20 +91,20 @@ foreach ($persons AS $person) {
             }
             echo ' /><br />';
         }
-        ?>                            
+        ?>                          
 
         <div class="name">
             <?php
             if ($params->get('show_player_flag') == 1) {
-                echo JSMCountries::getCountryFlag($person['country']). " " . $text;                    
+                echo JSMCountries::getCountryFlag($person['country']). " " . $text;                  
             } else {
-                echo $text;                
-            }           
+                echo $text;              
+            }         
             ?>
         </div>
 
         <div class="position">
-            <?php echo Text::_($person['position_name']); ?> 
+            <?php echo Text::_($person['position_name']); ?>
             <br />
             <?php echo $person['team_name']; ?></div>
         <div class="birthday-text">
@@ -114,7 +114,7 @@ foreach ($persons AS $person) {
         <div class="player-info">
             <a href="<?php echo $person_link; ?>" >
                 <?php if($usefontawesome) {
-                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
+                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';              
 }?>
                 <?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
             </a>

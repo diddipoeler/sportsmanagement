@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,12 +24,12 @@ HTMLHelper::_('behavior.tooltip');
 
 <style type="text/css">
 
-.pred_ranking ul { 
-    list-style: none; 
-} 
-.pred_ranking ul li { 
-    display: inline; 
-} 
+.pred_ranking ul {
+    list-style: none;
+}
+.pred_ranking ul li {
+    display: inline;
+}
 </style>
 
 
@@ -65,11 +65,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
          <input type='hidden' name='task' value='predictionresults.selectprojectround' />
-            
+          
             <?php echo HTMLHelper::_('form.token'); ?>
       <!--
       Responsive tables
-      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
       When viewing on anything larger than 768px wide, you will not see any difference in these tables.
       -->
       <div class="table-responsive">
@@ -80,24 +80,24 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             echo '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
             ?>
            </td>
-                    
+                  
                     <?php
                     $round_ids = '';
                     if ($this->config['use_pred_select_rounds'] ) {
                         $round_ids = $this->config['predictionroundid'];
                     }
-                    
+                  
                     $rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id, 'ASC', false, $round_ids);
-                        
+                      
                         $groups = sportsmanagementModelPrediction::getPredictionGroupList();
 
                     $htmlRoundsOptions = HTMLHelper::_('select.genericList', $rounds, 'r', 'class="inputbox" onchange="this.form.submit(); "', 'value', 'text', sportsmanagementModelPrediction::$roundID);
-                        
+                      
                         $predictionGroups[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'), 'value', 'text');
                         $predictionGroups = array_merge($predictionGroups, $groups);
                         $htmlGroupOptions = HTMLHelper::_('select.genericList', $predictionGroups, 'pggroup', 'class="inputbox" onchange="this.form.submit(); "', 'value', 'text', sportsmanagementModelPrediction::$pggroup);
-            
-           
+          
+         
                     echo Text::sprintf(
                         'COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
                         '<td>'.$htmlRoundsOptions.'</td>',
@@ -105,7 +105,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                         '<td>'.$htmlGroupOptions.'</td>'
                     );
             ?>
-                    
+                  
            <td >
                         <?PHP
                         echo '&nbsp;&nbsp;';
@@ -118,7 +118,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                         $routeparameter['mode'] = 0;
                         $routeparameter['order'] = '';
                         $routeparameter['layout'] = '';
-                        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);            
+                        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);          
 
                         $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
                         $desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0,'title' => $imgTitle));
@@ -137,43 +137,43 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
           </p>
             <?php echo $this->pagination->getPagesLinks(); ?>
       </div>
-    
-      </tfoot>  
-                
+  
+      </tfoot>
+              
          </table>
             </div>
             <br />
         </form>
       <!--
       Responsive tables
-      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
       When viewing on anything larger than 768px wide, you will not see any difference in these tables.
       -->
-           <div class="table-responsive">        
+           <div class="table-responsive">      
         <table class="<?PHP echo $this->config['table_class']; ?> <?PHP echo $this->config['table_class_responsive']; ?>">
            <thead>
          <tr>
-            <?php 
-                $tdClassStr = "style='text-align:center; vertical-align:middle; '"; 
+            <?php
+                $tdClassStr = "style='text-align:center; vertical-align:middle; '";
                 ?>
           <th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
             <?php
-                
+              
             if ($this->config['show_user_icon']) {
             ?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
             }
-                
+              
             ?>
           <th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
         <?php
         if ($this->config['show_pred_group']) {
         ?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
         }
-                
+              
         $match_ids = null;
                 $round_ids = null;
                 $proteams_ids = null;
-                
+              
         // nur spiele zum tippen ?
         if ($this->config['use_pred_select_matches'] ) {
             $match_ids = $this->config['predictionmatchid'];
@@ -181,24 +181,24 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         // nur spieltage tippen ?
         if ($this->config['use_pred_select_rounds'] ) {
             $round_ids = $this->config['predictionroundid'];
-        }  
+        }
          // nur bestimmte mannschaften tippen ?
         if ($this->config['use_pred_select_proteams'] ) {
             $proteams_ids = $this->config['predictionproteamid'];
         }
-        
       
+    
            // hier holen wir uns die spiele zu dem projekt und der runde
         $roundMatchesList = sportsmanagementModelPredictionResults::getMatches($this->roundID, $predictionProject->project_id, $match_ids, $round_ids, $proteams_ids, $this->config['show_logo_small_overview']);
-            
+          
         foreach ($roundMatchesList AS $match)
         {
             ?>
          <th <?php echo $tdClassStr; ?> >
             <?php
              // clublogo oder vereinsflagge
-                        
-                        
+                      
+                      
                         switch($this->config['show_logo_small_overview'])
                         //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
                         {
@@ -207,10 +207,10 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             case 'logo_big':
                 // bild ist nicht vorhanden, dann das standardbild
                 if (!sportsmanagementHelper::existPicture($match->homeLogo) ) {
-                    $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+                    $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");  
                 }
-                //echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,$match->homeLogo,$match->homeName,'20');                               
-                            
+                //echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,$match->homeLogo,$match->homeName,'20');                             
+                          
                 echo sportsmanagementHelperHtml::getBootstrapModalImage(
                     'predresult' . $match->homeid,
                     $match->homeLogo,
@@ -220,8 +220,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                     $this->modalwidth,
                     $this->modalheight,
                     $this->config['use_jquery_modal']
-                );                          
-?>                                    
+                );                        
+?>                                  
 
 <?PHP
 //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
@@ -229,8 +229,8 @@ if ($this->config['show_team_names'] == 1 ) {
     echo $match->homeShortName.'<br />';
 }
                 break;
-                        
-            case 'country_flag':    
+                      
+            case 'country_flag':  
                 //if ( $this->config['show_logo_small_overview'] == 2 )
                 //{
                 echo JSMCountries::getCountryFlag($match->homeCountry).'<br />';
@@ -239,17 +239,17 @@ if ($this->config['show_team_names'] == 1 ) {
                 }
                 break;
                         }
-                        
+                      
                         $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
                         $outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
                         $outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
-                        
+                      
             ?>
                         <span class='hasTip' title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT', $match->homeName, $match->awayName, $outputStr); ?>"><?php echo $outputStr; ?></span>
                         <br />
                         <?php
-                        
-                        
+                      
+                      
                         switch($this->config['show_logo_small_overview'])
                         //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
                         {
@@ -258,7 +258,7 @@ if ($this->config['show_team_names'] == 1 ) {
                         case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
                             if (!sportsmanagementHelper::existPicture($match->awayLogo) ) {
-                                $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+                                $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");  
                             }
                             //echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,$match->awayLogo,$match->awayName,'20');
                             echo sportsmanagementHelperHtml::getBootstrapModalImage(
@@ -270,17 +270,17 @@ if ($this->config['show_team_names'] == 1 ) {
                                 $this->modalwidth,
                                 $this->modalheight,
                                 $this->config['use_jquery_modal']
-                            );                      
-                    
-                        ?>                                    
-                            
+                            );                    
+                  
+                        ?>                                  
+                          
                         <?PHP
                         //echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
                         if ($this->config['show_team_names'] == 1 ) {
                             echo $match->awayShortName.'<br />';
                         }
                             break;
-                        
+                      
                         case 'country_flag':
                             //if ( $this->config['show_logo_small_overview'] == 2 )
                             //{
@@ -290,7 +290,7 @@ if ($this->config['show_team_names'] == 1 ) {
                             }
                             break;
                         }
-                        
+                      
                 ?>
                 </th>
             <?php
@@ -309,35 +309,35 @@ if ($this->config['show_team_names'] == 1 ) {
          </tr>
             </thead>
             <?php
-            
-            
-            
+          
+          
+          
             $k = 0;
             $tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
 
             // verlegt in die view.htm.php
             //$memberList = $this->model->getPredictionMembersList($this->config,$this->configavatar);
-            
+          
             //$memberResultsList = $this->model->getPredictionMembersResultsList($predictionProject->project_id,$this->roundID);
 
             $membersResultsArray = array();
             $membersDataArray = array();
             $membersMatchesArray = array();
 
-      
-                
+    
+              
             foreach ($this->memberList AS $member)
             {
-            
-        
-                
+          
+      
+              
                 $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(
                     $predictionProject->project_id,
                     $this->roundID,
                     $this->roundID,
                     $member->user_id
                 );
-        
+      
 
 
                 $memberPredictionPointsCount=0;
@@ -352,14 +352,14 @@ if ($this->config['show_team_names'] == 1 ) {
                 if (!empty($memberPredictionPoints)) {
                     foreach ($memberPredictionPoints AS $memberPredictionPoint)
                      {
-                        if ((!is_null($memberPredictionPoint->homeResult)) 
-                            || (!is_null($memberPredictionPoint->awayResult)) 
-                            || (!is_null($memberPredictionPoint->homeDecision)) 
+                        if ((!is_null($memberPredictionPoint->homeResult))
+                            || (!is_null($memberPredictionPoint->awayResult))
+                            || (!is_null($memberPredictionPoint->homeDecision))
                             || (!is_null($memberPredictionPoint->awayDecision))
                         ) {
-                        
+                      
 
-                    
+                  
                             $predictionsCount++;
                             $result = sportsmanagementModelPrediction::createResultsObject(
                                 $memberPredictionPoint->homeResult,
@@ -397,30 +397,30 @@ if ($this->config['show_team_names'] == 1 ) {
                         }
 
 
-                        
+                      
                         $memberPredictionOutput = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 
                             $matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date, 1, $predictionProjectSettings->timezone);
                             $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
                         $predMemberId = explode(":", $this->predictionMember->pmID);
-                        
+                      
                         /*$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
                          (!is_null($memberPredictionPoint->homeResult)) ||
                          (!is_null($memberPredictionPoint->awayResult)) ||
                          (!is_null($memberPredictionPoint->homeDecision)) ||
                          (!is_null($memberPredictionPoint->awayDecision)) ||
                          ($this->predictionMember->pmID==$member->pmID));*/
-                        
+                      
                         $showAllowed = (($thisTimeDate >= $matchTimeDate) ||
                                            (!is_null($memberPredictionPoint->homeResult)) ||
                                            (!is_null($memberPredictionPoint->awayResult)) ||
                                            (!is_null($memberPredictionPoint->homeDecision)) ||
                                            (!is_null($memberPredictionPoint->awayDecision)) ||
                                             $predMemberId[0] == $member->pmID);
-                        
+                      
 
                         if ($showAllowed) {
-                            
+                          
                                    // anzeige ändern bei normaler tipeingabe und toto-tip
                             if ($predictionProject->mode == 0 ) {
                                 $memberPredictionOutput = $memberPredictionPoint->prHomeTipp.$this->config['seperator'].$memberPredictionPoint->prAwayTipp;
@@ -431,9 +431,9 @@ if ($this->config['show_team_names'] == 1 ) {
 
 
 
-                            if ((!is_null($memberPredictionPoint->homeResult)) 
-                                || (!is_null($memberPredictionPoint->awayResult)) 
-                                || (!is_null($memberPredictionPoint->homeDecision)) 
+                            if ((!is_null($memberPredictionPoint->homeResult))
+                                || (!is_null($memberPredictionPoint->awayResult))
+                                || (!is_null($memberPredictionPoint->homeDecision))
                                 || (!is_null($memberPredictionPoint->awayDecision))
                             ) {
                                    $points = $memberPredictionPoint->prPoints;
@@ -450,7 +450,7 @@ if ($this->config['show_team_names'] == 1 ) {
                         {
                                  $memberPredictionOutput = '- '.$this->config['seperator'].' -';
                         }
-                        
+                      
                         if ($memberPredictionPoint->prJoker) {
                             $memberPredictionOutput .= '<sub style="color: red;">*</sub>';
                         }
@@ -470,31 +470,31 @@ if ($this->config['show_team_names'] == 1 ) {
                 $membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
                 $membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
                 $membersResultsArray[$member->pmID]['membernameAtoZ'] = $member->name;
-                
+              
                 // check all needed output for later
                 {
                 $picture = $member->avatar;
-                    
+                  
                 if ($member->aliasName ) {
                      $member->name = $member->aliasName;
                 }
-          
+        
                 $playerName = $member->name;
                 $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
                     $membersDataArray[$member->pmID]['pg_group_id']    = $member->pg_group_id;
-                    
-                if (((!isset($member->avatar)) 
-                    || ($member->avatar=='') 
-                    || (!file_exists($member->avatar)) 
+                  
+                if (((!isset($member->avatar))
+                    || ($member->avatar=='')
+                    || (!file_exists($member->avatar))
                     || ((!$member->show_profile) && ($this->predictionMember->pmID!=$member->pmID)))
                 ) {
                        $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
-            
+          
                 //$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
-                $output = HTMLHelper::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['show_user_icon_width'] ));                    
+                $output = HTMLHelper::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['show_user_icon_width'] ));                  
                 $membersDataArray[$member->pmID]['show_user_icon'] = $output;
-                
+              
                 if (( $this->config['link_name_to'] ) && (($member->show_profile)||($this->predictionMember->pmID==$member->pmID))) {
                     $link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID, $member->pmID);
                     $output = HTMLHelper::link($link, $member->name);
@@ -508,12 +508,12 @@ if ($this->config['show_team_names'] == 1 ) {
             }
 
 
-            
+          
             $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray, $this->config);
             $recordCount = count($computedMembersRanking);
-            
+          
 
-      
+    
             $i=1;
             $skipMemberCount = 0;
 
@@ -522,7 +522,7 @@ if ($this->config['show_team_names'] == 1 ) {
         ?>
       <tbody>
         <?PHP
-        $durchlauf = 1; 
+        $durchlauf = 1;
         foreach ($computedMembersRanking AS $key => $value)
          {
             if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende))) {
@@ -535,9 +535,9 @@ if ($this->config['show_team_names'] == 1 ) {
                 $class = '';
                 ?>
                 <?php
-    
-                
-    
+  
+              
+  
                 ?>
                 <tr <?php echo $styleStr; ?> >
              <td<?php echo $tdStyleStr; ?>><?php echo $value['rank']; ?></td>
@@ -549,7 +549,7 @@ if ($this->config['show_team_names'] == 1 ) {
                  <td<?php echo $tdStyleStr; ?>><?php echo $membersDataArray[$key]['name']; ?></td>
 
                     <?php
-                        
+                      
                     if ($this->config['show_pred_group']) {
                         ?>
                             <td<?php echo $tdStyleStr; ?>><?php echo $membersDataArray[$key]['pg_group_name']; ?></td>

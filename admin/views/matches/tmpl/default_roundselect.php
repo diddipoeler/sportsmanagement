@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
         <!-- round selector START -->
         <div style="width: 75%; margin-bottom: 14px;">
         <form name="roundForm" id="roundForm" method="post">
-            
+          
             <input type="hidden" name="act" value="" id="short_act" />
             <input type="hidden" name="task" value="" />
             <input type="hidden" name='boxchecked' value="0" />
@@ -30,12 +30,12 @@ use Joomla\CMS\Language\Text;
                 <?php
                 $lv=""; $nv=""; $sv=false;
 
-                foreach($this->ress as $v) { if ($v->id == $this->roundws->id) { break; 
-                } $lv=$v->id; 
+                foreach($this->ress as $v) { if ($v->id == $this->roundws->id) { break;
+                } $lv=$v->id;
                 }
-                foreach($this->ress as $v) { $nv=$v->id; if ($sv) { break; 
-                } if ($v->id == $this->roundws->id) { $sv=true; 
-                } 
+                foreach($this->ress as $v) { $nv=$v->id; if ($sv) { break;
+                } if ($v->id == $this->roundws->id) { $sv=true;
+                }
                 }
                 echo '<div style="float: left; text-align: center;">';
                 if ($lv != "") {

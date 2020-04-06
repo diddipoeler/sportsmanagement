@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage helpers
  */
- 
+
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -20,8 +20,8 @@ use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementHelperTransifex
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -29,14 +29,14 @@ use Joomla\CMS\Filesystem\File;
  */
 class sportsmanagementHelperTransifex
 {
-    
+  
     private static $apiUrl = 'https://www.transifex.com/api/2/project/sportsmanagement';
     private static $languages = array();
 
-    
+  
     /**
  * sportsmanagementHelperTransifex::updatelanguage()
- * 
+ *
  * @param  mixed  $data
  * @param  string $folder
  * @return
@@ -45,119 +45,119 @@ class sportsmanagementHelperTransifex
     {
         if ($folder == 'de-DE' || $folder == 'en-GB' ) {
             Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'), 'Notice');
-            return $data;    
+            return $data;  
         }
 
 
-        $adminpath = JPATH_ADMINISTRATOR. '/language/'.$folder ;    
+        $adminpath = JPATH_ADMINISTRATOR. '/language/'.$folder ;  
         // verzeichnis prüfen	
         if (Folder::exists($adminpath) ) {
-            Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'), 'Notice');        
+            Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' ist vorhanden!'), 'Notice');      
         }
         else
         {
             Folder::create($adminpath);
-            Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' wurde angelegt!'), 'Notice');            
+            Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis '.$folder.' wurde angelegt!'), 'Notice');          
         }
 
-        $sitepath = JPATH_ROOT. '/language/'.$folder ;    
+        $sitepath = JPATH_ROOT. '/language/'.$folder ;  
         // verzeichnis prüfen	
         if (Folder::exists($sitepath) ) {
-            Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' ist vorhanden!'), 'Notice');        
+            Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' ist vorhanden!'), 'Notice');      
         }
         else
         {
             Folder::create($sitepath);
-            Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' wurde angelegt!'), 'Notice');            
-        }    
-    
+            Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis '.$folder.' wurde angelegt!'), 'Notice');          
+        }  
+  
         foreach ( $data as $key => $value )
         {
-    
+  
             if ($value->completed == '') {
-    
-            }   
+  
+            } 
             else
-            { 
-                $value->images = 'error.png';    
+            {
+                $value->images = 'error.png';  
                 $path = '';
                 /**
-* 
- * adminsprache 
-*/    
+*
+ * adminsprache
+*/  
                 if (strpos($value->file, 'admin-com_') !== false) {
-                    $mod = str_replace('admin-', '', $value->file);    
+                    $mod = str_replace('admin-', '', $value->file);  
                     $path = $adminpath;
                     $path .= '/'.$folder.'.'.$mod;
-                    $value->folder = $path;    
-                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');    
-                    try{    
+                    $value->folder = $path;  
+                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');  
+                    try{  
                         File::write($path, $content['data']);
-                        $value->images = 'ok.png';        
+                        $value->images = 'ok.png';      
                     }
                     catch (Exception $e)
                     {
                         Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
-                        $value->images = 'error.png';            
-                    }    
-    
+                        $value->images = 'error.png';          
+                    }  
+  
                 }
                 /**
-* 
- * frontend 
-*/        
+*
+ * frontend
+*/      
                 if (strpos($value->file, 'site-com_') !== false) {
-                    $mod = str_replace('site-', '', $value->file);    
+                    $mod = str_replace('site-', '', $value->file);  
                     $path = $sitepath;
                     $path .= '/'.$folder.'.'.$mod;
-                    $value->folder = $path;    
-    
-                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');    
-                    try{    
+                    $value->folder = $path;  
+  
+                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');  
+                    try{  
                         File::write($path, $content['data']);
-                        $value->images = 'ok.png';        
+                        $value->images = 'ok.png';      
                     }
                     catch (Exception $e)
                     {
                         Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
-                        $value->images = 'error.png';            
-                    }    
-    
-                }    
+                        $value->images = 'error.png';          
+                    }  
+  
+                }  
                 /**
-* 
- * module 
-*/        
+*
+ * module
+*/      
                 if (strpos($value->file, 'mod_') !== false) {
-                    $mod = str_replace('admin-', '', $value->file);    
+                    $mod = str_replace('admin-', '', $value->file);  
                     $path = $sitepath;
                     $path .= '/'.$folder.'.'.$mod;
-                    $value->folder = $path;    
-    
-                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');    
-                    try{    
+                    $value->folder = $path;  
+  
+                    $content = self::getData('resource/' . $value->slug . '/translation/' . $value->language . '?file=1');  
+                    try{  
                         File::write($path, $content['data']);
-                        $value->images = 'ok.png';        
+                        $value->images = 'ok.png';      
                     }
                     catch (Exception $e)
                     {
                         Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
-                        $value->images = 'error.png';            
+                        $value->images = 'error.png';          
                     }
-    
+  
                 }
 
             }
-    
+  
         }
-    
-    
-        return $data;    
+  
+  
+        return $data;  
     }
-    
+  
     /**
  * sportsmanagementHelperTransifex::getData()
- * 
+ *
  * @param  mixed $path
  * @return
  */
@@ -192,7 +192,7 @@ class sportsmanagementHelperTransifex
 
     /**
  * sportsmanagementHelperTransifex::getLangCode()
- * 
+ *
  * @param  mixed $lang
  * @param  bool  $inverse
  * @return
@@ -212,7 +212,7 @@ class sportsmanagementHelperTransifex
 
     /**
  * sportsmanagementHelperTransifex::getLangmap()
- * 
+ *
  * @return
  */
     private static function getLangmap($joomla=true)

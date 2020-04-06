@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,15 +12,15 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match events -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <h2>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS');
 ?>
 </h2>		
 

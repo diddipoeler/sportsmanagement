@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -48,15 +48,15 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
     <?php	if ($this->config['show_nation'] == 1 ) :    ?>
         <th class="td_c">&nbsp;</th>
     <?php endif; ?>
-        
+      
     <?php	if ($this->config['show_team'] == 1 ) :    ?>
         <th class="td_l"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TEAM');    ?></th>
     <?php endif; ?>
     <?php	if ($show_icons == 1 ) :    ?>
         <th class="td_r" class="nowrap"><?php	echo $rows->getImage(); ?></th>
-    <?php else: ?>    
+    <?php else: ?>  
         <th class="td_r" class="nowrap"><?php	echo Text::_($rows->name); ?></th>
-    <?php endif; ?>        
+    <?php endif; ?>      
     </tr>
     </thead>
     <tbody>
@@ -66,7 +66,7 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
         $lastrank = 0;
         foreach((array) $this->playersstats[$rows->id]->ranking as $row )
         {
-           
+         
             if ($lastrank == $row->rank ) {
                 $rank = '-';
             }
@@ -75,7 +75,7 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
                 $rank = $row->rank;
             }
             $lastrank  = $row->rank;
-            
+          
 
             $favStyle = '';
             $isFavTeam = in_array($row->team_id, $this->favteams);
@@ -94,13 +94,13 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
             }
 
             ?>
-            
+          
           <tr class=""<?php echo $favStyle; ?>>
            <td class="td_r rank"><?php	echo $rank;    ?></td>
             <?php	$playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);?>
             <?php	if ($this->config['show_picture_thumb'] == 1 ) : ?>
         <td class="td_c playerpic">
-    <?php 
+    <?php
     $picture = isset($row->teamplayerpic) ? $row->teamplayerpic : null;
     if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") )) {
         $picture = $row->picture;
@@ -118,9 +118,9 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
                 $this->modalwidth,
                 $this->modalheight,
                 $this->overallconfig['use_jquery_modal']
-            );               
+            );             
     ?>
-        
+      
         </td>
             <?php endif; ?>
 
@@ -133,7 +133,7 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
             $routeparameter['p'] = $this->project->id;
             $routeparameter['tid'] = $row->team_id;
             $routeparameter['pid'] = $row->person_id;
-            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);            
+            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);          
             //$link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $row->team_id, $row->person_id );
             echo HTMLHelper::link($link, $playerName);
         }
@@ -158,8 +158,8 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
         $routeparameter['p'] = $this->project->id;
         $routeparameter['tid'] = $row->team_id;
         $routeparameter['ptid'] = 0;
-        $routeparameter['division'] = 0;                
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);                    
+        $routeparameter['division'] = 0;              
+        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);                  
         //$link = sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $row->team_id  );
     } else {
         $link = null;
@@ -180,19 +180,19 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
     </tbody>
 </table>
 
-<?php 
+<?php
 if ($this->multiple_stats == 1) {
 ?>
 <div class="fulltablelink">
-<?php 
+<?php
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
 $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['division'] = $this->division->id;
 $routeparameter['tid'] = $this->teamid;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking', $routeparameter);     
-echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); 
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking', $routeparameter);   
+echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE'));
 ?>
 </div>
 <?php

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 ?>
 
 <style type="text/css">
@@ -27,21 +27,21 @@ div.jQBracket {
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(<?PHP echo $this->color_from;?>), to(<?PHP echo $this->color_to;?>));
   background: -moz-linear-gradient(-90deg, <?PHP echo $this->color_from;?>, <?PHP echo $this->color_to;?>);
   }
-  
+
 div.jQBracket .round {
     position: relative;
     /* breite der runde: 100*/
     width: <?PHP echo $this->jl_tree_bracket_round_width;?>px;
     margin-right: 40px;
-    float: left; 
+    float: left;
     }
-    
+  
 div.jQBracket .team {
     position: relative;
-    
+  
     vertical-align:middle;
     display:table-cell;
-    
+  
     z-index: 1;
     float: left;
     background-color: #666666;
@@ -52,7 +52,7 @@ div.jQBracket .team {
     border-radius: 5px;
     margin: 1px 0px;
     cursor: default;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); 
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
     }
 
 div.jQBracket .team b {
@@ -62,9 +62,9 @@ div.jQBracket .team b {
       height: inherit;
       position: absolute;
       /* breite des teams b: 70*/
-      width: <?PHP echo $this->jl_tree_bracket_teamb_width;?>px; 
+      width: <?PHP echo $this->jl_tree_bracket_teamb_width;?>px;
       }
-                
+              
 </style>
 <script type="text/javascript">
 
@@ -75,7 +75,7 @@ jQuery(document).ready(function() {
     demos.forEach(function(d){
       var demo = jQuery('div#'+d)
       jQuery('<div class="demo"></div>').appendTo(demo)
-      
+    
     })
   })
 </script>
@@ -89,26 +89,26 @@ jQuery(document).ready(function() {
 <div id="big">
 
   <script type="text/javascript">
-  
+
   var customRounds = {
-      roundsheader : [ 
+      roundsheader : [
         <?PHP echo $this->bracket_rounds;
-        ?> 
+        ?>
       ]
     }
   </script>
 
   <script type="text/javascript">
-   
+ 
       var customData = {
       teams : [
         <?PHP echo $this->bracket_teams;?>
       ],
-      results : [ 
-        <?PHP echo $this->bracket_results;?> 
+      results : [
+        <?PHP echo $this->bracket_results;?>
       ]
     }
-   
+ 
    /* Render function is called for each team label when data is changed, data
  * contains the data object given in init and belonging to this slot.
  *
@@ -120,10 +120,10 @@ jQuery(document).ready(function() {
  * - entry-complete: Data and score available
  */
 function render_fn(container, data, score, state) {
-console.table(container);    
+console.table(container);  
 console.log('state : ' + state );
 //console.log('name : ' + data.name );
-//console.log('flag : ' + data.flag );    
+//console.log('flag : ' + data.flag );  
   switch(state) {
     case "empty-bye":
       container.append("No team")
@@ -131,7 +131,7 @@ console.log('state : ' + state );
     case "empty-tbd":
       container.append("Upcoming")
       return;
- 
+
     case "entry-no-score":
     case "entry-default-win":
     case "entry-complete":
@@ -152,7 +152,7 @@ console.log('state : ' + state );
     container.append('<img src="'+data.flag+'" height="16"/> ').append(data.name)
   }
   */
-  
+
   /* Edit function is called when team label is clicked */
 function edit_fn(container, data, doneCb) {
   var input = jQuery('<input type="text">')
@@ -161,10 +161,10 @@ function edit_fn(container, data, doneCb) {
   input.focus()
   input.blur(function() { doneCb({flag: data.flag, name: input.val()}) })
 }
-    
-  jQuery(document).ready(function() 
+  
+  jQuery(document).ready(function()
   {
-           
+         
       jQuery('div#big .demo').bracket({
       init: customData,
       roundsheader: customRounds,
@@ -172,9 +172,9 @@ function edit_fn(container, data, doneCb) {
       decorator: {edit: edit_fn,
                 render: render_fn}
        })
-     
+   
     })
-    
+  
     function resize(target, propName) {
     resizeParameters[propName] = parseInt(target.value);
     target.previousElementSibling.textContent = target.value;
@@ -193,7 +193,7 @@ var resizeParameters = {
   roundMargin: 100,
   init: customData
 };
- 
+
 function updateResizeDemo() {
   jQuery('#big .demo').bracket(resizeParameters);
 }
@@ -205,5 +205,5 @@ jQuery(document).ready(function() {
   })
 
 </script>
-  
-  
+
+

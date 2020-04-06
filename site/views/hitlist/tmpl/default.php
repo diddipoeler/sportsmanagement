@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,7 +26,7 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
+    $uri = Uri::getInstance(); 
 } else {
     $uri = Factory::getURI();
 }
@@ -49,7 +49,7 @@ function searchPerson(val)
 </script>
 <div class="row-fluid">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
-<?php 
+<?php
 echo $this->loadTemplate('items');
 echo $this->loadTemplate('jsminfo');
 ?>

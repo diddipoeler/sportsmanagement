@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -51,7 +51,7 @@ if (!isset($this->club)) {
             }
 
             $picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $picture;
-    
+  
             echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 'clubinfo' . $this->club->id,
                 $picture,
@@ -61,16 +61,16 @@ if (!isset($this->club)) {
                 $this->modalwidth,
                 $this->modalheight,
                 $this->overallconfig['use_jquery_modal']
-            );            
+            );          
 
             if ($this->config['show_club_logo_copyright']) {
                 if ($this->club->cr_logo_big) {
                     echo Text::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->club->cr_logo_big . '</i>');
                 }
-                ?> 
-                <!--        : &copy; -->    
+                ?>
+                <!--        : &copy; -->  
                 <?PHP
-             
+           
             }
             ?>
             <br />
@@ -115,7 +115,7 @@ if (!isset($this->club)) {
                             ?>
                             <br />
                         </span>
-                    </address>    
+                    </address>  
 
                     <?php
                 }
@@ -167,7 +167,7 @@ if (!isset($this->club)) {
                     </address>
                     <?php
                 }
-            
+          
                 if ($this->club->twitter) {
                     ?>
                     <address>
@@ -225,10 +225,10 @@ if (!isset($this->club)) {
                 }
                 if ($this->club->dissolved && $this->club->dissolved != '0000-00-00' && $this->config['show_dissolved']) {
                     ?>
-                    <address>    
+                    <address>  
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
-                        <?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>   
-                    </address>   
+                        <?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?> 
+                    </address> 
                     <?php
                 }
                 if ($this->club->dissolved_year && $this->config['show_dissolved_year']) {
@@ -282,8 +282,8 @@ if (!isset($this->club)) {
                                 $this->modalwidth,
                                 $this->modalheight,
                                 $this->overallconfig['use_jquery_modal']
-                            );                            
-                            
+                            );                          
+                          
                             ?>
                         </address>
                         <?php
@@ -311,7 +311,7 @@ if (!isset($this->club)) {
                     <?PHP
                 }
 
-                
+              
                 if ($this->config['show_fusion'] ) {
                     if ($this->familytree) {
                             $class_collapse = 'collapse in';
@@ -332,10 +332,10 @@ if (!isset($this->club)) {
                                 <?php
                                 if (!$this->config['show_bootstrap_tree']) {
                                     ?>
-                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>    
+                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>  
                                     <?php
                                 }
-                                ?>    
+                                ?>  
                                 <a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
                                 <?php
                                 echo $this->familytree;

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,7 +33,7 @@ foreach ($list as $match)
 
     $playgroundname = "";
     $playground_id = 0;
-    $picture = "";       
+    $picture = "";     
     if ($mode == 0) {
         $textdiv .= '<tr><td><div class="qslidejl">';
     }
@@ -56,7 +56,7 @@ foreach ($list as $match)
         elseif ($match->club_playground_id != "") {
             $playgroundname = $match->club_playground_name;
             $playground_id = $match->playground_club_slug;
-        } 
+        }
 
         if($params->get('show_playground_link')) {
             $routeparameter = array();
@@ -64,8 +64,8 @@ foreach ($list as $match)
             $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
             $routeparameter['p'] = $match->project_slug;
             $routeparameter['pgid'] = $playground_id ;
-            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);    
-  
+            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);  
+
             $playgroundname= HTMLHelper::link($link, Text::sprintf('%1$s', $playgroundname));
         }
         else
@@ -76,7 +76,7 @@ foreach ($list as $match)
     }
 
     if ($params->get('show_playground_picture', 0)) {
-        $textdiv.= '<div class="jlplplaneplpicture"> ';    
+        $textdiv.= '<div class="jlplplaneplpicture"> ';  
 
         if ($match->playground_id != "") {
             $picture = $match->playground_picture;
@@ -86,15 +86,15 @@ foreach ($list as $match)
         }
         elseif ($match->club_playground_id != "") {
             $picture = $match->playground_club_picture;
-        } 
+        }
 
         if ($picture ) {
             $textdiv .= '<p>'.HTMLHelper::image($picture, "", "width=".$params->get('picture_playground_width')).'</p>';
         }
 
-        $textdiv.= '</div>';    
+        $textdiv.= '</div>';  
     }
-    
+  
     $textdiv .= '<div class="jlplplanedate">';
     $textdiv .= HTMLHelper::date($match->match_date, $dateformat);
     $textdiv .= " ".Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
@@ -127,7 +127,7 @@ foreach ($list as $match)
         }
         else
         {
-            $textdiv .= '<p>'.HTMLHelper::image($team1logo, "").'</p>';    
+            $textdiv .= '<p>'.HTMLHelper::image($team1logo, "").'</p>';  
         }
 
     }
@@ -145,7 +145,7 @@ foreach ($list as $match)
         }
         else
         {
-            $textdiv .= '<p>'.HTMLHelper::image($team2logo, "").'</p>';    
+            $textdiv .= '<p>'.HTMLHelper::image($team2logo, "").'</p>';  
         }
 
 

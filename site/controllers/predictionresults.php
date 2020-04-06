@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionResults
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -32,7 +32,7 @@ class sportsmanagementControllerPredictionResults extends BaseController
 
     /**
          * sportsmanagementControllerPredictionResults::display()
-         * 
+         *
          * @param  bool $cachable
          * @param  bool $urlparams
          * @return void
@@ -45,7 +45,7 @@ class sportsmanagementControllerPredictionResults extends BaseController
 
     /**
      * sportsmanagementControllerPredictionResults::selectprojectround()
-     * 
+     *
      * @return void
      */
     function selectprojectround()

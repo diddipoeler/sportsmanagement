@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -71,14 +71,14 @@ $colors = $list['colors'];
     <?php
     //$class = $params->get('style_class2', 0);
     //if ( $k == 0 ) { $class = $params->get('style_class1', 0); }
-            
+          
             $i++;
     $color = "";
-            
+          
             //echo $item->rank.'<br>';
-            
+          
     if ($params->get('show_rank_colors', 0) ) {
-        foreach ($colors as $colorItem) 
+        foreach ($colors as $colorItem)
               {
             if ($item->rank >= $colorItem['from'] && $item->rank <= $colorItem['to']) {
                 $color = $colorItem['color'];
@@ -143,7 +143,7 @@ $colors = $list['colors'];
 </table>
 
 <?php if ($params->get('show_ranking_link', 1) ) :?>
-<p class="fulltablelink"><?php 
+<p class="fulltablelink"><?php
     $divisionid = explode(':', $params->get('division_id', 0));
     $divisionid = $divisionid[0];
     $routeparameter = array();
@@ -155,7 +155,7 @@ $routeparameter['r'] = $list['project']->round_slug;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $divisionid;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);    
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
     echo HTMLHelper::link($link, Text::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
 </div>

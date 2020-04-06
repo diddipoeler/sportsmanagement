@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                         <th width="1%" nowrap="nowrap" style="vertical-align: top; "><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
                     </tr>
                 </thead>
-                <tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>                
+                <tfoot><tr><td colspan="<?php echo $colspan; ?>"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>              
                 <tbody>
         <?php
         $k=0;
@@ -42,7 +42,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $published    = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'treetomatch.');
             ?>
             <tr class="<?php echo "row$k"; ?>">
-                    
+                  
              <td style="text-align:center; ">
             <?php
             echo $checked;

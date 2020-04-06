@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div id="table-responsive">
         <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE', '<i>', '<i>'.$this->projectws->name.'</i>'); ?></legend>
-        
+      
     <?php
     $colspan= 11;
     ?>
@@ -144,7 +144,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             echo $row->tree_i;
             ?>
              </td>
-                    
+                  
              <td id="tdtreetos-hide" style="text-align:center; ">
             <?php
             echo $row->hide;

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -52,8 +52,8 @@ echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON', 's
 ?>
 <br>
 <?php
-echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');    
-?>    
+echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');  
+?>  
 </th>
 <th class="title">
 <?php
@@ -70,13 +70,13 @@ echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 
 echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE', 'p.project_type', $this->sortDirection, $this->sortColumn);
 ?>
 <br>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES'); 
-?>    
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TEMPLATES');
+?>  
 </th>
 <th>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); 
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
 ?>
 </th>
 <th width="" class="title">
@@ -151,10 +151,10 @@ for ($i=0,$n=count($this->items); $i < $n; $i++)
     $link2 = Route::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
     $link2panel = Route::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id);
     $link2teams = Route::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id);
-                    
+                  
     $link2rounds = Route::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id);
     $link2divisions = Route::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id);
-                    
+                  
     $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
     $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
 
@@ -181,11 +181,11 @@ echo HTMLHelper::_(
 </br>	
 <?php
 endif;
-$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/projectimages/' . $row->id;                    
-echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);                    
+$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/projectimages/' . $row->id;                  
+echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);                  
 ?>
 </td>
-                            
+                          
 <td>
 <?php
 
@@ -197,7 +197,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('projectimages' . $row->id, 
 <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 </td>
 <td>
-<?php 
+<?php
 if ($this->state->get('filter.search_nation') ) {
     $append = ' style="background-color:#bbffff"';
     echo HTMLHelper::_(
@@ -208,10 +208,10 @@ if ($this->state->get('filter.search_nation') ) {
         $i.'\').checked=true"'.$append,
         'id', 'name', $row->league_id
     );
-}                        
+}                      
 else
 {
-    echo $row->league.'<br>'; 
+    echo $row->league.'<br>';
 }
 ?>
 </td>
@@ -220,17 +220,17 @@ else
     <br>
     <?php
     $picture = $this->model->existcurrentseason($this->season_ids, $row->league_id) ? 'ok.png' : 'error.png';
-    echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture, '', 'title= "' . '' . '"');    
+    echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture, '', 'title= "' . '' . '"');  
     ?>
     </td>
 <td class="center">
-<?php 
-echo Text::_($row->sportstype); 
+<?php
+echo Text::_($row->sportstype);
 ?>
 </td>
-                        
+                      
 <td class="center">
-<?php 
+<?php
 $inputappend = '';
 $append = ' style="background-color:#bbffff"';
 echo HTMLHelper::_(
@@ -243,9 +243,9 @@ echo HTMLHelper::_(
 );
 ?>
 </td>
-    
+  
 <td class="center">
-<?php 
+<?php
 $inputappend = '';
 $append = ' style="background-color:#bbffff"';
 echo HTMLHelper::_(
@@ -258,7 +258,7 @@ echo HTMLHelper::_(
 );
 ?>
 <br>
-<?php     
+<?php   
 echo HTMLHelper::_(
     'select.genericlist',
     $this->lists['mastertemplates'],
@@ -267,7 +267,7 @@ echo HTMLHelper::_(
     $i.'\').checked=true"'.$append,
     'value', 'text', $row->master_template
 );
-?>    
+?>  
 </td>
 <td class="center">
 <?php
@@ -287,7 +287,7 @@ elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player")
 }
 else
 {
-?>                                    
+?>                                  
 <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
 <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
@@ -317,8 +317,8 @@ else
 <a href="<?php echo $link2divisions; ?>"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id); ?></a>
 </td>
 <td class="center">
-<?php 
-echo $row->user_field; 
+<?php
+echo $row->user_field;
 $teile = explode("<br>", $row->user_field);
 for ($a=0; $a < sizeof($teile); $a++ )
 {
@@ -330,7 +330,7 @@ for ($a=0; $a < sizeof($teile); $a++ )
 if ($this->state->get('filter.userfields') ) {
 ?>
 <input type="text" size="100" class="inputbox" name="user_field<?php echo $row->id; ?>" value="<?php echo $row->user_fieldvalue; ?>"
-onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                        
+onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                      
 <input type="text" size="10" class="inputbox" name="user_field_id<?php echo $row->id; ?>" value="<?php echo $row->user_field_id; ?>" >
 <?PHP
 }
@@ -339,7 +339,7 @@ onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 <td class="center">
 <div class="btn-group">
 <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'projects.', $canChange, 'cb'); ?>
-<?php 
+<?php
 // Create dropdown items and render the dropdown list.
 if ($canChange) {
     HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'projects');

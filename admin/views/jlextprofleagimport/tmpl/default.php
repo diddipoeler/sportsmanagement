@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -42,7 +42,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       </td>
       </tr>
       <tr>
-            
+          
             <td><?php echo $this->countries; ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->country); ?>&nbsp;(<?php echo $this->country; ?>)</td>
           </tr>
       </tbody>
@@ -57,4 +57,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

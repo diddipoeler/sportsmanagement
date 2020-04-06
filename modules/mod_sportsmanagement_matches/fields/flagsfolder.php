@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.00

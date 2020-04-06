@@ -1,6 +1,6 @@
 <?PHP
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -151,7 +151,7 @@ if ($this->matchnumber) {
                         ?>
                     </td>
                 </tr>
-                <?php $lfdnummer++; 
+                <?php $lfdnummer++;
             endforeach; ?>
             </tbody>
         </table>
@@ -213,7 +213,7 @@ if ($this->matchnumber) {
                         ?>
                     </td>
                 </tr>
-                <?php $lfdnummer++; 
+                <?php $lfdnummer++;
             endforeach; ?>
             </tbody>
         </table>

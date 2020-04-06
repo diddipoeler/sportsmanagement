@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelCurve
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -50,13 +50,13 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
     var $ranking2 = array();
     var $ranking = array(); // cache for ranking function return data
     var $teamcount = array();
-    
+  
     static $cfg_which_database = 0;
     static $season_id = 0;
-    
+  
     /**
      * sportsmanagementModelCurve::__construct()
-     * 
+     *
      * @return
      */
     function __construct( )
@@ -73,19 +73,19 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
         $this->both = $jinput->getInt('both', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
-        self::$season_id = $jinput->get('s', 0, 'INT');    
+        self::$season_id = $jinput->get('s', 0, 'INT');  
         $post = $jinput->post->getArray(array());
         if ($post ) {
              self::$teamid1 = $post['tid1_'.$post['division']];
-             self::$teamid2 = $post['tid2_'.$post['division']];    
+             self::$teamid2 = $post['tid2_'.$post['division']];  
         }
-        
+      
         $this->determineTeam1And2();
     }
 
     /**
      * sportsmanagementModelCurve::determineTeam1And2()
-     * 
+     *
      * @return
      */
     function determineTeam1And2()
@@ -95,8 +95,8 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
         // Use favorite team(s) in case both teamids are 0
         if ((self::$teamid1 == 0) && (self::$teamid2 == 0)) {
             $favteams = sportsmanagementModelProject::getFavTeams();
@@ -108,7 +108,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
         // When (one of) the teams are not specified, search for the next unplayed or the latest played match
         if ((self::$teamid1 == 0) || (self::$teamid2 == 0)) {
-            
+          
             $query->select('t1.id AS teamid1, t2.id AS teamid2');
             $query->from('#__sportsmanagement_match AS m ');
             $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
@@ -117,24 +117,24 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
             if (self::$division) {
                 $query->where('pt1.division_id = '.self::$division);
             }
-            
-            
+          
+          
             $query->join('INNER', '#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
             $query->join('INNER', '#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
             $query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
             $query->where('pt2.project_id = '.self::$projectid);
-                
+              
             if (self::$division) {
                 $query->where('pt2.division_id = '.self::$division);
             }
-            
-            
+          
+          
             $query->join('INNER', '#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
             $query->join('INNER', '#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
             $query->join('INNER', '#__sportsmanagement_project AS p ON pt1.project_id = p.id AND pt2.project_id = p.id ');
-            
+          
             $query->where('m.published = 1 AND m.cancel = 0');
-            
+          
             if (self::$teamid1) {
                 $quoted_team_id = self::$teamid1;
                 $team = 'st1';
@@ -144,7 +144,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
                 $quoted_team_id = self::$teamid2;
                 $team = 'st2';
             }
-            
+          
             if ($this->both) {
                 $query->where('(st1.team_id='.$quoted_team_id.' OR st2.team_id='.$quoted_team_id.')');
             }
@@ -152,28 +152,28 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
             {
                 $query->where($team.'.team_id='.$quoted_team_id);
             }
-            
+          
             $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), self::$cfg_which_database);
             $expiry_time = $config ? $config['expiry_time'] : 0;
-            
+          
             $query->where('(m.team1_result IS NULL OR m.team2_result IS NULL)');
             $query->where('DATE_ADD(m.match_date, INTERVAL '.$this->_db->Quote($expiry_time).' MINUTE) >= NOW()');
 
             $query->order('m.match_date');
-            
+          
             $db->setQuery($query);
-        
+      
             $match = $db->loadObject();
 
             // If there is no unplayed match left, take the latest match played
             if (!isset($match)) {
                 $query->clear('order');
                 $query->order('m.match_date DESC');
-                
-                $starttime = microtime(); 
-                
+              
+                $starttime = microtime();
+              
                 $db->setQuery($query);
-        
+      
                 $match = $db->loadObject();
             }
             if (isset($match)) {
@@ -185,7 +185,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelCurve::getDivLevel()
-     * 
+     *
      * @return
      */
     function getDivLevel()
@@ -199,7 +199,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelCurve::getTeam1()
-     * 
+     *
      * @param  integer $division
      * @return
      */
@@ -220,7 +220,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelCurve::getTeam2()
-     * 
+     *
      * @param  integer $division
      * @return
      */
@@ -241,7 +241,7 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelCurve::getDivision()
-     * 
+     *
      * @return
      */
     function getDivision( )
@@ -251,17 +251,17 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelCurve::getDivisionId()
-     * 
+     *
      * @return
      */
     function getDivisionId( )
     {
         return self::$division;
     }
-    
+  
     /**
      * sportsmanagementModelCurve::getDataByDivision()
-     * 
+     *
      * @param  integer $division
      * @return
      */
@@ -269,24 +269,24 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
     {
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
         $rounds  = sportsmanagementModelProject::getRounds('ASC', self::$cfg_which_database, false);
         $teams   = sportsmanagementModelProject::getTeamsIndexedByPtid($division, 'name', self::$cfg_which_database);
-            
+          
         $rankinghelper = JSMRanking::getInstance($project, self::$cfg_which_database);
         $rankinghelper->setProjectId($project->id, self::$cfg_which_database);
 
         sportsmanagementModelRounds::$_project_id = $project->id;
         $firstRound = sportsmanagementModelRounds::getFirstRound($project->id, self::$cfg_which_database);
         $firstRoundId = $firstRound['id'];
-        
+      
         $rankings = array();
         foreach ($rounds as $r)
         {
             $rankings[$r->id] = $rankinghelper->getRanking($firstRoundId, $r->id, $division, self::$cfg_which_database);
         }
-        
+      
         foreach ($teams as $ptid => $team)
         {
             if($team->is_in_score==0) { continue;

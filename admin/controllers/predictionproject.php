@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerpredictionproject
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -30,22 +30,22 @@ use Joomla\CMS\MVC\Controller\FormController;
 class sportsmanagementControllerpredictionproject extends FormController
 {
 
-    /**
-     * Method to store prediction project
-     *
-     * @access public
-     * @return boolean    True on success
-     */
-    function store()
-    {
-        $post = Factory::getApplication()->input->post->getArray(array());
-        // Check for request forgeries
-        Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+	/**
+	 * Method to store prediction project
+	 *
+	 * @access public
+	 * @return boolean    True on success
+	 */
+	function store()
+	{
+		$post = Factory::getApplication()->input->post->getArray(array());
 
-        $model = $this->getModel();
-         $msg = $model->save($post['jform']);
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-    }
+		// Check for request forgeries
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+
+		$model = $this->getModel();
+		 $msg = $model->save($post['jform']);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+	}
 
 }
-?>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\Filesystem\File;
         <fieldset class="adminform">
             <legend>
                 <?php
-                echo Text::_($this->teams->team2); 
+                echo Text::_($this->teams->team2);
                 ?>
             </legend>
     <table class='adminlist'>
@@ -72,7 +72,7 @@ use Joomla\CMS\Filesystem\File;
         $teap = 0;
         foreach ( $this->events as $ev)
         {
-            $teap++;    
+            $teap++;  
             $this->evbb = $model->getPlayerEventsbb($row->value, $ev->value, $this->item->id);
             ?>
           <td style="text-align: center; ">
@@ -87,7 +87,7 @@ use Joomla\CMS\Filesystem\File;
                             &nbsp;&nbsp;
                             </td>
 
-            <?php 
+            <?php
         }
         ?>
        </tr>
@@ -97,5 +97,5 @@ use Joomla\CMS\Filesystem\File;
             <input type="hidden" name="total_a_players" value="<?php echo $i;?>" />
             <input type="hidden" name="teap" value="<?php echo $teap;?>" />
         </tbody>
-    </table>        
+    </table>      
         </fieldset>

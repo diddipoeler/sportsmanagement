@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewTreetonode
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -29,10 +29,10 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementViewTreetonode extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewTreetonode::init()
-     * 
+     *
      * @return
      */
     function init(  )
@@ -47,7 +47,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetonode::_displayForm()
-     * 
+     *
      * @return void
      */
     function _displayForm(  )
@@ -56,16 +56,16 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
         $tid = $this->app->getUserState($this->option . '.tid');
 
         $lists = array();
-        
+      
         //	$node = $this->get('data');
         $match = $this->model->getNodeMatch();
-        
+      
         //$total = $this->get('Total');
         //$pagination = $this->get('Pagination');
         //$projectws = $this->get( 'Data', 'project' );
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $projectws = $mdlProject->getProject($pid);
-        
+      
         $model = $this->getModel('project');
         $mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
         $team_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewprojectpositions
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -36,10 +36,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
     /**
      * sportsmanagementViewprojectpositions::init()
-     * 
+     *
      * @return
      */
-    public function init() 
+    public function init()
     {
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -73,7 +73,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
         $this->jinput->set('pid', $this->project_id);
 
         $this->model->updateprojectpositions($items, $this->project_id);
-        
+      
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
@@ -87,11 +87,11 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
     /**
      * sportsmanagementViewprojectpositions::_displayEditlist()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayEditlist($tpl) 
+    function _displayEditlist($tpl)
     {
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -174,7 +174,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
@@ -189,7 +189,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar_Editlist() 
+    protected function addToolbar_Editlist()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
         ToolbarHelper::save('projectposition.save_positionslist');

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPositions
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -33,7 +33,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
 {
     /**
      * sportsmanagementViewPositions::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -55,28 +55,28 @@ class sportsmanagementViewPositions extends sportsmanagementView
         $sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
         $allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();
         $sportstypes = array_merge($sportstypes, $allSportstypes);
-        
+      
         $this->sports_type    = $allSportstypes;
-        
+      
         $lists['sportstypes'] = HTMLHelper::_(
-            'select.genericList', 
-            $sportstypes, 
-            'filter_sports_type', 
-            'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-            'id', 
-            'name', 
+            'select.genericList',
+            $sportstypes,
+            'filter_sports_type',
+            'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+            'id',
+            'name',
             $this->state->get('filter.sports_type')
         );
         unset($sportstypes);
-        
+      
         $this->lists = $lists;
-        
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementViewPositions::addToolbar()
-     * 
+     *
      * @return void
      */
     protected function addToolbar()
@@ -94,7 +94,7 @@ class sportsmanagementViewPositions extends sportsmanagementView
         ToolbarHelper::addNew('position.add');
         ToolbarHelper::custom('position.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::archiveList('position.export', Text::_('JTOOLBAR_EXPORT'));
-                
+              
         parent::addToolbar();
     }
 }

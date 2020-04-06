@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementModelImagehandler
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -59,7 +59,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelImagehandler::getState()
-     * 
+     *
      * @param  mixed $property
      * @param  mixed $default
      * @return
@@ -134,37 +134,37 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
         static $list;
 
         /**
-* 
- * Only process the list once per request 
+*
+ * Only process the list once per request
 */
         if (is_array($list)) {
             return $list;
         }
 
         /**
-* 
- * Get folder from request 
+*
+ * Get folder from request
 */
         $folder = $this->getState('folder');
         $search = $this->getState('search');
 
         /**
-* 
- * Initialize variables 
+*
+ * Initialize variables
 */
         $basePath = JPATH_SITE.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.$folder;
 
         $images     = array ();
 
         /**
-* 
- * Get the list of files and folders from the given folder 
+*
+ * Get the list of files and folders from the given folder
 */
         $fileList     = Folder::files($basePath);
 
         /**
-* 
- * Iterate over the files if they exist 
+*
+ * Iterate over the files if they exist
 */
         if ($fileList !== false) {
             foreach ($fileList as $file)
@@ -240,8 +240,8 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
         }
 
         /**
-* 
- * gets the new value and applies the percentage, then rounds the value 
+*
+ * gets the new value and applies the percentage, then rounds the value
 */
         $width = round($width * $percentage);
         $height = round($height * $percentage);

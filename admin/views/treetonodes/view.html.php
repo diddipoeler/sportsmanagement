@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreetonodes
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -33,12 +33,12 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetonodes::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
-        
+      
         if ($this->getLayout()=='default' || $this->getLayout()=='default_3' || $this->getLayout()=='default_4' ) {
             $this->_displayDefault();
             return;
@@ -48,7 +48,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetonodes::_displayDefault()
-     * 
+     *
      * @return void
      */
     function _displayDefault()
@@ -67,7 +67,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
         }
         $lists['team'] = $team_id;
         unset($team_id);
-        
+      
 
 
         $style  = 'style="background-color: #dddddd; ';
@@ -78,7 +78,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
         $style .= 'font-family: verdana; ';
         $style .= 'text-align: center;"';
         $path = 'media/com_sportsmanagement/treebracket/onwhite/';
-        
+      
         // build the html radio for adding into new round / exist round
         $createYesNo = array(0 => Text::_('JNO'),1 => Text::_('JYES'));
         $createLeftRight = array(0 => Text::_('L'),1 => Text::_('R'));
@@ -110,18 +110,18 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
              $value->team_id = $this->matches[$value->node]->team_id;
              $value->team_name = $this->matches[$value->node]->team_name;
              $value->title = $this->matches[$value->node]->team_name;
-             $value->content = $this->matches[$value->node]->team_name;    
+             $value->content = $this->matches[$value->node]->team_name;  
              $value->match_id = $this->matches[$value->node]->match_id;
-             $value->roundcode = $this->matches[$value->node]->roundcode;    
+             $value->roundcode = $this->matches[$value->node]->roundcode;  
         }
         $this->model->savenode($this->node);
-        
+      
     }
-    
-    
+  
+  
         /**
          * sportsmanagementViewTreetonodes::addToolBar()
-         * 
+         *
          * @return void
          */
     protected function addToolBar()
@@ -138,16 +138,16 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
         case 2:
             ToolbarHelper::apply('treetonode.saveallleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW'), false);
             ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
-            break; 
+            break;
         case 3:
             ToolbarHelper::apply('treetonode.savefinishleaf', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF'), false);
             ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE'), false);
-            break;  
-        
+            break;
+      
         }
         parent::addToolbar();
-       
-    } 
+     
+    }
 
 }
 ?>

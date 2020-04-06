@@ -29,13 +29,13 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 
 class sportsmanagementViewEvent extends JViewLegacy
 {
-    public function display($tpl = null) 
+    public function display($tpl = null)
     {
         $this->event = $this->get('GCalendar');
         parent::display($tpl);
-    }    
+    }  
 
-    //	public function init() 
+    //	public function init()
     //    {
     //		$this->event = $this->get('GCalendar');
     //	}

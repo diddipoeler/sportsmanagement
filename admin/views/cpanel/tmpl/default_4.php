@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,11 +11,11 @@
  * @package    sportsmanagement
  * @subpackage cpanel
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-?> 
+?>
 <div class="row" >
     <div id="j-sidebar-container" class="col-md-2">
         <?php echo $this->sidebar; ?>
@@ -23,7 +23,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     <div class="col-md-8">
         <strong ><i class="fa fa-2x fa-lightbulb-o"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA') ?>
         </strong>
-        <hr>      
+        <hr>    
         <div id="dashboard-iconss" class="dashboard-icons">
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=sportstypes">
                 <img src="components/com_sportsmanagement/assets/icons/sportarten.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?>" /><br />
@@ -83,15 +83,15 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=agegroups">
                     <img src="components/com_sportsmanagement/assets/icons/altersklassen.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?></span>
-                </a>     
+                </a>   
                 <?PHP
             }
-            ?>        
-        </div> 
-        <hr> 
+            ?>      
+        </div>
+        <hr>
         <strong><i class="fa fa-2x fa-users"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_PERSONAL_DATA') ?>
         </strong>
-        <hr>    
+        <hr>  
         <div id="dashboard-iconss" class="dashboard-icons">
 
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=clubs">
@@ -113,7 +113,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?PHP
             }
             if ($this->params->get('show_option_playground', 1)) {
-                ?>  
+                ?>
                 <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=playgrounds">
                     <img src="components/com_sportsmanagement/assets/icons/spielorte.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_VENUES') ?></span>
@@ -121,24 +121,24 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?PHP
             }
             if ($this->params->get('show_option_rosterposition', 1)) {
-                ?> 
+                ?>
                 <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=rosterpositions">
                     <img src="components/com_sportsmanagement/assets/icons/spielfeldpositionen.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_ROSTER_POSITION') ?></span>
                 </a>
                 <?PHP
             }
-            ?> 
-        </div> 
+            ?>
+        </div>
 
-        <hr> 
+        <hr>
         <strong><i class="fa fa-2x fa-cubes"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_SPECIAL_FUNCTION') ?>
         </strong>
-        <hr>    
+        <hr>  
         <div id="dashboard-iconss" class="dashboard-icons">
             <?PHP
             if ($this->params->get('show_option_extrafields', 1)) {
-                ?> 
+                ?>
                 <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=extrafields">
                     <img src="components/com_sportsmanagement/assets/icons/extrafelder.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?></span>
@@ -170,17 +170,17 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?PHP
             }
             ?>
-            
+          
                 <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=transifex">
                     <img src="components/com_sportsmanagement/assets/icons/transifex.png" width="48" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?>" /><br />
                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TRANSIFEX') ?></span>
-                </a> 
+                </a>
         </div>
 
-        <hr> 
+        <hr>
         <strong><i class="fa fa-2x fa-compress"></i><i class="fa fa-2x fa-expand"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_IMPORT_EXPORT_FUNCTION') ?>
         </strong>
-        <hr>    
+        <hr>  
         <div id="dashboard-iconss" class="dashboard-icons">
 
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default">
@@ -203,12 +203,12 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT') ?></span>
             </a>
 
-        </div> 
+        </div>
 
-        <hr> 
+        <hr>
         <strong><i class="fa fa-2x fa-wrench"></i> <?php echo Text::_('COM_SPORTSMANAGEMENT_D_HEADING_INSTALL_TOOLS') ?>
         </strong>
-        <hr>    
+        <hr>  
         <div id="dashboard-iconss" class="dashboard-icons">
 
             <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=updates">
@@ -230,8 +230,8 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?PHP
             }
             ?>
-        </div> 
-        <hr>  
+        </div>
+        <hr>
         <div class="">
             <div class="center">
                 <?PHP
@@ -270,12 +270,12 @@ use Joomla\CMS\HTML\HTMLHelper;
                 }
                 echo HTMLHelper::_('bootstrap.endAccordion');
                 ?>
-            </div>                                     
+            </div>                                   
         </div>
     </div>
     <div class="col-md-2">
         <?php sportsmanagementHelper::jsminfo(); ?>
-        
+      
     </div>
 </div>
 </div>

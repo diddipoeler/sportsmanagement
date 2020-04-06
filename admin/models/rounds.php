@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRounds
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,10 +31,10 @@ class sportsmanagementModelRounds extends JSMModelList
 {
     var $_identifier = "rounds";
     static $_project_id = 0;
-    
+  
     /**
      * sportsmanagementModelRounds::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -52,16 +52,16 @@ class sportsmanagementModelRounds extends JSMModelList
         parent::__construct($config);
                 parent::setDbo($this->jsmdb);
                 self::$_project_id    = $this->jsmjinput->getInt('pid', 0);
-                
+              
         if (!self::$_project_id ) {
-            self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');    
+            self::$_project_id    = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');  
         }
-                
-                $this->jsmapp->setUserState("$this->jsmoption.pid", self::$_project_id); 
-                
-                
+              
+                $this->jsmapp->setUserState("$this->jsmoption.pid", self::$_project_id);
+              
+              
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -81,7 +81,7 @@ class sportsmanagementModelRounds extends JSMModelList
         $published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
         $this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $this->setState('list.limit', $value);    
+        $this->setState('list.limit', $value);  
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
         $this->setState('list.start', $value);
@@ -97,32 +97,32 @@ class sportsmanagementModelRounds extends JSMModelList
         }
         $this->setState('list.direction', $listOrder);
     }
-    
+  
     /**
      * sportsmanagementModelRounds::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
     {
-    
+  
         // Create a new query object.		
-        $this->jsmquery->clear();    
+        $this->jsmquery->clear();  
         // Select some fields
         $this->jsmquery->select('p.season_id');
         // From table
         $this->jsmquery->from('#__sportsmanagement_project AS p');
-        $this->jsmquery->where('p.id = ' . self::$_project_id);    
-        $this->jsmdb->setQuery($this->jsmquery);    
-        $this->_season_id = $this->jsmdb->loadResult();    
+        $this->jsmquery->where('p.id = ' . self::$_project_id);  
+        $this->jsmdb->setQuery($this->jsmquery);  
+        $this->_season_id = $this->jsmdb->loadResult();  
         $this->jsmapp->setUserState("$this->jsmoption.season_id", $this->_season_id);
-        
+      
         // Create a new query object.		
         $this->jsmquery->clear();
         $this->jsmsubquery1->clear();
         $this->jsmsubquery2->clear();
         $this->jsmsubquery3->clear();
-        
+      
         // Select some fields
         $this->jsmquery->select('r.*');
         // From the rounds table
@@ -139,31 +139,31 @@ class sportsmanagementModelRounds extends JSMModelList
         $this->jsmsubquery3->select('count(*)');
         $this->jsmsubquery3->from('#__sportsmanagement_match ');
         $this->jsmsubquery3->where('round_id=r.id');
-        
+      
         $this->jsmquery->select('('.$this->jsmsubquery1.') AS countUnPublished');
         $this->jsmquery->select('('.$this->jsmsubquery2.') AS countNoResults');
         $this->jsmquery->select('('.$this->jsmsubquery3.') AS countMatches');
-        
-        
+      
+      
           //$query->where(' r.project_id = '.$this->_project_id);
           $this->jsmquery->where(' r.project_id = '.self::$_project_id);
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where(' LOWER(r.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-       
+     
         if (is_numeric($this->getState('filter.state')) ) {
-            $this->jsmquery->where('r.published = '.$this->getState('filter.state'));    
+            $this->jsmquery->where('r.published = '.$this->getState('filter.state'));  
         }
-        
+      
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'r.roundcode')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-       
+     
         return $this->jsmquery;
     }
-    
+  
     /**
      * return count of  project rounds
      *
@@ -178,7 +178,7 @@ class sportsmanagementModelRounds extends JSMModelList
         $this->jsmquery->select('count(*) AS count');
         // From the table
         $this->jsmquery->from('#__sportsmanagement_round');
-        $this->jsmquery->where('project_id = '.$project_id);  
+        $this->jsmquery->where('project_id = '.$project_id);
 
         try{
               $this->jsmdb->setQuery($this->jsmquery);
@@ -190,28 +190,28 @@ class sportsmanagementModelRounds extends JSMModelList
             return false;
         }
     }
-    
+  
     /**
-     * 
+     *
      * @param int $projectid
      * @return assocarray
      */
-    public static function getFirstRound($projectid,$cfg_which_database = 0) 
+    public static function getFirstRound($projectid,$cfg_which_database = 0)
     {
          $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
-        
+      
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('id AS round_id');
         $query->select('roundcode');
         // From the table
         $query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$projectid);  
-        $query->order('roundcode ASC, id ASC');  
+        $query->where('project_id = '.$projectid);
+        $query->order('roundcode ASC, id ASC');
         try{
              $db->setQuery($query);
             $result = $db->loadAssocList();
@@ -226,34 +226,34 @@ class sportsmanagementModelRounds extends JSMModelList
         catch (Exception $e)
         {
             $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');    
+            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');  
             return false;
-        }        
-        
+        }      
+      
     }
-    
+  
     /**
-     * 
+     *
      * @param int $projectid
      * @return assocarray
      */
-    public static function getLastRound($projectid,$cfg_which_database = 0) 
+    public static function getLastRound($projectid,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');        
-        
+        $option = $app->input->getCmd('option');      
+      
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('id AS round_id');
         $query->select('roundcode');
         // From the table
         $query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$projectid);  
-        $query->order('roundcode DESC, id DESC');  
-                
+        $query->where('project_id = '.$projectid);
+        $query->order('roundcode DESC, id DESC');
+              
         try{
             $db->setQuery($query);
             $result = $db->loadAssocList();
@@ -263,39 +263,39 @@ class sportsmanagementModelRounds extends JSMModelList
             else
             {
                 return false;
-            }    
-            
+            }  
+          
         }
         catch (Exception $e)
         {
             $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');    
+            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');  
             return false;
-        }   
-        
+        } 
+      
     }
-    
+  
     /**
-     * 
+     *
      * @param int $roundid
      * @param int $projectid
      * @return assocarray
      */
-    public static function getPreviousRound($roundid, $projectid,$cfg_which_database = 0) 
+    public static function getPreviousRound($roundid, $projectid,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('roundcode');
         // From the table
         $query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$projectid);  
-        $query->order('id ASC');  
-        
+        $query->where('project_id = '.$projectid);
+        $query->order('id ASC');
+      
 
         try{
             $db->setQuery($query);
@@ -304,9 +304,9 @@ class sportsmanagementModelRounds extends JSMModelList
         catch (Exception $e)
         {
             $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');    
+            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');  
             return false;
-        } 
+        }
         for ($i=0,$n=count($result); $i < $n; $i++) {
             if(isset($result[$i-1])) {
                 return $result[$i-1];
@@ -315,29 +315,29 @@ class sportsmanagementModelRounds extends JSMModelList
             }
         }
     }
-    
+  
     /**
-     * 
+     *
      * @param int $roundid
      * @param int $projectid
      * @return assocarray
      */
-    public static function getNextRound($roundid, $projectid,$cfg_which_database = 0) 
+    public static function getNextRound($roundid, $projectid,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
           // Select some fields
           $query->select('CONCAT_WS( \':\', id, alias ) AS id');
         $query->select('roundcode');
         // From the table
         $query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$projectid);  
-        $query->order('id ASC');  
-        
-    
+        $query->where('project_id = '.$projectid);
+        $query->order('id ASC');
+      
+  
         try{
             $db->setQuery($query);
             $result = $db->loadAssocList();
@@ -345,9 +345,9 @@ class sportsmanagementModelRounds extends JSMModelList
         catch (Exception $e)
         {
             $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');    
+            $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS), 'Notice');  
             return false;
-        } 
+        }
         for ($i=0,$n=count($result); $i < $n; $i++) {
             if($result[$i]['id']==$roundid) {
                 if(isset($result[$i+1])) {
@@ -358,7 +358,7 @@ class sportsmanagementModelRounds extends JSMModelList
             }
         }
     }
-    
+  
     /**
      * Get the next round by todays date
      *
@@ -372,9 +372,9 @@ class sportsmanagementModelRounds extends JSMModelList
         $this->jsmquery->select('id, roundcode, round_date_first , round_date_last');
         // From the table
         $this->jsmquery->from('#__sportsmanagement_round');
-        $this->jsmquery->where('project_id = '.$projectid);  
+        $this->jsmquery->where('project_id = '.$projectid);
         $this->jsmquery->where('DATEDIFF(CURDATE(), DATE(round_date_first)) < 0');
-        $this->jsmquery->order('round_date_first ASC'); 
+        $this->jsmquery->order('round_date_first ASC');
         try{
             $this->jsmdb->setQuery($this->jsmquery);
             $result = $this->jsmdb->loadAssocList();
@@ -384,9 +384,9 @@ class sportsmanagementModelRounds extends JSMModelList
         {
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
-        }        
+        }      
     }
-    
+  
     /**
      * return project rounds as array of objects(roundid as value, name as text)
      *
@@ -399,15 +399,15 @@ class sportsmanagementModelRounds extends JSMModelList
         $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
          // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS value');
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         // From the table
         $query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$project_id);  
-        $query->order('roundcode '.$ordering); 
+        $query->where('project_id = '.$project_id);
+        $query->order('roundcode '.$ordering);
         try{
              $db->setQuery($query);
                 $result = $db->loadObjectList();
@@ -417,32 +417,32 @@ class sportsmanagementModelRounds extends JSMModelList
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
             return false;
         }
-        
-        
+      
+      
         return $result;
     }
-    
+  
     function populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder = null)
-    {        
+    {      
          $db = sportsmanagementHelper::getDBConnection();
          $date = Factory::getDate();
         $user = Factory::getUser();
-         include_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'class.roundrobin.php';    
+         include_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'class.roundrobin.php';  
         if (!strtotime($start)) {
              $start = strftime('%Y-%m-%d');
         }
         if (!preg_match("/^[0-9]+:[0-9]+$/", $time)) {
             $time = '20:00';
         }
-        
+      
           $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
           $teams = $mdlProject->getProjectTeamsOptions($project_id);
-        
+      
         if ($teamsorder) {
             $ordered = array();
-            foreach ($teamsorder as $ptid) 
+            foreach ($teamsorder as $ptid)
             {
-                foreach ($teams as $t) 
+                foreach ($teams as $t)
                 {
                     if ($t->value == $ptid) {
                         $ordered[] = $t;
@@ -454,7 +454,7 @@ class sportsmanagementModelRounds extends JSMModelList
                 $teams = $ordered;
             }
         }
-        
+      
             // diddipoeler
             $rrteams = array();
         foreach ( $teams as $team )
@@ -464,7 +464,7 @@ class sportsmanagementModelRounds extends JSMModelList
             $roundrobin = new roundrobin($rrteams);
             $roundrobin->free_ticket = false; // free tickets off
             $roundrobin->create_matches();
-    
+  
         if ($roundrobin->finished) {
             $i = 1;
             while ($roundrobin->next_matchday()) {
@@ -476,27 +476,27 @@ class sportsmanagementModelRounds extends JSMModelList
                     echo"<br />";
             }
         }
-    
-    
+  
+  
         if (!$teams || !count($teams)) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM'));
             return false;
         }
           $rounds = $this->getRoundsOptions($project_id);
           $rounds = $rounds ? $rounds : array();
-        
+      
         if ($scheduling < 2) {
             include_once JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'RRobin.class.php';
             $helper = new RRobin();
             $helper->create($teams);
-            $schedule = $helper->getSchedule($scheduling+1);            
+            $schedule = $helper->getSchedule($scheduling+1);          
         }
         else
           {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_UNDEFINED_SCHEDULING'));
-            return false;            
+            return false;          
         }
-        
+      
           $current_date = null;
           $current_code = 0;
         foreach ($schedule as $k => $games)
@@ -516,7 +516,7 @@ class sportsmanagementModelRounds extends JSMModelList
                 $round->roundcode = $current_code ? $current_code + 1 : 1;
                 $round->name      = sprintf($roundname, $round->roundcode);
                 $round->modified = $date->toSql();
-                $round->modified_by = $user->get('id');    
+                $round->modified_by = $user->get('id');  
                 /**
  * Insert the object into the table.
  */
@@ -526,15 +526,15 @@ class sportsmanagementModelRounds extends JSMModelList
                 }
                 catch (Exception $e)
                    {
-                    $this->setError('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED');    
-                    return false;        
-                }                    
+                    $this->setError('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED');  
+                    return false;      
+                }                  
                     $current_date = $round->round_date_first;
                     $current_code = $round->roundcode;
-                
+              
                     $round_id = $result;
             }
-            
+          
             // create games !
             foreach ($games as $g)
             {
@@ -549,7 +549,7 @@ class sportsmanagementModelRounds extends JSMModelList
                 $game->published = 1;
                 $game->match_date = $current_date.' '.$time;
                 $game->modified = $date->toSql();
-                $game->modified_by = $user->get('id');    
+                $game->modified_by = $user->get('id');  
                 /**
  * Insert the object into the table.
  */
@@ -559,19 +559,19 @@ class sportsmanagementModelRounds extends JSMModelList
                 }
                 catch (Exception $e)
                    {
-                    $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_FAILED');    
-                    return false;        
-                }                    
-                
-                
-                
-                
+                    $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_FAILED');  
+                    return false;      
+                }                  
+              
+              
+              
+              
             }
         }
-        
+      
           return true;
-    }    
+    }  
 
-    
+  
 }
 ?>

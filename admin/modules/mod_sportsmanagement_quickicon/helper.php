@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * ModSportsmanagementQuickIconHelper
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -35,11 +35,11 @@ abstract class ModSportsmanagementQuickIconHelper
      * @since 1.6
      */
     protected static $buttons = array();
-    
-    
+  
+  
     /**
      * ModSportsmanagementQuickIconHelper::getModPosition()
-     * 
+     *
      * @return void
      */
     public static function getModPosition()
@@ -48,12 +48,12 @@ abstract class ModSportsmanagementQuickIconHelper
         $query->select('position');
         $query->from('#__modules');
         $query->where('module LIKE '.Factory::getDbo()->Quote(''.'mod_sportsmanagement_quickicon'.''));
-        
+      
         Factory::getDBO()->setQuery($query);
         $res = Factory::getDBO()->loadResult();
-    
-        return $res;   
-    }   
+  
+        return $res; 
+    } 
 
     /**
      * Helper method to return button list.
@@ -87,7 +87,7 @@ abstract class ModSportsmanagementQuickIconHelper
                   'access' => array('core.manage', 'com_sportsmanagement'),
                   'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
                   ),
-                        
+                      
                         array(
                   'link' => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
                   'image' => 'pencil-2',
@@ -96,7 +96,7 @@ abstract class ModSportsmanagementQuickIconHelper
                   'access' => array('core.manage', 'com_sportsmanagement'),
                   'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
                   ),
-                        
+                      
                         array(
                   'link' => Route::_('index.php?option=com_sportsmanagement&view=projects'),
                   'image' => 'pencil-2',
@@ -105,7 +105,7 @@ abstract class ModSportsmanagementQuickIconHelper
                   'access' => array('core.manage', 'com_sportsmanagement'),
                   'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
                   ),
-                        
+                      
                         array(
                   'link' => Route::_('index.php?option=com_sportsmanagement&view=predictions'),
                   'image' => 'pencil-2',
@@ -114,7 +114,7 @@ abstract class ModSportsmanagementQuickIconHelper
                   'access' => array('core.manage', 'com_sportsmanagement'),
                   'group' => 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL'
                   ),
-                        
+                      
                         array(
                   'link' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
                   'image' => 'pencil-2',

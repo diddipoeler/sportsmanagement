@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -21,7 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 if (!empty($this->match_article->introtext)) {
-    
+  
     ?>
     <table class="table " >
         <tr>

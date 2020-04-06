@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -32,24 +32,24 @@ $crew = array();
 
 /**
  * modSportsmanagementClubBirthdayHelper
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class modSportsmanagementClubBirthdayHelper
 {
-    
+  
     /**
  * modSportsmanagementClubBirthdayHelper::jsm_birthday_sort()
- * 
+ *
  * @param  mixed $array
  * @param  mixed $sort
  * @return
  */
-    public static function jsm_birthday_sort($array, $sort) 
+    public static function jsm_birthday_sort($array, $sort)
     {
 
         /**
@@ -65,17 +65,17 @@ class modSportsmanagementClubBirthdayHelper
      *
      * @since 11.1
      */
-     
+   
 
          $res = ArrayHelper::sortObjects($array, 'age', $sort);
 
         return $res;
-    }    
+    }  
 
 
     /**
  * modSportsmanagementClubBirthdayHelper::getClubs()
- * 
+ *
  * @param  mixed $limit
  * @param  mixed $season_ids
  * @return
@@ -86,17 +86,17 @@ class modSportsmanagementClubBirthdayHelper
         $birthdaytext = '';
         $database = sportsmanagementHelper::getDBConnection();
         /**
-* 
- * get club info, we have to make a function for this 
+*
+ * get club info, we have to make a function for this
 */
         $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
         if ($season_ids ) {
-            foreach ( $season_ids as $key => $val ) 
+            foreach ( $season_ids as $key => $val )
             {
                 $season_ids[$key] = (int)$val;
-            }    
-            $seasons = implode(",", $season_ids); 
+            }  
+            $seasons = implode(",", $season_ids);
         }
          $query = $database->getQuery(true);
         $query->select('c.id,c.country,c.founded,c.name,c.alias,c.founded_year,c.logo_big AS picture, DATE_FORMAT(c.founded, \'%m-%d\')AS daymonth,YEAR( CURRENT_DATE( ) ) as year');
@@ -109,9 +109,9 @@ class modSportsmanagementClubBirthdayHelper
         $query->join('INNER', ' #__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
         $query->where('( c.founded != \'0000-00-00\' AND c.founded_year != \'0000\'  AND c.founded_year != \'\' ) ');
         if ($seasons ) {
-              $query->where('st.season_id IN ('.$seasons.')');    
-        }        
-    
+              $query->where('st.season_id IN ('.$seasons.')');  
+        }      
+  
             $query->group('c.id,c.country,c.founded,c.name,c.alias,c.founded_year,c.logo_big');
 
             $query->order('days_to_birthday ASC');
@@ -125,11 +125,11 @@ class modSportsmanagementClubBirthdayHelper
         catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
-             Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');    
+             Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');  
             $database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
              return false;
         }
-    
+  
     }
 
 }

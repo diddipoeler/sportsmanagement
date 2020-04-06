@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelsmquotes
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -28,15 +28,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelsmquotes extends JSMModelList
 {
     var $_identifier = "smquotes";
-    
+  
     /**
      * sportsmanagementModelsmquotes::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.quote',
                         'obj.id',
@@ -45,7 +45,7 @@ class sportsmanagementModelsmquotes extends JSMModelList
                 parent::__construct($config);
                 parent::setDbo($this->jsmdb);
     }
-    
+  
     /**
      * Method to auto-populate the model state.
      *
@@ -90,13 +90,13 @@ class sportsmanagementModelsmquotes extends JSMModelList
         }
         $this->setState('list.direction', $listOrder);
     }
-    
-    
-    
-    
+  
+  
+  
+  
     /**
      * sportsmanagementModelsmquotes::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
@@ -130,10 +130,10 @@ class sportsmanagementModelsmquotes extends JSMModelList
             $this->jsmdb->escape($this->getState('list.ordering', 'obj.quote')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
- 
+
         return $this->jsmquery;
     }
 
-    
+  
 }
 ?>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -54,6 +54,6 @@ else
     ?><p><?php
         echo Text::sprintf('Good luck wishes... %1$s on %2$s', $this->config['ownername'], '<b>'.$this->websiteName.'</b>');
     ?></p><?php
-    } 
+    }
 }
 ?><br />

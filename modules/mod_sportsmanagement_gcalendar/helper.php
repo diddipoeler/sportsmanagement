@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
 class sportsmanagementModGCalendarHelper
 {
 
-    public static function getCalendars($params) 
+    public static function getCalendars($params)
     {
         $calendarids = null;
         if($params != null) {

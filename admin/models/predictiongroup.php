@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ jimport('joomla.application.component.modeladmin');
 
 /**
  * sportsmanagementModelpredictiongroup
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,7 +32,7 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelpredictiongroup extends JSMModelAdmin
 {
-    
+  
     /**
      * Method to save the form data.
      *
@@ -49,23 +49,23 @@ class sportsmanagementModelpredictiongroup extends JSMModelAdmin
           // Set the values
           $data['modified'] = $date->toSql();
           $data['modified_by'] = $user->get('id');
-        
+      
           // zuerst sichern, damit wir bei einer neuanlage die id haben
         if (parent::save($data) ) {
             $id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+          
             if ($isNew ) {
                 //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
             }
-           
+         
         }
-        
-        return true;   
-    }   
-    
+      
+        return true; 
+    } 
+  
 
 }
 ?>

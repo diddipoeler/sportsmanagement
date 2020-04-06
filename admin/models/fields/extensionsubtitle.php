@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldSubtitle
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -31,7 +31,7 @@ class JFormFieldextensionsubtitle extends FormField
 
     /**
      * FormFieldSubtitle::getLabel()
-     * 
+     *
      * @return
      */
     protected function getLabel()
@@ -56,7 +56,7 @@ class JFormFieldextensionsubtitle extends FormField
         $html .= '<div style="'.implode($style).'">';
 
         if ($value) {
-                
+              
             $style = array();
 
             $style[] = 'font-family: "Courier New", Courier, monospace; ';
@@ -69,7 +69,7 @@ class JFormFieldextensionsubtitle extends FormField
             $style[] = 'position: absolute; ';
             $style[] = 'left: 20px; ';
             $style[] = 'top: -6px; ';
-                
+              
             $html .= '<div style=\''.implode($style).'\'>'.Text::_($value).'</div>';
         }
 
@@ -78,7 +78,7 @@ class JFormFieldextensionsubtitle extends FormField
 
     /**
      * FormFieldSubtitle::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()

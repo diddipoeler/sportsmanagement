@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -65,8 +65,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMRandomplayerHelper', __DIR__ . '/helper.php');
 
@@ -74,12 +74,12 @@ $list = modJSMRandomplayerHelper::getData($params);
 
 $document = Factory::getDocument();
 /**
- * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr  
+ * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr
  * //add css file
  * $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
  */
 
-?>           
+?>         
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require ModuleHelper::getLayoutPath($module->module);

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewJLXMLExports
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -28,10 +28,10 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewJLXMLExports extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewJLXMLExports::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -53,6 +53,6 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
         parent::addToolbar();
     }
-        
+      
 }
 ?>

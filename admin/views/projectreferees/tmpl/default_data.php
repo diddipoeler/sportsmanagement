@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>'.$this->project->name.'</i>');
     ?>
         </legend>
-        
+      
         <div id="editcell">
             <table class="<?php echo $this->table_data_class; ?>">
                 <thead>
@@ -103,7 +103,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         $canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
                         $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projectreferees.', $canCheckin);
-                        
+                      
             $inputappend='';
             ?>
             <tr class="<?php echo "row$k"; ?>">
@@ -117,15 +117,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             echo HTMLHelper::_('grid.id', $i, $row->id);
             ?>
              </td>
-                            
+                          
            <td class="center">
                                 <?php
                                 if ($row->checked_out) : ?>
                     <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'projectreferees.', $canCheckin); ?>
-                <?php 
-                                endif; 
+                <?php
+                                endif;
                                 if ($canEdit && !$row->checked_out ) :
-                                    ?>    
+                                    ?>  
                                     <a href="<?php echo $link; ?>">
             <?php
             $imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
@@ -136,12 +136,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             );
         ?>
                                 </a>
-                            <?php 
-                                endif; 
+                            <?php
+                                endif;
                                     ?>
               </td>
                 <?php
-                            
+                          
                 ?>
              <td>
             <?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 1) ?>
@@ -177,7 +177,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 $playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0);
                 $picture = Uri::root().$row->picture;
                 //echo sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
-                echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'.$row->id, $picture, $playerName, '20', $picture);                                                                                       
+                echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'.$row->id, $picture, $playerName, '20', $picture);                                                                                     
             }
             ?>
              </td>

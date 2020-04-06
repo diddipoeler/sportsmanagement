@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -46,8 +46,8 @@ if (!class_exists('sportsmanagementHelper') ) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMTrainingsData', __DIR__ . '/helper.php');
 
@@ -76,7 +76,7 @@ $daysOfWeek = array(
                 6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
                 7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
             );
-            
+          
 $document = Factory::getDocument();
 
 /**

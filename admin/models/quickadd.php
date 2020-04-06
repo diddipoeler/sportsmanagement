@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelQuickAdd
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -31,11 +31,11 @@ class sportsmanagementModelQuickAdd extends JSMModelList
 {
 
     var $_identifier = "quickadd";
-    
+  
 
     /**
      * sportsmanagementModelQuickAdd::getNotAssignedPlayers()
-     * 
+     *
      * @param  mixed $searchterm
      * @param  mixed $projectteam_id
      * @param  mixed $searchinfo
@@ -43,7 +43,7 @@ class sportsmanagementModelQuickAdd extends JSMModelList
      */
     function getNotAssignedPlayers($searchterm, $projectteam_id,$searchinfo = null )
     {
-        $query  = "	SELECT pl.*, pl.id as id2 
+        $query  = "	SELECT pl.*, pl.id as id2
 					FROM #__sportsmanagement_person AS pl
 					WHERE	(	LOWER( CONCAT(pl.firstname, ' ', pl.lastname) ) LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " OR
 								alias LIKE " . $this->_db->Quote("%" . $searchterm . "%") . " OR
@@ -58,7 +58,7 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         if ($searchinfo ) {
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
-        
+      
         $option = Factory::getApplication()->input->getCmd('option');
         $app    = Factory::getApplication();
 
@@ -74,7 +74,7 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         }
         $query = $query . $orderby;
         $this->_db->setQuery($query);
-        
+      
         if (!$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit')) ) {
             echo $this->_db->getErrorMsg();
         }
@@ -82,11 +82,11 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         return $this->_data;
     }
 
-    
-    
+  
+  
     /**
      * sportsmanagementModelQuickAdd::getNotAssignedStaff()
-     * 
+     *
      * @param  mixed $searchterm
      * @param  mixed $projectteam_id
      * @param  mixed $searchinfo
@@ -105,11 +105,11 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         $query .= "                     FROM #__sportsmanagement_team_staff AS ts ";
         $query .= "                     WHERE projectteam_id = ". $this->_db->Quote($projectteam_id);
         $query .= "                     AND ts.person_id = pl.id ) ";
-        
+      
         if ($searchinfo ) {
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
-        
+      
         $option = Factory::getApplication()->input->getCmd('option');
         $app    = Factory::getApplication();
 
@@ -128,8 +128,8 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         if (!$this->_data = $this->_getList(
             $query,
             $this->getState('limitstart'),
-            $this->getState('limit') 
-        ) 
+            $this->getState('limit')
+        )
         ) {
             echo $this->_db->getErrorMsg();
         }
@@ -137,10 +137,10 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         return $this->_data;
     }
 
-    
+  
     /**
      * sportsmanagementModelQuickAdd::getNotAssignedReferees()
-     * 
+     *
      * @param  mixed $searchterm
      * @param  mixed $projectid
      * @param  mixed $searchinfo
@@ -159,12 +159,12 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         $query .= "                     FROM #__sportsmanagement_project_referee AS pr ";
         $query .= "                     WHERE project_id = ". $this->_db->Quote($projectid);
         $query .= "                     AND pr.person_id = pl.id ) ";
-        
-        
+      
+      
         if ($searchinfo ) {
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
-        
+      
         $option = Factory::getApplication()->input->getCmd('option');
         $app    = Factory::getApplication();
 
@@ -179,14 +179,14 @@ class sportsmanagementModelQuickAdd extends JSMModelList
             $orderby     = ' ORDER BY ' . $filter_order . ' ' . $filter_order_Dir . ' , pl.lastname ';
         }
         $query = $query . $orderby;
-        
+      
         $this->_db->setQuery($query);
-        
+      
         if (!$this->_data = $this->_getList(
             $query,
             $this->getState('limitstart'),
-            $this->getState('limit') 
-        ) 
+            $this->getState('limit')
+        )
         ) {
             echo $this->_db->getErrorMsg();
         }
@@ -194,10 +194,10 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         return $this->_data;
     }
 
-    
+  
     /**
      * sportsmanagementModelQuickAdd::getNotAssignedTeams()
-     * 
+     *
      * @param  mixed $searchterm
      * @param  mixed $projectid
      * @return
@@ -221,30 +221,30 @@ class sportsmanagementModelQuickAdd extends JSMModelList
         if (!$this->_data = $this->_getList(
             $query,
             $this->getState('limitstart'),
-            $this->getState('limit') 
-        ) 
+            $this->getState('limit')
+        )
         ) {
             echo $this->_db->getErrorMsg();
         }
         $this->_total = $this->_getListCount($query);
         return $this->_data;
     }
-    
+  
     /**
      * sportsmanagementModelQuickAdd::addPlayer()
-     * 
+     *
      * @param  mixed $projectteam_id
      * @param  mixed $personid
      * @param  mixed $name
      * @return
      */
     function addPlayer($projectteam_id, $personid, $name = null)
-    {        
+    {      
         if (!$personid && empty($name) ) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
             return false;
         }
-    
+  
         // add the new individual as their name was sent through.
         if (!$personid) {
             $mdlPerson = BaseDatabaseModel::getInstance('Person', 'sportsmanagementModel');
@@ -274,12 +274,12 @@ class sportsmanagementModelQuickAdd extends JSMModelList
             $mdlPerson->store($data);
             $personid = $mdlPerson->_db->insertid();
         }
-    
+  
         if (!$personid) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_FAILED_ADDING_PERSON'));
             return false;
         }
-    
+  
         /**
  * muss noch programmiert werden
  */

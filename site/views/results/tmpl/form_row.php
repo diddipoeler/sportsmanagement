@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  */
 
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -22,8 +22,8 @@ if ($this->overallconfig['use_jquery_modal'] ) {
 ?>
 
 
-<?php 
-}    
+<?php
+}  
         $match = $this->game;
         $i = $this->i;
         $thismatch = Table::getInstance('Match', 'sportsmanagementTable');
@@ -37,7 +37,7 @@ if (isset($this->teams[$thismatch->projectteam1_id]) ) {
 if (isset($this->teams[$thismatch->projectteam2_id]) ) {
         $team2 = $this->teams[$thismatch->projectteam2_id];
 }
-        
+      
         $user = Factory::getUser();
 
 if (isset($team1) && isset($team2)) {
@@ -57,7 +57,7 @@ foreach ($teams AS $team)
         $canEdit = $user->authorise('core.edit', 'com_sportsmanagement');
         $canCheckin = $user->authorise('core.manage', 'com_checkin') || $thismatch->checked_out == $user->get('id') || $thismatch->checked_out == 0;
         $checked = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
-        
+      
         $published    = HTMLHelper::_('grid.published', $match, $i);
 
         list($date,$time) = explode(" ", $match->match_date);
@@ -65,7 +65,7 @@ foreach ($teams AS $team)
     ?>
 <tr id="result-<?php echo $match->id; ?>" class="row-result">
     <td valign="top"><?php
-    
+  
     if ($thismatch->checked_out && $thismatch->checked_out != $my->id) {
         $db= Factory::getDBO();
         $query="	SELECT username
@@ -85,7 +85,7 @@ foreach ($teams AS $team)
        <!-- Edit match details -->
        <td valign="">
         <?php
-        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'edit', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');                
+        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'edit', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');              
         ?>
       <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -98,11 +98,11 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );  
+        );
         ?>
 
        </td>
-    
+  
         <?PHP
         $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
         ?>
@@ -111,14 +111,14 @@ foreach ($teams AS $team)
         echo HTMLHelper::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
         ?>
        </td>
-        <?php 
+        <?php
         if($this->project->project_type == 'DIVISIONS_LEAGUE' ) {
         ?>
       <td style="text-align:center; " >
         <?php echo $match->divhome; ?>
       </td>
-    <?php 
-        } 
+    <?php
+        }
         if ($this->config['show_edit_match_number'] ) {
         ?>
       <!-- Edit number -->
@@ -127,16 +127,16 @@ foreach ($teams AS $team)
     value="<?php echo $thismatch->match_number;?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
       </td>
         <?php
-        }        
-        if ($this->config['show_edit_match_date'] ) {    
+        }      
+        if ($this->config['show_edit_match_date'] ) {  
             ?>
           <!-- Edit date -->
           <td nowrap='nowrap' align='center' valign='top'>
             <?php
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
-            ?> 
+            ?>
             <div class="well">
-            <?php 
+            <?php
             $attribs = array(
             "class" => "span2",
             "onChange" => "document.getElementById('cb".$i."').checked=true",
@@ -153,26 +153,26 @@ foreach ($teams AS $team)
                 'match_date'.$thismatch->id,
                 '%d-%m-%Y',
                 $attribs
-            ); 
+            );
             ?>
           </div>
-            <?PHP            
+            <?PHP          
             }
             else
-            {     
+            {   
                 echo HTMLHelper::calendar(
                     sportsmanagementHelper::convertDate($datum, 1),
                     'match_date'.$thismatch->id,
                     'match_date'.$thismatch->id,
                     '%d-%m-%Y',
                     'size="9"  style="font-size:9px;" onchange="document.getElementById(\'cb'.$i.'\').checked=true; "'
-                ); 
-            }                    
+                );
+            }                  
                     ?>
         </td>
         <?php
         }
-        if ($this->config['show_edit_match_time'] ) {    
+        if ($this->config['show_edit_match_time'] ) {  
         ?>
         <!-- Edit start time -->
         <td align='center' nowrap='nowrap' valign='top'>
@@ -189,7 +189,7 @@ foreach ($teams AS $team)
        class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
      </td>
         <?php
-        }    
+        }  
         ?>
        <!-- Edit home team -->
        <td align="center" nowrap="nowrap" valign="top">
@@ -208,10 +208,10 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
-        ?>            
+        );      
+        ?>          
       </td>
-      <td>    
+      <td>  
         <!-- Edit home team -->
             <?php
             $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
@@ -254,10 +254,10 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
+        );      
         ?>
 
-    
+  
        </td>
        <!-- Edit match results -->
         <?php
@@ -355,12 +355,12 @@ foreach ($teams AS $team)
      </td>
         <?php
         }
-        if ($this->config['show_edit_match_events'] ) {    
+        if ($this->config['show_edit_match_events'] ) {  
         ?>
        <!-- Edit match events -->
        <td valign="top">
         <?php
-        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
         ?>
       <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -373,7 +373,7 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
+        );      
         ?>
        </td>
         <?php
@@ -383,7 +383,7 @@ foreach ($teams AS $team)
          <!-- Edit match statistics -->
          <td valign="top">
             <?php
-            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
             ?>
         <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -396,17 +396,17 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
-        ?>        
+        );      
+        ?>      
          </td>
             <?php
         }
-        if ($this->config['show_edit_match_referees'] ) {        
+        if ($this->config['show_edit_match_referees'] ) {      
             ?>
          <!-- Edit referee -->
          <td valign="top">
             <?php
-            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editreferees', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editreferees', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
             ?>
         <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -419,8 +419,8 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
-        ?>         
+        );      
+        ?>       
 
          </td>
             <?php
@@ -430,7 +430,7 @@ foreach ($teams AS $team)
       <td valign='top' style='text-align: center;'>
        <input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
      value='<?php echo ((isset($thismatch->published)&&(!$thismatch->published)) ? 0 : 1); ?>'
-        <?php if ($thismatch->published) {echo ' checked="checked" '; 
+        <?php if ($thismatch->published) {echo ' checked="checked" ';
         } ?>
      onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; if(document.adminForm.cbp<?php echo $thismatch->id; ?>.value==0){document.adminForm.cbp<?php echo $thismatch->id; ?>.value=1;}else{document.adminForm.cbp<?php echo $thismatch->id; ?>.value=0;}" />
       </td>

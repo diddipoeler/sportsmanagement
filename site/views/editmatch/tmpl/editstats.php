@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,27 +26,27 @@ $params = $this->form->getFieldsets('params');
 <fieldset>
 <div class="fltrt">
 <button type="button" onclick="Joomla.submitform('editmatch.savestats', this.form);">
-<?php echo Text::_('JSAVE');?></button>        
+<?php echo Text::_('JSAVE');?></button>      
 <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
-<?php echo Text::_('JCANCEL');?></button>        
+<?php echo Text::_('JCANCEL');?></button>      
 
 </div>
-        
+      
 <div class="configuration" >
 
 </div>
 </fieldset>
 <div class="clear"></div>
 <?php
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));  
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_($this->teams->team1, true));
 echo $this->loadTemplate('home');
-echo HTMLHelper::_('bootstrap.endTab');        
+echo HTMLHelper::_('bootstrap.endTab');      
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_($this->teams->team2, true));
 echo $this->loadTemplate('away');
-echo HTMLHelper::_('bootstrap.endTab');        
-echo HTMLHelper::_('bootstrap.endTabSet');        
-       
+echo HTMLHelper::_('bootstrap.endTab');      
+echo HTMLHelper::_('bootstrap.endTabSet');      
+     
 ?>
 <!-- <input type='hidden' name='option' value='com_sportsmanagement' /> -->
 <input type="hidden" name="view" value="" />

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,27 +14,28 @@
 
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * sportsmanagementControllerpredictiongroups
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllerpredictiongroups extends JSMControllerAdmin
 {
-  
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'predictiongroup', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'predictiongroup', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 }

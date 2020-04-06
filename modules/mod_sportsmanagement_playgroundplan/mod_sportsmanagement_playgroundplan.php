@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -47,8 +47,8 @@ if (!class_exists('sportsmanagementHelper') ) {
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modSportsmanagementPlaygroundplanHelper', __DIR__ . '/helper.php');
 

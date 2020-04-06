@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -51,7 +51,7 @@ JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 
 // welche tabelle soll genutzt werden
 $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
- 
+
 if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') ) {
     DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $paramscomponent->get('show_debug_info'));
 }
@@ -65,8 +65,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modSportsmanagementTeamPlayersHelper', __DIR__ . '/helper.php');
 
@@ -78,7 +78,7 @@ $document = Factory::getDocument();
  */
 $document->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.$module->module.'.css');
 
-?>           
+?>         
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require ModuleHelper::getLayoutPath($module->module);

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage rivals
  */
- 
-defined('_JEXEC') or die; 
+
+defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-<?php echo $this->pagetitle; 
+<?php echo $this->pagetitle;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="rivals">
 <?php	
@@ -51,7 +51,7 @@ foreach ($this->opos as $opos => $v)
     <?PHP
     /**
 * darstellung der verschiedenen bilder
-*/    
+*/  
     switch ($this->config['show_picture'])
     {
     case 'logo_small':
@@ -90,12 +90,12 @@ foreach ($this->opos as $opos => $v)
     case 'country_flag_logo_big':
         echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team, 1, 0, 'logo_big', Factory::getApplication()->input->getInt('cfg_which_database', 0), 0, $this->modalwidth, $this->modalheight, $this->overallconfig['use_jquery_modal']);
         break;
-    
+  
     }
     ?>
 </td>
 <td class="">
-<?php 
+<?php
 $isFavTeam = in_array($team->id, explode(",", $this->project->fav_team));
 // TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 $config['highlight_fav'] = $isFavTeam;
@@ -117,7 +117,7 @@ $k=1-$k;
 }
 else
 {
-    echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES');        
-}    
-?>    
+    echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES');      
+}  
+?>  
 </div>

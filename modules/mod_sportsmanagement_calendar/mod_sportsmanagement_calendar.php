@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -48,10 +48,10 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
 $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
-        
+      
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMCalendarHelper', __DIR__ . '/helper.php');
 
@@ -66,24 +66,24 @@ else
 {
 
     $startDate= new JDate($params->get('cal_start_date'));
-    
+  
     if(version_compare(JVERSION, '3.0.0', 'ge')) {
-        //$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');    
+        //$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');  
         $config = Factory::getConfig();
-        $offset = $config->get('offset');    
+        $offset = $config->get('offset');  
         $year = $jinput->getVar('year', $startDate->toFormat('Y'));
         $month  = $jinput->getVar('month', $startDate->toFormat('m'));
-        $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('d'));      
+        $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('d'));    
     }
     else
-    {    
+    {  
         $config = Factory::getConfig();
-        $offset = $config->get('offset'); 
+        $offset = $config->get('offset');
         $year = $jinput->getVar('year', $startDate->toFormat('%Y'));
         $month  = $jinput->getVar('month', $startDate->toFormat('%m'));
         $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
     }
-    
+  
 }
 
 $helper = new modJSMCalendarHelper;
@@ -92,7 +92,7 @@ $lightbox = $params->get('lightbox', 1);
 $inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'sportsmanagement'):'';
 
 if (!defined('JLC_MODULESCRIPTLOADED')) {
-    if(version_compare(JVERSION, '3.0.0', 'ge')) {    
+    if(version_compare(JVERSION, '3.0.0', 'ge')) {  
         //$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
         $doc->addScript(Uri::root().'/media/system/js/mootools-core-uncompressed.js');
         $doc->addScript(Uri::root().'/media/system/js/mootools-more-uncompressed.js');
@@ -102,13 +102,13 @@ if (!defined('JLC_MODULESCRIPTLOADED')) {
     else
     {
         $doc->addScript(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'assets/js'.DIRECTORY_SEPARATOR.$module->module.'_2.js');
-    }    
+    }  
 
     $doc->addStyleSheet(Uri::base().'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'assets/css'.DIRECTORY_SEPARATOR.$module->module.'.css');
     define('JLC_MODULESCRIPTLOADED', 1);
 }
 $calendar = $helper->showCal($params, $year, $month, $ajax, $module->id);
-?>           
+?>         
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require ModuleHelper::getLayoutPath($module->module);

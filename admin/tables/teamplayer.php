@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementTableTeamPlayer
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -54,14 +54,14 @@ class sportsmanagementTableTeamPlayer extends JSMTable
 
     /**
      * sportsmanagementTableTeamPlayer::canDelete()
-     * 
+     *
      * @param  mixed $id
      * @param  mixed $joins
      * @return
      */
     function canDelete($id, $joins = null)
     {
-        
+      
         return true;
     }
 }

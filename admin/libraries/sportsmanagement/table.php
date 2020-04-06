@@ -1,6 +1,6 @@
-<?PHP        
+<?PHP      
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\Registry\Registry;
 
 /**
  * JSMTable
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -31,7 +31,7 @@ class JSMTable extends Table
 
     /**
      * JSMTable::bind()
-     * 
+     *
      * @param  mixed  $array
      * @param  string $ignore
      * @return
@@ -48,11 +48,11 @@ class JSMTable extends Table
             $registry->loadArray($array['extendeduser']);
             $array['extendeduser'] = (string) $registry;
         }
-        
+      
         if (isset($array['season_ids']) && is_array($array['season_ids'])) {
             $array['season_ids'] = implode(',', $array['season_ids']);
         }
-        
+      
         if (key_exists('params', $array) && is_array($array['params']) ) {
             $registry = new Registry();
             $registry->loadArray($array['params']);
@@ -63,11 +63,11 @@ class JSMTable extends Table
             $registry->loadArray($array['comp_params']);
             $array['comp_params'] = $registry->toString();
         }
-      
+    
         return parent::bind($array, $ignore);
     }
-    
-        
+  
+      
 }
 
-?>    
+?>  

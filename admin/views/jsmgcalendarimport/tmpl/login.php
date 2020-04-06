@@ -56,7 +56,7 @@ use Joomla\CMS\Router\Route;
                             required="required" aria-invalid="true">
                     </div>
                 </div>
-                
+              
                 <div class="control-group">
                     <div class="control-label">
                         <label id="jform_name-lbl" for="google_api_clientid"
@@ -69,7 +69,7 @@ use Joomla\CMS\Router\Route;
                             required="required" aria-invalid="true">
                     </div>
                 </div>
-                
+              
                 <div class="control-group">
                     <div class="control-label">
                         <label id="jform_name-lbl" for="google_api_clientsecret"
@@ -82,10 +82,10 @@ use Joomla\CMS\Router\Route;
                             required="required" aria-invalid="true">
                     </div>
                 </div>
-                
-                
-                
-                
+              
+              
+              
+              
             </div>
         </div>
         <input type="submit" value="Login" class="btn"/>

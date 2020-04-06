@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldlanguagecharacter
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -78,7 +78,7 @@ class JFormFieldlanguagecharacter extends \JFormFieldList
         for ($i = $startRange; $i <= $endRange; $i++) {
             $options[] = HTMLHelper::_('select.option', $i, '&#'.$i.';', 'value', 'text');
         }
-           
+         
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
 

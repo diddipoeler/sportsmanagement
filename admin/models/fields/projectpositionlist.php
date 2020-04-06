@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldprojectpositionlist
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -32,7 +32,7 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldprojectpositionlist extends \JFormFieldList
 {
-    
+  
     /**
      * field type
      *
@@ -54,12 +54,12 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        
+      
         $team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
         $persontype = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
         $project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
         $pid = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
-        
+      
         // Initialize variables.
         $options = array();
         $select_id = Factory::getApplication()->input->getVar('id');
@@ -74,8 +74,8 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
          $query->order('pos.ordering,pos.name');
             $query->group('pos.id');
          $db->setQuery($query);
-           
-        try { 
+         
+        try {
             $options = $db->loadObjectList();
         }
         catch (Exception $e) {
@@ -85,7 +85,7 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
             {
             $row->text = Text::_($row->text);
         }
-    
+  
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;

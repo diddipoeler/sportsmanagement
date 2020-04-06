@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelhitlist
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -32,34 +32,34 @@ class sportsmanagementModelhitlist extends ListModel
     var $_identifier = "hitlist";
     var $limitstart = 0;
     var $limit = 0;
-    static $cfg_which_database = 0;    
+    static $cfg_which_database = 0;  
     static $projectid = 0;
     static $_success_text = null;
-    
+  
     /**
      * sportsmanagementModelhitlist::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
             // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         self::$projectid = $jinput->getInt("p", 0);
-        
+      
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
-            
+          
                 parent::__construct($config);
     }
-        
-        
+      
+      
         /**
          * sportsmanagementModelhitlist::getSportsmanagementHits()
-         * 
+         *
          * @param  mixed   $config
          * @param  integer $max_hits
          * @param  string  $table
@@ -75,30 +75,30 @@ class sportsmanagementModelhitlist extends ListModel
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         switch ($table)
         {
         case 'person':
             $query->select('CONCAT_WS(\' - \',firstname,lastname) AS name,hits');
-            break; 
+            break;
         default:
             $query->select('name,hits');
-            break; 
+            break;
         }
-        
+      
         $query->from('#__sportsmanagement_'.$table);
         $query->where('hits != 0 ');
         $query->order('hits DESC');
-        
+      
         $db->setQuery($query, 0, $max_hits);
         $db->query();
         $rows = $db->loadObjectList();
-       
+     
         self::$_success_text[Text::_('COM_SPORTSMANAGEMENT_HITLIST_'.strtoupper($table))] = $rows;
-           
+         
     }
 
-    
+  
 }
 
-?>    
+?>  

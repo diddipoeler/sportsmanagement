@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,7 +26,7 @@ $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server', '
 $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
 $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
 $show_facebook_link = ComponentHelper::getParams($option)->get('show_facebook_link', 0);
-$cfg_bugtracker_server = ComponentHelper::getParams($option)->get('cfg_bugtracker_server', '');    
+$cfg_bugtracker_server = ComponentHelper::getParams($option)->get('cfg_bugtracker_server', '');  
 $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width', 100);
 ?>
 
@@ -34,19 +34,19 @@ $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width', 100
 .modaljsm {
     width: 80%;
     height: 60%;
-  }  
+  }
 
 </style>
 
 <style>
 .modal-dialog {
     width: 80%;
-  }  
+  }
 .modal-dialog,
 .modal-content {
     /* 95% of window height */
     height: 95%;
-}  
+}
 </style>
 
 <script type="text/javascript" >
@@ -54,58 +54,58 @@ $logo_width = ComponentHelper::getParams($option)->get('logo_picture_width', 100
 function openLink(url)
 {
 var width = get_windowPopUpWidth();
-var heigth = get_windowPopUpHeight(); 
+var heigth = get_windowPopUpHeight();
 
 SqueezeBox.open(url, {
-       handler: 'iframe', 
+       handler: 'iframe',
        size: { x: width, y: heigth }
    });
-       
-} 
+     
+}
 
 </script>	
 
 <div class="<?php echo $this->divclassrow;?>" style="text-align:center; clear:both">
 <br />
-<!--      
+<!--    
 <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target="_blank" href="http://www.fussballineuropa.de">
 <img src= "<?php echo  Uri::root(true);?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto">
 </a>
--->            
+-->          
     <br />
     <?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
-    <br />      
-<img src= "<?php echo  Uri::root(true);?>/components/com_sportsmanagement/assets/images/fussballineuropa.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>                    
+    <br />    
+<img src= "<?php echo  Uri::root(true);?>/components/com_sportsmanagement/assets/images/fussballineuropa.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>                  
     <?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy;
     <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
-<br />  
+<br />
 <?php
-if ($show_facebook_link == 3 ) {    
+if ($show_facebook_link == 3 ) {  
 ?>
-<img src= "<?php echo  Uri::root(true);?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>                    
+<img src= "<?php echo  Uri::root(true);?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>                  
 <a href="https://www.facebook.com/joomlasportsmanagement/" target="_blank">JSM auf Facebook</a>	
-    <br />      
+    <br />    
 <?php
 }
 ?>
-    <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :       
-    <?php 
+    <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :     
+    <?php
     //echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
     echo sprintf('%1$s (diddipoeler)', sportsmanagementHelper::getVersion());
     ?>
-    <br />    
-      
+    <br />  
+    
 <?PHP
 /**
-* 
- * welche joomla version ? 
+*
+ * welche joomla version ?
 */
 if(version_compare(JVERSION, '3.0.0', 'ge')) {
 
 }
 elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
     /**
- * Joomla! 2.5 code here 
+ * Joomla! 2.5 code here
 */
 ?>
 <!-- Button HTML (to Trigger Modal) -->
@@ -114,8 +114,8 @@ elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
 <a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>
 <br />
 <?PHP
-} 
+}
 
-?>      
+?>    
 
 </div>

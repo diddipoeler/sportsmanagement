@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINIS
 
 /**
  * SMStatisticComplexsumpergame
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,16 +32,16 @@ class SMStatisticComplexsumpergame extends SMStatistic
 {
     /**
  * also the name of the associated xml file
- */    
+ */  
     var $_name = 'complexsumpergame';
-    
+  
     var $_calculated = 1;
     var $_showinsinglematchreports = 0;
     var $_ids = 'stat_ids';
-    
+  
     /**
      * SMStatisticComplexsumpergame::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
@@ -51,7 +51,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
     /**
      * SMStatisticComplexsumpergame::getFactors()
-     * 
+     *
      * @return
      */
     function getFactors()
@@ -59,23 +59,23 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $params  = SMStatistic::getParams();
         $factors = explode(',', $params->get('factors'));
         $stat_ids = SMStatistic::getSids($this->_ids);
-        
+      
         if (count($stat_ids) != count($factors)) {
             Log::add(Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id), Log::WARNING, 'jsmerror');
             return(array(0));
         }
-                
+              
         $sids = array();
-        foreach ($factors as $s) 
+        foreach ($factors as $s)
         {
             $sids[] = (float)$s;
-        }        
+        }      
         return $sids;
     }
 
     /**
      * SMStatisticComplexsumpergame::getPlayerStatsByProject()
-     * 
+     *
      * @param  mixed   $person_id
      * @param  integer $projectteam_id
      * @param  integer $project_id
@@ -86,16 +86,16 @@ class SMStatisticComplexsumpergame extends SMStatistic
     {
         $sids = SMStatistic::getSids($this->_ids);
         $factors = self::getFactors();
-        
+      
         $num = $this->getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors);
         $den = $this->getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
         return $this->formatValue($num, $den, $this->getPrecision());
     }
 
-    
+  
     /**
      * SMStatisticComplexsumpergame::getRosterStats()
-     * 
+     *
      * @param  mixed $team_id
      * @param  mixed $project_id
      * @param  mixed $position_id
@@ -110,7 +110,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
         $precision = SMStatistic::getPrecision();
         $res = array();
-        foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id) 
+        foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id)
         {
             $res[$person_id] = new stdclass();
             $res[$person_id]->person_id = $person_id;
@@ -123,7 +123,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
     /**
      * SMStatisticComplexsumpergame::getPlayersRanking()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  mixed   $division_id
      * @param  mixed   $team_id
@@ -133,14 +133,14 @@ class SMStatisticComplexsumpergame extends SMStatistic
      * @return
      */
     function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
-    {        
+    {      
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = SMStatistic::getQuotedSids($this->_ids);
         $factors  = self::getFactors();
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         // get all stats
         $query->select('ms.value, ms.statistic_id, tp.id AS tpid');
         $query->from('#__sportsmanagement_match_statistic AS ms');
@@ -148,8 +148,8 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id');
-              
-        $query->where('pt.project_id = ' . $project_id);        
+            
+        $query->where('pt.project_id = ' . $project_id);      
         if ($division_id != 0) {
             $query->where('pt.division_id = ' . $division_id);
         }
@@ -164,9 +164,9 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
         $db->setQuery($query);
         $gp = $db->loadObjectList('tpid');
-        
+      
         // now calculate per player
-        $players = array();        
+        $players = array();      
         // first, the numerator complex sum
         foreach ($stats as $stat)
         {
@@ -185,7 +185,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
                 unset($players[$k]);
             }
         }
-        
+      
         // now we reorder
         $order = (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC'));
         if ($order == 'ASC') {
@@ -200,7 +200,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
         $players = array_slice($players, $limitstart, $limit, true);
         $ids = array_keys($players);
-        
+      
         $query->clear();
         $query->select('tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,p.firstname, p.nickname, p.lastname, p.picture, p.country,st.team_id, pt.picture AS projectteam_picture');
         $query->select('t.picture AS team_picture,t.name AS team_name, t.short_name AS team_short_name');
@@ -212,7 +212,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query->where('pt.project_id = ' . $project_id);
         $query->where('p.published = 1');
         $query->where('tp.id IN ('. implode(',', $ids) .')');
-                
+              
         if ($division_id != 0) {
             $query->where('pt.division_id = ' . $division_id);
         }
@@ -230,7 +230,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
             $previousval = 0;
             $currentrank = 1 + $limitstart;
             $i = 0;
-            foreach ($players as $k => $value) 
+            foreach ($players as $k => $value)
             {
                 $res->ranking[$i] = $details[$k];
                 $res->ranking[$i]->total = $value;
@@ -241,7 +241,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
                 else {
                     $res->ranking[$i]->rank = $i + 1 + $limitstart;
                 }
-                
+              
                 $previousval = $value;
                 $currentrank = $res->ranking[$i]->rank;
 
@@ -253,10 +253,10 @@ class SMStatisticComplexsumpergame extends SMStatistic
         return $res;
     }
 
-    
+  
     /**
      * SMStatisticComplexsumpergame::getTeamsRanking()
-     * 
+     *
      * @param  integer $project_id
      * @param  integer $limit
      * @param  integer $limitstart
@@ -264,11 +264,11 @@ class SMStatisticComplexsumpergame extends SMStatistic
      * @return
      */
     function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
-    {        
+    {      
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = SMStatistic::getQuotedSids($this->_ids);
         $factors  = self::getFactors();
-        
+      
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         // team games
@@ -278,10 +278,10 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query->join('INNER', '#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.published = 1 AND m.team1_result IS NOT NULL');
         $query->where('pt.project_id = ' . $project_id);
         $query->group('pt.id');
-        
+      
         $db->setQuery($query);
         $gp = $db->loadObjectList('team_id');
-                
+              
         // get all stats
         $query->clear();
         $select = 'ms.value, ms.statistic_id, st.team_id ';
@@ -289,9 +289,9 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
         $db->setQuery($query);
         $stats = $db->loadObjectList();
-        
+      
         // now calculate per team
-        $teams = array();        
+        $teams = array();      
         foreach ($stats as $stat)
         {
             $key = array_search($stat->statistic_id, $sids);
@@ -309,7 +309,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
                 unset($teams[$k]);
             }
         }
-        
+      
         // now we reorder
         $order = (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC'));
         if ($order == 'ASC') {
@@ -318,9 +318,9 @@ class SMStatisticComplexsumpergame extends SMStatistic
         else {
             arsort($teams);
         }
-        
+      
         $teams = array_slice($teams, $limitstart, $limit, true);
-        
+      
         $res = array();
         foreach ($teams as $id => $value)
         {
@@ -335,7 +335,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
             // get ranks
             $previousval = 0;
             $currentrank = 1 + $limitstart;
-            foreach ($res as $k => $row) 
+            foreach ($res as $k => $row)
             {
                 if ($row->total == $previousval) {
                     $res[$k]->rank = $currentrank;
@@ -351,10 +351,10 @@ class SMStatisticComplexsumpergame extends SMStatistic
         }
         return $res;
     }
-    
+  
     /**
      * SMStatisticComplexsumpergame::getStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @param  mixed $team_id
      * @param  mixed $project_id
@@ -365,14 +365,14 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = SMStatistic::getQuotedSids($this->_ids);
         $factors  = self::getFactors();
-        
+      
         $db = sportsmanagementHelper::getDBConnection();
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
 
         $db->setQuery($query);
         $stats = $db->loadObjectList();
-        
+      
         $num = 0;
         foreach ($stats as $stat)
         {
@@ -381,20 +381,20 @@ class SMStatisticComplexsumpergame extends SMStatistic
                 $num += $factors[$key]*$stat->value;
             }
         }
-        
+      
         //games
         $select = 'COUNT(ms.id) AS value, tp.person_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false, 'match_staff');
-        
+      
         $db->setQuery($query);
         $den = $db->loadResult();
-        
+      
         return $this->formatValue($num, $den, $this->getPrecision());;
     }
-    
+  
     /**
      * SMStatisticComplexsumpergame::getHistoryStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @return
      */
@@ -403,14 +403,14 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $sids = SMStatistic::getSids($this->_ids);
         $sqids = $this->getQuotedSids();
         $factors  = $this->getFactors();
-        
+      
         $db = sportsmanagementHelper::getDBConnection();
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
 
         $db->setQuery($query);
-        $stats = $db->loadObjectList();    
-        
+        $stats = $db->loadObjectList();  
+      
         $num = 0;
         foreach ($stats as $stat)
         {
@@ -419,19 +419,19 @@ class SMStatisticComplexsumpergame extends SMStatistic
                 $num += $factors[$key]*$stat->value;
             }
         }
-        
+      
         //games
         $select = 'COUNT(ms.id) AS value, tp.person_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true, 'match_staff');
         $db->setQuery($query);
         $den = $db->loadResult();
-        
+      
         return self::formatValue($num, $den, $this->getPrecision());;
     }
 
     /**
      * SMStatisticComplexsumpergame::formatValue()
-     * 
+     *
      * @param  mixed $num
      * @param  mixed $den
      * @param  mixed $precision

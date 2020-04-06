@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,16 +17,16 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTableMatchCommentary
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementTableMatchCommentary extends JSMTable
 {
-    
+  
     /**
      * Constructor
      *
@@ -39,7 +39,7 @@ class sportsmanagementTableMatchCommentary extends JSMTable
         parent::__construct('#__sportsmanagement_match_commentary', 'id', $db);
     }
 
-    
+  
 
 }
 ?>

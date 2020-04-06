@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -21,9 +21,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelsmimageimports
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,11 +35,11 @@ class sportsmanagementModelsmimageimports extends ListModel
 
     /**
      * sportsmanagementModelsmimageimports::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
-    public function __construct($config = array()) 
+    public function __construct($config = array())
     {
         $config['filter_fields'] = array(
             'name',
@@ -57,7 +57,7 @@ class sportsmanagementModelsmimageimports extends ListModel
      *
      * @since 1.6
      */
-    protected function populateState($ordering = null, $direction = null) 
+    protected function populateState($ordering = null, $direction = null)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -80,10 +80,10 @@ class sportsmanagementModelsmimageimports extends ListModel
 
     /**
      * sportsmanagementModelsmimageimports::getListQuery()
-     * 
+     *
      * @return
      */
-    protected function getListQuery() 
+    protected function getListQuery()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -119,10 +119,10 @@ class sportsmanagementModelsmimageimports extends ListModel
 
     /**
      * sportsmanagementModelsmimageimports::getXMLFolder()
-     * 
+     *
      * @return
      */
-    function getXMLFolder() 
+    function getXMLFolder()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -146,10 +146,10 @@ class sportsmanagementModelsmimageimports extends ListModel
 
     /**
      * sportsmanagementModelsmimageimports::getimagesxml()
-     * 
+     *
      * @return
      */
-    function getimagesxml() 
+    function getimagesxml()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -205,10 +205,10 @@ class sportsmanagementModelsmimageimports extends ListModel
 
     /**
      * sportsmanagementModelsmimageimports::getXMLFiles()
-     * 
+     *
      * @return
      */
-    function getXMLFiles() 
+    function getXMLFiles()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -216,14 +216,14 @@ class sportsmanagementModelsmimageimports extends ListModel
         $files = array();
         $path = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml';
         //        $xml = Factory::getXMLParser( 'Simple' );
-        //       $xml->loadFile($path); 
+        //       $xml->loadFile($path);
 
         if(version_compare(JVERSION, '4', 'ge')) {
             $xml = simplexml_load_file($path);
         } else {
             $xml = Factory::getXML($path);
         }
-        
+      
         $i = 0;
 
         foreach ($xml->children() as $picture) {

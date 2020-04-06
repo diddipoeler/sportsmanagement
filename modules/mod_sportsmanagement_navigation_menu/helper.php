@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * modsportsmanagementNavigationMenuHelper
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -41,15 +41,15 @@ class modsportsmanagementNavigationMenuHelper
     protected $_teamoptions;
 
     protected $_project;
-    
+  
     protected $_project_slug = '';
     protected $_team_slug = '';
     protected $_division_slug = '';
     protected $_round_slug = '';
-    
+  
     /**
      * modsportsmanagementNavigationMenuHelper::__construct()
-     * 
+     *
      * @param  mixed $params
      * @return void
      */
@@ -59,7 +59,7 @@ class modsportsmanagementNavigationMenuHelper
         $app = Factory::getApplication();
         // JInput object
         $this->jinput = $app->input;
-        
+      
         $this->_params = $params;
         $this->_db = Factory::getDbo();
 
@@ -78,7 +78,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * modsportsmanagementNavigationMenuHelper::getSeasonId()
-     * 
+     *
      * @return
      */
     public function getSeasonId()
@@ -92,7 +92,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * modsportsmanagementNavigationMenuHelper::getLeagueId()
-     * 
+     *
      * @return
      */
     public function getLeagueId()
@@ -106,7 +106,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * modsportsmanagementNavigationMenuHelper::getDivisionId()
-     * 
+     *
      * @return
      */
     public function getDivisionId()
@@ -116,7 +116,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * modsportsmanagementNavigationMenuHelper::getTeamId()
-     * 
+     *
      * @return
      */
     public function getTeamId()
@@ -153,7 +153,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * returns the selector for division
-     * 
+     *
      * @return string html select
      */
     public function getDivisionSelect()
@@ -194,7 +194,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * returns the selector for league
-     * 
+     *
      * @return string html select
      */
     public function getLeagueSelect()
@@ -222,7 +222,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * returns the selector for project
-     * 
+     *
      * @return string html select
      */
     public function getProjectSelect()
@@ -242,11 +242,11 @@ class modsportsmanagementNavigationMenuHelper
         $query->join('INNER', '#__sportsmanagement_sports_type AS st on st.id = p.sports_type_id ');
 
         $query->where('p.published = 1');
-        
+      
         if ($this->getParam('show_project_dropdown') == 'season' && !$this->getProject()) {
             if ($this->getParam('s', 0) ) {
                 $query->where('p.season_id = ' . (int)$this->getParam('s'));
-            }    
+            }  
         }
 
         if ($this->getParam('show_project_dropdown') == 'season' && $this->getProject()) {
@@ -333,7 +333,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * returns the selector for teams
-     * 
+     *
      * @return string html select
      */
     public function getTeamSelect()
@@ -354,7 +354,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * returns select for project teams
-     * 
+     *
      * @return string html select
      */
     protected function getTeamsOptions()
@@ -393,7 +393,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * return info for current project
-     * 
+     *
      * @return object
      */
     public function getProject()
@@ -424,7 +424,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * return link for specified view - allow seo consistency
-     * 
+     *
      * @param  string $view
      * @return string url
      */
@@ -639,7 +639,7 @@ class modsportsmanagementNavigationMenuHelper
 
     /**
      * return param value or default if not found
-     * 
+     *
      * @param  string $name
      * @param  mixed  $default
      * @return mixed

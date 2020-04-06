@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -76,7 +76,7 @@ for ( $i = 0, $n = count($this->stafflist); $i < $n; $i++ )
   </td>
   <td>
     <div class="player-name">
-    <?php 
+    <?php
      $playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
     if ($this->config['link_player'] ) {
         $routeparameter = array();
@@ -85,9 +85,9 @@ for ( $i = 0, $n = count($this->stafflist); $i < $n; $i++ )
         $routeparameter['p'] = $this->project->slug;
         $routeparameter['tid'] = $this->team->slug;
         $routeparameter['pid'] = $row->person_slug;
-       
+     
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
-                            
+                          
         echo HTMLHelper::link($link, '<i>'.$playerName.'</i>');
     }
     else
@@ -131,13 +131,13 @@ for ( $i = 0, $n = count($this->stafflist); $i < $n; $i++ )
                 }
                 echo $staff_position;
 
-                
+              
             ?>
                     </td>
                     <td style="width: 55px;">
-                      
+                    
                             <?php
-        
+      
                             $imgTitle = Text::sprintf($playerName);
                             $picture = $row->picture;
                             if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") )) {
@@ -156,10 +156,10 @@ for ( $i = 0, $n = count($this->stafflist); $i < $n; $i++ )
                                 $this->modalheight,
                                 $this->overallconfig['use_jquery_modal']
                             );
-        
-  
+      
+
     ?>
-                      
+                    
   </td>
   <td style="padding-left: 10px;">
     <div class="player-position">
@@ -199,7 +199,7 @@ for ( $i = 0, $n = count($this->stafflist); $i < $n; $i++ )
     $routeparameter['tid'] = $this->team->slug;
     $routeparameter['pid'] = $row->slug;
     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
-    echo HTMLHelper::link($link, '<i>'.$playerName.'</i>'); ?></div>            
+    echo HTMLHelper::link($link, '<i>'.$playerName.'</i>'); ?></div>          
                     </td>
                   </tr>
                 </tbody></table>

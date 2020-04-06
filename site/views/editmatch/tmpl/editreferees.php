@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,9 +26,9 @@ $params = $this->form->getFieldsets('params');
     <fieldset>
         <div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">
-<?php echo Text::_('JSAVE');?></button>    
+<?php echo Text::_('JSAVE');?></button>  
 <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
-<?php echo Text::_('JCANCEL');?></button>        
+<?php echo Text::_('JCANCEL');?></button>      
         </div>
         <div class="configuration" >
     <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
@@ -45,9 +45,9 @@ $params = $this->form->getFieldsets('params');
                     </th>
                     <th>
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
-                    </th>                    
+                    </th>                  
                 </tr>
-            </thead>            
+            </thead>          
                 <tr>
                     <td style="text-align:center; ">
         <?php
@@ -66,11 +66,11 @@ $params = $this->form->getFieldsets('params');
 <td style='text-align:center; vertical-align:middle; '>
 <!-- left / right buttons -->
 <br />
-                                        
-                                        
+                                      
+                                      
 <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
 <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
-                                        
+                                      
 </td>
 <td>
 <!-- player affected to this position -->

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ jimport('joomla.form.formfield');
 
 /**
  * FormFieldTitle
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -33,7 +33,7 @@ class JFormFieldTitle extends FormField
 
     /**
      * FormFieldTitle::getLabel()
-     * 
+     *
      * @return
      */
     protected function getLabel()
@@ -65,7 +65,7 @@ class JFormFieldTitle extends FormField
 
         if ($image_src) {
             $html .= '<img style="margin: -1px 4px 0 0; float: left; padding: 0px; width: 16px; height: 16px" src="'.$image_src.'">';
-        } 
+        }
         else if ($icon) {
             HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
             $html .= '<i style="font-size: inherit; vertical-align: baseline" class="SYWicon-'.$icon.'">&nbsp;</i>';
@@ -80,7 +80,7 @@ class JFormFieldTitle extends FormField
 
     /**
      * FormFieldTitle::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()

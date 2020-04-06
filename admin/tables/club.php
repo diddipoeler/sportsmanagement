@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,16 +17,16 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableClub
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementTableClub extends JSMTable
 {
-    
+  
     /**
      * Constructor
      *
@@ -47,7 +47,7 @@ class sportsmanagementTableClub extends JSMTable
      * @since  1.0
      */
     function check()
-    {    
+    {  
         // setting alias
         $this->alias = OutputFilter::stringURLSafe($this->name);
         return true;

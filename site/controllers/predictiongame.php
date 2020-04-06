@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME .DIRECTORY_SEPARATOR. 'helpers' .
 
 /**
  * sportsmanagementControllerPredictiongame
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -30,7 +30,7 @@ class sportsmanagementControllerPredictiongame extends BaseController
 {
     /**
      * sportsmanagementControllerPredictiongame::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()

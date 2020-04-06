@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,8 +44,8 @@ if (!class_exists('sportsmanagementHelper') ) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMPlaygroundTicker', __DIR__ . '/helper.php');
 
@@ -53,11 +53,11 @@ JLoader::register('modJSMPlaygroundTicker', __DIR__ . '/helper.php');
  * soll die externe datenbank genutzt werden ?
  */
 if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database') ) {
-    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');    
+    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');  
 }
 else
 {
-    $module->picture_server = Uri::root();    
+    $module->picture_server = Uri::root();  
 }
 
 $playgrounds = modJSMPlaygroundTicker::getData($params);

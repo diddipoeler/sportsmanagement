@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,31 +15,31 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
+
 /**
  * sportsmanagementModelPlayground
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelPlayground extends JSMModelAdmin
 {
-    
+  
     static $playground = null;
     static $cfg_which_database = 0;
-    
+  
     /**
      * sportsmanagementModelplayground::getAddressString()
-     * 
+     *
      * @return
      */
     function getAddressString()
     {
         $playground = self::getPlayground();
-        if (!isset($playground) ) { return null; 
+        if (!isset($playground) ) { return null;
         }
         $address_parts = array();
         if (!empty($playground->address)) {
@@ -63,12 +63,12 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $address = implode(', ', $address_parts);
         return $address;
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelPlayground::getNextGames()
-     * 
+     *
      * @param  integer $project
      * @param  integer $pgid
      * @param  integer $played
@@ -82,9 +82,9 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         // Get a db connection.
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
-        
+      
         $result = array();
-        $starttime = microtime(); 
+        $starttime = microtime();
         $d2 = new Datetime("now");
 
         $playground = self::getPlayground($pgid);
@@ -114,10 +114,10 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             if ($project && !$allproject ) {
                 $query->where('p.id = '. (int)$project);
             }
-            
+          
             $query->group('m.id');
             $query->order('match_date ASC');
-            
+          
             $db->setQuery($query);
             try{
                       $result = $db->loadObjectList();
@@ -130,16 +130,16 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
                         $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                          $result = false;
             }
-        
+      
         }
-        
+      
         return $result;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelPlayground::updateHits()
-     * 
+     *
      * @param  integer $pgid
      * @param  integer $inserthits
      * @return void
@@ -150,21 +150,21 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $app = Factory::getApplication();
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
- 
+
         if ($inserthits ) {
                $query->update($db->quoteName('#__sportsmanagement_playground'))->set('hits = hits + 1')->where('id = '.$pgid);
- 
+
               $db->setQuery($query);
- 
+
               $result = $db->execute();
-              $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
-        }  
-     
+              $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+        }
+   
     }
-    
+  
     /**
      * sportsmanagementModelPlayground::getPlayground()
-     * 
+     *
      * @param  integer $pgid
      * @param  integer $inserthits
      * @return
@@ -175,20 +175,20 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(true, $app->getUserState("com_sportsmanagement.cfg_which_database", false));
         $query = $db->getQuery(true);
-        
-        self::updateHits($pgid, $inserthits); 
-        
+      
+        self::updateHits($pgid, $inserthits);
+      
         if (is_null(self::$playground) ) {
             if ($pgid < 1 ) {
                 $pgid = Factory::getApplication()->input->getInt("pgid", 0);
-            }    
-            
+            }  
+          
             if ($pgid > 0 ) {
                 $query->select('*');
                 $query->from('#__sportsmanagement_playground');
                 $query->where('id = '. $pgid);
                 $db->setQuery($query);
-                
+              
                 self::$playground = $db->loadObject();
 
             }
@@ -196,8 +196,8 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$playground;
     }
-    
-    
-    
-    
+  
+  
+  
+  
 }

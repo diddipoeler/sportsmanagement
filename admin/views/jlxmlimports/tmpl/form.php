@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -284,7 +284,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                         <p style='text-align:center;'><b style='color:green; '><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_SUCCESS', '<i>'.$this->uploadArray['name'].'</i>'); ?></b></p>
         <?php
         if ($this->import_version!='OLD') {
-            if (isset($exportversion->exportRoutine) 
+            if (isset($exportversion->exportRoutine)
                 && strtotime($exportversion->exportRoutine) >= strtotime('2010-09-19 23:00:00')
             ) {
                 ?>
@@ -300,7 +300,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                 <p><?php
                 echo Text::_('This file was created by an older revision of JoomLeague 1.5.0a!').'<br />';
                 echo Text::_('As we can not guarantee a correct processing the import routine will STOP here!!!');
-                                    
+                                  
                                     echo Text::sprintf('This file was created using SportsManagement-Export-Routine dated: %1$s', $exportversion->exportRoutine).'<br />';
                 echo Text::sprintf('Date and time of this file is: %1$s - %2$s', $exportversion->exportDate, $exportversion->exportTime).'<br />';
                 echo Text::sprintf('The name of the Joomla-System where this file was created is: %1$s', $exportversion->exportSystem).'<br />';
@@ -355,7 +355,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                     foreach ($this->sportstypes AS $row)
                                     {
                                         $options .= '<option ';
-                                        if (($row->name==$dSportsTypeName) 
+                                        if (($row->name==$dSportsTypeName)
                                             || ($row->name==Text::_($dSportsTypeName))
                                         ) {
                                             $foundMatchingSportstype = true;
@@ -387,7 +387,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                 $('adminForm').sportstypeNew.disabled=true;
                                             }" />
             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-                                    <input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew' 
+                                    <input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew'
                                             value="<?php echo stripslashes(htmlspecialchars(Text::_($dSportsTypeName))); ?>"
             <?php if ($foundMatchingSportstype) {echo " disabled='disabled'";
 }?>/>
@@ -398,7 +398,7 @@ if (isset($this->xml) && is_array($this->xml)) {
             ?>
                                     <input type="hidden" name="newSportsTypeCheck" value="1" />
             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-                                    <input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew' 
+                                    <input type='text' name='sportstypeNew' size='30' maxlength='25' id='sportstypeNew'
                                             value="<?php echo stripslashes(htmlspecialchars(Text::_($dSportsTypeName))); ?>" />
             <?php
                                 }
@@ -458,7 +458,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                 $('adminForm').leagueNew.disabled=true;
             }" />
             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-          <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew' 
+          <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew'
             value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>"
             <?php if ($foundMatchingLeague) {echo " disabled='disabled'";
 }?>/>
@@ -469,7 +469,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                 ?>
              <input type="hidden" name="newLeagueCheck" value="1" />
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-             <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew' 
+             <input type='text' name='leagueNew' size='90' maxlength='75' id='leagueNew'
             value="<?php echo stripslashes(htmlspecialchars($dLeagueName)); ?>" />
                 <?php
             }
@@ -520,7 +520,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                 $('adminForm').seasonNew.disabled=true;
                                             }" />
             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-                                    <input type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew' 
+                                    <input type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew'
                                             value="<?php echo stripslashes(htmlspecialchars($dSeasonName)); ?>"
             <?php if ($foundMatchingSeason) {echo " disabled='disabled'";
 }?>/>
@@ -531,14 +531,14 @@ if (isset($this->xml) && is_array($this->xml)) {
             ?>
                                     <input type="hidden" name="newSeasonCheck" value="1" />
             <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CREATE_NEW'); ?>
-                                    <input type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew' 
+                                    <input type='text' name='seasonNew' size='90' maxlength='75' id='seasonNew'
                                             value="<?php echo stripslashes(htmlspecialchars($dSeasonName)); ?>" />
             <?php
                                 }
                                 ?>
                                 </td>
          </tr>
-                            
+                          
    <tr>
    <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></td>
    <td style='background-color:#EEEEEE'>
@@ -553,7 +553,7 @@ if (isset($this->xml) && is_array($this->xml)) {
     ?>
    </td>
    </tr>
-                            
+                          
                             <tr>
                                 <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ADMIN'); ?></td>
                                 <td style='background-color:#EEEEEE'>
@@ -590,7 +590,7 @@ if (isset($this->xml) && is_array($this->xml)) {
             </select>
            </td>
           </tr>
-                        
+                      
    <tr>
    <td style='background-color:#EEEEEE'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES'); ?></td>
    <td style='background-color:#EEEEEE'>
@@ -602,10 +602,10 @@ if (isset($this->xml) && is_array($this->xml)) {
         'class=""',
         'value', 'text', $this->master_template
     );
-    ?>    
+    ?>  
    </td>
    </tr>
-                        
+                      
                             <tr>
                                 <td style='background-color:#DDDDDD'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE'); ?></td>
                                 <td style='background-color:#DDDDDD'>
@@ -712,7 +712,7 @@ if (isset($this->xml) && is_array($this->xml)) {
             $matchingTeam_ID = 0;
             $matchingTeam_ClubID = 0;
                             $matchingTeam_INFO = '';
-                            
+                          
             if (count($this->teams) > 0) {
                 foreach ($this->teams AS $team)
                 {
@@ -720,9 +720,9 @@ if (isset($this->xml) && is_array($this->xml)) {
                     // 									    (strcasecmp($importTeam_ShortName,$team->short_name)==0) &&
                     // 									    (strcasecmp($importTeam_MiddleName,$team->middle_name)==0) &&
                     // 									    (strcasecmp($importTeam_Info,$team->info)==0) )
-                                     
-                    if ((strcasecmp($importTeam_Name, $team->name) == 0) 
-                        && (strcasecmp($importTeam_Info, $team->info)==0) 
+                                   
+                    if ((strcasecmp($importTeam_Name, $team->name) == 0)
+                        && (strcasecmp($importTeam_Info, $team->info)==0)
                         //                   if ( $importTeam_Name == $team->name &&
                         // 									    $importTeam_Info == $team->info )
                     ) {
@@ -764,7 +764,7 @@ if (isset($this->xml) && is_array($this->xml)) {
          </td>
             <?php $color = $foundMatchingClubAndTeam ? $useExistingEntryColor: $useNewEntryColor; ?>
          <td style='line-height:200%; text-align:left; vertical-align:middle; background-color:<?php echo $color; ?>' id='tetd<?php echo $key; ?>'>
-            <?php 
+            <?php
             if ($foundMatchingClubAndTeam) {
                 $checked1 = "checked='checked'";
                 $checked2 = "";
@@ -888,14 +888,14 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                     <b><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBNAME');?></b>
                                                     <input type='<?php echo $visible; ?>' name='matching_ClubID_<?php echo $key;?>' value='<?php echo $matchingClub_ID;?>'/>
                                                     <input type='<?php echo $visible; ?>' name='clubID_<?php echo $key;?>' value='<?php echo $importTeam_ClubID;?>' <?php echo $ic_disabled;?>/>
-                                                    <input type='<?php echo $visible; ?>' name='clubName_<?php echo $key; ?>' size='60' maxlength='100' 
+                                                    <input type='<?php echo $visible; ?>' name='clubName_<?php echo $key; ?>' size='60' maxlength='100'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_ClubName));?>' <?php echo $ic_disabled;?>/>
                                                     <input type='<?php echo $visible; ?>' name='clubFileID_<?php echo $key;?>' value='<?php echo $importTeam_ClubID;?>'/>
-                                                    <input type='<?php echo $visible; ?>' name='clubCountry_<?php echo $key; ?>' size='60' maxlength='100' 
+                                                    <input type='<?php echo $visible; ?>' name='clubCountry_<?php echo $key; ?>' size='60' maxlength='100'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_ClubCountry));?>' <?php echo $ic_disabled;?>/>
-                                                    
+                                                  
                                                     <input type='<?php echo $visible; ?>' name='dbClubID_<?php echo $key;?>' value='<?php echo $matchingClub_ID;?>' <?php echo $dc_disabled;?>/>
-                                                    <input type='<?php echo $visible; ?>' name='dbClubPlaygroundID_<?php echo $key;?>' value='<?php echo $matchingClub_PlaygroundID;?>'/> 
+                                                    <input type='<?php echo $visible; ?>' name='dbClubPlaygroundID_<?php echo $key;?>' value='<?php echo $matchingClub_PlaygroundID;?>'/>
                                                 </td>
                                                 <td style='background-color:<?php echo $color; ?>; border-color:<?php echo $color; ?>'>
                                                     <input type='text' name='impClubName_<?php echo $key;?>' value='<?php echo $importTeam_ClubName;?>' size='30' maxlength='45' disabled='disabled'>
@@ -927,13 +927,13 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                     <input type='hidden' name='matching_TeamID_<?php echo $key;?>' value='<?php echo $matchingTeam_ID;?>' <?php echo $it_disabled;?>/>
                                                     <input type='hidden' name='teamID_<?php echo $key;?>' value='<?php echo $importTeam_ID;?>' <?php echo $it_disabled;?>/>
                                                     <input type='hidden' name='teamFileID_<?php echo $key;?>' value='<?php echo $importTeam_ID;?>' <?php echo $it_disabled;?>/>
-                                                    <input type='hidden' name='teamName_<?php echo $key; ?>' size='60' maxlength='100' 
+                                                    <input type='hidden' name='teamName_<?php echo $key; ?>' size='60' maxlength='100'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_Name));?>' <?php echo $it_disabled;?>/>
-                                                    <input type='hidden' name='teamShortname_<?php echo $key; ?>' size='60' maxlength='100' 
+                                                    <input type='hidden' name='teamShortname_<?php echo $key; ?>' size='60' maxlength='100'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_ShortName));?>' <?php echo $it_disabled;?>/>
-                                                    <input type='hidden' name='teamMiddleName_<?php echo $key; ?>' size='60' maxlength='100' 
+                                                    <input type='hidden' name='teamMiddleName_<?php echo $key; ?>' size='60' maxlength='100'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_MiddleName));?>' <?php echo $it_disabled;?>/>
-                                                    <input type='hidden' name='teamInfo_<?php echo $key; ?>' size='60' maxlength='255' 
+                                                    <input type='hidden' name='teamInfo_<?php echo $key; ?>' size='60' maxlength='255'
                                                             value='<?php echo stripslashes(htmlspecialchars($importTeam_Info));?>' <?php echo $it_disabled;?>/>
                                                     <input type='hidden' name='dbTeamID_<?php echo $key;?>' value='<?php echo $matchingTeam_ID;?>' <?php echo $dt_disabled;?>/>
                                                     <b><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMNAME');?></b>
@@ -948,7 +948,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                     <input type='text' name='dbTeamName_<?php echo $key;?>' value='<?php echo $importTeam_Name; ?>' size='30' maxlength='45' disabled='disabled'/>
                                                 </td>
             </tr>
-                      
+                    
                       <tr style='background-color:<?php echo $color; ?>; border-color:<?php echo $color; ?>; border-style:none'>
                       <td style='background-color:<?php echo $color; ?>; border-color:<?php echo $color; ?>'>
                       </td>
@@ -962,7 +962,7 @@ if (isset($this->xml) && is_array($this->xml)) {
                                                     <input type='text' name='dbTeamInfo_<?php echo $key;?>' value='<?php echo $matchingTeam_INFO; ?>' size='30' maxlength='45' disabled='disabled'/>
                                                 </td>
                       </tr>
-                      
+                    
            </tbody>
           </table>
          </td>
@@ -1190,7 +1190,7 @@ if (isset($this->xml) && is_array($this->xml)) {
             if (count($this->events) > 0) {
                 foreach ($this->events AS $row1)
                 {
-                    if ((strcasecmp($event->name, $row1->name)==0) 
+                    if ((strcasecmp($event->name, $row1->name)==0)
                         || (strcasecmp(Text::_($event->name), Text::_($row1->name))==0)
                     ) {
                         $color=$useExistingEntryColor;
@@ -1914,12 +1914,12 @@ if (isset($this->xml) && is_array($this->xml)) {
  <td>
             <?PHP
                                             $agegroup = 0;
-                                            
+                                          
             foreach( $this->search_agegroup as $agegroups )
                                             {
                 if ($agegroups->text == $person->info ) {
                     $agegroup = $agegroups->value;
-                }    
+                }  
             }
             echo HTMLHelper::_(
                 'select.genericlist',
@@ -1928,10 +1928,10 @@ if (isset($this->xml) && is_array($this->xml)) {
                 'class="form-control form-control-inline"',
                 'value', 'text', $agegroup
             );
-                                                                    
+                                                                  
             ?>
             </td>
-                                                
+                                              
             </tr>
            </table>
           </td>
@@ -1945,7 +1945,7 @@ if (isset($this->xml) && is_array($this->xml)) {
       </fieldset>
       <p style='text-align:right;'><a href='#page_top'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TOP'); ?></a></p>
                 <p style='text-align:right;'><button type="button" onclick="Joomla.submitbutton('jlxmlimport.insert')"><?php echo Text::_('JSAVE') ?></button></p>
-                
+              
         <?php
     }
     ?>
@@ -1971,4 +1971,4 @@ if (isset($this->xml) && is_array($this->xml)) {
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

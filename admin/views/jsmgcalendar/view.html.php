@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,8 +26,8 @@ use Joomla\CMS\Component\ComponentHelper;
 //class GCalendarViewGCalendar extends GCalendarView
 /**
  * sportsmanagementViewjsmgcalendar
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -39,7 +39,7 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 
     /**
  * sportsmanagementViewjsmgcalendar::init()
- * 
+ *
  * @param  mixed $tpl
  * @return void
  */
@@ -51,15 +51,15 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
             $this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', ''));
             $this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', ''));
         }
-       
-    }   
+     
+    } 
 
     /**
     * Add the page title and toolbar.
     *
     * @since 1.7
     */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
 
         parent::addToolbar();

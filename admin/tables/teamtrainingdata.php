@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTableTeamTrainingData
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementTableTeamTrainingData extends JSMTable
 {
-    
+  
     /**
      * Constructor
      *

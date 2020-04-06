@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -40,7 +40,7 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
  //no direct access
-defined('_JEXEC') or die('Restricted access');  
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 //$quotemarks= $params->get('quotemarks');

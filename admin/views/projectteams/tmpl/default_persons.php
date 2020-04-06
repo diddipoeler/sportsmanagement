@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage projectteams
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -63,7 +63,7 @@ $app = Factory::getApplication();
                                 ?>
                             </a>
                         </th>
-                        
+                      
                         <th>
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN', 'tl.admin', $this->sortDirection, $this->sortColumn); ?>
                             <a href="mailto:<?php
@@ -122,11 +122,11 @@ $app = Factory::getApplication();
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
-                        
+                      
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
-                        
-                        
+                      
+                      
                         <th width="1%">
         <?php echo HTMLHelper::_('grid.sort', 'TID', 'team_id', $this->sortDirection, $this->sortColumn); ?>
                         </th>
@@ -171,8 +171,8 @@ $app = Factory::getApplication();
                 }
                 ?>
              <td><?php echo $row->name; ?></td>
-                            
-                            
+                          
+                          
              <td class="center"><?php echo $row->editor; ?></td>
                 <?php
                 if ($this->project->project_type == 'DIVISIONS_LEAGUE') {
@@ -253,7 +253,7 @@ $app = Factory::getApplication();
                                                                     value="<?php echo $row->penalty_points; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
           </td>
-                            
+                          
           <td class="center">
                                 <input<?php echo $inputappend; ?>    type="text" size="2" class="inputbox"
                                                                     name="won_finally<?php echo $row->id; ?>"
@@ -290,7 +290,7 @@ $app = Factory::getApplication();
                                                                     value="<?php echo $row->diffgoals_finally; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
           </td>
-                            
+                          
                             <td class="center">
             <?php
                                     $append=' style="background-color:#bbffff"';
@@ -317,8 +317,8 @@ $app = Factory::getApplication();
             );
                 ?>
               </td>
-                            
-                            
+                          
+                          
              <td class="center"><?php echo $row->team_id; ?></td>
              <td class="center"><?php echo $row->id; ?></td>
             </tr>

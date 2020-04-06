@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Uri\Uri;
 
 switch ($this->fieldset) {
     /**
-* 
- * für die spielfeldpositionen     
+*
+ * für die spielfeldpositionen   
 */
 case 'playground_jquery':
     $backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
@@ -46,7 +46,7 @@ case 'playground_jquery':
     $testlauf = 1;
     foreach ($schemahome as $key => $value) {
         //<div id="draggable">
-        ?>  
+        ?>
 
         <div id="draggable_<?PHP echo $testlauf; ?>" style="position:absolute; width:103px; left:<?PHP echo $value['heim']['links']; ?>px; top:<?PHP echo $value['heim']['oben']; ?>px; text-align:center;">
             <img class="bild_s" style="width:60px;" id="img_<?PHP echo $testlauf; ?>" src="<?PHP echo $picture; ?>" alt="" /><br />
@@ -62,7 +62,7 @@ case 'playground_jquery':
      */
 case 'training':
     $view = $this->jinput->getCmd('view', 'cpanel');
-    ?>                
+    ?>              
     <fieldset class="adminform">
 
     <table class="table">
@@ -293,7 +293,7 @@ case 'teamperson':
     }
 
     break;
-            
+          
     /**
      * tabellenpositionen in de gruppen/divisionen
      */
@@ -363,7 +363,7 @@ case 'params':
     }
     break;
 case 'request':
-    echo $this->form->renderFieldset('request');            
+    echo $this->form->renderFieldset('request');          
     break;
 case 'injury':
     echo $this->form->renderFieldset('injury');
@@ -373,10 +373,10 @@ case 'suspension':
     break;
 case 'away':
     echo $this->form->renderFieldset('away');
-    break;   
+    break; 
 case 'competition':
     echo $this->form->renderFieldset('competition');
-    break;                 
+    break;               
 // das ist der standard
 default:
     ?>
@@ -414,9 +414,9 @@ default:
             <?PHP
                 break;
             }
-            ?> 
-                </td>       
-            </tr>                    
+            ?>
+                </td>     
+            </tr>                  
     <?php endforeach; ?>
 
             <tr>
@@ -425,7 +425,7 @@ default:
                 ?>
                <script type="text/javascript">
 
-               </script>            
+               </script>          
 
             </div>
             </div>
@@ -444,4 +444,4 @@ default:
         <?PHP
     break;
 }
-?>        
+?>      

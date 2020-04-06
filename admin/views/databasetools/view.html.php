@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage databasetools
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
@@ -19,8 +19,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewDatabaseTools
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -31,20 +31,20 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView
 
     /**
      * sportsmanagementViewDatabaseTools::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
-        
+      
     }
 
     /**
      * sportsmanagementViewDatabaseTools::addToolbar()
-     * 
+     *
      * @return void
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
 
         //		// Set toolbar items for the page

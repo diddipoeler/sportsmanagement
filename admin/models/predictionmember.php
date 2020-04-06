@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.05
@@ -28,19 +28,19 @@ require_once JPATH_ROOT.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'co
 
 /**
  * sportsmanagementModelpredictionmember
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelpredictionmember extends JSMModelAdmin
 {
-    
+  
     /**
      * sportsmanagementModelpredictionmember::save_memberlist()
-     * 
+     *
      * @return void
      */
     function save_memberlist()
@@ -55,23 +55,23 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-    
+  
         $post    = Factory::getApplication()->input->post->getArray(array());
         $cid    = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         $prediction_id = $post['cid'];
-  
+
         foreach ( $post['prediction_members'] as $key => $value )
         {
                $query->clear();
-              $query->select('pm.id'); 
-              $query->from('#__sportsmanagement_prediction_member AS pm '); 
-              $query->where('pm.prediction_id = ' . $prediction_id); 
-              $query->where('pm.user_id = ' . $value); 
-              $db->setQuery($query); 
-              $result = $db->loadResult(); 
+              $query->select('pm.id');
+              $query->from('#__sportsmanagement_prediction_member AS pm ');
+              $query->where('pm.prediction_id = ' . $prediction_id);
+              $query->where('pm.user_id = ' . $value);
+              $db->setQuery($query);
+              $result = $db->loadResult();
 
             if (!$result ) {
-    
+  
                     $table = 'predictionentry';
                     $rowproject = Table::getInstance($table, 'sportsmanagementTable');
                     $rowproject->prediction_id = $prediction_id;
@@ -87,17 +87,17 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                     {
 
                 }
-   
+ 
             }
 
         }
-  
+
     }
+
  
-   
     /**
    * sportsmanagementModelpredictionmember::sendEmailtoMembers()
-   * 
+   *
    * @param  mixed $cid
    * @param  mixed $prediction_id
    * @return void
@@ -105,7 +105,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
     function sendEmailtoMembers($cid,$prediction_id)
     {
         $config = Factory::getConfig();
-  
+
         $language = Factory::getLanguage();
         $language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
 
@@ -113,7 +113,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         $configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
         $overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
         $configprediction = array_merge($overallConfig, $configprediction);
- 
+
         $pred_reminder_mail_text = ComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text', 0);
 
         /**
@@ -121,13 +121,13 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
  */
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
-            $sender = array( 
+            $sender = array(
             $config->get('config.mailfrom'),
             $config->get('config.fromname') );
         }
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
-            $sender = array( 
+            $sender = array(
             $config->getValue('config.mailfrom'),
             $config->getValue('config.fromname') );
         }
@@ -148,21 +148,21 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
  * als html
  */
             $mailer->isHTML(true);
-            $mailer->setSender($sender); 
-          
+            $mailer->setSender($sender);
+        
             $body = '';
             /**
   * jetzt die ergebnisse
-  */  
-            $body .= "<html>";         
+  */
+            $body .= "<html>";       
               $member_email = $this->getPredictionMemberEMailAdress($value);
-              $fromdate = ''; 
+              $fromdate = '';
               $predictionlink = '';
               $projectcount = 0;
             foreach ( $predictionproject as $project_key => $project_value )
               {
                 $predictiongamematches = $mdlPredictionGames->getPredictionGamesMatches($prediction_id, $project_value, $member_email->user_id);
-   
+ 
                 $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
                 $body .= "<tr>";
                 $body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
@@ -173,7 +173,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                 $body .= "</tr>";
                 /**
  * schleife über die ergebnisse in der runde
- */    
+ */  
                 foreach ($predictiongamematches AS $result)
                 {
                     $class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
@@ -196,7 +196,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                     $body .= " - ";
                     $body .= "</td>";
                       /**
- * clublogo oder vereinsflagge hometeam    
+ * clublogo oder vereinsflagge hometeam  
  */
                       $body .= "<td nowrap='nowrap' class='td_r'>";
                       $body .= $result->home_name;
@@ -208,11 +208,11 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                         $result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
                     }
                       $body .=  HTMLHelper::image(Uri::root().$result->home_logo_big, $imgTitle, array(' title' => $imgTitle,' width' => 30));
-                      $body .=  ' ' ;   
-                      $body .= "</td>";    
-                      $body .= "<td nowrap='nowrap' class='td_c'>";    
+                      $body .=  ' ' ; 
+                      $body .= "</td>";  
+                      $body .= "<td nowrap='nowrap' class='td_c'>";  
                       $body .= "<b>" . "-" . "</b>";
-                      $body .= "</td>";    
+                      $body .= "</td>";  
                       /**
  * clublogo oder vereinsflagge awayteam
  */
@@ -224,10 +224,10 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                          $result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
                     }
                       $body .=  HTMLHelper::image(Uri::root().$result->away_logo_big, $imgTitle, array(' title' => $imgTitle,' width' => 30));
-                      $body .= "</td>";                
+                      $body .= "</td>";              
                       $body .= "<td nowrap='nowrap' class='td_l'>";
                       $body .= $result->away_name;
-                      $body .= "</td>";    
+                      $body .= "</td>";  
                       /**
  * spielergebnisse
  */
@@ -262,13 +262,13 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                       $body .= "</td>";
                       $body .= "</tr>";
                       /**
- * tendencen im tippspiel  
+ * tendencen im tippspiel
  */
                     if ($configprediction['show_tipp_tendence'] ) {
 
                          $body .= "<tr class='tipp_tendence'>";
                          $body .= "<td class='td_c'>";
-                         $body .= "&nbsp;"; 
+                         $body .= "&nbsp;";
                          $body .= "</td>";
 
                          $body .= "<td class='td_l' colspan='8'>";
@@ -302,39 +302,39 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
                     }
                     else
                       {
-                         $k = (1-$k);                            
+                         $k = (1-$k);                          
                     }
-       
-       
-                }  
+     
+     
+                }
 
                 if ($projectcount ) {
-                       $fromdate .= ' und '; 
-                }    
+                       $fromdate .= ' und ';
+                }  
                 $fromdate .= HTMLHelper::date($result->round_date_first, 'd.m.Y', false).'-'.HTMLHelper::date($result->round_date_last, 'd.m.Y', false);
-   
+ 
                 $body .= "<tr>";
                 $body .= "<td colspan='8'>&nbsp;</td>";
                 $body .= "<td class='td_c'>" . Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT', $totalPoints) ."</td>";
-                $body .= "</tr>";                
-                $body .= "<table>";   
- 
+                $body .= "</tr>";              
+                $body .= "<table>"; 
+
                 $projectcount++;
             }
             $body .= "</html><br>";
-   
+ 
             /**
  * add the recipient. $recipient = $user_email;
  */
-              $mailer->addRecipient($member_email->email); 
+              $mailer->addRecipient($member_email->email);
             /**
  * add the subject
  */
                $subject = addslashes(
                    sprintf(
                        Text::_("COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS"),
-                       $predictiongame->name 
-                   ) 
+                       $predictiongame->name
+                   )
                );
               $mailer->setSubject($subject);
             /**
@@ -371,14 +371,14 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         /**
  * schleife über die tippspieler ende
  */
-   
+ 
     }
 
 
 
     /**
      * sportsmanagementModelpredictionmember::getSystemAdminsEMailAdresses()
-     * 
+     *
      * @return
      */
     function getSystemAdminsEMailAdresses()
@@ -407,7 +407,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
     /**
      * sportsmanagementModelpredictionmember::getPredictionGameAdminsEMailAdresses()
-     * 
+     *
      * @param  mixed $predictionGameID
      * @return
      */
@@ -416,7 +416,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $query =    '	SELECT u.email
 						FROM #__users AS u
 						INNER JOIN #__sportsmanagement_prediction_admin AS pa ON	pa.prediction_id = ' . (int) $predictionGameID . ' AND
@@ -426,7 +426,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 						ORDER BY u.email';
         //echo $query . '<br />';
         $this->_db->setQuery($query);
-    
+  
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $records = $db->loadColumn();
@@ -441,7 +441,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
     /**
      * sportsmanagementModelpredictionmember::getPredictionMembersEMailAdresses()
-     * 
+     *
      * @param  mixed $cids
      * @return
      */
@@ -450,13 +450,13 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $query =    '	SELECT user_id
 						FROM #__sportsmanagement_prediction_member
 						WHERE	id IN (' . $cids . ')';
 
         $db->setQuery($query);
-        if (!$cids = $this->_db->loadResultArray() ) { return false; 
+        if (!$cids = $this->_db->loadResultArray() ) { return false;
         }
 
         ArrayHelper::toInteger($cids);
@@ -469,7 +469,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 						ORDER BY u.email';
 
         $db->setQuery($query);
-    
+  
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $records = $db->loadColumn();
@@ -484,7 +484,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
     /**
      * sportsmanagementModelpredictionmember::getPredictionMemberEMailAdress()
-     * 
+     *
      * @param  mixed $predictionMemberID
      * @return
      */
@@ -498,10 +498,10 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 
 
           $this->jsmdb->setQuery($this->jsmquery);
-        if (!$user_id = $this->jsmdb->loadResult() ) { 
-            return false; 
+        if (!$user_id = $this->jsmdb->loadResult() ) {
+            return false;
         }
-        
+      
         // Select some fields
         $this->jsmquery->clear();
         $this->jsmquery->select('email,username,id as user_id');
@@ -509,21 +509,21 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         $this->jsmquery->where('u.block = 0');
         $this->jsmquery->where('u.id = ' . $user_id);
         $this->jsmquery->order('u.email');
-        
+      
           $this->jsmdb->setQuery($this->jsmquery);
         return $this->jsmdb->loadObject();
     }
-    
+  
     /**
      * sportsmanagementModelpredictionmember::getPredictionGroups()
-     * 
+     *
      * @return
      */
     function getPredictionGroups()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
         $this->_db->setQuery($query);
         if (!$result = $this->_db->loadObjectList()) {
@@ -544,7 +544,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
     {
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         $user =& Factory::getUser();
         if (count($cid) ) {
             $cids = implode(',', $cid);
@@ -555,7 +555,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 							AND ( checked_out = 0 OR ( checked_out = ' . (int) $user->get('id') . ' ) )';
 
             $this->_db->setQuery($query);
-           
+         
             if (!$this->_db->execute() ) {
                 return false;
             }
@@ -646,11 +646,11 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         return true;
     }
 
-    
+  
 
     /**
      * sportsmanagementModelpredictionmember::deletePredictionMembers()
-     * 
+     *
      * @param  mixed $cid
      * @return
      */
@@ -658,7 +658,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
     {
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         if (count($cid) ) {
             ArrayHelper::toInteger($cid);
             $cids = implode(',', $cid);
@@ -671,11 +671,11 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         return true;
     }
 
-    
+  
 
     /**
      * sportsmanagementModelpredictionmember::deletePredictionResults()
-     * 
+     *
      * @param  mixed   $cid
      * @param  integer $prediction_id
      * @return
@@ -685,7 +685,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
           $db = sportsmanagementHelper::getDBConnection();
-        
+      
         if (count($cid)) {
             ArrayHelper::toInteger($cid);
             $cids = implode(',', $cid);
@@ -716,7 +716,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
         }
         return true;
     }
-    
+  
     /**
      * Method to save the form data.
      *
@@ -733,22 +733,22 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
           // Set the values
           $data['modified'] = $date->toSql();
           $data['modified_by'] = $user->get('id');
-        
+      
           // zuerst sichern, damit wir bei einer neuanlage die id haben
         if (parent::save($data) ) {
             $id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+          
             if ($isNew ) {
                 //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
             }
-           
+         
         }
-        
-        return true;    
-    }  
+      
+        return true;  
+    }
 
 }
 ?>

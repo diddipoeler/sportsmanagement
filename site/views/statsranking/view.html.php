@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewStatsRanking
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,10 +27,10 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewStatsRanking extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewStatsRanking::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -38,14 +38,14 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $this->cfg_which_database);
         //$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
-        
+      
         //$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
         $this->division = sportsmanagementModelProject::getDivision(0, $this->cfg_which_database);
         $this->teamid = $this->model->getTeamId();
-        
+      
         $teams = sportsmanagementModelProject::getTeamsIndexedById(0, 'name', $this->cfg_which_database);
         //$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
-        
+      
         if ($this->teamid != 0 ) {
             foreach ( $teams AS $k => $v)
             {
@@ -64,7 +64,7 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
         $this->limit = $this->model->getLimit();
         $this->limitstart = $this->model->getLimitStart();
         $this->multiple_stats = count($this->stats) > 1 ;
-        
+      
         $prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
         if ($this->multiple_stats ) {
             $prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE');
@@ -89,9 +89,9 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
         }
         $this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
         $this->document->setTitle($this->pagetitle);
-        
+      
         $this->headertitle = $this->pagetitle;
-        
+      
         //parent::display( $tpl );
     }
 }

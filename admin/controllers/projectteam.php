@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementControllerprojectteam
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,17 +27,17 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerprojectteam extends JSMControllerForm
 {
 
-    /**
- * sportsmanagementControllerprojectteam::storechangeteams()
- * 
- * @return void
- */
-    function storechangeteams()
-    {
-        $model = $this->getModel('projectteams');
-        $model->setNewTeamID();
-        $msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-    }
+	/**
+	 * sportsmanagementControllerprojectteam::storechangeteams()
+	 *
+	 * @return void
+	 */
+	function storechangeteams()
+	{
+		$model = $this->getModel('projectteams');
+		$model->setNewTeamID();
+		$msg = '';
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+	}
 
 }

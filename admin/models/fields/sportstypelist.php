@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -33,9 +33,9 @@ if (!class_exists('sportsmanagementHelper') ) {
 
 /**
  * FormFieldsportstypelist
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -63,20 +63,20 @@ class JFormFieldsportstypelist extends \JFormFieldList
           $lang = Factory::getLanguage();
           $db = sportsmanagementHelper::getDBConnection(false, false);
          $query = $db->getQuery(true);
-            
+          
          $query->select('id AS value, name AS text');
          $query->from('#__sportsmanagement_sports_type');
          $query->order('name');
          $db->setQuery($query);
          $options = $db->loadObjectList();
-    
+  
           $extension = "COM_SPORTSMANAGEMENT";
         $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
         $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
         ||    $lang->load($extension, $source, null, false, false)
         ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
         ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
-        
+      
         foreach ( $options as $row )
           {
             $row->text = Text::_($row->text);

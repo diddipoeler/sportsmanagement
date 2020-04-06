@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * FormFieldJSMTitle
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -29,7 +29,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 class JFormFieldJSMTitle extends FormField
 {
-        
+      
     public $type = 'JSMTitle';
 
     /**
@@ -38,7 +38,7 @@ class JFormFieldJSMTitle extends FormField
      * @return array    The field option objects.
      * @since  1.6
      */
-    protected function getLabel() 
+    protected function getLabel()
     {
         $value = trim($this->element['title']);
         $image_src = $this->element['imagesrc']; // path ex: ../modules/mod_latestnews/images/icon.png (16x16)
@@ -78,8 +78,8 @@ class JFormFieldJSMTitle extends FormField
 
         //$html .= '</div>';
 
-        return $html;        
-        
+        return $html;      
+      
     }
 
     /**
@@ -88,7 +88,7 @@ class JFormFieldJSMTitle extends FormField
      * @return string    The field input markup.
      * @since  1.6
      */
-    protected function getInput() 
+    protected function getInput()
     {
         return '';
     }

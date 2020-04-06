@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,7 +24,7 @@ HTMLHelper::_('behavior.tooltip');
 
 <?PHP
 echo $this->loadTemplate('joomla_version');
-?>    
+?>  
 <input type='hidden' name='task' value='' />
 <input type='hidden' name='boxchecked' value='0' />
 <input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>' />

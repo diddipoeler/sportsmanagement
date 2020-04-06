@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage stats
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -31,13 +31,13 @@ use Joomla\CMS\Language\Text;
     <tr class="sectiontableentry2">
         <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_PER_MATCH');?>:</td>
         <td class="statvalue">
-        <?php 
+        <?php
         if (isset($this->totals->sumspectators) && $this->totals->attendedmatches ) {
             echo round(($this->totals->sumspectators / $this->totals->attendedmatches), 2);
         }
         else
         {
-            echo 0;    
+            echo 0;  
         }
         ?>
         </td>

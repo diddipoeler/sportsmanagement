@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ use Joomla\CMS\Language\Text;
                     </th>
                     <th>
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ASSIGNED'); ?>
-                    </th>                    
+                    </th>                  
                 </tr>
             </thead>
                 <tr>
@@ -40,9 +40,9 @@ use Joomla\CMS\Language\Text;
         ?>
                     </span>
                     </td>
-                </tr>                
+                </tr>              
                 <tr>
-                    <td style="text-align:center; vertical-align:middle; ">                    
+                    <td style="text-align:center; vertical-align:middle; ">                  
         <?php
         // echo select list of non assigned players from team roster
         if (isset($this->lists['team_players']) ) {
@@ -65,11 +65,11 @@ use Joomla\CMS\Language\Text;
                    <td style='text-align:center; vertical-align:middle; '>
                     <!-- left / right buttons -->
                     <br />
-                                        
-                                        
+                                      
+                                      
           <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $position_id;?>');" />
           <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $position_id;?>','roster');" />
-                                        
+                                      
               </td>
               <td>
                <!-- player affected to this position -->

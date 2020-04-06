@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -51,8 +51,8 @@ if (!class_exists('sportsmanagementModelProject')) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modSportsmanagementTeamStatHelper', __DIR__ . '/helper.php');
 

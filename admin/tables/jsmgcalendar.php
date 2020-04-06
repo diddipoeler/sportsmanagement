@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,9 @@ JLoader::import('joomla.database.table');
 
 /**
  * sportsmanagementTablejsmGCalendar
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,7 +33,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 {
     /**
      * sportsmanagementTablejsmGCalendar::__construct()
-     * 
+     *
      * @param  mixed $db
      * @return
      */
@@ -44,7 +44,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
     /**
      * sportsmanagementTablejsmGCalendar::bind()
-     * 
+     *
      * @param  mixed  $array
      * @param  string $ignore
      * @return
@@ -63,7 +63,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
     /**
      * sportsmanagementTablejsmGCalendar::load()
-     * 
+     *
      * @param  mixed $keys
      * @param  bool  $reset
      * @return
@@ -82,7 +82,7 @@ class  sportsmanagementTablejsmGCalendar extends JTable
 
     /**
      * sportsmanagementTablejsmGCalendar::store()
-     * 
+     *
      * @param  bool $updateNulls
      * @return
      */

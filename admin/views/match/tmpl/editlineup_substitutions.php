@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -55,19 +55,19 @@ use Joomla\CMS\Language\Text;
                 ?>
                 <tr id="sub-<?php echo $substitution->id; ?>" class="<?php echo "row$k"; ?>">
                  <td>
-            <?php 
+            <?php
             if($substitution->came_in==2) {
                 echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
             } else {
                 echo sportsmanagementHelper::formatName(null, $substitution->out_firstname, $substitution->out_nickname, $substitution->out_lastname, 0);
-            } 
+            }
                     ?>
                   </td>
                   <td>
-                    <?php 
+                    <?php
                     if($substitution->came_in == 1) {
                         echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
-                    } 
+                    }
                     ?>
                   </td>
                   <td>

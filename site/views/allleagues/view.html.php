@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,9 +28,9 @@ if (!class_exists('sportsmanagementHelperHtml')) {
 
 /**
  * sportsmanagementViewallleagues
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -45,10 +45,10 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 
     /**
      * sportsmanagementViewallleagues::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table', 'request', 'string');

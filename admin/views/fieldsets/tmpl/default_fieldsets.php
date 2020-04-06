@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage fieldsets
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -44,7 +44,7 @@ case 'playground_jquery':
     $testlauf = 1;
     foreach ($schemahome as $key => $value) {
         //<div id="draggable">
-        ?>  
+        ?>
 
         <div id="draggable_<?PHP echo $testlauf; ?>" style="position:absolute; width:103px; left:<?PHP echo $value['heim']['links']; ?>px; top:<?PHP echo $value['heim']['oben']; ?>px; text-align:center;">
             <img class="bild_s" style="width:60px;" id="img_<?PHP echo $testlauf; ?>" src="<?PHP echo $picture; ?>" alt="" /><br />
@@ -57,7 +57,7 @@ case 'playground_jquery':
     break;
 case 'training':
     $view = Factory::getApplication()->input->getCmd('view', 'cpanel');
-    ?>                
+    ?>              
     <fieldset class="adminform">
 
     <table class='table'>
@@ -180,7 +180,7 @@ if ($this->lists) {
 <?php
     break;
 
-// für google maps    
+// für google maps  
 case 'maps':
     ?>
 <style type="text/css">
@@ -255,7 +255,7 @@ setTimeout(function () {
 <?PHP
     break;
 
-// für google maps    
+// für google maps  
 case 'maps1':
     $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
     $paramsPlugin = new Registry($plugin->params);
@@ -292,12 +292,12 @@ case 'maps1':
     $params = "{mosmap width='500'\|height='400'\|lat='52.052312'\|lon='4.447141'\|
 zoom='3'\|mapType='Satellite'\|text='sv DWO'\|tooltip='DWO'\|
 marker='1'\|align='center' } ";
-    //$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";  
+    //$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";
     echo HTMLHelper::_('content.prepare', $params);
 
     break;
 
-// für google maps    
+// für google maps  
 case 'maps2':
     $document = Factory::getDocument();
     $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
@@ -487,13 +487,13 @@ default:
                 <?PHP
                 break;
             }
-            ?> 
-                </td>       
-            </tr>                    
+            ?>
+                </td>     
+            </tr>                  
     <?php endforeach; ?>
             </table>
         </fieldset>
                 <?PHP
     break;
 }
-                ?>        
+                ?>      

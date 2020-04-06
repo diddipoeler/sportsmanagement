@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -86,15 +86,15 @@ use Joomla\CMS\Router\Route;
                         <td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
                         <td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
         <?php
-                        
+                      
         $inputappend='';
         ?>
                             <td class="center">
                             <?php
                             if ($row->checked_out) : ?>
             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
-                            <?php endif; 
-                                    
+                            <?php endif;
+                                  
                             if ($canEdit && !$row->checked_out ) :
                             ?>
                                 <a href="<?php echo $link; ?>">
@@ -106,16 +106,16 @@ use Joomla\CMS\Router\Route;
             );
     ?>
 </a>
-                <?php 
-                            endif; 
-                                    
+                <?php
+                            endif;
+                                  
                                     ?>
                             </td>
         <?php
-                        
+                      
         ?>
                         <td><?php echo $row->author; ?></td>
-                        
+                      
                         <td >
                                 <?php
                                 if (empty($row->picture) ) {
@@ -136,7 +136,7 @@ use Joomla\CMS\Router\Route;
                                 {
                                     //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
                                     //echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-?>                                    
+?>                                  
 <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
@@ -144,11 +144,11 @@ use Joomla\CMS\Router\Route;
                                 }
                                 ?>
                             </td>
-                        
-                        
+                      
+                      
                         <td><?php echo $row->quote; ?></td>
                         <td><?php echo $this->escape($row->category_title); ?></td>
-                        
+                      
                         <td class="order">
                             <span>
                                 <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'smquotes.orderup', 'JLIB_HTML_MOVE_UP', 'obj.ordering'); ?>
@@ -163,7 +163,7 @@ use Joomla\CMS\Router\Route;
                         <td class="center">
 <div class="btn-group">
             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'smquotes.', $canChange, 'cb'); ?>
-            <?php 
+            <?php
             // Create dropdown items and render the dropdown list.
             if ($canChange) {
                  HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'smquotes');
@@ -171,9 +171,9 @@ use Joomla\CMS\Router\Route;
                  echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
             }
                                 ?>
-            </div>                        
+            </div>                      
 
-                        
+                      
                         </td>
                         <td class="center"><?php echo $row->id; ?></td>
                     </tr>
@@ -184,4 +184,4 @@ use Joomla\CMS\Router\Route;
             </tbody>
         </table>
     </div>
-    
+  

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -71,37 +71,37 @@ if (!class_exists('sportsmanagementHelper')) {
 /**
  * was wird benöigt ?
  */
-JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
-JLoader::import('components.com_sportsmanagement.helpers.html', JPATH_SITE); 
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE); 
-JLoader::import('components.com_sportsmanagement.helpers.simpleGMapGeocoder', JPATH_SITE); 
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.html', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.helpers.simpleGMapGeocoder', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-    
+  
 $view = $input->getVar("view");
 switch ($view)
 {
-case 'allprojects': 
+case 'allprojects':
     JLoader::import('components.com_sportsmanagement.models.leagues', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.seasons', JPATH_ADMINISTRATOR);
     break;
-case 'ranking': 
+case 'ranking':
 case 'curve':
-    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
-    JLoader::import('components.com_sportsmanagement.models.clubnames', JPATH_ADMINISTRATOR);    
+    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
+    JLoader::import('components.com_sportsmanagement.models.clubnames', JPATH_ADMINISTRATOR);  
     JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
-    JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);      
-    break;    
-case 'results':    
+    JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);    
+    break;  
+case 'results':  
     JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
-    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
-    JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);    
-    break;    
-case 'editmatch':   
-case 'jltournamenttree':
     JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);  
-    break;      
+    break;  
+case 'editmatch': 
+case 'jltournamenttree':
+    JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
+    break;    
 case 'matchreport':
     JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
@@ -112,20 +112,20 @@ case 'matchreport':
 case 'resultsranking':
     JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
-    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);
-    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE); 
-    JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);        
+    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
+    JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);      
     break;
 case 'resultsmatrix':
     JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);
-    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.matrix', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
-    JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);        
-    break;  
+    JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);      
+    break;
 case 'roster':
     JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
     break;
@@ -134,16 +134,16 @@ case 'teamplan':
     break;
 case 'teams':
 case 'teamstats':
-case 'teamstree':    
+case 'teamstree':  
 case 'matrix':
 case 'rankingalltime':
 case 'clubinfo':
 case 'clubplan':
 case 'eventsranking':
 case 'stats':
-case 'about':  
-    
-    break;    
+case 'about':
+  
+    break;  
 case 'editclub':
     JLoader::import('components.com_sportsmanagement.models.clubinfo', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
@@ -151,17 +151,17 @@ case 'editclub':
     break;
 case 'editperson':
     JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);
-    JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
     break;
 case 'player':
-case 'staff':  
+case 'staff':
 case 'referee':
-    JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);  
+    JLoader::import('components.com_sportsmanagement.models.person', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.eventtypes', JPATH_ADMINISTRATOR);
-    break;    
+    break;  
 case 'teaminfo':
-    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);     
-    break;    
+    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);   
+    break;  
 case 'playground':
     JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.teams', JPATH_ADMINISTRATOR);
@@ -169,7 +169,7 @@ case 'playground':
     break;
 case 'nextmatch':
     JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
-    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
     JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
     break;
@@ -185,7 +185,7 @@ case 'predictionusers':
 case 'predictionuser':
 case 'predictionentry':
 case 'predictionresults':
-    JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH_SITE); 
+    JLoader::import('components.com_sportsmanagement.helpers.predictionroute', JPATH_SITE);
     JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
     break;
 }
@@ -268,7 +268,7 @@ $document->setMetaData('revisit-after', '2 days');
 $document->setMetaData('robots', 'index,follow');
 
 /**
-* 
+*
  * meta name
  * keywords
  * description

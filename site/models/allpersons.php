@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallpersons
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,15 +33,15 @@ class sportsmanagementModelallpersons extends ListModel
     var $limitstart = 0;
     var $limit = 0;
     var $columns= array();
-    
+  
     /**
      * sportsmanagementModelallpersons::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
             // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -80,7 +80,7 @@ class sportsmanagementModelallpersons extends ListModel
         $jinput = $app->input;
         //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
         $this->setState('list.start', $this->limitstart);
-    
+  
         $store = $this->getStoreId('getstart');
 
         // Try to load the data from internal storage.
@@ -94,7 +94,7 @@ class sportsmanagementModelallpersons extends ListModel
         if ($start > $total - $limit) {
             $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
         }
-    
+  
         // Add the total to the internal cache.
         $this->cache[$store] = $start;
 
@@ -117,10 +117,10 @@ class sportsmanagementModelallpersons extends ListModel
         $option = $jinput->getCmd('option');
         // Initialise variables.
         $app = Factory::getApplication('site');
-        
-        
-        
-       
+      
+      
+      
+     
         // List state information
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
         $this->setState('list.limit', $value);
@@ -143,7 +143,7 @@ class sportsmanagementModelallpersons extends ListModel
         if (!in_array($filter_order, $this->filter_fields)) {
             $filter_order = 'v.lastname';
         }
-        
+      
         //$filter_order_Dir = Factory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) {
@@ -152,16 +152,16 @@ class sportsmanagementModelallpersons extends ListModel
 
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
-  
+
 
         // List state information.
         parent::populateState('v.lastname', 'ASC');
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelallplaygrounds::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -174,34 +174,34 @@ class sportsmanagementModelallpersons extends ListModel
         //$search	= $this->getState('filter.search');
         //$search_nation	= $this->getState('filter.search_nation');
         $select_columns    = $this->getState('filter.select_columns');
-        
+      
         if ($select_columns ) {
             foreach( $select_columns as $key => $value )
             {
                 $select_columns[$key] = 'v.'.$value;
-            } 
+            }
         }
-       
+     
         // Create a new query object.
         $db        = $this->getDbo();
         $query    = $db->getQuery(true);
-        $user    = Factory::getUser(); 
-        
-        
+        $user    = Factory::getUser();
+      
+      
         if ($select_columns ) {
-            $query->select(implode(",", $select_columns)); 
-            $query->select('v.id'); 
+            $query->select(implode(",", $select_columns));
+            $query->select('v.id');
         }
         else
         {
-            $query->select('v.*');    
+            $query->select('v.*');  
         }
-        
+      
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS teamslug');
-        
-        $query->select('po.name as position_name'); 
+      
+        $query->select('po.name as position_name');
         // From table
         $query->from('#__sportsmanagement_person as v');
         // Join over the clubs
@@ -213,12 +213,12 @@ class sportsmanagementModelallpersons extends ListModel
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = stp.team_id');
         $query->join('LEFT', '#__sportsmanagement_position AS po ON po.id = v.position_id');
-        
+      
         //        // Join over the users for the checked out user.
         //		$query->select('uc.name AS editor');
         //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
-        
-        
+      
+      
         if ($this->getState('filter.search')) {
             $query->where('LOWER(v.lastname) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
@@ -227,12 +227,12 @@ class sportsmanagementModelallpersons extends ListModel
             $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         if ($this->use_current_season ) {
-            $filter_season = ComponentHelper::getParams($option)->get('current_season', 0);    
+            $filter_season = ComponentHelper::getParams($option)->get('current_season', 0);  
             $query->where('p.season_id IN ('.implode(',', $filter_season).')');
         }
-        
+      
         //$query->limit($this->getState('list.start'));
-        
+      
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC')));
@@ -240,8 +240,8 @@ class sportsmanagementModelallpersons extends ListModel
         return $query;
 
     }
-    
-    
+  
+  
 }
 
-?>    
+?>  

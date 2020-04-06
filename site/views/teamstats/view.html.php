@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,26 +17,26 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewTeamStats
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewTeamStats extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewTeamStats::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
         if ($this->config['show_goals_stats_flash'] ) {
              $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-             $this->document->addScript($js);    
+             $this->document->addScript($js);  
         }
         if (isset($this->project) ) {
 
@@ -68,26 +68,26 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
             if ($this->config['show_goals_stats_flash'] ) {
                   $rounds    = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelTeamStats::$cfg_which_database);
                   $this->round_labels = array();
-                foreach ($rounds as $r) 
+                foreach ($rounds as $r)
                   {
                     $this->round_labels[] = '"'.$r->name.'"';
                 }
                   $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelTeamStats::$cfg_which_database), $this->config));
             }
-        
-            
-           
+      
+          
+         
         }
-    
+  
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_PAGE_TITLE');
         if (isset($this->team) ) {
             $pageTitle .= ': ' . $this->team->name;
         }
         $this->document->setTitle($pageTitle);
-       
+     
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE') . " - " . $this->team->name;
-        
+      
     }
 
     /**
@@ -123,7 +123,7 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
             {
                 $matchDayGoalsCount[] = intval($rw->goalsfor + $rw->goalsagainst);
             }
-            
+          
             $matchDayGoalsCountMax = intval($rw->goalsfor + $rw->goalsagainst) > $matchDayGoalsCountMax ? intval($rw->goalsfor + $rw->goalsagainst) : $matchDayGoalsCountMax;
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,9 +26,9 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewResultsranking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -38,14 +38,14 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
     /**
      * sportsmanagementViewResultsranking::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-        
+      
         $this->document->addScript(Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js');
-        
+      
         /**
  * add the ranking model
  */
@@ -58,12 +58,12 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $rankingmodel::$from = 0;
                 $rankingmodel::$to = 0;
         $rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database', 0));
-        
+      
         $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
-        
+      
         /**
  * add the results model
- */        
+ */      
         $resultsmodel    = new sportsmanagementModelResults();
         /**
  * add the results config file
@@ -88,7 +88,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $config = array_merge($rankingconfig, $resultsconfig);
 
         $this->config = array_merge($this->overallconfig, $config);
-        
+      
         if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') ) {
 
         }
@@ -101,10 +101,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $this->round = $resultsmodel::$roundid;
         $this->roundid = $resultsmodel::$roundid;
         $this->roundcode = $roundcode;
-        
+      
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC', $this->jinput->getInt('cfg_which_database', 0));
         $options = $this->getRoundSelectNavigation($rounds, $this->jinput->getInt('cfg_which_database', 0));
-        
+      
         $this->matchdaysoptions = $options;
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
@@ -128,15 +128,15 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $this->type = $rankingmodel::$type;
         $this->from = $rankingmodel::$from;
         $this->to = $rankingmodel::$to;
-        
+      
         if ($this->params->get('show_allranking', 0) ) {
              $this->previousRanking = $rankingmodel::$previousRanking;
             if ($this->config['show_table_1']) {
                 $this->currentRanking = $rankingmodel::$currentRanking;
-            }    
+            }  
             if ($this->config['show_table_2']) {
                 $this->homeRank = $rankingmodel::$homeRank;
-            }    
+            }  
             if ($this->config['show_table_3']) {
                 $this->awayRank = $rankingmodel::$awayRank;
             }
@@ -149,18 +149,18 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
                 $rankingmodel::$part = 2;
                 $rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
                 $this->secondRank = $rankingmodel::$currentRanking;
-            }    
+            }  
         }
         else
         {
              $this->previousRanking = $rankingmodel::$previousRanking;
-             $this->currentRanking = $rankingmodel::$currentRanking;    
+             $this->currentRanking = $rankingmodel::$currentRanking;  
         }
 
         $this->current_round = $rankingmodel::$current_round;
         $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
         $this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database', 0));
-        
+      
         /**
  * rankingcolors
  */
@@ -168,22 +168,22 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
             $this->config['colors'] = "";
         }
         $this->colors = sportsmanagementModelProject::getColors($this->config['colors'], $this->jinput->getInt('cfg_which_database', 0));
-        
+      
         /**
  * Set page title
  */
         $pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
          ? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
          : Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
-            
+          
         if (isset($this->project->name) ) {
             $pageTitle .= ' - ' . $this->project->name;
         }
         $this->document->setTitle($pageTitle);
-        
+      
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
-        
+      
         /**
  * diddipoeler
  */
@@ -191,11 +191,11 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
             $this->allteams = $mdlProjectteams->getAllProjectTeams($project->id, 0, null, $this->jinput->getInt('cfg_which_database', 0));
         }
         if ($this->params->get('show_map', 0) ) {
-            $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0)); 
+            $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
 
             //	  $this->geo = new JSMsimpleGMapGeocoder();
             //	  $this->geo->genkml3($project->id,$this->allteams);
-  
+
             foreach ( $this->allteams as $row )
             {
                       $address_parts = array();
@@ -224,10 +224,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         }
 
     }
-    
+  
     /**
      * sportsmanagementViewResultsranking::getRoundSelectNavigation()
-     * 
+     *
      * @param  mixed $rounds
      * @return
      */
@@ -252,6 +252,6 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         }
         return $options;
     }
-        
+      
 }
 ?>

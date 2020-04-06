@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,8 +27,8 @@ JLoader::import('joomla.utilities.simplecrypt');
 
 /**
  * sportsmanagementModeljsmGCalendar
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -38,7 +38,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 {
     /**
      * sportsmanagementModeljsmGCalendar::allowEdit()
-     * 
+     *
      * @param  mixed  $data
      * @param  string $key
      * @return
@@ -51,7 +51,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 
     /**
      * sportsmanagementModeljsmGCalendar::getTable()
-     * 
+     *
      * @param  string $type
      * @param  string $prefix
      * @param  mixed  $config
@@ -59,13 +59,13 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
      */
     public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
 
     /**
      * sportsmanagementModeljsmGCalendar::getForm()
-     * 
+     *
      * @param  mixed $data
      * @param  bool  $loadData
      * @return
@@ -82,7 +82,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 
     /**
      * sportsmanagementModeljsmGCalendar::loadFormData()
-     * 
+     *
      * @return
      */
     protected function loadFormData()
@@ -94,15 +94,15 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
         }
         return $data;
     }
-    
-    
+  
+  
     /**
      * Method to save the form data.
      *
      * @param  array    The form data.
      * @return boolean    True on success.
      * @since  1.6
-     * 
+     *
      * http://framework.zend.com/manual/1.12/en/zend.http.response.html
      */
     public function save($data)
@@ -113,12 +113,12 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
           $post = Factory::getApplication()->input->post->getArray(array());
           // Get a db connection.
         $db = Factory::getDbo();
-      
+    
           $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone', '');
-       
+     
         if (empty($data['id']) ) {
             // xml file erstellen
-            $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'createcal.xml'; 
+            $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'createcal.xml';
             $output  = "<entry xmlns='http://www.w3.org/2005/Atom'". "\n";
             $output .= "xmlns:gd='http://schemas.google.com/g/2005'". "\n";
             $output .= "xmlns:gCal='http://schemas.google.com/gCal/2005'>". "\n";
@@ -143,7 +143,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 
             $username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account', '');
             $password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password', '');
-            /*          
+            /*        
             $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
             $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);
             $gdataCal = new Zend_Gdata_Calendar($client);
@@ -155,15 +155,15 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
             $xml = str_replace('[SUMMARY]', $summary, $xml);
             $response = $gdataCal->post($xml, $uri);
             */
-    
+  
             // die erstellte kalender id übergeben
             //$data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
-    
+  
         }
-        
-        
-        
+      
+      
+      
           // Proceed with the save
-        return parent::save($data);   
-    }    
+        return parent::save($data); 
+    }  
 }

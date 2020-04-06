@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -47,8 +47,8 @@ use Joomla\Registry\Registry;
 
 /**
  * ModJSMGoogleCalendarHelper
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -71,10 +71,10 @@ class ModJSMGoogleCalendarHelper
      */
     protected $calendarId;
 
-    
+  
     /**
      * ModJSMGoogleCalendarHelper::__construct()
-     * 
+     *
      * @param  mixed $params
      * @return void
      */
@@ -84,10 +84,10 @@ class ModJSMGoogleCalendarHelper
         $this->calendarId = $params->get('calendar_id', null);
     }
 
-    
+  
     /**
      * ModJSMGoogleCalendarHelper::nextEvents()
-     * 
+     *
      * @param  mixed $maxEvents
      * @return
      */
@@ -104,10 +104,10 @@ class ModJSMGoogleCalendarHelper
         return $this->prepareEvents($events);
     }
 
-    
+  
     /**
      * ModJSMGoogleCalendarHelper::duration()
-     * 
+     *
      * @param  mixed $event
      * @return
      */
@@ -130,7 +130,7 @@ class ModJSMGoogleCalendarHelper
 
     /**
      * ModJSMGoogleCalendarHelper::getEvents()
-     * 
+     *
      * @param  mixed $options
      * @return
      */
@@ -161,10 +161,10 @@ class ModJSMGoogleCalendarHelper
         throw new UnexpectedValueException("Unexpected data received from Google: `{$response->body}`.");
     }
 
-    
+  
     /**
      * ModJSMGoogleCalendarHelper::prepareEvents()
-     * 
+     *
      * @param  mixed $events
      * @return
      */
@@ -181,7 +181,7 @@ class ModJSMGoogleCalendarHelper
 
     /**
      * ModJSMGoogleCalendarHelper::prepareEvent()
-     * 
+     *
      * @param  mixed $event
      * @return
      */
@@ -193,10 +193,10 @@ class ModJSMGoogleCalendarHelper
         return $event;
     }
 
-    
+  
     /**
      * ModJSMGoogleCalendarHelper::unifyDate()
-     * 
+     *
      * @param  mixed $date
      * @return
      */

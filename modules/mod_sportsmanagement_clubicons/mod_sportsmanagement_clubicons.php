@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,8 +30,8 @@ if (!defined('JSM_PATH') ) {
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 /**
-* 
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist 
+*
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
 */
 if (!class_exists('JSMModelLegacy')) {
     JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -43,19 +43,19 @@ if (!class_exists('sportsmanagementModeldatabasetool')) {
     include_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'databasetool.php';
 }
 
-JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);  
+JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
 
 /**
-* 
- * welche tabelle soll genutzt werden 
+*
+ * welche tabelle soll genutzt werden
 */
 $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 $database_table    = $paramscomponent->get('cfg_which_database_table');
-$show_debug_info = $paramscomponent->get('show_debug_info');  
-$show_query_debug_info = $paramscomponent->get('show_query_debug_info'); 
+$show_debug_info = $paramscomponent->get('show_debug_info');
+$show_query_debug_info = $paramscomponent->get('show_query_debug_info');
 
 if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') ) {
     DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $show_debug_info);
@@ -69,21 +69,21 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMClubiconsHelper', __DIR__ . '/helper.php');
 
 /**
-* 
- * soll die externe datenbank genutzt werden ? 
+*
+ * soll die externe datenbank genutzt werden ?
 */
 if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database') ) {
-    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');    
+    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');  
 }
 else
 {
-    $module->picture_server = Uri::root();    
+    $module->picture_server = Uri::root();  
 }
 
 $data = new modJSMClubiconsHelper($params, $module);
@@ -92,16 +92,16 @@ $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
 
 /**
-* 
- * die übersetzungen laden 
+*
+ * die übersetzungen laden
 */
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
 /**
-* 
- * welche joomla version ? 
+*
+ * welche joomla version ?
 */
 if(version_compare(JVERSION, '3.0.0', 'ge')) {
     HTMLHelper::_('behavior.framework', true);
@@ -113,8 +113,8 @@ else
 
 $doc = Factory::getDocument();
 /**
-* 
- * Add styles 
+*
+ * Add styles
 */
 $style = '
 .img-zoom {
@@ -124,20 +124,20 @@ $style = '
     -o-transition: all .2s ease-in-out;
     -ms-transition: all .2s ease-in-out;
 }
- 
+
 .transition {
-    -webkit-transform: scale('.$params->get('max_width_after_mouse_over', '10').'); 
+    -webkit-transform: scale('.$params->get('max_width_after_mouse_over', '10').');
     -moz-transform: scale('.$params->get('max_width_after_mouse_over', '10').');
     -o-transform: scale('.$params->get('max_width_after_mouse_over', '10').');
     transform: scale('.$params->get('max_width_after_mouse_over', '10').');
 }
-'; 
+';
 $doc->addStyleDeclaration($style);
 
 if ($cnt ) {
     $script =  'script';
     $doc->addScript(Uri::base() . 'modules'.DIRECTORY_SEPARATOR.$module->module.DIRECTORY_SEPARATOR.'js/'.$script.'.js');
-?>           
+?>         
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 include ModuleHelper::getLayoutPath($module->module, $params->get('template', 'default'));

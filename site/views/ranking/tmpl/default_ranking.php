@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
 
 /**
- * es wird als erstes die farblegende der divisionen/gruppen gelesen 
+ * es wird als erstes die farblegende der divisionen/gruppen gelesen
  */
 foreach ($this->currentRanking as $division => $cu_rk) {
     if ($division) {
@@ -43,7 +43,7 @@ foreach ($this->currentRanking as $division => $cu_rk) {
             <tr>
                 <td class="contentheading">
         <?php
-        //get the division name from the first team of the division 
+        //get the division name from the first team of the division
         foreach ($cu_rk as $ptid => $team) {
             echo $this->divisions[$division]->name;
             break;
@@ -52,7 +52,7 @@ foreach ($this->currentRanking as $division => $cu_rk) {
                 </td>
             </tr>
         </table>
-</div>    
+</div>  
         <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
                     <?php

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -168,7 +168,7 @@ use Joomla\CMS\Router\Route;
                         $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                     } else {
-                        ?>                                    
+                        ?>                                  
                         <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
                             <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                         </a>
@@ -190,21 +190,21 @@ $html[] = '<fieldset id="published_act_season' . $row->id . '" class="' . $class
 foreach ($options as $in => $option)
         {
     $checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
-    $btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';    
-    $btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;          
-    
+    $btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';  
+    $btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;        
+  
     $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
     $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
                 . $option->value . '"' . $onchange . ' />';
 
     $html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
                 . Text::_($option->text) . '</label>';
-  
-}                        
-                        
-echo implode($html);                            
-?>                       
-                </td>    
+
+}                      
+                      
+echo implode($html);                          
+?>                     
+                </td>  
                 <td class="center">
                     <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'leagues.', $canChange, 'cb'); ?>
@@ -217,7 +217,7 @@ echo implode($html);
                         }
                         ?>
                     </div>
-                </td>    
+                </td>  
                 <td class="order">
                     <span>
                         <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'leagues.orderup', 'JLIB_HTML_MOVE_UP', 'obj.ordering'); ?>

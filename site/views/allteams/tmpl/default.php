@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -55,7 +55,7 @@ function searchPerson(val)
 
 <button type="submit" class="btn" title=""><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
 <button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
-        
+      
 <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 <td align="center" colspan="4">
 <?php
@@ -65,23 +65,23 @@ for ($i=$startRange; $i <= $endRange; $i++)
 {
     printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#'.$i.';', '&#'.$i.';');
 }
-                
+              
 ?>
 </td>
 </div>
-    
+  
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />
-        
+      
 <div class="display-limit">
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
 </div>
-        
+      
 </fieldset>
-<?php 
-echo $this->loadTemplate('items'); 
+<?php
+echo $this->loadTemplate('items');
 echo $this->loadTemplate('jsminfo');
 ?>
 </form>

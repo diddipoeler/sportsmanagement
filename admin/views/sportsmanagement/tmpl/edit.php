@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage sportsmanagement
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
@@ -24,7 +24,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $params = $this->form->getFieldsets('params');
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="helloworld-form" class="form-validate">
- 
+
     <div class="width-60 fltlft">
         <fieldset class="adminform">
             <legend><?php echo Text::_('COM_HELLOWORLD_HELLOWORLD_DETAILS'); ?></legend>
@@ -34,7 +34,7 @@ $params = $this->form->getFieldsets('params');
 <?php endforeach; ?>
             </ul>
     </div>
- 
+
     <div class="width-40 fltrt">
     <?php echo HTMLHelper::_('sliders.start', 'sportsmanagement-slider'); ?>
 <?php foreach ($params as $name => $fieldset): ?>
@@ -50,10 +50,10 @@ $params = $this->form->getFieldsets('params');
             </ul>
         </fieldset>
 <?php endforeach; ?>
- 
+
     <?php echo HTMLHelper::_('sliders.end'); ?>
     </div>
- 
+
     <div>
         <input type="hidden" name="task" value="sportsmanagement.edit" />
     <?php echo HTMLHelper::_('form.token'); ?>
@@ -63,4 +63,4 @@ $params = $this->form->getFieldsets('params');
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

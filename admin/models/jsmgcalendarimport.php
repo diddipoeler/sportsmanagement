@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,8 +25,8 @@ JLoader::import('components.com_sportsmanagement.libraries.google-php.vendor.aut
 
 /**
  * sportsmanagementModeljsmgcalendarImport
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -34,23 +34,23 @@ JLoader::import('components.com_sportsmanagement.libraries.google-php.vendor.aut
  */
 class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 {
-    
+  
     var $_name = 'sportsmanagement';
 
     /**
      * sportsmanagementModeljsmgcalendarImport::__construct()
-     * 
+     *
      * @return void
      */
-    public function __construct() 
+    public function __construct()
     {
         parent::__construct();
 
     }
-    
+  
     /**
      * sportsmanagementModeljsmgcalendarImport::import()
-     * 
+     *
      * @return void
      */
     public function import()
@@ -66,41 +66,41 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
         $this->jsmquery = $this->jsmdb->getQuery(true);
 
         /**
- * Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/). 
-*/    
+ * Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/).
+*/  
         $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid', '');
         $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret', '');
         $google_api_key = ComponentHelper::getParams($option)->get('google_api_developerkey', '');
         $google_api_redirecturi = ComponentHelper::getParams($option)->get('google_api_redirecturi', '');
         $google_mail_account = ComponentHelper::getParams($option)->get('google_mail_account', '');
 
-      
+    
         $session = Factory::getSession(
             array(
             'expire' => 30
             )
-        );    
+        );  
         if (! $app->input->get('code')) {
                $session->set('client-id', $google_client_id, $this->_name);
                $session->set('client-secret', $google_client_secret, $this->_name);
         }
         $clientId = $session->get('client-id', null, $this->_name);
-        $clientSecret = $session->get('client-secret', null, $this->_name);      
-      
+        $clientSecret = $session->get('client-secret', null, $this->_name);    
+    
         if ($app->input->get('code')) {
                    $session->set('client-id', null, $this->_name);
                    $session->set('client-secret', null, $this->_name);
-        }      
-      
-      
-      
+        }    
+    
+    
+    
         //$client = new Google_Client();
         $client = new Google_Client(
             array(
             'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
             )
         );
-        $client->setApplicationName("JSMCalendar");                
+        $client->setApplicationName("JSMCalendar");              
         //$client->setApprovalPrompt('force');
         $client->setClientId($google_client_id);
         $client->setClientSecret($google_client_secret);
@@ -116,7 +116,7 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
         } else {
             $uri = Factory::getURI();
         }
-        
+      
         if (filter_var($uri->getHost(), FILTER_VALIDATE_IP)) {
                $uri->setHost('localhost');
         }
@@ -154,9 +154,9 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 
         //$tok = json_decode($token, true);
 
-        while(true) 
+        while(true)
         {
-            foreach ($calList->getItems() as $calendarListEntry) 
+            foreach ($calList->getItems() as $calendarListEntry)
                   {
                 $params = new Registry();
                 $params->set('refreshToken', $token['refresh_token']);
@@ -166,7 +166,7 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
                 $params->set('action-create', true);
                 $params->set('action-edit', true);
                 $params->set('action-delete', true);
-                    
+                  
                 $this->jsmquery->clear();
                 $this->jsmquery->select('id');
                 $this->jsmquery->from('#__sportsmanagement_gcalendar');
@@ -176,8 +176,8 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
 
                 if (!$result_sel ) {
                       /**
-* 
- * wenn nichts gefunden wurde neu anlegen 
+*
+ * wenn nichts gefunden wurde neu anlegen
 */
                       $newcalendar = new stdClass();
                       $newcalendar->calendar_id = $calendarListEntry->getID();
@@ -202,24 +202,24 @@ class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel
                       $object->alias = OutputFilter::stringURLSafe($object->title);
                       $object->modified = Factory::getDate()->toSql();
                       $object->modified_by = Factory::getUser()->get('id');
-                      $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $object, 'id');     
-    
-    
+                      $result = Factory::getDbo()->updateObject('#__sportsmanagement_gcalendar', $object, 'id');   
+  
+  
                 }
-     
+   
             }
                   $pageToken = $calList->getNextPageToken();
             if ($pageToken) {
                 $optParams = array('pageToken' => $pageToken);
                 $calList= $service->calList->listCalendarList($optParams);
-            } 
-            else 
+            }
+            else
                   {
                 break;
             }
         }
 
-        return true;   
-    }   
+        return true; 
+    } 
 
 }

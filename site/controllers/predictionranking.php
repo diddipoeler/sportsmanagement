@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,19 +20,19 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionRanking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllerPredictionRanking extends BaseController
 {
-    
+  
         /**
          * sportsmanagementControllerPredictionRanking::display()
-         * 
+         *
          * @param  bool $cachable
          * @param  bool $urlparams
          * @return void
@@ -45,7 +45,7 @@ class sportsmanagementControllerPredictionRanking extends BaseController
 
     /**
      * sportsmanagementControllerPredictionRanking::selectprojectround()
-     * 
+     *
      * @return void
      */
     function selectprojectround()
@@ -62,17 +62,17 @@ class sportsmanagementControllerPredictionRanking extends BaseController
         $rID = $jinput->getVar('r', '0');
         $set_pj = $jinput->getVar('set_pj', '0');
         $set_r = $jinput->getVar('set_r', '0');
-        
+      
         $type = $jinput->getVar('type', '0');
         $from = $jinput->getVar('from', '0');
         $to = $jinput->getVar('to', '0');
-        
+      
         if (!$rID ) {
-            $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
+            $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);  
         }
-        
+      
         $link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID, $pjID, $rID, '', $pggroup, $pggrouprank, $type, $from, $to);
-        
+      
         //echo '<br />' . $link . '<br />';
         $this->setRedirect($link);
     }

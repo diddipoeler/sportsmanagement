@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -42,14 +42,14 @@ $logo = HTMLHelper::_('image', $url, $alt, $attribs);
             <thead>
       <tr>
       <th><?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
-      
+    
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11'); ?>
       </th>
       </tr>
       </thead>
   </table>
 
-            
+          
 <table class="<?php echo $this->table_data_class; ?>">
 <thead>
 <tr>
@@ -76,11 +76,11 @@ $logo = HTMLHelper::_('image', $url, $alt, $attribs);
 </th>
 </tr>
 </thead>
-                
+              
 <?PHP
 
 $startteamdfb = 0;
-foreach($this->lists['dfbday'] as $rowdfb) 
+foreach($this->lists['dfbday'] as $rowdfb)
 {
     echo "<tr><td>".$rowdfb->schluessel."</td>";
     echo "<td>".$rowdfb->spieltag."</td>";
@@ -96,17 +96,17 @@ foreach($this->lists['dfbday'] as $rowdfb)
 ?>
 
 </table>
-            
+          
 </fieldset>
 </div>
 
 <fieldset class="actions">
-                            
+                          
 </fieldset>
 
 <input type="hidden" name="sent" value="1" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="divisionid" value="<?php echo $this->division_id;?> " />                            
+<input type="hidden" name="divisionid" value="<?php echo $this->division_id;?> " />                          
 </form>
 <?php
 

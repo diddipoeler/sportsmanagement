@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -37,9 +37,9 @@ HTMLHelper::_('behavior.modal');
         echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));
         echo $this->loadTemplate('away');
         echo HTMLHelper::_('bootstrap.endTab');
-        echo HTMLHelper::_('bootstrap.endTabSet');    
+        echo HTMLHelper::_('bootstrap.endTabSet');  
     }
-        
+      
     else
     {
         echo HTMLHelper::_('tabs.start', 'tabs', array('useCookie'=>1));

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ require_once JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARAT
 
 /**
  * sportsmanagementViewScoresheet
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -32,7 +32,7 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
 
     /**
      * sportsmanagementViewTeamPlan::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -58,12 +58,12 @@ class sportsmanagementViewScoresheet extends sportsmanagementView
         );
         foreach($this->teamplayer1 AS $key => $player) {
                $position = $key+1;
-               $fields['SpielerA'. $position] = $player->lastname.' '.$player->firstname;    
+               $fields['SpielerA'. $position] = $player->lastname.' '.$player->firstname;  
                $fields['SpielernummerA'. $position] = $player->knvbnr;
         }
         foreach($this->teamplayer2 AS $key => $player) {
              $position = $key+1;
-             $fields['SpielerB'. $position] = $player->lastname.' '.$player->firstname;    
+             $fields['SpielerB'. $position] = $player->lastname.' '.$player->firstname;  
              $fields['SpielernummerB'. $position] = $player->knvbnr;
         }
         if ($this->match[0]->game_parts == "3") {

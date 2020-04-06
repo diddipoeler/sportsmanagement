@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelLeagues
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,15 +27,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelLeagues extends JSMModelList
 {
     var $_identifier = "leagues";
-    
+  
     /**
      * sportsmanagementModelLeagues::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.name',
                         'obj.alias',
@@ -54,7 +54,7 @@ class sportsmanagementModelLeagues extends JSMModelList
                 parent::__construct($config);
                 parent::setDbo($this->jsmdb);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -68,7 +68,7 @@ class sportsmanagementModelLeagues extends JSMModelList
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''), '');
         }
-        
+      
         // Load the filter state.
         $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
@@ -81,7 +81,7 @@ class sportsmanagementModelLeagues extends JSMModelList
            $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
         $this->setState('filter.search_association', $temp_user_request);
            $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
-           $this->setState('filter.federation', $temp_user_request);  
+           $this->setState('filter.federation', $temp_user_request);
            $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
         $this->setState('list.limit', $value);
 
@@ -100,10 +100,10 @@ class sportsmanagementModelLeagues extends JSMModelList
         }
         $this->setState('list.direction', $listOrder);
     }
-    
+  
     /**
      * sportsmanagementModelLeagues::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
@@ -120,33 +120,33 @@ class sportsmanagementModelLeagues extends JSMModelList
         // Join over the users for the checked out user.
         $this->jsmquery->select('uc.name AS editor');
         $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        
+      
         $this->jsmquery->select('ag.name AS agegroup');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = obj.agegroup_id');
-        
+      
         $this->jsmquery->select('fed.name AS fedname');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_associations AS fed ON fed.id = obj.associations');
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where('LOWER(obj.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-        
+      
         if ($this->getState('filter.search_nation')) {
             $this->jsmquery->where('obj.country LIKE '.$this->jsmdb->Quote(''.$this->getState('filter.search_nation').''));
         }
-        
+      
         if ($this->getState('filter.search_association')) {
             $this->jsmquery->where('obj.associations = '.$this->getState('filter.search_association'));
         }
-        
+      
         if ($this->getState('filter.federation')) {
             $this->jsmquery->where('obj.associations = '.$this->getState('filter.federation'));
         }
-        
+      
         if ($this->getState('filter.search_agegroup')) {
             $this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
         }
-        
+      
         if (is_numeric($this->getState('filter.state'))) {
             $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));
         }
@@ -155,15 +155,15 @@ class sportsmanagementModelLeagues extends JSMModelList
             $this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
- 
+
         return $this->jsmquery;
     }
 
+
+
+
+
   
-
-
-
-    
     /**
      * Method to return a leagues array (id,name)
      *
@@ -176,9 +176,9 @@ class sportsmanagementModelLeagues extends JSMModelList
     {
 
         $search_nation = '';
-        
+      
 
-        
+      
         if ($this->jsmapp->isClient('administrator') ) {
             $search_nation    = $this->getState('filter.search_nation');
             //$search_nation	= self::getState('filter.search_nation');
@@ -189,11 +189,11 @@ class sportsmanagementModelLeagues extends JSMModelList
         //        $query = $db->getQuery(true);
         $this->jsmquery->select('id,name');
         $this->jsmquery->from('#__sportsmanagement_league');
-        
+      
         if ($search_nation) {
             $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$search_nation.''));
         }
-        
+      
         $this->jsmquery->order('name ASC');
 
         $this->jsmdb->setQuery($this->jsmquery);
@@ -209,6 +209,6 @@ class sportsmanagementModelLeagues extends JSMModelList
         return $result;
     }
 
-    
+  
 }
 ?>

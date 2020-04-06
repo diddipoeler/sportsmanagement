@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,13 +17,13 @@ use Joomla\CMS\Language\Text;
 
 ?>
 <h4>
-<?php 
+<?php
 if ($this->config['show_extended_text'] ) {
-    echo Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES'); 
-}                
+    echo Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
+}              
 ?>
 </h4>
-            
+          
 <?php
 foreach ( $this->extended as $key => $value )
 {
@@ -31,73 +31,73 @@ foreach ( $this->extended as $key => $value )
         ?>
         <div class="<?php echo $this->divclassrow;?>">
     <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
-    <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">  
+    <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
     <strong>
-    <?php 
+    <?php
     $keytext = $key;
-    $valuetext = $value; 
+    $valuetext = $value;
     switch($keytext)
     {
     case 'formation1':
-        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME'; 
+        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_HOME';
         break;
     case 'formation2':
-        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY'; 
+        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FORMATION_AWAY';
         break;
     case 'Weather':
-        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER'; 
-        break;         
+        $keytext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER';
+        break;       
     }
- 
+
     switch ($valuetext)
     {
     case 'foggy':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY';      
         break;
     case 'rainy':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY';      
         break;
     case 'sunny':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY';      
         break;
     case 'windy':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY';      
         break;
     case 'dry':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY';      
         break;
     case 'snowing':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING';      
         break;
     case 'normal':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL';      
         break;
     case 'wet':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET';      
         break;
     case 'fielddry':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY';        
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY';      
         break;
     case 'snow':
-        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW';        
-        break;    
-    }             
-    echo Text::_($keytext).':'; 
+        $valuetext = 'COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW';      
+        break;  
+    }           
+    echo Text::_($keytext).':';
     ?>
     </strong>
-    </div>    
-  
-    <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">  
-<?php  
+    </div>  
+
+    <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
+<?php
 echo Text::_($valuetext);
-?>  
+?>
 </div>
-  
-</div>    
+
 </div>  
-<?php  
+</div>
+<?php
     }
-  
+
 }
 
 
@@ -107,7 +107,7 @@ return;
 <?php
 if(count($this->extended->getFieldsets()) > 0) {
     // fieldset->name is set in the backend and is localized, so we need the backend language file here
-    
+  
     foreach ($this->extended->getFieldsets() as $fieldset)
     {
         if (isset($this->config['show_extended_geo_values']) ) {
@@ -117,9 +117,9 @@ if(count($this->extended->getFieldsets()) > 0) {
         {
             $fields = $this->extended->getFieldset('COM_SPORTSMANAGEMENT_EXT_EXTENDED_PREFERENCES');
         }
-        
+      
         if (count($fields) > 0) {
-            // Check if the extended data contains information 
+            // Check if the extended data contains information
             $hasData = false;
             foreach ($fields as $field)
             {
@@ -135,16 +135,16 @@ if(count($this->extended->getFieldsets()) > 0) {
             // And if so, display this information
             if ($hasData) {
                         ?>
-                
+              
 
                   <h4>
-                    <?php 
+                    <?php
                     if ($this->config['show_extended_text'] ) {
-                        echo Text::_($fieldset->name); 
-                    }                
+                        echo Text::_($fieldset->name);
+                    }              
                     ?>
                   </h4>
-            
+          
                         <?php
                         foreach ($fields as $field)
                         {
@@ -157,58 +157,58 @@ if(count($this->extended->getFieldsets()) > 0) {
                           <div class="<?php echo $this->divclassrow;?>">
                           <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
                           <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
-                        
+                      
                           <strong><?php echo Text::_($label).':'; ?></strong>
                           </div>
                           <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
                                 <?php
                                 if (is_array($field->value) ) {
-                            
-                                    foreach( $field->value as $key => $value)  
+                          
+                                    foreach( $field->value as $key => $value)
                                     {
-                                        echo Text::_($value).'<br>';      
+                                        echo Text::_($value).'<br>';    
                                     }
-                              
+                            
                                 }
                                 else
-                                { 
+                                {
                                     switch ($field->value)
                                     {
                                     case 'foggy':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');      
                                         break;
                                     case 'rainy':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');      
                                         break;
                                     case 'sunny':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY');      
                                         break;
                                     case 'windy':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY');      
                                         break;
                                     case 'dry':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY');      
                                         break;
                                     case 'snowing':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING');      
                                         break;
                                     case 'normal':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL');      
                                         break;
                                     case 'wet':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET');      
                                         break;
                                     case 'fielddry':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY');        
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY');      
                                         break;
                                     case 'snow':
-                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');        
-                                        break;    
+                                        echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');      
+                                        break;  
                                     default:
-                                        $value = $field->value;        
-                                        echo Text::_($value);        
+                                        $value = $field->value;      
+                                        echo Text::_($value);      
                                         break;
-                                    }                    
+                                    }                  
                                 }
                             ?>
                           </div>
@@ -220,11 +220,11 @@ if(count($this->extended->getFieldsets()) > 0) {
                     ?>
 
 
-             
+           
                   <br/>
                     <?php
             }
         }
     }
 }
-?>    
+?>  

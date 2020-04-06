@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage helpers
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -19,9 +19,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * JSMRanking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -109,7 +109,7 @@ class JSMRanking
      * @var array
      */
     var $_roundcodes = null;
-    
+  
     /**
      * get instance of ranking. Looks into extension folder too.
      *
@@ -119,9 +119,9 @@ class JSMRanking
     {
         if ($project) {
             //$this->_roundcodes = null;
-            
+          
             $extensions = sportsmanagementHelper::getExtensions($project->id);
-                
+              
             foreach ($extensions as $type)
             {
                 $classname = 'JSMRanking'. ucfirst($type);
@@ -158,21 +158,21 @@ class JSMRanking
     function setProjectId($id,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');    
-    
-    
+        $option = $app->input->getCmd('option');  
+  
+  
         $this->_projectid = (int) $id;
         //		$this->_project = new sportsmanagementModelProject();
         //		$this->_project->setProjectID($id);
         //		$this->_params = $this->_project->getTemplateConfig('ranking');
         sportsmanagementModelProject::setProjectID($id, $cfg_which_database);
         $this->_params = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
-        
+      
         if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
-            $my_text = 'projectid -> '.$this->_projectid.'<br>'; 
+            $my_text = 'projectid -> '.$this->_projectid.'<br>';
             sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-          
-    
+        
+  
         }
 
         // wipe data
@@ -201,22 +201,22 @@ class JSMRanking
     function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');    
-        
-        
+        $option = $app->input->getCmd('option');  
+      
+      
         $this->_from     = $from;
         $this->_to       = $to;
         $this->_mode     = 0;
-        
+      
         if ($division == '' ) {
             $division = 0;
         }
         self::setDivisionId($division, $cfg_which_database);
 
         $teams = self::_collect(null, $cfg_which_database);
-    
+  
         $rankings = self::_buildRanking($teams, $cfg_which_database);
-            
+          
         return $rankings;
     }
 
@@ -231,9 +231,9 @@ class JSMRanking
     function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');    
-        
-        
+        $option = $app->input->getCmd('option');  
+      
+      
         $this->_from     = $from;
         $this->_to       = $to;
         $this->_mode     = 1;
@@ -244,7 +244,7 @@ class JSMRanking
 
         $teams = self::_collect(null, $cfg_which_database);
         $rankings = self::_buildRanking($teams, $cfg_which_database);
-        
+      
         return $rankings;
     }
 
@@ -259,9 +259,9 @@ class JSMRanking
     function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');    
-        
-        
+        $option = $app->input->getCmd('option');  
+      
+      
         $this->_from     = $from;
         $this->_to       = $to;
         $this->_mode     = 2;
@@ -272,7 +272,7 @@ class JSMRanking
 
         $teams = self::_collect(null, $cfg_which_database);
         $rankings = self::_buildRanking($teams, $cfg_which_database);
-        
+      
         return $rankings;
     }
 
@@ -285,22 +285,22 @@ class JSMRanking
     {
           $app = Factory::getApplication();
           $option = $app->input->getCmd('option');
-       
-       
+     
+     
         if (!$this->_projectid) {
 
-            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), 'error');            
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'), 'error');          
             return false;
         }
 
-        if(version_compare(JSM_JVERSION, '4', 'eq') ) {        
+        if(version_compare(JSM_JVERSION, '4', 'eq') ) {      
              $data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database);
         }
 
-        if(version_compare(JSM_JVERSION, '3', 'eq') ) {        
+        if(version_compare(JSM_JVERSION, '3', 'eq') ) {      
              $data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database);
 
-        }            
+        }          
         return $data;
     }
 
@@ -327,9 +327,9 @@ class JSMRanking
     function _collect($ptids = null,$cfg_which_database = 0)
     {
           $app = Factory::getApplication();
-          $option = $app->input->getCmd('option');    
-       
-    
+          $option = $app->input->getCmd('option');  
+     
+  
         $mode         = $this->_mode;
         $from         = $this->_from;
         $to           = $this->_to;
@@ -337,16 +337,16 @@ class JSMRanking
         //		$project  	= $this->_project->getProject();
         $project      = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
         $data         = self::_initData($cfg_which_database);
-        
+      
         foreach ((array)$data->_matches as $match)
         {
-        
-            if (!isset($data->_teams[$match->projectteam1_id]) || $data->_teams[$match->projectteam1_id]->_is_in_score === 0 
-                || !isset($data->_teams[$match->projectteam2_id]) || $data->_teams[$match->projectteam2_id]->_is_in_score === 0  
+      
+            if (!isset($data->_teams[$match->projectteam1_id]) || $data->_teams[$match->projectteam1_id]->_is_in_score === 0
+                || !isset($data->_teams[$match->projectteam2_id]) || $data->_teams[$match->projectteam2_id]->_is_in_score === 0
             ) {
                 continue;
             }
-        
+      
             if (!$this->_countGame($match, $from, $to, $ptids, $cfg_which_database)) {
                 continue;
             }
@@ -355,7 +355,7 @@ class JSMRanking
             }
             $homeId = $match->projectteam1_id;
             $awayId = $match->projectteam2_id;
-            
+          
             if ($mode == 0 || $mode == 1) {
                 $home = &$data->_teams[$homeId];
             }
@@ -372,30 +372,30 @@ class JSMRanking
                 $away = new JSMRankingTeamClass(0); //in that case, $data wont be affected
                 //$away::$sum_points = 0;
             }
-            
+          
             $shownegpoints = 1;
 
             $decision = $match->decision;
-            
+          
             $mp1 = 0;
             $mp2 = 0;
                 $se1 = 0;
             $se2 = 0;
                 $ga1 = 0;
-            $ga2 = 0;                     
+            $ga2 = 0;                   
             if ($decision == 0) {
                 $home_score = $match->home_score;
                 $away_score = $match->away_score;
                 $leg1 = $match->l1;
                 $leg2 = $match->l2;
-                
+              
                 $mp1 = $match->mp1;
                 $mp2 = $match->mp2;
                 $se1 = $match->se1;
                 $se2 = $match->se2;
                 $ga1 = $match->ga1;
                 $ga2 = $match->ga2;
-                
+              
             }
             else
             {
@@ -428,56 +428,56 @@ class JSMRanking
             $loss_points = (isset($arr[2])) ? $arr[2] : 0;
 
             $home_ot = $match->home_score_ot;
-            $away_ot = $match->away_score_ot;            
+            $away_ot = $match->away_score_ot;          
             $home_so = $match->home_score_so;
             $away_so = $match->away_score_so;
 
             if ($decision!=1) {
                 if($home_score > $away_score ) {
-                    switch ($resultType) 
+                    switch ($resultType)
                     {
-                    case 0: 
-                        $home->cnt_won++; 
-                        $home->cnt_won_home++; 
-                        $away->cnt_lost++; 
-                        $away->cnt_lost_away++;    
+                    case 0:
+                        $home->cnt_won++;
+                        $home->cnt_won_home++;
+                        $away->cnt_lost++;
+                        $away->cnt_lost_away++;  
                         break;
-                    case 1: 
-                        $home->cnt_wot++; 
-                        $home->cnt_wot_home++; 
+                    case 1:
+                        $home->cnt_wot++;
+                        $home->cnt_wot_home++;
                         /**
  * keine summierung für hockey
  */
-                        //						$home->cnt_won++; 
-                        //						$home->cnt_won_home++; 
-                        $away->cnt_lot++; 
+                        //						$home->cnt_won++;
+                        //						$home->cnt_won_home++;
+                        $away->cnt_lot++;
                         $away->cnt_lot_away++;
                         /**
  * keine summierung für hockey
  */
-                        //$away->cnt_lost++; 
+                        //$away->cnt_lost++;
                         //$away->cnt_lost_home++; 						
                         break;
-                    case 2: 
-                        $home->cnt_wso++; 
+                    case 2:
+                        $home->cnt_wso++;
                         $home->cnt_wso_home++;
                         /**
  * keine summierung für hockey
- */                        
-                        //						$home->cnt_won++; 
-                        //						$home->cnt_won_home++; 
-                        $away->cnt_lso++; 
-                        $away->cnt_lso_away++; 
-                        $away->cnt_lot++; 
-                        $away->cnt_lot_away++;         
+ */                      
+                        //						$home->cnt_won++;
+                        //						$home->cnt_won_home++;
+                        $away->cnt_lso++;
+                        $away->cnt_lso_away++;
+                        $away->cnt_lot++;
+                        $away->cnt_lot_away++;       
                         /**
  * keine summierung für hockey
  */
-                        //$away->cnt_lost++; 
+                        //$away->cnt_lost++;
                         //$away->cnt_lost_home++; 							
                         break;
-                    }                
-                    
+                    }              
+                  
                     $home->sum_points += $win_points; //home_score can't be null...						
                     $away->sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0);
                     //$home::$sum_points += $win_points; //home_score can't be null...						
@@ -486,86 +486,86 @@ class JSMRanking
                     if ($shownegpoints == 1 ) {
                         $home->neg_points += $loss_points;
                         $away->neg_points += ( $decision == 0 || isset($away_score) ? $win_points : 0);
-                    }        
+                    }      
                 }
                 else if ($home_score == $away_score ) {
-                    switch ($resultType) 
+                    switch ($resultType)
                     {
-                    case 0:                 
+                    case 0:               
                         $home->cnt_draw++;
                         $home->cnt_draw_home++;
 
                         $away->cnt_draw++;
                         $away->cnt_draw_away++;
-                        break;    
-                    case 1:     
+                        break;  
+                    case 1:   
                         if ($home_ot > $away_ot) {
                             /**
  * keine summierung für hockey
- */                          
+ */                        
                             //							$home->cnt_won++;
                             //							$home->cnt_won_home++;
-                            $home->cnt_wot++; 
-                            $home->cnt_wot_home++;                            
+                            $home->cnt_wot++;
+                            $home->cnt_wot_home++;                          
                             /**
  * keine summierung für hockey
  */
                             //							$away->cnt_lost++;
                             //							$away->cnt_lost_away++;
-                            $away->cnt_lot++; 
-                            $away->cnt_lot_away++;                            
+                            $away->cnt_lot++;
+                            $away->cnt_lot_away++;                          
                         }
                         if ($home_ot < $away_ot) {
                             /**
  * keine summierung für hockey
- */                          
+ */                        
                             //							$away->cnt_won++;
                             //							$away->cnt_won_home++;
-                            $away->cnt_wot++; 
-                            $away->cnt_wot_home++;                            
+                            $away->cnt_wot++;
+                            $away->cnt_wot_home++;                          
                             /**
  * keine summierung für hockey
  */
                             //							$home->cnt_lost++;
                             //							$home->cnt_lost_away++;
-                            $home->cnt_lot++; 
-                            $home->cnt_lot_away++;                            
-                        }                        
-                        break;                        
-                    case 2:     
+                            $home->cnt_lot++;
+                            $home->cnt_lot_away++;                          
+                        }                      
+                        break;                      
+                    case 2:   
                         if ($home_so > $away_so) {
                             /**
  * keine summierung für hockey
  */
                             //							$home->cnt_won++;
                             //							$home->cnt_won_home++;
-                            $home->cnt_wso++; 
-                            $home->cnt_wso_home++;                            
+                            $home->cnt_wso++;
+                            $home->cnt_wso_home++;                          
                             /**
  * keine summierung für hockey
  */
                             //							$away->cnt_lost++;
                             //							$away->cnt_lost_away++;
-                            $away->cnt_lso++; 
-                            $away->cnt_lso_away++;                            
+                            $away->cnt_lso++;
+                            $away->cnt_lso_away++;                          
                         }
                         if ($home_so < $away_so) {
                             /**
  * keine summierung für hockey
- */                          
+ */                        
                             //							$away->cnt_won++;
                             //							$away->cnt_won_home++;
-                            $away->cnt_wso++; 
-                            $away->cnt_wso_home++;                            
+                            $away->cnt_wso++;
+                            $away->cnt_wso_home++;                          
                             /**
  * keine summierung für hockey
  */
                             //							$home->cnt_lost++;
                             //							$home->cnt_lost_away++;
-                            $home->cnt_lso++; 
-                            $home->cnt_lso_away++;                            
-                        }                        
-                        break;                    
+                            $home->cnt_lso++;
+                            $home->cnt_lso_away++;                          
+                        }                      
+                        break;                  
                     }
                     $home->sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
                     $away->sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
@@ -577,50 +577,50 @@ class JSMRanking
                 }
                 else if ($home_score < $away_score ) {
                     switch ($resultType) {
-                    case 0:   
-                        $home->cnt_lost++; 
+                    case 0: 
+                        $home->cnt_lost++;
                         $home->cnt_lost_home++;
-                        
-                        $away->cnt_won++; 
-                        $away->cnt_won_away++; 
+                      
+                        $away->cnt_won++;
+                        $away->cnt_won_away++;
                         break;
-                    case 1:   
-                        $home->cnt_lot++; 
-                        $home->cnt_lot_home++; 
-                        /**
- * keine summierung für hockey
- */                        
-                        //$home->cnt_lost++; 
-                        //$home->cnt_lost_home++; 
-                        $away->cnt_wot++; 
-                        $away->cnt_wot_away++;
-                        /**
- * keine summierung für hockey
- */                         
-                        //						$away->cnt_won++; 
-                        //						$away->cnt_won_away++; 						
-                        break;
-                    case 2:   
-                        $home->cnt_lso++; 
-                        $home->cnt_lso_home++; 
-                        $home->cnt_lot++; 
+                    case 1: 
+                        $home->cnt_lot++;
                         $home->cnt_lot_home++;
                         /**
  * keine summierung für hockey
- */                         
-                        //$home->cnt_lost++; 
+ */                      
+                        //$home->cnt_lost++;
+                        //$home->cnt_lost_home++;
+                        $away->cnt_wot++;
+                        $away->cnt_wot_away++;
+                        /**
+ * keine summierung für hockey
+ */                       
+                        //						$away->cnt_won++;
+                        //						$away->cnt_won_away++; 						
+                        break;
+                    case 2: 
+                        $home->cnt_lso++;
+                        $home->cnt_lso_home++;
+                        $home->cnt_lot++;
+                        $home->cnt_lot_home++;
+                        /**
+ * keine summierung für hockey
+ */                       
+                        //$home->cnt_lost++;
                         //$home->cnt_lost_home++; 	
-                        $away->cnt_wso++; 
+                        $away->cnt_wso++;
                         $away->cnt_wso_away++;
                         /**
  * keine summierung für hockey
- */                        
-                        //						$away->cnt_won++; 
+ */                      
+                        //						$away->cnt_won++;
                         //						$away->cnt_won_away++; 						
                         break;
-                    }                    
-                                    
-                    $home->sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);            
+                    }                  
+                                  
+                    $home->sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);          
                     $away->sum_points += $win_points;
                     //$home::$sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);			
                     //$away::$sum_points += $win_points;
@@ -638,13 +638,13 @@ class JSMRanking
                 //Final Win/Loss Decision
                 if($match->team_won==0) {
                     $home->cnt_lost++;
-                    $away->cnt_lost++; 
+                    $away->cnt_lost++;
                     //record a won on the home team
                 } else if($match->team_won==1) {
                     $home->cnt_won++;
                     $away->cnt_lost++;
                     $home->sum_points += $win_points;
-                    $away->cnt_lost_home++;                    
+                    $away->cnt_lost_home++;                  
                     //record a won on the away team
                 } else if($match->team_won==2) {
                     $away->cnt_won++;
@@ -663,12 +663,12 @@ class JSMRanking
                     $away->cnt_won++;
                     $home->sum_points += $win_points;
                     $away->sum_points += $win_points;
-                        
+                      
                 }
             }
             /*winpoints*/
             $home->winpoints=$win_points;
-            
+          
             /* bonus points */
             $home->sum_points += $match->home_bonus;
             //$home::$sum_points += $match->home_bonus;
@@ -702,7 +702,7 @@ class JSMRanking
             $away->sum_team1_legs   += $leg2;
             $away->sum_team2_legs   += $leg1;
             $away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
-            
+          
             $away->sum_team1_matchpoint   += $mp1;
             $away->sum_team2_matchpoint   += $mp1;
             $away->diff_team_matchpoint   = $away->sum_team1_matchpoint - $away->sum_team2_matchpoint;
@@ -712,11 +712,11 @@ class JSMRanking
             $away->sum_team1_games   += $ga2;
             $away->sum_team2_games   += $ga1;
             $away->diff_team_games   = $away->sum_team1_games - $away->sum_team2_games;
-            
+          
 
             $away->sum_away_for += $away_score;
         }
-            
+          
         return $data->_teams;
     }
 
@@ -728,25 +728,25 @@ class JSMRanking
     public static function _initTeams($pid,$division,$cfg_which_database = 0)
     {
           $app = Factory::getApplication();
-          $option = $app->input->getCmd('option');    
+          $option = $app->input->getCmd('option');  
         // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
           $query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
+        $starttime = microtime();
+      
           $query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
         $query->select('t.name, t.id as teamid, pt.neg_points_finally');
         $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
         $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
         $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
         $query->from('#__sportsmanagement_project_team AS pt ');
-        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id'); 
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
         $query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
         $query->where('pt.project_id = ' . $pid);
         $query->where('pt.is_in_score = 1');
-        
+      
         if ($division ) {
-                
+              
               $query->join('INNER', '#__sportsmanagement_match AS m ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ) ');
               $query->where('m.division_id = ' . $division);
         }
@@ -754,7 +754,7 @@ class JSMRanking
           {
 
         }
-                
+              
         $db->setQuery($query);
         $res = $db->loadObjectList();
 
@@ -763,20 +763,20 @@ class JSMRanking
  * deshalb muss die komponente auch in der lage das darzustellen.
  */
         if (!$res && $division ) {
-             $query->clear();            
+             $query->clear();          
              $query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
              $query->select('t.name, t.id as teamid, pt.neg_points_finally');
              $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
              $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
              $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
              $query->from('#__sportsmanagement_project_team AS pt ');
-             $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id'); 
+             $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
              $query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
              $query->where('pt.project_id = ' . $pid);
              $query->where('pt.is_in_score = 1');
              $db->setQuery($query);
-             $res = $db->loadObjectList();        
-        } 
+             $res = $db->loadObjectList();      
+        }
 
         $teams = array();
         foreach ((array) $res as $r)
@@ -786,20 +786,20 @@ class JSMRanking
             $t->setPtid($r->ptid);
             // diddipoeler
             $t->ptid_slug = $r->ptid_slug;
-            if ($division && !$r->division_id ) {    
+            if ($division && !$r->division_id ) {  
                 $t->setDivisionid($division);
             }
             else
-            {    
+            {  
                 $t->setDivisionid($r->division_id);
-            }    
+            }  
             $t->setStartpoints($r->start_points);
             $t->setNegpoints($r->neg_points_finally);
             $t->setName($r->name);
 
             // new for is_in_score
             $t->setIs_In_Score($r->is_in_score);
-            
+          
             // new for use_finally			
             $t->setuse_finally($r->use_finally);
             $t->setpoints_finally($r->points_finally);
@@ -811,9 +811,9 @@ class JSMRanking
             $t->sethomegoals_finally($r->homegoals_finally);
             $t->setguestgoals_finally($r->guestgoals_finally);
             $t->setdiffgoals_finally($r->diffgoals_finally);
-            
+          
             $t->penalty_points = $r->penalty_points;
-      
+    
             if ($r->use_finally ) {
                 $t->sum_points = $r->points_finally;
                 $t->neg_points = $r->neg_points_finally;
@@ -826,10 +826,10 @@ class JSMRanking
                 $t->diff_team_results = $r->diffgoals_finally;
 
             }
-                  
+                
             $teams[$r->ptid] = $t;
         }
-    
+  
         return $teams;
     }
 
@@ -841,14 +841,14 @@ class JSMRanking
     public static function _getMatches($pid,$division,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');            
+        $option = $app->input->getCmd('option');          
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
             $query = $db->getQuery(true);
-            $starttime = microtime(); 
-    
+            $starttime = microtime();
+  
           $viewName = $app->input->getVar("view");
 
-        //		$query = 
+        //		$query =
         $query->select('m.id');
         $query->select('m.projectteam1_id');
         $query->select('m.projectteam2_id');
@@ -858,17 +858,17 @@ class JSMRanking
         $query->select('m.team2_bonus AS away_bonus');
         $query->select('m.team1_legs AS l1');
         $query->select('m.team2_legs AS l2');
-        
+      
         $query->select('m.team1_single_matchpoint AS mp1');
         $query->select('m.team2_single_matchpoint AS mp2');
-        
+      
         $query->select('m.team1_single_sets AS se1');
         $query->select('m.team2_single_sets AS se2');
-        
+      
         $query->select('m.team1_single_games AS ga1');
         $query->select('m.team2_single_games AS ga2');
-        
-        
+      
+      
         $query->select('m.match_result_type AS match_result_type');
         $query->select('m.alt_decision as decision');
         $query->select('m.team1_result_decision AS home_score_decision');
@@ -878,22 +878,22 @@ class JSMRanking
         $query->select('m.team1_result_so AS home_score_so');
         $query->select('m.team2_result_so AS away_score_so');
         $query->select('r.id as roundid, m.team_won, r.roundcode ');
-        
+      
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
         $query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
-        
+      
         $query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
         $query->where('m.published = 1');
         $query->where('r.published = 1');
         $query->where('pt1.project_id = '.$db->Quote($pid));
         if ($division ) {
             $query->where('m.division_id = '.$division);
-        }    
+        }  
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
         $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
 
-        
+      
         switch($viewName)
         {
         case 'rankingalltime':
@@ -902,12 +902,12 @@ class JSMRanking
             $query->where('m.count_result');
             break;
         }
-    
+  
         $db->setQuery($query);
-       
+     
         $res = $db->loadObjectList();
         $matches = array();
-        foreach ((array) $res as $r) 
+        foreach ((array) $res as $r)
         {
             $matches[$r->id] = $r;
         }
@@ -923,10 +923,10 @@ class JSMRanking
     function _getSubDivisions($cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');  
+        $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
             $query = $db->getQuery(true);
-            
+          
         if (!$this->_division) {
             return false;
         }
@@ -935,9 +935,9 @@ class JSMRanking
             $query->from('#__sportsmanagement_division ');
             $query->where('project_id = ' . $db->Quote($this->_projectid));
             $query->where('parent_id = ' . $db->Quote($this->_division));
-            
+          
             $db->setQuery($query);
-            
+          
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
                  // Joomla! 3.0 code here
                  $res = $db->loadColumn();
@@ -945,7 +945,7 @@ class JSMRanking
             elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
                 // Joomla! 2.5 code here
                 $res = $db->loadResultArray();
-            } 
+            }
             $res[] = $this->_division;
             $this->_divisions = $res;
         }
@@ -964,7 +964,7 @@ class JSMRanking
     function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
     {
         $res = true;
-        
+      
         if ($from) {
             if ($this->_getRoundcode($game->roundid, $cfg_which_database) < $this->_getRoundcode($from, $cfg_which_database) ) {
                 return false;
@@ -985,21 +985,21 @@ class JSMRanking
 
         return $res;
     }
-    
+  
     /**
      * return round roundcode
-     * 
+     *
      * @param  int $round_id
      * @return int roundcode
      */
     function _getRoundcode($round_id,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');  
+        $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-        $starttime = microtime(); 
-               
+        $starttime = microtime();
+             
         if (empty($this->_roundcodes)) {
             $query->select('r.roundcode, r.id ');
               $query->from('#__sportsmanagement_round AS r ');
@@ -1008,7 +1008,7 @@ class JSMRanking
             $db->setQuery($query);
             $this->_roundcodes = $db->loadAssocList('id');
         }
-        
+      
         if (!isset($this->_roundcodes[(int)$round_id])) {
               Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'), Log::ERROR, 'jsmerror');
               Log::add(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'), Log::ERROR, 'jsmerror');
@@ -1028,8 +1028,8 @@ class JSMRanking
     {
         if (empty($this->_criteria)) {
             /**
-* 
- * get the values from ranking template setting 
+*
+ * get the values from ranking template setting
 */
             $values = explode(',', $this->_params['ranking_order']);
             $crit = array();
@@ -1040,12 +1040,12 @@ class JSMRanking
                     $crit[] = '_cmp'.$v;
                 }
                 else {
-                            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');                
+                            Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');              
                 }
             }
             /**
-* 
- * set a default criteria if empty 
+*
+ * set a default criteria if empty
 */
             if (!count($crit)) {
                 $crit[] = '_cmpPoints';
@@ -1063,9 +1063,9 @@ class JSMRanking
     function _buildRanking($teams,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');  
+        $option = $app->input->getCmd('option');
 
-        
+      
         // division filtering
         $teams = array_filter($teams, array($this, "_filterdivision"));
 
@@ -1127,7 +1127,7 @@ class JSMRanking
     {
         if (empty($this->_h2h)) {
             $teams = $this->_h2h_group;
-                
+              
             if (empty($teams)) {
                 return false;
             }
@@ -1153,7 +1153,7 @@ class JSMRanking
         }
         return (in_array($team->_divisionid, $divs));
     }
-     
+   
     /*****************************************************************************
     *
     * Compare functions (callbacks for uasort)
@@ -1188,7 +1188,7 @@ class JSMRanking
         $res =- ($a->getPoints() - $b->getPoints());
         return (int)$res;
     }
-    
+  
     /**
      * Point comparison
      *
@@ -1202,7 +1202,7 @@ class JSMRanking
         $res =- ($b->penalty_points - $a->penalty_points );
         return (int)$res;
     }
-    
+  
 
     /**
      * Bonus points comparison
@@ -1482,7 +1482,7 @@ class JSMRanking
     {
         $res = -( $a->cnt_wot - $b->cnt_wot );
         return $res;
-    }    
+    }  
 
     /**
      * SO_wins comparison
@@ -1495,7 +1495,7 @@ class JSMRanking
     {
         $res = -( $a->cnt_wso - $b->cnt_wso );
         return $res;
-    }        
+    }      
 }
 
 /**
@@ -1504,9 +1504,9 @@ class JSMRanking
  */
 /**
  * JSMRankingTeam
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -1516,7 +1516,7 @@ class JSMRankingTeamClass
 
     var $_use_finally = 0;
     var $_points_finally = 0;
-    var $_neg_points_finally = 0;   
+    var $_neg_points_finally = 0; 
     var $_matches_finally = 0;
     var $_won_finally = 0;
     var $_draws_finally = 0;
@@ -1540,10 +1540,10 @@ class JSMRankingTeamClass
     var $cnt_won_away      = 0;
     var $cnt_draw_away     = 0;
     var $cnt_lost_away     = 0;
-    var $cnt_wot        = 0; 
+    var $cnt_wot        = 0;
     var $cnt_wso        = 0;
     var $cnt_lot        = 0;
-    var $cnt_lso        = 0;    
+    var $cnt_lso        = 0;  
     var $cnt_wot_home    = 0;
     var $cnt_wso_home    = 0;
     var $cnt_lot_home    = 0;
@@ -1551,7 +1551,7 @@ class JSMRankingTeamClass
     var $cnt_wot_away    = 0;
     var $cnt_wso_away    = 0;
     var $cnt_lot_away    = 0;
-    var $cnt_lso_away    = 0;    
+    var $cnt_lso_away    = 0;  
     var $sum_points        = 0;
     var $neg_points        = 0;
     var $bonus_points      = 0;
@@ -1570,11 +1570,11 @@ class JSMRankingTeamClass
     var $diff_team_legs = 0;
     var $round          = 0;
     var $rank           = 0;
-    
+  
 
     /**
      * JSMRankingTeamClass::JSMRankingTeam()
-     * 
+     *
      * @param  mixed $ptid
      * @return void
      */
@@ -1585,7 +1585,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setis_in_score()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1593,10 +1593,10 @@ class JSMRankingTeamClass
     {
         $this->_is_in_score = (int) $val;
     }
-    
+  
     /**
      * JSMRankingTeamClass::setuse_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1607,7 +1607,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setpoints_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1618,7 +1618,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setneg_points_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1629,7 +1629,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setmatches_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1640,7 +1640,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setwon_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1651,7 +1651,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setdraws_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1662,7 +1662,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setlost_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1673,7 +1673,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::sethomegoals_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1684,7 +1684,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setguestgoals_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1695,7 +1695,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setdiffgoals_finally()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1703,10 +1703,10 @@ class JSMRankingTeamClass
     {
         $this->_diffgoals_finally = (int) $val;
     }
-    
+  
     /**
      * JSMRankingTeamClass::setPtid()
-     * 
+     *
      * @param  mixed $ptid
      * @return void
      */
@@ -1717,7 +1717,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setTeamid()
-     * 
+     *
      * @param  mixed $id
      * @return void
      */
@@ -1728,7 +1728,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::getPtid()
-     * 
+     *
      * @return
      */
     function getPtid()
@@ -1738,7 +1738,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::getTeamid()
-     * 
+     *
      * @return
      */
     function getTeamid()
@@ -1748,7 +1748,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setDivisionid()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1759,7 +1759,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::getDivisionid()
-     * 
+     *
      * @return
      */
     function getDivisionid()
@@ -1769,7 +1769,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::setStartpoints()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1777,10 +1777,10 @@ class JSMRankingTeamClass
     {
         $this->_startpoints = $val;
     }
-    
+  
     /**
      * JSMRankingTeamClass::setNegpoints()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1788,10 +1788,10 @@ class JSMRankingTeamClass
     {
         $this->neg_points = $val;
     }
-    
+  
     /**
      * JSMRankingTeamClass::setName()
-     * 
+     *
      * @param  mixed $val
      * @return void
      */
@@ -1802,7 +1802,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::winPct()
-     * 
+     *
      * @return
      */
     function winPct()
@@ -1815,10 +1815,10 @@ class JSMRankingTeamClass
             return ($this->cnt_won/($this->cnt_won+$this->cnt_lost+$this->cnt_draw))*100;
         }
     }
-    
+  
     /**
      * JSMRankingTeamClass::scoreAvg()
-     * 
+     *
      * @return
      */
     function scoreAvg()
@@ -1834,7 +1834,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::scorePct()
-     * 
+     *
      * @return
      */
     function scorePct()
@@ -1845,7 +1845,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::legsRatio()
-     * 
+     *
      * @return
      */
     function legsRatio()
@@ -1861,7 +1861,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::pointsRatio()
-     * 
+     *
      * @return
      */
     function pointsRatio()
@@ -1879,7 +1879,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::pointsQuot()
-     * 
+     *
      * @return
      */
     function pointsQuot()
@@ -1898,7 +1898,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeam::getName()
-     * 
+     *
      * @return
      */
     function getName()
@@ -1908,7 +1908,7 @@ class JSMRankingTeamClass
 
     /**
      * JSMRankingTeamClass::getPoints()
-     * 
+     *
      * @param  bool $include_start
      * @return
      */
@@ -1917,13 +1917,13 @@ class JSMRankingTeamClass
         if ($include_start) {
             return $this->sum_points + $this->_startpoints;
         }
-        else 
+        else
         {
             return $this->sum_points;
         }
     }
-    
-    
+  
+  
     /**
      * GFA:Goal For Average per match = Goal for / played matches
      *
@@ -1938,8 +1938,8 @@ class JSMRankingTeamClass
         {
             return $this->sum_team1_result/$this->cnt_matches;
         }
-    }     
-    
+    }   
+  
     /**
      * JSMRankingTeamClass::getGAA()
      * GAA:Goal Against Average per match = Goal against / played matches
@@ -1955,14 +1955,14 @@ class JSMRankingTeamClass
         {
             return $this->sum_team2_result/$this->cnt_matches;
         }
-    }    
+    }  
 
     /**
      * JSMRankingTeamClass::getPPG()
      * PpG:Points per Game = points / played matches
      *
      * @return float
-     */    
+     */  
     function getPPG()
     {
         if ($this->cnt_matches== 0) {
@@ -1972,14 +1972,14 @@ class JSMRankingTeamClass
         {
             return $this->getPoints(false)/$this->cnt_matches;
         }
-    }        
- 
+    }      
+
     /**
      * JSMRankingTeamClass::getPPP()
      * %PP:Team points in relation into max points = (points / (played matches*win points))*100
      *
      * @return float
-     */    
+     */  
     function getPPP()
     {
         if (($this->cnt_matches*$this->winpoints)== 0) {
@@ -1989,6 +1989,6 @@ class JSMRankingTeamClass
         {
             return ($this->getPoints(false)/($this->cnt_matches*$this->winpoints))*100;
         }
-    }     
+    }   
 }
 ?>

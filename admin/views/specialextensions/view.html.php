@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,13 +13,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper; 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewspecialextensions
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,20 +27,20 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementViewspecialextensions extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewspecialextensions::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
         $this->Extensions = $this->model->getSpecialExtensions();
     }
-    
+  
     /**
      * sportsmanagementViewspecialextensions::addIcon()
-     * 
+     *
      * @param  mixed $image
      * @param  mixed $url
      * @param  mixed $text
@@ -61,5 +61,5 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
      </div>
     <?php
     }
-    
+  
 }

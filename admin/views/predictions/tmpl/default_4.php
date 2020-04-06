@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,11 +11,11 @@
  * @package    sportsmanagement
  * @subpackage predictions
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 jimport('joomla.html.html.bootstrap');
-?> 
+?>
 <div class="row" >
     <div id="j-sidebar-container" class="col-md-2">
         <?php echo $this->sidebar; ?>
@@ -39,7 +39,7 @@ jimport('joomla.html.html.bootstrap');
                 <img src="components/com_sportsmanagement/assets/icons/tippspieltemplates.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES') ?>" /><br />
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES') ?></span>
             </a>
-        </div> 
+        </div>
 
 
 

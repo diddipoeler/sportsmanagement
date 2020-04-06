@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewImagehandler
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,10 +32,10 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewImagehandler extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewImagehandler::init()
-     * 
+     *
      * @return
      */
     public function init()
@@ -51,15 +51,15 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         case 'upload_3':
         case 'upload_4':
             $this->_displayupload($tpl);
-            return;        
+            return;      
         break;
         case 'uploaddraganddrop':
         case 'uploaddraganddrop_3':
-        case 'uploaddraganddrop_4':    
+        case 'uploaddraganddrop_4':  
             $this->folder = ImageSelectSM::getfolder($this->jinput->get('type'));
-            $this->setLayout('uploaddraganddrop');        
-            return;        
-        break;        
+            $this->setLayout('uploaddraganddrop');      
+            return;      
+        break;      
         }
 
 
@@ -70,7 +70,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         $fieldid     = Factory::getApplication()->input->getVar('fieldid');
         $search     = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
         $search     = trim(StringHelper::strtolower($search));
-        
+      
         $jinput->set('folder', $folder);
 
         // Do not allow cache
@@ -79,7 +79,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         //get images
         $images     = $this->get('Images');
         $pageNav     = $this->get('Pagination');
-        
+      
         // $this->request_url	= $uri->toString();
 
         if (count($images) > 0 || $search) {
@@ -95,7 +95,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
                //parent::display($tpl);
         } else {
                //no images in the folder, redirect to uploadscreen and raise notice
-            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), 'error');            
+            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), 'error');          
                $this->setLayout('upload');
                $this->form = $this->get('form');
                $this->_displayupload($tpl);
@@ -105,7 +105,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
     /**
      * sportsmanagementViewImagehandler::setImage()
-     * 
+     *
      * @param  integer $index
      * @return void
      */

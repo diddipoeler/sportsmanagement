@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -41,14 +41,14 @@
 */
 
 //no direct access
-defined('_JEXEC') or die('Restricted access');  
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 $quotemarks= $params->get('quotemarks');
 if ($list ) {
     foreach ($list as $rquote)
     {
-    
+  
 
          echo '<i>';
          modRquotesHelper::renderRquote($rquote, $params);

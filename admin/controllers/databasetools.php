@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerDatabaseTools
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,16 +27,16 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class sportsmanagementControllerDatabaseTools extends BaseController
 {
 
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'databasetool', $prefix = 'sportsmanagementModel') 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'databasetool', $prefix = 'sportsmanagementModel')
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 
 }
-?>

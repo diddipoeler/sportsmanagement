@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,18 +11,18 @@
  * @package    sportsmanagement
  * @subpackage fields
  */
- 
+
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
- 
+
 // import the list field type
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('list');
- 
+
 /**
  * SportsManagement Form Field class for the SportsManagement component
  */
@@ -34,13 +34,13 @@ class JFormFieldsportsmanagement extends \JFormFieldList
      * @var string
      */
     protected $type = 'sportsmanagement';
- 
+
     /**
      * Method to get a list of options for a list input.
      *
      * @return array        An array of JHtml options.
      */
-    protected function getOptions() 
+    protected function getOptions()
     {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -51,7 +51,7 @@ class JFormFieldsportsmanagement extends \JFormFieldList
         $messages = $db->loadObjectList();
         $options = array();
         if ($messages) {
-            foreach($messages as $message) 
+            foreach($messages as $message)
             {
                 $options[] = HTMLHelper::_('select.option', $message->id, $message->greeting . ($message->catid ? ' (' . $message->category . ')' : ''));
             }

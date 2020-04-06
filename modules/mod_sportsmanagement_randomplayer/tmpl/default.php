@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -39,20 +39,20 @@ $routeparameter['tid'] = $list['infoteam']->team_slug;
 $routeparameter['pid'] = $person->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 
-//$link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug, 
-//												$list['infoteam']->team_id, 
+//$link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug,
+//												$list['infoteam']->team_id,
 //												$person->slug );
 ?>
 
 <?php
 $picturetext = Text::_('MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PERSON_PICTURE');
 $text = sportsmanagementHelper::formatName(
-    null, $person->firstname, 
-    $person->nickname, 
-    $person->lastname, 
+    null, $person->firstname,
+    $person->nickname,
+    $person->lastname,
     $params->get("name_format")
 );
-    
+  
 $imgTitle = Text::sprintf($picturetext .' %1$s', $text);
 if (isset($list['inprojectinfo']->picture) ) {
     $picture = $list['inprojectinfo']->picture;
@@ -67,7 +67,7 @@ echo '<a href="'.$link.'">'.$pic.'</a>' ;
 
 <article>
 <p>
-<?php 
+<?php
 if($params->get('show_player_flag')) {
     echo JSMCountries::getCountryFlag($person->country)." ";
 }
@@ -79,8 +79,8 @@ if ($params->get('show_player_link')) {
     $routeparameter['tid'] = $list['infoteam']->team_slug;
     $routeparameter['pid'] = $person->slug;
     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-    //		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug, 
-    //														$list['infoteam']->team_id, 
+    //		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug,
+    //														$list['infoteam']->team_id,
     //														$person->slug );
     echo HTMLHelper::link($link, $text);
 }
@@ -92,7 +92,7 @@ else
 </p>
 <?php if ($params->get('show_team_name')) :?>
 <p>
-<?php 
+<?php
     echo sportsmanagementHelper::getPictureThumb(
         $list['infoteam']->team_picture,
         $list['infoteam']->name,
@@ -109,7 +109,7 @@ if ($params->get('show_team_link')) {
     $routeparameter['tid'] = $list['infoteam']->team_slug;
     $routeparameter['ptid'] = 0;
     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-    //		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug, 
+    //		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug,
     //														$list['infoteam']->team_id);
     echo HTMLHelper::link($link, $text);
 }
@@ -122,7 +122,7 @@ else
 <?php endif; ?>
 <?php if ($params->get('show_position_name') && isset($list['inprojectinfo']->position_name) ) :?>
 <p>
-<?php 
+<?php
     $positionName = $list['inprojectinfo']->position_name;
     echo Text::_($positionName);?>
 </p>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -58,7 +58,7 @@ else
 {
     $i = $this->node[0]->tree_i;        //depth
     $hide = $this->node[0]->hide;        //hide	
-    
+  
     $r = 2*(pow(2, $i));             //rows
     $c = 2*$i+1;                    //columns
     $col_hide = $c-2*$hide;            //hiden col
@@ -68,18 +68,18 @@ else
 <?php
 //headerline
 if($this->config['show_treeheader'] == 1 ) {
-?>    
+?>  
 <tr style="text-align: center;">
 <td align="middle">
 </td>
-<?PHP    
+<?PHP  
 for($h=0;$h<=$c;$h++)
         {
- 
+
     if(( $h%2 != 0 ) && ( $h > 2 ) ) {
-        ?>            
+        ?>          
 <td align="middle" colspan="2">
-<?PHP    
+<?PHP  
         $hed = (($h-1)/2)-1;
         //roundname
 if($this->config['show_name_from'] == 0 ) {
@@ -105,15 +105,15 @@ if($this->config['show_round_date'] ) {
     }
 }
         //date end
-?>    
+?>  
 </td>
-<?PHP                     
+<?PHP                   
     }
- 
+
 }
 ?>
 </tr>
-<?PHP  
+<?PHP
 }
 //headerline end
 
@@ -124,7 +124,7 @@ for($j=1;$j<$r;$j++)
     }
     else
     {
-        ?>   
+        ?> 
         <tr>
         <td height=30></td>
         <?PHP
@@ -143,7 +143,7 @@ for($j=1;$j<$r;$j++)
                     }
                 }
                  echo ' >';
-            
+          
                 for($w=0;$w<=$i;$w++)
                  {
                     if(( $k == (1+($w*2)) ) && ( $j % (2*(pow(2, $w))) == (pow(2, $w)))) {
@@ -181,26 +181,26 @@ for($j=1;$j<$r;$j++)
                                 echo $this->node[$j-1]->team_name;
                             }
                         }
-    
+  
                         if ($this->node[$j-1]->match_id ) {
                              $routeparameter = array();
                              $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
                              $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                              $routeparameter['p'] = Factory::getApplication()->input->getInt('p', 0);
                              $routeparameter['mid'] = $this->node[$j-1]->match_id;
-                             $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter); 
-                                ?>    
+                             $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+                                ?>  
                              <a href='<?php echo $report_link ; ?>'>
             <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
             width='20'
             alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT'); ?>'
             title='<?php echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT'); ?>'>
             </a>
-            <?php	                
-                        }                    
-                    
-                    
-                    
+            <?php	              
+                        }                  
+                  
+                  
+                  
                         if(($this->config['show_overlib_seed']==0)&& $this->node[$j-1]->is_leaf ) {
                              ;
                         }

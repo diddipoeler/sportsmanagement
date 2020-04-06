@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -28,15 +28,15 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 <?php
-//save and close 
+//save and close
 $close = Factory::getApplication()->input->getInt('close', 0);
 if($close == 1) {
     ?><script>
     window.addEvent('domready', function() {
-        $('cancel').onclick();    
+        $('cancel').onclick();  
     });
     </script>
-    <?php 
+    <?php
 }
 ?>
 <form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
@@ -58,18 +58,18 @@ if($close == 1) {
             "active" => "panel1" // It is the ID of the active tab.
         );
     echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1));    
-    echo $this->loadTemplate('home');    
+    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1));  
+    echo $this->loadTemplate('home');  
     echo HTMLHelper::_('bootstrap.endTab');
-    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));    
-    echo $this->loadTemplate('away');    
-    echo HTMLHelper::_('bootstrap.endTab');    
-    echo HTMLHelper::_('bootstrap.endTabSet'); 
-        
+    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));  
+    echo $this->loadTemplate('away');  
+    echo HTMLHelper::_('bootstrap.endTab');  
+    echo HTMLHelper::_('bootstrap.endTabSet');
+      
     ?>
-        
+      
         <input type="hidden" name="view" value="" />
-        
+      
         <input type="hidden" name="close" id="close" value="0" />
         <input type="hidden" name="task" id="" value="" />
         <input type="hidden" name="project_id"    value="<?php echo $this->project_id; ?>" />

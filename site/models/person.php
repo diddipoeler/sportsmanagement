@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Utility\Utility;
 
 /**
  * sportsmanagementModelPerson
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,7 +35,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
     var $teamplayerid = 0;
     static $person = null;
     var $teamplayer    = null;
-    
+  
 
     /**
      * store person info specific to the project
@@ -49,14 +49,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
      * @var array
      */
     var $_playerhistory = null;
-    
+  
     static $cfg_which_database = 0;
 
 
 
     /**
       * sportsmanagementModelPerson::__construct()
-      * 
+      *
       * @return void
       */
     function __construct()
@@ -70,14 +70,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         self::$personid    = (int) $jinput->get('pid', 0);
         $this->teamplayerid    = (int) $jinput->get('pt', 0);
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database', 0);
-        
+      
     }
 
 
 
     /**
       * sportsmanagementModelPerson::updateHits()
-      * 
+      *
       * @param  integer $personid
       * @param  integer $inserthits
       * @return void
@@ -88,21 +88,21 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         $app = Factory::getApplication();
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
- 
+
         if ($inserthits ) {
              $query->update($db->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = '.$personid);
- 
+
             $db->setQuery($query);
- 
+
             $result = $db->execute();
-            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
-        }  
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+        }
 
     }
-    
+  
     /**
      * sportsmanagementModelPerson::getPerson()
-     * 
+     *
      * @param  integer $personid
      * @param  integer $cfg_which_database
      * @param  integer $inserthits
@@ -113,7 +113,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         if ($personid ) {
-            self::$personid    = $personid;    
+            self::$personid    = $personid;  
         }
         else
         {
@@ -121,10 +121,10 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
                 self::$personid    = Factory::getApplication()->input->getInt('pid', 0);
             }
         }
-        $starttime = microtime(); 
-        
-        self::updateHits(self::$personid, $inserthits); 
-        
+        $starttime = microtime();
+      
+        self::updateHits(self::$personid, $inserthits);
+      
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
         $query->select('p.*');
@@ -132,7 +132,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
           $query->from('#__sportsmanagement_person AS p ');
           $query->where('p.id = '.$db->Quote(self::$personid));
         $db->setQuery($query);
-                
+              
         self::$person = $db->loadObject();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$person;
@@ -141,7 +141,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::getReferee()
-     * 
+     *
      * @return
      */
     public static function getReferee()
@@ -151,27 +151,27 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
           // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        
+      
         //if ( is_null( $this->_inproject ) )
         //{
         $query->select('p.*,CONCAT_WS(\':\',p.id,p.alias) AS slug');
         $query->select('pr.id,pr.notes AS prnotes,pr.picture');
         $query->select('pos.name AS position_name');
-        
+      
         $query->from('#__sportsmanagement_project_referee AS pr ');
-        
+      
         $query->join('INNER', '#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
         $query->join('INNER', '#__sportsmanagement_person AS p ON p.id = o.person_id');
-        
+      
         $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = pr.project_position_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-        
+      
         $query->where('pr.project_id = '.self::$projectid);
         $query->where('p.published = 1 ');
         $query->where('o.person_id = '.self::$personid);
         $db->setQuery($query);
-        self::$_inproject = $db->loadObject();  
-        
+        self::$_inproject = $db->loadObject();
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$_inproject;
     }
@@ -216,7 +216,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::getContactID()
-     * 
+     *
      * @param  mixed $catid
      * @return
      */
@@ -227,14 +227,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-        
+      
         $person = self::getPerson();
 
         $query->select('id');
         $query->from('#__contact_details');
         $query->where('user_id = ' . $person->jl_user_id);
         $query->where('catid = ' . $catid);
-        
+      
         $db->setQuery($query);
         $contact_id = $db->loadResult();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -254,7 +254,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
         $history = sportsmanagementModelPlayer::getPlayerHistory();
         $positionhistory = array();
         foreach($history as $h)
@@ -266,16 +266,16 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         if (!count($positionhistory)) {
             return array();
         }
-        
+      
         $query->select('et.*');
-          $query->from('#__sportsmanagement_eventtype AS et'); 
+          $query->from('#__sportsmanagement_eventtype AS et');
           $query->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
           $query->where('published = 1');
           $query->where('pet.position_id IN ('. implode(',', $positionhistory) .')');
           $query->order('et.ordering');
-                
+              
           $db->setQuery($query);
-                
+              
           $info = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $info;
@@ -295,16 +295,16 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
           $query->select('SUM(me.event_sum) as total');
-          $query->from('#__sportsmanagement_match_event AS me'); 
+          $query->from('#__sportsmanagement_match_event AS me');
           $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-          //$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+          //$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id');
           //$query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
 
         $query->where('me.event_type_id = ' . (int) $eventid);
         $query->where('tp1.person_id = ' . (int) self::$personid);
-                        
+                      
         if ($projectteamid) {
                   $query->where('me.projectteam_id = '.(int) $projectteamid);
         }
@@ -316,13 +316,13 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
           $db->setQuery($query);
           $result = $db->loadResult();
-             
+           
         if (empty($result) ) {
                 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 return 0;
-        } 
-        
-        
+        }
+      
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
           return $result;
     }
@@ -331,7 +331,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::getPlayerChangedRecipients()
-     * 
+     *
      * @return
      */
     function getPlayerChangedRecipients()
@@ -341,9 +341,9 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         // Create a new query object.		
          $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
           $query->select('email');
-          $query->from('#__users'); 
+          $query->from('#__users');
           $query->where('usertype = \'Super Administrator\' OR usertype = \'Administrator\' ');
 
         $db->setQuery($query);
@@ -355,14 +355,14 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
+        }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $res;
     }
 
     /**
      * sportsmanagementModelPerson::sendMailTo()
-     * 
+     *
      * @param  mixed $listOfRecipients
      * @param  mixed $subject
      * @param  mixed $message
@@ -378,32 +378,32 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::getAllowed()
-     * 
+     *
      * @param  mixed $config_editOwnPlayer
      * @return
      */
     public static function getAllowed($config_editOwnPlayer)
     {
           $app = Factory::getApplication();
-       
+     
         $user = Factory::getUser();
         $allowed = false;
         if(self::_isAdmin($user) || self::_isOwnPlayer($user, $config_editOwnPlayer)) {
             $allowed=true;
         }
-       
+     
         return $allowed;
     }
 
     /**
      * sportsmanagementModelPerson::_isAdmin()
-     * 
+     *
      * @param  mixed $user
      * @return
      */
     public static function _isAdmin($user)
     {
-       
+     
           // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         $app = Factory::getApplication();
@@ -416,7 +416,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
             if (sportsmanagementModelProject::isUserProjectAdminOrEditor($user->id, $project) ) {
                 $allowed = true;
             }
-                
+              
             // If not, then check if user has ACL rights
             if (!$allowed) {
                 if (!$user->authorise('person.edit', $option)) {
@@ -426,13 +426,13 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
                 }
             }
         }
-       
+     
         return $allowed;
     }
 
     /**
      * sportsmanagementModelPerson::_isOwnPlayer()
-     * 
+     *
      * @param  mixed $user
      * @param  mixed $config_editOwnPlayer
      * @return
@@ -440,7 +440,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
     public static function _isOwnPlayer($user,$config_editOwnPlayer)
     {
           $app = Factory::getApplication();
-       
+     
         if($user->id > 0) {
             $person = self::getPerson();
             return $config_editOwnPlayer && $user->id == $person->user_id;
@@ -450,7 +450,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::isEditAllowed()
-     * 
+     *
      * @param  mixed $config_editOwnPlayer
      * @param  mixed $config_editAllowed
      * @return
@@ -458,7 +458,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
     function isEditAllowed($config_editOwnPlayer,$config_editAllowed)
     {
           $app = Factory::getApplication();
-       
+     
         $allowed = false;
         $user = Factory::getUser();
         if($user->id > 0) {
@@ -467,13 +467,13 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
             }
             return $allowed;
         }
-        
+      
         return false;
     }
 
     /**
      * sportsmanagementModelPerson::_getProjectTeamIds4UserId()
-     * 
+     *
      * @param  mixed $userId
      * @return
      */
@@ -484,19 +484,19 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         // Create a new query object.		
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
-       
+     
           // team_player
           $query->select('tp.projectteam_id');
-          $query->from('#__sportsmanagement_person AS pr'); 
+          $query->from('#__sportsmanagement_person AS pr');
           $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
           $query->where('pr.user_id = '.$userId);
           $query->where('pr.published = 1');
           $query->where('tp.persontype = 1');
-                        
+                      
         $db->setQuery($query);
 
         $projectTeamIds = array();
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $projectTeamIds = $db->loadColumn();
@@ -504,18 +504,18 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $projectTeamIds = $db->loadResultArray();
-        } 
-        
-        
-        
+        }
+      
+      
+      
         // team_staff
            $query->select('tp.projectteam_id');
-             $query->from('#__sportsmanagement_person AS pr'); 
+             $query->from('#__sportsmanagement_person AS pr');
              $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
              $query->where('pr.user_id = '.$userId);
              $query->where('pr.published = 1');
              $query->where('tp.persontype = 2');
-                        
+                      
         $db->setQuery($query);
 
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -525,8 +525,8 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
             $res = $db->loadResultArray();
-        } 
-            
+        }
+          
         $projectTeamIds = array_merge($projectTeamIds, $res);
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $projectTeamIds;
@@ -534,7 +534,7 @@ class sportsmanagementModelPerson extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPerson::isContactDataVisible()
-     * 
+     *
      * @param  mixed $config_showContactDataOnlyTeamMembers
      * @return
      */

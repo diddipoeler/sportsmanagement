@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
         }
         ?>
 
-        <th class="teamheader">    
+        <th class="teamheader">  
 <?php sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_RANKING_TEAM'), "name", $this->config, "ASC", $this->paramconfig); ?>
         </th>
 

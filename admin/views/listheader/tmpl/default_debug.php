@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
     // Define slides options
         $slidesOptions = array(
             "active" => "slide2_id" // It is the ID of the active tab.
-        );    
+        );  
     echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id1', $slidesOptions);
     echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id1', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
 
@@ -45,7 +45,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
     </fieldset>
     <?php
         }
-        echo HTMLHelper::_('bootstrap.endSlide');          
+        echo HTMLHelper::_('bootstrap.endSlide');        
     }
     echo HTMLHelper::_('bootstrap.endAccordion');
 
@@ -53,7 +53,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
     echo HTMLHelper::_('bootstrap.endAccordion');
 }
 else
-{   
+{ 
     $options = array(
     'onActive' => 'function(title, description){
         description.setStyle("display", "block");
@@ -65,9 +65,9 @@ else
     }',
     'startOffset' => 1,  // 0 starts on the first tab, 1 starts the second, etc...
     'useCookie' => true, // this must not be a string. Don't use quotes.
-    );    
-    echo HTMLHelper::_('sliders.start', 'debug_info', $options);   
-    echo HTMLHelper::_('sliders.panel', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info'); 
+    );  
+    echo HTMLHelper::_('sliders.start', 'debug_info', $options); 
+    echo HTMLHelper::_('sliders.panel', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
     $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
 
     echo HTMLHelper::_('sliders.start', 'debug_info_text', $options);
@@ -82,7 +82,7 @@ else
         <table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
        </fieldset>
         <?php
-        }          
+        }        
     }
     echo HTMLHelper::_('sliders.end');
     echo HTMLHelper::_('sliders.end');

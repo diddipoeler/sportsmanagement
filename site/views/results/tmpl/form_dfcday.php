@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage results
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -19,7 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
+    $uri = Uri::getInstance(); 
 } else {
     $uri = Factory::getURI();
 }
@@ -29,7 +29,7 @@ if ($this->overallconfig['use_jquery_modal'] ) {
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 
-<?php 
+<?php
 }
 
 if (!$this->showediticon ) {
@@ -85,18 +85,18 @@ $document = Factory::getDocument();
        <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
                     </th>
                     <th width="20" style="vertical-align: top; ">&nbsp;</th>
-        <?php 
+        <?php
         if($this->project->project_type=='DIVISIONS_LEAGUE') {
             $colspan++;
         ?>
         <th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
-        <?php 
+        <?php
         }
         ?>
-                    
-                    
-                    
-                    
+                  
+                  
+                  
+                  
        <th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
        <th colspan="2" class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
        <th style="text-align: center; vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
@@ -118,7 +118,7 @@ $document = Factory::getDocument();
             <th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
             <?php
         }
-        ?>    
+        ?>  
       </tr>
      </thead>
      <!-- Start of the matches for the selected round -->
@@ -153,8 +153,8 @@ $document = Factory::getDocument();
         <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>' />
         <input type='hidden' name='layout' value='form_dfcday' />
         <input type='hidden' name='task' value='results.saveshort' />
-        
-        
+      
+      
         <input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />
         <input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 
@@ -174,7 +174,7 @@ $document = Factory::getDocument();
 <div class='pagenav'>
 <table width='96%' align='center' cellpadding='0' cellspacing='0'>
     <tr>
-    <?php 
+    <?php
     ?>
     </tr>
 </table>

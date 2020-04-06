@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldFavteam
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -55,25 +55,25 @@ class JFormFieldFavteam extends \JFormFieldList
         $view = $jinput->getCmd('view');
         $layout = $jinput->getCmd('layout');
         $id = $jinput->getVar('id', '0');
-        
+      
         // Initialize variables.
         $options = array();
 
         $varname = (string) $this->element['varname'];
-        
+      
         if ($layout == 'edit' ) {
-            $project_id = $id;    
+            $project_id = $id;  
         }
         else
         {
-            $project_id = $app->getUserState("$option.pid", '0');    
+            $project_id = $app->getUserState("$option.pid", '0');  
         }
-        
+      
 
-        if ($project_id) {        
+        if ($project_id) {      
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            
+          
             $query->select('t.id AS value, t.name AS text');
             $query->from('#__sportsmanagement_team AS t');
             $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
@@ -83,7 +83,7 @@ class JFormFieldFavteam extends \JFormFieldList
             $db->setQuery($query);
             $options = $db->loadObjectList();
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;

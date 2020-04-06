@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -81,19 +81,19 @@ var rosters = Array(homeroster, awayroster);
 </script>
 
 <?php
-//save and close 
+//save and close
 $close = Factory::getApplication()->input->getInt('close', 0);
 if($close == 1) {
     ?><script>
     window.addEvent('domready', function() {
-        $('cancel').onclick();    
+        $('cancel').onclick();  
     });
     </script>
-    <?php 
+    <?php
 }
 ?>
 
-    
+  
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
@@ -102,12 +102,12 @@ if($close == 1) {
 
 <div id="ajaxresponse" ></div>
     <fieldset>
-        
+      
         <div class="configuration" >
     <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
         </div>
     </fieldset>
-    
+  
         <fieldset class="adminform">
             <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
             <!-- Dont remove this as it is neede for ajax changings -->
@@ -130,7 +130,7 @@ if($close == 1) {
         <?php
         }
         ?>
-                        
+                      
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION'); ?></th>
                     </tr>
@@ -185,7 +185,7 @@ if($close == 1) {
                         <!-- <td style='text-align:center; ' > -->
                         <input type="hidden" size="3" value="0" id="event_time" name="event_time" class="inputbox" />
                         <!-- </td> -->
-                        <?php    
+                        <?php  
                         }
                         ?>
                         <td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
@@ -195,11 +195,11 @@ if($close == 1) {
                     </tr>
                 </tbody>
             </table>
-            
+          
             <br>
         </fieldset>
         <fieldset class="adminform">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_LIVE_COMMENTARY_DESCR'); ?></legend>        
+            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_LIVE_COMMENTARY_DESCR'); ?></legend>      
         <table class='adminlist' id="table-commentary">
             <thead>
                 <tr>
@@ -220,7 +220,7 @@ if($close == 1) {
                         <select name="ctype" id="ctype" class="inputbox select-commenttype">
                             <option value="1"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_1'); ?></option>
                             <option value="2"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2'); ?></option>
-                        </select> 
+                        </select>
                     </td>
                     <td style='text-align:center; ' >
                         <input type="text" size="3" value="" id="c_event_time" name="c_event_time" class="inputbox" />
@@ -237,11 +237,11 @@ if($close == 1) {
                 if (isset($this->matchcommentary) ) {
                     foreach ( $this->matchcommentary as $event )
                     {
-                        
+                      
                         ?>
                         <tr id="rowcomment-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
              <td>
-                        <?php 
+                        <?php
                         switch ($event->type) {
                         case 2:
                             echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2');
@@ -268,15 +268,15 @@ if($close == 1) {
                          </td>
                         </tr>
                         <?php
-                        
+                      
                         $k=1 - $k;
                     }
                 }
                 ?>
-                
+              
             </tbody>
         </table>
-            
+          
         </fieldset>
 </div>
 <div style="clear: both"></div>
@@ -286,7 +286,7 @@ if($close == 1) {
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 <input type="hidden" name="component" value="com_sportsmanagement" />	
-<?php 
+<?php
 echo HTMLHelper::_('form.token'); ?>
 </form>
 

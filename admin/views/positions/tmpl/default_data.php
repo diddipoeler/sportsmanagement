@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -216,8 +216,8 @@ echo HTMLHelper::_('select.genericlist', $this->lists['parent_id'], 'parent_id' 
                             $disabled = true ? '' : 'disabled="disabled"';
                             ?>
                         </span>
-                        <input  
-                            type="text" name="order[]" 
+                        <input
+                            type="text" name="order[]"
                             size="2"
                             value="<?php echo $row->ordering; ?>"
                             <?php echo $disabled ?>

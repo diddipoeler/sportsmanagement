@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerUpdsportsmanagement
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,7 +32,7 @@ class sportsmanagementControllerUpdsportsmanagement extends FormController
 
     /**
      * sportsmanagementControllerUpdsportsmanagement::getModel()
-     * 
+     *
      * @param  string $name
      * @param  string $prefix
      * @param  mixed  $config
@@ -45,7 +45,7 @@ class sportsmanagementControllerUpdsportsmanagement extends FormController
 
     /**
      * sportsmanagementControllerUpdsportsmanagement::submit()
-     * 
+     *
      * @return
      */
     public function submit()

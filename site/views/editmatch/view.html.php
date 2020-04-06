@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage editmatch
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -28,8 +28,8 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
 
 /**
  * sportsmanagementViewEditMatch
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -41,10 +41,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
 
         $option = Factory::getApplication()->input->getCmd('option');
@@ -113,10 +113,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::initEditLineup()
-     * 
+     *
      * @return
      */
-    function initEditLineup() 
+    function initEditLineup()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -246,7 +246,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
         $document->addScript(Uri::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsmanagement';". "\n";       
+        $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsmanagement';". "\n";     
         $javascript .= "var matchid = ".$this->match->id.";" . "\n";
         $javascript .= "var teamid = ".$this->tid.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
@@ -256,9 +256,9 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
         $javascript .= "updatePlayerSelect();". "\n";
         $javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
         $javascript .= '  });' . "\n";
-        $javascript .= "\n";    
+        $javascript .= "\n";  
         $document->addScriptDeclaration($javascript);
-        
+      
         $this->positions = $projectpositions;
         $this->staffpositions = $staffpositions;
         $this->substitutions = $substitutions[$tid];
@@ -268,10 +268,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::initEditEevents()
-     * 
+     *
      * @return
      */
-    function initEditEevents() 
+    function initEditEevents()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -279,7 +279,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
         $params = ComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
-    
+  
         // mannschaften der paarung
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
         $this->teams = $teams;
@@ -352,23 +352,23 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
                     $temp[] = $obj;
         }
         $lists['awayroster'] = HTMLHelper::_('select.genericlist', $temp, $teams->projectteam2_id, 'style="" size="1" class="inputbox" size="1"', 'value', 'text');
-       
+     
         $matchCommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         $matchevents = sportsmanagementModelMatch::getMatchEvents($this->match->id);
         //$document->addScriptDeclaration( $javascript );
 
-        $document->addScript(Uri::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');        
+        $document->addScript(Uri::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');      
 
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsmanagement';". "\n";        
+        $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsmanagement';". "\n";      
         $javascript .= "var matchid = ".$this->match->id.";" . "\n";
-        $javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";        
+        $javascript .= "var useeventtime = " . $this->useeventtime . ";" . "\n";      
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".Text::_('JACTION_DELETE')."';" . "\n";
         $javascript .= "\n";
-    
-        $document->addScriptDeclaration($javascript);        
-        
+  
+        $document->addScriptDeclaration($javascript);      
+      
         $this->matchevents = $matchevents;
         $this->matchcommentary = $matchCommentary;
         $this->rosters = $rosters;
@@ -379,10 +379,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::initEditStats()
-     * 
+     *
      * @return void
      */
-    function initEditStats() 
+    function initEditStats()
     {
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
 
@@ -424,10 +424,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::initEditMatch()
-     * 
+     *
      * @return void
      */
-    function initEditMatch() 
+    function initEditMatch()
     {
         $app = Factory::getApplication();
 
@@ -441,7 +441,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
                 }
                 else
                 {
-                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;                
+                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;              
                 }
             }
             $oldmatches = array_merge($oldmatches, $res);
@@ -458,7 +458,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
                 }
                 else
                 {
-                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;                
+                    $m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;              
                 }
             }
             $newmatches = array_merge($newmatches, $res);
@@ -480,10 +480,10 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 
     /**
      * sportsmanagementViewEditMatch::initEditReferees()
-     * 
+     *
      * @return
      */
-    function initEditReferees() 
+    function initEditReferees()
     {
         // projekt schiedsrichter
         $allreferees = array();
@@ -512,7 +512,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
             'select.genericlist', $projectreferees2, 'roster[]', 'style="font-size:12px;height:auto;min-width:15em;" ' .
             'class="inputbox" multiple="true" size="' . max(10, count($projectreferees2)) . '"', 'value', 'text'
         );
-        // projekt positionen                                                    
+        // projekt positionen                                                  
         $selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
         if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $this->project_id)) {
             $selectpositions = array_merge($selectpositions, $projectpositions);

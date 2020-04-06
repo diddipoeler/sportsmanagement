@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,14 +33,14 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
          padding-bottom: 3px;
          padding-left: 5px;
          padding-right: 5px;
-         white-space:nowrap; 
+         white-space:nowrap;
          vertical-align:bottom
       }
    </style>
 <![endif]-->
 
 <!--[if !IE]><!-->
-<style>  
+<style>
 .rotate_text
       {
          text-align: center;
@@ -52,10 +52,10 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
                 padding-right: 3px;
                 padding-top: 10px;
                 white-space: nowrap;
-                -webkit-transform: rotate(-90deg); 
+                -webkit-transform: rotate(-90deg);
                 -moz-transform: rotate(-90deg);
-                -o-transform: rotate(-90deg); 
-      }      
+                -o-transform: rotate(-90deg);
+      }    
 
       .rotated_cell
       {
@@ -65,12 +65,12 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
          padding-bottom: 3px;
          padding-left: 5px;
          padding-right: 5px;
-         white-space:nowrap; 
+         white-space:nowrap;
          vertical-align:bottom
       }
    </style>
-<!--<![endif]--> 
-   
+<!--<![endif]-->
+ 
 <div class="clr"></div>
 <form method="post" name="matrixForm" id="matrixForm">
 
@@ -117,7 +117,7 @@ for($rows = 0; $rows <= count($teams); $rows++){
                 for ($i=0,$n=count($this->matches); $i < $n; $i++)
                 {
                     $row =& $this->matches[$i];
-                    if($row->projectteam1_id == $trow->value 
+                    if($row->projectteam1_id == $trow->value
                         && $row->projectteam2_id == $tcol->value
                     ) {
                         $checked = 'checked';
@@ -130,7 +130,7 @@ for($rows = 0; $rows <= count($teams); $rows++){
                         $onClick = sprintf("onClick=\"javascript:SaveMatch('%s','%s');\"", $trow->value, $tcol->value);
                     }
                 }
-            }    
+            }  
             $text = sprintf("<td width=\"20\" align=\"center\" title=\"%s - %s\" bgcolor=\"%s\"><input type=\"radio\" name=\"match_%s\" %s %s></td>\n", $trow->text, $tcol->text, $color, $trow->value.$tcol->value, $onClick, $checked);
         }
         $matrix .= $text;

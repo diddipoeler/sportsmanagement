@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,18 +11,18 @@
  * @package    sportsmanagement
  * @subpackage editmatch
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-require_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'match.php'; 
+require_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'match.php';
 
 /**
  * sportsmanagementControllermatches
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -33,10 +33,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::__construct()
-     * 
+     *
      * @return void
      */
-    function __construct() 
+    function __construct()
     {
         parent::__construct();
     }
@@ -47,7 +47,7 @@ class sportsmanagementControllermatches extends BaseController
      *
      * @return JoomlaTuneAjaxResponse
      */
-    public static function getAjaxResponse() 
+    public static function getAjaxResponse()
     {
         static $instance = null;
 
@@ -60,10 +60,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::saveevent()
-     * 
+     *
      * @return void
      */
-    function saveevent() 
+    function saveevent()
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $data = array();
@@ -94,10 +94,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::savesubst()
-     * 
+     *
      * @return void
      */
-    function savesubst() 
+    function savesubst()
     {
         $data = array();
         $data['in'] = Factory::getApplication()->input->getInt('in');
@@ -120,10 +120,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::removeSubst()
-     * 
+     *
      * @return void
      */
-    function removeSubst() 
+    function removeSubst()
     {
         $substid = Factory::getApplication()->input->getInt('substid', 0);
 
@@ -139,10 +139,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::savecomment()
-     * 
+     *
      * @return void
      */
-    function savecomment() 
+    function savecomment()
     {
         $data = array();
         $data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
@@ -163,10 +163,10 @@ class sportsmanagementControllermatches extends BaseController
         echo json_encode($result);
         Factory::getApplication()->close();
     }
- 
+
     /**
      * sportsmanagementControllermatches::removeEvent()
-     * 
+     *
      * @return void
      */
     function removeEvent()
@@ -186,10 +186,10 @@ class sportsmanagementControllermatches extends BaseController
 
     /**
      * sportsmanagementControllermatches::removeCommentary()
-     * 
+     *
      * @return void
      */
-    public function removeCommentary() 
+    public function removeCommentary()
     {
         $event_id = Factory::getApplication()->input->getInt('event_id');
 

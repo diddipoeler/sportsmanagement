@@ -1,10 +1,10 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.58
-* @file 
+* @file
 * @author    diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
 * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license   GNU General Public License version 2 or later; see LICENSE.txt
@@ -21,8 +21,8 @@ use Joomla\CMS\Factory;
 
 /**
  * FormFieldExtensionVersion
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -30,18 +30,18 @@ use Joomla\CMS\Factory;
  */
 class JFormFieldExtensionVersion extends FormField
 {
-        
+      
     public $type = 'ExtensionVersion';
-    
+  
     protected $version;
 
     /**
      * FormFieldExtensionVersion::getLabel()
-     * 
+     *
      * @return
      */
-    protected function getLabel() 
-    {        
+    protected function getLabel()
+    {      
         $lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
@@ -55,20 +55,20 @@ class JFormFieldExtensionVersion extends FormField
 
     /**
      * FormFieldExtensionVersion::getInput()
-     * 
+     *
      * @return
      */
-    protected function getInput() 
+    protected function getInput()
     {
         $html = '<div style="padding-top: 5px; overflow: inherit">';
         $html .= '<span class="label">'.$this->version.'</span>';
         $html .= '</div>';
         return $html;
     }
-    
+  
     /**
      * FormFieldExtensionVersion::setup()
-     * 
+     *
      * @param  mixed $element
      * @param  mixed $value
      * @param  mixed $group
@@ -77,11 +77,11 @@ class JFormFieldExtensionVersion extends FormField
     public function setup(SimpleXMLElement $element, $value, $group = null)
     {
         $return = parent::setup($element, $value, $group);
-    
+  
         if ($return) {
             $this->version = isset($this->element['version']) ? $this->element['version'] : '';
         }
-    
+  
         return $return;
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTablepictures
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -38,10 +38,10 @@ class sportsmanagementTablepictures extends JSMTable
         parent::__construct('#__sportsmanagement_pictures', 'id', $db);
     }
 
-    
-    
-    
-    
+  
+  
+  
+  
 
 }
 ?>

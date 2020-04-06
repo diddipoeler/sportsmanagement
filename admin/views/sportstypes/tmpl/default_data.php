@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage sportstypes
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -122,7 +122,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     $picture = JPATH_SITE .DIRECTORY_SEPARATOR. $row->icon;
                     $desc = Text::_($row->name);
                     //echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
-                    ?>                                    
+                    ?>                                  
                         <a href="<?php echo Uri::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">
                             <img src="<?php echo Uri::root() . $row->icon; ?>" alt="<?php echo $desc; ?>" width="20" />
                         </a>
@@ -147,7 +147,7 @@ echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_i
                         }
                         ?>
                         </div>
-                    </td>    
+                    </td>  
 
                     <td class="order">
                         <span>

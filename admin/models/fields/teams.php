@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldTeams
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,17 +35,17 @@ class JFormFieldTeams extends FormField
 
     /**
      * FormFieldTeams::getInput()
-     * 
+     *
      * @return
      */
-    protected function getInput() 
+    protected function getInput()
     {
         $db = sportsmanagementHelper::getDBConnection();
         $lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = ComponentHelper::getParams('com_sportsmanagement');
         //$database_table	= $params->get( 'cfg_which_database_table' );
-        
+      
         $extension = "com_sportsmanagement";
         $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
         $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)

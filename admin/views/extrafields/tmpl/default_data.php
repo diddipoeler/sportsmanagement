@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,7 +30,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th width="20">
                         <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                     </th>
-                    
+                  
                     <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
@@ -46,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EXT_FIELD_FRONTEND', 'objcountry.template_frontend', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EXT_FIELD_VIEW_BACKEND', 'objcountry.views_backend', $this->sortDirection, $this->sortColumn);
@@ -78,7 +78,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.sort', 'JSTATUS', 'objcountry.published', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th width="10%">
         <?php
         echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'objcountry.ordering', $this->sortDirection, $this->sortColumn);
@@ -110,12 +110,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         </td>
         <?php
-                        
+                      
         $inputappend='';
         ?>
                             <td class="center">
@@ -128,33 +128,33 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <?php else : ?>
         <?php echo $this->escape($row->name); ?>
         <?php endif; ?>
-                        
-                        
-                        
+                      
+                      
+                      
                         <?php //echo $checked; ?>
-                        
+                      
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
                             </td>
         <?php
-                        
+                      
         ?>
-                        
+                      
                         <td><?php echo $row->template_backend; ?></td>
                         <td><?php echo $row->template_frontend; ?></td>
-                        
+                      
                         <td><?php echo $row->views_backend; ?></td>
                         <td><?php echo $row->fieldtyp; ?></td>
                         <td><?php echo $row->views_backend_field; ?></td>
                         <td><?php echo $row->select_columns; ?></td>
                         <td><?php echo $row->select_values; ?></td>
-                        
-                        
+                      
+                      
                         <td class="center">
 <div class="btn-group">
             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'extrafields.', $canChange, 'cb'); ?>
-            <?php 
+            <?php
             // Create dropdown items and render the dropdown list.
             if ($canChange) {
                  HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'extrafields');
@@ -162,11 +162,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                  echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
             }
                                 ?>
-            </div>                        
+            </div>                      
 
-                        
+                      
                         </td>
-                        
+                      
                         <td class="order">
                             <span>
                                 <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'extrafields.orderup', 'JLIB_HTML_MOVE_UP', 'objcountry.ordering'); ?>
@@ -187,4 +187,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </tbody>
         </table>
     </div>
-    
+  

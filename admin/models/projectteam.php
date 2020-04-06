@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -21,19 +21,19 @@ use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelprojectteam
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelprojectteam extends JSMModelAdmin
 {
-    
+  
     /**
      * sportsmanagementModelprojectteam::set_playground_match()
-     * 
+     *
      * @param  mixed $post
      * @return void
      */
@@ -49,9 +49,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $projectteam_id    = $pks[$x];
             $proTeam = Table::getInstance('Projectteam', 'sportsmanagementTable');
             $proTeam->load($projectteam_id);
-            $seasonteam_id    = $proTeam->team_id; 
-            $playground_id = $this->getProjectTeamPlayground($seasonteam_id);    
-        
+            $seasonteam_id    = $proTeam->team_id;
+            $playground_id = $this->getProjectTeamPlayground($seasonteam_id);  
+      
             if ($playground_id ) {
                 // Fields to update.
                 $fields = array(
@@ -62,22 +62,22 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
                 $conditions = array(
                  $this->jsmdb->quoteName('projectteam1_id') . ' = '.$projectteam_id
                 );
-                $this->jsmquery->clear();            
+                $this->jsmquery->clear();          
                 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
                 $this->jsmdb->setQuery($this->jsmquery);
                 $result = $this->jsmdb->execute();
-            
-            
+          
+          
             }
-        }    
-        
+        }  
+      
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelprojectteam::set_playground()
-     * 
+     *
      * @param  mixed $post
      * @return void
      */
@@ -87,24 +87,24 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
-        
+      
         for ($x=0; $x < count($pks); $x++)
         {
             $projectteam_id    = $pks[$x];
             $proTeam = Table::getInstance('Projectteam', 'sportsmanagementTable');
             $proTeam->load($projectteam_id);
-            $seasonteam_id    = $proTeam->team_id; 
+            $seasonteam_id    = $proTeam->team_id;
             $playground_id = $this->getProjectTeamPlayground($seasonteam_id);
-            if ($playground_id ) {     
+            if ($playground_id ) {   
                    $object = new stdClass();
                    $object->id = $projectteam_id;
                    $object->standard_playground = $playground_id;
                    $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
             }
-         
+       
         }
     }
-        
+      
     /**
      * Method to update checked project teams
      *
@@ -120,7 +120,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $post = Factory::getApplication()->input->post->getArray(array());
 
         $project_id = $post['pid'];
-        $new_project_id = $post['all_project_id'];          
+        $new_project_id = $post['all_project_id'];        
         $this->jsmquery->clear();
         $this->jsmquery->select('l.associations');
         $this->jsmquery->from('#__sportsmanagement_league as l');
@@ -128,7 +128,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $this->jsmquery->where('p.id = '.$project_id);
         $this->jsmdb->setQuery($this->jsmquery);
         $associations = $this->jsmdb->loadResult();
-       
+     
         $result=true;
         for ($x=0; $x < count($pks); $x++)
         {
@@ -137,9 +137,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $tblProjectteam->division_id = $post['division_id' . $pks[$x]];
             $tblProjectteam->start_points = $post['start_points' .$pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' .$pks[$x]];
-            // alle umsetzen       
+            // alle umsetzen     
             if ($project_id != $new_project_id ) {
-                $tblProjectteam->project_id = $new_project_id;  
+                $tblProjectteam->project_id = $new_project_id;
             }
             else
                 {
@@ -147,7 +147,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             }
             $tblProjectteam->is_in_score = $post['is_in_score' .$pks[$x]];
             $tblProjectteam->use_finally = $post['use_finally' .$pks[$x]];
-            
+          
             $tblProjectteam->points_finally = $post['points_finally' .$pks[$x]];
             $tblProjectteam->neg_points_finally = $post['neg_points_finally' . $pks[$x]];
             $tblProjectteam->penalty_points = $post['penalty_points' . $pks[$x]];
@@ -162,18 +162,18 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             if(!$tblProjectteam->store()) {
                 $result = false;
             }
-        
+      
 
             /**
- * hier werden noch die vereine aktualisiert 
+ * hier werden noch die vereine aktualisiert
  * wenn schon ein verband/kreis vorhanden ist, kein update
  */
-            $clubrow = Table::getInstance('club', 'sportsmanagementTable', array()); 
+            $clubrow = Table::getInstance('club', 'sportsmanagementTable', array());
             $clubrow->load($post['club_id'.$pks[$x]]);
             if ($clubrow->associations ) {
                   $associations = '';
             }
-            
+          
             // Create an object for the record we are going to update.
             $object = new stdClass();
             // Must be a valid primary key value.
@@ -184,20 +184,20 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             if ($associations ) {
                   $object->associations = $associations;
             }
-            
+          
             // Update their details in the users table using id as the primary key.
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
-            
-            
+          
+          
         }
         return $result;
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelprojectteam::setseasonid()
-     * 
+     *
      * @return void
      */
     function setseasonid()
@@ -210,37 +210,37 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
-        
+      
         for ($x=0; $x < count($pks); $x++)
         {
             $projectteam_id    = $pks[$x];
-        
+      
             $proTeam = Table::getInstance('Projectteam', 'sportsmanagementTable');
             $proTeam->load($projectteam_id);
             $object = new stdClass();
             $object->id = $proTeam->team_id;
             $object->season_id = $season_id;
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
-        
+      
             if (!$result ) {
 
             }
-        
+      
         }
-        
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelprojectteam::setusetable()
-     * 
+     *
      * @param  integer $setzer
      * @return void
      */
     function setusetable($setzer=0)
     {
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-    
+  
         for ($x=0; $x < count($pks); $x++)
         {
             $projectteam_id    = $pks[$x];
@@ -248,26 +248,26 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $object->id = $projectteam_id;
             $object->is_in_score = $setzer;
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
-        
+      
             if (!$result ) {
 
             }
-        
-        }    
-        
+      
+        }  
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelprojectteam::setusetablepoints()
-     * 
+     *
      * @param  integer $setzer
      * @return void
      */
     function setusetablepoints($setzer=0)
     {
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-    
+  
         for ($x=0; $x < count($pks); $x++)
         {
             $projectteam_id    = $pks[$x];
@@ -275,22 +275,22 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $object->id = $projectteam_id;
             $object->use_finally = $setzer;
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
-        
+      
             if (!$result ) {
 
             }
-        
-        }        
-        
-        
+      
+        }      
+      
+      
     }
-    
-    
-    
-        
+  
+  
+  
+      
     /**
      * sportsmanagementModelprojectteam::matchgroups()
-     * 
+     *
      * @return void
      */
     function matchgroups()
@@ -305,7 +305,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         for ($x=0; $x < count($pks); $x++)
         {
             $projectteam_id    = $pks[$x];
-            $projectteam_division_id = $post['division_id' . $pks[$x]];  
+            $projectteam_division_id = $post['division_id' . $pks[$x]];
 
             // Fields to update.
             $query = $db->getQuery(true);
@@ -319,11 +319,11 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             );
             $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
             $db->setQuery($query);
-            $result = $db->execute();  
+            $result = $db->execute();
             if (!$result ) {
 
             }
-        
+      
             $query->clear();
             $fields = array(
             $db->quoteName('division_id') . '=' . $projectteam_division_id
@@ -334,20 +334,20 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             );
             $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
             $db->setQuery($query);
-            $result = $db->execute();  
+            $result = $db->execute();
             if (!$result ) {
 
             }
-        
-        
-        
-        
-        }  
-        
-    }    
+      
+      
+      
+      
+        }
+      
+    }  
     /**
      * sportsmanagementModelprojectteam::storeAssign()
-     * 
+     *
      * @param  mixed $post
      * @return void
      */
@@ -373,14 +373,14 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $project_teams = $mdlProjectTeams->getAllProjectTeams($project_id, 0, $delete_team);
             foreach( $project_teams as $row )
             {
-                  $_pro_teams_to_delete[] = $row->projectteamid;  
+                  $_pro_teams_to_delete[] = $row->projectteamid;
             }
-        } 
-        
+        }
+      
         foreach ( $assign_id as $key => $value )
         {
             $query->clear();
-            $query->select('id');        
+            $query->select('id');      
             $query->from('#__sportsmanagement_project_team');
             $query->where('team_id = '.$value);
             $query->where('project_id = '.$project_id);
@@ -392,20 +392,20 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
                 $profile->team_id = $value;
                 $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
             }
-        
+      
         }
-        
+      
         if ($_pro_teams_to_delete ) {
             self::delete($_pro_teams_to_delete);
         }
-        
+      
     }
-    
+  
 
-    
+  
     /**
      * sportsmanagementModelprojectteam::delete()
-     * 
+     *
      * @param  mixed $pks
      * @return void
      */
@@ -415,7 +415,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $option = Factory::getApplication()->input->getCmd('option');
         $db        = Factory::getDbo();
         //$query	= $db->getQuery(true);
-       
+     
         // als erstes die heimspiele
         if (count($pks)) {
             $cids = implode(',', $pks);
@@ -431,7 +431,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             {
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'), 'Error');
             }
-        }    
+        }  
         // dann die auswärtsspiele
         if (count($pks)) {
             $cids = implode(',', $pks);
@@ -447,37 +447,37 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             {
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'), 'Error');
             }
-        }    
-        
+        }  
+      
         // dann den eigentlichen eintrag an joomla standard
         return parent::delete($pks);
-        
+      
     }
-    
+  
 
     /**
  * sportsmanagementModelprojectteam::getProjectTeamPlayground()
- * 
+ *
  * @param  integer $team_id
  * @return
  */
-    function getProjectTeamPlayground($team_id=0)    
+    function getProjectTeamPlayground($team_id=0)  
     {
         $this->jsmquery->clear();
         $this->jsmquery->select('c.standard_playground');
-        $this->jsmquery->from('#__sportsmanagement_club AS c');    
+        $this->jsmquery->from('#__sportsmanagement_club AS c');  
         $this->jsmquery->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
-        $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');    
+        $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');  
         $this->jsmquery->where('st.id = '. $team_id);
         $this->jsmdb->setQuery($this->jsmquery);
-        $result = $this->jsmdb->loadResult();    
-        return $result;    
+        $result = $this->jsmdb->loadResult();  
+        return $result;  
     }
-    
+  
 
     /**
      * sportsmanagementModelprojectteam::getProjectTeam()
-     * 
+     *
      * @param  integer $team_id
      * @return
      */
@@ -497,5 +497,5 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         $db->setQuery($query);
         return $db->loadObject();
     }
-    
+  
 }

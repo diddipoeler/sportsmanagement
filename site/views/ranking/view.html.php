@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementViewRanking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,30 +33,30 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
     /**
      * sportsmanagementViewRanking::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
         $this->matchimages = array();
-        
+      
         if ($this->config['show_pictures'] ) {
                 /**
  * die bilder zum spiel
  */
-                $mdlMatchReport = BaseDatabaseModel::getInstance("MatchReport", "sportsmanagementModel");    
+                $mdlMatchReport = BaseDatabaseModel::getInstance("MatchReport", "sportsmanagementModel");  
                 $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/projectimages/'.$this->project->id;
                 $folder = 'projectimages/'.$this->project->id;
                 $images = $mdlMatchReport->getMatchPictures($folder);
             if ($images ) {
                 $this->matchimages = $images;
             }
-        } 
-        
+        }
+      
         $rounds = array();
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
-        
+      
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
         $mdlDivisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
@@ -83,7 +83,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
                 $this->clubnames = $mdlClubnames->getClubNames($this->project->country);
             }
         }
-  
+
         if (!empty($this->overallconfig) ) {
             if ($this->overallconfig['show_project_rss_feed'] ) {
                 $mod_name = "mod_jw_srfr";
@@ -96,7 +96,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
                 }
             }
         }
-      
+    
         if (!empty($this->config) ) {
             if ($this->config['show_half_of_season']) {
                 if ($this->config['show_table_4']) {
@@ -146,12 +146,12 @@ class sportsmanagementViewRanking extends sportsmanagementView
         }
         if (!empty($this->config) ) {
             /**
-         * wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben 
+         * wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben
          */
-            if (!$this->config['show_table_1'] 
-                || !$this->config['show_table_2'] 
-                || !$this->config['show_table_3'] 
-                || !$this->config['show_table_4'] 
+            if (!$this->config['show_table_1']
+                || !$this->config['show_table_2']
+                || !$this->config['show_table_3']
+                || !$this->config['show_table_4']
                 || !$this->config['show_table_5']
             ) {
                   $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
@@ -211,14 +211,14 @@ class sportsmanagementViewRanking extends sportsmanagementView
         }
         if (!isset($this->config['club_link_logo']) ) {
             $this->config['club_link_logo'] = 1;
-        }    
+        }  
         if ($this->project ) {
             /**
          * wir holen uns alle mannschaften die dem projekt zugeordnet wurden
          */
             $this->allteams = $mdlProjectteams->getAllProjectTeams($this->project->id, 0, null, sportsmanagementModelProject::$cfg_which_database);
         }
-  
+
         if (!empty($this->config) ) {
             /**
          * möchte der anwender die vereinskürzel ausgeschrieben sehen ?
@@ -229,21 +229,21 @@ class sportsmanagementViewRanking extends sportsmanagementView
              */
                 $short_names = $mdlClubnames->getClubNames($this->project->country);
             }
-      
+    
             if ($this->config['show_ranking_maps']) {
 
                 $this->mapconfig = array();
                 /**
  * leaflet benutzen
- */            
+ */          
                 if ($this->config['use_which_map'] ) {
-                            $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));    
+                            $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));  
                 }
 
                 /**
  * kml file generieren
- */            
-                if (isset($this->mapconfig['map_kmlfile']) && $this->mapconfig['map_kmlfile'] ) {    
+ */          
+                if (isset($this->mapconfig['map_kmlfile']) && $this->mapconfig['map_kmlfile'] ) {  
                             $this->geo = new JSMsimpleGMapGeocoder();
                             $this->geo->genkml3($this->project->id, $this->allteams);
                 }

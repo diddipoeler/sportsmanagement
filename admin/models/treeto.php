@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelTreeto
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -27,39 +27,39 @@ use Joomla\Registry\Registry;
  */
 class sportsmanagementModelTreeto extends JSMModelAdmin
 {
-    
+  
     /**
     * sportsmanagementModelTreeto::__construct()
-    * 
+    *
     * @param  mixed $config
     * @return void
     */
     public function __construct($config = array())
-    {   
- 
+    { 
+
         parent::__construct($config);
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         parent::setDbo($this->jsmdb);
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
         // Reference global application object
         $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = Factory::getDocument();
-        
-    }    
-    
-    
-    
+      
+    }  
+  
+  
+  
     /**
      * sportsmanagementModelTreeto::getTreeToData()
-     * 
+     *
      * @param  mixed $treeto_id
      * @return
      */
@@ -71,16 +71,16 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
         $this->jsmquery->select('*');
         $this->jsmquery->from('#__sportsmanagement_treeto');
         $this->jsmquery->where('id = ' . $treeto_id);
-        
+      
          $this->jsmdb->setQuery($this->jsmquery);
          return $this->jsmdb->loadObject();
 
     }
 
-    
+  
     /**
      * sportsmanagementModelTreeto::setGenerateNode()
-     * 
+     *
      * @return
      */
     function setGenerateNode()
@@ -94,7 +94,7 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
         $global_matchday = (int) $this->jsmjinput->post->get('global_matchday');
         $global_known = (int) $this->jsmjinput->post->get('global_known');
         $global_fake = (int) $this->jsmjinput->post->get('global_fake');
-        
+      
         if($tree_i == 0 ) //nothing selected in dropdown
         {
                return false;
@@ -147,7 +147,7 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
                 $profile->row = $row;
                 $profile->bestof = $global_bestof;
                 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_node', $profile);
-                
+              
 
             }
                return true;

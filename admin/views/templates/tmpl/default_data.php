@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -34,7 +34,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND', '<i>'.$this->projectws->name.'</i>'); ?></legend>
             <table class="<?php echo $this->table_data_class; ?>">
                 <thead>
-        <?php 
+        <?php
         if ($this->projectws->master_template) {
             ?>
                     <tr>
@@ -43,7 +43,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     </tr>
                     <?php
-        } 
+        }
             ?>
                     <tr>
                         <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
@@ -63,7 +63,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <th>
         <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'tmpl.id', $this->sortDirection, $this->sortColumn); ?>
                         </th>
-                        
+                      
                         <th width="" class="title">
         <?php
         echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
@@ -79,8 +79,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <tfoot>
                 <tr>
                 <td colspan="5">
-                <?php 
-                echo $this->pagination->getListFooter(); 
+                <?php
+                echo $this->pagination->getListFooter();
                 ?>
                 </td>
                 <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
@@ -95,7 +95,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             $row =& $this->templates[$i];
             $link1 = Route::_('index.php?option=com_sportsmanagement&task=template.edit&id='.$row->id);
                         $canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
-                        
+                      
                         $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
                         $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'templates.', $canCheckin);
             ?>
@@ -107,7 +107,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             if (( $row->checked_out != $this->user->get('id') ) && $row->checked_out ) :  ?>
             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'templates.', $canCheckin); ?>
             <?php else: ?>
-                            
+                          
                             <?php
                             $imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
                             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
@@ -115,9 +115,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             $image = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
                             $linkParams = '';
                             echo HTMLHelper::link($link1, $image);
-                                
+                              
             endif;
-                                
+                              
                                 ?>
                                 </td>
           <td><?php echo $row->template; ?></td>
@@ -132,7 +132,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             ?><input type='hidden' name='isMaster[<?php echo $row->id; ?>]' value='<?php echo $row->isMaster; ?>' /><?php ?>
                                 </td>
                             <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->username; ?></td>    
+                            <td><?php echo $row->username; ?></td>  
          </tr>
             <?php
             $k=1 - $k;
@@ -140,4 +140,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         ?>
                 </tbody>
             </table>
-            
+          

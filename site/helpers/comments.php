@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,7 +33,7 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementModelComments
 {
-    static function CreateInstance(&$config) 
+    static function CreateInstance(&$config)
     {
         // prefer Kunena Comments, if configured in overall template
         if (($config['show_project_kunena_link'] == true) && (ComponentHelper::isEnabled('com_kunena'))) {
@@ -58,7 +58,7 @@ class sportsmanagementModelComments
      *
      * @return bool
      */
-    function isEnabled() 
+    function isEnabled()
     {
         return false;
     }
@@ -139,14 +139,14 @@ class sportsmanagementModelComments
      * @param  int $match_id
      * @return string
      */
-    static function getForumSubjectFromMatchID($match_id) 
+    static function getForumSubjectFromMatchID($match_id)
     {
         $subject = "Bitte Spielpaarung hier eingeben!";
         if ($match_id > 0) {
             $database = JFactory::getDBO();
             $query = $database->getQuery(true);
             $query->clear();
-            
+          
             $query->select(' t1.name AS home,t2.name AS away ');
             // From
             $query->from('#__sportsmanagement_match AS m');
@@ -213,7 +213,7 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
 {
     protected $sbItemid = 0;
 
-    function __construct(&$config) 
+    function __construct(&$config)
     {
         $database = JFactory::getDBO();
 
@@ -227,7 +227,7 @@ class sportsmanagementModelCommentsKunena extends sportsmanagementModelComments
     /**
      * description see base class
      */
-    function isEnabled() 
+    function isEnabled()
     {
         return true;
     }
@@ -287,7 +287,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
     protected $separate_comments;
     protected $comJcomments;
 
-    function __construct(&$config) 
+    function __construct(&$config)
     {
         $this->comJcomments = true;
         $dispatcher = JDispatcher::getInstance();
@@ -323,7 +323,7 @@ class sportsmanagementModelCommentsJSMJComments extends sportsmanagementModelCom
     /**
      * description see base class
      */
-    function isEnabled() 
+    function isEnabled()
     {
         return ($this->comJcomments == true);
     }

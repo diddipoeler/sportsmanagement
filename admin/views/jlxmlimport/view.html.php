@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewJLXMLImport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,7 +29,7 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 {
     /**
      * sportsmanagementViewJLXMLImport::init()
-     * 
+     *
      * @return void
      */
     public function init()

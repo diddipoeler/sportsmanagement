@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,15 +23,15 @@ $fieldsets = $this->form->getFieldsets();
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 
 <?php
-        //save and close 
+        //save and close
         $close = Factory::getApplication()->input->getInt('close', 0);
 if($close == 1) {
     ?><script>
             window.addEvent('domready', function() {
-                $('cancel').onclick();    
+                $('cancel').onclick();  
             });
             </script>
-    <?php 
+    <?php
 }
     ?>
         <fieldset>
@@ -44,18 +44,18 @@ if($close == 1) {
 <?php echo Text::_('JCANCEL');?></button>
                 </div>
             <legend>
-        <?php 
-        echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LEGEND_DESC', '<i>'.$this->item->name.'</i>'); 
+        <?php
+        echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LEGEND_DESC', '<i>'.$this->item->name.'</i>');
         ?>
       </legend>
 </fieldset>
+          
+      
             
-        
-              
 
 <?php
 
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));  
 foreach ($fieldsets as $fieldset) :
 
     switch ( $fieldset->name )
@@ -66,10 +66,10 @@ foreach ($fieldsets as $fieldset) :
         echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
         echo $this->loadTemplate($fieldset->name);
         echo HTMLHelper::_('bootstrap.endTab');
-        break;    
+        break;  
     }
 
-endforeach; 
+endforeach;
 
 echo HTMLHelper::_('bootstrap.endTabSet');
 
@@ -79,7 +79,7 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="close" id="close" value="0"/>
 <input type="hidden" name="cid" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p', 0); ?>" />     
+<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p', 0); ?>" />   
 <input type="hidden" name="task" value="" />	
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>

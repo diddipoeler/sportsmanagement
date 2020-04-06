@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,7 +20,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 <button type="button" onclick="Joomla.submitform('projectteam.storechangeteams', this.form)">
                 <?php echo Text::_('JSAVE');?></button>
 <button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
-<?php echo Text::_('JCANCEL');?></button>    
+<?php echo Text::_('JCANCEL');?></button>  
 
         <legend>
     <?php

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,9 +30,9 @@ if (!class_exists('sportsmanagementHelperHtml') ) {
 
 /**
  * sportsmanagementViewallpersons
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -46,7 +46,7 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 
     /**
      * sportsmanagementViewallpersons::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -56,17 +56,17 @@ class sportsmanagementViewallpersons extends sportsmanagementView
         $this->tableclass = $this->jinput->getVar('table_class', 'table', 'request', 'string');
         $this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');
 
-        $starttime = microtime(); 
+        $starttime = microtime();
         $this->state = $this->get('State');
         $this->items = $this->get('Items');
-       
+     
         $this->pagination = $this->get('Pagination');
         $this->columns = $this->model->columns;
         //build the html options for nation
         $nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
         if ($res = JSMCountries::getCountryOptions()) {$nation=array_merge($nation, $res);
         }
-        
+      
         $lists['nation'] = $nation;
         $lists['nation2'] = JHtmlSelect::genericlist(
             $nation,
@@ -76,10 +76,10 @@ class sportsmanagementViewallpersons extends sportsmanagementView
             'text',
             $this->state->get('filter.search_nation')
         );
-                                                                
+                                                              
            // Set page title
         $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE'));
-        
+      
            $form = new stdClass();
            $form->limitField = $this->pagination->getLimitBox();
            $this->filter = $this->state->get('filter.search');

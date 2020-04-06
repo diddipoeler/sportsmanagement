@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version   1.0.05
@@ -8,7 +8,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
- */ 
+ */
 
 
 defined('_JEXEC') or die('Restricted access'); ?>
@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 $rssitems_colums = $this->overallconfig['rssitems_colums'] ;
 
-foreach ($this->rssfeeditems as $feed) 
+foreach ($this->rssfeeditems as $feed)
 {
     if($feed != false ) {
         //image handling
@@ -35,15 +35,15 @@ foreach ($this->rssfeeditems as $feed)
         <?php if ($this->overallconfig['rsstitle_linkable'] ) { ?>
                         <a href="<?php echo str_replace('&', '&amp', $feed->link); ?>" target="<?php echo $this->overallconfig['link_target'] ?>">
         <?php echo $feed->title; ?></a>
-        <?php } else { 
+        <?php } else {
                         echo $feed->title;
-        } ?>    
+        } ?>  
           </div>
          </td>
         </tr>
         <?php
         }
-    
+  
         // feed description
         if ($this->overallconfig['rssdesc'] ) {
         ?>
@@ -55,10 +55,10 @@ foreach ($this->rssfeeditems as $feed)
      </tr>
         <?php
         }
-    
+  
         $actualItems = count($feed->items);
         $setItems    = $this->overallconfig['rssitems'] ;
-    
+  
         if ($setItems > $actualItems) {
             $totalItems = $actualItems;
         } else {
@@ -76,7 +76,7 @@ foreach ($this->rssfeeditems as $feed)
         {
             $currItem = & $feed->items[$j];
             // item title
-            if (($j % $rssitems_colums) == 0 ) : 
+            if (($j % $rssitems_colums) == 0 ) :
                 if ($this->overallconfig['rssrow_alternate'] ) {
                     $row = 'row'.(floor($j / $rssitems_colums) % $rssitems_colums) ;
                 } else {
@@ -93,7 +93,7 @@ foreach ($this->rssfeeditems as $feed)
             $des_tooltip    = $this->model->limitText($currItem->get_description(), $word_tooltip);
 
             ?>
-            <?php 
+            <?php
             if ($this->overallconfig['rss_enable_tooltip'] && (!$this->overallconfig['rssitemdesc'])) {
                 $tooltip_content =  ' class="editlinktip hasTip" title="' . $currItem->get_title() . '::' . addslashes(htmlspecialchars($des_tooltip)) . '"';
             } else {
@@ -123,8 +123,8 @@ foreach ($this->rssfeeditems as $feed)
          </td>
          </tr>
         </table>
-        <?php 
-    } 
-} 
+        <?php
+    }
+}
 ?>
 </div>

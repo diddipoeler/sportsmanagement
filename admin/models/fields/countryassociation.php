@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldcountryassociation
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -56,11 +56,11 @@ class JFormFieldcountryassociation extends \JFormFieldList
         if (is_array($select_id)) {
             $select_id = $select_id[0];
         }
-        
-        if ($select_id) {        
+      
+        if ($select_id) {      
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            
+          
             $query->select('t.id AS value, t.name AS text');
             $query->from('#__sportsmanagement_associations AS t');
              $query->join('inner', '#__sportsmanagement_'.$vartable.' AS wt ON wt.country = t.country ');
@@ -69,7 +69,7 @@ class JFormFieldcountryassociation extends \JFormFieldList
             $db->setQuery($query);
             $options = $db->loadObjectList();
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
         return $options;

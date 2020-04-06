@@ -1,6 +1,6 @@
 <?php
 /**
-* @version    $Id: upload.php 4905 2010-01-30 08:51:33Z and_one $ 
+* @version    $Id: upload.php 4905 2010-01-30 08:51:33Z and_one $
 * @package    JoomlaTracks
 * @copyright  Copyright (C) 2008 Julien Vonthron. All rights reserved.
 * @license    GNU/GPL, see LICENSE.php
@@ -23,13 +23,13 @@ use Joomla\CMS\Log\Log;
 <table class="noshow">
       <tr>
         <td width="50%" valign="top">
-        
+      
                 <?php if($this->ftp) : ?>
                 <fieldset class="adminform">
                     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_FTP_TITLE'); ?></legend>
 
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_FTP_DESC'); ?>
-                    
+                  
         <?php if(!$this->ftp ) : ?>
                         <p><?php echo Text::_($this->ftp->message); ?></p>
         <?php endif; ?>
@@ -72,7 +72,7 @@ use Joomla\CMS\Log\Log;
                             <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MSG_INSTALL_ENTER_A_URL'); ?></legend>
               <input class="inputbox" type="text" id="linkaddress" name="linkaddress" size="50" maxlength="250" value="" />
               <br />
-              
+            
                             <input class="button" type="submit" value="<?php echo Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE') ?>" />
                            </td>
                       </tr>
@@ -91,7 +91,7 @@ use Joomla\CMS\Log\Log;
                           <td>
                                 <?php
                                 echo "<b>".Text::_('COM_SPORTSMANAGEMENT_ADMIN_FIELD_PATH_IMAGE_FOLDER_LABEL').": "."</b>";
-                                echo "/images/com_sportsmanagement/database/".$this->folder;    
+                                echo "/images/com_sportsmanagement/database/".$this->folder;  
                                 echo "<br /><b>".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MEDIA_FILESIZE').": </b>".$this->params->get('image_max_size', 120)."kb<br />";
         ?>
 

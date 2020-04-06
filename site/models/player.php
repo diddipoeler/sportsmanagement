@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
  *
 * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPlayer
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -45,10 +45,10 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::__construct()
-     * 
+     *
      * @return
      */
-    function __construct() 
+    function __construct()
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -65,11 +65,11 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getTeamPlayers()
-     * 
+     *
      * @param  integer $cfg_which_database
      * @return
      */
-    function getTeamPlayers($cfg_which_database = 0) 
+    function getTeamPlayers($cfg_which_database = 0)
     {
         $app = Factory::getApplication();
         // JInput object
@@ -79,7 +79,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
 
-        
+      
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
@@ -125,10 +125,10 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getTeamPlayer()
-     * 
+     *
      * @return
      */
-    static function getTeamPlayer($projectid = 0, $personid = 0, $teamplayerid = 0) 
+    static function getTeamPlayer($projectid = 0, $personid = 0, $teamplayerid = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -146,7 +146,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             self::$teamplayerid = $teamplayerid;
         }
 
-        
+      
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
@@ -182,16 +182,16 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         self::$_inproject = $result;
-        
+      
         return self::$_inproject;
     }
 
     /**
      * sportsmanagementModelPlayer::getTeamStaff()
-     * 
+     *
      * @return
      */
-    function getTeamStaff() 
+    function getTeamStaff()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -199,7 +199,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-        
+      
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
@@ -231,14 +231,14 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getPlayerHistory()
-     * 
+     *
      * @param  integer $sportstype
      * @param  string  $order
      * @param  integer $persontype
      * @param  integer $cfg_which_database
      * @return
      */
-    function getPlayerHistory($sportstype = 0, $order = 'ASC', $persontype = 1, $cfg_which_database = 0) 
+    function getPlayerHistory($sportstype = 0, $order = 'ASC', $persontype = 1, $cfg_which_database = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -306,11 +306,11 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getAllEvents()
-     * 
+     *
      * @param  integer $sportstype
      * @return
      */
-    function getAllEvents($sportstype = 0) 
+    function getAllEvents($sportstype = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -346,14 +346,14 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
                  $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
             $info = false;
         }
-        
+      
         return $info;
     }
 
-    
+  
     /**
      * sportsmanagementModelPlayer::getTimePlayed()
-     * 
+     *
      * @param  mixed   $player_id
      * @param  mixed   $game_regular_time
      * @param  mixed   $match_id
@@ -361,21 +361,21 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
      * @param  integer $project_id
      * @return
      */
-    public static function getTimePlayed($player_id, $game_regular_time, $match_id = null, $cards = null, $project_id = 0,$add_time = 0) 
+    public static function getTimePlayed($player_id, $game_regular_time, $match_id = null, $cards = null, $project_id = 0,$add_time = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         /**
-* 
- * Create a new query object. 
-*/        
+*
+ * Create a new query object.
+*/      
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         $result = 0;
 
         /**
- * startaufstellung ohne ein und auswechselung 
+ * startaufstellung ohne ein und auswechselung
 */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
@@ -387,7 +387,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
             if ($add_time ) {
-                $query->where('m.match_result_type = 0'); 
+                $query->where('m.match_result_type = 0');
             }
         }
 
@@ -398,7 +398,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
         $db->setQuery($query);
         $totalresult = $db->loadObject();
-      
+    
         if ($add_time ) {
             $query->clear('where');
             $query->clear('join');
@@ -412,16 +412,16 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $totalresult2 = $db->loadObject();
             if ($totalresult2) {
                 $result += $totalresult2->totalmatch * ($game_regular_time + $add_time);
-            }    
-            
-            
+            }  
+          
+          
         }
         if ($totalresult) {
             $result += $totalresult->totalmatch * $game_regular_time;
         }
-        
+      
         /**
- * einwechselung 
+ * einwechselung
 */
         $query = $db->getQuery(true);
         $query->clear();
@@ -436,7 +436,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
             if ($add_time ) {
-                $query->where('m.match_result_type = 0'); 
+                $query->where('m.match_result_type = 0');
             }
         }
 
@@ -460,18 +460,18 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $cameinresult2 = $db->loadObject();
             if ($cameinresult2) {
                 $result += ( $cameinresult2->totalmatch * ($game_regular_time + $add_time) ) - ( $cameinresult2->totalin );
-            }    
-            
-            
+            }  
+          
+          
         }
-      
-      
+    
+    
         if ($cameinresult) {
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
         }
 
         /**
- * auswechselung 
+ * auswechselung
 */
         $query = $db->getQuery(true);
         $query->clear();
@@ -485,7 +485,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
             $query->where('r.project_id = ' . $project_id);
             if ($add_time ) {
-                $query->where('m.match_result_type = 0'); 
+                $query->where('m.match_result_type = 0');
             }
         }
 
@@ -510,16 +510,16 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             if ($cameautresult2) {
 
                 $result += ( $cameautresult2->totalout ) - ( $cameautresult2->totalmatch * ($game_regular_time + $add_time) );
-            }    
-            
+            }  
+          
         }
-      
+    
         if ($cameautresult) {
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
         }
 
         /**
- * jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen 
+ * jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
 */
         if ($cards) {
             $query = $db->getQuery(true);
@@ -559,7 +559,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getInOutStats()
-     * 
+     *
      * @param  integer $project_id
      * @param  integer $projectteam_id
      * @param  integer $teamplayer_id
@@ -570,7 +570,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
      * @param  integer $person_id
      * @return
      */
-    public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0, $cfg_which_database = 0, $team_id = 0, $person_id = 0) 
+    public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0, $cfg_which_database = 0, $team_id = 0, $person_id = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -612,7 +612,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
         $db->setQuery($query);
         $rows = $db->loadObjectList();
 
-        
+      
 
         $inoutstat = new stdclass;
         $inoutstat->played = 0;
@@ -626,7 +626,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $inoutstat->sub_in += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
             $inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
         }
-       
+     
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $inoutstat;
@@ -634,10 +634,10 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getStats()
-     * 
+     *
      * @return
      */
-    function getStats() 
+    function getStats()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -667,12 +667,12 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getCareerStats()
-     * 
+     *
      * @param  mixed $person_id
      * @param  mixed $sports_type_id
      * @return
      */
-    function getCareerStats($person_id, $sports_type_id) 
+    function getCareerStats($person_id, $sports_type_id)
     {
         $app = Factory::getApplication();
         $db = Factory::getDBO();
@@ -702,8 +702,8 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
                 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
                          $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
                 $this->_careerStats = false;
-            }            
-            
+            }          
+          
         }
 
         $stats = array();
@@ -720,10 +720,10 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getPlayerStatsByGame()
-     * 
+     *
      * @return
      */
-    function getPlayerStatsByGame() 
+    function getPlayerStatsByGame()
     {
         $app = Factory::getApplication();
         $teamplayers = self::getTeamPlayers();
@@ -760,12 +760,12 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
                 foreach ($pos_stats as $stat) {
                     if (!empty($stat)) {
                         if (isset($stat->_showinsinglematchreports) ) {
-                                            include_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'statistics' .DIRECTORY_SEPARATOR.$stat->_name. '.php';    
-                                            $mdlstats = BaseDatabaseModel::getInstance($stat->_name, "SMStatistic");   
-                                            $mdlstats->id = $stat->id;    
+                                            include_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'statistics' .DIRECTORY_SEPARATOR.$stat->_name. '.php';  
+                                            $mdlstats = BaseDatabaseModel::getInstance($stat->_name, "SMStatistic"); 
+                                            $mdlstats->id = $stat->id;  
                                             $stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);
                                             $displaystats[] = $stat;
-                        }                    
+                        }                  
                     }
                 }
             }
@@ -775,11 +775,11 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getPlayerStatsByProject()
-     * 
+     *
      * @param  integer $sportstype
      * @return
      */
-    function getPlayerStatsByProject($sportstype = 0) 
+    function getPlayerStatsByProject($sportstype = 0)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -788,20 +788,20 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
         $result = array();
         if (is_array($teamplayer) && !empty($teamplayer)) {
             /**
- *              getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
+ *              getTeamPlayer can return multiple teamplayers, because a player can be transferred from
  *              one team to another inside a season, but they are all the same person so have same person_id.
  *              So we get the player_id from the first array entry.
  */
             $stats = self::getCareerStats($teamplayer[0]->person_id, $sportstype);
             $history = self::getPlayerHistory($sportstype);
-            
+          
             if (count($history) > 0) {
                 foreach ($stats as $stat) {
                     if (!empty($stat)) {
                         foreach ($history as $player) {
                             $result[$stat->id][$player->project_id][$player->ptid] = $stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
                             if (!isset($result[$stat->id]['totals']) ) {
-                                $result[$stat->id]['totals'] = 0;    
+                                $result[$stat->id]['totals'] = 0;  
                             }
                             $result[$stat->id]['totals'] += $result[$stat->id][$player->project_id][$player->ptid];
                         }
@@ -814,10 +814,10 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelPlayer::getGames()
-     * 
+     *
      * @return
      */
-    function getGames() 
+    function getGames()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -842,7 +842,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
  *              3. There is one or more event on his name for the match
  */
             $query->select('m.id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
-            $query->select('m.match_result_type');    
+            $query->select('m.match_result_type');  
             $query->select('t1.id AS team1,t1.name AS home_name');
             $query->select('t2.id AS team2,t2.name AS away_name');
             $query->select('mp.teamplayer_id');
@@ -886,17 +886,17 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
             $game->playedtime = 0;
         }
 
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $games;
     }
 
     /**
      * sportsmanagementModelPlayer::getGamesEvents()
-     * 
+     *
      * @return
      */
-    function getGamesEvents() 
+    function getGamesEvents()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -937,7 +937,7 @@ class sportsmanagementModelPlayer extends BaseDatabaseModel
                 }
             }
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect  
         return $gameevents;
     }
 

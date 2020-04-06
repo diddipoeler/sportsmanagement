@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelrosterpositions
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,15 +29,15 @@ use Joomla\CMS\MVC\Model\ListModel;
 class sportsmanagementModelrosterpositions extends ListModel
 {
     var $_identifier = "rosterpositions";
-    
+  
     /**
      * sportsmanagementModelrosterpositions::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'obj.name',
                         'obj.country',
@@ -49,7 +49,7 @@ class sportsmanagementModelrosterpositions extends ListModel
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -63,7 +63,7 @@ class sportsmanagementModelrosterpositions extends ListModel
         $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
         $app = Factory::getApplication('administrator');
-        
+      
 
 
         // Load the filter state.
@@ -76,14 +76,14 @@ class sportsmanagementModelrosterpositions extends ListModel
         // List state information.
         parent::populateState('obj.name', 'asc');
     }
-    
-        
+  
+      
     protected function getListQuery()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $search    = $this->getState('filter.search');
-        
+      
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -102,19 +102,19 @@ class sportsmanagementModelrosterpositions extends ListModel
             $db->escape($this->getState('list.ordering', 'obj.name')).' '.
             $db->escape($this->getState('list.direction', 'ASC'))
         );
- 
+
 
 
         return $query;
-        
-        
-        
+      
+      
+      
     }
 
 
 
 
-    
+  
     function getRosterHome()
     {
         $bildpositionenhome = array();
@@ -142,7 +142,7 @@ class sportsmanagementModelrosterpositions extends ListModel
         $bildpositionenhome['HOME_POS'][10]['heim']['links'] = 233;
         return $bildpositionenhome;
     }
-    
+  
     function getRosterAway()
     {
         $bildpositionenaway = array();
@@ -170,8 +170,8 @@ class sportsmanagementModelrosterpositions extends ListModel
         $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         return $bildpositionenaway;
     }
-    
+  
 
-    
+  
 }
 ?>

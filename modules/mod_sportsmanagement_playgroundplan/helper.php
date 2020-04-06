@@ -14,9 +14,9 @@ use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementPlaygroundplanHelper
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version 2014
  * @access public
@@ -40,7 +40,7 @@ class modSportsmanagementPlaygroundplanHelper
 
 		$numberofmatches = $params->get('maxmatches','5');
 
-		$db  = sportsmanagementHelper::getDBConnection(); 
+		$db  = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
 		$result = array();
@@ -52,41 +52,41 @@ class modSportsmanagementPlaygroundplanHelper
         $query->select('pltd.id AS team_playground_id');
         $query->select('pltd.name AS team_playground_name');
         $query->select('pl.id AS playground_id');
-        
+      
         $query->select('pl.picture AS playground_picture');
         $query->select('plcd.picture AS playground_club_picture');
         $query->select('pltd.picture AS playground_team_picture');
-        
+      
         $query->select('pl.name AS playground_name');
         $query->select('t1.name AS team1_name');
         $query->select('t2.name AS team2_name');
-        
+      
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS playground_slug');
         $query->select('CONCAT_WS( \':\', plcd.id, plcd.alias ) AS playground_club_slug');
         $query->select('CONCAT_WS( \':\', pltd.id, pltd.alias ) AS playground_team_slug');
-            
+          
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER',' #__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id  ');
         $query->join('INNER',' #__sportsmanagement_project_team as tj2 ON tj2.id = m.projectteam2_id  ');
-        
+      
         $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = tj1.project_id  ');
-        
+      
         $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tj1.team_id ');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
-        
+      
         $query->join('INNER',' #__sportsmanagement_team as t1 ON t1.id = st1.team_id ');
         $query->join('INNER',' #__sportsmanagement_team as t2 ON t2.id = st2.team_id ');
         $query->join('INNER',' #__sportsmanagement_club c ON c.id = t1.club_id');
         $query->join('INNER',' #__sportsmanagement_league as lg ON lg.id = p.league_id');
-        
+      
         $query->join('LEFT',' #__sportsmanagement_playground AS plcd ON c.standard_playground = plcd.id');
         $query->join('LEFT',' #__sportsmanagement_playground AS pltd ON tj1.standard_playground = pltd.id ');
         $query->join('LEFT',' #__sportsmanagement_playground AS pl ON m.playground_id = pl.id');
-        
+      
         if ( $playgroundstring )
         {
-		$query->where('( m.playground_id IN ('.$playgroundstring.') 
+		$query->where('( m.playground_id IN ('.$playgroundstring.')
         OR (tj1.standard_playground IN ('. $playgroundstring .') AND m.playground_id IS NULL)
                           OR (c.standard_playground IN ('. $playgroundstring .') AND (m.playground_id IS NULL AND tj1.standard_playground IS NULL )))
         ');
@@ -94,18 +94,18 @@ class modSportsmanagementPlaygroundplanHelper
         $query->where('m.match_date > NOW()');
         $query->where('m.published = 1');
         $query->where('p.published = 1');
-        
+      
         if ( $projectstring != 0 )
 		{
             $query->where('p.id IN ('.$projectstring.')');
 		}
-        
+      
         $query->order('m.match_date ASC');
 
 			
 		$db->setQuery($query,0,$numberofmatches);
-        
-        try{ 
+      
+        try{
 		$info = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 }
@@ -121,7 +121,7 @@ $code = $e->getCode(); // Returns '500';
 
 	/**
 	 * modSportsmanagementPlaygroundplanHelper::getTeams()
-	 * 
+	 *
 	 * @param mixed $team1_id
 	 * @param mixed $teamformat
 	 * @return
@@ -129,16 +129,16 @@ $code = $e->getCode(); // Returns '500';
 	public static function getTeams( $team1_id, $teamformat)
 	{
 	   $app = Factory::getApplication();
-	   $db  = sportsmanagementHelper::getDBConnection(); 
+	   $db  = sportsmanagementHelper::getDBConnection();
        $query = $db->getQuery(true);
-       
+     
        $query->select($teamformat);
        $query->from('#__sportsmanagement_team AS t ');
        $query->where('t.id ='.(int)$team1_id);
 		
 		$db->setQuery( $query );
-        
-try{        
+      
+try{      
 		$team_name = $db->loadResult();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 }
@@ -156,27 +156,27 @@ $code = $e->getCode(); // Returns '500';
 
 	/**
 	 * modSportsmanagementPlaygroundplanHelper::getTeamLogo()
-	 * 
+	 *
 	 * @param mixed $team_id
 	 * @return
 	 */
 	public static function getTeamLogo($team_id,$logo = 'logo_big')
 	{
 	   $app = Factory::getApplication();
-	   $db  = sportsmanagementHelper::getDBConnection(); 
+	   $db  = sportsmanagementHelper::getDBConnection();
        $query = $db->getQuery(true);
-       
+     
        $query->select('c.'.$logo);
        $query->from('#__sportsmanagement_team AS t ');
        $query->join('LEFT',' #__sportsmanagement_club as c ON c.id = t.club_id ');
        $query->where('t.id ='.$team_id);
        	
 		$db->setQuery( $query );
-        
+      
        try{
 		$club_logo = $db->loadResult();
 
-		if ($club_logo == '') 
+		if ($club_logo == '')
         {
             switch ($logo)
             {
@@ -189,7 +189,7 @@ $code = $e->getCode(); // Returns '500';
                 case 'logo_big':
                 $club_logo = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
                 break;
-                
+              
             }
 
 		}
@@ -201,7 +201,7 @@ catch (Exception $e){
 $code = $e->getCode(); // Returns '500';
 	$club_logo = false;
 }
-        
+      
 		return $club_logo;
 	}
 }

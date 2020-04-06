@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelsishandball
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,10 +31,10 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
 {
 
 
-    
+  
     /**
      * sportsmanagementModelsishandball::getLink()
-     * 
+     *
      * @param  mixed $vereinsnummer
      * @param  mixed $vereinspasswort
      * @param  mixed $liganummer
@@ -42,25 +42,25 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
      * @param  mixed $sis_xmllink
      * @return
      */
-    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
+    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
-        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);    
+        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);  
         return $link;
     }
 
-    
+  
     /**
      * sportsmanagementModelsishandball::getTabelle()
-     * 
+     *
      * @param  mixed $linkresults
      * @param  mixed $liganummer
      * @param  mixed $sis_art
      * @return
      */
-    function getTabelle($linkresults,$liganummer,$sis_art) 
+    function getTabelle($linkresults,$liganummer,$sis_art)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -71,7 +71,7 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
         if (file_exists($datei)) {
             $LetzteAenderung = filemtime($datei);
             if ((time() - $LetzteAenderung) > 1800) {
-                //if(file_get_contents($linkresults)) 
+                //if(file_get_contents($linkresults))
                  //{
                  //Laden
                  //$content = file_get_contents($linkresults);
@@ -126,16 +126,16 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
         // XML File end
         return $result;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelsishandball::getStatistik()
-     * 
+     *
      * @param  mixed $linkresults
      * @param  mixed $liganummer
      * @return
      */
-    function getStatistik($linkresults,$liganummer) 
+    function getStatistik($linkresults,$liganummer)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -147,7 +147,7 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
             $LetzteAenderung = filemtime($datei);
             if ((time() - $LetzteAenderung) > 1800) {
                 //unlink($datei);
-                //if(file_get_contents($linkresults)) 
+                //if(file_get_contents($linkresults))
                 //{
                  //Laden
                  //$content = file_get_contents($linkresults);
@@ -204,17 +204,17 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
     }
     //Statistik, Tore end
 
-    
-    
+  
+  
     /**
      * sportsmanagementModelsishandball::getSpielplan()
-     * 
+     *
      * @param  mixed $linkresults
      * @param  mixed $liganummer
      * @param  mixed $sis_art
      * @return
      */
-    function getSpielplan($linkresults,$liganummer,$sis_art) 
+    function getSpielplan($linkresults,$liganummer,$sis_art)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -225,7 +225,7 @@ class sportsmanagementModelsishandball extends BaseDatabaseModel
         if (file_exists($datei)) {
             $LetzteAenderung = filemtime($datei);
             if ((time() - $LetzteAenderung) > 1800) {
-                //if(file_get_contents($linkresults)) 
+                //if(file_get_contents($linkresults))
                 //{
                   //Laden
                  //$content = file_get_contents($linkresults);

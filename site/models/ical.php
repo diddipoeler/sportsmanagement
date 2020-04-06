@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelical
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -37,10 +37,10 @@ class sportsmanagementModelical extends BaseDatabaseModel
     var $team = null;
     var $club = null;
 
-    
+  
     /**
      * sportsmanagementModelical::__construct()
-     * 
+     *
      * @return void
      */
     function __construct( )
@@ -49,28 +49,28 @@ class sportsmanagementModelical extends BaseDatabaseModel
         $app = Factory::getApplication();
         $jinput = $app->input;
         parent::__construct();
-        
+      
         self::$teamid = (int) $jinput->get('tid', 0, '');
         self::$projectteamid = (int) $jinput->get('ptid', 0, '');
-        
+      
         self::$projectid = $jinput->request->get('p', 0, 'INT');
         self::$divisionid = $jinput->request->get('division', 0, 'INT');
         self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::$projectid = self::$projectid;
-        //sportsmanagementModelResults::$projectid = self::$projectid;  
-        sportsmanagementModelNextMatch::$projectid = self::$projectid; 
+        //sportsmanagementModelResults::$projectid = self::$projectid;
+        sportsmanagementModelNextMatch::$projectid = self::$projectid;
 
     }
 
-    function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0) 
-    { 
+    function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0)
+    {
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
         $result = array();
-        
+      
         $query->select('m.id,m.projectteam1_id, m.projectteam2_id, m.match_date,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('playground.id AS playground_id,playground.name AS playground_name,playground.short_name AS playground_short_name');
         $query->select('playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city AS playground_city');
@@ -80,12 +80,12 @@ class sportsmanagementModelical extends BaseDatabaseModel
         $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-        $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');    
+        $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');  
 
         $query->select('t1.id AS team1, t2.id AS team2');
         $query->select('p.name AS project_name');
-        
-        // from 
+      
+        // from
         $query->from('#__sportsmanagement_match AS m');
         // join
         $query->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
@@ -101,18 +101,18 @@ class sportsmanagementModelical extends BaseDatabaseModel
         $query->join('LEFT', '#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
         $query->join('LEFT', '#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
         $query->join('LEFT', '#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
-        
+      
         // where
         $query->where('m.published = 1');
-        $query->where('r.project_id = '.$projectid);    
+        $query->where('r.project_id = '.$projectid);  
         if ($teamid ) {
-            $query->where('(t1.id = '.$teamid.' OR t2.id = '.$teamid.')');    
+            $query->where('(t1.id = '.$teamid.' OR t2.id = '.$teamid.')');  
         }
         // order
-        $query->order('m.match_date ASC,m.match_number');      
-        
-        
-        
+        $query->order('m.match_date ASC,m.match_number');    
+      
+      
+      
         try{
             $db->setQuery($query);
                $result = $db->loadObjectList('id');
@@ -123,18 +123,18 @@ class sportsmanagementModelical extends BaseDatabaseModel
             $result = false;
         }
         //}
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-        
-        return $result;    
-        
-        
-        
-        
-        
-        
-    }    
-    
-    
+      
+        return $result;  
+      
+      
+      
+      
+      
+      
+    }  
+  
+  
 }
 ?>

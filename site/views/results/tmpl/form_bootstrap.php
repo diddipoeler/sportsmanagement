@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,7 +23,7 @@ $this->divclassrest = '';
 $this->columns = 12;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
+    $uri = Uri::getInstance(); 
 } else {
     $uri = Factory::getURI();
 }
@@ -33,19 +33,19 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 <?php
 
-/** 
+/**
  * welche bootstrap version
  */
 if ($this->overallconfig['use_bootstrap_version'] ) {
-    $this->divclass = "col-xs-".round((12 / 2));    
-    $this->divclass .= " col-sm-".round((12 / 2));    
-    $this->divclass .= " col-md-".round((12 / 2));    
-    $this->divclass .= " col-lg-".round((12 / 2));    
+    $this->divclass = "col-xs-".round((12 / 2));  
+    $this->divclass .= " col-sm-".round((12 / 2));  
+    $this->divclass .= " col-md-".round((12 / 2));  
+    $this->divclass .= " col-lg-".round((12 / 2));  
 }
 else
 {
-    $this->divclass = "span".round((12 / 2));    
-}    
+    $this->divclass = "span".round((12 / 2));  
+}  
 
 if ($this->roundid > 0 ) {
 ?>
@@ -77,8 +77,8 @@ if ($this->showediticon ) //Needed to check if the user is still allowed to get 
 
 
 <div class="<?php echo $this->divclass; ?>" style="">
-<?php 
-echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagementModelProject::$cfg_which_database); 
+<?php
+echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagementModelProject::$cfg_which_database);
 ?>
 </div>
 </div>
@@ -87,24 +87,24 @@ echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagement
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
 <div class="row-fluid" style="">
 <?php
-/** 
+/**
  * welche bootstrap version
  */
 if ($this->overallconfig['use_bootstrap_version'] ) {
-    $this->divclass = "col-xs-".round((12 / $this->columns));    
-    $this->divclass .= " col-sm-".round((12 / $this->columns));    
-    $this->divclass .= " col-md-".round((12 / $this->columns));    
+    $this->divclass = "col-xs-".round((12 / $this->columns));  
+    $this->divclass .= " col-sm-".round((12 / $this->columns));  
+    $this->divclass .= " col-md-".round((12 / $this->columns));  
     $this->divclass .= " col-lg-".round((12 / $this->columns));
-    $this->divclassrest = "col-xs-3";    
-    $this->divclassrest .= " col-sm-3";    
-    $this->divclassrest .= " col-md-3";    
-    $this->divclassrest .= " col-lg-3";    
+    $this->divclassrest = "col-xs-3";  
+    $this->divclassrest .= " col-sm-3";  
+    $this->divclassrest .= " col-md-3";  
+    $this->divclassrest .= " col-lg-3";  
 }
 else
 {
-    $this->divclass = "span".round((12 / $this->columns));    
-    $this->divclassrest = "span3";    
-}    
+    $this->divclass = "span".round((12 / $this->columns));  
+    $this->divclassrest = "span3";  
+}  
 ?>
 <div class="<?php echo $this->divclass; ?>" style="">
 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
@@ -124,8 +124,8 @@ else
 <?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?>
 <br/>	
 </div>
-    
-<div class="<?php echo $this->divclassrest; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>    
+  
+<div class="<?php echo $this->divclassrest; ?>" style=""><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>  
 </div>	
 <!-- Start of the matches for the selected round -->
     <?php
@@ -137,7 +137,7 @@ else
             $this->i = $i;
             /**
  * eingabe laden
- */                        
+ */                      
             echo $this->loadTemplate('row');
         }
 

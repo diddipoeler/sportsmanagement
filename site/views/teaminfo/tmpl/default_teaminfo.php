@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,7 +44,7 @@ if (!isset($this->team)) {
                 $picture,
                 $this->team->name,
                 $this->config['team_picture_width'],
-                '',                            
+                '',                          
                 $this->modalwidth,
                 $this->modalheight,
                 $this->overallconfig['use_jquery_modal']
@@ -74,7 +74,7 @@ if (!isset($this->team)) {
                                 echo $addressString;
                     }
                             ?>
-                        </address>    
+                        </address>  
                         <?PHP
                         if ($this->club->phone) {
                             ?>
@@ -152,7 +152,7 @@ if (!isset($this->team)) {
                                         <?PHP
                                     }
                                     ?>
-                                </fieldset>    
+                                </fieldset>  
                             </div>
                             <?php
                         }

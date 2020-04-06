@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
 * @version    1.0.05
@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         if(f)
         {
         f.elements['search'].value=val;
-        
+      
         f.submit();
         }
     }
@@ -37,13 +37,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <?PHP
 if ($this->assign ) {
-?>    
+?>  
  <button type="button" onclick="Joomla.submitform('seasons.applyteams', this.form);">
 <?php echo Text::_('JAPPLY');?></button>
 <input	type="text" name="filter_search" id="filter_search"
                                 value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
                                 class="text_area" onchange="$('adminForm').submit(); " />
-                                
+                              
                 <button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
         <?php
@@ -57,11 +57,11 @@ else
 {
     echo $this->loadTemplate('joomla_version');
 }
-?>    
+?>  
 <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />    
+<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />  
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="club_id" value="<?php echo $this->club_id; ?>" />
@@ -71,4 +71,4 @@ else
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

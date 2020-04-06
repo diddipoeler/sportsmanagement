@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ HTMLHelper::_('behavior.tooltip');
                     $outputStr = Text::sprintf(
                         'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE2',
                         '<i>' . $this->predictiongame->name . '</i>',
-                        ' ' . $this->predictiongame->id . ' ' 
+                        ' ' . $this->predictiongame->id . ' '
                     );
                 }
                 else
@@ -61,7 +61,7 @@ HTMLHelper::_('behavior.tooltip');
                                 <?php
                                 echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE'), 'tmpl.template', $this->sortDirection, $this->sortColumn);
                                 ?>
-        </th>                            
+        </th>                          
         <th class='title' nowrap='nowrap'>
                                 <?php
                                 echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3'), 'tmpl.title', $this->sortDirection, $this->sortColumn);
@@ -73,7 +73,7 @@ HTMLHelper::_('behavior.tooltip');
                                 echo HTMLHelper::_('grid.sort', Text::_('JGRID_HEADING_ID'), 'tmpl.id', $this->sortDirection, $this->sortColumn);
                                 ?>
         </th>
-                            
+                          
                             <th width="" class="title">
         <?php
         echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
@@ -84,7 +84,7 @@ HTMLHelper::_('behavior.tooltip');
         echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
         ?>
        </th>
-                    
+                  
         </tr>
        </thead>
         <tfoot>
@@ -125,14 +125,14 @@ HTMLHelper::_('behavior.tooltip');
                                 <?php
                                 if ($row->checked_out) : ?>
                 <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
-                                <?php endif; ?>    
+                                <?php endif; ?>  
             <a href='<?php echo $link; ?>'>
                 <?php
                 echo HTMLHelper::_(
                     'image',
                     'administrator/components/com_sportsmanagement/assets/images/edit.png',
                     Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS'),
-                    'title= "' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS') . '"' 
+                    'title= "' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS') . '"'
                 );
                 ?>
             </a>
@@ -141,7 +141,7 @@ HTMLHelper::_('behavior.tooltip');
             <?php
             echo $row->template;
             ?>
-           </td>                                
+           </td>                              
            <td style='text-align:left; ' nowrap='nowrap'>
             <?php
             echo Text::_($row->title);
@@ -153,7 +153,7 @@ HTMLHelper::_('behavior.tooltip');
             ?>
            </td>
                                 <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->username; ?></td> 
+                            <td><?php echo $row->username; ?></td>
           </tr>
             <?php
             $k = 1 - $k;
@@ -166,4 +166,4 @@ HTMLHelper::_('behavior.tooltip');
     ?>
 <!--		</fieldset> -->
 <!--	</div> -->
-  
+

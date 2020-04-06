@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -40,7 +40,7 @@ if ($this->config['show_teams_seasons'] == "1") {
             ?> <a href="javascript:void(0)"
             onclick="switchMenu('tid<?php echo $this->team->id . $season->projectid; ?>');"
             title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
-           </a> 
+           </a>
             <?php
 
             ?></td>
@@ -57,7 +57,7 @@ if ($this->config['show_teams_seasons'] == "1") {
     if ($this->config['show_teams_logos']) {
         $picture = $season->picture;
 
-        if ((@is_null($picture)) 
+        if ((@is_null($picture))
             or (strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png"))
         ) {
             $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
@@ -75,7 +75,7 @@ if ($this->config['show_teams_seasons'] == "1") {
        $routeparameter['tid'] = $season->team_slug;
        $routeparameter['ptid'] = 0;
                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
-    
+  
     echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
     ?> <br />
     <?php
@@ -103,7 +103,7 @@ if ($this->config['show_teams_seasons'] == "1") {
        $routeparameter['to'] = 0;
        $routeparameter['division'] = 0;
                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
-    
+  
     echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
     ?> <br />
       </div>

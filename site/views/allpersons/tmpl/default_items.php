@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="allpersons">         
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allpersons">       
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>
@@ -31,7 +31,7 @@ if ($this->columns ) {
         <th class="" id="">
         <?php  echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_FES_ALLPERSONS_'.strtoupper($value), 'v.'.$value, $this->sortDirection, $this->sortColumn); ?>
     </th>
-    <?PHP    
+    <?PHP  
     }
 }
 ?>
@@ -42,13 +42,13 @@ if ($this->columns ) {
 <?php foreach ($this->items as $field => $item) : ?>
 <tr class="row<?php echo $i % 2; ?>">
 
-<?php 
+<?php
 
 foreach( $this->columns as $key => $value )
 {
 ?>
 <td>
-<?PHP 
+<?PHP
 switch ($value)
 {
 case 'lastname':
@@ -59,12 +59,12 @@ case 'lastname':
         $routeparameter['p'] = $item->projectslug;
         $routeparameter['tid'] = $item->teamslug;
         $routeparameter['pid'] = $item->slug;
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);    
+        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);  
         echo HTMLHelper::link($link, $item->$value);
     }
     else
     {
-        echo $item->$value;    
+        echo $item->$value;  
     }
     break;
 case 'country':
@@ -91,11 +91,11 @@ default:
     echo $item->$value;
     break;
 
-    
+  
 }
 ?>
 </td>
-<?PHP 
+<?PHP
 
 }
 

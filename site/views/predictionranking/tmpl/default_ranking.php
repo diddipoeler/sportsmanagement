@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,12 +24,12 @@ HTMLHelper::_('behavior.tooltip');
 
 <style type="text/css">
 
-.pred_ranking ul { 
-    list-style: none; 
-} 
-.pred_ranking ul li { 
-    display: inline; 
-} 
+.pred_ranking ul {
+    list-style: none;
+}
+.pred_ranking ul li {
+    display: inline;
+}
 </style>
 
 <?php
@@ -41,7 +41,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         sportsmanagementModelPrediction::$pjID = $predictionProject->project_slug;
         $this->model->predictionProject = $predictionProject;
         $actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
-        
+      
         ?>
         <form name='resultsRoundSelector' method='post' >
          <input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
@@ -54,9 +54,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
       <!--
       Responsive tables
-      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
       When viewing on anything larger than 768px wide, you will not see any difference in these tables.
-      -->            
+      -->          
       <div class="table-responsive">
          <table class="table table-responsive" >
        <tr>
@@ -67,7 +67,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
            </td>
            <td>
                 <?php
-         
+       
                 echo HTMLHelper::_('select.genericlist', $this->lists['ranking_array'], 'pggrouprank', 'class="inputbox" size="1" onchange="this.form.submit(); "', 'value', 'text', sportsmanagementModelPrediction::$pggrouprank);
                     ?>
            </td>
@@ -89,7 +89,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 );
                 if ($showProjectID > 0) {
                 ?>
-                    
+                  
             <td>
                     <?php
                      echo '&nbsp;&nbsp;';
@@ -102,21 +102,21 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                     $routeparameter['mode'] = 0;
                     $routeparameter['order'] = '';
                     $routeparameter['layout'] = '';
-                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);                            
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);                          
 
                      $imgTitle=Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
                      $desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0,'title' => $imgTitle));
                      echo HTMLHelper::link($link, $desc, array('target' => ''));
                         ?>
                    </td>
-            
+          
                     <?php
                 }
             ?>
             </td>
          </tr>
- 
-                    
+
+                  
          </table>
             </div>
             <br />
@@ -125,11 +125,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         <?php
         $round_ids = null;
         if (($showProjectID > 0) && ($this->config['show_rankingnav'])) {
-            
+          
             if ($this->configentries['use_pred_select_rounds'] ) {
                 $round_ids = $this->configentries['predictionroundid'];
             }
-            
+          
             $from_matchday = $this->model->createMatchdayList($predictionProject->project_id, $round_ids);
             $to_matchday = $this->model->createMatchdayList($predictionProject->project_id, $round_ids);
         ?>
@@ -145,9 +145,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
      <!--
      Responsive tables
-     Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+     Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
      When viewing on anything larger than 768px wide, you will not see any difference in these tables.
-     -->             
+     -->           
             <div class="table-responsive">
        <table class="table table-responsive">
         <tr>
@@ -170,49 +170,49 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         <?php
         //echo $this->pagination->getLimitBox();
         ?>
-     </tfoot>                    
-                    
+     </tfoot>                  
+                  
        </table>
                 </div>
         <?php echo HTMLHelper::_('form.token'); ?>
       </form>
             <br />
         <?php
-        
+      
         }
         ?>
       <!--
       Responsive tables
-      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+      Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
       When viewing on anything larger than 768px wide, you will not see any difference in these tables.
-      -->   
+      --> 
         <div class="table-responsive">
         <table class="<?PHP echo $this->config['table_class'];?> <?PHP echo $this->config['table_class_responsive'];?>" >
         <thead>
          <tr>
        <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
         <?php
-                
+              
         if (sportsmanagementModelPrediction::$pggrouprank ) {
         ?>
-    <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
+    <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>  
             <?php
         }
         else
-                {    
+                {  
             if ($this->config['show_user_icon']) {
                     ?><th  style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
             }
                 ?>
                 <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
                 <?php
-                
+              
                 if ($this->config['show_pred_group']) {
                     ?>
-                <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
+                <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>  
         <?php
                 }
-                
+              
         }
 
 
@@ -258,13 +258,13 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
       </tr>
             </thead>
         <?php
-       
+     
         $k = 0;
         $memberList = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar);
-            
+          
         $membersResultsArray = array();
         $membersDataArray = array();
-                
+              
         if (sportsmanagementModelPrediction::$pggrouprank ) {
             $groupmembersResultsArray = array();
             $groupmembersDataArray = array();
@@ -280,7 +280,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 $member->user_id,
                 sportsmanagementModelPrediction::$type
             );
-                    
+                  
             $predictionsCount = 0;
             $totalPoints = 0;
             $ChampPoints = 0;
@@ -288,33 +288,33 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             $totalDiff = 0;
             $totalTend = 0;
             $totalJoker = 0;
-                    
+                  
             if (!empty($memberPredictionPoints)) {
                 foreach ($memberPredictionPoints AS $memberPredictionPoint)
                 {
-                    if ((!is_null($memberPredictionPoint->homeResult)) 
-                        || (!is_null($memberPredictionPoint->awayResult)) 
-                        || (!is_null($memberPredictionPoint->homeDecision)) 
+                    if ((!is_null($memberPredictionPoint->homeResult))
+                        || (!is_null($memberPredictionPoint->awayResult))
+                        || (!is_null($memberPredictionPoint->homeDecision))
                         || (!is_null($memberPredictionPoint->awayDecision))
                     ) {
                         $predictionsCount++;
-                                
+                              
                                 switch ( $this->config['use_match_result'] )
                                 {
                         case 0:
-                            // normale spielzeit wird benutzt 
+                            // normale spielzeit wird benutzt
                             // wenn aber die verlängerung oder das elfmeterergebnis eingetragen wurde,
                             // dann den endstand der regulaeren spielzeit nehmen.
-                            if (!is_null($memberPredictionPoint->homeResultOT) || !is_null($memberPredictionPoint->awayResultOT)  
+                            if (!is_null($memberPredictionPoint->homeResultOT) || !is_null($memberPredictionPoint->awayResultOT)
                                 || !is_null($memberPredictionPoint->homeResultSO) || !is_null($memberPredictionPoint->awayResultSO)
                             ) {
                                 $partresults1 = explode(";", $memberPredictionPoint->homeResultSplit);
                                  $partresults2 = explode(";", $memberPredictionPoint->awayResultSplit);
                                 $memberPredictionPoint->homeResult = array_pop($partresults1);;
                                 $memberPredictionPoint->awayResult = array_pop($partresults2);;
-                            }    
-                                    
-                                    
+                            }  
+                                  
+                                  
                             break;
                         case 1:
                             // verlaengerung
@@ -331,7 +331,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                             }
                             break;
                                 }
-                                
+                              
                                 $result = sportsmanagementModelPrediction::createResultsObject(
                                     $memberPredictionPoint->homeResult,
                                     $memberPredictionPoint->awayResult,
@@ -344,7 +344,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 );
                                          // neue punkte berechnen
                         $newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject, $result);
-                                
+                              
                         //if (!is_null($memberPredictionPoint->prPoints))
                         {
                         $points = $memberPredictionPoint->prPoints;
@@ -376,7 +376,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             }
 
             $ChampPoints = sportsmanagementModelPrediction::getChampionPoints($member->champ_tipp);
-          
+        
             $membersResultsArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
                     $membersResultsArray[$member->pmID]['pg_group_id'] = $member->pg_group_id;
                     $membersResultsArray[$member->pmID]['rank'] = 0;
@@ -387,7 +387,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             $membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
             $membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
             $membersResultsArray[$member->pmID]['membernameAtoZ'] = $member->name;
-                    
+                  
             if (sportsmanagementModelPrediction::$pggrouprank ) {
                 if (!isset($groupmembersResultsArray[$member->pg_group_id]['predictionsCount']) ) {
                     $groupmembersResultsArray[$member->pg_group_id]['predictionsCount'] = 0;
@@ -421,11 +421,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
             // check all needed output for later
             $picture = $member->avatar;
-            $playerName = $member->name;                    
-                    
-            if (((!isset($member->avatar)) 
-                || ($member->avatar=='') 
-                || (!file_exists($member->avatar)) 
+            $playerName = $member->name;                  
+                  
+            if (((!isset($member->avatar))
+                || ($member->avatar=='')
+                || (!file_exists($member->avatar))
                 || ((!$member->show_profile) && ($this->predictionMember->pmID!=$member->pmID)))
             ) {
                 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -435,7 +435,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             $membersDataArray[$member->pmID]['show_user_icon'] = $output;
                     $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
                     $membersDataArray[$member->pmID]['pg_group_id']    = $member->pg_group_id;
-                    
+                  
             if (sportsmanagementModelPrediction::$pggrouprank ) {
                 $groupmembersDataArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
                 $groupmembersDataArray[$member->pg_group_id]['pg_group_id']    = $member->pg_group_id;
@@ -444,7 +444,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             if ($member->aliasName ) {
                 $member->name = $member->aliasName;
             }
-          
+        
             if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID))) {
                 $link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID, $member->pmID);
                 $output = HTMLHelper::link($link, $member->name);
@@ -453,9 +453,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             {
                 $output = $member->name;
             }
-                    
+                  
             $membersDataArray[$member->pmID]['name'] = $output;
-                    
+                  
             $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF', $member->name);
             $imgFile = HTMLHelper::image("media/com_sportsmanagement/jl_images/zoom.png", $imgTitle, array(' title' => $imgTitle));
             // bugtracker id 0000088
@@ -471,20 +471,20 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
             $membersDataArray[$member->pmID]['show_tip_details'] = $output;
             $membersDataArray[$member->pmID]['champ_tipp'] = $member->champ_tipp;
-                    
+                  
             if ((int)sportsmanagementModelPrediction::$pggrouprank ) {
                 $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF', $member->pg_group_name);
                 $imgFile = HTMLHelper::image("media/com_sportsmanagement/jl_images/zoom.png", $imgTitle, array(' title' => $imgTitle));
                 $link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID, $actualProjectCurrentRound, sportsmanagementModelPrediction::$pjID, $member->pmID, '', $member->pg_group_id);
                 $output = HTMLHelper::link($link, $imgFile);
-                $groupmembersDataArray[$member->pg_group_id]['show_tip_details'] = $output;    
-            }    
-                
-                
+                $groupmembersDataArray[$member->pg_group_id]['show_tip_details'] = $output;  
+            }  
+              
+              
         }
         /**
-* 
- * ende der tippmitglieder 
+*
+ * ende der tippmitglieder
 */
         if (sportsmanagementModelPrediction::$pggrouprank ) {
             $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($groupmembersResultsArray, $this->config);
@@ -493,11 +493,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
             $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray, $this->config);
         }
-                
+              
         $recordCount = count($computedMembersRanking);
 
         $i=1;
-                
+              
         if (sportsmanagementModelPrediction::$pggrouprank ) {
             $schluessel = 'pg_group_id';
             $membersDataArray = $groupmembersDataArray;
@@ -505,29 +505,29 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         }
         else
                     {
-            $schluessel = 'pmID';    
-        }    
-                
+            $schluessel = 'pmID';  
+        }  
+              
 
         ?>
       <tbody>
         <?PHP
         /**
  * schleife über die sortierte tabelle anfang
- */        
-        $durchlauf = 1; 
+ */      
+        $durchlauf = 1;
         foreach ($computedMembersRanking AS $key => $value)
         {
-            if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende))) {                
+            if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende))) {              
                 foreach ( $this->items as $items )
                 {
                     if ($key == $items->$schluessel ) {
                         $styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:'.$this->config['background_color_ranking'].'; color:black; " ' : '';
                         $tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
                         $class = '';
-                    
+                  
                         ?>
-                        
+                      
            <tr  <?php echo $styleStr; ?> >
             <td<?php echo $tdStyleStr; ?>><?php echo $value['rank']; ?></td>
             <?php
@@ -558,26 +558,26 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 if (isset($membersDataArray[$key]['champ_tipp']) ) {
                     if ($this->config['show_champion_tip_club_logo']) {
                         if ($showProjectID ) {
-                            $champLogo = $this->model->getChampLogo($showProjectID, $membersDataArray[$key]['champ_tipp']);    
-                            
+                            $champLogo = $this->model->getChampLogo($showProjectID, $membersDataArray[$key]['champ_tipp']);  
+                          
                             if (isset($champLogo->name) ) {
                                 $imgTitle = $champLogo->name;
                                 $champion_logo_size = $this->config['champion_logo_size'];
-                                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key, $champLogo->$champion_logo_size, $imgTitle, '20'); 
+                                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key, $champLogo->$champion_logo_size, $imgTitle, '20');
                             }
                             else
                             {
                                 $imgFile = '';
                             }
-                            
-                        } 
+                          
+                        }
                         else
                            {
                             $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
-                            $imgFile = HTMLHelper::image("media/com_sportsmanagement/event_icons/goal2.png", $imgTitle, array('title' => $imgTitle));    
+                            $imgFile = HTMLHelper::image("media/com_sportsmanagement/event_icons/goal2.png", $imgTitle, array('title' => $imgTitle));  
                         }
-                             
-                             
+                           
+                           
                     }
                     else
                              {
@@ -599,7 +599,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                   </td>
                     <?PHP
                 }
-              
+            
             }
                            // soll der meistertipp angezeigt werden ? ende
             if (!sportsmanagementModelPrediction::$pggrouprank ) {
@@ -655,7 +655,7 @@ else
                     }
                 }
             }
-            $durchlauf++;          
+            $durchlauf++;        
         }
         /**
  * schleife über die sortierte tabelle ende

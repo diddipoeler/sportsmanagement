@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,9 +27,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     Joomla.submitbutton = function(task)
     {
         if (task == 'source.cancel' || document.formvalidator.isValid(document.id('source-form'))) {
-    <?php 
+    <?php
     if (version_compare(JSM_JVERSION, '3', 'eq')) {
-        echo $this->form->getField('source')->save(); 
+        echo $this->form->getField('source')->save();
     }
     ?>
             Joomla.submitform(task, document.getElementById('source-form'));
@@ -53,12 +53,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <?php echo HTMLHelper::_('form.token'); ?>
     </fieldset>
 
-    
+  
     <?php echo $this->form->getInput('filename'); ?>
 
 </form>
 <div>
 <?PHP
 echo $this->loadTemplate('footer');
-?>  
+?>
 </div>	

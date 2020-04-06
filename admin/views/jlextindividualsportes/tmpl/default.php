@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -98,17 +98,17 @@ use Joomla\CMS\HTML\HTMLHelper;
             document.getElementById('massadd_type2').style.display='block';
         }
     }
-    
+  
     function SaveMatch(a,b)
     {
         var f = document.matrixForm;
         if(f)
-        {  
-            f.elements['teamplayer1_id'].value = a;  
-            f.elements['teamplayer2_id'].value = b;  
-            f.submit();  
-        }  
-    }    
+        {
+            f.elements['teamplayer1_id'].value = a;
+            f.elements['teamplayer2_id'].value = b;
+            f.submit();
+        }
+    }  
 //-->
 </script>
 <style>
@@ -122,7 +122,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 
-<?php 
+<?php
 //echo $this->loadTemplate('massadd'); ?>
 </div>
 <?php echo $this->loadTemplate('matches'); ?>

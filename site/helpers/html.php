@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementHelperHtml
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -39,7 +39,7 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::getBootstrapModalImage()
-     * 
+     *
      * @param  string $target
      * @param  string $picture
      * @param  string $text
@@ -49,23 +49,23 @@ class sportsmanagementHelperHtml
      * @param  string $height
      * @return
      */
-    public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0) 
+    public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0)
     {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
         switch ($use_jquery_modal)
-        {     
-        case 2:            
+        {   
+        case 2:          
             if ($url) {
-                   $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
-            }    
+                   $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';  
+            }  
             if (!$url) {
-                $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';        
-            }    
-            $modaltext .= '</a>';                
-            break;                
+                $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';      
+            }  
+            $modaltext .= '</a>';              
+            break;              
         case 1:
             if ($url) {
                         $modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
@@ -73,19 +73,19 @@ class sportsmanagementHelperHtml
                         $modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
                         $modaltext .= ' title="'.$text.'"';
                         $modaltext .= '>';
-                        $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
+                        $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';  
                         $modaltext .= '</a>';
-            }    
+            }  
             if (!$url) {
                      $modaltext = '<a id="'.$target.'" href="'.$picture.'" class=""';
                      $modaltext .= ' target="SingleSecondaryWindowName"';
                      $modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
                      $modaltext .= ' title="'.$text.'"';
                      $modaltext .= '>';
-                     $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
+                     $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';  
                      $modaltext .= '</a>';
-            }        
-            break;    
+            }      
+            break;  
         case 0:
             //            if ($url) {
             //                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
@@ -93,7 +93,7 @@ class sportsmanagementHelperHtml
             //                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
             //            }
             //            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
-            
+          
                $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
             $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
             $modaltext .= '</a>';
@@ -112,8 +112,8 @@ class sportsmanagementHelperHtml
             );
 
             break;
-        
-        }    
+      
+        }  
         return $modaltext;
     }
 
@@ -126,7 +126,7 @@ class sportsmanagementHelperHtml
      * @param  object $project
      * @return string html
      */
-    public static function showMatchTime(&$game, &$config, &$overallconfig, &$project) 
+    public static function showMatchTime(&$game, &$config, &$overallconfig, &$project)
     {
         // overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php
         $output = '';
@@ -186,17 +186,17 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::showDivisonRemark()
-     * 
+     *
      * @param  mixed   $hometeam
      * @param  mixed   $guestteam
      * @param  mixed   $config
      * @param  integer $division_id
      * @return
      */
-    public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') 
+    public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '')
     {
         $app = Factory::getApplication();
-    
+  
         $output = '';
         if ($config['switch_home_guest']) {
             $tmpteam = & $hometeam;
@@ -212,12 +212,12 @@ class sportsmanagementHelperHtml
             $division->load((int) $division_id);
             $hometeam->division_slug = $division->id . ':' . $division->alias;
             $hometeam->division_name = $division->name;
-            $hometeam->division_shortname = $division->shortname;      
-        $guestteam->division_id = $division_id;     
+            $hometeam->division_shortname = $division->shortname;    
+        $guestteam->division_id = $division_id;   
         $guestteam->division_slug = $division->id . ':' . $division->alias;
             $guestteam->division_name = $division->name;
             $guestteam->division_shortname = $division->shortname;
-     
+   
         if ((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0)) {
             if (!isset($config['spacer'])) {
                 $config['spacer'] = '/';
@@ -267,7 +267,7 @@ class sportsmanagementHelperHtml
             $output .= '&nbsp;';
         }
 
-        
+      
         return $output;
     }
 
@@ -280,7 +280,7 @@ class sportsmanagementHelperHtml
      * @param  int    $mode
      * @return string html
      */
-    public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0) 
+    public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0)
     {
         $app = Factory::getApplication();
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -293,7 +293,7 @@ class sportsmanagementHelperHtml
         //$thisproject->load($projectid);
 
         $query->clear();
-        
+      
         $query->select('*');
         $query->select('CONCAT_WS( \':\', id, alias ) AS project_slug');
         // from table
@@ -309,7 +309,7 @@ class sportsmanagementHelperHtml
             //$thisround->load($current_round);
 
             $query->clear();
-            
+          
             $query->select('*');
             $query->select('CONCAT_WS( \':\', id, alias ) AS round_slug');
             // from table
@@ -346,7 +346,7 @@ class sportsmanagementHelperHtml
                 if (!strstr($thisround->round_date_first, "0000-00-00")) {
                     echo HTMLHelper::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
-                if (($thisround->round_date_last != $thisround->round_date_first) 
+                if (($thisround->round_date_last != $thisround->round_date_first)
                     && (!strstr($thisround->round_date_last, "0000-00-00"))
                 ) {
                     echo " - " . HTMLHelper::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
@@ -362,11 +362,11 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::getRoundSelectNavigation()
-     * 
+     *
      * @param  mixed $form
      * @return
      */
-    public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0) 
+    public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0)
     {
         $app = Factory::getApplication();
         // JInput object
@@ -386,7 +386,7 @@ class sportsmanagementHelperHtml
         $routeparameter['layout'] = sportsmanagementModelProject::$layout;
 
         //                $routeparameter['cfg_which_database'] = $cfg_which_database;
-        //                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
+        //                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
         //        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
         //        $routeparameter['r'] = 0;
         //        $routeparameter['division'] = $division;
@@ -419,12 +419,12 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::showMatchPlayground()
-     * 
+     *
      * @param  mixed $game
      * @param  mixed $config
      * @return
      */
-    public static function showMatchPlayground(&$game, $config = array()) 
+    public static function showMatchPlayground(&$game, $config = array())
     {
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
@@ -434,7 +434,7 @@ class sportsmanagementHelperHtml
             self::$teams[$game->projectteam1_id] = new stdClass();
             self::$teams[$game->projectteam1_id]->standard_playground = 0;
         }
-        
+      
         if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id)) {
             if (empty($game->playground_id)) {
                 $game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
@@ -444,7 +444,7 @@ class sportsmanagementHelperHtml
                 //$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
 
                 $query->clear();
-                
+              
                 $query->select('*');
                 // from table
                 $query->from('#__sportsmanagement_club');
@@ -497,7 +497,7 @@ class sportsmanagementHelperHtml
             //$pginfo->load($game->playground_id);
 
             $query->clear();
-            
+          
             $query->select('*');
             // from table
             $query->from('#__sportsmanagement_playground');
@@ -531,7 +531,7 @@ class sportsmanagementHelperHtml
 
             $playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name; ?>
             <span class='hasTip'
-                  title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 
+                  title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
                 <?php echo $show_playground_alert. HTMLHelper::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
 
             <?php
@@ -548,7 +548,7 @@ class sportsmanagementHelperHtml
      * @param  object $project
      * @return string
      */
-    function mark_now_playing($thistime, $match_stamp, &$config, &$project) 
+    function mark_now_playing($thistime, $match_stamp, &$config, &$project)
     {
         $whichpart = 1;
         $gone_since_begin = intval(($thistime - $match_stamp) / 60);
@@ -583,14 +583,14 @@ class sportsmanagementHelperHtml
      * @param  array attributes
      * @return string image html code
      */
-    public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) 
+    public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null)
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
         if ($res === false) {
             return false;
-        }      
+        }    
 
         if ($res == 0) {
             if ($usefontawesome) {
@@ -610,7 +610,7 @@ class sportsmanagementHelperHtml
                  $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
                 $title = $alt;
                 $icon_color = 'lost';
-                 
+               
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
                 $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
@@ -622,14 +622,14 @@ class sportsmanagementHelperHtml
                  $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
                 $icon_color = 'won';
-                 
+               
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
                 $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
             }
         }
-        
+      
             // default title attribute, if not specified in passed attributes
             $def_attribs = array('title' => $title);
         if ($attributes) {
@@ -655,7 +655,7 @@ class sportsmanagementHelperHtml
      * @param  array attributes
      * @return string linked image html code
      */
-    public function getThumbScore($game, $projectteam_id, $attributes = null) 
+    public function getThumbScore($game, $projectteam_id, $attributes = null)
     {
         if (!$img = self::getThumbUpDownImg($game, $projectteam_id, $attributes = null)) {
             return false;
@@ -678,7 +678,7 @@ class sportsmanagementHelperHtml
      * @param  int    $ptid
      * @return string image html code
      */
-    public static function getLastRankImg($team, $previous, $ptid, $attributes = null) 
+    public static function getLastRankImg($team, $previous, $ptid, $attributes = null)
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
@@ -724,14 +724,14 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking()
-     * 
+     *
      * @param  mixed  $columnTitle
      * @param  mixed  $paramName
      * @param  mixed  $config
      * @param  string $default
      * @return void
      */
-    public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC") 
+    public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC")
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -772,14 +772,14 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::printColumnHeadingSort()
-     * 
+     *
      * @param  mixed  $columnTitle
      * @param  mixed  $paramName
      * @param  mixed  $config
      * @param  string $default
      * @return void
      */
-    public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null) 
+    public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -843,7 +843,7 @@ class sportsmanagementHelperHtml
 
     /**
      * sportsmanagementHelperHtml::nextLastPages()
-     * 
+     *
      * @param  mixed   $url
      * @param  mixed   $text
      * @param  mixed   $maxentries
@@ -851,7 +851,7 @@ class sportsmanagementHelperHtml
      * @param  integer $limit
      * @return void
      */
-    public static function nextLastPages($url, $text, $maxentries, $limitstart = 0, $limit = 10) 
+    public static function nextLastPages($url, $text, $maxentries, $limitstart = 0, $limit = 10)
     {
         $latestlimitstart = 0;
         if (intval($limitstart - $limit) > 0) {

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,12 +30,12 @@ if ($this->predictionMember->pmID > 0) {
     echo $this->loadTemplate('sectionheader');
     if (($this->predictionMember->show_profile) || ($this->allowedAdmin) || ($this->predictionMember->user_id==$this->actJoomlaUser->id)) {
         echo $this->loadTemplate('info');
-            
+          
         if ($this->config['show_flash_statistic_points']) {
             echo $this->loadTemplate('pointsflashchart');
         }
         if ($this->config['show_flash_statistic_ranks']) {
-            echo $this->loadTemplate('rankflashchart');    
+            echo $this->loadTemplate('rankflashchart');  
         }
     }
     else

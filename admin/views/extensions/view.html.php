@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,12 +19,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
- 
+
 
 /**
  * sportsmanagementViewextensions
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -42,19 +42,19 @@ class sportsmanagementViewextensions extends sportsmanagementView
         $params = ComponentHelper::getParams($this->option);
         $this->sporttypes = $params->get('cfg_sport_types');
     }
- 
+
     /**
      * Setting the toolbar
      */
-    protected function addToolBar() 
-    { 
+    protected function addToolBar()
+    {
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
         $canDo = sportsmanagementHelper::getActions();
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
         if ($canDo->get('core.admin')) {
-            ToolbarHelper::divider();           
+            ToolbarHelper::divider();         
         }
         parent::addToolbar();
     }
@@ -63,14 +63,14 @@ class sportsmanagementViewextensions extends sportsmanagementView
      *
      * @return void
      */
-    protected function setDocument() 
+    protected function setDocument()
     {
         $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS'));
     }
-    
+  
     /**
      * sportsmanagementViewextensions::addIcon()
-     * 
+     *
      * @param  mixed $image
      * @param  mixed $url
      * @param  mixed $text
@@ -91,5 +91,5 @@ class sportsmanagementViewextensions extends sportsmanagementView
      </div>
     <?php
     }
-    
+  
 }

@@ -89,7 +89,7 @@ class vcalendar
  * @param  array $config
  * @return void
  */
-    function vcalendar( $config = array()) 
+    function vcalendar( $config = array())
     {
         $this->_makeVersion();
         $this->calscale   = null;
@@ -132,7 +132,7 @@ class vcalendar
  * @since  2.10.16 - 2011-10-28
  * @return string
  */
-    function createCalscale() 
+    function createCalscale()
     {
         if(empty($this->calscale)) { return false;
         }
@@ -153,7 +153,7 @@ class vcalendar
  * @param  string $value
  * @return void
  */
-    function setCalscale( $value ) 
+    function setCalscale( $value )
     {
         if(empty($value)) { return false;
         }
@@ -170,7 +170,7 @@ class vcalendar
  * @since  2.10.16 - 2011-10-28
  * @return string
  */
-    function createMethod() 
+    function createMethod()
     {
         if(empty($this->method)) { return false;
         }
@@ -191,7 +191,7 @@ class vcalendar
  * @param  string $value
  * @return bool
  */
-    function setMethod( $value ) 
+    function setMethod( $value )
     {
         if(empty($value)) { return false;
         }
@@ -213,7 +213,7 @@ class vcalendar
  * @since  2.12.11 - 2012-05-13
  * @return string
  */
-    function createProdid() 
+    function createProdid()
     {
         if(!isset($this->prodid)) {
             $this->_makeProdid();
@@ -236,7 +236,7 @@ class vcalendar
  * @since  2.6.8 - 2009-12-30
  * @return void
  */
-    function _makeProdid() 
+    function _makeProdid()
     {
         $this->prodid  = '-//'.$this->unique_id.'//NONSGML kigkonsult.se '.ICALCREATOR_VERSION.'//'.strtoupper($this->language);
     }
@@ -253,7 +253,7 @@ class vcalendar
  * @since  0.3.0 - 2006-08-10
  * @return void
  */
-    function _makeUnique_id() 
+    function _makeUnique_id()
     {
         $this->unique_id  = ( isset($_SERVER['SERVER_NAME'])) ? gethostbyname($_SERVER['SERVER_NAME']) : 'localhost';
     }
@@ -270,7 +270,7 @@ class vcalendar
  * @since  2.10.16 - 2011-10-28
  * @return string
  */
-    function createVersion() 
+    function createVersion()
     {
         if(empty($this->version)) {
             $this->_makeVersion();
@@ -291,7 +291,7 @@ class vcalendar
  * @since  0.3.0 - 2006-08-10
  * @return void
  */
-    function _makeVersion() 
+    function _makeVersion()
     {
         $this->version = '2.0';
     }
@@ -303,7 +303,7 @@ class vcalendar
  * @param  string $value
  * @return void
  */
-    function setVersion( $value ) 
+    function setVersion( $value )
     {
         if(empty($value)) { return false;
         }
@@ -321,7 +321,7 @@ class vcalendar
  * @since  2.16.21 - 2013-05-25
  * @return string
  */
-    function createXprop() 
+    function createXprop()
     {
         if(empty($this->xprop) || !is_array($this->xprop)) { return false;
         }
@@ -364,7 +364,7 @@ class vcalendar
  * @param  array  $params optional
  * @return bool
  */
-    function setXprop( $label, $value, $params=false ) 
+    function setXprop( $label, $value, $params=false )
     {
         if(empty($label)) {
             return false;
@@ -372,7 +372,7 @@ class vcalendar
         if('X-' != strtoupper(substr($label, 0, 2))) {
             return false;
         }
-        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -393,7 +393,7 @@ class vcalendar
  * @param  int   $propix,   optional, if specific property is wanted in case of multiply occurences
  * @return bool, if successfull delete
  */
-    function deleteProperty( $propName=false, $propix=false ) 
+    function deleteProperty( $propName=false, $propix=false )
     {
         $propName = ( $propName ) ? strtoupper($propName) : 'X-PROP';
         if(!$propix ) {
@@ -417,7 +417,7 @@ class vcalendar
         default:
             $reduced = array();
             if($propName != 'X-PROP' ) {
-                if(!isset($this->xprop[$propName])) { unset($this->propdelix[$propName]); return false; 
+                if(!isset($this->xprop[$propName])) { unset($this->propdelix[$propName]); return false;
                 }
                 foreach( $this->xprop as $k => $a ) {
                     if(( $k != $propName ) && !empty($a)) {
@@ -455,7 +455,7 @@ class vcalendar
  * @param  bool   $inclParam=FALSE
  * @return mixed
  */
-    function getProperty( $propName=false, $propix=false, $inclParam=false ) 
+    function getProperty( $propName=false, $propix=false, $inclParam=false )
     {
         $propName = ( $propName ) ? strtoupper($propName) : 'X-PROP';
         if('X-PROP' == $propName ) {
@@ -603,7 +603,7 @@ class vcalendar
  *                    second ALWAYS component value!
  * @return bool
  */
-    function setProperty() 
+    function setProperty()
     {
         $numargs    = func_num_args();
         if(1 > $numargs ) {
@@ -636,7 +636,7 @@ class vcalendar
  * @param  mixed $config
  * @return value
  */
-    function getConfig( $config = false ) 
+    function getConfig( $config = false )
     {
         if(!$config ) {
             $return = array();
@@ -749,7 +749,7 @@ class vcalendar
  * @param  string $value
  * @return void
  */
-    function setConfig( $config, $value = false) 
+    function setConfig( $config, $value = false)
     {
         if(is_array($config)) {
             $ak = array_keys($config);
@@ -927,7 +927,7 @@ class vcalendar
  * @param  object $component calendar component
  * @return void
  */
-    function addComponent( $component ) 
+    function addComponent( $component )
     {
         $this->setComponent($component);
     }
@@ -940,7 +940,7 @@ class vcalendar
  * @param  mixed $arg2 optional, ordno if arg1 = component type
  * @return void
  */
-    function deleteComponent( $arg1, $arg2=false  ) 
+    function deleteComponent( $arg1, $arg2=false  )
     {
         $argType = $index = null;
         if (ctype_digit((string) $arg1)) {
@@ -982,7 +982,7 @@ class vcalendar
  * @param  mixed $arg2 optional, ordno if arg1 = component type
  * @return object
  */
-    function getComponent( $arg1=false, $arg2=false ) 
+    function getComponent( $arg1=false, $arg2=false )
     {
         $index = $argType = null;
         if (!$arg1 ) { // first or next in component chain
@@ -1114,7 +1114,7 @@ class vcalendar
  * @param  string $compType component type
  * @return object (reference)
  */
-    function & newComponent( $compType ) 
+    function & newComponent( $compType )
     {
         $config = $this->getConfig();
         $keys   = array_keys($this->components);
@@ -1170,7 +1170,7 @@ class vcalendar
  *                                FALSE          - one occurance of component only in output array
  * @return array or FALSE
  */
-    function selectComponents( $startY=false, $startM=false, $startD=false, $endY=false, $endM=false, $endD=false, $cType=false, $flat=false, $any=true, $split=true ) 
+    function selectComponents( $startY=false, $startM=false, $startD=false, $endY=false, $endM=false, $endD=false, $cType=false, $flat=false, $any=true, $split=true )
     {
             /* check  if empty calendar */
         if(0 >= count($this->components)) { return false;
@@ -1568,7 +1568,7 @@ class vcalendar
         } // end foreach ( $this->components as $cix => $component )
         unset(
             $dtendExist, $dueExist, $durationExist, $endAllDayEvent, $recurrid, $recurridList,
-            $end, $startWdate, $endWdate, $rdurWsecs, $rdur, $exdatelist, $recurlist, $workstart, $workend, $endDateFormat 
+            $end, $startWdate, $endWdate, $rdurWsecs, $rdur, $exdatelist, $recurlist, $workstart, $workend, $endDateFormat
         ); // clean up
         if(0 >= count($result)) { return false;
         } elseif(!$flat ) {
@@ -1612,7 +1612,7 @@ class vcalendar
  * @param  array $selectOptions, (string) key => (mixed) value, (key=propertyName)
  * @return array
  */
-    function selectComponents2( $selectOptions ) 
+    function selectComponents2( $selectOptions )
     {
         $output = array();
         $allowedComps      = array('vevent', 'vtodo', 'vjournal', 'vfreebusy' );
@@ -1691,7 +1691,7 @@ class vcalendar
  * @param  mixed  $arg2      optional, ordno if arg1 = component type
  * @return void
  */
-    function setComponent( $component, $arg1=false, $arg2=false  ) 
+    function setComponent( $component, $arg1=false, $arg2=false  )
     {
         $component->setConfig($this->getConfig(), false, true);
         if(!in_array($component->objName, array( 'valarm', 'vtimezone' ))) {
@@ -1755,7 +1755,7 @@ class vcalendar
  * @param  string $sortArg, optional
  * @return void
  */
-    function sort( $sortArg=false ) 
+    function sort( $sortArg=false )
     {
         if(! is_array($this->components) || ( 2 > count($this->components))) {
             return;
@@ -1851,7 +1851,7 @@ class vcalendar
  * @param  mixed $unparsedtext, optional, strict rfc2445 formatted, single property string or array of property strings
  * @return bool FALSE if error occurs during parsing
  */
-    function parse( $unparsedtext=false ) 
+    function parse( $unparsedtext=false )
     {
         $nl = $this->getConfig('nl');
         if(( false === $unparsedtext ) || empty($unparsedtext)) {
@@ -1995,16 +1995,16 @@ class vcalendar
                 $WithinQuotes = false;
                 $cix          = 0;
                 while( false !== substr($line, $cix, 1)) {
-                    if(( ':'  == $line[$cix] )                         
-                        && ( substr($line, $cix,     3)  != '://' )       
-                        && ( !in_array(strtolower(substr($line, $cix - 6, 4)), $paramMStz))   
-                        && ( !in_array(strtolower(substr($line, $cix - 3, 4)), $paramProto3)) 
-                        && ( !in_array(strtolower(substr($line, $cix - 4, 5)), $paramProto4)) 
-                        && ( strtolower(substr($line, $cix - 6, 7)) != 'mailto:' )   
-                        && !$WithinQuotes 
+                    if(( ':'  == $line[$cix] )                       
+                        && ( substr($line, $cix,     3)  != '://' )     
+                        && ( !in_array(strtolower(substr($line, $cix - 6, 4)), $paramMStz)) 
+                        && ( !in_array(strtolower(substr($line, $cix - 3, 4)), $paramProto3))
+                        && ( !in_array(strtolower(substr($line, $cix - 4, 5)), $paramProto4))
+                        && ( strtolower(substr($line, $cix - 6, 7)) != 'mailto:' ) 
+                        && !$WithinQuotes
                     ) {
                         $attrEnd = true;
-                        if(( $cix < ( $strlen - 4 )) 
+                        if(( $cix < ( $strlen - 4 ))
                             && ctype_digit(substr($line, $cix+1, 4))
                         ) { // an URI with a (4pos) portnr??
                             for( $c2ix = $cix; 3 < $c2ix; $c2ix-- ) {
@@ -2091,7 +2091,7 @@ class vcalendar
  * @since  2.10.16 - 2011-10-28
  * @return string
  */
-    function createCalendar() 
+    function createCalendar()
     {
         $calendarInit = $calendarxCaldecl = $calendarStart = $calendar = '';
         switch( $this->format ) {
@@ -2124,17 +2124,17 @@ class vcalendar
             $calendarInit .= ' [';
             $old_xcaldecl  = array();
             foreach( $this->xcaldecl as $declix => $declPart ) {
-                if(( 0 < count($old_xcaldecl))    
-                    && isset($declPart['uri'])     && isset($declPart['external'])     
-                    && isset($old_xcaldecl['uri']) && isset($old_xcaldecl['external']) 
-                    && ( in_array($declPart['uri'],      $old_xcaldecl['uri']))            
+                if(( 0 < count($old_xcaldecl))  
+                    && isset($declPart['uri'])     && isset($declPart['external'])   
+                    && isset($old_xcaldecl['uri']) && isset($old_xcaldecl['external'])
+                    && ( in_array($declPart['uri'],      $old_xcaldecl['uri']))          
                     && ( in_array($declPart['external'], $old_xcaldecl['external']))
                 ) {
                     continue; // no duplicate uri and ext. references
                 }
-                if(( 0 < count($old_xcaldecl))    
-                    && !isset($declPart['uri'])     && !isset($declPart['uri'])         
-                    && isset($declPart['ref'])     && isset($old_xcaldecl['ref'])      
+                if(( 0 < count($old_xcaldecl))  
+                    && !isset($declPart['uri'])     && !isset($declPart['uri'])       
+                    && isset($declPart['ref'])     && isset($old_xcaldecl['ref'])    
                     && ( in_array($declPart['ref'],      $old_xcaldecl['ref']))
                 ) {
                     continue; // no duplicate element declarations
@@ -2188,7 +2188,7 @@ class vcalendar
  * @param  bool $gzip
  * @return redirect
  */
-    function returnCalendar( $utf8Encode=false, $gzip=false ) 
+    function returnCalendar( $utf8Encode=false, $gzip=false )
     {
         $filename = $this->getConfig('filename');
         $output   = $this->createCalendar();
@@ -2221,7 +2221,7 @@ class vcalendar
  * @param  string $delimiter optional
  * @return bool
  */
-    function saveCalendar( $directory=false, $filename=false, $delimiter=false ) 
+    function saveCalendar( $directory=false, $filename=false, $delimiter=false )
     {
         if($directory ) {
             $this->setConfig('directory', $directory);
@@ -2259,7 +2259,7 @@ class vcalendar
  * @param  int timeout optional, default 3600 sec
  * @return redirect/FALSE
  */
-    function useCachedCalendar( $directory=false, $filename=false, $delimiter=false, $timeout=3600) 
+    function useCachedCalendar( $directory=false, $filename=false, $delimiter=false, $timeout=3600)
     {
         if ($directory && ctype_digit((string) $directory) && !$filename ) {
             $timeout   = (int) $directory;
@@ -2347,7 +2347,7 @@ class calendarComponent
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since  2.9.6 - 2011-05-17
  */
-    function calendarComponent() 
+    function calendarComponent()
     {
         $this->objName         = ( isset($this->timezonetype)) ?
                           strtolower($this->timezonetype)  :  get_class($this);
@@ -2376,7 +2376,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-22
  * @return string
  */
-    function createAction() 
+    function createAction()
     {
         if(empty($this->action)) { return false;
         }
@@ -2395,9 +2395,9 @@ class calendarComponent
  * @param  mixed  $params
  * @return bool
  */
-    function setAction( $value, $params=false ) 
+    function setAction( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2415,7 +2415,7 @@ class calendarComponent
  * @since  2.11.16 - 2012-02-04
  * @return string
  */
-    function createAttach() 
+    function createAttach()
     {
         if(empty($this->attach)) { return false;
         }
@@ -2454,9 +2454,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setAttach( $value, $params=false, $index=false ) 
+    function setAttach( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2474,7 +2474,7 @@ class calendarComponent
  * @since  2.11.12 - 2012-01-31
  * @return string
  */
-    function createAttendee() 
+    function createAttendee()
     {
         if(empty($this->attendee)) { return false;
         }
@@ -2496,8 +2496,8 @@ class calendarComponent
                         if(is_array($pValue) || in_array($pKey, $mParams)) {
                             continue;
                         }
-                        if(( false !== strpos($pValue, ':')) 
-                            || ( false !== strpos($pValue, ';')) 
+                        if(( false !== strpos($pValue, ':'))
+                            || ( false !== strpos($pValue, ';'))
                             || ( false !== strpos($pValue, ','))
                         ) {
                             $paramvalue[$pKey] = '"'.$pValue.'"';
@@ -2581,9 +2581,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setAttendee( $value, $params=false, $index=false ) 
+    function setAttendee( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2610,7 +2610,7 @@ class calendarComponent
                     }
                     foreach( $optparamvalue as $part ) {
                         $part = trim($part);
-                        if(( '"' == substr($part, 0, 1)) 
+                        if(( '"' == substr($part, 0, 1))
                             && ( '"' == substr($part, -1))
                         ) {
                             $part = substr($part, 1, ( strlen($part) - 2 ));
@@ -2624,7 +2624,7 @@ class calendarComponent
                     }
                     break;
                 default:
-                    if(( '"' == substr($optparamvalue, 0, 1)) 
+                    if(( '"' == substr($optparamvalue, 0, 1))
                         && ( '"' == substr($optparamvalue, -1))
                     ) {
                         $optparamvalue = substr($optparamvalue, 1, ( strlen($optparamvalue) - 2 ));
@@ -2670,7 +2670,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createCategories() 
+    function createCategories()
     {
         if(empty($this->categories)) { return false;
         }
@@ -2706,9 +2706,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setCategories( $value, $params=false, $index=false ) 
+    function setCategories( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2726,7 +2726,7 @@ class calendarComponent
  * @since  0.9.7 - 2006-11-20
  * @return string
  */
-    function createClass() 
+    function createClass()
     {
         if(empty($this->class)) { return false;
         }
@@ -2745,9 +2745,9 @@ class calendarComponent
  * @param  array  $params optional
  * @return bool
  */
-    function setClass( $value, $params=false ) 
+    function setClass( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2765,7 +2765,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createComment() 
+    function createComment()
     {
         if(empty($this->comment)) { return false;
         }
@@ -2792,9 +2792,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setComment( $value, $params=false, $index=false ) 
+    function setComment( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2812,15 +2812,15 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-22
  * @return string
  */
-    function createCompleted( ) 
+    function createCompleted( )
     {
         if(empty($this->completed)) { return false;
         }
-        if(!isset($this->completed['value']['year'])  
-            && !isset($this->completed['value']['month']) 
-            && !isset($this->completed['value']['day'])   
-            && !isset($this->completed['value']['hour'])  
-            && !isset($this->completed['value']['min'])   
+        if(!isset($this->completed['value']['year'])
+            && !isset($this->completed['value']['month'])
+            && !isset($this->completed['value']['day']) 
+            && !isset($this->completed['value']['hour'])
+            && !isset($this->completed['value']['min']) 
             && !isset($this->completed['value']['sec'])
         ) {
             if($this->getConfig('allowEmpty')) {
@@ -2846,7 +2846,7 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setCompleted( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    function setCompleted( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         if(empty($year)) {
             if($this->getConfig('allowEmpty')) {
@@ -2871,7 +2871,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createContact() 
+    function createContact()
     {
         if(empty($this->contact)) { return false;
         }
@@ -2897,9 +2897,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setContact( $value, $params=false, $index=false ) 
+    function setContact( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -2917,7 +2917,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createCreated() 
+    function createCreated()
     {
         if(empty($this->created)) { return false;
         }
@@ -2939,7 +2939,7 @@ class calendarComponent
  * @param  mixed $params optional
  * @return bool
  */
-    function setCreated( $year=false, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    function setCreated( $year=false, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         if(!isset($year)) {
             $year = date('Ymd\THis', mktime(date('H'), date('i'), date('s') - date('Z'), date('m'), date('d'), date('Y')));
@@ -2958,7 +2958,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createDescription() 
+    function createDescription()
     {
         if(empty($this->description)) { return false;
         }
@@ -2984,11 +2984,11 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setDescription( $value, $params=false, $index=false ) 
+    function setDescription( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
-        } 
+        }
         }
         if('vjournal' != $this->objName ) {
             $index = 1;
@@ -3007,15 +3007,15 @@ class calendarComponent
  * @since  2.14.4 - 2012-09-26
  * @return string
  */
-    function createDtend() 
+    function createDtend()
     {
         if(empty($this->dtend)) { return false;
         }
-        if(!isset($this->dtend['value']['year'])  
-            && !isset($this->dtend['value']['month']) 
-            && !isset($this->dtend['value']['day'])   
-            && !isset($this->dtend['value']['hour'])  
-            && !isset($this->dtend['value']['min'])   
+        if(!isset($this->dtend['value']['year'])
+            && !isset($this->dtend['value']['month'])
+            && !isset($this->dtend['value']['day']) 
+            && !isset($this->dtend['value']['hour'])
+            && !isset($this->dtend['value']['min']) 
             && !isset($this->dtend['value']['sec'])
         ) {
             if($this->getConfig('allowEmpty')) {
@@ -3043,7 +3043,7 @@ class calendarComponent
  * @param  array params optional
  * @return bool
  */
-    function setDtend( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false ) 
+    function setDtend( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false )
     {
         if(empty($year)) {
             if($this->getConfig('allowEmpty')) {
@@ -3068,13 +3068,13 @@ class calendarComponent
  * @since  2.4.4 - 2008-03-07
  * @return string
  */
-    function createDtstamp() 
+    function createDtstamp()
     {
-        if(!isset($this->dtstamp['value']['year'])  
-            && !isset($this->dtstamp['value']['month']) 
-            && !isset($this->dtstamp['value']['day'])   
-            && !isset($this->dtstamp['value']['hour'])  
-            && !isset($this->dtstamp['value']['min'])   
+        if(!isset($this->dtstamp['value']['year'])
+            && !isset($this->dtstamp['value']['month'])
+            && !isset($this->dtstamp['value']['day']) 
+            && !isset($this->dtstamp['value']['hour'])
+            && !isset($this->dtstamp['value']['min']) 
             && !isset($this->dtstamp['value']['sec'])
         ) {
             $this->_makeDtstamp();
@@ -3090,7 +3090,7 @@ class calendarComponent
  * @since  2.14.1 - 2012-09-29
  * @return void
  */
-    function _makeDtstamp() 
+    function _makeDtstamp()
     {
         $d    = date('Y-m-d-H-i-s', mktime(date('H'), date('i'), (date('s') - date('Z')), date('m'), date('d'), date('Y')));
         $date = explode('-', $d);
@@ -3111,7 +3111,7 @@ class calendarComponent
  * @param  array $params optional
  * @return TRUE
  */
-    function setDtstamp( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    function setDtstamp( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         if(empty($year)) {
             $this->_makeDtstamp();
@@ -3131,15 +3131,15 @@ class calendarComponent
  * @since  2.14.4 - 2012-09-26
  * @return string
  */
-    function createDtstart() 
+    function createDtstart()
     {
         if(empty($this->dtstart)) { return false;
         }
-        if(!isset($this->dtstart['value']['year'])  
-            && !isset($this->dtstart['value']['month']) 
-            && !isset($this->dtstart['value']['day'])   
-            && !isset($this->dtstart['value']['hour'])  
-            && !isset($this->dtstart['value']['min'])   
+        if(!isset($this->dtstart['value']['year'])
+            && !isset($this->dtstart['value']['month'])
+            && !isset($this->dtstart['value']['day']) 
+            && !isset($this->dtstart['value']['hour'])
+            && !isset($this->dtstart['value']['min']) 
             && !isset($this->dtstart['value']['sec'])
         ) {
             if($this->getConfig('allowEmpty')) {
@@ -3170,7 +3170,7 @@ class calendarComponent
  * @param  array  $params optional
  * @return bool
  */
-    function setDtstart( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false ) 
+    function setDtstart( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false )
     {
         if(empty($year)) {
             if($this->getConfig('allowEmpty')) {
@@ -3195,15 +3195,15 @@ class calendarComponent
  * @since  2.14.4 - 2012-09-26
  * @return string
  */
-    function createDue() 
+    function createDue()
     {
         if(empty($this->due)) { return false;
         }
-        if(!isset($this->due['value']['year'])  
-            && !isset($this->due['value']['month']) 
-            && !isset($this->due['value']['day'])   
-            && !isset($this->due['value']['hour'])  
-            && !isset($this->due['value']['min'])   
+        if(!isset($this->due['value']['year'])
+            && !isset($this->due['value']['month'])
+            && !isset($this->due['value']['day']) 
+            && !isset($this->due['value']['hour'])
+            && !isset($this->due['value']['min']) 
             && !isset($this->due['value']['sec'])
         ) {
             if($this->getConfig('allowEmpty')) {
@@ -3231,7 +3231,7 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setDue( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false ) 
+    function setDue( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false )
     {
         if(empty($year)) {
             if($this->getConfig('allowEmpty')) {
@@ -3256,14 +3256,14 @@ class calendarComponent
  * @since  2.16.21 - 2013-05-25
  * @return string
  */
-    function createDuration() 
+    function createDuration()
     {
         if(empty($this->duration)) { return false;
         }
-        if(!isset($this->duration['value']['week']) 
-            && !isset($this->duration['value']['day'])  
-            && !isset($this->duration['value']['hour']) 
-            && !isset($this->duration['value']['min'])  
+        if(!isset($this->duration['value']['week'])
+            && !isset($this->duration['value']['day'])
+            && !isset($this->duration['value']['hour'])
+            && !isset($this->duration['value']['min'])
             && !isset($this->duration['value']['sec'])
         ) {
             if($this->getConfig('allowEmpty')) {
@@ -3287,7 +3287,7 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setDuration( $week, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    function setDuration( $week, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         if(empty($week) && empty($day) && empty($hour) && empty($min) && empty($sec)) {
             if($this->getConfig('allowEmpty')) {
@@ -3322,7 +3322,7 @@ class calendarComponent
  * @since  2.16.5 - 2012-12-28
  * @return string
  */
-    function createExdate() 
+    function createExdate()
     {
         if(empty($this->exdate)) { return false;
         }
@@ -3353,7 +3353,7 @@ class calendarComponent
                 }
                 if(0 < $eix ) {
                     if(isset($theExdate['value'][0]['tz'])) {
-                        if(ctype_digit(substr($theExdate['value'][0]['tz'], -4)) 
+                        if(ctype_digit(substr($theExdate['value'][0]['tz'], -4))
                             || ( 'Z' == $theExdate['value'][0]['tz'] )
                         ) {
                             if('Z' != substr($formatted, -1)) {
@@ -3385,7 +3385,7 @@ class calendarComponent
  * @param  integer       $index,  optional
  * @return bool
  */
-    function setExdate( $exdates, $params=false, $index=false ) 
+    function setExdate( $exdates, $params=false, $index=false )
     {
         if(empty($exdates)) {
             if($this->getConfig('allowEmpty')) {
@@ -3433,9 +3433,9 @@ class calendarComponent
             } elseif(isset($exdatea['tz'])) {
                 $exdatea['tz'] = (string) $exdatea['tz'];
             }
-            if(isset($input['params']['TZID']) 
-                || ( isset($exdatea['tz']) && !iCalUtilityFunctions::_isOffset($exdatea['tz'])) 
-                || ( isset($input['value'][0]) && ( !isset($input['value'][0]['tz']))) 
+            if(isset($input['params']['TZID'])
+                || ( isset($exdatea['tz']) && !iCalUtilityFunctions::_isOffset($exdatea['tz']))
+                || ( isset($input['value'][0]) && ( !isset($input['value'][0]['tz'])))
                 || ( isset($input['value'][0]['tz']) && !iCalUtilityFunctions::_isOffset($input['value'][0]['tz']))
             ) {
                 unset($exdatea['tz']);
@@ -3469,7 +3469,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-22
  * @return string
  */
-    function createExrule() 
+    function createExrule()
     {
         if(empty($this->exrule)) { return false;
         }
@@ -3485,9 +3485,9 @@ class calendarComponent
  * @param  integer $index,    optional
  * @return bool
  */
-    function setExrule( $exruleset, $params=false, $index=false ) 
+    function setExrule( $exruleset, $params=false, $index=false )
     {
-        if(empty($exruleset)) { if($this->getConfig('allowEmpty')) { $exruleset = ''; 
+        if(empty($exruleset)) { if($this->getConfig('allowEmpty')) { $exruleset = '';
         } else { return false;
         }
         }
@@ -3505,7 +3505,7 @@ class calendarComponent
  * @since  2.16.27 - 2013-07-05
  * @return string
  */
-    function createFreebusy() 
+    function createFreebusy()
     {
         if(empty($this->freebusy)) { return false;
         }
@@ -3542,8 +3542,8 @@ class calendarComponent
                     $cnt2 = 5;
                 }
                 if(( 7 == $cnt2 )       // period=  -> date-time
-                    && isset($freebusyPeriod[1]['year'])  
-                    && isset($freebusyPeriod[1]['month']) 
+                    && isset($freebusyPeriod[1]['year'])
+                    && isset($freebusyPeriod[1]['month'])
                     && isset($freebusyPeriod[1]['day'])
                 ) {
                     $content .= iCalUtilityFunctions::_date2strdate($freebusyPeriod[1]);
@@ -3571,7 +3571,7 @@ class calendarComponent
  * @param  integer $index,   optional
  * @return bool
  */
-    function setFreebusy( $fbType, $fbValues, $params=false, $index=false ) 
+    function setFreebusy( $fbType, $fbValues, $params=false, $index=false )
     {
         if(empty($fbValues)) {
             if($this->getConfig('allowEmpty')) {
@@ -3583,7 +3583,7 @@ class calendarComponent
             }
         }
         $fbType = strtoupper($fbType);
-        if(( !in_array($fbType, array( 'FREE', 'BUSY', 'BUSY-UNAVAILABLE', 'BUSY-TENTATIVE' ))) 
+        if(( !in_array($fbType, array( 'FREE', 'BUSY', 'BUSY-UNAVAILABLE', 'BUSY-TENTATIVE' )))
             && ( 'X-' != substr($fbType, 0, 2))
         ) {
             $fbType = 'BUSY';
@@ -3640,7 +3640,7 @@ class calendarComponent
  * @since  2.12.6 - 2012-04-21
  * @return string
  */
-    function createGeo() 
+    function createGeo()
     {
         if(empty($this->geo)) { return false;
         }
@@ -3674,7 +3674,7 @@ class calendarComponent
  * @param  array $params    optional
  * @return bool
  */
-    function setGeo( $latitude, $longitude, $params=false ) 
+    function setGeo( $latitude, $longitude, $params=false )
     {
         if(isset($latitude) && isset($longitude)) {
             if(!is_array($this->geo)) { $this->geo = array();
@@ -3701,7 +3701,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createLastModified() 
+    function createLastModified()
     {
         if(empty($this->lastmodified)) { return false;
         }
@@ -3723,7 +3723,7 @@ class calendarComponent
  * @param  array $params optional
  * @return boll
  */
-    function setLastModified( $year=false, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    function setLastModified( $year=false, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         if(empty($year)) {
             $year = date('Ymd\THis', mktime(date('H'), date('i'), date('s') - date('Z'), date('m'), date('d'), date('Y')));
@@ -3742,7 +3742,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createLocation() 
+    function createLocation()
     {
         if(empty($this->location)) { return false;
         }
@@ -3763,9 +3763,9 @@ class calendarComponent
  * @param  array params optional
  * @return bool
  */
-    function setLocation( $value, $params=false ) 
+    function setLocation( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -3783,7 +3783,7 @@ class calendarComponent
  * @since  2.6.33 - 2010-12-17
  * @return string
  */
-    function createOrganizer() 
+    function createOrganizer()
     {
         if(empty($this->organizer)) { return false;
         }
@@ -3804,9 +3804,9 @@ class calendarComponent
  * @param  array params optional
  * @return bool
  */
-    function setOrganizer( $value, $params=false ) 
+    function setOrganizer( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -3839,7 +3839,7 @@ class calendarComponent
  * @since  2.9.3 - 2011-05-14
  * @return string
  */
-    function createPercentComplete() 
+    function createPercentComplete()
     {
         if(!isset($this->percentcomplete) || ( empty($this->percentcomplete) && !is_numeric($this->percentcomplete))) { return false;
         }
@@ -3858,9 +3858,9 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setPercentComplete( $value, $params=false ) 
+    function setPercentComplete( $value, $params=false )
     {
-        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -3878,7 +3878,7 @@ class calendarComponent
  * @since  2.9.3 - 2011-05-14
  * @return string
  */
-    function createPriority() 
+    function createPriority()
     {
         if(!isset($this->priority) || ( empty($this->priority) && !is_numeric($this->priority))) { return false;
         }
@@ -3897,9 +3897,9 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setPriority( $value, $params=false  ) 
+    function setPriority( $value, $params=false  )
     {
-        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -3917,7 +3917,7 @@ class calendarComponent
  * @since  2.16.9 - 2013-01-09
  * @return string
  */
-    function createRdate() 
+    function createRdate()
     {
         if(empty($this->rdate)) { return false;
         }
@@ -3948,7 +3948,7 @@ class calendarComponent
             $rno = 1;
             foreach( $theRdate['value'] as $rix => $rdatePart ) {
                 $contentPart = null;
-                if(is_array($rdatePart) 
+                if(is_array($rdatePart)
                     && isset($theRdate['params']['VALUE']) && ( 'PERIOD' == $theRdate['params']['VALUE'] )
                 ) { // PERIOD
                     if($utctime ) {
@@ -3972,8 +3972,8 @@ class calendarComponent
                         $cnt2 = 5;
                     }
                     if(( 7 == $cnt2 )       // period=  -> date-time
-                        && isset($rdatePart[1]['year'])  
-                        && isset($rdatePart[1]['month']) 
+                        && isset($rdatePart[1]['year'])
+                        && isset($rdatePart[1]['month'])
                         && isset($rdatePart[1]['day'])
                     ) {
                         if($utctime ) {
@@ -4020,7 +4020,7 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setRdate( $rdates, $params=false, $index=false ) 
+    function setRdate( $rdates, $params=false, $index=false )
     {
         if(empty($rdates)) {
             if($this->getConfig('allowEmpty')) {
@@ -4039,12 +4039,12 @@ class calendarComponent
         $zArr = array( 'GMT', 'UTC', 'Z' );
         $toZ = ( isset($params['TZID']) && in_array(strtoupper($params['TZID']), $zArr)) ? true : false;
             /*  check if PERIOD, if not set */
-        if((!isset($input['params']['VALUE']) || !in_array($input['params']['VALUE'], array( 'DATE', 'PERIOD' ))) 
-            && isset($rdates[0])    && is_array($rdates[0]) && ( 2 == count($rdates[0])) 
-            && isset($rdates[0][0]) &&    isset($rdates[0][1]) && !isset($rdates[0]['timestamp']) 
-            && (( is_array($rdates[0][0]) && ( isset($rdates[0][0]['timestamp']) 
-            || iCalUtilityFunctions::_isArrayDate($rdates[0][0]))) 
-            || ( is_string($rdates[0][0]) && ( 8 <= strlen(trim($rdates[0][0])))))  
+        if((!isset($input['params']['VALUE']) || !in_array($input['params']['VALUE'], array( 'DATE', 'PERIOD' )))
+            && isset($rdates[0])    && is_array($rdates[0]) && ( 2 == count($rdates[0]))
+            && isset($rdates[0][0]) &&    isset($rdates[0][1]) && !isset($rdates[0]['timestamp'])
+            && (( is_array($rdates[0][0]) && ( isset($rdates[0][0]['timestamp'])
+            || iCalUtilityFunctions::_isArrayDate($rdates[0][0])))
+            || ( is_string($rdates[0][0]) && ( 8 <= strlen(trim($rdates[0][0])))))
             && ( is_array($rdates[0][1]) || ( is_string($rdates[0][1]) && ( 3 <= strlen(trim($rdates[0][1])))))
         ) {
             $input['params']['VALUE'] = 'PERIOD';
@@ -4191,7 +4191,7 @@ class calendarComponent
  * @since  2.14.4 - 2012-09-26
  * @return string
  */
-    function createRecurrenceid() 
+    function createRecurrenceid()
     {
         if(empty($this->recurrenceid)) { return false;
         }
@@ -4217,7 +4217,7 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setRecurrenceid( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false ) 
+    function setRecurrenceid( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false )
     {
         if(empty($year)) {
             if($this->getConfig('allowEmpty')) {
@@ -4242,7 +4242,7 @@ class calendarComponent
  * @since  2.16.21 - 2013-05-25
  * @return string
  */
-    function createRelatedTo() 
+    function createRelatedTo()
     {
         if(empty($this->relatedto)) { return false;
         }
@@ -4266,9 +4266,9 @@ class calendarComponent
  * @param  index $index,  optional
  * @return bool
  */
-    function setRelatedTo( $value, $params=false, $index=false ) 
+    function setRelatedTo( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4287,7 +4287,7 @@ class calendarComponent
  * @since  2.9.3 - 2011-05-14
  * @return string
  */
-    function createRepeat() 
+    function createRepeat()
     {
         if(!isset($this->repeat) || ( empty($this->repeat) && !is_numeric($this->repeat))) { return false;
         }
@@ -4306,9 +4306,9 @@ class calendarComponent
  * @param  array  $params optional
  * @return void
  */
-    function setRepeat( $value, $params=false ) 
+    function setRepeat( $value, $params=false )
     {
-        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4326,7 +4326,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createRequestStatus() 
+    function createRequestStatus()
     {
         if(empty($this->requeststatus)) { return false;
         }
@@ -4359,9 +4359,9 @@ class calendarComponent
  * @param  integer $index,   optional
  * @return bool
  */
-    function setRequestStatus( $statcode, $text, $extdata=false, $params=false, $index=false ) 
+    function setRequestStatus( $statcode, $text, $extdata=false, $params=false, $index=false )
     {
-        if(empty($statcode) || empty($text)) { if($this->getConfig('allowEmpty')) { $statcode = $text = ''; 
+        if(empty($statcode) || empty($text)) { if($this->getConfig('allowEmpty')) { $statcode = $text = '';
         } else { return false;
         }
         }
@@ -4383,7 +4383,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createResources() 
+    function createResources()
     {
         if(empty($this->resources)) { return false;
         }
@@ -4418,9 +4418,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setResources( $value, $params=false, $index=false ) 
+    function setResources( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4438,7 +4438,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createRrule() 
+    function createRrule()
     {
         if(empty($this->rrule)) { return false;
         }
@@ -4454,9 +4454,9 @@ class calendarComponent
  * @param  integer $index,   optional
  * @return void
  */
-    function setRrule( $rruleset, $params=false, $index=false ) 
+    function setRrule( $rruleset, $params=false, $index=false )
     {
-        if(empty($rruleset)) { if($this->getConfig('allowEmpty')) { $rruleset = ''; 
+        if(empty($rruleset)) { if($this->getConfig('allowEmpty')) { $rruleset = '';
         } else { return false;
         }
         }
@@ -4474,11 +4474,11 @@ class calendarComponent
  * @since  2.9.3 - 2011-05-14
  * @return string
  */
-    function createSequence() 
+    function createSequence()
     {
         if(!isset($this->sequence) || ( empty($this->sequence) && !is_numeric($this->sequence))) { return false;
         }
-        if(( !isset($this->sequence['value']) || ( empty($this->sequence['value']) && !is_numeric($this->sequence['value']))) 
+        if(( !isset($this->sequence['value']) || ( empty($this->sequence['value']) && !is_numeric($this->sequence['value'])))
             && ( '0' != $this->sequence['value'] )
         ) {
             return ( $this->getConfig('allowEmpty')) ? $this->_createElement('SEQUENCE') : false;
@@ -4495,7 +4495,7 @@ class calendarComponent
  * @param  array $params optional
  * @return bool
  */
-    function setSequence( $value=false, $params=false ) 
+    function setSequence( $value=false, $params=false )
     {
         if(( empty($value) && !is_numeric($value)) && ( '0' != $value )) {
             $value = ( isset($this->sequence['value']) && ( -1 < $this->sequence['value'] )) ? $this->sequence['value'] + 1 : '0';
@@ -4514,7 +4514,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createStatus() 
+    function createStatus()
     {
         if(empty($this->status)) { return false;
         }
@@ -4533,9 +4533,9 @@ class calendarComponent
  * @param  array  $params optional
  * @return bool
  */
-    function setStatus( $value, $params=false ) 
+    function setStatus( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4553,7 +4553,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createSummary() 
+    function createSummary()
     {
         if(empty($this->summary)) { return false;
         }
@@ -4573,9 +4573,9 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setSummary( $value, $params=false ) 
+    function setSummary( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4593,7 +4593,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createTransp() 
+    function createTransp()
     {
         if(empty($this->transp)) { return false;
         }
@@ -4612,9 +4612,9 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setTransp( $value, $params=false ) 
+    function setTransp( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4632,7 +4632,7 @@ class calendarComponent
  * @since  2.4.16 - 2008-10-21
  * @return string
  */
-    function createTrigger() 
+    function createTrigger()
     {
         if(empty($this->trigger)) { return false;
         }
@@ -4640,8 +4640,8 @@ class calendarComponent
             return ( $this->getConfig('allowEmpty')) ? $this->_createElement('TRIGGER') : false;
         }
         $content = $attributes = null;
-        if(isset($this->trigger['value']['year'])   
-            && isset($this->trigger['value']['month'])  
+        if(isset($this->trigger['value']['year']) 
+            && isset($this->trigger['value']['month'])
             && isset($this->trigger['value']['day'])
         ) {
             $content      .= iCalUtilityFunctions::_date2strdate($this->trigger['value']);
@@ -4674,7 +4674,7 @@ class calendarComponent
  * @param  array $params       optional
  * @return bool
  */
-    function setTrigger( $year, $month=null, $day=null, $week=false, $hour=false, $min=false, $sec=false, $relatedStart=true, $before=true, $params=false ) 
+    function setTrigger( $year, $month=null, $day=null, $week=false, $hour=false, $min=false, $sec=false, $relatedStart=true, $before=true, $params=false )
     {
         if(empty($year) && ( empty($month) || is_array($month)) && empty($day) && empty($week) && empty($hour) && empty($min) && empty($sec)) {
             if($this->getConfig('allowEmpty')) {
@@ -4695,7 +4695,7 @@ class calendarComponent
         elseif(is_array($year) && ( is_array($month) || empty($month))) {
             $params = iCalUtilityFunctions::_setParams($month);
             if(!(array_key_exists('year',  $year)    // exclude date-time
-                && array_key_exists('month', $year) 
+                && array_key_exists('month', $year)
                 && array_key_exists('day',   $year))
             ) {  // when this must be a duration
                 if(isset($params['RELATED']) && ( 'END' == strtoupper($params['RELATED']))) {
@@ -4755,10 +4755,10 @@ class calendarComponent
             return true;
         }
         elseif(( empty($year) && empty($month))     // duration
-            && (( !empty($week) || ( 0 == $week )) 
-            || ( !empty($day)  || ( 0 == $day  )) 
-            || ( !empty($hour) || ( 0 == $hour )) 
-            || ( !empty($min)  || ( 0 == $min  )) 
+            && (( !empty($week) || ( 0 == $week ))
+            || ( !empty($day)  || ( 0 == $day  ))
+            || ( !empty($hour) || ( 0 == $hour ))
+            || ( !empty($min)  || ( 0 == $min  ))
             || ( !empty($sec)  || ( 0 == $sec  )))
         ) {
             unset($params['RELATED']); // set at output creation (END only)
@@ -4801,7 +4801,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createTzid() 
+    function createTzid()
     {
         if(empty($this->tzid)) { return false;
         }
@@ -4820,9 +4820,9 @@ class calendarComponent
  * @param  array  $params optional
  * @return bool
  */
-    function setTzid( $value, $params=false ) 
+    function setTzid( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4841,7 +4841,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createTzname() 
+    function createTzname()
     {
         if(empty($this->tzname)) { return false;
         }
@@ -4866,9 +4866,9 @@ class calendarComponent
  * @param  integer $index,  optional
  * @return bool
  */
-    function setTzname( $value, $params=false, $index=false ) 
+    function setTzname( $value, $params=false, $index=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4886,7 +4886,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createTzoffsetfrom() 
+    function createTzoffsetfrom()
     {
         if(empty($this->tzoffsetfrom)) { return false;
         }
@@ -4905,9 +4905,9 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setTzoffsetfrom( $value, $params=false ) 
+    function setTzoffsetfrom( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4925,7 +4925,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createTzoffsetto() 
+    function createTzoffsetto()
     {
         if(empty($this->tzoffsetto)) { return false;
         }
@@ -4944,9 +4944,9 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setTzoffsetto( $value, $params=false ) 
+    function setTzoffsetto( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -4964,7 +4964,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createTzurl() 
+    function createTzurl()
     {
         if(empty($this->tzurl)) { return false;
         }
@@ -4983,9 +4983,9 @@ class calendarComponent
  * @param  string $params optional
  * @return boll
  */
-    function setTzurl( $value, $params=false ) 
+    function setTzurl( $value, $params=false )
     {
-        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -5003,7 +5003,7 @@ class calendarComponent
  * @since  0.9.7 - 2006-11-20
  * @return string
  */
-    function createUid() 
+    function createUid()
     {
         if(0 >= count($this->uid)) {
             $this->_makeuid();
@@ -5018,7 +5018,7 @@ class calendarComponent
  * @since  2.2.7 - 2007-09-04
  * @return void
  */
-    function _makeUid() 
+    function _makeUid()
     {
         $date   = date('Ymd\THisT');
         $unique = substr(microtime(), 2, 4);
@@ -5042,7 +5042,7 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setUid( $value, $params=false ) 
+    function setUid( $value, $params=false )
     {
         if(empty($value)) { return false; // no allowEmpty check here !!!!
         }
@@ -5060,7 +5060,7 @@ class calendarComponent
  * @since  2.4.8 - 2008-10-21
  * @return string
  */
-    function createUrl() 
+    function createUrl()
     {
         if(empty($this->url)) { return false;
         }
@@ -5079,7 +5079,7 @@ class calendarComponent
  * @param  string $params optional
  * @return bool
  */
-    function setUrl( $value, $params=false ) 
+    function setUrl( $value, $params=false )
     {
         if(!empty($value)) {
             if(!filter_var($value, FILTER_VALIDATE_URL) && ( 'urn' != strtolower(substr($value, 0, 3)))) {
@@ -5105,7 +5105,7 @@ class calendarComponent
  * @since  2.16.2 - 2012-12-18
  * @return string
  */
-    function createXprop() 
+    function createXprop()
     {
         if(empty($this->xprop)) { return false;
         }
@@ -5140,7 +5140,7 @@ class calendarComponent
  * @param  array  $params optional
  * @return bool
  */
-    function setXprop( $label, $value, $params=false ) 
+    function setXprop( $label, $value, $params=false )
     {
         if(empty($label)) {
             return false;
@@ -5148,7 +5148,7 @@ class calendarComponent
         if('X-' != strtoupper(substr($label, 0, 2))) {
             return false;
         }
-        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = ''; 
+        if(empty($value) && !is_numeric($value)) { if($this->getConfig('allowEmpty')) { $value = '';
         } else { return false;
         }
         }
@@ -5168,7 +5168,7 @@ class calendarComponent
  * @since  2.0.6 - 2006-06-20
  * @return string
  */
-    function _createFormat() 
+    function _createFormat()
     {
         $objectname                   = null;
         switch( $this->format ) {
@@ -5211,7 +5211,7 @@ class calendarComponent
  * @param  string $content    property content (optional)
  * @return string
  */
-    function _createElement( $label, $attributes=null, $content=false ) 
+    function _createElement( $label, $attributes=null, $content=false )
     {
         switch( $this->format ) {
         case 'xcal':
@@ -5277,7 +5277,7 @@ class calendarComponent
                 $attributes = str_replace($this->intAttrDelimiter, $this->attributeDelimiter, $attributes);
             }
         }
-        if(( 'xcal' == $this->format) 
+        if(( 'xcal' == $this->format)
             && ((( 'attach' == $label ) && !$attachInlineBinary ) || ( in_array($label, array( 'tzurl', 'url' ))))
         ) {
             $pos = strrpos($content, "/");
@@ -5334,7 +5334,7 @@ class calendarComponent
  * @param  array $ctrKeys optional
  * @return string
  */
-    function _createParams( $params=array(), $ctrKeys=array() ) 
+    function _createParams( $params=array(), $ctrKeys=array() )
     {
         if(!is_array($params) || empty($params)) {
             $params = array();
@@ -5345,8 +5345,8 @@ class calendarComponent
         $CNattrExist = $LANGattrExist = false;
         $xparams = array();
         foreach( $params as $paramKey => $paramValue ) {
-            if(( false !== strpos($paramValue, ':')) 
-                || ( false !== strpos($paramValue, ';')) 
+            if(( false !== strpos($paramValue, ':'))
+                || ( false !== strpos($paramValue, ';'))
                 || ( false !== strpos($paramValue, ','))
             ) {
                 $paramValue = '"'.$paramValue.'"';
@@ -5429,7 +5429,7 @@ class calendarComponent
  * @param  array $recurdata
  * @return string
  */
-    function _format_recur( $recurlabel, $recurdata ) 
+    function _format_recur( $recurlabel, $recurdata )
     {
         $output = null;
         foreach( $recurdata as $therule ) {
@@ -5516,25 +5516,25 @@ class calendarComponent
  * @param  string $propName
  * @return bool
  */
-    function _notExistProp( $propName ) 
+    function _notExistProp( $propName )
     {
         if(empty($propName)) { return false; // when deleting x-prop, an empty propName may be used=allowed
         }
         $propName = strtolower($propName);
         if('last-modified'    == $propName ) { if(!isset($this->lastmodified)) {    return true;
-        } 
+        }
         }
         elseif('percent-complete' == $propName ) { if(!isset($this->percentcomplete)) { return true;
-        } 
+        }
         }
         elseif('recurrence-id'    == $propName ) { if(!isset($this->recurrenceid)) {    return true;
-        } 
+        }
         }
         elseif('related-to'       == $propName ) { if(!isset($this->relatedto)) {       return true;
-        } 
+        }
         }
         elseif('request-status'   == $propName ) { if(!isset($this->requeststatus)) {   return true;
-        } 
+        }
         }
         elseif((       'x-' != substr($propName, 0, 2)) && !isset($this->$propName)) {       return true;
         }
@@ -5550,7 +5550,7 @@ class calendarComponent
  * @param  mixed $config
  * @return value
  */
-    function getConfig( $config = false) 
+    function getConfig( $config = false)
     {
         if(!$config ) {
             $return = array();
@@ -5717,7 +5717,7 @@ class calendarComponent
  * @param  bool   $softUpdate
  * @return void
  */
-    function setConfig( $config, $value = false, $softUpdate = false ) 
+    function setConfig( $config, $value = false, $softUpdate = false )
     {
         if(is_array($config)) {
             $ak = array_keys($config);
@@ -5806,7 +5806,7 @@ class calendarComponent
  * @param  int   $propix,   optional, if specific property is wanted in case of multiply occurences
  * @return bool, if successfull delete TRUE
  */
-    function deleteProperty( $propName=false, $propix=false ) 
+    function deleteProperty( $propName=false, $propix=false )
     {
         if($this->_notExistProp($propName)) { return false;
         }
@@ -6054,7 +6054,7 @@ class calendarComponent
                 }
             }
             else {
-                if(count($this->xprop) <= $propix ) { unset($this->propdelix[$propName]); return false; 
+                if(count($this->xprop) <= $propix ) { unset($this->propdelix[$propName]); return false;
                 }
                 $xpropno = 0;
                 foreach( $this->xprop as $xpropkey => $xpropvalue ) {
@@ -6083,7 +6083,7 @@ class calendarComponent
  * @param  int   $propix,    reference to removal counter
  * @return bool TRUE
  */
-    function deletePropertyM( & $multiprop, & $propix ) 
+    function deletePropertyM( & $multiprop, & $propix )
     {
         if(isset($multiprop[$propix])) {
             unset($multiprop[$propix]);
@@ -6110,7 +6110,7 @@ class calendarComponent
  * @param  bool                                                                                 $specform=FALSE
  * @return mixed
  */
-    function getProperty( $propName=false, $propix=false, $inclParam=false, $specform=false ) 
+    function getProperty( $propName=false, $propix=false, $inclParam=false, $specform=false )
     {
         if('GEOLOCATION' == strtoupper($propName)) {
             $content = $this->getProperty('LOCATION');
@@ -6156,7 +6156,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->attach[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->attach[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->attach[$propix] : $this->attach[$propix]['value'];
         break;
@@ -6166,7 +6166,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->attendee[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->attendee[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->attendee[$propix] : $this->attendee[$propix]['value'];
         break;
@@ -6176,7 +6176,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->categories[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->categories[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->categories[$propix] : $this->categories[$propix]['value'];
         break;
@@ -6190,7 +6190,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->comment[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->comment[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->comment[$propix] : $this->comment[$propix]['value'];
         break;
@@ -6204,7 +6204,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->contact[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->contact[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->contact[$propix] : $this->contact[$propix]['value'];
         break;
@@ -6218,7 +6218,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->description[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->description[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->description[$propix] : $this->description[$propix]['value'];
         break;
@@ -6255,7 +6255,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->exdate[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->exdate[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->exdate[$propix] : $this->exdate[$propix]['value'];
         break;
@@ -6265,7 +6265,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->exrule[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->exrule[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->exrule[$propix] : $this->exrule[$propix]['value'];
         break;
@@ -6275,7 +6275,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->freebusy[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->freebusy[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->freebusy[$propix] : $this->freebusy[$propix]['value'];
         break;
@@ -6309,7 +6309,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->rdate[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->rdate[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->rdate[$propix] : $this->rdate[$propix]['value'];
         break;
@@ -6323,7 +6323,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->relatedto[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->relatedto[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->relatedto[$propix] : $this->relatedto[$propix]['value'];
         break;
@@ -6337,7 +6337,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->requeststatus[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->requeststatus[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->requeststatus[$propix] : $this->requeststatus[$propix]['value'];
         break;
@@ -6347,7 +6347,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->resources[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->resources[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->resources[$propix] : $this->resources[$propix]['value'];
         break;
@@ -6357,7 +6357,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->rrule[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->rrule[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->rrule[$propix] : $this->rrule[$propix]['value'];
         break;
@@ -6391,7 +6391,7 @@ class calendarComponent
                 $propix++;
             }
             $this->propix[$propName] = $propix;
-            if(!isset($this->tzname[$propix])) { unset($this->propix[$propName]); return false; 
+            if(!isset($this->tzname[$propix])) { unset($this->propix[$propName]); return false;
             }
             return ( $inclParam ) ? $this->tzname[$propix] : $this->tzname[$propix]['value'];
         break;
@@ -6452,7 +6452,7 @@ class calendarComponent
  * @param  string $propName
  * @param  array  $output,  incremented result array
  */
-    function _getProperties( $propName, & $output ) 
+    function _getProperties( $propName, & $output )
     {
         if(empty($output)) {
             $output = array();
@@ -6525,7 +6525,7 @@ class calendarComponent
  *                    second ALWAYS component value!
  * @return void
  */
-    function setProperty() 
+    function setProperty()
     {
         $numargs    = func_num_args();
         if(1 > $numargs ) { return false;
@@ -6643,7 +6643,7 @@ class calendarComponent
  * @param  mixed $unparsedtext, optional, strict rfc2445 formatted, single property string or array of strings
  * @return bool FALSE if error occurs during parsing
  */
-    function parse( $unparsedtext=null ) 
+    function parse( $unparsedtext=null )
     {
         $nl = $this->getConfig('nl');
         if(!empty($unparsedtext)) {
@@ -6773,16 +6773,16 @@ class calendarComponent
               $WithinQuotes = false;
               $cix          = 0;
             while( false !== substr($line, $cix, 1)) {
-                if((  ':' == $line[$cix] )                         
-                    && ( substr($line, $cix,     3)  != '://' )       
-                    && ( !in_array(strtolower(substr($line, $cix - 6, 4)), $paramMStz))   
-                    && ( !in_array(strtolower(substr($line, $cix - 3, 4)), $paramProto3)) 
-                    && ( !in_array(strtolower(substr($line, $cix - 4, 5)), $paramProto4)) 
-                    && ( strtolower(substr($line, $cix - 6, 7)) != 'mailto:' )   
-                    && !$WithinQuotes 
+                if((  ':' == $line[$cix] )                       
+                    && ( substr($line, $cix,     3)  != '://' )     
+                    && ( !in_array(strtolower(substr($line, $cix - 6, 4)), $paramMStz)) 
+                    && ( !in_array(strtolower(substr($line, $cix - 3, 4)), $paramProto3))
+                    && ( !in_array(strtolower(substr($line, $cix - 4, 5)), $paramProto4))
+                    && ( strtolower(substr($line, $cix - 6, 7)) != 'mailto:' ) 
+                    && !$WithinQuotes
                 ) {
                     $attrEnd = true;
-                    if(( $cix < ( $clen - 4 )) 
+                    if(( $cix < ( $clen - 4 ))
                         && ctype_digit(substr($line, $cix+1, 4))
                     ) { // an URI with a (4pos) portnr??
                         for( $c2ix = $cix; 3 < $c2ix; $c2ix-- ) {
@@ -6877,7 +6877,7 @@ class calendarComponent
                     $propname, $values[0]  // statcode
                     , $values[1]  // statdesc
                     , $values[2]  // extdata
-                    , $propattr 
+                    , $propattr
                 );
                 break;
             case 'FREEBUSY':
@@ -6935,7 +6935,7 @@ class calendarComponent
                                 $value6 = array();
                                 $dayno = $dayname = null;
                                 $value5 = trim((string) $value5);
-                                if(( ctype_alpha(substr($value5, -1))) 
+                                if(( ctype_alpha(substr($value5, -1)))
                                     && ( ctype_alpha(substr($value5, -2, 1)))
                                 ) {
                                     $dayname = substr($value5, -2, 2);
@@ -6956,7 +6956,7 @@ class calendarComponent
                             $value4 = array();
                             $dayno  = $dayname = null;
                             $value5 = trim((string) $value3[1]);
-                            if(( ctype_alpha(substr($value5, -1))) 
+                            if(( ctype_alpha(substr($value5, -1)))
                                 && ( ctype_alpha(substr($value5, -2, 1)))
                             ) {
                                   $dayname = substr($value5, -2, 2);
@@ -7023,7 +7023,7 @@ class calendarComponent
  * @since  2.15.4 - 2012-10-18
  * @return object
  */
-    function copy() 
+    function copy()
     {
         return unserialize(serialize($this));
     }
@@ -7038,7 +7038,7 @@ class calendarComponent
  * @param  mixed $arg2 optional, ordno if arg1 = component type
  * @return void
  */
-    function deleteComponent( $arg1, $arg2=false  ) 
+    function deleteComponent( $arg1, $arg2=false  )
     {
         if(!isset($this->components)) { return false;
         }
@@ -7082,7 +7082,7 @@ class calendarComponent
  * @param  mixed $arg2 optional, ordno if arg1 = component type
  * @return object
  */
-    function getComponent( $arg1=false, $arg2=false ) 
+    function getComponent( $arg1=false, $arg2=false )
     {
         if(!isset($this->components)) { return false;
         }
@@ -7139,7 +7139,7 @@ class calendarComponent
  * @param  object $component calendar component
  * @return void
  */
-    function addSubComponent( $component ) 
+    function addSubComponent( $component )
     {
         $this->setComponent($component);
     }
@@ -7151,7 +7151,7 @@ class calendarComponent
  * @param  string $compType subcomponent type
  * @return object (reference)
  */
-    function & newComponent( $compType ) 
+    function & newComponent( $compType )
     {
         $config = $this->getConfig();
         $keys   = array_keys($this->components);
@@ -7183,7 +7183,7 @@ class calendarComponent
  * @param  mixed  $arg2      optional, ordno if arg1 = component type
  * @return bool
  */
-    function setComponent( $component, $arg1=false, $arg2=false  ) 
+    function setComponent( $component, $arg1=false, $arg2=false  )
     {
         if(!isset($this->components)) { return false;
         }
@@ -7245,7 +7245,7 @@ class calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createSubComponent() 
+    function createSubComponent()
     {
         $output = null;
         if('vtimezone' == $this->objName ) { // sort subComponents, first standard, then daylight, in dtstart order
@@ -7338,7 +7338,7 @@ class vevent extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function vevent( $config = array()) 
+    function vevent( $config = array())
     {
         $this->calendarComponent();
 
@@ -7397,7 +7397,7 @@ class vevent extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname    = $this->_createFormat();
         $component     = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -7494,7 +7494,7 @@ class vtodo extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function vtodo( $config = array()) 
+    function vtodo( $config = array())
     {
         $this->calendarComponent();
 
@@ -7554,7 +7554,7 @@ class vtodo extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname    = $this->_createFormat();
         $component     = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -7642,7 +7642,7 @@ class vjournal extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function vjournal( $config = array()) 
+    function vjournal( $config = array())
     {
         $this->calendarComponent();
 
@@ -7692,7 +7692,7 @@ class vjournal extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname = $this->_createFormat();
         $component  = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -7761,7 +7761,7 @@ class vfreebusy extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function vfreebusy( $config = array()) 
+    function vfreebusy( $config = array())
     {
         $this->calendarComponent();
 
@@ -7799,7 +7799,7 @@ class vfreebusy extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname = $this->_createFormat();
         $component  = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -7852,7 +7852,7 @@ class valarm extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function valarm( $config = array()) 
+    function valarm( $config = array())
     {
         $this->calendarComponent();
 
@@ -7888,7 +7888,7 @@ class valarm extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname    = $this->_createFormat();
         $component     = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -7944,7 +7944,7 @@ class vtimezone extends calendarComponent
  * @param  array $config
  * @return void
  */
-    function vtimezone( $timezonetype=false, $config = array()) 
+    function vtimezone( $timezonetype=false, $config = array())
     {
         if(is_array($timezonetype)) {
             $config       = $timezonetype;
@@ -7993,7 +7993,7 @@ class vtimezone extends calendarComponent
  * @param  array $xcaldecl
  * @return string
  */
-    function createComponent( &$xcaldecl ) 
+    function createComponent( &$xcaldecl )
     {
         $objectname    = $this->_createFormat();
         $component     = $this->componentStart1.$objectname.$this->componentStart2.$this->nl;
@@ -8033,13 +8033,13 @@ class iCalUtilityFunctions
     private static $m_pInstance;
 
     // Private constructor to limit object instantiation to within the class
-    private function __construct() 
+    private function __construct()
     {
         $m_pInstance = false;
     }
 
     // Getter method for creating/returning the single instance of this class
-    public static function getInstance() 
+    public static function getInstance()
     {
         if (!self::$m_pInstance) {
             self::$m_pInstance = new iCalUtilityFunctions();
@@ -8056,11 +8056,11 @@ class iCalUtilityFunctions
  * @param  int   $parno    optional, default FALSE
  * @return array
  */
-    public static function _date_time_array( $datetime, $parno=false ) 
+    public static function _date_time_array( $datetime, $parno=false )
     {
         return iCalUtilityFunctions::_chkDateArr($datetime, $parno);
     }
-    public static function _chkDateArr( $datetime, $parno=false ) 
+    public static function _chkDateArr( $datetime, $parno=false )
     {
         $output = array();
         if(( !$parno || ( 6 <= $parno )) && isset($datetime[3]) && !isset($datetime[4])) { // Y-m-d with tz
@@ -8070,26 +8070,26 @@ class iCalUtilityFunctions
         }
         foreach( $datetime as $dateKey => $datePart ) {
             switch ( $dateKey ) {
-            case '0': case 'year':   $output['year']  = $datePart; 
+            case '0': case 'year':   $output['year']  = $datePart;
                 break;
-            case '1': case 'month':  $output['month'] = $datePart; 
+            case '1': case 'month':  $output['month'] = $datePart;
                 break;
-            case '2': case 'day':    $output['day']   = $datePart; 
+            case '2': case 'day':    $output['day']   = $datePart;
                 break;
             }
             if(3 != $parno ) {
                 switch ( $dateKey ) {
                 case '0':
                 case '1':
-                case '2': 
+                case '2':
                     break;
-                case '3': case 'hour': $output['hour']  = $datePart; 
+                case '3': case 'hour': $output['hour']  = $datePart;
                     break;
-                case '4': case 'min' : $output['min']   = $datePart; 
+                case '4': case 'min' : $output['min']   = $datePart;
                     break;
-                case '5': case 'sec' : $output['sec']   = $datePart; 
+                case '5': case 'sec' : $output['sec']   = $datePart;
                     break;
-                case '6': case 'tz'  : $output['tz']    = $datePart; 
+                case '6': case 'tz'  : $output['tz']    = $datePart;
                     break;
                 }
             }
@@ -8101,7 +8101,7 @@ class iCalUtilityFunctions
             }
             if(!isset($output['sec'])) {         $output['sec']  = 0;
             }
-            if(isset($output['tz']) 
+            if(isset($output['tz'])
                 && (( '+0000' == $output['tz'] ) || ( '-0000' == $output['tz'] ) || ( '+000000' == $output['tz'] ) || ( '-000000' == $output['tz'] ))
             ) {
                                              $output['tz']   = 'Z';
@@ -8119,7 +8119,7 @@ class iCalUtilityFunctions
  * @param  array $params, property parameters
  * @return void
  */
-    public static function _chkdatecfg( $theDate, & $parno, & $params ) 
+    public static function _chkdatecfg( $theDate, & $parno, & $params )
     {
         if(isset($params['TZID'])) {
             $parno = 6;
@@ -8141,7 +8141,7 @@ class iCalUtilityFunctions
                         $params['TZID'] = $tzid; // save only timezone
                     }
                 }
-                elseif(!$parno && ( 3 == count($theDate)) 
+                elseif(!$parno && ( 3 == count($theDate))
                     && ( isset($params['VALUE']) && ( 'DATE' == $params['VALUE'] ))
                 ) {
                     $parno = 3;
@@ -8153,7 +8153,7 @@ class iCalUtilityFunctions
                 $date = trim($theDate);
                 if('Z' == substr($date, -1)) {
                     $parno = 7; // UTC DATE-TIME
-                } elseif((( 8 == strlen($date) && ctype_digit($date)) || ( 11 >= strlen($date))) 
+                } elseif((( 8 == strlen($date) && ctype_digit($date)) || ( 11 >= strlen($date)))
                     && ( !isset($params['VALUE']) || !in_array($params['VALUE'], array( 'DATE-TIME', 'PERIOD' )))
                 ) {
                     $parno = 3; // DATE
@@ -8184,7 +8184,7 @@ class iCalUtilityFunctions
  * @param  array $b
  * @return int
  */
-    public static function _cmpfcn( $a, $b ) 
+    public static function _cmpfcn( $a, $b )
     {
         if(empty($a)) {                       return -1;
         }
@@ -8245,19 +8245,19 @@ class iCalUtilityFunctions
  * @param  string $nl
  * @return string
  */
-    public static function convEolChar( & $text, $nl ) 
+    public static function convEolChar( & $text, $nl )
     {
         $outp = '';
         $cix  = 0;
         while(    isset($text[$cix])) {
-            if(isset($text[$cix + 2]) &&  ( "\r" == $text[$cix] ) && ( "\n" == $text[$cix + 1] ) 
+            if(isset($text[$cix + 2]) &&  ( "\r" == $text[$cix] ) && ( "\n" == $text[$cix + 1] )
                 && ((    " " ==   $text[$cix + 2] ) ||  ( "\t" == $text[$cix + 2] ))                    // 2 pos eolchar + ' ' or '\t'
             ) { $cix  += 2;                                                                           // skip 3
             } elseif(isset($text[$cix + 1]) &&  ( "\r" == $text[$cix] ) && ( "\n" == $text[$cix + 1] )) {
                   $outp .= $nl;                                                                         // 2 pos eolchar
                   $cix  += 1;                                                                           // replace with $nl
             }
-            elseif(isset($text[$cix + 1]) && (( "\r" == $text[$cix] ) || ( "\n" == $text[$cix] )) 
+            elseif(isset($text[$cix + 1]) && (( "\r" == $text[$cix] ) || ( "\n" == $text[$cix] ))
                 && (( " " ==   $text[$cix + 1] ) ||  ( "\t" == $text[$cix + 1] ))                     // 1 pos eolchar + ' ' or '\t'
             ) { $cix  += 1;                                                                            // skip 2
             } elseif(( "\r" == $text[$cix] )     ||  ( "\n" == $text[$cix] )) {                          // 1 pos eolchar
@@ -8301,7 +8301,7 @@ class iCalUtilityFunctions
  * @param  int    $to        a unix timestamp
  * @return bool
  */
-    public static function createTimezone( & $calendar, $timezone, $xProp=array(), $from=null, $to=null ) 
+    public static function createTimezone( & $calendar, $timezone, $xProp=array(), $from=null, $to=null )
     {
         if(empty($timezone)) {
             return false;
@@ -8317,7 +8317,7 @@ class iCalUtilityFunctions
             $transitions       = $dtz->getTransitions();
             $utcTz             = new DateTimeZone('UTC');
         }
-        catch( Exception $e ) { return false; 
+        catch( Exception $e ) { return false;
         }
         if(empty($to)) {
             $dates             = array_keys($calendar->getProperty('dtstart'));
@@ -8370,8 +8370,8 @@ class iCalUtilityFunctions
             $prevOffsetfrom    = $trans['offset'];
             if(true !== $trans['isdst'] ) {                           // standard timezone
                 if(!empty($stdIx) && isset($transTemp[$stdIx]['offsetfrom'])   // check for any repeating rdate's (in order)
-                    && ( $transTemp[$stdIx]['abbr']       ==   $trans['abbr'] )        
-                    && ( $transTemp[$stdIx]['offsetfrom'] ==   $trans['offsetfrom'] )  
+                    && ( $transTemp[$stdIx]['abbr']       ==   $trans['abbr'] )      
+                    && ( $transTemp[$stdIx]['offsetfrom'] ==   $trans['offsetfrom'] )
                     && ( $transTemp[$stdIx]['offset']     ==   $trans['offset'] )
                 ) {
                     $transTemp[$stdIx]['rdate'][]        =   $trans['time'];
@@ -8381,8 +8381,8 @@ class iCalUtilityFunctions
             } // end standard timezone
             else {                                                     // daylight timezone
                 if(!empty($dlghtIx) && isset($transTemp[$dlghtIx]['offsetfrom'])  // check for any repeating rdate's (in order)
-                    && ( $transTemp[$dlghtIx]['abbr']       ==   $trans['abbr'] )         
-                    && ( $transTemp[$dlghtIx]['offsetfrom'] ==   $trans['offsetfrom'] )   
+                    && ( $transTemp[$dlghtIx]['abbr']       ==   $trans['abbr'] )       
+                    && ( $transTemp[$dlghtIx]['offsetfrom'] ==   $trans['offsetfrom'] ) 
                     && ( $transTemp[$dlghtIx]['offset']     ==   $trans['offset'] )
                 ) {
                     $transTemp[$dlghtIx]['rdate'][]        =   $trans['time'];
@@ -8446,17 +8446,17 @@ class iCalUtilityFunctions
  * @param  int   $parno,   optional, default 6
  * @return string
  */
-    public static function _format_date_time( $datetime, $parno=6 ) 
+    public static function _format_date_time( $datetime, $parno=6 )
     {
         return iCalUtilityFunctions::_date2strdate($datetime, $parno);
     }
-    public static function _date2strdate( $datetime, $parno=6 ) 
+    public static function _date2strdate( $datetime, $parno=6 )
     {
-        if(!isset($datetime['year'])  
-            && !isset($datetime['month']) 
-            && !isset($datetime['day'])   
-            && !isset($datetime['hour'])  
-            && !isset($datetime['min'])   
+        if(!isset($datetime['year'])
+            && !isset($datetime['month'])
+            && !isset($datetime['day']) 
+            && !isset($datetime['hour'])
+            && !isset($datetime['min']) 
             && !isset($datetime['sec'])
         ) {
             return;
@@ -8510,7 +8510,7 @@ class iCalUtilityFunctions
  * @param  string $wtz      timezone
  * @return int
  */
-    public static function _date2timestamp( $datetime, $wtz=null ) 
+    public static function _date2timestamp( $datetime, $wtz=null )
     {
         if(!isset($datetime['hour'])) { $datetime['hour'] = 0;
         }
@@ -8556,11 +8556,11 @@ class iCalUtilityFunctions
  * @param  array $duration
  * @return array
  */
-    public static function _duration_array( $duration ) 
+    public static function _duration_array( $duration )
     {
         return iCalUtilityFunctions::_duration2arr($duration);
     }
-    public static function _duration2arr( $duration ) 
+    public static function _duration2arr( $duration )
     {
         $seconds        = 0;
         foreach( $duration as $durKey => $durValue ) {
@@ -8615,7 +8615,7 @@ class iCalUtilityFunctions
  * @param  array $duration
  * @return array, date format
  */
-    public static function _duration2date( $startdate, $duration ) 
+    public static function _duration2date( $startdate, $duration )
     {
         $dateOnly          = ( isset($startdate['hour']) || isset($startdate['min']) || isset($startdate['sec'])) ? false : true;
         $startdate['hour'] = ( isset($startdate['hour'])) ? $startdate['hour'] : 0;
@@ -8651,11 +8651,11 @@ class iCalUtilityFunctions
  * @param  string $duration
  * @return array
  */
-    public static function _duration_string( $duration ) 
+    public static function _duration_string( $duration )
     {
         return iCalUtilityFunctions::_durationStr2arr($duration);
     }
-    public static function _durationStr2arr( $duration ) 
+    public static function _durationStr2arr( $duration )
     {
         $duration = (string) trim($duration);
         while( 'P' != strtoupper(substr($duration, 0, 1))) {
@@ -8710,16 +8710,16 @@ class iCalUtilityFunctions
  * @param  array $duration, array( week, day, hour, min, sec )
  * @return string
  */
-    public static function _format_duration( $duration ) 
+    public static function _format_duration( $duration )
     {
         return iCalUtilityFunctions::_duration2str($duration);
     }
-    public static function _duration2str( $duration ) 
+    public static function _duration2str( $duration )
     {
-        if(isset($duration['week']) 
-            || isset($duration['day'])  
-            || isset($duration['hour']) 
-            || isset($duration['min'])  
+        if(isset($duration['week'])
+            || isset($duration['day'])
+            || isset($duration['hour'])
+            || isset($duration['min'])
             || isset($duration['sec'])
         ) {
             $ok = true;
@@ -8733,8 +8733,8 @@ class iCalUtilityFunctions
         if(isset($duration['day']) && ( 0 < $duration['day'] )) {
             $output .= $duration['day'].'D';
         }
-        if(( isset($duration['hour']) && ( 0 < $duration['hour'] )) 
-            || ( isset($duration['min'])  && ( 0 < $duration['min'] ))  
+        if(( isset($duration['hour']) && ( 0 < $duration['hour'] ))
+            || ( isset($duration['min'])  && ( 0 < $duration['min'] ))
             || ( isset($duration['sec'])  && ( 0 < $duration['sec'] ))
         ) {
             $output .= 'T';
@@ -8760,7 +8760,7 @@ class iCalUtilityFunctions
  * @param  int    $preSet  optional, return value if already preset
  * @return int
  */
-    public static function _existRem( &$array, $expkey, $expval=false, $hitVal=null, $elseVal=null, $preSet=null ) 
+    public static function _existRem( &$array, $expkey, $expval=false, $hitVal=null, $elseVal=null, $preSet=null )
     {
         if($preSet ) {
             return $preSet;
@@ -8786,7 +8786,7 @@ class iCalUtilityFunctions
  * @param  array $input
  * @return bool
  */
-    public static function _isArrayDate( $input ) 
+    public static function _isArrayDate( $input )
     {
         if(!is_array($input) || isset($input['week']) || isset($input['timestamp']) || ( 3 > count($input))) {
             return false;
@@ -8806,7 +8806,7 @@ class iCalUtilityFunctions
         if(( 1970 > $input[0] ) || ( 12 < $input[1] ) || ( 31 < $input[2] )) {
             return false;
         }
-        if(( isset($input[0]) && isset($input[1]) && isset($input[2])) 
+        if(( isset($input[0]) && isset($input[1]) && isset($input[2]))
             && checkdate((int) $input[1], (int) $input[2], (int) $input[0])
         ) {
             return true;
@@ -8825,7 +8825,7 @@ class iCalUtilityFunctions
  * @param  array $input
  * @return bool
  */
-    public static function _isArrayTimestampDate( $input ) 
+    public static function _isArrayTimestampDate( $input )
     {
         return ( is_array($input) && isset($input['timestamp'])) ? true : false ;
     }
@@ -8837,18 +8837,18 @@ class iCalUtilityFunctions
  * @param  string $input
  * @return bool
  */
-    public static function _isOffset( $input ) 
+    public static function _isOffset( $input )
     {
         $input         = trim((string) $input);
         if('Z' == substr($input, -1)) {
             return true;
-        } elseif((   5 <= strlen($input)) 
-            && ( in_array(substr($input, -5, 1), array( '+', '-' ))) 
+        } elseif((   5 <= strlen($input))
+            && ( in_array(substr($input, -5, 1), array( '+', '-' )))
             && (   '0000' <= substr($input, -4)) && (   '9999' >= substr($input, -4))
         ) {
             return true;
-        } elseif((    7 <= strlen($input)) 
-            && ( in_array(substr($input, -7, 1), array( '+', '-' ))) 
+        } elseif((    7 <= strlen($input))
+            && ( in_array(substr($input, -7, 1), array( '+', '-' )))
             && ( '000000' <= substr($input, -6)) && ( '999999' >= substr($input, -6))
         ) {
             return true;
@@ -8864,7 +8864,7 @@ class iCalUtilityFunctions
  * @param  string $timezone, input/output variable reference
  * @return bool
  */
-    public static function ms2phpTZ( & $timezone ) 
+    public static function ms2phpTZ( & $timezone )
     {
         if(empty($timezone)) {
             return false;
@@ -8889,8 +8889,8 @@ class iCalUtilityFunctions
         $hits = array();
         foreach( $timezone_abbreviations as $name => $transitions ) {
             foreach( $transitions as $cnt => $transition ) {
-                if(empty($transition['offset'])      
-                    || empty($transition['timezone_id']) 
+                if(empty($transition['offset'])    
+                    || empty($transition['timezone_id'])
                     || ( $transition['offset'] != $searchOffset )
                 ) {
                     continue;
@@ -8943,7 +8943,7 @@ class iCalUtilityFunctions
  * @param  string $seconds
  * @return string
  */
-    public static function offsetSec2His( $seconds ) 
+    public static function offsetSec2His( $seconds )
     {
         if('-' == substr($seconds, 0, 1)) {
             $prefix  = '-';
@@ -8992,7 +8992,7 @@ class iCalUtilityFunctions
  * @return   void
  * @internal BYHOUR, BYMINUTE, BYSECOND, WEEKLY at year end/start
  */
-    public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=false ) 
+    public static function _recur2date( & $result, $recur, $wdate, $startdate, $enddate=false )
     {
         foreach( $wdate as $k => $v ) { if(ctype_digit($v)) { $wdate[$k] = (int) $v;
         }
@@ -9188,7 +9188,7 @@ class iCalUtilityFunctions
                 if($currentKey != $intervalix ) {
                     $intervalarr = array( $intervalix => ( $intervalarr[$currentKey] + 1 ));
                 }
-                if(( $recur['INTERVAL'] != $intervalarr[$intervalix] ) 
+                if(( $recur['INTERVAL'] != $intervalarr[$intervalix] )
                     && ( 0 != $intervalarr[$intervalix] )
                 ) {
                       /* step up date */
@@ -9209,17 +9209,17 @@ class iCalUtilityFunctions
             }
             if($updateOK && isset($recur['BYWEEKNO'])) {
                 $updateOK = iCalUtilityFunctions::_recurBYcntcheck(
-                    $recur['BYWEEKNO'], $daycnts[$wdate['month']][$wdate['day']]['weekno_up'], $daycnts[$wdate['month']][$wdate['day']]['weekno_down'] 
+                    $recur['BYWEEKNO'], $daycnts[$wdate['month']][$wdate['day']]['weekno_up'], $daycnts[$wdate['month']][$wdate['day']]['weekno_down']
                 );
             }
             if($updateOK && isset($recur['BYYEARDAY'])) {
                 $updateOK = iCalUtilityFunctions::_recurBYcntcheck(
-                    $recur['BYYEARDAY'], $daycnts[$wdate['month']][$wdate['day']]['yearcnt_up'], $daycnts[$wdate['month']][$wdate['day']]['yearcnt_down'] 
+                    $recur['BYYEARDAY'], $daycnts[$wdate['month']][$wdate['day']]['yearcnt_up'], $daycnts[$wdate['month']][$wdate['day']]['yearcnt_down']
                 );
             }
             if($updateOK && isset($recur['BYMONTHDAY'])) {
                 $updateOK = iCalUtilityFunctions::_recurBYcntcheck(
-                    $recur['BYMONTHDAY'], $wdate['day'], $daycnts[$wdate['month']][$wdate['day']]['monthcnt_down'] 
+                    $recur['BYMONTHDAY'], $wdate['day'], $daycnts[$wdate['month']][$wdate['day']]['monthcnt_down']
                 );
             }
             // echo "efter BYMONTHDAY: ".implode('-',$wdate).' status: '; echo ($updateOK) ? 'TRUE' : 'FALSE'; echo "<br>\n";//test###
@@ -9236,15 +9236,15 @@ class iCalUtilityFunctions
                         $daynoexists = true;
                         if(( isset($recur['FREQ']) && ( $recur['FREQ'] == 'MONTHLY' )) || isset($recur['BYMONTH'])) {
                             $daynosw = iCalUtilityFunctions::_recurBYcntcheck(
-                                $recur['BYDAY'][0], $daycnts[$m][$d]['monthdayno_up'], $daycnts[$m][$d]['monthdayno_down'] 
+                                $recur['BYDAY'][0], $daycnts[$m][$d]['monthdayno_up'], $daycnts[$m][$d]['monthdayno_down']
                             );
                         } elseif(isset($recur['FREQ']) && ( $recur['FREQ'] == 'YEARLY' )) {
                             $daynosw = iCalUtilityFunctions::_recurBYcntcheck(
-                                $recur['BYDAY'][0], $daycnts[$m][$d]['yeardayno_up'], $daycnts[$m][$d]['yeardayno_down'] 
+                                $recur['BYDAY'][0], $daycnts[$m][$d]['yeardayno_up'], $daycnts[$m][$d]['yeardayno_down']
                             );
                         }
                     }
-                    if((  $daynoexists &&  $daynosw && $daynamesw ) 
+                    if((  $daynoexists &&  $daynosw && $daynamesw )
                         || ( !$daynoexists && !$daynosw && $daynamesw )
                     ) {
                         $updateOK = true;
@@ -9255,27 +9255,27 @@ class iCalUtilityFunctions
                 else {
                     foreach( $recur['BYDAY'] as $bydayvalue ) {
                         $daynoexists = $daynosw = $daynamesw = false;
-                        if(isset($bydayvalue['DAY']) 
+                        if(isset($bydayvalue['DAY'])
                             && ( $bydayvalue['DAY'] == $daycnts[$m][$d]['DAY'] )
                         ) {
                             $daynamesw = true;
                         }
                         if(isset($bydayvalue[0])) {
                                         $daynoexists = true;
-                            if(( isset($recur['FREQ']) && ( $recur['FREQ'] == 'MONTHLY' )) 
+                            if(( isset($recur['FREQ']) && ( $recur['FREQ'] == 'MONTHLY' ))
                                 || isset($recur['BYMONTH'])
                             ) {
                                 $daynosw = iCalUtilityFunctions::_recurBYcntcheck(
-                                    $bydayvalue['0'], $daycnts[$m][$d]['monthdayno_up'], $daycnts[$m][$d]['monthdayno_down'] 
+                                    $bydayvalue['0'], $daycnts[$m][$d]['monthdayno_up'], $daycnts[$m][$d]['monthdayno_down']
                                 );
                             } elseif(isset($recur['FREQ']) && ( $recur['FREQ'] == 'YEARLY' )) {
                                 $daynosw = iCalUtilityFunctions::_recurBYcntcheck(
-                                    $bydayvalue['0'], $daycnts[$m][$d]['yeardayno_up'], $daycnts[$m][$d]['yeardayno_down'] 
+                                    $bydayvalue['0'], $daycnts[$m][$d]['yeardayno_up'], $daycnts[$m][$d]['yeardayno_down']
                                 );
                             }
                         }
                         // echo "daynoexists:$daynoexists daynosw:$daynosw daynamesw:$daynamesw<br>\n"; // test ###
-                        if((  $daynoexists &&  $daynosw && $daynamesw ) 
+                        if((  $daynoexists &&  $daynosw && $daynamesw )
                             || ( !$daynoexists && !$daynosw && $daynamesw )
                         ) {
                                           $updateOK = true;
@@ -9287,7 +9287,7 @@ class iCalUtilityFunctions
             // echo "efter BYDAY: ".implode('-',$wdate).' status: '; echo ($updateOK) ? 'TRUE' : 'FALSE'; echo "<br>\n"; // test ###
                 /* check BYSETPOS */
             if($updateOK ) {
-                if(isset($recur['BYSETPOS']) 
+                if(isset($recur['BYSETPOS'])
                     && ( in_array($recur['FREQ'], array( 'YEARLY', 'MONTHLY', 'WEEKLY', 'DAILY' )))
                 ) {
                     if(isset($recur['WEEKLY'])) {
@@ -9298,14 +9298,14 @@ class iCalUtilityFunctions
                         }
                     }
                     else {
-                        if(( isset($recur['FREQ']) && ( 'YEARLY'      == $recur['FREQ'] )  
-                            && ( $bysetposYold == $wdate['year'] ))   
-                            || ( isset($recur['FREQ']) && ( 'MONTHLY'     == $recur['FREQ'] )  
-                            && (( $bysetposYold == $wdate['year'] )  
-                            && ( $bysetposMold == $wdate['month'] ))) 
-                            || ( isset($recur['FREQ']) && ( 'DAILY'       == $recur['FREQ'] )  
-                            && (( $bysetposYold == $wdate['year'] )  
-                            && ( $bysetposMold == $wdate['month'])  
+                        if(( isset($recur['FREQ']) && ( 'YEARLY'      == $recur['FREQ'] )
+                            && ( $bysetposYold == $wdate['year'] )) 
+                            || ( isset($recur['FREQ']) && ( 'MONTHLY'     == $recur['FREQ'] )
+                            && (( $bysetposYold == $wdate['year'] )
+                            && ( $bysetposMold == $wdate['month'] )))
+                            || ( isset($recur['FREQ']) && ( 'DAILY'       == $recur['FREQ'] )
+                            && (( $bysetposYold == $wdate['year'] )
+                            && ( $bysetposMold == $wdate['month'])
                             && ( $bysetposDold == $wdate['day'] )))
                         ) {
                               // echo "bysetposymd1[]=".date('Y-m-d H:i:s',$wdatets)."<br>\n";//test
@@ -9333,13 +9333,13 @@ class iCalUtilityFunctions
                 /* check if BYSETPOS is set for updating result array */
             if($updateOK && isset($recur['BYSETPOS'])) {
                   $bysetpos       = false;
-                if(isset($recur['FREQ']) && ( 'YEARLY'  == $recur['FREQ'] ) 
+                if(isset($recur['FREQ']) && ( 'YEARLY'  == $recur['FREQ'] )
                     && ( $bysetposYold != $wdate['year'] )
                 ) {
                       $bysetpos     = true;
                       $bysetposYold = $wdate['year'];
                 }
-                elseif(isset($recur['FREQ']) && ( 'MONTHLY' == $recur['FREQ'] 
+                elseif(isset($recur['FREQ']) && ( 'MONTHLY' == $recur['FREQ']
                     && (( $bysetposYold != $wdate['year'] ) || ( $bysetposMold != $wdate['month'] )))
                 ) {
                       $bysetpos     = true;
@@ -9353,9 +9353,9 @@ class iCalUtilityFunctions
                         $bysetpos     = true;
                     }
                 }
-                elseif(isset($recur['FREQ']) && ( 'DAILY'   == $recur['FREQ'] ) 
-                    && (( $bysetposYold != $wdate['year'] )  
-                    || ( $bysetposMold != $wdate['month'] ) 
+                elseif(isset($recur['FREQ']) && ( 'DAILY'   == $recur['FREQ'] )
+                    && (( $bysetposYold != $wdate['year'] )
+                    || ( $bysetposMold != $wdate['month'] )
                     || ( $bysetposDold != $wdate['day'] ))
                 ) {
                       $bysetpos     = true;
@@ -9399,9 +9399,9 @@ class iCalUtilityFunctions
             }
         }
     }
-    public static function _recurBYcntcheck( $BYvalue, $upValue, $downValue ) 
+    public static function _recurBYcntcheck( $BYvalue, $upValue, $downValue )
     {
-        if(is_array($BYvalue) 
+        if(is_array($BYvalue)
             && ( in_array($upValue, $BYvalue) || in_array($downValue, $BYvalue))
         ) {
             return true;
@@ -9411,7 +9411,7 @@ class iCalUtilityFunctions
             return false;
         }
     }
-    public static function _recurIntervalIx( $freq, $date, $wkst ) 
+    public static function _recurIntervalIx( $freq, $date, $wkst )
     {
             /* create interval index */
         switch( $freq ) {
@@ -9432,7 +9432,7 @@ class iCalUtilityFunctions
         }
         return $intervalix;
     }
-    public static function _recurBydaySort( $bydaya, $bydayb ) 
+    public static function _recurBydaySort( $bydaya, $bydayb )
     {
         static $days = array( 'SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6 );
         return ( $days[substr($bydaya, -2)] < $days[substr($bydayb, -2)] ) ? -1 : 1;
@@ -9445,7 +9445,7 @@ class iCalUtilityFunctions
  * @param  array $rexrule
  * @return array
  */
-    public static function _setRexrule( $rexrule ) 
+    public static function _setRexrule( $rexrule )
     {
         $input          = array();
         if(empty($rexrule)) {
@@ -9562,7 +9562,7 @@ class iCalUtilityFunctions
  * @param  string $tzid    optional
  * @return array
  */
-    public static function _setDate( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false, $caller=null, $objName=null, $tzid=false ) 
+    public static function _setDate( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $tz=false, $params=false, $caller=null, $objName=null, $tzid=false )
     {
         $input = $parno = null;
         $localtime = (( 'dtstart' == $caller ) && in_array($objName, array( 'vtimezone', 'standard', 'daylight' ))) ? true : false;
@@ -9781,7 +9781,7 @@ class iCalUtilityFunctions
  * @param  array $params optional
  * @return array
  */
-    public static function _setDate2( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false ) 
+    public static function _setDate2( $year, $month=false, $day=false, $hour=false, $min=false, $sec=false, $params=false )
     {
         $input = null;
         iCalUtilityFunctions::_strDate2arr($year);
@@ -9840,7 +9840,7 @@ class iCalUtilityFunctions
                               , 'sec'   => $sec );
             if(isset($tz)) { $input['value']['tz'] = $tz;
             }
-            if(( isset($tz) && iCalUtilityFunctions::_isOffset($tz)) 
+            if(( isset($tz) && iCalUtilityFunctions::_isOffset($tz))
                 || ( isset($input['params']['TZID']) && iCalUtilityFunctions::_isOffset($input['params']['TZID']))
             ) {
                 if(!isset($tz) && isset($input['params']['TZID']) && iCalUtilityFunctions::_isOffset($input['params']['TZID'])) {
@@ -9876,7 +9876,7 @@ class iCalUtilityFunctions
  * @param  int   $index
  * @return void
  */
-    public static function _setMval( & $valArr, $value, $params=false, $defaults=false, $index=false ) 
+    public static function _setMval( & $valArr, $value, $params=false, $defaults=false, $index=false )
     {
         if(!is_array($valArr)) { $valArr = array();
         }
@@ -9903,7 +9903,7 @@ class iCalUtilityFunctions
  * @param  array $defaults
  * @return array
  */
-    public static function _setParams( $params, $defaults=false ) 
+    public static function _setParams( $params, $defaults=false )
     {
         if(!is_array($params)) {
             $params = array();
@@ -9956,7 +9956,7 @@ class iCalUtilityFunctions
  * @param  string $value
  * @return string
  */
-    public static function _size75( $string, $nl ) 
+    public static function _size75( $string, $nl )
     {
         $tmp             = $string;
         $string          = '';
@@ -10035,7 +10035,7 @@ class iCalUtilityFunctions
  * @param  array $b
  * @return int
  */
-    public static function _sortExdate1( $a, $b ) 
+    public static function _sortExdate1( $a, $b )
     {
         $as  = sprintf('%04d%02d%02d', $a['year'], $a['month'], $a['day']);
         $as .= ( isset($a['hour'])) ? sprintf('%02d%02d%02d', $a['hour'], $a['min'], $a['sec']) : '';
@@ -10043,7 +10043,7 @@ class iCalUtilityFunctions
         $bs .= ( isset($b['hour'])) ? sprintf('%02d%02d%02d', $b['hour'], $b['min'], $b['sec']) : '';
         return strcmp($as, $bs);
     }
-    public static function _sortExdate2( $a, $b ) 
+    public static function _sortExdate2( $a, $b )
     {
         $val = reset($a['value']);
         $as  = sprintf('%04d%02d%02d', $val['year'], $val['month'], $val['day']);
@@ -10062,7 +10062,7 @@ class iCalUtilityFunctions
  * @param  array $b
  * @return int
  */
-    public static function _sortRdate1( $a, $b ) 
+    public static function _sortRdate1( $a, $b )
     {
         $val = isset($a['year']) ? $a : $a[0];
         $as  = sprintf('%04d%02d%02d', $val['year'], $val['month'], $val['day']);
@@ -10072,7 +10072,7 @@ class iCalUtilityFunctions
         $bs .= ( isset($val['hour'])) ? sprintf('%02d%02d%02d', $val['hour'], $val['min'], $val['sec']) : '';
         return strcmp($as, $bs);
     }
-    public static function _sortRdate2( $a, $b ) 
+    public static function _sortRdate2( $a, $b )
     {
         $val   = isset($a['value'][0]['year']) ? $a['value'][0] : $a['value'][0][0];
         if(empty($val)) {
@@ -10100,7 +10100,7 @@ class iCalUtilityFunctions
  * @param  array $step,     default array( 'day' => 1 )
  * @return void
  */
-    public static function _stepdate( &$date, &$timestamp, $step=array( 'day' => 1 )) 
+    public static function _stepdate( &$date, &$timestamp, $step=array( 'day' => 1 ))
     {
         if(!isset($date['hour'])) { $date['hour'] = 0;
         }
@@ -10127,7 +10127,7 @@ class iCalUtilityFunctions
  * @param  mixed $input
  * @return bool, TRUE on success
  */
-    public static function _strDate2arr( & $input ) 
+    public static function _strDate2arr( & $input )
     {
         if(is_array($input)) {
             return false;
@@ -10170,7 +10170,7 @@ class iCalUtilityFunctions
         }
         $temp['hour']  = substr($work, 0, 2);
         $temp['min']   = substr($work, 2, 2);
-        if((( 0 > $temp['hour'] ) || ( $temp['hour'] > 23 )) 
+        if((( 0 > $temp['hour'] ) || ( $temp['hour'] > 23 ))
             || (( 0 > $temp['min'] )  || ( $temp['min']  > 59 ))
         ) {
             return false;
@@ -10203,11 +10203,11 @@ class iCalUtilityFunctions
  * @param  moxed $wtz      optional, default null
  * @return array
  */
-    public static function _date_time_string( $datetime, $parno=false ) 
+    public static function _date_time_string( $datetime, $parno=false )
     {
         return iCalUtilityFunctions::_strdate2date($datetime, $parno, null);
     }
-    public static function _strdate2date( $datetime, $parno=false, $wtz=null ) 
+    public static function _strdate2date( $datetime, $parno=false, $wtz=null )
     {
         // save original input string to return it later
         $unparseddatetime = $datetime;
@@ -10252,7 +10252,7 @@ class iCalUtilityFunctions
                 $tz     = substr($datetime, $tx);
                 $datetime = trim(substr($datetime, 0, $len + $tx));
             }
-            if(( ctype_digit(substr($datetime, 0, 8)) && ( 'T' ==  substr($datetime, 8, 1)) && ctype_digit(substr($datetime, -6, 6))) 
+            if(( ctype_digit(substr($datetime, 0, 8)) && ( 'T' ==  substr($datetime, 8, 1)) && ctype_digit(substr($datetime, -6, 6)))
                 || ( ctype_digit(substr($datetime, 0, 14)))
             ) {
                 $tzSts  = true;
@@ -10323,7 +10323,7 @@ class iCalUtilityFunctions
  * @param  string $nl
  * @return string
  */
-    public static function _strrep( $string, $format, $nl ) 
+    public static function _strrep( $string, $format, $nl )
     {
         switch( $format ) {
         case 'xcal':
@@ -10376,7 +10376,7 @@ class iCalUtilityFunctions
  * @param  string $string
  * @return string
  */
-    public static function _strunrep( $string ) 
+    public static function _strunrep( $string )
     {
         $string = str_replace('\\\\', '\\',     $string);
         $string = str_replace('\,',   ',',      $string);
@@ -10394,7 +10394,7 @@ class iCalUtilityFunctions
  * @param  string $wtz
  * @return array
  */
-    public static function _timestamp2date( $timestamp, $parno=6, $wtz=null ) 
+    public static function _timestamp2date( $timestamp, $parno=6, $wtz=null )
     {
         if(is_array($timestamp)) {
             $tz        = ( isset($timestamp['tz'])) ? $timestamp['tz'] : $wtz;
@@ -10441,7 +10441,7 @@ class iCalUtilityFunctions
  * @param  int $timestamp
  * @return array, duration format
  */
-    public static function _timestamp2duration( $timestamp ) 
+    public static function _timestamp2duration( $timestamp )
     {
         $dur         = array();
         $dur['week'] = (int) floor($timestamp / ( 7 * 24 * 60 * 60 ));
@@ -10465,14 +10465,14 @@ class iCalUtilityFunctions
  * @param  string $format, date output format, default 'Ymd\THis'
  * @return bool
  */
-    public static function transformDateTime( & $date, $tzFrom, $tzTo='UTC', $format = 'Ymd\THis' ) 
+    public static function transformDateTime( & $date, $tzFrom, $tzTo='UTC', $format = 'Ymd\THis' )
     {
         if(is_array($date) && isset($date['timestamp'])) {
             try {
                 $d = new DateTime("@{$date['timestamp']}"); // set UTC date
                 $d->setTimezone(new DateTimeZone($tzFrom)); // convert to 'from' date
             }
-            catch( Exception $e ) { return false; 
+            catch( Exception $e ) { return false;
             }
         }
         else {
@@ -10485,14 +10485,14 @@ class iCalUtilityFunctions
             if('Z' == substr($date, -1)) {
                 $date = substr($date, 0, ( strlen($date) - 2 ));
             }
-            try { $d = new DateTime($date, new DateTimeZone($tzFrom)); 
+            try { $d = new DateTime($date, new DateTimeZone($tzFrom));
             }
-            catch( Exception $e ) { return false; 
+            catch( Exception $e ) { return false;
             }
         }
-        try { $d->setTimezone(new DateTimeZone($tzTo)); 
+        try { $d->setTimezone(new DateTimeZone($tzTo));
         }
-        catch( Exception $e ) { return false; 
+        catch( Exception $e ) { return false;
         }
         $date = $d->format($format);
         return true;
@@ -10505,13 +10505,13 @@ class iCalUtilityFunctions
  * @param  string $offset
  * @return integer
  */
-    public static function _tz2offset( $tz ) 
+    public static function _tz2offset( $tz )
     {
         $tz           = trim((string) $tz);
         $offset       = 0;
-        if(((     5  != strlen($tz))       && ( 7  != strlen($tz))) 
-            || ((    '+' != substr($tz, 0, 1)) && ( '-' != substr($tz, 0, 1))) 
-            || (( '0000' >= substr($tz, 1, 4)) && ( '9999' < substr($tz, 1, 4))) 
+        if(((     5  != strlen($tz))       && ( 7  != strlen($tz)))
+            || ((    '+' != substr($tz, 0, 1)) && ( '-' != substr($tz, 0, 1)))
+            || (( '0000' >= substr($tz, 1, 4)) && ( '9999' < substr($tz, 1, 4)))
             || (( 7  == strlen($tz))       && ( '00' > substr($tz, 5, 2)) && ( '99' < substr($tz, 5, 2)))
         ) {
             return $offset;
@@ -10539,7 +10539,7 @@ class iCalUtilityFunctions
  * $param string $ext, vCard file extension (default 'vcf')
  * @return mixed
  */
-function iCal2vCard( $email, $version='2.1', $directory=false, $ext='vcf' ) 
+function iCal2vCard( $email, $version='2.1', $directory=false, $ext='vcf' )
 {
     if(false === ( $pos = strpos($email, '@'))) {
         return false;
@@ -10635,7 +10635,7 @@ function iCal2vCard( $email, $version='2.1', $directory=false, $ext='vcf' )
  * $param string $ext, vCard file extension (default 'vcf')
  * @return mixed
  */
-function iCal2vCards( & $calendar, $version='2.1', $directory=false, $ext='vcf' ) 
+function iCal2vCards( & $calendar, $version='2.1', $directory=false, $ext='vcf' )
 {
     $hits   = array();
     $vCardP = array( 'ATTENDEE', 'CONTACT', 'ORGANIZER' );
@@ -10687,11 +10687,11 @@ function iCal2vCards( & $calendar, $version='2.1', $directory=false, $ext='vcf' 
  * @param  object $calendar, iCalcreator vcalendar instance reference
  * @return string
  */
-function iCal2XML( & $calendar ) 
+function iCal2XML( & $calendar )
 {
             /**
-* 
- * fix an SimpleXMLElement instance and create root element 
+*
+ * fix an SimpleXMLElement instance and create root element
 */
     $xmlstr       = '<?xml version="1.0" encoding="utf-8"?><icalendar xmlns="urn:ietf:params:xml:ns:icalendar-2.0">';
     $xmlstr      .= '<!-- created '.date('Ymd\THis\Z', time());
@@ -10700,8 +10700,8 @@ function iCal2XML( & $calendar )
     $xml          = new SimpleXMLElement($xmlstr);
     $vcalendar    = $xml->addChild('vcalendar');
             /**
-* 
- * fix calendar properties 
+*
+ * fix calendar properties
 */
     $properties   = $vcalendar->addChild('properties');
     $calProps     = array( 'version', 'prodid', 'calscale', 'method' );
@@ -10715,13 +10715,13 @@ function iCal2XML( & $calendar )
     }
     $langCal = $calendar->getConfig('language');
             /**
-* 
- * prepare to fix components with properties 
+*
+ * prepare to fix components with properties
 */
     $components   = $vcalendar->addChild('components');
             /**
-* 
- * fix component properties 
+*
+ * fix component properties
 */
     while( false !== ( $component = $calendar->getComponent())) {
         $compName   = $component->objName;
@@ -10895,8 +10895,8 @@ function iCal2XML( & $calendar )
             } // end switch( $prop )
         } // end foreach( $props as $prop )
             /**
-* 
- * fix subComponent properties, if any 
+*
+ * fix subComponent properties, if any
 */
         while( false !== ( $subcomp = $component->getComponent())) {
             $subCompName  = $subcomp->objName;
@@ -10989,8 +10989,8 @@ function iCal2XML( & $calendar )
                     break;
                 case 'trigger':
                     if(false !== ( $content = $subcomp->getProperty($prop, false, true))) {
-                        if(isset($content['value']['year'])   
-                            && isset($content['value']['month'])  
+                        if(isset($content['value']['year']) 
+                            && isset($content['value']['month'])
                             && isset($content['value']['day'])
                         ) {
                             $type = 'date-time';
@@ -11032,11 +11032,11 @@ function iCal2XML( & $calendar )
  * @param  array  $params,  new element 'attributes'
  * @return void
  */
-function _addXMLchild( & $parent, $name, $type, $content, $params=array()) 
+function _addXMLchild( & $parent, $name, $type, $content, $params=array())
 {
             /**
-* 
- * create new child node 
+*
+ * create new child node
 */
     $name  = strtolower($name);
     $child = $parent->addChild($name);
@@ -11055,16 +11055,16 @@ function _addXMLchild( & $parent, $name, $type, $content, $params=array())
                 $p1 = $parameters->addChild($param);
                 switch( $param ) {
                 case 'altrep':
-                case 'dir':            $ptype = 'uri';            
+                case 'dir':            $ptype = 'uri';          
                     break;
                 case 'delegated-from':
                 case 'delegated-to':
                 case 'member':
-                case 'sent-by':        $ptype = 'cal-address';    
+                case 'sent-by':        $ptype = 'cal-address';  
                     break;
-                case 'rsvp':           $ptype = 'boolean';        
+                case 'rsvp':           $ptype = 'boolean';      
                     break ;
-                default:               $ptype = 'text';           
+                default:               $ptype = 'text';         
                     break;
                 }
                 if(is_array($parVal)) {
@@ -11082,8 +11082,8 @@ function _addXMLchild( & $parent, $name, $type, $content, $params=array())
         return;
     }
             /**
-* 
- * store content 
+*
+ * store content
 */
     switch( $type ) {
     case 'binary':
@@ -11269,7 +11269,7 @@ function _addXMLchild( & $parent, $name, $type, $content, $params=array())
  * @param  array  $iCalcfg iCalcreator config array (opt)
  * @return mixediCalcreator instance or FALSE on error
  */
-function XMLfile2iCal( $xmlfile, $iCalcfg=array()) 
+function XMLfile2iCal( $xmlfile, $iCalcfg=array())
 {
     if(false === ( $xmlstr = file_get_contents($xmlfile))) {
         return false;
@@ -11285,7 +11285,7 @@ function XMLfile2iCal( $xmlfile, $iCalcfg=array())
  * @param  array  $iCalcfg iCalcreator config array (opt)
  * @return mixed  iCalcreator instance or FALSE on error
  */
-function XMLstr2iCal( $xmlstr, $iCalcfg=array()) 
+function XMLstr2iCal( $xmlstr, $iCalcfg=array())
 {
     return XML2iCal($xmlstr, $iCalcfg);
 }
@@ -11298,7 +11298,7 @@ function XMLstr2iCal( $xmlstr, $iCalcfg=array())
  * @param  array  $iCalcfg iCalcreator config array (opt)
  * @return mixed  iCalcreator instance or FALSE on error
  */
-function XML2iCal( $xmlstr, $iCalcfg=array()) 
+function XML2iCal( $xmlstr, $iCalcfg=array())
 {
     $xmlstr  = str_replace(array( "\r\n", "\n\r", "\n", "\r" ), '', $xmlstr);
     $xml     = XMLgetTagContent1($xmlstr, 'vcalendar', $endIx);
@@ -11316,7 +11316,7 @@ function XML2iCal( $xmlstr, $iCalcfg=array())
  * @param  string $xml
  * @return bool
  */
-function XMLgetComps( $iCal, $xml ) 
+function XMLgetComps( $iCal, $xml )
 {
     static $comps = array( 'vtimezone', 'standard', 'daylight', 'vevent', 'vtodo', 'vjournal', 'vfreebusy', 'valarm' );
     $sx      = 0;
@@ -11354,7 +11354,7 @@ function XMLgetComps( $iCal, $xml )
  * @param  string $xml
  * @return void
  */
-function XMLgetProps( $iCal, $xml) 
+function XMLgetProps( $iCal, $xml)
 {
     while( ! empty($xml)) {
         $xml2         = XMLgetTagContent2($xml, $propName, $endIx);
@@ -11491,14 +11491,14 @@ function XMLgetProps( $iCal, $xml)
             break;
         default:
             switch( $valueType ) {
-            case 'binary':    $params['VALUE'] = 'BINARY';           
+            case 'binary':    $params['VALUE'] = 'BINARY';         
                 break;
-            case 'date':      $params['VALUE'] = 'DATE';             
+            case 'date':      $params['VALUE'] = 'DATE';           
                 break;
-            case 'date-time': $params['VALUE'] = 'DATE-TIME';        
+            case 'date-time': $params['VALUE'] = 'DATE-TIME';      
                 break;
             case 'text':
-            case 'unknown':   $value = html_entity_decode($value); 
+            case 'unknown':   $value = html_entity_decode($value);
                 break;
             }
             break;
@@ -11535,23 +11535,23 @@ function XMLgetProps( $iCal, $xml)
  * @param  int    $endIx
  * @return mixed
  */
-function XMLgetTagContent1( $xml, $tagName, & $endIx=0 ) 
+function XMLgetTagContent1( $xml, $tagName, & $endIx=0 )
 {
     $strlen    = strlen($tagName);
     $sx1       = 0;
     while( false !== substr($xml, $sx1, 1)) {
-        if(( false !== substr($xml, ( $sx1 + $strlen + 1 ), 1)) 
+        if(( false !== substr($xml, ( $sx1 + $strlen + 1 ), 1))
             && ( strtolower("<$tagName>")   == strtolower(substr($xml, $sx1, ( $strlen + 2 ))))
         ) {
             break;
         }
-        if(( false !== substr($xml, ( $sx1 + $strlen + 3 ), 1)) 
+        if(( false !== substr($xml, ( $sx1 + $strlen + 3 ), 1))
             && ( strtolower("<$tagName />") == strtolower(substr($xml, $sx1, ( $strlen + 4 ))))
         ) { // empty tag
               $endIx = $strlen + 5;
               return '';
         }
-        if(( false !== substr($xml, ( $sx1 + $strlen + 2 ), 1)) 
+        if(( false !== substr($xml, ( $sx1 + $strlen + 2 ), 1))
             && ( strtolower("<$tagName/>")  == strtolower(substr($xml, $sx1, ( $strlen + 3 ))))
         ) { // empty tag
               $endIx = $strlen + 4;
@@ -11580,7 +11580,7 @@ function XMLgetTagContent1( $xml, $tagName, & $endIx=0 )
  * @param  int    $endIx
  * @return mixed
  */
-function XMLgetTagContent2( $xml, & $tagName, & $endIx ) 
+function XMLgetTagContent2( $xml, & $tagName, & $endIx )
 {
     $endIx       = strlen($xml) + 1; // just in case.. .
     $sx1         = 0;
@@ -11614,10 +11614,10 @@ function XMLgetTagContent2( $xml, & $tagName, & $endIx )
         return '';
     }
     $strlen      = strlen($tagName);
-    if(( 'duration' == $tagName ) 
-        && ( false !== ( $pos1 = stripos($xml, "<duration>",  $sx1+1))) 
-        && ( false !== ( $pos2 = stripos($xml, "</duration>", $pos1+1))) 
-        && ( false !== ( $pos3 = stripos($xml, "</duration>", $pos2+1))) 
+    if(( 'duration' == $tagName )
+        && ( false !== ( $pos1 = stripos($xml, "<duration>",  $sx1+1)))
+        && ( false !== ( $pos2 = stripos($xml, "</duration>", $pos1+1)))
+        && ( false !== ( $pos3 = stripos($xml, "</duration>", $pos2+1)))
         && ( $pos1 < $pos2 ) && ( $pos2 < $pos3 )
     ) {
         $pos = $pos3;
@@ -11669,7 +11669,7 @@ function XMLgetTagContent2( $xml, & $tagName, & $endIx )
  *
  * @return array, time zone data with keys for 'offsetHis', 'offsetSec' and 'tzname'
  */
-function getTzOffsetForDate($timezonesarray, $tzid, $timestamp) 
+function getTzOffsetForDate($timezonesarray, $tzid, $timestamp)
 {
     if(is_array($timestamp)) {
         //$disp = sprintf( '%04d%02d%02d %02d%02d%02d', $timestamp['year'], $timestamp['month'], $timestamp['day'], $timestamp['hour'], $timestamp['min'], $timestamp['sec'] ); // test ###
@@ -11726,7 +11726,7 @@ function getTzOffsetForDate($timezonesarray, $tzid, $timestamp)
  * @return array, time zone transition timestamp, array before(offsetHis, offsetSec), array after(offsetHis, offsetSec, tzname)
  *                based on the timezone data in the vcalendar object
  */
-function getTimezonesAsDateArrays($vcalendar) 
+function getTimezonesAsDateArrays($vcalendar)
 {
     $timezonedata = array();
     while( $vtz = $vcalendar->getComponent('vtimezone')) {
@@ -11751,7 +11751,7 @@ function getTimezonesAsDateArrays($vcalendar)
  * @param  object $vtzc, an iCalcreator calendar standard/daylight instance
  * @return array, time zone data; array before(offsetHis, offsetSec), array after(offsetHis, offsetSec, tzname)
  */
-function expandTimezoneDates($vtzc) 
+function expandTimezoneDates($vtzc)
 {
     $tzdates = array();
     // prepare time zone "description" to attach to each change

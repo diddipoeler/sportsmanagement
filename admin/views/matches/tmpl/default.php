@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,20 +28,20 @@ if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
 ?>
 
 <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">
-<?php 
-echo $this->loadTemplate('massadd'); 
+<?php
+echo $this->loadTemplate('massadd');
 ?>
 </div>
-<?php 
-echo $this->loadTemplate('matches'); 
-?>    
-<?php 
+<?php
+echo $this->loadTemplate('matches');
+?>  
+<?php
 if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') ) {
-    echo $this->loadTemplate('matrix'); 
+    echo $this->loadTemplate('matrix');
 }
 ?>
 <div>
 <?PHP
 echo $this->loadTemplate('footer');
-?>   
+?> 
 </div>

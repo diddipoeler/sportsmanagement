@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -35,7 +35,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         $actualProjectCurrentRound             = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 
         $roundID = $actualProjectCurrentRound;
-        
+      
         ?>
         <form name='resultsRoundSelector' method='post'>
             <input type='hidden' name='prediction_id' value='<?php echo (int) $predictionGame[0]->id; ?>'/>
@@ -83,7 +83,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                             if (!$config['show_tip_ranking_round'] ) {
                                 $link = JSMPredictionHelperRoute::getPredictionRankingRoute(
                                     $predictionGame[0]->id,
-                                    $modelpg->predictionProject->project_slug, 
+                                    $modelpg->predictionProject->project_slug,
                                     ''
                                 );
                             }
@@ -225,9 +225,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
                 /**
  * wenn in der moduleinstellung der aktuelle spieltag aus dem projekt angezeigt werden soll,
- * dann soll auch dieser übergeben werden. 
+ * dann soll auch dieser übergeben werden.
  */
-                if ($config['show_tip_ranking_round'] ) { 
+                if ($config['show_tip_ranking_round'] ) {
                                 $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(
                                     $showProjectID,
                                     $actualProjectCurrentRound,
@@ -235,7 +235,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                     $member->user_id,
                                     sportsmanagementModelPrediction::$type
                                 );
-                }    
+                }  
                 else
                 {
                                 $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(
@@ -245,7 +245,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                     $member->user_id,
                                     sportsmanagementModelPrediction::$type
                                 );
-                }                    
+                }                  
 
                 $predictionsCount = 0;
                 $totalPoints      = 0;
@@ -256,9 +256,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 if (!empty($memberPredictionPoints) ) {
                     foreach ($memberPredictionPoints AS $memberPredictionPoint)
                     {
-                        if (( !is_null($memberPredictionPoint->homeResult) ) 
-                            || ( !is_null($memberPredictionPoint->awayResult) ) 
-                            || ( !is_null($memberPredictionPoint->homeDecision) ) 
+                        if (( !is_null($memberPredictionPoint->homeResult) )
+                            || ( !is_null($memberPredictionPoint->awayResult) )
+                            || ( !is_null($memberPredictionPoint->homeDecision) )
                             || ( !is_null($memberPredictionPoint->awayDecision) )
                         ) {
                             $predictionsCount++;
@@ -315,9 +315,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 $picture    = $member->avatar;
                 $playerName = $member->name;
 
-                if (( ( !isset($member->avatar) ) 
-                    || ( $member->avatar == '' ) 
-                    || ( !file_exists($member->avatar) ) 
+                if (( ( !isset($member->avatar) )
+                    || ( $member->avatar == '' )
+                    || ( !file_exists($member->avatar) )
                     || ( ( !$member->show_profile ) && ( $predictionMember[0]->pmID != $member->pmID ) ) )
                 ) {
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
@@ -375,8 +375,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 $class      = ( $predictionMember[0]->pmID == $key ) ? 'sectiontableentry1' : $class;
                 $tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
 
-                if (( ( !$config['show_all_user'] ) && ( $value['predictionsCount'] > 0 ) ) 
-                    || ( $config['show_all_user'] ) 
+                if (( ( !$config['show_all_user'] ) && ( $value['predictionsCount'] > 0 ) )
+                    || ( $config['show_all_user'] )
                     || ( $predictionMember[0]->pmID == $key )
                 ) {
                     ?>
@@ -454,24 +454,24 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             }
 ?>
 
-<tr>            
-<?PHP            
-  
-            
+<tr>          
+<?PHP          
+
+          
 ?>
-</tr>            
+</tr>          
 </table>
 <?php
     }
-    
+  
 ?>
 <table class="table table-responsive">
-<tr class="bg-info">    
-<td class="text-center">        
-<?PHP     
+<tr class="bg-info">  
+<td class="text-center">      
+<?PHP   
 if ($config['show_tip_ranking_text'] ) {
     echo '&nbsp;&nbsp;';
-    if ($config['show_tip_ranking_round'] ) { 
+    if ($config['show_tip_ranking_round'] ) {
         $link = JSMPredictionHelperRoute::getPredictionRankingRoute(
             $predictionGame[0]->id,
             $modelpg->predictionProject->project_slug,
@@ -479,25 +479,25 @@ if ($config['show_tip_ranking_text'] ) {
             '',
             0,
             0, 0, $actualProjectCurrentRound, $actualProjectCurrentRound
-        );    
+        );  
     }
     else
-    {    
+    {  
         $link = JSMPredictionHelperRoute::getPredictionRankingRoute(
             $predictionGame[0]->id,
-            $modelpg->predictionProject->project_slug, 
+            $modelpg->predictionProject->project_slug,
             ''
         );
     }
 
     $desc = Text::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
     echo HTMLHelper::link($link, $desc, array('target' => ''));
-}              
+}            
 ?>
 </td>
-</tr>            
+</tr>          
 </table>
-<?php    
-    
+<?php  
+  
 }
 ?>

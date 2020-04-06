@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementViewMatchReport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -35,7 +35,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -45,14 +45,14 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
         $this->match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt("mid", 0), sportsmanagementModelProject::$cfg_which_database);
         $this->matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt("mid", 0));
-        
+      
         if ($ret = sportsmanagementModelMatch::getMatchText($this->match->new_match_id, sportsmanagementModelProject::$cfg_which_database) ) {
                $this->newmatchtext = $ret->text;
         }
         if ($ret = sportsmanagementModelMatch::getMatchText($this->match->old_match_id, sportsmanagementModelProject::$cfg_which_database) ) {
                $this->oldmatchtext = $ret->text;
         }
-        
+      
         /**
  * hole den artikel zum spiel
  */
@@ -83,7 +83,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $jRegistry->loadString($this->match->extended, 'ini');
         $extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
         $extended->bind($jRegistry);
-        */    
+        */  
         $this->extended = sportsmanagementHelper::getExtended($this->match->extended, 'match', 'ini', true);
 
         $this->extended2 = sportsmanagementHelper::getExtended($this->match->extended, 'match');
@@ -96,10 +96,10 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         if (!$this->formation2 ) {
             $this->formation2 = '4231';
         }
-   
+ 
         $schemahome = $this->schemahome = $this->model->getPlaygroundSchema($this->formation1, 'heim');
         $schemaaway = $this->schemaaway = $this->model->getPlaygroundSchema($this->formation2, 'gast');
-    
+  
         if ($this->config['show_pictures'] ) {
                 /**
  * die bilder zum spiel
@@ -110,8 +110,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
             if ($images ) {
                 $this->matchimages = $images;
             }
-        
-        }    
+      
+        }  
 
         /**
  * Set page title
@@ -129,7 +129,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showLegresult()
-     * 
+     *
      * @param  integer $team
      * @return
      */
@@ -171,7 +171,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showOvertimeResult()
-     * 
+     *
      * @return
      */
     function showOvertimeResult()
@@ -185,7 +185,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showShotoutResult()
-     * 
+     *
      * @return
      */
     function showShotoutResult()
@@ -199,7 +199,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showMatchresult()
-     * 
+     *
      * @param  mixed $decision
      * @param  mixed $team
      * @return
@@ -228,7 +228,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showSubstitution()
-     * 
+     *
      * @param  mixed $sub
      * @return
      */
@@ -255,10 +255,10 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                 $routeparameter['p'] = $this->project->id;
                 $routeparameter['tid'] = $sub->team_id;
                 $routeparameter['pid'] = $sub->out_person_id;
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);            
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);          
                 $result .= HTMLHelper::link($link, $outName);
-            } 
-            else 
+            }
+            else
             {
                 $result .= $outName;
             }
@@ -283,10 +283,10 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                 $routeparameter['p'] = $this->project->id;
                 $routeparameter['tid'] = $sub->team_id;
                 $routeparameter['pid'] = $sub->person_id;
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);              
                 $result .= HTMLHelper::link($link, $inName);
-            } 
-            else 
+            }
+            else
             {
                 $result .= $inName;
             }
@@ -301,7 +301,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showEvents()
-     * 
+     *
      * @param  integer $eventid
      * @param  integer $projectteamid
      * @return
@@ -330,7 +330,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                     $routeparameter['p'] = $this->project->slug;
                     $routeparameter['tid'] = $me->team_id;
                     $routeparameter['pid'] = $me->playerid;
-                    $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                              
+                    $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                            
                     $match_player = HTMLHelper::link($player_link, $match_player);
                 }
                 $result .= $match_player;
@@ -361,7 +361,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::getTimelineMatchTime()
-     * 
+     *
      * @return
      */
     function getTimelineMatchTime()
@@ -370,32 +370,32 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         switch ($result_type) {
         case 0:
             /**
-* 
- * Ordinary time 
+*
+ * Ordinary time
 */
             $matchtime=$this->project->game_regular_time;
             break;
         case 1:
             /**
-* 
- * Overtime time 
+*
+ * Overtime time
 */
             $matchtime=$this->project->game_regular_time + $this->project->add_time;
             break;
         case 2:
             /**
-* 
- * Shotout time 
+*
+ * Shotout time
 */
             if ($this->showOvertimeResult() ) {
                 /**
-* 
- * First overtime, then Shotout? 
+*
+ * First overtime, then Shotout?
 */
-                $matchtime=$this->project->game_regular_time + $this->project->add_time; 
+                $matchtime=$this->project->game_regular_time + $this->project->add_time;
             }
             else {
-                $matchtime=$this->project->game_regular_time; 
+                $matchtime=$this->project->game_regular_time;
             }
             break;
         }
@@ -404,7 +404,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::getEventsTimes()
-     * 
+     *
      * @return
      */
     function getEventsTimes()
@@ -420,7 +420,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showSubstitution_Timelines1()
-     * 
+     *
      * @param  integer $sub
      * @return
      */
@@ -445,7 +445,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showSubstitution_Timelines2()
-     * 
+     *
      * @param  integer $sub
      * @return
      */
@@ -470,7 +470,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::_formatTimelineSubstitution()
-     * 
+     *
      * @param  mixed   $sub
      * @param  mixed   $firstname
      * @param  mixed   $nickname
@@ -522,7 +522,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showEvents_Timelines1()
-     * 
+     *
      * @param  integer $eventid
      * @param  integer $projectteamid
      * @return
@@ -534,7 +534,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
+  
         $result = '';
         $eventcounter = array();
         foreach ($this->eventtypes AS $event)
@@ -542,7 +542,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
             foreach ($this->matchevents AS $me)
             {
                 if ($me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id ) {
-                    
+                  
                     $placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
                     /**
  * set teamplayer picture
@@ -552,13 +552,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                         if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) ) {
                             $picture = $placeholder;
                         }
-                        
+                      
                     }
                     /**
  * when teamplayer picture is empty or a placeholder icon look for the general player picture
  */
                     elseif
-                    (( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) 
+                    (( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) )
                         && ( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
                     ) {
                         $picture = $me->picture1;
@@ -585,7 +585,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::showEvents_Timelines2()
-     * 
+     *
      * @param  integer $eventid
      * @param  integer $projectteamid
      * @return
@@ -608,13 +608,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                         if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$picture) ) {
                             $picture = $placeholder;
                         }
-                        
+                      
                     }
                     /**
  * when teamplayer picture is empty or a placeholder icon look for the general player picture
  */
                     elseif
-                    (( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) 
+                    (( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) )
                         && ( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
                     ) {
                         $picture = $me->picture1;
@@ -641,7 +641,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::_formatTimelineEvent()
-     * 
+     *
      * @param  mixed   $matchEvent
      * @param  mixed   $event
      * @param  mixed   $firstname
@@ -690,7 +690,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
     /**
      * sportsmanagementViewMatchReport::getHtmlImageForTips()
-     * 
+     *
      * @param  mixed   $picture
      * @param  integer $width
      * @param  integer $height

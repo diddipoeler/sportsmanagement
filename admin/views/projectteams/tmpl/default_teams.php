@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage projectteams
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -51,16 +51,16 @@ img.car {
 // for details http://ivaynberg.github.io/select2/
 $optteams = ' allowClear: true,
    width: "100%",
-   formatResult: function format(state) 
-   {  
+   formatResult: function format(state)
+   {
    var originalOption = state.element;
    var picture;
    picture = teampicture[state.id];
-   if (!state.id) 
-   return state.text; 
-   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text;
    },
-   
+ 
    escapeMarkup: function(m) { return m; }
 ';
 
@@ -111,16 +111,16 @@ $optteams = ' allowClear: true,
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
         ?>
                         <br />
-                        <?php 
-                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY'); 
+                        <?php
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY');
                         ?>
                         <br />
-                        <?php 
-                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR'); 
+                        <?php
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR');
                         ?>
                         <br />
-                        <?php 
-                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID'); 
+                        <?php
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID');
                         ?>
                     </th>
                         <th colspan="2"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
@@ -174,7 +174,7 @@ $optteams = ' allowClear: true,
                         </th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
                         <th>
-                        <?php  
+                        <?php
                         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA', 'tl.matches_finally', $this->sortDirection, $this->sortColumn);
                         ?>
             </th>
@@ -189,7 +189,7 @@ $optteams = ' allowClear: true,
             <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
-                        
+                      
                         <th >
     <?php echo HTMLHelper::_('grid.sort', 'STID', 'st.id', $this->sortDirection, $this->sortColumn); ?>
             </th>
@@ -231,16 +231,16 @@ $optteams = ' allowClear: true,
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         <!--  </td> -->
             <?php
-                            
+                          
             $inputappend='';
             ?>
          <!--            <td style="text-align:center; "> -->
-                                
+                              
                                 <?php if ($row->checked_out) : ?>
         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'projectteams.', $canCheckin); ?>
                                 <?php endif; ?>
@@ -252,23 +252,23 @@ $optteams = ' allowClear: true,
                                     $image = HTMLHelper::image($imageFile, $imageTitle, $imageParams);
                                     $linkParams = '';
                                     echo HTMLHelper::link($link1, $image);
-                                    
+                                  
 
             ?>
         <?php else : ?>
         <?php //echo $this->escape($row->name); ?>
-        <?php endif; 
-                    
-                    
-                            
+        <?php endif;
+                  
+                  
+                          
             ?>
-                                    
+                                  
                                     </td>
             <?php
-                            
+                          
             ?>
            <td>
-                            <?php 
+                            <?php
                             /**
  * die möglichkeit bieten, das vereinslogo zu aktualisieren
  */
@@ -291,9 +291,9 @@ $optteams = ' allowClear: true,
                                     $this->modalheight
                                 );
 ?>
-              
-                                                        
-                <?php                               
+            
+                                                      
+                <?php                             
 
                             }
                             elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) {
@@ -318,14 +318,14 @@ $optteams = ' allowClear: true,
                         $this->modalheight
                     );
                         ?>
-              
-                                                    
-                                    <?php           
+            
+                                                  
+                                    <?php         
 
 
-                                                
+                                              
                             } else {
-                                
+                              
                                 if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$row->club_logo) ) {
                                     $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
                                     echo HTMLHelper::_(
@@ -336,7 +336,7 @@ $optteams = ' allowClear: true,
                  <a href="<?php echo Uri::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo Uri::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
-<?PHP 
+<?PHP
 echo sportsmanagementHelper::getBootstrapModalImage(
     'projectteam'.$row->club_id,
     Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
@@ -345,13 +345,13 @@ echo sportsmanagementHelper::getBootstrapModalImage(
     Uri::base().$link,
     $this->modalwidth,
     $this->modalheight
-);                                
+);                              
 
                 ?>
-              
-                            
-                            
-                <?php                                                                
+            
+                          
+                          
+                <?php                                                              
                                 } else {
                                     echo sportsmanagementHelper::getBootstrapModalImage(
                                         'projectteam'.$row->club_id,
@@ -361,28 +361,28 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                                         Uri::base().$link,
                                         $this->modalwidth,
                                         $this->modalheight
-                                    );                                
+                                    );                              
 
                             ?>
-              
-                            
-                            
-                                            <?php                                
-                                
-                                
-                                
-                                                    
+            
+                          
+                          
+                                            <?php                              
+                              
+                              
+                              
+                                                  
                                 }
                             }
                             echo $row->name; ?>
     <br>
     <?PHP
     if (ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change', '')  ) {
-        HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);            
+        HTMLHelper::_('formbehavior2.select2', '.optteams', $optteams);          
         echo HTMLHelper::_(
             'select.genericlist', $this->projectsbyleagueseason, 'new_project_id'.$row->id,
             'style="width:225px;" class="optteams" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.'', 'value', 'text', $this->project_id
-        );            
+        );          
     }
     ?>
     </td>
@@ -402,23 +402,23 @@ echo sportsmanagementHelper::getBootstrapModalImage(
     <input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
   name="location<?php echo $row->id; ?>"
   value="<?php echo $row->location; ?>"
-  onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+  onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
   <br>
   <input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
   name="founded_year<?php echo $row->id; ?>"
   value="<?php echo $row->founded_year; ?>"
-  onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+  onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
   <br>
    <input<?php echo $inputappend; ?> type="text" size="20" class="form-control form-control-inline"
    name="unique_id<?php echo $row->id; ?>"
    value="<?php echo $row->unique_id; ?>"
    onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-    
+  
    <input<?php echo $inputappend; ?> type="hidden" size="25" class="form-control form-control-inline"
    name="club_id<?php echo $row->id; ?>"
    value="<?php echo $row->club_id; ?>"
-   onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
-    
+   onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+  
         </td>
    <td class="center"><?php
     if($row->playercount == 0 ) {
@@ -486,13 +486,13 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                 'administrator/components/com_sportsmanagement/assets/images/information.png',
                 $imageTitle, 'title= "'.$imageTitle.'"'
             );
-                                
+                              
         ?>
         <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
      <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
      </a>
-        <?PHP                                 
-                                
+        <?PHP                               
+                              
         }
         else
         {
@@ -506,7 +506,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
         <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100" />
         </a>
-        <?PHP                                                     
+        <?PHP                                                   
             } else {
                 $imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
                 echo HTMLHelper::_(
@@ -524,9 +524,9 @@ echo sportsmanagementHelper::getBootstrapModalImage(
 <a href="<?php echo Uri::root().$row->playground_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo Uri::root().$row->playground_picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
 </a>
-<?PHP 
+<?PHP
                                 }
-            ?>                          
+            ?>                        
      </td>
      <td class="center">
      <input<?php echo $inputappend; ?>    type="text" size="2" class="form-control form-control-inline"
@@ -558,7 +558,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                                                                     value="<?php echo $row->penalty_points; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
          </td>
-                            
+                          
          <td class="center">
                                 <input<?php echo $inputappend; ?>    type="text" size="2" class="form-control form-control-inline"
                                                                     name="won_finally<?php echo $row->id; ?>"
@@ -595,7 +595,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                                                                     value="<?php echo $row->diffgoals_finally; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
      </td>
-                   
+                 
         <td class="center">
         <?php
         $append=' style="background-color:#bbffff"';
@@ -622,7 +622,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
                 );
                 ?>
             </td>
-                            
+                          
             <td class="center"><?php echo $row->season_team_id; ?>
      <br>
         <?php echo $row->seasonname; ?>
@@ -639,7 +639,7 @@ echo sportsmanagementHelper::getBootstrapModalImage(
     </table>
     <!--    </fieldset> -->
     </div>
-    
+  
 <?PHP
 
-?>   
+?> 

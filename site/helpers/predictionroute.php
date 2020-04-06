@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JSMPredictionHelperRoute
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,7 +33,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
     /**
  * JSMPredictionHelperRoute::getPredictionResultsRoute()
- * 
+ *
  * @param  mixed  $predictionID
  * @param  mixed  $roundID
  * @param  mixed  $projectID
@@ -45,9 +45,9 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
     public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-       
-          $params = array('option' => 'com_sportsmanagement', 
-          'view' => 'predictionresults', 
+     
+          $params = array('option' => 'com_sportsmanagement',
+          'view' => 'predictionresults',
                         'cfg_which_database' => $cfg_which_database,
           'prediction_id' => $predictionID);
 
@@ -58,14 +58,14 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         //		if (!is_null($projectID)){$params['pj']=$projectID;}
         //		if (!is_null($roundID)){$params['r']=$roundID;}
         //		if (!is_null($userID)){$params['uid']=$userID;}
-        
+      
            //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
 
-        
+      
           $query = JSMPredictionHelperRoute::buildQuery($params);
           //echo $query; die();
           $link = Route::_('index.php?' . $query . $anchor, false);
@@ -76,7 +76,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
     /**
  * JSMPredictionHelperRoute::getPredictionRankingRoute()
- * 
+ *
  * @param  mixed   $predictionID
  * @param  mixed   $projectID
  * @param  mixed   $roundID
@@ -88,9 +88,9 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
     public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0,$type=0,$from=0,$to=0,$cfg_which_database = 0)
     {
         $app = Factory::getApplication();
-       
-          $params = array('option' => 'com_sportsmanagement', 
-          'view' => 'predictionranking', 
+     
+          $params = array('option' => 'com_sportsmanagement',
+          'view' => 'predictionranking',
                         'cfg_which_database' => $cfg_which_database,
           'prediction_id' => $predictionID);
 
@@ -99,7 +99,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         //        if (!is_null($groupID)){$params['pggroup']=$groupID;}
         //		if (!is_null($projectID)){$params['pj']=$projectID;}
         //		if (!is_null($roundID)){$params['r']=$roundID;}
-        
+      
         //if (!is_null($groupRank)){$params['pggrouprank']=$groupRank;}
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
@@ -120,14 +120,14 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
     /**
  * JSMPredictionHelperRoute::getPredictionRulesRoute()
- * 
+ *
  * @param  mixed $predictionID
  * @return
  */
     public static function getPredictionRulesRoute($predictionID,$cfg_which_database = 0)
     {
-          $params = array('option' => 'com_sportsmanagement', 
-          'view' => 'predictionrules', 
+          $params = array('option' => 'com_sportsmanagement',
+          'view' => 'predictionrules',
                         'cfg_which_database' => $cfg_which_database,
           'prediction_id' => $predictionID);
 
@@ -136,10 +136,10 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
           return $link;
     }
-          
+        
     /**
  * JSMPredictionHelperRoute::getPredictionTippEntryRoute()
- * 
+ *
  * @param  mixed  $predictionID
  * @param  mixed  $userID
  * @param  mixed  $roundID
@@ -149,24 +149,24 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  */
     public static function getPredictionTippEntryRoute($predictionID,$userID=0,$roundID=0,$projectID=0,$anchor='',$groupID=0,$cfg_which_database = 0)
     {
-          $params = array('option' => 'com_sportsmanagement', 
-          'view' => 'predictionentry', 
+          $params = array('option' => 'com_sportsmanagement',
+          'view' => 'predictionentry',
                         'cfg_which_database' => $cfg_which_database,
           'prediction_id' => $predictionID);
-    
+  
         //        // diddipoeler
         //		if (!is_null($projectID)){$params['p']=$projectID;}
-        //        
+        //      
         //		if (!is_null($projectID)){$params['pj']=$projectID;}
         //		if (!is_null($roundID)){$params['r']=$roundID;}
         //		if (!is_null($userID)){$params['uid']=$userID;}
-        
+      
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
-        
+      
           $query = JSMPredictionHelperRoute::buildQuery($params);
           $link = Route::_('index.php?' . $query, false);
           return $link;
@@ -175,7 +175,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
     /**
  * JSMPredictionHelperRoute::getPredictionMemberRoute()
- * 
+ *
  * @param  mixed   $predictionID
  * @param  mixed   $userID
  * @param  mixed   $task
@@ -186,43 +186,43 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  */
     public static function getPredictionMemberRoute($predictionID,$userID=0,$task=0,$projectID=0,$groupID=0,$roundID=0,$cfg_which_database = 0)
     {
-    
+  
          switch ($task)
          {
         case 'edit';
-            $params = array('option' => 'com_sportsmanagement', 
-            'view' => 'predictionuser', 
+            $params = array('option' => 'com_sportsmanagement',
+            'view' => 'predictionuser',
                        'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID);
-            break;                    
+            break;                  
         default:
-            $params = array('option' => 'com_sportsmanagement', 
-            'view' => 'predictionusers', 
+            $params = array('option' => 'com_sportsmanagement',
+            'view' => 'predictionusers',
                        'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID);
             break;
 }
-        
+      
             //        // diddipoeler
             //        if (!is_null($projectID)){$params['p']=$projectID;}
-            //        
+            //      
             //		if (!is_null($userID)){$params['uid']=$userID;}
             //		if (!is_null($projectID)){$params['pj']=$projectID;}
             //		if (!is_null($task)){$params['layout']=$task;}
-        
-   
+      
+ 
             //$params['p'] = $projectID;
             $params['pggroup'] = $groupID;
             $params['pj'] = $projectID;
             $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
             $params['uid'] = $userID;
-        
+      
               switch ($task)
             {
             case 'edit';
                   $params['layout'] = 'edit';
-                break;                    
-  
+                break;                  
+
 }
 
                 $query = JSMPredictionHelperRoute::buildQuery($params);
@@ -230,10 +230,10 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
 
                 return $link;
     }
-            
+          
     /**
  * JSMPredictionHelperRoute::buildQuery()
- * 
+ *
  * @param  mixed $parts
  * @return
  */
@@ -245,13 +245,13 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         else {
             $params = ComponentHelper::getParams('com_sportsmanagement');
             if ($params->get('default_itemid')) {
-                $parts['Itemid'] = intval($params->get('default_itemid'));                
+                $parts['Itemid'] = intval($params->get('default_itemid'));              
             }
         }
 
           return Uri::buildQuery($parts);
     }
-  
-      
+
+    
 }
 ?>

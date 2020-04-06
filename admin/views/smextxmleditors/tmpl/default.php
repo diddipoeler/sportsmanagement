@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,13 +27,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <?PHP
 
-//if(version_compare(JVERSION,'3.0.0','ge')) 
+//if(version_compare(JVERSION,'3.0.0','ge'))
 //{
 //echo $this->loadTemplate('joomla3');
 //}
 //else
 //{
-//echo $this->loadTemplate('joomla2');    
+//echo $this->loadTemplate('joomla2');  
 //}
 
 ?>
@@ -52,7 +52,7 @@ foreach ( $this->files as $file )
             <tr class="">
                 <td class="center"></td>
                 <?php
-                    
+                  
                     ?>
                     <td class="center" nowrap="nowrap">
                                 <a    href="<?php echo $link; ?>" >
@@ -63,21 +63,21 @@ foreach ( $this->files as $file )
                                         $imageTitle, 'title= "'.$imageTitle.'"'
                                     );
             ?>
-                    </a>                 
+                    </a>               
                     </td>
                 <td>
                 <?php
-                    
+                  
                 echo $file;
-                    
+                  
         ?>
      </td>
-    
+  
             </tr>
     <?php
 
-    
-}    
+  
+}  
 
 ?>
 </table>
@@ -86,4 +86,4 @@ foreach ( $this->files as $file )
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

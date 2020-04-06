@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
-HTMLHelper::_('behavior.modal'); 
+HTMLHelper::_('behavior.modal');
 require_once 'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'xshv2.lib.core.php';
 $modal_popup_width = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 0);
 $modal_popup_height = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 0);
@@ -63,12 +63,12 @@ if ($this->tabelle) {
     // XML File
     $filepath='components/com_sportsmanagement/data/';
     //File laden
-    
+  
     $datei = ($filepath.'tab_sis_art_'.$this->params->get('sis_art').'_ln_'.$lnr.'.xml');
     if (file_exists($datei)) {
         $lastmodify = filemtime($datei);
     }
-       
+     
     echo '<tr class="sisdesc">';
     echo '<td style="text-align:left;">Platz</td>';
     echo '<td style="text-align:left;">Mannschaft</td>';
@@ -90,7 +90,7 @@ if ($this->tabelle) {
         } else {
             echo '<tr class="even">';
         }
-    
+  
         echo '<td>';
         echo $platz->Nr;
         echo '</td>';
@@ -119,7 +119,7 @@ if ($this->tabelle) {
         echo '<td align="center">';
         echo $platz->PunktePlus.':'.$platz->PunkteMinus;
         echo '</td>';
-        
+      
         echo '</tr>';
         $i++;
     }
@@ -139,14 +139,14 @@ if ($this->spielplan) {
         date_default_timezone_set('Europe/Vienna');
         //Ablauftest
         /*$heutetest="10.10.2011";
-        $heutetest_f = explode('.', $heutetest); 
+        $heutetest_f = explode('.', $heutetest);
         $heute = mktime(0, 0, 0, $heutetest_f[1], $heutetest_f[0], $heutetest_f[2]);*/
         //Ablauftest end
         $heute = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
         $futuredate = mktime(0, 0, 0, 1, 1, $this->params->get('sis_jahr'));
         $zaehler = 1;
         $colspan = 9;
-        
+      
         $wtag = Array(
         "Mon" => "Mo.",
         "Tue" => "Di.",
@@ -171,7 +171,7 @@ if ($this->spielplan) {
         "Nov" => "November",
         "Dec" => "Dezember"
         );
-        
+      
 
         $lnr = $this->spielplan->Spielklasse->Liga;
         $filepath='components/com_sportsmanagement/data/';
@@ -180,11 +180,11 @@ if ($this->spielplan) {
         if (file_exists($datei)) {
                $lastmodify = filemtime($datei);
         }
-        
+      
         if ($this->params->get('sis_getxmldatei') ) {
-        
+      
         }
-        
+      
 
         if($this->params->get('sis_ueberschrift') ) {
              echo '<div class="ueberschrift">';
@@ -198,9 +198,9 @@ if ($this->spielplan) {
              echo $this->spielplan->Spielklasse->Name;
              echo '</div>';
         }
-        
+      
         foreach ($this->spielplan->Spiel as $spiel) {
-            
+          
             if((string) $spiel->Mannschaft1 === $this->params->get('sis_clubnummer') || (string) $spiel->Mannschaft2 === $this->params->get('sis_clubnummer') || (string) $spiel->Mannschaft1 === $this->params->get('sis_clubnummer1') || (string) $spiel->Mannschaft2 === $this->params->get('sis_clubnummer1')) {
                 $wtagsp = $wtag[date('D', strtotime($spiel->Datum))];
                 $monatsp = $monat[date('M', strtotime($spiel->Datum))];
@@ -223,9 +223,9 @@ if ($this->spielplan) {
                     echo '</span><span class="article_seperator">&nbsp;</span><br><br>';
                 }
             }
-        
+      
         }
-        
+      
         echo '<div class="small">';
         echo '© <a href="'.$this->paramscomponent->get('sis_xmllink').'" target="_blank">'.substr($this->paramscomponent->get('sis_xmllink'), 7).'</a> - Letzte Aktualisierung: '.date("d.m.Y H:i:s", $lastmodify);
         echo "</div>";
@@ -233,9 +233,9 @@ if ($this->spielplan) {
         //echo xshv2Footer();
 
     } else {
-    
+  
         date_default_timezone_set('Europe/Vienna');
-    
+  
         $wtag = Array(
         "Mon" => "Mo.",
         "Tue" => "Di.",
@@ -317,7 +317,7 @@ if ($this->spielplan) {
             } else {
                 $row_color = "even";
             }
-        
+      
             if($this->params->get('sis_art') == "1a") {
                 $wtagsp = $wtag[date('D', strtotime($spielplan->Datum))];
                 $monatsp = $monat[date('M', strtotime($spielplan->Datum))];
@@ -348,7 +348,7 @@ if ($this->spielplan) {
                     }
                     echo '</tr>';
                     $zaehler++;
-                }    
+                }  
             } else {
                 echo '<tr class="'.$row_color.'">';
                 echo '<td>';
@@ -428,12 +428,12 @@ if ($this->statistik) {
     // XML File
     $filepath='components/com_sportsmanagement/data/';
     //File laden
-    
+  
     $datei = ($filepath.'stat_'.$lnr.'.xml');
     if (file_exists($datei)) {
         $lastmodify = filemtime($datei);
     }
-       
+     
     echo '<tr class="sisdesc">';
     echo '<td>Name</td>';
     echo '<td align="center">Tore</td>';
@@ -485,7 +485,7 @@ if ($this->statistik) {
                 echo $spl->MannschaftsName;
                 echo '</td>';
                 echo '</tr>';
-                $i++;    
+                $i++;  
             }
         }
     }
@@ -493,7 +493,7 @@ if ($this->statistik) {
     echo '<td class="small" colspan="'.$colspan.'">';
     echo '© <a href="'.$this->paramscomponent->get('sis_xmllink').'" target="_blank">'.substr($this->paramscomponent->get('sis_xmllink'), 7).'</a> - Letzte Aktualisierung: '.date("d.m.Y H:i:s", $lastmodify);
     echo "</td>";
-    echo "</tr>";   
+    echo "</tr>"; 
     echo '</table>';
     //echo xshv2Footer();
 

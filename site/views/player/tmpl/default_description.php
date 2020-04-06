@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage player
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
@@ -36,11 +36,11 @@ if (!empty($description) ) {
         <div class="personinfo">
     <?php	
     $description = HTMLHelper::_('content.prepare', $description);
-    echo stripslashes($description); 
+    echo stripslashes($description);
     ?>
         </div>
     <?php
 }
     ?>
-</div>    
+</div>  
 <!-- Team Player Description END -->

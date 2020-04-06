@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,13 +21,13 @@ if (!class_exists('sportsmanagementHelperRoute')) {
     /**
  * add the classes for handling
  */
-    JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);     
+    JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);   
 }
 
 /**
  * SportsmanagementRouter
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -35,21 +35,21 @@ if (!class_exists('sportsmanagementHelperRoute')) {
  */
 class SportsmanagementRouter extends RouterBase
 {
-    
+  
     /**
      * SportsmanagementRouter::build()
      * Build SEF URL
-     * 
+     *
      * @param  mixed $query
      * @return
      */
     public function build(&$query)
     {
         $segments = array();
-        
+      
         /**
-* 
- * Get menu item 
+*
+ * Get menu item
 */
         $menuitem = null;
 
@@ -62,63 +62,63 @@ class SportsmanagementRouter extends RouterBase
 
                 if (!$menuitems[$Itemid]) {
                     /**
-* 
- * Itemid doesn't exist or is invalid 
+*
+ * Itemid doesn't exist or is invalid
 */
                     unset($query ['Itemid']);
                 }
             }
 
             $menuitem = $menuitems[$Itemid];
-        }    
-        
+        }  
+      
         /**
-* 
- * Safety check: we need view in order to create SEF URLs 
+*
+ * Safety check: we need view in order to create SEF URLs
 */
         if (!isset($menuitem->query['view']) && empty($query ['view'])) {
             return $segments;
-        }    
-        
+        }  
+      
         /**
-* 
- * Get view for later use (query wins menu item) 
+*
+ * Get view for later use (query wins menu item)
 */
-        $view = isset($query ['view']) ? (string) preg_replace('/[^a-z]/', '', $query ['view']) : $menuitem->query ['view'];    
+        $view = isset($query ['view']) ? (string) preg_replace('/[^a-z]/', '', $query ['view']) : $menuitem->query ['view'];  
 
         /**
-* 
- * Get default values for URI variables 
+*
+ * Get default values for URI variables
 */
-        if (isset(sportsmanagementHelperRoute::$views[$view])) { 
-            $defaults = sportsmanagementHelperRoute::$views[$view]; 
-        } 
-        
+        if (isset(sportsmanagementHelperRoute::$views[$view])) {
+            $defaults = sportsmanagementHelperRoute::$views[$view];
+        }
+      
         $segments [] = $view;
         unset($query['view']);
         /**
-* 
- * Check all URI variables and remove those which aren't needed 
+*
+ * Check all URI variables and remove those which aren't needed
 */
         foreach ($query as $var => $value)
         {
-            if (isset($defaults [$var]) ) { 
+            if (isset($defaults [$var]) ) {
                   $segments [] = $value;
                  /**
-* 
- * Remove URI variable which has default value 
-*/ 
-                 unset($query [$var]); 
-            } 
+*
+ * Remove URI variable which has default value
+*/
+                 unset($query [$var]);
+            }
             elseif (isset($menuitem->query [$var]) && $value == $menuitem->query [$var] && $var != 'Itemid' && $var != 'option') {
                 /**
-* 
- * Remove URI variable which has the same value as menu item 
+*
+ * Remove URI variable which has the same value as menu item
 */
                 unset($query [$var]);
             }
-        }    
-        
+        }  
+      
         return $segments;
     }
 
@@ -133,57 +133,57 @@ class SportsmanagementRouter extends RouterBase
      */
     public function parse(&$segments)
     {
-        
+      
         /**
-* 
- * Get current menu item and get query variables from it 
+*
+ * Get current menu item and get query variables from it
 */
         $active = Factory::getApplication()->getMenu()->getActive();
         $vars   = isset($active->query) ? $active->query : array('view' => 'home');
           $defaults = array();
-    
+  
         if (empty($vars['view']) || $vars['view'] == 'home' || $vars['view'] == 'entrypage') {
             $vars['view'] = '';
         }
-    
+  
         /**
-* 
- * Get default values for URI variables 
-*/ 
-        if (isset(sportsmanagementHelperRoute::$views[$segments[0]])) { 
-            $defaults = sportsmanagementHelperRoute::$views[$segments[0]]; 
-        } 
-      
+*
+ * Get default values for URI variables
+*/
+        if (isset(sportsmanagementHelperRoute::$views[$segments[0]])) {
+            $defaults = sportsmanagementHelperRoute::$views[$segments[0]];
+        }
+    
         if ($defaults ) {
             $vars['view'] = $segments[0];
-            $count = 1;  
-            foreach ( $defaults as $key => $value )  
+            $count = 1;
+            foreach ( $defaults as $key => $value )
             {
-    
+  
                 if (isset($active->query) && sizeof($segments) < 2 ) {
-        
+      
                 }
                 else
                   {
                     if (isset($segments[$count]) ) {
-                         $vars[$key] = $segments[$count];  
+                         $vars[$key] = $segments[$count];
                     }
                 }
-                $count++;  
+                $count++;
             }
-        
-        }
       
+        }
+    
         /**
-* 
- * Handle all segments 
+*
+ * Handle all segments
 */
         $count = 0;
         while (($segment = array_shift($segments)) !== null)
         {
-        
+      
         }
-        
+      
         return $vars;
     }
 }

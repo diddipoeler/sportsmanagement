@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -40,11 +40,11 @@ $j = 0;
                     ?>
                     </th>
         <?php
-                    
+                  
         if (!$stat->getCalculated() && $stat->position_id == $position->posid) {
             ?>
            <th style="text-align: center;"><?php	echo $stat->getImage();    ?></th>
-        <?php 
+        <?php
         }
                 }
                 ?>
@@ -75,18 +75,18 @@ $j = 0;
          </tr>
             <?php
             $i++;
-        endif;    
+        endif;  
     }
     ?>
         </tbody>
     </table>
     <?php endforeach; ?>
-    
+  
     <?php if (count($this->awayStaff)) :?>
     <hr/>
     <?php foreach ($this->staffpositions as $position): ?>
     <h3><?php echo $position->text; ?></h3>
-    <table>    
+    <table>  
         <thead>
             <tr>
                 <th style="text-align: left;"></th>
@@ -97,13 +97,13 @@ $j = 0;
                     if (!$stat->getCalculated() && $stat->position_id == $position->posid) {
                         ?>
                        <th style="text-align: center;"><?php	echo $stat->getImage();    ?></th>
-                    <?php 
-                    }            
+                    <?php
+                    }          
                 }
                 ?>
             </tr>
         </thead>
-        
+      
         <tbody>
     <?php
     foreach ( $this->awayStaff as $row )
@@ -129,7 +129,7 @@ $j = 0;
          </tr>
             <?php
             $j++;
-        endif;    
+        endif;  
     }
     ?>
         </tbody>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -51,20 +51,20 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
 }
 
 if ($paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') ) {
-    DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));    
+    DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));  
 }
 else
 {
     if (COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || Factory::getApplication()->input->getInt('cfg_which_database', 0) ) {
-        if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {    
+        if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {  
             DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));
-        }    
+        }  
     }
     else
     {
-        if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {        
+        if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {      
             DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', JURI::root());
-        }    
+        }  
     }
 
 }
@@ -72,9 +72,9 @@ else
 
 /**
  * plgSearchsearch_sportsmanagement
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -86,7 +86,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
     /**
      * plgSearchsearch_sportsmanagement::plgSearchsearch_sportsmanagement()
-     * 
+     *
      * @param  mixed $subject
      * @param  mixed $params
      * @return
@@ -101,7 +101,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
     /**
      * plgSearchsearch_sportsmanagement::onContentSearchAreas()
-     * 
+     *
      * @return
      */
     function onContentSearchAreas()
@@ -117,7 +117,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
     /**
      * plgSearchsearch_sportsmanagement::onContentSearch()
-     * 
+     *
      * @param  mixed  $text
      * @param  string $phrase
      * @param  string $ordering
@@ -129,7 +129,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         // Reference global application object
         $app = Factory::getApplication();
         //$db 	= Factory::getDBO();
-        $db = sportsmanagementHelper::getDBConnection(); 
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $user    = Factory::getUser();
         $country = '';
@@ -143,7 +143,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         $search_referees    = $this->params->def('search_referees',    1);
         $search_projects    = $this->params->def('search_projects',    1);
         $text = trim($text);
-       
+     
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
              // Joomla! 3.0 code here
              $escape = 'escape';
@@ -151,7 +151,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         elseif(version_compare(JVERSION, '2.5.0', 'ge')) {
              // Joomla! 2.5 code here
              $escape = 'getEscaped';
-        } 
+        }
 
         if ($text == '') {
             return array();
@@ -165,11 +165,11 @@ class plgSearchsearch_sportsmanagement extends JPlugin
         case 'any':
         default:
             $words = explode(' ', $text);
-            
-            //echo '<pre>'.print_r($words,true).'</pre>';            
-            
-            
-            
+          
+            //echo '<pre>'.print_r($words,true).'</pre>';          
+          
+          
+          
             $wheres = array();
             $wheresteam = array();
             $wheresperson = array();
@@ -179,16 +179,16 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             if ($search_clubs ) {
                 foreach ($words as $word)
                 {
-                      
+                    
                     $suchpattern="/\[(.*)\]/";
                     preg_match($suchpattern, $word, $match); //Search-String
-                    //echo 'wort <pre>'.print_r($word,true).'</pre>';                      
-                    //echo 'treffer <pre>'.print_r($match,true).'</pre>';                      
+                    //echo 'wort <pre>'.print_r($word,true).'</pre>';                    
+                    //echo 'treffer <pre>'.print_r($match,true).'</pre>';                    
 
-                      
-                      
+                    
+                    
                     if ($match[1] ) {
-                        //$wheres[] 	= 'c.country LIKE '.$match[1]; 
+                        //$wheres[] 	= 'c.country LIKE '.$match[1];
                         $country = $match[1];
                         //$wheres[] 	= 'c.country LIKE '.$db->Quote(''.$match[1].'');
                     }
@@ -203,13 +203,13 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
                         $wheres[]     = implode(' OR ', $wheres2);
                     }
-                      
+                    
                 }
-                  
+                
                 if ($match[1] ) {
                     array_pop($words);
                 }
-                  
+                
             }
 
 
@@ -247,7 +247,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
                     $wheresplayground[]     = implode(' OR ', $wheres2);
                 }
             }
-                
+              
             if ($search_projects ) {
                 foreach ($words as $word)
                 {
@@ -286,7 +286,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pt.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=clubinfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&cid=\', CONCAT_WS(\':\',c.id,c.alias) ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_club AS c');
             $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
             $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
@@ -295,22 +295,22 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
             $query->where(" ( ".$where." ) ");
             if ($country ) {
-                $query->where('c.country LIKE '.$db->Quote(''.$country.''));  
+                $query->where('c.country LIKE '.$db->Quote(''.$country.''));
             }
             $query->group('c.name,c.country');
             $query->order('c.name');
-            
+          
             $db->setQuery($query);
             $list = $db->loadObjectList();
-            
+          
             /**
             * hier bereiten wir den text auf,
             * damit wir auch bilder und flaggen sehen
-            */        
+            */      
 
             foreach ($list as $row)
                 {
-                //$row->title = JSMCountries::getCountryFlag($row->country).' '.$row->title;    
+                //$row->title = JSMCountries::getCountryFlag($row->country).' '.$row->title;  
                 $row->text = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DIRECTORY_SEPARATOR.$row->picture.'" alt="..." class="img-rounded" width="50">'.JSMCountries::getCountryFlag($row->country).' '.$row->text;
             }
             $rows[] = $list;
@@ -327,7 +327,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pt.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=teaminfo&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_team AS t');
             $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
             $query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
@@ -336,11 +336,11 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 
             $query->where(" ( ".$whereteam." ) ");
             if ($country ) {
-                $query->where('c.country LIKE '.$db->Quote(''.$country.''));  
+                $query->where('c.country LIKE '.$db->Quote(''.$country.''));
             }
             $query->group('t.name,c.country');
             $query->order('t.name');
-            
+          
             $db->setQuery($query);
             $list = $db->loadObjectList();
             $rows[] = $list;
@@ -361,14 +361,14 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pt.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_person AS pe');
             $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = pe.id');
             $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
             $query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
             $query->join('INNER', ' #__sportsmanagement_team AS t ON t.id = st.team_id ');
             $query->join('INNER', ' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
-        
+      
             $query->where(" ( ".$wheresperson." ) ");
             $query->where('pe.published = 1');
             $query->where('tp.persontype = 1');
@@ -395,14 +395,14 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pt.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=player&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',p.id,p.alias) ,\'&tid=\', CONCAT_WS(\':\',t.id,t.alias) , \'&pid=\', CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_person AS pe');
             $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = pe.id');
             $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
             $query->join('INNER', ' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
             $query->join('INNER', ' #__sportsmanagement_team AS t ON t.id = st.team_id ');
             $query->join('INNER', ' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
-        
+      
             $query->where(" ( ".$wheresperson." ) ");
             $query->where('pe.published = 1');
             $query->where('tp.persontype = 2');
@@ -425,17 +425,17 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pr.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=referee&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pid=\',CONCAT_WS(\':\',pe.id,pe.alias) ) AS href');
             $query->select('2 AS browsernav');
-          
+        
             $query->from('#__sportsmanagement_person AS pe');
             $query->join('LEFT', '#__sportsmanagement_season_person_id AS o ON o.person_id = pe.id');
             $query->join('LEFT', '#__sportsmanagement_project_referee AS pr ON pr.person_id = o.id');
             $query->join('LEFT', '#__sportsmanagement_project AS pro ON pr.project_id = pro.id');
-            
+          
             $query->where(" ( ".$wheresperson." ) ");
             $query->where(" pe.published = 1 ");
             $query->group('pe.lastname, pe.firstname, pe.nickname');
             $query->order('pe.lastname,pe.firstname,pe.nickname');
-            
+          
             $db->setQuery($query);
             $list = $db->loadObjectList();
             $rows[] = $list;
@@ -452,7 +452,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('r.project_id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=playground&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&pgid=\',CONCAT_WS(\':\',pl.id,pl.alias) ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_playground AS pl');
             $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = pl.club_id');
             $query->join('LEFT', '#__sportsmanagement_match AS m ON m.playground_id = pl.id');
@@ -463,12 +463,12 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->where(" ( ".$wheresplayground." ) ");
             $query->group('pl.name');
             $query->order('pl.name');
-            
+          
             $db->setQuery($query);
             $list = $db->loadObjectList();
             $rows[] = $list;
         }
-        
+      
         /**
  *         hier werden die projekte gesucht
  */
@@ -482,7 +482,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->select('pro.id AS project');
             $query->select('CONCAT( \'index.php?option=com_sportsmanagement&view=ranking&cfg_which_database=0&s=0&p=\', CONCAT_WS(\':\',pro.id,pro.alias) ,\'&type=0\' ) AS href');
             $query->select('2 AS browsernav');
-            
+          
             $query->from('#__sportsmanagement_project AS pro');
             $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = pro.league_id');
 
@@ -490,12 +490,12 @@ class plgSearchsearch_sportsmanagement extends JPlugin
             $query->where(" ( ".$wheresproject." ) ");
             $query->group('pro.name');
             $query->order('pro.name');
-            
+          
             $db->setQuery($query);
             $list = $db->loadObjectList();
             $rows[] = $list;
         }
-        
+      
         $results = array();
 
         if(count($rows)) {
@@ -516,7 +516,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
                     }
                 }
             }
-            
+          
             foreach($rows as $row)
             {
                 $results = array_merge($results, (array) $row);

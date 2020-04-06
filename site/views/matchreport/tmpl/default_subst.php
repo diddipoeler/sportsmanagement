@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,7 +26,7 @@ usort(
 if ($this->config['show_substitutions'] ) {
     if (!empty($this->substitutes)) {
         ?>
-        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'); ?></h2>    
+        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'); ?></h2>  
         <table class="table ">
          <tr>
        <td class="list">

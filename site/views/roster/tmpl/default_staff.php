@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage roster
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -71,7 +71,7 @@ if (count($this->stafflist) > 0) {
         </tr>
     </table>
     <br />
-    <div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultstaff"> 
+    <div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultstaff">
     <table class="<?php echo $this->config['table_class'];?>">
         <thead>
             <tr class="sectiontableheader rosterheader">
@@ -97,7 +97,7 @@ if (count($this->stafflist) > 0) {
     for ($i=0, $n=count($this->stafflist); $i < $n; $i++)
     {
         $row =& $this->stafflist[$i];
-               
+             
         ?>
      <tr class="">
         <?php
@@ -106,9 +106,9 @@ if (count($this->stafflist) > 0) {
            <td width="30" class="td_c">&nbsp;</td><?php
         }
         $playerName = sportsmanagementHelper::formatName(
-            null, $row->firstname, 
-            $row->nickname, 
-            $row->lastname, 
+            null, $row->firstname,
+            $row->nickname,
+            $row->lastname,
             $this->config["name_format_staff"]
         );
         if ($this->config['show_staff_icon']) {
@@ -116,17 +116,17 @@ if (count($this->stafflist) > 0) {
             if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") )) {
                 $picture = $row->ppic;
             }
-                    
+                  
                     /*
              if ( !file_exists( $picture ) )
              {
               $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-             } 
+             }
                     */
                     ?>
             <td width="40" class="td_c" nowrap="nowrap">
                         <?php
-                
+              
                         echo sportsmanagementHelperHtml::getBootstrapModalImage(
                             'staff'.$row->playerid,
                             $picture,
@@ -136,10 +136,10 @@ if (count($this->stafflist) > 0) {
                             $this->modalwidth,
                             $this->modalheight,
                             $this->overallconfig['use_jquery_modal']
-                        );    
+                        );  
 
-      
-              
+    
+            
                             ?>
             </td>
             <?php
@@ -168,7 +168,7 @@ if (count($this->stafflist) > 0) {
             $routeparameter['p'] = $this->project->slug;
             $routeparameter['tid'] = $this->team->slug;
             $routeparameter['pid'] = $row->person_slug;
-       
+     
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
             echo HTMLHelper::link($link, '<span class="staffname">'. $playerName.'</span>');
         }
@@ -210,7 +210,7 @@ if (count($this->stafflist) > 0) {
         if ($row->deathday !="0000-00-00" ) {
             $birthdateStr .= ' [ &dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
         }
-                            
+                          
                     echo $birthdateStr;
                 ?>
                 </td><?php

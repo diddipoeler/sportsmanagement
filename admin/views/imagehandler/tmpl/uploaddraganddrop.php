@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -35,10 +35,10 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
     <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
         wish to resize images before upload. This must be loaded before fileinput.min.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.5.1/js/plugins/piexif.min.js" type="text/javascript"></script>
-    <!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview. 
+    <!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
         This must be loaded before fileinput.min.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.5.1/js/plugins/sortable.min.js" type="text/javascript"></script>
-    <!-- purify.min.js is only needed if you wish to purify HTML content in your preview for 
+    <!-- purify.min.js is only needed if you wish to purify HTML content in your preview for
         HTML files. This must be loaded before fileinput.min.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.5.1/js/plugins/purify.min.js" type="text/javascript"></script>
     <!-- bootstrap.min.js below is needed if you wish to zoom and preview file content in a detail modal
@@ -50,27 +50,27 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.5.1/themes/fas/theme.min.js"></script>
     <!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.5.1/js/locales/<?php echo $languageCode;?>.js"></script>
-  
+
 <div class="container my-4">
 <form action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm" name="adminForm" method="post">
-        
+      
   <div class="form-group">
             <div class="file-loading">
                 <input name="userfile" id="userfile" type="file" class="file" data-overwrite-initial="false" data-theme="fas">
             </div>
         </div>
-  
+
   <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="task" value="imagehandler.upload" />
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
-  
 
-</div>  
-  
-<script>  
+
+</div>
+
+<script>
  jQuery("#userfile").fileinput({
         theme: 'fas',
   language: 'de',
@@ -82,6 +82,6 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
         slugCallback: function (filename) {
             return filename.replace('(', '_').replace(']', '_');
         }
-    });  
+    });
 
 </script>

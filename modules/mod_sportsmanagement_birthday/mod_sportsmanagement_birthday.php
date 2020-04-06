@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -39,7 +39,7 @@ if (!class_exists('JSMCountries')) {
 }
 if (!class_exists('sportsmanagementHelper')) {
     /**
- * add the classes for handling 
+ * add the classes for handling
 */
     $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
@@ -52,11 +52,11 @@ if (!class_exists('sportsmanagementHelper')) {
  */
 //$language = Factory::getLanguage();
 $lang->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
-  
+
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'helper.php';
 
@@ -77,7 +77,7 @@ case 'B':
     break;
 default:
     if ($mode == 'L' && $params->get('show_player_card') ) {
-        $attribs['layout'] = 'default_player_card';    
+        $attribs['layout'] = 'default_player_card';  
         $document->addStyleSheet(Uri::base() . 'modules' .DIRECTORY_SEPARATOR. $module->module .DIRECTORY_SEPARATOR. 'css' .DIRECTORY_SEPARATOR. 'player_card.css');
         $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
@@ -196,7 +196,7 @@ case 'J':
     }
     break;
 }
-?>           
+?>         
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require ModuleHelper::getLayoutPath($module->module, $layout);

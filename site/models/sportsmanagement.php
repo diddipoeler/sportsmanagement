@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,13 +15,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\MVC\Model\ItemModel; 
+use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelsportsmanagement
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -33,7 +33,7 @@ class sportsmanagementModelsportsmanagement extends ItemModel
      * @var object item
      */
     protected $item;
- 
+
     /**
      * Method to auto-populate the model state.
      *
@@ -46,19 +46,19 @@ class sportsmanagementModelsportsmanagement extends ItemModel
      * @return void
      * @since  1.6
      */
-    protected function populateState() 
+    protected function populateState()
     {
         $app = Factory::getApplication();
         // Get the message id
         $id = Factory::getApplication()->input->getInt('id');
         $this->setState('message.id', $id);
- 
+
         // Load the parameters.
         $params = $app->getParams();
         $this->setState('params', $params);
         parent::populateState();
     }
- 
+
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -68,17 +68,17 @@ class sportsmanagementModelsportsmanagement extends ItemModel
      * @return Table    A database object
      * @since  1.6
      */
-    public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array())
     {
         return Table::getInstance($type, $prefix, $config);
     }
- 
+
     /**
      * Get the message
      *
      * @return object The message to be displayed to the user
      */
-    public function getItem() 
+    public function getItem()
     {
         if (!isset($this->item)) {
             $id = $this->getState('message.id');
@@ -103,9 +103,9 @@ class sportsmanagementModelsportsmanagement extends ItemModel
                          {
                     $params->loadJSON($this->item->params);
                 }
-                
+              
                      $this->item->params = $params;
- 
+
                      // Merge global params with item params
                      $params = clone $this->getState('params');
                      $params->merge($this->item->params);

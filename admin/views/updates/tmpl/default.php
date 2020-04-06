@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,22 +24,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /*  #myModal1 .modal-dialog {
     width: 80%;
   }
-*/  
+*/
 
 /*
 .modaljsm {
     width: 80%;
     height: 60%;
-  }  
+  }
   */
 .modal-dialog {
     width: 80%;
-  }  
+  }
 .modal-dialog,
 .modal-content {
     /* 95% of window height */
     height: 95%;
-}  
+}
 
 
 </style>
@@ -51,17 +51,17 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 
-?>        
-  
+?>      
+
     <?php
     // tabs anzeigen
     $idxTab = 1;
-    echo HTMLHelper::_('tabs.start', 'tabs_updates', array('useCookie'=>1)); 
-    echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
+    echo HTMLHelper::_('tabs.start', 'tabs_updates', array('useCookie'=>1));
+    echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++));
     ?>
   <table class="table">
         <thead>
@@ -97,12 +97,12 @@ else
                   class="modal">
                                     <?php
                                     echo $row['file_name'];
-                                    ?> 
+                                    ?>
                             </a>
-                    
+                  
                             <a    href="javascript:openLink('<?php echo $link; ?>')">
                     <?php
-                                     
+                                   
                     $image = 'icon-16-Teams.png';
                     $title=  '';
                     echo HTMLHelper::_(
@@ -110,8 +110,8 @@ else
                         Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
                         'title= "' .$title. '"'
                     );
-                                                     
-                                        
+                                                   
+                                      
                                                                             ?>
                 </a>
                                     -->
@@ -125,7 +125,7 @@ else
         $params['width']  = "100%";
         echo $html .= HTMLHelper::_('bootstrap.renderModal', 'modal-' . $i, $params);
 
-        ?>                                                 
+        ?>                                               
                     </td>
                 <td><?php
                 if($row['updateDescription'] != "") {
@@ -146,7 +146,7 @@ else
         }
     ?></tbody>
     </table>
-    
+  
     <?PHP
     echo HTMLHelper::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel'.($idxTab++));
     foreach ( $this->versionhistory as $history )
@@ -155,14 +155,14 @@ else
        <fieldset>
        <legend>
       <strong>
-        <?php 
-        //echo $history->date; 
+        <?php
+        //echo $history->date;
         echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN', $history->version, HTMLHelper::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
         ?>
       </strong>
       </legend>
-        <?php 
-        //echo $history->text; 
+        <?php
+        //echo $history->text;
         echo Text::_($history->text);
         ?>
        </fieldset>
@@ -170,8 +170,8 @@ else
     }
     echo HTMLHelper::_('tabs.end');
     ?>
-    
-    
+  
+  
     <input type="hidden" name="view" value="updates" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
@@ -183,4 +183,4 @@ else
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

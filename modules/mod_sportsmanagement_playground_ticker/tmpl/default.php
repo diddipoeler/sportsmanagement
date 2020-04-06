@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -42,10 +42,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-?>    
+?>  
 <div class="container-fluid">
         <div class="row">
-           
+         
             <div class="col-md-12">
                 <!-- Controls -->
                 <div class="controls pull-right hidden-xs">
@@ -53,23 +53,23 @@ defined('_JEXEC') or die('Restricted access');
                         data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                             data-slide="next"></a>
                 </div>
-                
+              
             </div>
         </div>
-        
+      
         <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-            
+          
 <?PHP
 $a = 0;
-foreach ($playgrounds AS $playground) 
+foreach ($playgrounds AS $playground)
 {
-                                                       
-    $active = ($a==0) ? 'active' : '';    
+                                                     
+    $active = ($a==0) ? 'active' : '';  
 
-    $playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
-    //if ($params->get('show_picture')==1) 
+    $playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
+    //if ($params->get('show_picture')==1)
     //{
     if (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->picture) && $playground->picture != '' ) {
         $thispic = $playground->picture;
@@ -78,9 +78,9 @@ foreach ($playgrounds AS $playground)
         $thispic = $playground->default_picture;
     }
     //}
-       
+     
 
-?>              
+?>            
                 <div class="item <?php echo $active; ?>">
                     <div class="row">
                         <div class="col-md-12">
@@ -89,26 +89,26 @@ foreach ($playgrounds AS $playground)
                                     <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" width="<?php echo $params->get('picture_width', 50); ?>" />
                                 </div>
                             </div>
-                        </div>        
+                        </div>      
         </div>
-        
+      
         <div class="info">
                                     <div class="row">
                                     <div class="price col-md-6">
                                             <h5><?php echo $playground->name; ?></h5>
-                                            
+                                          
                                         </div>
                                     <div class="price col-md-6">
-                                            
+                                          
                                             <h5 class="price-text-color"><?php echo $playground->max_visitors; ?></h5>
-                                        </div>    
+                                        </div>  
                                     </div>
                                     </div>
-        </div>  
-<?PHP 
-$a++;   
+        </div>
+<?PHP
+$a++; 
 }
-?>            
+?>          
         </div>
 </div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,19 +20,19 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewDivisions
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewDivisions extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewDivisions::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -44,7 +44,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         $this->table = Table::getInstance('division', 'sportsmanagementTable');
         $this->lists = $lists;
     }
-    
+  
     /**
      * Add the page title and toolbar.
      *
@@ -54,7 +54,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE');
         if ($this->user->username == 'admin' ) {
-            ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);    
+            ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);  
         }
         ToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
         ToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);

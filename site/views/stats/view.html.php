@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,25 +19,25 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewStats
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewStats extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewStats::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
         $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-        $this->document->addScript($js);    
+        $this->document->addScript($js);  
 
         $this->project = sportsmanagementModelProject::getProject($this->jinput->getint("cfg_which_database", 0));
         if (isset($this->project) ) {
@@ -60,15 +60,15 @@ class sportsmanagementViewStats extends sportsmanagementView
             $limit = 3;
 
             $this->limit = $limit;
-            
+          
             $rounds    = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getint("cfg_which_database", 0));
             $this->round_labels = array();
-            foreach ($rounds as $r) 
+            foreach ($rounds as $r)
             {
                   $this->round_labels[] = '"'.$r->name.'"';
             }
-            
-            
+          
+          
             $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", $this->jinput->getint("cfg_which_database", 0)), $this->config));
         }
         // Set page title
@@ -80,18 +80,18 @@ class sportsmanagementViewStats extends sportsmanagementView
             }
         }
         $this->document->setTitle($pageTitle);
-        
+      
         $view = $this->jinput->getVar("view");
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
-        
+      
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 
     }
 
     /**
      * sportsmanagementViewStats::_setChartdata()
-     * 
+     *
      * @param  mixed $config
      * @return
      */

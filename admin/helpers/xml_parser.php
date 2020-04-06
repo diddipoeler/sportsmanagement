@@ -1,17 +1,17 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
  * @file       xml_parser.php
- * @author    
- * @copyright 
+ * @author  
+ * @copyright
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage helpers
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
 /*
@@ -827,7 +827,7 @@ class xml_parser_class
                 $this->error_line=$xml_parser_handlers[$this->xml_parser]->error_line;
                 $this->error_column=$xml_parser_handlers[$this->xml_parser]->error_column;
                 $this->error_byte_index=$xml_parser_handlers[$this->xml_parser]->error_byte_index;
-            }            
+            }          
         }
         return($this->error);
     }

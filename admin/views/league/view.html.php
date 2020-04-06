@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewLeague
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -30,35 +30,35 @@ class sportsmanagementViewLeague extends sportsmanagementView
 
     /**
      * sportsmanagementViewLeague::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
-         
+       
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
-        
+      
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
         $this->extended    = $extended;
-        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');        
+        $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');      
         $this->extendeduser    = $extendeduser;
-        
+      
     }
- 
-    
+
+  
     /**
      * sportsmanagementViewLeague::addToolBar()
-     * 
+     *
      * @return void
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
         $this->jinput->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
         $this->icon = 'league';
         parent::addToolbar();
     }
-    
-    
+  
+  
 }

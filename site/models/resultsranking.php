@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,25 +18,25 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelResultsranking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementModelResultsranking extends BaseDatabaseModel
 {
-    
+  
     static $divisionid= 0;
     static $roundid= 0;
     static $projectid= 0;
     static $cfg_which_database = 0;
     static $show_ranking_reiter = 0;
-    
+  
     /**
      * sportsmanagementModelResultsranking::__construct()
-     * 
+     *
      * @return
      */
     function __construct( )
@@ -44,7 +44,7 @@ class sportsmanagementModelResultsranking extends BaseDatabaseModel
           $app = Factory::getApplication();
           // JInput object
           $jinput = $app->input;
-       
+     
         parent::__construct();
         self::$divisionid = (int) $jinput->get('division', 0, '');
         self::$roundid = (int) $jinput->get('r', 0, '');
@@ -54,7 +54,7 @@ class sportsmanagementModelResultsranking extends BaseDatabaseModel
           sportsmanagementModelProject::$projectid = self::$projectid;
           sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
     }
-  
+
 }
-  
-?>  
+
+?>

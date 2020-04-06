@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllereditperson
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -36,55 +36,55 @@ class sportsmanagementControllereditperson extends FormController
      * @return void
      * @since  1.5
      */
-    function __construct($config = array()) 
+    function __construct($config = array())
     {
         parent::__construct($config);
 
         /**
-* 
- * Map the apply task to the save method. 
+*
+ * Map the apply task to the save method.
 */
         $this->registerTask('apply', 'save');
     }
 
     /**
      * sportsmanagementControllereditperson::getModel()
-     * 
+     *
      * @param  string $name
      * @param  string $prefix
      * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
     {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
     /**
      * sportsmanagementControllereditperson::submit()
-     * 
+     *
      * @return
      */
-    public function submit() 
+    public function submit()
     {
 
 
         return true;
     }
 
-   
+ 
     /**
      * sportsmanagementControllereditperson::save()
-     * 
+     *
      * @param  mixed $key
      * @param  mixed $urlVar
      * @return
      */
-    public function save($key = null, $urlVar = null) 
+    public function save($key = null, $urlVar = null)
     {
         /**
-* 
- * Initialise variables. 
+*
+ * Initialise variables.
 */
         $app = Factory::getApplication();
         $model = $this->getModel('editperson');
@@ -93,14 +93,14 @@ class sportsmanagementControllereditperson extends FormController
         $id = Factory::getApplication()->input->getInt('id');
 
         /**
-* 
- * Now update the loaded data to the database via a function in the model 
+*
+ * Now update the loaded data to the database via a function in the model
 */
         $upditem = $model->updItem($data);
 
         /**
-* 
- * Set the redirect based on the task. 
+*
+ * Set the redirect based on the task.
 */
         switch ($this->getTask()) {
         case 'apply':
@@ -120,7 +120,7 @@ class sportsmanagementControllereditperson extends FormController
 
         /**
          * sportsmanagementControllereditperson::cancel()
-         * 
+         *
          * @param  mixed $key
          * @return
          */

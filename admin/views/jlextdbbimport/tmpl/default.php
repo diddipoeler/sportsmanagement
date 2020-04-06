@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -65,8 +65,8 @@ $attribs['align'] = 'left';
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_SELECT_USE_PROJECT');
         ?>
-       </legend>      
-        <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_USE_PROJECT'); ?>      
+       </legend>    
+        <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_USE_PROJECT'); ?>    
         </fieldset>
         </td>
         </tr>
@@ -100,7 +100,7 @@ $attribs['align'] = 'left';
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_DELIMITER');
         ?>
        </legend>
-            
+          
         <input type="radio" name="delimiter" value=";" checked> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_DELIMITER_SEMICOLON'); ?><br><br>
         <input type="radio" name="delimiter" value=","> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_DELIMITER_COMMA'); ?><br><br>
         <input type="radio" name="delimiter" value="\t"> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_DELIMITER_TABULAR'); ?><br>
@@ -110,8 +110,8 @@ $attribs['align'] = 'left';
         <?php
         }
         ?>
-      
-      
+    
+    
       <tr>
       <td>
       <fieldset>
@@ -130,7 +130,7 @@ $attribs['align'] = 'left';
         </table>
         <input type="hidden" name='sent' value='1' />
         <input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
-        <input type="hidden" name="option" value="com_sportsmanagement" /> 
+        <input type="hidden" name="option" value="com_sportsmanagement" />
         <input type="hidden" name='task' value='jlextdbbimport.save' />
     <?php echo HTMLHelper::_('form.token')."\n"; ?>
     </form>
@@ -139,4 +139,4 @@ $attribs['align'] = 'left';
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

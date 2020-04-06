@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 
@@ -26,18 +26,18 @@ use Joomla\CMS\Filesystem\File;
     ?>
         <tr>
             <td class="teamlogo">
-                <?php 
+                <?php
                 //dynamic object property string
                 $pic = $this->config['show_picture'];
-                
+              
                 if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team1->$pic) ) {
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
                 else
                 {
                     $picture = $this->team1->$pic;
-                }    
-                            
+                }  
+                          
                 ?>
 
 <?PHP
@@ -50,10 +50,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     $this->modalwidth,
     $this->modalheight,
     $this->overallconfig['use_jquery_modal']
-);                     
+);                   
 
 ?>
-                
+              
         </td>
         <td>
         </td>
@@ -62,14 +62,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
         <td>
         </td>
         <td class="teamlogo">
-    <?php 
+    <?php
     if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$this->team2->$pic) ) {
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
     }
     else
                 {
         $picture = $this->team2->$pic;
-    }   
+    } 
 
     echo sportsmanagementHelperHtml::getBootstrapModalImage(
         'team2mare'.$this->team2->id,
@@ -80,12 +80,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
         $this->modalwidth,
         $this->modalheight,
         $this->overallconfig['use_jquery_modal']
-    );                     
-                            
+    );                   
+                          
     ?>
-        
+      
 
-                   
+                 
 
         </td>
     </tr>
@@ -93,18 +93,18 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     <?php
     } // end team logo
     ?>
-    
+  
     <tr>
         <td class="team">
-    <?php 
+    <?php
     if ($this->config['names'] == "short_name" ) {
-        echo $this->team1->short_name; 
+        echo $this->team1->short_name;
     }
     if ($this->config['names'] == "middle_name" ) {
-        echo $this->team1->middle_name; 
+        echo $this->team1->middle_name;
     }
     if ($this->config['names'] == "name" ) {
-        echo $this->team1->name; 
+        echo $this->team1->name;
     }
     ?>
         </td>
@@ -118,15 +118,15 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 <?php echo $this->showMatchresult($this->match->alt_decision, 2); ?>
             </td>
         <td class="team">
-    <?php 
+    <?php
     if ($this->config['names'] == "short_name" ) {
-        echo $this->team2->short_name; 
+        echo $this->team2->short_name;
     }
     if ($this->config['names'] == "middle_name" ) {
-        echo $this->team2->middle_name; 
+        echo $this->team2->middle_name;
     }
     if ($this->config['names'] == "name" ) {
-        echo $this->team2->name; 
+        echo $this->team2->name;
     }
     ?>
         </td>
@@ -153,10 +153,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 <?php
         }
     }
-        
+      
     /**
  * legs anzeigen
- */        
+ */      
     if ($this->match->team1_legs ) {
         ?>
         <tr>
@@ -174,10 +174,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
             <td>
         </td>
         </tr>
-        <?php    
-            
-            
-            
+        <?php  
+          
+          
+          
     }
 
     /**
@@ -190,10 +190,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 <?php echo $this->match->match_result_detail; ?>
             </td>
         </tr>
-        <?php    
+        <?php  
     }
         ?>
-    
+  
 </table>
 
 <?php
@@ -212,8 +212,8 @@ else
 {
     ?>
     <table class="table" >
-        
-        
+      
+      
     <?php
 
     if ($this->config['show_overtime_result'] ) {

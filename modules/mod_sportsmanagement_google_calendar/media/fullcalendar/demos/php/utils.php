@@ -4,7 +4,7 @@
 //
 // Requires PHP 5.2.0 or higher.
 //--------------------------------------------------------------------------------------------------
-/** 
+/**
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -27,7 +27,7 @@ class Event
 
     // Constructs an Event object from the given array of key=>values.
     // You can optionally force the timezone of the parsed dates.
-    public function __construct($array, $timezone=null) 
+    public function __construct($array, $timezone=null)
     {
 
         $this->title = $array['title'];
@@ -62,7 +62,7 @@ class Event
 
     // Returns whether the date range of our event intersects with the given all-day range.
     // $rangeStart and $rangeEnd are assumed to be dates in UTC with 00:00:00 time.
-    public function isWithinDayRange($rangeStart, $rangeEnd) 
+    public function isWithinDayRange($rangeStart, $rangeEnd)
     {
 
         // Normalize our event's dates for comparison with the all-day range.
@@ -81,7 +81,7 @@ class Event
 
 
     // Converts this Event object back to a plain data array, to be used for generating JSON
-    public function toArray() 
+    public function toArray()
     {
 
         // Start with the misc properties (don't worry, PHP won't affect the original array)
@@ -114,7 +114,7 @@ class Event
 
 
 // Parses a string into a DateTime object, optionally forced into the given timezone.
-function parseDateTime($string, $timezone=null) 
+function parseDateTime($string, $timezone=null)
 {
     $date = new DateTime(
         $string,
@@ -132,7 +132,7 @@ function parseDateTime($string, $timezone=null)
 
 // Takes the year/month/date values of the given DateTime and converts them to a new DateTime,
 // but in UTC.
-function stripTime($datetime) 
+function stripTime($datetime)
 {
     return new DateTime($datetime->format('Y-m-d'));
 }

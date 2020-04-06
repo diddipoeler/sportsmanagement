@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage specialextensions
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
@@ -22,7 +22,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <tr>
         <td width="100%" valign="top">
             <div id="cpanel">
-                <?php 
+                <?php
                 foreach ( $this->Extensions as $key => $value )
                 {
                     echo $this->addIcon('extensions.png', 'index.php?option=com_sportsmanagement&view='.$value.'', Text::_($value));
@@ -37,4 +37,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

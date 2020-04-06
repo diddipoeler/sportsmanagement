@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,14 +14,14 @@
 
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModeltrainingdata
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -39,16 +39,16 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
 
-    
+  
 
 
-    
+  
     /**
      * Method to save the form data.
      *
@@ -65,19 +65,19 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
           // Set the values
           $data['modified'] = $date->toSql();
           $data['modified_by'] = $user->get('id');
-        
+      
           // zuerst sichern, damit wir bei einer neuanlage die id haben
         if (parent::save($data) ) {
             $id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+          
             if ($isNew ) {
                 //Here you can do other tasks with your newly saved record...
                 $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
             }
-           
+         
         }
-    }   
-    
+    } 
+  
 }

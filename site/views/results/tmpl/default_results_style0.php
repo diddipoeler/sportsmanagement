@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -73,12 +73,12 @@ if ($this->config['show_comments_count'] ) {
     }
 }
 ?>
- 
+
 <table class="<?PHP echo $this->config['table_class']; ?> ">
     <?php
     foreach( $dates as $date => $games )
     {
-    
+  
         ?>
        <!-- DATE HEADER -->
           <thead>
@@ -89,7 +89,7 @@ if ($this->config['show_comments_count'] ) {
         if (($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) ) {
         ?>
         <th id="results-header-head-column-count" colspan="<?php echo $nbcols-$nbcols_header; ?>">
-            <?php 
+            <?php
             if ($date == "0000-00-00" ) {
                 echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
             }
@@ -98,8 +98,8 @@ if ($this->config['show_comments_count'] ) {
                     echo HTMLHelper::date($date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
             if ($this->config['show_matchday_dateheader']) {
-                echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode); 
-            } 
+                echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode);
+            }
                     ?>
                  </th>
                     <?php
@@ -117,7 +117,7 @@ if ($this->config['show_comments_count'] ) {
         } else {
         ?>
         <th id="results-header-head" colspan="<?php echo $nbcols; ?>">
-            <?php 
+            <?php
             if ($date == "0000-00-00" ) {
                 echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');;
             }
@@ -126,8 +126,8 @@ if ($this->config['show_comments_count'] ) {
                     echo HTMLHelper::date($date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
             if ($this->config['show_matchday_dateheader']) {
-                echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode); 
-            } 
+                echo ' - ' . Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB', $this->roundcode);
+            }
                     ?>
                  </th>
         <?php
@@ -151,8 +151,8 @@ if ($this->config['show_comments_count'] ) {
                     $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                     $routeparameter['p'] = $this->project->slug;
                     $routeparameter['mid'] = $game->slug;
-                    $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter); 
-                    $history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);                
+                    $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+                    $history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);              
                 }
                 else
                 {
@@ -166,7 +166,7 @@ if ($this->config['show_comments_count'] ) {
                 }
 
                 if (!$this->config['show_historylink'] ) {
-                      $history_link = '';                    
+                      $history_link = '';                  
                 }
 
 
@@ -252,8 +252,8 @@ if ($this->config['show_comments_count'] ) {
           </td>
             <?php
                 }
-    
-                // diddipoeler    
+  
+                // diddipoeler  
                 if ($this->config['show_match_summary']) {
                     $imgTitle = $team1->name;
                     $imgTitle .= ' - '.$team2->name;
@@ -272,12 +272,12 @@ if ($this->config['show_comments_count'] ) {
                                 $this->modalwidth,
                                 $this->modalheight,
                                 $this->overallconfig['use_jquery_modal']
-                            );                
+                            );              
                     }
                 ?>
                   </td>
-                <?php       
-                }  
+                <?php     
+                }
             ?>
            <!-- show divisions -->
             <?php
@@ -286,7 +286,7 @@ if ($this->config['show_comments_count'] ) {
                 echo sportsmanagementHelperHtml::showDivisonRemark(
                     $this->teams[$game->projectteam1_id],
                     $this->teams[$game->projectteam2_id],
-                    $this->config, $game->division_id 
+                    $this->config, $game->division_id
                 );
                 echo '</td>';
             }
@@ -310,7 +310,7 @@ if ($this->config['show_comments_count'] ) {
             }
             //--------------------------------------------------------------------------------------------------------------
             if ($this->config['result_style'] == 0 ) {
-    
+  
                 switch ($this->config['show_logo_small'])
                 {
                 case 0:
@@ -325,9 +325,9 @@ if ($this->config['show_comments_count'] ) {
                 case 4:
                     $width = '40';
                     break;
-    
-                }  
-            
+  
+                }
+          
                 switch ($this->config['show_logo_small'])
                 {
                 case 1:
@@ -342,12 +342,12 @@ if ($this->config['show_comments_count'] ) {
                     $pic1 = $team1->logo_big;
                     $pic2 = $team2->logo_big;
                     break;
-                }  
-          
+                }
+        
         ?>
       <!-- show team-icons and/or -names -->
       <td width='<?PHP echo $width;?>'>
-    <?php 
+    <?php
     if ($this->config['club_link_logo'] ) {
         echo sportsmanagementViewResults::getTeamClubIcon(
             $team1,
@@ -356,12 +356,12 @@ if ($this->config['show_comments_count'] ) {
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        ); 
+        );
     }
     else
     {
-        echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->name, '20', 'auto', 3);    
-    }            
+        echo ' ' . sportsmanagementHelper::getPictureThumb($pic1, $team1->name, '20', 'auto', 3);  
+    }          
     ?>
     </td>
     <td>
@@ -371,21 +371,21 @@ if ($this->config['show_comments_count'] ) {
     ?>
     </td>
     <td width='<?PHP echo $width;?>'>
-    <?php 
-    if ($this->config['club_link_logo'] ) {            
+    <?php
+    if ($this->config['club_link_logo'] ) {          
         echo sportsmanagementViewResults::getTeamClubIcon(
-            $team2, 
-            $this->config['show_logo_small'], 
+            $team2,
+            $this->config['show_logo_small'],
             array('class' => 'teamlogo'),
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        ); 
+        );
     }
     else
     {
-        echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->name, '20', 'auto', 3);        
-    }    
+        echo ' ' . sportsmanagementHelper::getPictureThumb($pic2, $team2->name, '20', 'auto', 3);      
+    }  
     ?>
  </td>
             <td>
@@ -396,19 +396,19 @@ if ($this->config['show_comments_count'] ) {
          </td>
          <!-- show match score -->
          <td width='' class='score'>
-                <?php 
-                echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $game, $report_link, $this->config); 
+                <?php
+                echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $game, $report_link, $this->config);
                 if ($history_link ) {
-                    ?>    
+                    ?>  
                     <a href='<?php echo $history_link; ?>'>
                  <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
                  width='20'
                  alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'
                  title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
                  </a>
-                    <?php    
+                    <?php  
                 }
-        
+      
         ?>
         </td>
         <?php
@@ -443,14 +443,14 @@ if ($this->config['show_comments_count'] ) {
                 echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $game, $report_link, $this->config);
                 echo '&nbsp;';
                 if ($history_link ) {
-                ?>    
+                ?>  
                 <a href='<?php echo $history_link; ?>'>
           <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
           width='20'
           alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'
           title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
           </a>
-                <?php    
+                <?php  
                 }
                 ?>
              </td>
@@ -515,14 +515,14 @@ if ($this->config['show_comments_count'] ) {
                 echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $game, $report_link, $this->config);
                 echo '&nbsp;';
                 if ($history_link ) {
-                ?>    
+                ?>  
                 <a href='<?php echo $history_link; ?>'>
           <img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
           width='20'
           alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'
           title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
           </a>
-                <?php    
+                <?php  
                 }
                 ?>
              </td>
@@ -567,7 +567,7 @@ if ($this->config['show_comments_count'] ) {
                 $routeparameter['p'] = $this->project->id;
                 $routeparameter['mid'] = $game->id;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('scoresheet', $routeparameter);
-                
+              
                 $text = HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf_button.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
                 $attribs = array('title' => Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
                 echo HTMLHelper::_('link', $link, $text, $attribs);

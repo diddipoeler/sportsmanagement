@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreeto
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -30,10 +30,10 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class sportsmanagementViewTreeto extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewTreeto::init()
-     * 
+     *
      * @return
      */
     public function init()
@@ -52,7 +52,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreeto::_displayForm()
-     * 
+     *
      * @return void
      */
     function _displayForm()
@@ -63,7 +63,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreeto::_displayGennode()
-     * 
+     *
      * @return void
      */
     function _displayGennode()
@@ -74,9 +74,9 @@ class sportsmanagementViewTreeto extends sportsmanagementView
         //		$uri = Factory::getURI();
         //		$user = Factory::getUser();
         //		$model = $this->getModel();
-        
+      
         $this->form = $this->get('Form');
-        
+      
         $lists = array();
 
         $this->treeto = $this->get('Item');
@@ -91,12 +91,12 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
         $this->addToolBar_Gennode();
         //parent::display($tpl);
-        $this->setLayout('gennode');  
+        $this->setLayout('gennode');
     }
 
     /**
      * sportsmanagementViewTreeto::addToolBar_Gennode()
-     * 
+     *
      * @return void
      */
     protected function addToolBar_Gennode()
@@ -107,7 +107,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreeto::addToolBar()
-     * 
+     *
      * @return void
      */
     protected function addToolBar()
@@ -120,7 +120,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreeto::setDocument()
-     * 
+     *
      * @return void
      */
     protected function setDocument()

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
+    $uri = Uri::getInstance(); 
 } else {
     $uri = Factory::getURI();
 }
@@ -30,12 +30,12 @@ if ($this->overallconfig['use_jquery_modal'] ) {
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 -->
-<?php 
+<?php
 }
 
 if ($this->overallconfig['use_squeezebox_modal'] ) {
-    
-}    
+  
+}  
 
 if (!$this->showediticon ) {
     Factory::getApplication()->redirect(str_ireplace('layout=form', '', $uri->toString()), Text::_('ALERTNOTAUTH'));
@@ -50,7 +50,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 else
 {
 
-  
+
 }
 
 ?>
@@ -87,8 +87,8 @@ else
                 ?>
             </td>
             <td>
-            <?php 
-            echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagementModelProject::$cfg_which_database); 
+            <?php
+            echo sportsmanagementHelperHtml::getRoundSelectNavigation(true, sportsmanagementModelProject::$cfg_which_database);
             ?>
             </td>
         </tr>
@@ -107,22 +107,22 @@ else
     </th>
     <th width="" style="vertical-align: top; "></th>
         <th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></th>
-    <?php 
+    <?php
     if($this->project->project_type=='DIVISIONS_LEAGUE') {
         $colspan++;
     ?>
     <th style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DIVISION'); ?></th>
-    <?php 
+    <?php
     }
     ?>
-                    
+                  
     <?php
     if ($this->config['show_edit_match_number'] ) {
     ?>
     <th width="20" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
     <?php
     }
-    if ($this->config['show_edit_match_date'] ) {    
+    if ($this->config['show_edit_match_date'] ) {  
     ?>
     <th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
     <?php
@@ -158,7 +158,7 @@ else
     <?php
     }
     ?>
-                    
+                  
     <?php
     if ($this->config['show_edit_match_events'] ) {
         if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
@@ -171,13 +171,13 @@ else
             ?>
            <th class="title" class="nowrap" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
         <?php
-        }    
-        
-        
-        
+        }  
+      
+      
+      
     ?>
-    
-        
+  
+      
     <?php
     }
     if ($this->config['show_edit_match_statistic'] ) {
@@ -205,7 +205,7 @@ else
             $this->i = $i;
             /**
  * eingabe laden
- */                        
+ */                      
             echo $this->loadTemplate('row');
         }
         $k = 1 - $k;

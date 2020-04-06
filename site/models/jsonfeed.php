@@ -27,10 +27,10 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelJSONFeed extends BaseDatabaseModel
 {
 
-    public function getGoogleCalendarFeeds() 
+    public function getGoogleCalendarFeeds()
     {
         $app = Factory::getApplication();
-        
+      
         $startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
         $endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
 
@@ -45,7 +45,7 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
             $calendarids = Factory::getApplication()->input->getVar('gcid', null);
         }
         $results = jsmGCalendarDBUtil::getCalendars($calendarids);
-       
+     
         if(empty($results)) {
             return null;
         }
@@ -62,7 +62,7 @@ class sportsmanagementModelJSONFeed extends BaseDatabaseModel
             }
             $calendars[] = $events;
         }
-        
+      
         return $calendars;
     }
 }

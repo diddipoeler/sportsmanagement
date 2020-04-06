@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewPredictionUsers
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -31,27 +31,27 @@ use Joomla\CMS\Log\Log;
 class sportsmanagementViewPredictionUsers extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewPredictionUsers::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
         $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-        $this->document->addScript($js);    
+        $this->document->addScript($js);  
         sportsmanagementModelProject::$projectid = $this->jinput->getint("pj", 0);
         $this->predictionMemberID = $this->jinput->getint('uid', '0');
         $this->predictionGameID = $this->jinput->getint('prediction_id', '0');
         $this->rounds = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getint("cfg_which_database", 0));
         $this->round_labels = array();
-        foreach ($this->rounds as $r) 
+        foreach ($this->rounds as $r)
         {
             $this->round_labels[] = '"'.$r->name.'"';
         }
         $this->project_id = $this->jinput->getint("pj", 0);
-        
+      
         $model = $this->getModel();
 
         $this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
@@ -62,14 +62,14 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
             $overallConfig        = sportsmanagementModelPrediction::getPredictionOverallConfig();
             $tipprankingconfig    = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionranking');
             //$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
-            
+          
             $configavatar            = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
             $this->roundID = sportsmanagementModelPrediction::$roundID;
             $this->config = array_merge($overallConfig, $tipprankingconfig, $config);
             $model::$config = $this->config;
-            
+          
             $this->configavatar = $configavatar;
-            
+          
             $this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
             if (!isset($this->predictionMember->id) ) {
                 $this->predictionMember->id = 0;
@@ -80,11 +80,11 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
             $this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
             $this->memberData = $this->model->memberPredictionData();
             $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
-            
+          
             if (!empty($this->predictionMember->user_id)) {
                 $this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
             }
-            
+          
             $this->_setPointsChartdata(array_merge($config));
             $this->_setRankingChartdata(array_merge($config));
 
@@ -112,7 +112,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
             $lists['predictionMembers'] = HTMLHelper::_('select.genericList', $predictionMembers, 'uid', 'class="inputbox" onchange="this.form.submit(); "', 'value', 'text', $dMemberID);
             unset($res);
             unset($predictionMembers);
-        
+      
             if (empty($this->predictionMember->fav_team) ) {
                 $this->predictionMember->fav_team = '0,0';
             }
@@ -152,7 +152,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 
                 foreach ($this->predictionProjectS AS $predictionProject)
                 {
-         
+       
                     $projectteams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'), 'value', 'text');
                     if ($res = $this->model->getPredictionProjectTeams($predictionProject->project_id) ) {
                         $projectteams = array_merge($projectteams, $res);
@@ -160,7 +160,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
                     if (!isset($favTeamsList[$predictionProject->project_id])) {
                          $favTeamsList[$predictionProject->project_id]=0;
                     }
-          
+        
                     $lists['fav_team'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'fav_team['.$predictionProject->project_id.']', 'class="inputbox"', 'value', 'text', $favTeamsList[$predictionProject->project_id]);
 
                     // kann champion ausgewaehlt werden ?
@@ -168,7 +168,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
                          $disabled='';
                          // ist überhaupt das startdatum gesetzt ?
                         if ($predictionProject->start_date == '0000-00-00' ) {
-                            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'), 'Error');  
+                            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'), 'Error');
                             $disabled=' disabled="disabled" ';
                         }
                         else
@@ -182,26 +182,26 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
                             $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate, 1, $predictionProjectSettings->timezone);
                             $tippAllowed =    ( ( $thisTimeDate < $competitionStartTimeDate ) ) ;
                             if (!$tippAllowed) {$disabled=' disabled="disabled" ';
-                            }else{$disabled=''; 
+                            }else{$disabled='';
                             }
                         }
-           
+         
                     }
                     else
                       {
                         $disabled=' disabled="disabled" ';
                     }
-          
+        
                     if (!isset($champTeamsList[$predictionProject->project_id])) {
                          $champTeamsList[$predictionProject->project_id]=0;
                     }
-          
+        
                     $lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'champ_tipp['.$predictionProject->project_id.']', 'class="inputbox"'.$disabled.'', 'value', 'text', $champTeamsList[$predictionProject->project_id]);
                     $lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'champ_tipp['.$predictionProject->project_id.']', 'class="inputbox"'.$disabled.'', 'value', 'text', $champTeamsList[$predictionProject->project_id]);
                     unset($projectteams);
                 }
 
-        
+      
             }
             else
             {
@@ -210,7 +210,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
             }
 
             $this->lists = $lists;
-      
+    
             // Set page title
             $pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
             $this->document->setTitle($pageTitle);
@@ -224,17 +224,17 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 
     /**
      * sportsmanagementViewPredictionUsers::_setPointsChartdata()
-     * 
+     *
      * @param  mixed $config
      * @return
      */
     function _setPointsChartdata($config)
     {
         $data = sportsmanagementModelPredictionUsers::getPointsChartData();
-    
+  
         // Calculate Values for Chart Object
-        $userpoints= array();    
-        $PointsCountMax = 0;    
+        $userpoints= array();  
+        $PointsCountMax = 0;  
 
         foreach( $data as $rw )
         {
@@ -251,7 +251,7 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
 
     /**
      * sportsmanagementViewPredictionUsers::_setRankingChartdata()
-     * 
+     *
      * @param  mixed $config
      * @return
      */
@@ -261,21 +261,21 @@ class sportsmanagementViewPredictionUsers extends sportsmanagementView
           sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint("prediction_id", 0);
           $memberlist = sportsmanagementModelPrediction::getPredictionMemberList();
           $this->RankingCountMax = sizeof($memberlist);
-       
-        foreach ($this->rounds as $r) 
+     
+        foreach ($this->rounds as $r)
         {
-             $data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID, $r->id);    
+             $data = sportsmanagementModelPredictionUsers::getRanksChartData($this->predictionGameID, $r->id);  
 
-            foreach ($data as $key => $value ) 
+            foreach ($data as $key => $value )
              {
                 if ($value->member_id == $this->predictionMemberID ) {
-                    $this->userranking[] = $key + 1;    
+                    $this->userranking[] = $key + 1;  
                 }
             }
 
 
         }
-      
+    
 
     }
 }

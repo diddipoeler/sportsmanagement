@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -61,7 +61,7 @@ use Joomla\CMS\Router\Route;
                 <td colspan="6">
         <?php echo $this->pagination->getListFooter(); ?>
                     <br/><br/>
-                    
+                  
                 </td>
             </tr>
         </tfoot>

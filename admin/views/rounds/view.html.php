@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewRounds
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -36,10 +36,10 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
     /**
      * sportsmanagementViewRounds::init()
-     * 
+     *
      * @return
      */
-    public function init() 
+    public function init()
     {
         $app = Factory::getApplication();
         $this->massadd = 0;
@@ -64,11 +64,11 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
     /**
      * sportsmanagementViewRounds::_displayMassadd()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayMassadd($tpl) 
+    function _displayMassadd($tpl)
     {
 
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -81,11 +81,11 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
     /**
      * sportsmanagementViewRounds::_displayDefault()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayDefault($tpl) 
+    function _displayDefault($tpl)
     {
 
 
@@ -109,11 +109,11 @@ class sportsmanagementViewRounds extends sportsmanagementView
 
     /**
      * sportsmanagementViewRounds::_displayPopulate()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function _displayPopulate($tpl) 
+    function _displayPopulate($tpl)
     {
 
         $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
@@ -148,7 +148,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
      *
      * @since 1.6
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
@@ -182,12 +182,12 @@ class sportsmanagementViewRounds extends sportsmanagementView
             }
         } else {
             ToolbarHelper::custom('round.cancelmassadd', 'cancel.png', 'cancel_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'), false);
-            
+          
         }
 
     }
 
-   
+ 
 
 }
 

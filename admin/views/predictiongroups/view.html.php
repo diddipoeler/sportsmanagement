@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,39 +20,39 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewpredictiongroups
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewpredictiongroups extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewpredictiongroups::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-       
+     
         $this->table = Table::getInstance('predictiongroup', 'sportsmanagementTable');
-        
+      
         if (!$this->items ) {
-            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'), 'Error');    
+            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'), 'Error');  
         }
-               
+             
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
     * @since 1.7
     */
     protected function addToolbar()
-    { 
+    {
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
         $this->icon = 'predgroups';
@@ -64,7 +64,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
         ToolbarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
         ToolbarHelper::checkin('predictiongroups.checkin');
         parent::addToolbar();
-    
+  
     }
 }
 ?>

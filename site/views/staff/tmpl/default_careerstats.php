@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage staff
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -28,7 +28,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
                 <tr class="sectiontableheader">
                     <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
                     <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
-                     <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
+                     <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th>
                     <th class="td_c"><?php
                     $imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
                     echo HTMLHelper::image(
@@ -39,7 +39,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
         <?php
         if ($this->config['show_careerstats']) {
             if (!empty($stats)) {
-                foreach ($this->stats as $stat){ ?><th class="td_c"><?php echo $stat->getImage(); ?></th><?php 
+                foreach ($this->stats as $stat){ ?><th class="td_c"><?php echo $stat->getImage(); ?></th><?php
                 }
             }
         }
@@ -62,7 +62,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
                             // echo " (".$player_hist->project_id.")";
                         ?></td>
                          <td class="td_l" class="nowrap"><?php echo $player_hist->team_name; ?></td>
-                            
+                          
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;

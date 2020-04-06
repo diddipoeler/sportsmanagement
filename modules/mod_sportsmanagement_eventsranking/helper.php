@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,16 +12,16 @@
  * @subpackage mod_sportsmanagement_eventsranking
  */
 
-defined('_JEXEC') or die('Restricted access'); 
-use Joomla\CMS\HTML\HTMLHelper; 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
- 
+
 /**
  * modSMEventsrankingHelper
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -29,47 +29,47 @@ JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
  */
 class modSMEventsrankingHelper
 {
-    
+  
     /**
      * modSMEventsrankingHelper::getData()
-     * 
+     *
      * @param  mixed $params
      * @return
      */
     public static function getData(&$params)
-    { 
-      
+    {
+    
           $app = Factory::getApplication();
 
         if (!class_exists('sportsmanagementModelEventsRanking')) {
             JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
             JLoader::import('components.com_sportsmanagement.models.eventsranking', JPATH_SITE);
         }
-        
+      
         $usedp = $params->get('p');
         $projectstring = (is_array($usedp)) ? implode(",", array_map('intval', $usedp))  : (int) $usedp;
-        
+      
         $usedteam = $params->get('tid');
         $teamstring = (is_array($usedteam)) ? implode(",", array_map('intval', $usedteam))  : (int) $usedteam ;
-        
+      
         sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
         sportsmanagementModelProject::setProjectId($projectstring, $params->get('cfg_which_database'));
-        
+      
         $project = sportsmanagementModelProject::getProject($params->get('cfg_which_database'), __METHOD__);
-        
+      
         sportsmanagementModelEventsRanking::$cfg_which_database = $params->get('cfg_which_database');
-        
+      
         sportsmanagementModelEventsRanking::$projectid = $projectstring;
         sportsmanagementModelEventsRanking::$divisionid = 0;
         sportsmanagementModelEventsRanking::$matchid = 0;
         sportsmanagementModelEventsRanking::$teamid = $teamstring;
         sportsmanagementModelEventsRanking::$eventid = $params->get('evid');
         sportsmanagementModelEventsRanking::$limit = $params->get('limit');
-        sportsmanagementModelEventsRanking::$limitstart = 0;        
-                
+        sportsmanagementModelEventsRanking::$limitstart = 0;      
+              
         $eventtypes = sportsmanagementModelEventsRanking::getEventTypes();
         if ($project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-            $events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, true);  
+            $events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, true);
         }
         else
         {
@@ -77,7 +77,7 @@ class modSMEventsrankingHelper
         }
         $teams = sportsmanagementModelProject::getTeamsIndexedById();
 
-        return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams); 
+        return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams);
     }
 
     /**
@@ -98,7 +98,7 @@ class modSMEventsrankingHelper
         return $id;
     }
 
-    
+  
     /**
      * get img for team
      *
@@ -113,17 +113,17 @@ class modSMEventsrankingHelper
             if (!empty($item->logo_big)) {
                 return HTMLHelper::_('image', $item->logo_big, $item->short_name, array('width' => '20', 'class' => 'teamlogo'));
             }
-        }        
+        }      
         else if ($type == 2 && !empty($item->country)) {
             return JSMCountries::getCountryFlag($item->country, 'class="teamcountry"');
-        } 
-        
+        }
+      
         return '';
     }
 
     /**
      * modSMEventsrankingHelper::getTeamLink()
-     * 
+     *
      * @param  mixed $team
      * @param  mixed $params
      * @param  mixed $project
@@ -136,7 +136,7 @@ class modSMEventsrankingHelper
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
         $routeparameter['p'] = $project->slug;
-               
+             
         switch ($params->get('teamlink'))
         {
         case 'teaminfo':
@@ -155,14 +155,14 @@ class modSMEventsrankingHelper
                $routeparameter['ptid'] = 0;
             return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);;
         case 'clubinfo':
-            
-            return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $team->club_slug);                
+          
+            return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $team->club_slug);              
         }
     }
-    
+  
     /**
      * modSMEventsrankingHelper::printName()
-     * 
+     *
      * @param  mixed $item
      * @param  mixed $team
      * @param  mixed $params
@@ -172,37 +172,37 @@ class modSMEventsrankingHelper
     public static function printName($item, $team, $params, $project)
     {
           $name = sportsmanagementHelper::formatName(
-              null, $item->fname, 
-              $item->nname, 
-              $item->lname, 
+              null, $item->fname,
+              $item->nname,
+              $item->lname,
               $params->get("name_format")
           );
-                                                    
-        if ($params->get('show_player_link')) {        
-                    
+                                                  
+        if ($params->get('show_player_link')) {      
+                  
             $routeparameter = array();
             $routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
             $routeparameter['s'] = $params->get('s');
             $routeparameter['p'] = $project->slug;
             $routeparameter['tid'] = $item->team_slug;
-            $routeparameter['pid'] = $item->person_slug;                    
-                                    
+            $routeparameter['pid'] = $item->person_slug;                  
+                                  
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
 
             echo HTMLHelper::link($link, $name);
-                    
+                  
         }
         else
           {
             echo $name;
-        }                
+        }              
 
     }
-    
-    
+  
+  
     /**
          * modSMEventsrankingHelper::getEventIcon()
-         * 
+         *
          * @param  mixed $event
          * @return
          */
@@ -219,6 +219,6 @@ class modSMEventsrankingHelper
         }
         return $txt;
     }
-    
-    
+  
+  
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage about
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -30,7 +30,7 @@ use Joomla\CMS\Factory;
             //echo $backgroundimage.'<br>';
 
             echo "<img class=\"\" style=\"\" src=\"" . $backgroundimage . "\" alt=\"\" width=\"200\">";
-            ?>        
+            ?>      
         </td>
     </tr>
 </table>
@@ -82,7 +82,7 @@ use Joomla\CMS\Factory;
                 <?php echo "Fussballineuropa Forum"; ?>
             </a>
         </td>
-    </tr> 
+    </tr>
 
     <tr>
         <td>
@@ -116,7 +116,7 @@ use Joomla\CMS\Factory;
 </div>
 
 <table class="table table-responsive about">
-    
+  
     <tr>
         <td>
             <b>
@@ -138,7 +138,7 @@ use Joomla\CMS\Factory;
         </td>
     </tr>
 
-   
+ 
 </table>
 <br />
 

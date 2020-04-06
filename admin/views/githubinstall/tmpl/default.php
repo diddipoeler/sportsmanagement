@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,21 +31,21 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 //echo $this->loadTemplate('data');
 
-foreach ($this->_success_text as $key => $value) 
-        { 
-    ?> 
-            <fieldset> 
-                <legend><?php echo Text::_($key); ?></legend> 
-                <table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table> 
-            </fieldset> 
-    <?php 
-}   
-         
+foreach ($this->_success_text as $key => $value)
+        {
+    ?>
+            <fieldset>
+                <legend><?php echo Text::_($key); ?></legend>
+                <table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+            </fieldset>
+    <?php
+} 
+       
 
 
 ?>
@@ -59,4 +59,4 @@ foreach ($this->_success_text as $key => $value)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

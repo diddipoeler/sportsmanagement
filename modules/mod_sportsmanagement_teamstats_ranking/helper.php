@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * modSportsmanagementTeamStatHelper
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -38,33 +38,33 @@ class modSportsmanagementTeamStatHelper
     public static function getData(&$params)
     {
           $mainframe = Factory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(); 
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         sportsmanagementModelProject::setProjectId((int)$params->get('p'));
         $stat_id = (int)$params->get('sid');
-        
-        if ($stat_id ) {        
+      
+        if ($stat_id ) {      
             $project = sportsmanagementModelProject::getProject();
             $stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id, 0, 0)));
             if (!$stat) {
                        echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_UNDEFINED_STAT').'<br>';
-            
+          
                       $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                       return false;
             }
-       
+     
             $ranking = $stat->getTeamsRanking($project->id, $params->get('limit'), 0, $params->get('ranking_order', 'DESC'));
             if (empty($ranking)) {
                        return false;
             }
-        
+      
             $ids = array();
             foreach ($ranking as $r)
             {
                        $ids[] = $db->Quote($r->team_id);
             }
-        
+      
             $query->select('t.*, c.logo_big,c.country');
             $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
             $query->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS club_slug');
@@ -73,7 +73,7 @@ class modSportsmanagementTeamStatHelper
             $query->where('t.id IN ('.implode(',', $ids).')');
 
             $db->setQuery($query);
-       
+     
             $teams = $db->loadObjectList('id');
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return array('project' => $project, 'ranking' => $ranking, 'teams' => $teams, 'stat' => $stat);
@@ -83,7 +83,7 @@ class modSportsmanagementTeamStatHelper
             return false;
         }
     }
-        
+      
     /**
      * get img for team
      *
@@ -98,17 +98,17 @@ class modSportsmanagementTeamStatHelper
             if (!empty($item->logo_big)) {
                 return HTMLHelper::_('image', $item->logo_big, $item->short_name, array('width' => '50', 'class' => 'teamlogo'));
             }
-        }        
+        }      
         else if ($type == 2 && !empty($item->country)) {
             return JSMCountries::getCountryFlag($item->country, 'class="teamcountry"');
         }
-        
+      
         return '';
     }
 
     /**
      * modSportsmanagementTeamStatHelper::getTeamLink()
-     * 
+     *
      * @param  mixed $item
      * @param  mixed $params
      * @param  mixed $project
@@ -116,11 +116,11 @@ class modSportsmanagementTeamStatHelper
      */
     public static function getTeamLink($item, $params, $project)
     {
-        $routeparameter = array();        
+        $routeparameter = array();      
         $routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
         $routeparameter['s'] = $project->season_slug;
         $routeparameter['p'] = $project->slug;
-                
+              
         switch ($params->get('teamlink'))
         {
         case 'teaminfo':
@@ -140,13 +140,13 @@ class modSportsmanagementTeamStatHelper
             return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
         case 'clubinfo':
             return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $item->club_slug);
-                
+              
         }
     }
 
     /**
      * modSportsmanagementTeamStatHelper::getStatIcon()
-     * 
+     *
      * @param  mixed $stat
      * @return
      */

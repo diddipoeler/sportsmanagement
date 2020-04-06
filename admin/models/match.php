@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -203,7 +203,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
             )
         );
-        $client->setApplicationName("JSMCalendar");                
+        $client->setApplicationName("JSMCalendar");              
         //$client->setApprovalPrompt('force');
         $client->setClientId($calendar->params->get('client-id'));
         $client->setClientSecret($calendar->params->get('client-secret'));
@@ -239,7 +239,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         $obj = $cal->events->listEvents($calendar->params->get('calendarId'), $params);
         $googleEvents = $obj->items;
 
-        $this->jsmquery->clear();        
+        $this->jsmquery->clear();      
         $this->jsmquery->select('p.timezone,p.name,p.gcalendar_id,p.game_regular_time,p.halftime,p.gcalendar_use_fav_teams,p.fav_team,gc.username,gc.password,gc.calendar_id');
         $this->jsmquery->from('#__sportsmanagement_project as p');
         $this->jsmquery->join('INNER', '#__sportsmanagement_gcalendar AS gc ON gc.id = p.gcalendar_id');
@@ -277,38 +277,38 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
         $this->jsmquery->order('m.match_date ASC,m.match_number');
         $this->jsmdb->setQuery($this->jsmquery);
-        $result = $this->jsmdb->loadObjectList();        
-        
-        foreach ($result as $row) {        
-  
+        $result = $this->jsmdb->loadObjectList();      
+      
+        foreach ($result as $row) {      
+
                 $event = new Google_Service_Calendar_Event();
 
                 $event->setSummary($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.':'.$row->team2_result.')');
-                $event->setDescription($row->roundname);      
-                $event->setLocation($row->playground_name. ',' . $row->playground_city . ',' . $row->playground_address);      
-                $start = new Google_Service_Calendar_EventDateTime();  
+                $event->setDescription($row->roundname);    
+                $event->setLocation($row->playground_name. ',' . $row->playground_city . ',' . $row->playground_address);    
+                $start = new Google_Service_Calendar_EventDateTime();
                 // Setze das Datum und verwende das RFC 3339 Format.
                 list($date2, $time) = explode(" ", $row->match_date);
                 //$anstoss = date('H:i', $row->match_date);	
-                $anstoss = $time;    
-                $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);    
-           
-                $start->setDateTime($date2.'T'.$anstoss.date("P", strtotime($row->match_date)));     
+                $anstoss = $time;  
+                $abpfiff = date('H:i', strtotime($time) + ($gcalendar_id->game_regular_time + $gcalendar_id->halftime)*60);  
+         
+                $start->setDateTime($date2.'T'.$anstoss.date("P", strtotime($row->match_date)));   
                 $start->setTimeZone($row->timezone);
-                $event->setStart($start);      
-  
-                $end = new Google_Service_Calendar_EventDateTime();      
-                $end->setDateTime($date2.'T'.$abpfiff.':00'.date("P", strtotime($date2.' '.$abpfiff.':00')));     
-                $end->setTimeZone($row->timezone);      
-                $event->setEnd($end);      
+                $event->setStart($start);    
+
+                $end = new Google_Service_Calendar_EventDateTime();    
+                $end->setDateTime($date2.'T'.$abpfiff.':00'.date("P", strtotime($date2.' '.$abpfiff.':00')));   
+                $end->setTimeZone($row->timezone);    
+                $event->setEnd($end);    
 
             if ($row->gcal_event_id ) {
-                $event = $cal->events->update($calendar->params->get('calendarId'), $row->gcal_event_id, $event);    
+                $event = $cal->events->update($calendar->params->get('calendarId'), $row->gcal_event_id, $event);  
             }
             else
                 {
-                $event = $cal->events->insert($calendar->params->get('calendarId'), $event);      
-                $id = $event->getId();      
+                $event = $cal->events->insert($calendar->params->get('calendarId'), $event);    
+                $id = $event->getId();    
                 $object = new stdClass();
                 $object->id = $row->id;
                 $object->gcal_event_id = $id;
@@ -425,8 +425,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
     function savestats($data)
     {
         $app = Factory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection();   
-        $query = $db->getQuery(true);    
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);  
         $match_id = $data['match_id'];
         if (isset($data['cid'])) {
             foreach ($data['teamplayer_id'] as $idx => $tpid) {
@@ -434,7 +434,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                 $projectteam_id = $data['projectteam_id'][$idx];
                 $query->clear();
                 $conditions = array(
-                $db->quoteName('match_id') . ' = '.$match_id, 
+                $db->quoteName('match_id') . ' = '.$match_id,
                 $db->quoteName('teamplayer_id') . ' = ' . $teamplayer_id
                 );
                 $query->delete($db->quoteName('#__sportsmanagement_match_statistic'));
@@ -464,7 +464,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                     }
                 } catch (Exception $e) {
                               $result = false;
-                }    
+                }  
             }
         }
         //staff stats
@@ -474,12 +474,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                 $projectteam_id = $data['sprojectteam_id'][$idx];
                 $query->clear();
                 $conditions = array(
-                $db->quoteName('match_id') . ' = '.$match_id, 
+                $db->quoteName('match_id') . ' = '.$match_id,
                 $db->quoteName('team_staff_id') . ' = ' . $team_staff_id
                 );
                 $query->delete($db->quoteName('#__sportsmanagement_match_staff_statistic'));
                 $query->where($conditions);
-            
+          
                 try{
                           $db->setQuery($query);
                           $res = $db->execute();
@@ -504,7 +504,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                     }
                 } catch (Exception $e) {
                               $result = false;
-                }    
+                }  
             }
         }
         return true;
@@ -525,8 +525,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         $result = true;
         for ($x = 0; $x < count($pks); $x++) {
             /**
-* 
- * änderungen im datum oder der uhrzeit 
+*
+ * änderungen im datum oder der uhrzeit
 */
             $tblMatch = $this->getTable();;
             $tblMatch->load((int)$pks[$x]);
@@ -593,7 +593,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             $tournement_round = $this->jsmdb->loadResult();
             if ($tournement_round) {
                 /**
-* 
+*
  * roundcode für die nächste runde
 */
                 $this->jsmquery->clear();
@@ -604,7 +604,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                 try
                 {
                        $round_object = $this->jsmdb->loadObject();
-                       $round_code = $round_object->roundcode;  
+                       $round_code = $round_object->roundcode;
                 }
                 catch (RuntimeException $e)
                 {
@@ -626,11 +626,11 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                 catch (RuntimeException $e)
                 {
                     $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-                    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(), true).'</pre>', 'Error'); 
+                    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(), true).'</pre>', 'Error');
                 }
                 /**
-* 
- * update 
+*
+ * update
 */
                 $this->jsmquery->clear();
                 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match'))
@@ -660,12 +660,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                     //            $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                     //	    $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->jsmquery->dump(),true).'</pre>', 'Error');
                 }
-            
-            
-            
+          
+          
+          
             }
-            
-            
+          
+          
 
             if ($post['use_legs']) {
                 foreach ($post['team1_result_split' . $pks[$x]] as $key => $value) {
@@ -787,7 +787,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             $cids = implode(',', $pks);
             // wir löschen mit join
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
-            FROM #__sportsmanagement_match as m    
+            FROM #__sportsmanagement_match as m  
             LEFT JOIN #__sportsmanagement_match_statistic as ms
             ON ms.match_id = m.id
             LEFT JOIN #__sportsmanagement_match_staff_statistic as mss
@@ -851,10 +851,10 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         if ($data['id'] ) {
                 $data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
         }
-        
+      
         /**
-* 
- * zuerst sichern, damit wir bei einer neuanlage die id haben 
+*
+ * zuerst sichern, damit wir bei einer neuanlage die id haben
 */
         try {
             $parentsave = parent::save($data);
@@ -1270,7 +1270,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         $query->join('LEFT', '#__sportsmanagement_project_team AS spi ON mr.project_referee_id=spi.id');
         $query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = spi.team_id');
         $query->join('LEFT', '#__sportsmanagement_team AS pr ON st1.team_id=pr.id AND pr.published = 1');
-        $query->where('mr.match_id = ' . $match_id);            
+        $query->where('mr.match_id = ' . $match_id);          
         try {
             $db->setQuery($query);
             $result = $db->loadObjectList('value');
@@ -1318,10 +1318,10 @@ class sportsmanagementModelMatch extends JSMModelAdmin
     }
 
 
-    
+  
     /**
      * sportsmanagementModelMatch::getMatchPersons()
-     * 
+     *
      * @param  mixed   $projectteam_id
      * @param  integer $project_position_id
      * @param  mixed   $match_id
@@ -1594,8 +1594,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
         if (!$peid) {
             /**
-* 
- * Delete all referees assigned to this match 
+*
+ * Delete all referees assigned to this match
 */
             $this->jsmquery->delete($this->jsmdb->quoteName('#__sportsmanagement_match_referee'));
             $this->jsmquery->where('match_id = ' . $mid);
@@ -1615,8 +1615,8 @@ class sportsmanagementModelMatch extends JSMModelAdmin
             $result_referee_delete = $this->jsmdb->loadObjectList();
 
             /**
-* 
- * Delete all referees which are not selected anymore from this match 
+*
+ * Delete all referees which are not selected anymore from this match
 */
             ArrayHelper::toInteger($peid);
             $peids = implode(',', $peid);
@@ -1828,7 +1828,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         }
         else
         {
-               $result = true;    
+               $result = true;  
         }
         return $result;
     }
@@ -1907,7 +1907,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
         }
         else
         {
-               return true;    
+               return true;  
         }
         return true;
     }
@@ -2354,12 +2354,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
                 $db->setQuery($query);
                 return $db->loadObjectList();
         } catch (Exception $e) {
-            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.' match id' . $match_id), Log::ERROR, 'jsmerror');   
+            Log::add(Text::_(__METHOD__.' '.__LINE__.' '.' match id' . $match_id), Log::ERROR, 'jsmerror'); 
             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), Log::ERROR, 'jsmerror');
             Log::add(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), Log::ERROR, 'jsmerror');
             return false;
         }
-        
+      
     }
 
 

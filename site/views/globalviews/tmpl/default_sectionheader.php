@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage globalviews
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -22,7 +22,7 @@ use Joomla\CMS\Component\ComponentHelper;
 $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
-$view = $jinput->getVar("view");        
+$view = $jinput->getVar("view");      
 $modalheight = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
 ?>
@@ -31,10 +31,10 @@ $modalwidth = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_
 <?php
 switch ( $view )
 {
-    
+  
 case 'matchreport':
     ?>
-    
+  
     <table class="table">
     <tr>
         <td class="contentheading"><?php
@@ -46,13 +46,13 @@ case 'matchreport':
                 $pageTitle,
                 $this->round->name,
                 HTMLHelper::date($matchDate, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')),
-                sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project) 
+                sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project)
             );
-        
+      
         }
         elseif (isset($this->round->name) && !$timestamp ) {
             echo '&nbsp;' . Text::sprintf($pageTitle, $this->round->name, '', '');
-        }  
+        }
         else
         {
             echo '&nbsp;' . Text::sprintf($pageTitle, '', '', '');
@@ -60,7 +60,7 @@ case 'matchreport':
     ?></td>
     </tr>
 </table>
-    
+  
     <?PHP
     break;
 case 'player':
@@ -70,11 +70,11 @@ case 'player':
         <td class="contentheading">
     <?php
     echo Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
-    
+  
     if ($this->showediticon ) {
-        
+      
           // $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
-    
+  
           $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -91,8 +91,8 @@ case 'player':
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );      
-                
+        );    
+              
     }
 
     if (isset($this->teamPlayer->injury) && $this->teamPlayer->injury ) {
@@ -100,7 +100,7 @@ case 'player':
         echo "&nbsp;&nbsp;" . HTMLHelper::image(
             'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
             $imageTitle,
-            array( 'title' => $imageTitle ) 
+            array( 'title' => $imageTitle )
         );
     }
 
@@ -109,7 +109,7 @@ case 'player':
         echo "&nbsp;&nbsp;" . HTMLHelper::image(
             'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
             $imageTitle,
-            array( 'title' => $imageTitle ) 
+            array( 'title' => $imageTitle )
         );
     }
 
@@ -119,14 +119,14 @@ case 'player':
         echo "&nbsp;&nbsp;" . HTMLHelper::image(
             'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
             $imageTitle,
-            array( 'title' => $imageTitle ) 
+            array( 'title' => $imageTitle )
         );
     }
     ?>
         </td>
     </tr>
 </table>
-    
+  
     <?PHP
     break;
 case 'staff':
@@ -136,8 +136,8 @@ case 'staff':
         <td class="contentheading">
     <?php
     echo $this->title;
-            
-            
+          
+          
     if ($this->showediticon ) {
         $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
@@ -149,16 +149,16 @@ case 'staff':
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );         
-    
-    
-                
+        );       
+  
+  
+              
     }
     ?>
         </td>
     </tr>
 </table>
-    
+  
     <?PHP
     break;
 case 'results':
@@ -186,7 +186,7 @@ case 'results':
             $routeparameter['order'] = sportsmanagementModelResults::$order;
             $routeparameter['layout'] = $this->config['result_style_edit'];
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                
+              
             $imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS');
             $desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ));
             echo ' ';
@@ -201,7 +201,7 @@ case 'results':
     }
     ?>
         </td>
-    <?php if ($this->config['show_matchday_dropdown'] == 1 ) { 
+    <?php if ($this->config['show_matchday_dropdown'] == 1 ) {
     ?>
         <form name='resultsRoundSelector' method='post'>
         <input type='hidden' name='option' value='com_sportsmanagement' />
@@ -225,12 +225,12 @@ case 'results':
     ?>
         </td>
                 </form>
-            <?php 
-} 
+            <?php
+}
     ?>
         </tr>
 </table>
-    
+  
     <?PHP
     break;
 case 'teamplan':
@@ -268,7 +268,7 @@ case 'teamplan':
             $routeparameter['mode'] = 0;
             $routeparameter['ptid'] = $this->ptid;
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical', $routeparameter);
-                    
+                  
             //$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
             $text = HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/calendar.png', Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
             $attribs = array('title' => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
@@ -288,8 +288,8 @@ case 'curve':
  <table class="table">
         <tr>
             <td class="contentheading"><a name="division<?php echo $this->divisions;?>"></a>
-            
-    <?php 
+          
+    <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');
     if ($this->division) {
         echo ' '.$this->division->name;
@@ -367,7 +367,7 @@ case 'nextmatch':
         {
             echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE')). " ".
             sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project);
-        } 
+        }
     ?></td>
     </tr>
 </table>
@@ -378,7 +378,7 @@ case 'teaminfo':
     <h4>
     <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
     if ($this->showediticon ) {
-        $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;    
+        $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;  
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'projectteamedit'.$this->projectteamid,
             'administrator/components/com_sportsmanagement/assets/images/edit.png',
@@ -388,9 +388,9 @@ case 'teaminfo':
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );             
+        );           
 
-        $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;    
+        $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;  
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'teamedit'.$this->projectteamid,
             'administrator/components/com_sportsmanagement/assets/images/teams.png',
@@ -400,8 +400,8 @@ case 'teaminfo':
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        ); 
-            
+        );
+          
     } else {
         //echo "no permission";
     }
@@ -420,9 +420,9 @@ case 'clubinfo':
 echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . " " . $this->club->name;
 
 if ($this->showediticon ) {
-                    
+                  
     $link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $this->club->id, "club.edit");
-                    
+                  
     echo sportsmanagementHelperHtml::getBootstrapModalImage(
         'clubedit'.$this->club->id,
         'administrator/components/com_sportsmanagement/assets/images/edit.png',
@@ -432,13 +432,13 @@ if ($this->showediticon ) {
         $this->modalwidth,
         $this->modalheight,
         $this->overallconfig['use_jquery_modal']
-    );                  
-                
-                
+    );                
+              
+              
 }
     ?>
         </h4>
-    <?PHP    
+    <?PHP  
     break;
 default:
     ?>
@@ -446,7 +446,7 @@ default:
     <table class="table" id="sectionheader">
     <tr>
     <td class="contentheading">
-    
+  
     <?php
     echo $this->headertitle;
     ?>

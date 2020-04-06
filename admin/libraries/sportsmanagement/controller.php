@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -53,7 +53,7 @@ class JSMControllerAdmin extends AdminController
 
      /**
       * JSMControllerAdmin::cancel()
-      * 
+      *
       * @return void
       */
     function cancel()
@@ -100,21 +100,21 @@ class JSMControllerForm extends FormController
         $this->jsmdate = Factory::getDate();
         //      if ( $this->view_list == 'people' )
         //      {
-        //      $this->view_list == 'persons' ; 
+        //      $this->view_list == 'persons' ;
         //      }
         //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_list), '');
         //      $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$this->view_item), '');
         /**
-* 
- * Map the apply task to the save method. 
+*
+ * Map the apply task to the save method.
 **/
         //$this->registerTask('apply', 'save');
     }
 
-    
+  
     /**
      * JSMControllerForm::import()
-     * 
+     *
      * @return void
      */
     function import()
@@ -122,10 +122,10 @@ class JSMControllerForm extends FormController
         $message = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_IMPORT');
         $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message);
     }
-    
+  
     /**
      * JSMControllerForm::export()
-     * 
+     *
      * @return void
      */
     function export()
@@ -133,10 +133,10 @@ class JSMControllerForm extends FormController
         $message = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_EXPORT');
         $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message);
     }
-    
+  
     /**
      * JSMControllerForm::cancelmodal()
-     * 
+     *
      * @param  mixed $key
      * @return void
      */
@@ -145,7 +145,7 @@ class JSMControllerForm extends FormController
         $msg = '';
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
     }
-    
+  
     /**
      * JSMControllerForm::save()
      *

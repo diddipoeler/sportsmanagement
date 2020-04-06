@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,16 +18,16 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementTablePredictionResult
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
  */
 class sportsmanagementTablePredictionResult extends JSMTable
 {
-    
+  
     /**
      * Constructor
      *

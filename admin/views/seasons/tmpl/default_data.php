@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -101,7 +101,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                             $image = 'players.png';
                             $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
                             echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', $assignpersons, $this->modalwidth, $this->modalheight);
-                            ?>                            
+                            ?>                          
                             </td>
                             <?php
                         }
@@ -136,7 +136,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                             }
                             ?>
                         </div>
-                    </td>    
+                    </td>  
                     <td class="order">
                         <span>
                             <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'seasons.orderup', 'JLIB_HTML_MOVE_UP', 's.ordering'); ?>

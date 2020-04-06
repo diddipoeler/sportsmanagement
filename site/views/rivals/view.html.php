@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage rivals
  */
- 
+
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewRivals
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -27,26 +27,26 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewRivals extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewRivals::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
         $this->document->addScript(Uri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js');
-    
+  
         //$this->project = sportsmanagementModelProject::getProject();
         //$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-        
+      
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = "-";
         }
         //$this->config = $config;
         $this->opos = $this->model->getOpponents();
         $this->team = $this->model->getTeam();
-       
+     
         // Set page title
         $titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
         if (!empty($this->team)) {
@@ -60,10 +60,10 @@ class sportsmanagementViewRivals extends sportsmanagementView
         if (!empty($this->division) && $this->division->id != 0) {
             $titleInfo->divisionName = $this->division->name;
         }
-                        
+                      
         $this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
         $this->document->setTitle($this->pagetitle);
-        
+      
         $this->headertitle = $this->pagetitle;
 
     }

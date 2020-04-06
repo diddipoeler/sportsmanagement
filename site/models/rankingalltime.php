@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      rankingalltime.php
@@ -32,8 +32,8 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {
 
 /**
  * sportsmanagementModelRankingAllTime
- * 
- * @package 
+ *
+ * @package
  * @author diddi
  * @copyright 2014
  * @version $Id$
@@ -50,7 +50,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
     var $projectid = 0;
     var $leagueid = 0;
     static $classname = 'sportsmanagementModelRanking';
-    
+  
     /**
      * ranking parameters
      * @var array
@@ -65,7 +65,7 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelRankingAllTime::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
@@ -74,13 +74,13 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
         $app = Factory::getApplication();
         $jinput = $app->input;
         $this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
-        
+      
         $file = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'ranking.php';
         require_once($file);
-        
+      
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
-       
+     
         $params = $menu->getParams($item->id);
 
         if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
@@ -88,39 +88,39 @@ class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
         } else {
             $this->debug_info = false;
         }
-        
+      
         if ( $item->query['view'] == 'rankingalltime' )
         {
         // diddipoeler
-        // menueeintrag vorhanden    
+        // menueeintrag vorhanden  
 
 $registry = new Registry();
 $registry->loadArray($params);
 $newparams = $registry->toArray();
- 
+
 foreach ($newparams['data'] as $key => $value ) {
-            
+          
             $this->_params[$key] = $value;
         }
-        
+      
         }
         else
         {
-//$strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';    
+//$strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'rankingalltime.xml';  
         $strXmlFile = JPATH_SITE.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'rankingalltime'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'default.xml';
         //$xml = simplexml_load_file($strXmlFile);
-        
+      
         $xml=Factory::getXML($strXmlFile);
         $children = $xml->document->children();
 
- // We can now step through each element of the file 
-foreach( $xml->children() as $field ) 
+ // We can now step through each element of the file
+foreach( $xml->children() as $field )
 {
 
-foreach( $field->fieldset  as $fieldset ) 
+foreach( $field->fieldset  as $fieldset )
 {
 
-foreach( $fieldset->field  as $param ) 
+foreach( $fieldset->field  as $param )
 {
 $attributes = $param->attributes();
 
@@ -128,20 +128,20 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
 
 }
 
-}  
+}
 
    }
-        
-}        
-        
+      
+}      
+      
         parent::__construct();
 
     }
 
-   
+ 
     /**
      * sportsmanagementModelRankingAllTime::getAllTeamsIndexedByPtid()
-     * 
+     *
      * @param mixed $project_ids
      * @return
      */
@@ -156,8 +156,8 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
               {
                 $this->teams[$r->team_id] = $r;
               }
-              
-              if ( $r->use_finally ) 
+            
+              if ( $r->use_finally )
 {
 $this->teams[$r->team_id]->sum_points += $r->points_finally;
 $this->teams[$r->team_id]->neg_points += $r->neg_points_finally;
@@ -167,8 +167,8 @@ $this->teams[$r->team_id]->cnt_draw += $r->draws_finally;
 $this->teams[$r->team_id]->cnt_lost += $r->lost_finally;
 $this->teams[$r->team_id]->sum_team1_result += $r->homegoals_finally;
 $this->teams[$r->team_id]->sum_team2_result += $r->guestgoals_finally;
-$this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;                
-                
+$this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;              
+              
               }
               else
               {
@@ -193,17 +193,17 @@ $this->teams[$r->team_id]->diff_team_results += $r->diffgoals_finally;
         }
 
 $count_teams = count($this->teams);
-Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    	    
+Log::add(Text::_('Wir verarbeiten '.$count_teams.' Vereine !'), Log::INFO, 'jsmerror');	    	  
 //echo 'result <pre>'.print_r($result,true).'</pre>';
 //echo 'teams <pre>'.print_r($this->teams,true).'</pre>';
-      
-      
+    
+    
         return $this->teams;
     }
-    
+  
     /**
      * sportsmanagementModelRankingAllTime::getAllTeams()
-     * 
+     *
      * @param mixed $project_ids
      * @return
      */
@@ -215,10 +215,10 @@ $option = Factory::getApplication()->input->getCmd('option');
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->clear();
-        
-       
+      
+     
 if ( $project_ids )
-{        
+{      
         $query->select('tl.id AS projectteamid,tl.division_id');
         $query->select('tl.standard_playground,tl.admin,tl.start_points');
         $query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
@@ -228,27 +228,27 @@ if ( $project_ids )
         $query->select('c.unique_id,c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country, c.website');
         $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
         $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
-        
+      
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
         $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
         $query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
 
 $query->from('#__sportsmanagement_project_team as tl' );
-$query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.id = tl.team_id'); 
+$query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.id = tl.team_id');
 $query->join('LEFT','#__sportsmanagement_team as t ON st.team_id = t.id' );
 $query->join('LEFT','#__sportsmanagement_club as c ON t.club_id = c.id' );
 $query->join('LEFT','#__sportsmanagement_division as d ON d.id = tl.division_id' );
 $query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standard_playground' );
 $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = tl.project_id' );
-            
+          
 $query->where('tl.project_id IN (' . $project_ids . ')' );
 //$query->group('st.team_id' );
-            
+          
 
         $db->setQuery($query);
         $this->_teams = $db->loadObjectList();
-        
+      
         if ( !$this->_teams )
         {
 
@@ -259,14 +259,14 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 else
 {
 Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
-			return false;    
+			return false;  
 }
 
     }
-    
+  
     /**
      * sportsmanagementModelRankingAllTime::getAllMatches()
-     * 
+     *
      * @param mixed $projects
      * @return
      */
@@ -279,68 +279,68 @@ Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, '
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->clear();
-   
-   
+ 
+ 
    if ( $projects )
-   {     
+   {   
         $query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
 	$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
 	$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
         $query->select('t1.id AS team1_id,t2.id AS team2_id');
 	$query->select('r.id as roundid, m.team_won, r.roundcode');
-        
-        
+      
+      
         $query->from('#__sportsmanagement_match m');
 	$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-	$query->join('INNER','#__sportsmanagement_team t1 ON st1.team_id = t1.id '); 
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
+	$query->join('INNER','#__sportsmanagement_team t1 ON st1.team_id = t1.id ');
 	$query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id'); 
-	$query->join('INNER','#__sportsmanagement_team t2 ON st2.team_id = t2.id '); 
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
+	$query->join('INNER','#__sportsmanagement_team t2 ON st2.team_id = t2.id ');
 	$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
-        
+      
         $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
         $query->where('m.published = 1');
         $query->where('r.published = 1');
         $query->where('pt1.project_id IN ('.$projects.')');
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
         $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
-    
+  
     $db->setQuery($query);
-    $res = $db->loadObjectList();  
-    
+    $res = $db->loadObjectList();
+  
     if ( !$res )
         {
 	    Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::ERROR, 'jsmerror');
         }
-              
+            
     $this->_matches = $res;
-    
+  
     $count_matches = count($res);
-Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsmerror');	    
+Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsmerror');	  
     }
     else
     {
 	Log::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), Log::WARNING, 'jsmerror');
-			return false;    
-    }  
-    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
-    return $res;
-        
+			return false;  
     }
-    
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect   
+    return $res;
+      
+    }
+  
     /**
      * sportsmanagementModelRankingAllTime::getAllTimeRanking()
-     * 
+     *
      * @return
      */
     function getAllTimeRanking()
     {
         $option = Factory::getApplication()->input->getCmd('option');
 	$app = Factory::getApplication();
-    
+  
     $arr = explode(",",$this->alltimepoints);
-   
+ 
     foreach ((array)$this->_matches as $match)
 		{
 		$resultType = $match->match_result_type;
@@ -359,20 +359,20 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 				$leg1 = 0;
 				$leg2 = 0;
 			}
-            
+          
 		$homeId = $match->team1_id;
 		$awayId = $match->team2_id;
     $home = &$this->teams[$homeId];
     $away = &$this->teams[$awayId];
-    
-   
+  
+ 
     $home->cnt_matches++;
 		$away->cnt_matches++;
-    
+  
     $win_points  = (isset($arr[0])) ? $arr[0] : 3;
 	$draw_points = (isset($arr[1])) ? $arr[1] : 1;
 	$loss_points = (isset($arr[2])) ? $arr[2] : 0;
-    
+  
     if ( $loss_points )
     {
     $shownegpoints = 1;
@@ -381,8 +381,8 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
     {
     $shownegpoints = 0;
     }
-    
-    
+  
+  
 			$home_ot = $match->home_score_ot;
 			$away_ot = $match->away_score_ot;			
 			$home_so = $match->home_score_so;
@@ -391,39 +391,39 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
     if ($decision!=1) {
 				if( $home_score > $away_score )
 				{
-					switch ($resultType) 
+					switch ($resultType)
 					{
-					case 0: 
-						$home->cnt_won++; 
-						$home->cnt_won_home++; 
+					case 0:
+						$home->cnt_won++;
+						$home->cnt_won_home++;
 						
-						$away->cnt_lost++; 
+						$away->cnt_lost++;
 						$away->cnt_lost_away++;	
 						break;
-					case 1: 
-						$home->cnt_wot++; 
-						$home->cnt_wot_home++; 
-						$home->cnt_won++; 
-						$home->cnt_won_home++; 
+					case 1:
+						$home->cnt_wot++;
+						$home->cnt_wot_home++;
+						$home->cnt_won++;
+						$home->cnt_won_home++;
 						
-						$away->cnt_lot++; 
-						$away->cnt_lot_away++; 
+						$away->cnt_lot++;
+						$away->cnt_lot_away++;
 						//When LOT, LOT=1 but No LOSS Count(Hockey)
-						//$away->cnt_lost++; 
+						//$away->cnt_lost++;
 						//$away->cnt_lost_home++; 						
 						break;
-					case 2: 
-						$home->cnt_wso++; 
+					case 2:
+						$home->cnt_wso++;
 						$home->cnt_wso_home++;
-						$home->cnt_won++; 
-						$home->cnt_won_home++; 
+						$home->cnt_won++;
+						$home->cnt_won_home++;
 						
-						$away->cnt_lso++; 
-						$away->cnt_lso_away++; 
-						$away->cnt_lot++; 
+						$away->cnt_lso++;
+						$away->cnt_lso_away++;
+						$away->cnt_lot++;
 						$away->cnt_lot_away++; 		
 						//When LSO ,LSO=1 and LOT=1 but No LOSS Count (Hockey)
-						//$away->cnt_lost++; 
+						//$away->cnt_lost++;
 						//$away->cnt_lost_home++; 							
 						break;
 					}				
@@ -439,7 +439,7 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 				}
 				else if ( $home_score == $away_score )
 				{
-					switch ($resultType) 
+					switch ($resultType)
 					{
 					case 0: 				
 						$home->cnt_draw++;
@@ -453,24 +453,24 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 						{
 							$home->cnt_won++;
 							$home->cnt_won_home++;
-							$home->cnt_wot++; 
+							$home->cnt_wot++;
 							$home->cnt_wot_home++;							
 
 							$away->cnt_lost++;
 							$away->cnt_lost_away++;
-							$away->cnt_lot++; 
+							$away->cnt_lot++;
 							$away->cnt_lot_away++;							
 						}
 						if ( $home_ot < $away_ot)
 						{
 							$away->cnt_won++;
 							$away->cnt_won_home++;
-							$away->cnt_wot++; 
+							$away->cnt_wot++;
 							$away->cnt_wot_home++;							
 
 							$home->cnt_lost++;
 							$home->cnt_lost_away++;
-							$home->cnt_lot++; 
+							$home->cnt_lot++;
 							$home->cnt_lot_away++;							
 						}						
 					break;						
@@ -479,24 +479,24 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 						{
 							$home->cnt_won++;
 							$home->cnt_won_home++;
-							$home->cnt_wso++; 
+							$home->cnt_wso++;
 							$home->cnt_wso_home++;							
 
 							$away->cnt_lost++;
 							$away->cnt_lost_away++;
-							$away->cnt_lso++; 
+							$away->cnt_lso++;
 							$away->cnt_lso_away++;							
 						}
 						if ( $home_so < $away_so)
 						{
 							$away->cnt_won++;
 							$away->cnt_won_home++;
-							$away->cnt_wso++; 
+							$away->cnt_wso++;
 							$away->cnt_wso_home++;							
 
 							$home->cnt_lost++;
 							$home->cnt_lost_away++;
-							$home->cnt_lso++; 
+							$home->cnt_lso++;
 							$home->cnt_lso_away++;							
 						}						
 					break;					
@@ -513,37 +513,37 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 				else if ( $home_score < $away_score )
 				{
 					switch ($resultType) {
-					case 0:   
-						$home->cnt_lost++; 
+					case 0: 
+						$home->cnt_lost++;
 						$home->cnt_lost_home++;
 						
-						$away->cnt_won++; 
-						$away->cnt_won_away++; 
+						$away->cnt_won++;
+						$away->cnt_won_away++;
 						break;
-					case 1:   
-						$home->cnt_lot++; 
-						$home->cnt_lot_home++; 
+					case 1: 
+						$home->cnt_lot++;
+						$home->cnt_lot_home++;
 						//When LOT, LOT=1 but No LOSS Count(Hockey)
-						//$home->cnt_lost++; 
-						//$home->cnt_lost_home++; 
+						//$home->cnt_lost++;
+						//$home->cnt_lost_home++;
 						
-						$away->cnt_wot++; 
-						$away->cnt_wot_away++; 
-						$away->cnt_won++; 
+						$away->cnt_wot++;
+						$away->cnt_wot_away++;
+						$away->cnt_won++;
 						$away->cnt_won_away++; 						
 						break;
-					case 2:   
-						$home->cnt_lso++; 
-						$home->cnt_lso_home++; 
-						$home->cnt_lot++; 
-						$home->cnt_lot_home++; 
+					case 2: 
+						$home->cnt_lso++;
+						$home->cnt_lso_home++;
+						$home->cnt_lot++;
+						$home->cnt_lot_home++;
 						//When LSO ,LSO=1 and LOT=1 but No LOSS Count (Hockey)
-						//$home->cnt_lost++; 
+						//$home->cnt_lost++;
 						//$home->cnt_lost_home++; 	
 						
-						$away->cnt_wso++; 
+						$away->cnt_wso++;
 						$away->cnt_wso_away++;
-						$away->cnt_won++; 
+						$away->cnt_won++;
 						$away->cnt_won_away++; 						
 						break;
 					}					
@@ -566,7 +566,7 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 				//Final Win/Loss Decision
 				if($match->team_won==0) {
 					$home->cnt_lost++;
-					$away->cnt_lost++; 
+					$away->cnt_lost++;
 				//record a won on the home team
 				} else if($match->team_won==1) {
 					$home->cnt_won++;
@@ -620,11 +620,11 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
 			$away->diff_team_legs    = $away->sum_team1_legs - $away->sum_team2_legs;
 
 			$away->sum_away_for += $away_score;	
-    
-    
+  
+  
     }
-    
-    
+  
+  
 
 /**
  * hier werden die werte aus dem projekt dem team dazu addiert
@@ -633,13 +633,13 @@ Log::add(Text::_('Wir verarbeiten '.$count_matches.' Spiele !'), Log::INFO, 'jsm
  * über den request anders übergeben werden. z.b. 2 punkte oder 3 punkte für
  * einen sieg
  * $win_points $draw_points $loss_points
- * 
- * 
+ *
+ *
  */
     /*
 foreach ( $this->_teams as $team )
 {
-if ( $team->use_finally ) 
+if ( $team->use_finally )
 {
 if ( $win_points )
 {	
@@ -661,17 +661,17 @@ $this->teams[$team->team_id]->cnt_lost += $team->lost_finally;
 $this->teams[$team->team_id]->sum_team1_result += $team->homegoals_finally;
 $this->teams[$team->team_id]->sum_team2_result += $team->guestgoals_finally;
 $this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
-}    
+}  
 }
-*/    
-    
+*/  
+  
     return $this->teams;
-     
-    }    
-    
+   
+    }  
+  
     /**
      * sportsmanagementModelRankingAllTime::getColors()
-     * 
+     *
      * @param string $configcolors
      * @return
      */
@@ -715,11 +715,11 @@ $this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
         $option = Factory::getApplication()->input->getCmd('option');
         $jinput = $app->input;
         $league = $jinput->request->get('l', 0, 'INT');
-       
+     
 	$db = Factory::getDBO();
 	$query = Factory::getDbo()->getQuery(true);
 
-        if (!$league) 
+        if (!$league)
         {
         $projekt = $jinput->request->get('p', 0, 'INT');
         $query->clear();
@@ -734,14 +734,14 @@ $this->teams[$team->team_id]->diff_team_results += $team->diffgoals_finally;
 
 $query->clear();
 $query->select('p.id,p.name,s.name as seasonname');
-$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');	    
+$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');	  
 $query->from('#__sportsmanagement_project as p');
-$query->join('INNER','#__sportsmanagement_season AS s ON p.season_id = s.id '); 	    
+$query->join('INNER','#__sportsmanagement_season AS s ON p.season_id = s.id '); 	  
 $query->where('p.league_id = ' . $league);
 $query->order('s.name DESC ');
 $db->setQuery($query);
-$result = $db->loadObjectList();        
-       
+$result = $db->loadObjectList();      
+     
 
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
@@ -750,7 +750,7 @@ $result = $db->loadObjectList();
 	
     /**
      * sportsmanagementModelRankingAllTime::getAllProject()
-     * 
+     *
      * @return
      */
     function getAllProject()
@@ -759,16 +759,16 @@ $result = $db->loadObjectList();
         $option = Factory::getApplication()->input->getCmd('option');
         $jinput = $app->input;
         $league = $jinput->request->get('l', 0, 'INT');
-       
+     
         // Create a new query object.		
 		$db = Factory::getDBO();
 		$query = Factory::getDbo()->getQuery(true);
 
-        if (!$league) 
+        if (!$league)
         {
             $projekt = $jinput->request->get('p', 0, 'INT');
             $query->clear();
-            
+          
 		$query->select('league_id');
 		// From the rounds table
 		$query->from('#__sportsmanagement_project');
@@ -787,23 +787,23 @@ $query->clear();
         $query->where('league_id = ' . $league);
         $query->order('name ');
         $db->setQuery($query);
-        
-         if(version_compare(JVERSION,'3.0.0','ge')) 
+      
+         if(version_compare(JVERSION,'3.0.0','ge'))
         {
         // Joomla! 3.0 code here
         $result = $db->loadColumn(0);
         }
-        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        elseif(version_compare(JVERSION,'2.5.0','ge'))
         {
         // Joomla! 2.5 code here
         $result = $db->loadResultArray(0);
-        } 
-        
+        }
+      
         $this->project_ids = implode(",", $result);
         $this->project_ids_array = $result;
-       
+     
         $count_project = count($result);
-Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::INFO, 'jsmerror');	    
+Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::INFO, 'jsmerror');	  
     $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 
@@ -811,27 +811,27 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
 
     /**
      * sportsmanagementModelRankingAllTime::getAllTimeParams()
-     * 
+     *
      * @return
      */
     function getAllTimeParams()
     {
         return $this->_params;
     }
-    
+  
     /**
      * sportsmanagementModelRankingAllTime::getCurrentRanking()
-     * 
+     *
      * @return
      */
     function getCurrentRanking()
     {
         $option = Factory::getApplication()->input->getCmd('option');
 	$app = Factory::getApplication();
-   
+ 
         $newranking = array();
 
-        foreach ($this->teams as $key) 
+        foreach ($this->teams as $key)
         {
 //            $new = new stdclass(0);
             $new = new JSMRankingTeamClass(0);
@@ -855,9 +855,9 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
             $new->_pid = $key->project_id;
 
             $newranking[0][$key->team_id] = $new;
-        
+      
         }
-       
+     
         $newranking[0] = self::_sortRanking($newranking[0]);
 
         $oldpoints = 0;
@@ -877,13 +877,13 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
         return $newranking;
 
     }
-    
-    
-    
-    
+  
+  
+  
+  
     /**
      * sportsmanagementModelRankingAllTime::_sortRanking()
-     * 
+     *
      * @param mixed $ranking
      * @return
      */
@@ -894,18 +894,18 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'DESC', 'STR');
-        
+      
         $arr2 = array();
-        
+      
         foreach ($ranking as $row) {
                 $arr2[$row->_teamid] = ArrayHelper::fromObject($row);
             }
-       
-        if (!$order) 
+     
+        if (!$order)
         {
             $order_dir = 'DESC';
             $sortarray = array();
-            
+          
 
             foreach ($this->_getRankingCriteria() as $c) {
 
@@ -934,7 +934,7 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
 
             unset($ranking);
 
-            foreach ($arr2 as $key => $row) 
+            foreach ($arr2 as $key => $row)
             {
 
                 $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
@@ -1025,12 +1025,12 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
                     }
                     break;
             }
-            
+          
             $arr2 = $this->array_msort($arr2, $sortarray);
 
             unset($ranking);
 
-            foreach ($arr2 as $key => $row) 
+            foreach ($arr2 as $key => $row)
             {
                 $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
@@ -1038,12 +1038,12 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
         }
 
         return $ranking;
-        
+      
     }
 
     /**
      * sportsmanagementModelRankingAllTime::array_msort()
-     * 
+     *
      * @param mixed $array
      * @param mixed $cols
      * @return
@@ -1084,7 +1084,7 @@ Log::add(Text::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'), Log::
 
 /**
  * sportsmanagementModelRankingAllTime::_getRankingCriteria()
- * 
+ *
  * @return
  */
 function _getRankingCriteria()
@@ -1117,8 +1117,8 @@ $app = Factory::getApplication();
 
         return $this->_criteria;
     }
-    
-   
+  
+ 
 }
 
 ?>

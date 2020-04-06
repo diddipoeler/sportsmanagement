@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,9 +23,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldpersonagegroup
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -52,9 +52,9 @@ class JFormFieldpersonagegroup extends \JFormFieldList
          $query = $db->getQuery(true);
          $personquery = $db->getQuery(true);
          $personquery2 = $db->getQuery(true);
-            
+          
          $person_age_range = $db->getQuery(true);
-            
+          
           // Initialize variables.
         $options = array();
 
@@ -71,22 +71,22 @@ class JFormFieldpersonagegroup extends \JFormFieldList
          $query->order('name');
          $db->setQuery($query);
          $options_select = $db->loadObjectList();
-        
+      
         foreach($options_select as $row)
          {
-     
+   
             $options[] = HTMLHelper::_('select.option', $row->value, $row->text);
-     
+   
         }
-            
-    
+          
+  
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
-        
+      
         //return HTMLHelper::_('select.genericlist', $options, 'month', 'class="inputbox"', 'value', 'text', $person_range);
         return $options;
     }
-    
+  
 }
 
 

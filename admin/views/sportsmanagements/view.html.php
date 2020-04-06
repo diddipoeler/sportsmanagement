@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
@@ -21,8 +21,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewsportsmanagements
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -35,12 +35,12 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
      *
      * @return void
      */
-    function display($tpl = null) 
+    function display($tpl = null)
     {
         // Get data from the model
         $items = $this->get('Items');
         $pagination = $this->get('Pagination');
- 
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             Log::add(implode('<br />', $errors));
@@ -49,21 +49,21 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
         // Assign data to the view
         $this->items = $items;
         $this->pagination = $pagination;
- 
+
         // Set the toolbar
         $this->addToolBar();
- 
+
         // Display the template
         parent::display($tpl);
- 
+
         // Set the document
         $this->setDocument();
     }
- 
+
     /**
      * Setting the toolbar
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
@@ -91,7 +91,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
      *
      * @return void
      */
-    protected function setDocument() 
+    protected function setDocument()
     {
         $document = Factory::getDocument();
         $document->setTitle(Text::_('COM_HELLOWORLD_ADMINISTRATION'));

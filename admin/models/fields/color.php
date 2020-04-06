@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * FormFieldColor
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,7 +32,7 @@ class JFormFieldColor extends \JFormFieldText
 
     /**
      * FormFieldColor::getInput()
-     * 
+     *
      * @return
      */
     public function getInput()
@@ -44,7 +44,7 @@ class JFormFieldColor extends \JFormFieldText
 
     /**
      * FormFieldColor::setup()
-     * 
+     *
      * @param  mixed $element
      * @param  mixed $value
      * @param  mixed $group

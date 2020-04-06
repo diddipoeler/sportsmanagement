@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -46,7 +46,7 @@ if (!empty($this->matchstaffpositions)) {
                     $routeparameter['p'] = $this->project->slug;
                     $routeparameter['tid'] = $player->team_slug;
                     $routeparameter['pid'] = $player->person_slug;
-                                        
+                                      
                     $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
                     $match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
                     echo HTMLHelper::link($player_link, $match_player);
@@ -86,8 +86,8 @@ if (!empty($this->matchstaffpositions)) {
                     echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id, $picture, $imgTitle, $this->config['staff_picture_width']);
 
                                         ?>
-                                        
- 
+                                      
+
 
 
                                         <?php

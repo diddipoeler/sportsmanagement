@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,13 +22,13 @@ class sportsmanagementViewjlxmlexports extends JViewLegacy
 {
     function display( $tpl = null )
     {
-        
+      
           // Get a refrence of the page instance in joomla
         $document = & Factory::getDocument();
-        $uri = &Factory::getURI();        
-    
+        $uri = &Factory::getURI();      
+  
           $model = $this->getModel();
-    
+  
           $model->exportData();
 
         parent::display($tpl);

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementControllerResults
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,10 +29,10 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementControllerResults extends BaseController
 {
 
-    
+  
     /**
      * sportsmanagementControllerEditMatch::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -48,32 +48,32 @@ class sportsmanagementControllerResults extends BaseController
           // Get the input
           $this->pks = $this->jinput->getVar('cid', null, 'post', 'array');
           $this->post = $this->jinput->post->getArray();
-    
+  
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') ) {
-    
+  
         }
 
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementControllerResults::saveReferees()
-     * 
+     *
      * @return void
      */
     public function saveReferees()
     {
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$this->post['cfg_which_database'].'&s='.$this->post['s'].'&p='.$this->post['p'].'&r='.$this->post['r'].'&division='.$this->post['division'].'&mode='.$this->post['mode'].'&order='.$this->post['order'].'&layout='.$this->post['layout']);   
-       
-       
-       
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$this->post['cfg_which_database'].'&s='.$this->post['s'].'&p='.$this->post['p'].'&r='.$this->post['r'].'&division='.$this->post['division'].'&mode='.$this->post['mode'].'&order='.$this->post['order'].'&layout='.$this->post['layout']); 
+     
+     
+     
     }
-    
-       
+  
+     
     /**
      * sportsmanagementControllerResults::display()
-     * 
+     *
      * @param  bool $cachable
      * @param  bool $urlparams
      * @return void
@@ -82,10 +82,10 @@ class sportsmanagementControllerResults extends BaseController
     {
 
     }
-    
+  
     /**
      * sportsmanagementControllerResults::saveshort()
-     * 
+     *
      * @return void
      */
     public function saveshort()
@@ -99,16 +99,16 @@ class sportsmanagementControllerResults extends BaseController
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $post = $jinput->post->getArray();
         $layout = $jinput->getCmd('layout', 'form');
-    
+  
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') ) {
 
         }
 
         $model->saveshort();
-   
+ 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$post['cfg_which_database'].'&s='.$post['s'].'&p='.$post['p'].'&r='.$post['r'].'&division='.$post['division'].'&mode='.$post['mode'].'&order='.$post['order'].'&layout='.$layout);
-               
-    }   
+             
+    } 
 
 
 }

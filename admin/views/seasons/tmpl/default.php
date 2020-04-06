@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -31,4 +31,4 @@ echo $this->loadTemplate('joomla_version');
 </form>
 <?PHP
 echo $this->loadTemplate('footer');
-?>   
+?> 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -69,7 +69,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <?php echo $this->pagination->getListFooter(); ?>
                     <?php echo $this->pagination->getResultsCounter(); ?>
                 </td>
-            </tr>       
+            </tr>     
         </tfoot>
         <tbody>
             <?php
@@ -149,7 +149,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
                         }
                         ?>
-                        </div>    
+                        </div>  
                     </td>
                     <td class="order">
                         <span>

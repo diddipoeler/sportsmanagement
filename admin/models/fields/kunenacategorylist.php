@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * FormFieldKunenaCategoryList
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,10 +34,10 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 
     /**
      * FormFieldKunenaCategoryList::getInput()
-     * 
+     *
      * @return
      */
-    protected function getInput() 
+    protected function getInput()
     {
         if (!class_exists('KunenaForum') || !KunenaForum::installed()) {
             echo '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';

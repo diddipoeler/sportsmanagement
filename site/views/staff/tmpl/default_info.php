@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage staff
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -36,8 +36,8 @@ use Joomla\CMS\Factory;
         if ((empty($picture))|| ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  )) {
             $picture = $this->person->picture;
         }
-                
-                
+              
+              
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'staffinfo' . $this->person->id,
             $picture,
@@ -47,22 +47,22 @@ use Joomla\CMS\Factory;
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );                
-        
-        
+        );              
+      
+      
         ?>
 
         <?php
     }
     ?>
-</div>        
-<div class="col-md-6">  
+</div>      
+<div class="col-md-6">
 
     <?php
     if(!empty($this->person->country) && $this->config["show_nationality"] ) {
         ?>
-            
-            
+          
+          
             <address>
      <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
     <?php
@@ -73,9 +73,9 @@ use Joomla\CMS\Factory;
         <?php
     }
     ?>
-                    
-    
-                
+                  
+  
+              
         <?php
         $outputName = Text::sprintf('%1$s %2$s', $this->person->firstname, $this->person->lastname);
         if ($this->person->user_id ) {
@@ -90,28 +90,28 @@ use Joomla\CMS\Factory;
                 $link = sportsmanagementHelperRoute::getUserProfileRouteCBE(
                     $this->person->user_id,
                     $this->project->id,
-                    $this->person->id 
+                    $this->person->id
                 );
                 $outputName = HTMLHelper::link($link, $outputName);
                 break;
 
-            default:    
+            default:  
                 break;
             }
         }
-                        
+                      
         ?>
-                    
-                
+                  
+              
                  <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NAME'); ?></strong>
     <?php echo $outputName; ?>
             </address>
-                
-                
-                
+              
+              
+              
                 <?php if (! empty($this->person->nickname) ) {
-                    
+                  
         ?>
                 <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NICKNAME'); ?></strong>
@@ -119,15 +119,15 @@ use Joomla\CMS\Factory;
             </address>
                 <?php
                 }
-                
-                
-if (( $this->config[ 'show_birthday' ] > 0 ) 
-    && ( $this->config[ 'show_birthday' ] < 5 ) 
-    && ( $this->person->birthday != '0000-00-00' ) 
+              
+              
+if (( $this->config[ 'show_birthday' ] > 0 )
+    && ( $this->config[ 'show_birthday' ] < 5 )
+    && ( $this->person->birthday != '0000-00-00' )
 ) {
 
     ?>
-                    
+                  
 
     <?php
     switch ( $this->config['show_birthday'] )
@@ -151,7 +151,7 @@ if (( $this->config[ 'show_birthday' ] > 0 )
     //echo Text::_( $outputStr );
     ?>
 
-                        
+                      
     <?php
     switch ( $this->config['show_birthday'] )
     {
@@ -178,23 +178,23 @@ if (( $this->config[ 'show_birthday' ] > 0 )
     default:    $birthdateStr = "";
         break;
     }
-                            
+                          
     ?>
-                        
-                    
+                      
+                  
             <address>
             <strong><?php echo Text::_($outputStr); ?></strong>
     <?php echo $birthdateStr; ?>
         </address>
-                    
-                    
+                  
+                  
         <?php if($this->person->deathday != '0000-00-00' ) {?>
-                    
+                  
         <?php
         $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY';
         //echo Text::_( $outputStr );
         ?>
-                        
+                      
         <?php
         $deathdateStr =    $this->person->deathday != "0000-00-00" ?
         HTMLHelper::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
@@ -206,11 +206,11 @@ if (( $this->config[ 'show_birthday' ] > 0 )
             </address>
         <?php
         }
-                    
-                    
-                    
+                  
+                  
+                  
 }
-                
+              
 if (( $this->person->address != "" ) && ( $this->config[ 'show_person_address' ] ==1  )) {
     ?>
                 <address>
@@ -223,14 +223,14 @@ if (( $this->person->address != "" ) && ( $this->config[ 'show_person_address' ]
             $this->person->zipcode,
             $this->person->location,
             $this->person->address_country,
-            'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' 
+            'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM'
         );
         ?>
               </address>
                 <?php
 }
-                
-                
+              
+              
 if (( $this->person->phone != "" ) && $this->config[ 'show_person_phone' ] ) {
     ?>
   <address>
@@ -253,7 +253,7 @@ if (( $this->person->email != "" ) && $this->config['show_person_email'] ) {
     ?>
   <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
-    <?php 
+    <?php
       $user = Factory::getUser();
     if (( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) ) {
         ?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
@@ -277,7 +277,7 @@ if (( $this->person->website != "" ) && $this->config['show_person_website'] ) {
         'link',
         $this->person->website,
         $this->person->website,
-        array( 'target' => '_blank' ) 
+        array( 'target' => '_blank' )
     );
             ?>
             </address>
@@ -292,7 +292,7 @@ if (( $this->person->height > 0 ) && $this->config['show_person_height'] ) {
       </address>
     <?php
 }
-                
+              
 if (( $this->person->weight > 0 ) && $this->config['show_person_weight'] ) {
     ?>
   <address>
@@ -301,17 +301,17 @@ if (( $this->person->weight > 0 ) && $this->config['show_person_weight'] ) {
       </address>
     <?php
 }
-                    
+                  
 if (isset($this->inprojectinfo->position_id) && $this->inprojectinfo->position_id > 0 ) {
     ?>
-                
+              
         <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></strong>
     <?php echo Text::_($this->inprojectinfo->position_name); ?>
     </address>
-                
-                
-                
+              
+              
+              
                 <?php
 }
 
@@ -321,7 +321,7 @@ if (( ! empty($this->person->knvbnr) ) && $this->config['show_person_regnr'] ) {
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR'); ?></strong>
     <?php echo $this->person->knvbnr; ?>
       </address>
-                    
+                  
     <?php
 }
                 ?>
@@ -331,5 +331,5 @@ if (( ! empty($this->person->knvbnr) ) && $this->config['show_person_regnr'] ) {
 </table>
 <br />
 
-</div>  
-</div>  
+</div>
+</div>

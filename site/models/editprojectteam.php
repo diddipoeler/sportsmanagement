@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
 
 /**
  * sportsmanagementModelEditprojectteam
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -32,31 +32,31 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
  */
 class sportsmanagementModelEditprojectteam extends AdminModel
 {
-  
+
     /**
-* 
- * interfaces 
+*
+ * interfaces
 */
     var $latitude    = null;
     var $longitude    = null;
-    
+  
     /**
      * sportsmanagementModelEditprojectteam::updItem()
-     * 
+     *
      * @param  mixed $data
      * @return void
      */
     function updItem($data)
     {
         $app = Factory::getApplication();
-        
+      
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
         }
         /**
-* 
- * Specify which columns are to be ignored. This can be a string or an array. 
+*
+ * Specify which columns are to be ignored. This can be a string or an array.
 */
         $ignore = '';
         try{
@@ -66,17 +66,17 @@ class sportsmanagementModelEditprojectteam extends AdminModel
         }
         catch (Exception $e)
         {
-            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
-            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
+            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');  
+            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');  
         }
 
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelEditprojectteam::getData()
-     * 
+     *
      * @return
      */
     function getData()
@@ -101,7 +101,7 @@ class sportsmanagementModelEditprojectteam extends AdminModel
     {
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -119,10 +119,10 @@ class sportsmanagementModelEditprojectteam extends AdminModel
         if (empty($form)) {
             return false;
         }
-       
+     
         return $form;
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -138,7 +138,7 @@ class sportsmanagementModelEditprojectteam extends AdminModel
         }
         return $data;
     }
-    
+  
 }
 
 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -68,7 +68,7 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 ?>
 <!-- <fieldset class="adminform"> -->
@@ -98,7 +98,7 @@ else
 {
     echo '<div class="alert alert-no-items">';
     echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-    echo '</div>';    
+    echo '</div>';  
 }
 
 ?>
@@ -114,4 +114,4 @@ else
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -77,7 +77,7 @@ HTMLHelper::_('behavior.tooltip');
         echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED'), 'tmb.approved', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                    
+                  
                     <th width="" class="title">
         <?php
         echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
@@ -88,7 +88,7 @@ HTMLHelper::_('behavior.tooltip');
         echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
         ?>
                     </th>
-                    
+                  
                 </tr>
             </thead>
             <tfoot>
@@ -132,7 +132,7 @@ HTMLHelper::_('behavior.tooltip');
                 <?php
                 if ($row->checked_out) : ?>
             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin); ?>
-                <?php endif; ?>    
+                <?php endif; ?>  
                  <a  href="<?php echo $link2; ?>"
                   title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_EDIT_USER'); ?>" >
                     <?php
@@ -140,7 +140,7 @@ HTMLHelper::_('behavior.tooltip');
                     ?>
                  </a>
                     <?php
-                        
+                      
                 ?>
                </td>
                <td>
@@ -193,7 +193,7 @@ HTMLHelper::_('behavior.tooltip');
                 }
                 echo HTMLHelper::_(
                     'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
-                    $imgtitle, 'title= "' . $imgtitle . '"' 
+                    $imgtitle, 'title= "' . $imgtitle . '"'
                 );
                 ?>
                </td>
@@ -204,7 +204,7 @@ HTMLHelper::_('behavior.tooltip');
                 }
                 echo HTMLHelper::_(
                     'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
-                    $imgtitle, 'title= "' . $imgtitle . '"' 
+                    $imgtitle, 'title= "' . $imgtitle . '"'
                 );
                 ?>
                </td>
@@ -215,7 +215,7 @@ HTMLHelper::_('behavior.tooltip');
                 }
                 echo HTMLHelper::image(
                     'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
-                    $imgtitle, 'title= "' . $imgtitle . '"' 
+                    $imgtitle, 'title= "' . $imgtitle . '"'
                 );
                 ?>
                </td>
@@ -226,7 +226,7 @@ HTMLHelper::_('behavior.tooltip');
                 }
                 echo HTMLHelper::_(
                     'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
-                    $imgtitle, 'title= "' . $imgtitle . '"' 
+                    $imgtitle, 'title= "' . $imgtitle . '"'
                 );
                 ?>
                </td>
@@ -237,12 +237,12 @@ HTMLHelper::_('behavior.tooltip');
                 }
                 echo HTMLHelper::_(
                     'image', 'administrator/components/com_sportsmanagement/assets/images/' . $imgfile,
-                    $imgtitle, 'title= "' . $imgtitle . '"' 
+                    $imgtitle, 'title= "' . $imgtitle . '"'
                 );
                 ?>
                </td>
                     <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->modusername; ?></td> 
+                            <td><?php echo $row->modusername; ?></td>
               </tr>
                 <?php
                 $k = 1 - $k;
@@ -253,4 +253,4 @@ HTMLHelper::_('behavior.tooltip');
         </table>
     </div>
 
-    
+  

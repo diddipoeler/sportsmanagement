@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage controllers
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementControllerrosterposition
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
-<?php 
+<?php
 $personName = sportsmanagementHelper::formatName(null, $this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format"]);
 if ($this->config['show_player_icon']) {
     $imgTitle = Text::sprintf($personName);
@@ -27,9 +27,9 @@ if ($this->config['show_player_icon']) {
     if ((empty($picture)) || ($picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png' )) {
         $picture = $this->row->ppic;
     }
-    
-    
-    
+  
+  
+  
 ?>
             <div class="jl_rosterperson_picture_column">
                 <div class="jl_rosterperson_pic">
@@ -44,9 +44,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     $this->modalheight,
     $this->overallconfig['use_jquery_modal']
 );
-     
-          
-    
+   
+        
+  
 ?>
                 </div><!-- /.jl_rosterperson_pic -->
             </div><!-- /.jl_rosterperson_picture_column -->
@@ -62,11 +62,11 @@ if ($this->config['show_player_numbers']) {
 ?>
                 <span class="jl_rosterperson_position_number">
                 <?php
-                $playerNumber = ( $this->config['player_numbers_pictures'] && function_exists('imagecreatefrompng') ) ? 
-                    HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr, $pnr, array( 'title'=> $pnr )) 
+                $playerNumber = ( $this->config['player_numbers_pictures'] && function_exists('imagecreatefrompng') ) ?
+                    HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr, $pnr, array( 'title'=> $pnr ))
                     : $pnr;
                     echo $playerNumber;
-                
+              
 ?>
                 </span><!-- /.jl_rosterperson_position_number -->
 <?php
@@ -80,15 +80,15 @@ if ($this->config['show_player_numbers']) {
                 $routeparameter['p'] = $this->project->slug;
                 $routeparameter['tid'] = $this->team->slug;
                 $routeparameter['pid'] = $this->row->person_slug;
-                echo ($this->config['link_player']==1) ? 
+                echo ($this->config['link_player']==1) ?
                 HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter), $personName)
                 : $personName;
 ?>
                     <br />&nbsp;
-                </span>    
+                </span>  
             </h3>
             <div class="jl_roster_persondetails">
-<?php 
+<?php
 if (( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->row->suspension > 0 && $this->row->suspension_end > $this->project->current_round ) ) {
 ?>
 <div>
@@ -96,7 +96,7 @@ if (( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->
     <?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?>
 </span><!-- /.jl_roster_persondetails_label -->
 <span class="jl_roster_persondetails_data">
-<?php 
+<?php
 $model =& $this->getModel();
 $this->playertool = $model->getTeamPlayer($this->project->current_round, $this->row->playerid);
 if (!empty($this->playertool[0]->injury)) {
@@ -126,7 +126,7 @@ if (!empty($this->playertool[0]->away)) {
 <?php
 }// if ((isset($this->row->is_injured) && $this->row->is_injured ends
 ?>
-<?php 
+<?php
 if ($this->config['show_birthday'] > 0 && $this->row->birthday !="0000-00-00" ) {
     switch ( $this->config['show_birthday'] )
     {
@@ -187,7 +187,7 @@ if ($this->config['show_birthday'] > 0 && $this->row->birthday !="0000-00-00" ) 
     ?>
                     <div>
                         <span class="jl_roster_persondetails_label">
-    <?php 
+    <?php
      echo Text::_("COM_SPORTSMANAGEMENT_ROSTER_DEATHDAY");
     ?>
      [ &dagger; ]
@@ -223,11 +223,11 @@ if ($this->overallconfig['use_jl_substitution'] || $this->config['show_events_st
 <?php
 if ($this->overallconfig['use_jl_substitution'] ) {
     /**
-* 
- * Events of substitutions are shown 
+*
+ * Events of substitutions are shown
 **/
          $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id, $this->row->projectteam_id, $this->row->season_team_person_id, $this->project->game_regular_time);
-            
+          
     $cnt = 0;
     if ($this->config['show_games_played'] && isset($this->InOutStat->played) ) {
         $cnt++;

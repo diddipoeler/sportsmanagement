@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,9 +25,9 @@ use Joomla\CMS\Language\Text;
                     </th>
                     <th>
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUS_ASSIGNED'); ?>
-                    </th>                    
+                    </th>                  
                 </tr>
-            </thead>                
+            </thead>              
                 <tr>
                     <td colspan="2">
                 </tr>
@@ -49,13 +49,13 @@ use Joomla\CMS\Language\Text;
                   <td style='text-align:center; vertical-align:middle; '>
                    <!-- left / right buttons -->
                    <br />
-                                        
-                                        
+                                      
+                                      
                                         <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TO_LINEUP'); ?>" onclick="move_list_items('staff','staffposition<?php echo $position_id;?>');" />
                                         <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_DELETE_FROM_LINEUP'); ?>" onclick="move_list_items('staffposition<?php echo $position_id;?>','staff');" />
-                                        
-                                        
-                                        
+                                      
+                                      
+                                      
              </td>
              <td>
               <!-- player affected to this position -->

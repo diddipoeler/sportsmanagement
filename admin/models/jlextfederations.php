@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModeljlextfederations
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,15 +29,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModeljlextfederations extends JSMModelList
 {
     var $_identifier = "jlextfederations";
-    
+  
     /**
      * sportsmanagementModeljlextfederations::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'objassoc.name',
                         'objassoc.short_name',
@@ -55,7 +55,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
                 parent::__construct($config);
                 parent::setDbo($this->jsmdb);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -75,7 +75,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         $published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
         $this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $this->setState('list.limit', $value);    
+        $this->setState('list.limit', $value);  
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
         $this->setState('list.start', $value);
@@ -90,12 +90,12 @@ class sportsmanagementModeljlextfederations extends JSMModelList
             $listOrder = 'ASC';
         }
         $this->setState('list.direction', $listOrder);
-        
+      
     }
-    
+  
     /**
    * sportsmanagementModeljlextfederations::getListQuery()
-   * 
+   *
    * @return
    */
     protected function getListQuery()
@@ -109,29 +109,29 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         // Join over the users for the checked out user.
         $this->jsmquery->select('uc.name AS editor');
         $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
-        
+      
         if ($this->getState('filter.search') ) {
             $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-        
+      
         if ($this->getState('filter.search_nation') ) {
             $this->jsmquery->where("objassoc.country = '".$this->getState('filter.search_nation')."'");
         }
-        
+      
         if (is_numeric($this->getState('filter.state')) ) {
-            $this->jsmquery->where('objassoc.published = '.$this->getState('filter.state'));    
+            $this->jsmquery->where('objassoc.published = '.$this->getState('filter.state'));  
         }
-        
+      
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
- 
+
         if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') ) {
         }
 
         return $this->jsmquery;
     }
-    
+  
 }
 ?>

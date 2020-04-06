@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,8 +24,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldGoogleApiKey
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -33,19 +33,19 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldGoogleApiKey extends \JFormFieldList
 {
-    
+  
     protected $type = 'GoogleApiKey';
 
 
     /**
      * FormFieldGoogleApiKey::getOptions()
-     * 
+     *
      * @return
      */
     protected function getOptions()
     {
-        $google_api_key = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');    
+        $google_api_key = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');  
         return $google_api_key;
     }
-    
+  
 }

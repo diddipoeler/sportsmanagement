@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage stats
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -66,7 +66,7 @@ datasets: [{
                 data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
                 ]
             }
-            
+          
             ]
 },
 
@@ -85,8 +85,8 @@ datasets: [{
     scales: {
 yAxes: [{
 ticks: {
-suggestedMin: 0,   
-suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>, 
+suggestedMin: 0, 
+suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>,
 beginAtZero:false,
 reverse: false,
 stepSize:1,

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version   1.0.05
@@ -22,9 +22,9 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModeldatabasetool
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -46,11 +46,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::runJoomlaQuery()
-     * 
+     *
      * @param  string $setModelVar
      * @return
      */
-    public static function runJoomlaQuery($setModelVar = '', $db = null) 
+    public static function runJoomlaQuery($setModelVar = '', $db = null)
     {
         $result = false;
 
@@ -90,7 +90,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
         // Get the form.
@@ -104,12 +104,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getMemory()
-     * 
+     *
      * @param  mixed $startmemory
      * @param  mixed $endmemory
      * @return
      */
-    function getMemory($startmemory, $endmemory) 
+    function getMemory($startmemory, $endmemory)
     {
         $memory = array();
         $temp = new stdClass();
@@ -129,10 +129,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getRunTime()
-     * 
+     *
      * @return
      */
-    public static function getRunTime() 
+    public static function getRunTime()
     {
         $mtime = microtime();
         $mtime = explode(" ", $mtime);
@@ -142,12 +142,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getQueryTime()
-     * 
+     *
      * @param  mixed $starttime
      * @param  mixed $endtime
      * @return
      */
-    function getQueryTime($starttime, $endtime) 
+    function getQueryTime($starttime, $endtime)
     {
         $starttime = explode(" ", $starttime);
         $endtime = explode(" ", $endtime);
@@ -156,10 +156,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getSportsManagementTables()
-     * 
+     *
      * @return
      */
-    function getSportsManagementTables() 
+    function getSportsManagementTables()
     {
         $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
@@ -175,10 +175,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getJoomleagueTables()
-     * 
+     *
      * @return
      */
-    function getJoomleagueTablesTruncate() 
+    function getJoomleagueTablesTruncate()
     {
         $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
@@ -193,11 +193,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::checkImportTablesJlJsm()
-     * 
+     *
      * @param  mixed $tables
      * @return void
      */
-    function checkImportTablesJlJsm($tables) 
+    function checkImportTablesJlJsm($tables)
     {
         $prefix = $this->jsmapp->getCfg('dbprefix');
         $storeFailedColor = 'red';
@@ -283,10 +283,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getJoomleagueImportTables()
-     * 
+     *
      * @return void
      */
-    function getJoomleagueImportTables() 
+    function getJoomleagueImportTables()
     {
         $this->jsmquery->select('*');
         $this->jsmquery->from('#__sportsmanagement_jl_tables');
@@ -297,10 +297,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::getJoomleagueTables()
-     * 
+     *
      * @return
      */
-    function getJoomleagueTables() 
+    function getJoomleagueTables()
     {
         $this->jsmquery = $this->jsmdb->getQuery(true);
         $this->jsmquery = "SHOW TABLES LIKE '%_joomleague%'";
@@ -329,7 +329,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                 $record_jl = $this->jsmdb->loadResult();
 
                 if ($record_jl) {
-                    
+                  
                 } else {
                     $temp = new stdClass();
                     $temp->name = $value;
@@ -338,9 +338,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                     // Insert the object into the table.
                     $resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_jl_tables', $temp);
                     if ($resultinsert) {
-                        
+                      
                     } else {
-                        
+                      
                     }
                 }
             }
@@ -350,10 +350,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::setParamstoJSON()
-     * 
+     *
      * @return void
      */
-    function setParamstoJSON() 
+    function setParamstoJSON()
     {
         $this->jsmquery = $this->jsmdb->getQuery(true);
         $this->jsmquery->select('template,params');
@@ -425,10 +425,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::setNewComponentName()
-     * 
+     *
      * @return void
      */
-    function setNewComponentName() 
+    function setNewComponentName()
     {
         $this->jsmquery = $this->jsmdb->getQuery(true);
         // Fields to update.
@@ -491,10 +491,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::setNewPicturePath()
-     * 
+     *
      * @return void
      */
-    function setNewPicturePath() 
+    function setNewPicturePath()
     {
         $this->jsmquery = $this->jsmdb->getQuery(true);
         // Fields to update.
@@ -690,12 +690,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::setSportsManagementTableQuery()
-     * 
+     *
      * @param  mixed $table
      * @param  mixed $command
      * @return
      */
-    function setSportsManagementTableQuery($table, $command) 
+    function setSportsManagementTableQuery($table, $command)
     {
 
         $this->jsmquery = strtoupper($command) . ' TABLE `' . $table . '`';
@@ -710,11 +710,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::checkQuotes()
-     * 
+     *
      * @param  mixed $sm_quotes
      * @return
      */
-    function checkQuotes($sm_quotes) 
+    function checkQuotes($sm_quotes)
     {
 
         foreach ($sm_quotes as $key => $type) {
@@ -791,7 +791,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                             if (!self::runJoomlaQuery(__CLASS__, $this->jsmdb)) {
                                 self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
                             } else {
-                                
+                              
                             }
                         }
                     }
@@ -801,7 +801,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                 // joomla versionen
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
                     $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
-                    //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
+                    //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml');
                     $document = 'version';
                 } else {
                     $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
@@ -820,12 +820,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::insertAgegroup()
-     * 
+     *
      * @param  mixed $search_nation
      * @param  mixed $filter_sports_type
      * @return
      */
-    function insertAgegroup($search_nation, $filter_sports_type) 
+    function insertAgegroup($search_nation, $filter_sports_type)
     {
         $app = Factory::getApplication();
 
@@ -893,10 +893,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                         } catch (Exception $e) {
                             $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
                         }
-                        
+                      
                     }
                 }
-                // schleife altersgruppen ende    
+                // schleife altersgruppen ende  
             }
 
 
@@ -906,10 +906,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::checkAssociations()
-     * 
+     *
      * @return
      */
-    function checkAssociations() 
+    function checkAssociations()
     {
         $country_assoc_del = '';
 
@@ -933,8 +933,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
         }
 
         /**
-* 
- * Ein JDatabaseQuery Objekt beziehen 
+*
+ * Ein JDatabaseQuery Objekt beziehen
 **/
         if ($country_assoc_del) {
             $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -946,16 +946,16 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
         $image_path = 'images/' . $this->jsmoption . '/database/associations/';
 
         /**
-* 
- * schleife 
+*
+ * schleife
 */
         foreach ($xml->$document as $association) {
             $country = (string) $association->assocname->attributes()->country;
 
             if ($country_assoc) {
                 /**
-* 
- * welche länder möchte denn der user haben ? 
+*
+ * welche länder möchte denn der user haben ?
 **/
                 foreach ($country_assoc as $key => $value) {
                     if ($value == $country) {
@@ -969,19 +969,19 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                         $middlename = $assocname;
                         $aliasname = OutputFilter::stringURLSafe($assocname);
                         if (!$shortname ) {
-                            $shortname = $assocname;    
+                            $shortname = $assocname;  
                         }
-                        
+                      
 
                         $this->jsmquery = $this->jsmdb->getQuery(true);
                         /**
-* 
- * Select some fields  
+*
+ * Select some fields
 */
                         $this->jsmquery->select('id');
                         /**
-* 
- * From the table 
+*
+ * From the table
 */
                         $this->jsmquery->from('#__sportsmanagement_associations');
                         $this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
@@ -992,36 +992,36 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                         $export = array();
                         if (!$result) {
                             /**
-* 
- * landesverband nicht gefunden 
+*
+ * landesverband nicht gefunden
 */
                             if (empty($parentmain)) {
                                 /**
-* 
- * Create a new query object. 
+*
+ * Create a new query object.
 */
                                 $insertquery = $this->jsmdb->getQuery(true);
                                 /**
-* 
- * Insert columns. 
+*
+ * Insert columns.
 */
                                 $columns = array('country', 'name', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
                                 /**
-* 
- * Insert values. 
+*
+ * Insert values.
 */
                                 $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
                                 /**
-* 
- * Prepare the insert query. 
+*
+ * Prepare the insert query.
 */
                                 $insertquery
                                     ->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
                                     ->columns($this->jsmdb->quoteName($columns))
                                     ->values(implode(',', $values));
                                 /**
-* 
- * Set the query using our newly populated query object and execute it. 
+*
+ * Set the query using our newly populated query object and execute it.
 */
                                 $this->jsmdb->setQuery($insertquery);
 
@@ -1036,31 +1036,31 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                             } else {
                                 $parent_id = $this->_assoclist[$country][$parentmain];
                                 /**
-* 
- * Create a new query object. 
+*
+ * Create a new query object.
 */
                                 $insertquery = $this->jsmdb->getQuery(true);
                                 /**
-* 
- * Insert columns. 
+*
+ * Insert columns.
 */
                                 $columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
                                 /**
-* 
- * Insert values. 
+*
+ * Insert values.
 */
                                 $values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
                                 /**
-* 
- * Prepare the insert query. 
+*
+ * Prepare the insert query.
 */
                                 $insertquery
                                     ->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
                                     ->columns($this->jsmdb->quoteName($columns))
                                     ->values(implode(',', $values));
                                 /**
-* 
- * Set the query using our newly populated query object and execute it. 
+*
+ * Set the query using our newly populated query object and execute it.
 */
                                 $this->jsmdb->setQuery($insertquery);
 
@@ -1075,8 +1075,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                             }
                         } else {
                             /**
-* 
- * landesverband gefunden 
+*
+ * landesverband gefunden
 */
                             $temp = new stdClass();
                             $temp->id = $result;
@@ -1097,8 +1097,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                             }
 
                             /**
-* 
- * Fields to update. 
+*
+ * Fields to update.
 */
                             $this->jsmquery = $this->jsmdb->getQuery(true);
                             $fields = array(
@@ -1109,8 +1109,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
                             );
                             /**
-* 
- * Conditions for which records should be updated. 
+*
+ * Conditions for which records should be updated.
 */
                             $conditions = array(
                                 $this->jsmdb->quoteName('id') . '=' . $result
@@ -1123,16 +1123,16 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
                 }
             }
         }
- 
+
     }
 
     /**
      * sportsmanagementModeldatabasetool::checkSportTypeStructur()
-     * 
+     *
      * @param  mixed $type
      * @return
      */
-    function checkSportTypeStructur($type) 
+    function checkSportTypeStructur($type)
     {
         $app = Factory::getApplication();
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -1186,10 +1186,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::insertCountries()
-     * 
+     *
      * @return
      */
-    function insertCountries() 
+    function insertCountries()
     {
         $app = Factory::getApplication();
         include_once JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/' . 'helpers' .DIRECTORY_SEPARATOR. 'jinstallationhelper.php';
@@ -1216,11 +1216,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::insertSportType()
-     * 
+     *
      * @param  mixed $type
      * @return
      */
-    function insertSportType($type) 
+    function insertSportType($type)
     {
         $app = Factory::getApplication();
         $sports_type_id = 0;
@@ -1283,14 +1283,14 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::addStandardForSportType()
-     * 
+     *
      * @param  mixed   $name
      * @param  mixed   $id
      * @param  mixed   $type
      * @param  integer $update
      * @return void
      */
-    function addStandardForSportType($name, $id, $type, $update = 0) 
+    function addStandardForSportType($name, $id, $type, $update = 0)
     {
         $app = Factory::getApplication();
         $this->option = Factory::getApplication()->input->getCmd('option');
@@ -1397,13 +1397,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::build_SelectQuery()
-     * 
+     *
      * @param  mixed   $tablename
      * @param  mixed   $param1
      * @param  integer $st_id
      * @return
      */
-    function build_SelectQuery($tablename, $param1, $st_id = 0) 
+    function build_SelectQuery($tablename, $param1, $st_id = 0)
     {
         $this->jsmquery = "SELECT * FROM #__sportsmanagement_" . $tablename . " WHERE name='" . $param1 . "' and sports_type_id = " . $st_id . " ";
         return $this->jsmquery;
@@ -1411,7 +1411,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::build_InsertQuery_Position()
-     * 
+     *
      * @param  mixed $tablename
      * @param  mixed $param1
      * @param  mixed $param2
@@ -1421,7 +1421,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
      * @param  mixed $order_count
      * @return
      */
-    function build_InsertQuery_Position($tablename, $param1, $param2, $param3, $param4, $sports_type_id, $order_count) 
+    function build_InsertQuery_Position($tablename, $param1, $param2, $param3, $param4, $sports_type_id, $order_count)
     {
         // Get a db connection.
         $db = Factory::getDbo();
@@ -1446,7 +1446,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::build_InsertQuery_Event()
-     * 
+     *
      * @param  mixed $tablename
      * @param  mixed $param1
      * @param  mixed $param2
@@ -1454,7 +1454,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
      * @param  mixed $order_count
      * @return
      */
-    function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count) 
+    function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count)
     {
         // Get a db connection.
         $db = Factory::getDbo();
@@ -1478,12 +1478,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::build_InsertQuery_PositionEventType()
-     * 
+     *
      * @param  mixed $param1
      * @param  mixed $param2
      * @return
      */
-    function build_InsertQuery_PositionEventType($param1, $param2) 
+    function build_InsertQuery_PositionEventType($param1, $param2)
     {
         // Get a db connection.
         $db = Factory::getDbo();
@@ -1506,7 +1506,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 
     /**
      * sportsmanagementModeldatabasetool::writeErrorLog()
-     * 
+     *
      * @param  mixed $class
      * @param  mixed $function
      * @param  mixed $file
@@ -1514,7 +1514,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
      * @param  mixed $line
      * @return void
      */
-    public static function writeErrorLog($class, $function, $file, $text, $line) 
+    public static function writeErrorLog($class, $function, $file, $text, $line)
     {
 
     }

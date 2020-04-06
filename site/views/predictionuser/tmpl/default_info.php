@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ else
 {
     $outputUserName = $this->predictionMember->username;
 }
-        
+      
 if (sportsmanagementModelPrediction::$pjID > 0) {
     $showProjectID = sportsmanagementModelPrediction::$pjID;
 }
@@ -47,9 +47,9 @@ $totalJoker=0;
 if (!empty($memberPredictionPoints)) {
     foreach ($memberPredictionPoints AS $memberPredictionPoint)
     {
-        if ((!is_null($memberPredictionPoint->homeResult)) 
-            || (!is_null($memberPredictionPoint->awayResult)) 
-            || (!is_null($memberPredictionPoint->homeDecision)) 
+        if ((!is_null($memberPredictionPoint->homeResult))
+            || (!is_null($memberPredictionPoint->awayResult))
+            || (!is_null($memberPredictionPoint->homeDecision))
             || (!is_null($memberPredictionPoint->awayDecision))
         ) {
             $predictionsCount++;
@@ -73,7 +73,7 @@ if (!empty($memberPredictionPoints)) {
         <td class='picture'>
     <?php
     // das userbild
-    sportsmanagementModelPredictionUsers::showMemberPicture($outputUserName, $this->predictionMember->user_id); 
+    sportsmanagementModelPredictionUsers::showMemberPicture($outputUserName, $this->predictionMember->user_id);
     ?>
     </td>
         <td class='info'>
@@ -100,7 +100,7 @@ if (!empty($memberPredictionPoints)) {
                 $outputName = HTMLHelper::link($link, $outputName);
                 break;
 
-            default:    
+            default:  
                 break;
             }
         }
@@ -191,11 +191,11 @@ if (!empty($memberPredictionPoints)) {
         <?php
                 }
                 ?>
-                
+              
         <tr>
                     <td class='label'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_CHAMPIONS'); /**
-* 
- * Meistertipp 
+*
+ * Meistertipp
 */ ?></td>
                     <td class='data'><?php
                     $found=false;
@@ -217,7 +217,7 @@ if (!empty($memberPredictionPoints)) {
                                 $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
                                 $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate, 1, $predictionProjectSettings->timezone);
                                 $showChamp = ($thisTimeDate > $competitionStartTimeDate);
-                                                
+                                              
                                 if (($showChamp)) {
                                     if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id)) {
                                         foreach ($res AS $team)
@@ -270,7 +270,7 @@ if (!empty($memberPredictionPoints)) {
                                 <input type='hidden' name='pjID' value='<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>' />
                                 <input type='hidden' name='task' value='predictionusers.selectprojectround' />
                                 <input type='hidden' name='option' value='com_sportsmanagement' />
-                                
+                              
                                 <?php echo HTMLHelper::_('form.token'); ?>
 
                                 <?php echo sportsmanagementModelPrediction::createProjectSelector(

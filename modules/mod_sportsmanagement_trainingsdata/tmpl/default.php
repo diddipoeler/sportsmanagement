@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -15,13 +15,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-?>    
+?>  
 <div class="">
 <legend class="scheduler-border">
 <strong>
-<?php 
+<?php
 if ($params->get('show_training_modul_header') ) {
-    echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); 
+    echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
 }
 ?>
 </strong>
@@ -53,14 +53,14 @@ if ($params->get('show_training_modul_header') ) {
     if (!empty($trainingsdata)) {
         foreach ($trainingsdata as $training)
         {
-            $hours = ($training->time_start / 3600); 
+            $hours = ($training->time_start / 3600);
             $hours = (int)$hours;
-            $mins = (($training->time_start - (3600*$hours)) / 60); 
+            $mins = (($training->time_start - (3600*$hours)) / 60);
             $mins= (int)$mins;
             $startTime = sprintf('%02d', $hours).':'.sprintf('%02d', $mins);
-            $hours = ($training->time_end / 3600); 
+            $hours = ($training->time_end / 3600);
             $hours = (int)$hours;
-            $mins = (($training->time_end - (3600*$hours)) / 60); 
+            $mins = (($training->time_end - (3600*$hours)) / 60);
             $mins = (int)$mins;
             $endTime = sprintf('%02d', $hours).':'.sprintf('%02d', $mins);
             ?>
@@ -69,21 +69,21 @@ if ($params->get('show_training_modul_header') ) {
        <td><?php echo $startTime; ?></td>
        <td><?php echo $endTime; ?></td>
        <td><?php echo $training->place; ?></td>
-                
-                
-        <?php 
+              
+              
+        <?php
         if ($params->get('show_training_note') ) {
-            if ($training->notes != "" ) : 
+            if ($training->notes != "" ) :
                 $count_note++;
             ?>
             <td>*<sup><?php echo $count_note; ?></sup></td>
                 <?php else: ?>
                 <td><?php echo $training->notes; ?></td>
-                <?php 
-                endif; 
+                <?php
+                endif;
         }
                 ?>
-        
+      
             </tr>
             <?php
             $k = 1 - $k;
@@ -93,10 +93,10 @@ if ($params->get('show_training_modul_header') ) {
             $k=0;
             foreach ($trainingsdata as $training)
             {
-        
+      
                         ?>
-        
-                        <?php 
+      
+                        <?php
                         if($training->notes != "" ) :
                             $count_note++;
                     ?>
@@ -104,8 +104,8 @@ if ($params->get('show_training_modul_header') ) {
                   <td align="right">*<sup><?php echo $count_note; ?></sup></td>
             <td align="left" colspan="4" ><?php echo $training->notes; ?></td>
             </tr>
-            <?php 
-                        endif; 
+            <?php
+                        endif;
                     ?>
                         <?php	
                         $k = 1 - $k;
@@ -115,7 +115,7 @@ if ($params->get('show_training_modul_header') ) {
     else
     {
         ?>
-    
+  
       <div class="alert alert-error">
       <h4>
         <?php
@@ -126,10 +126,10 @@ if ($params->get('show_training_modul_header') ) {
         echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
         ?>
       </div>
-  
+
         <?php
     }
-    
+  
 ?>
 </table>
 <br/>

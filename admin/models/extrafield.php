@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementModelextrafield
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -27,6 +27,6 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModelextrafield extends JSMModelAdmin
 {
 
-    
-    
+  
+  
 }

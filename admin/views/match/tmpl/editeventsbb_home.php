@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -72,14 +72,14 @@ use Joomla\CMS\Filesystem\File;
         $tehp = 0;
         foreach ( $this->events as $ev)
         {
-            $tehp++;    
-            $this->evbb = $model->getPlayerEventsbb($row->value, $ev->value, $this->item->id);    
+            $tehp++;  
+            $this->evbb = $model->getPlayerEventsbb($row->value, $ev->value, $this->item->id);  
             ?>
           <td style="text-align: center;">
           <input type="hidden" name="event_type_id_h_<?php echo $i.'_'.$tehp;?>" value="<?php echo $ev->value;?>" />
-                            
+                          
                             <input type="hidden" name="event_id_h_<?php echo $i.'_'.$tehp;?>" value="<?php echo $this->evbb[0]->id;?>" />
-                            
+                          
                             <input type="text" size="1" class="inputbox" name="event_sum_h_<?php echo $i.'_'.$tehp; ?>" value="<?php echo (($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM')?>" onchange="document.getElementById('cb_h<?php echo $i;?>').checked=true" />
 
                             <input type="text" size="2" class="inputbox" name="event_time_h_<?php echo $i.'_'.$tehp; ?>" value="<?php echo (($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME')?>" onchange="document.getElementById('cb_h<?php echo $i;?>').checked=true" />

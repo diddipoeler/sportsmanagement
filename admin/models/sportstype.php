@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,10 +14,10 @@
 
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Model\BaseDatabaseModel; 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
- 
+
 /**
  * SportsManagement Model
  */
@@ -35,11 +35,11 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
     public function __construct($config = array())
     {
         parent::__construct($config);
-   
-    }       
+ 
+    }     
 
      /**
-     * return 
+     * return
      *
      * @param  int sportstype_id
      * @return int
@@ -53,6 +53,6 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
         $this->jsmdb->setQuery($this->jsmquery);
         return $this->jsmdb->loadObject();
     }
-    
-    
+  
+  
 }

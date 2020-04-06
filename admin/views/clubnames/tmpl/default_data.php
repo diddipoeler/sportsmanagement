@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,8 +27,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 <!--	<fieldset class="adminform"> -->
-        
-        
+      
+      
 
         <div class="table-responsive">
             <table class="<?php echo $this->table_data_class; ?>">
@@ -60,9 +60,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
         ?>
                     </th>
-                        
-                        
-                        
+                      
+                      
+                      
                         <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'JSTATUS', 'obj.published', $this->sortDirection, $this->sortColumn);
@@ -75,7 +75,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'clubnames.saveorder');
         ?>
                         </th>
-                        
+                      
                         <th style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'obj.id', $this->sortDirection, $this->sortColumn);
@@ -117,7 +117,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                             </td>
         <?php
-                            
+                          
                                 $inputappend = '';
                                 ?>
                                 <td style="text-align:center; ">
@@ -131,20 +131,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             echo HTMLHelper::_(
                 'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
                 $imageTitle,
-                'title= "' . $imageTitle . '"' 
+                'title= "' . $imageTitle . '"'
             );
             ?>
                                     </a>
                                 <?php endif; ?>
                                 </td>
                                 <?php
-                            
+                          
                     ?>
                             <td>
                                 <?php
                                 echo $row->name;
                                 ?>
-                                
+                              
                                         </td>
                                         <td>
                                 <?php
@@ -152,8 +152,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 ?>
                                         </td>
                                         <td class="center">
-                                    <?php 
-                                    echo JSMCountries::getCountryFlag($row->country); 
+                                    <?php
+                                    echo JSMCountries::getCountryFlag($row->country);
                                     $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                                     echo HTMLHelper::_(
                                         'select.genericlist', $this->lists['nation'], 'country'.$row->id,
@@ -161,12 +161,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                     );
                                     ?>
                                     </td>
-                           
-                            
+                         
+                          
                                       <td class="center">
                                        <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'clubnames.', $canChange, 'cb'); ?>
-                        <?php 
+                        <?php
                         // Create dropdown items and render the dropdown list.
                         if ($canChange) {
                              HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'clubnames');
@@ -175,7 +175,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         }
                                 ?>
                       </div>
-                            
+                          
                                       </td>
                                         <td class="order">
                                 <span>
@@ -204,5 +204,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         ?>
                 </tbody>
             </table>
-        </div> 
-<!--	</fieldset> --> 
+        </div>
+<!--	</fieldset> -->

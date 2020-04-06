@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version   1.0.05
@@ -20,8 +20,8 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
- */            
-if ($this->mapconfig['map_kmlfile'] ) {  
+ */          
+if ($this->mapconfig['map_kmlfile'] ) {
     $this->kmlpath = Uri::root() . 'tmp' .DIRECTORY_SEPARATOR. $this->club->id . '-club.kml';
     $this->kmlfile = $this->club->id . '-club.kml';
 }
@@ -40,19 +40,19 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         echo $this->loadTemplate('debug');
     }
     ?>
-   
+ 
         <?PHP
         echo $this->loadTemplate('projectheading');
         ?>
-    
+  
     <?PHP
     if ($this->config['show_sectionheader']) {
         ?>
-        
+      
             <?PHP
             echo $this->loadTemplate('sectionheader');
             ?>
-        
+      
         <?PHP
     }
     ?>
@@ -76,14 +76,14 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         $this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
     }
 
-    if ($this->club->latitude && $this->club->longitude ) {    
+    if ($this->club->latitude && $this->club->longitude ) {  
         if ($this->config['show_maps']) {
             if ($this->club->latitude != '0.00000000' && $this->club->longitude != '0.00000000') {
                 $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
             }
         }
     }
-    
+  
     if ($this->config['show_teams_of_club']) {
         $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'] = 'teams';
     }
@@ -112,7 +112,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
 
     echo $this->loadTemplate('jsminfo');
     ?>
-  
-    <!-- ende clubinfo -->    
+
+    <!-- ende clubinfo -->  
 </div>
 

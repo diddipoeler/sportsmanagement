@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -28,8 +28,8 @@ if ($this->config['show_icons'] == 1) { $show_icons = 1;
 }
 
 if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-    $colspanevent = 2;    
-}    
+    $colspanevent = 2;  
+}  
 ?>
 
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="default_eventsrank" >
@@ -119,15 +119,15 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
     if (!file_exists($picture) ) {
         $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
     }
-        
-    echo sportsmanagementHelperHtml::getBootstrapModalImage('evplayer' . $row->pid, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture, $playerName, $this->config['player_picture_width'])        
+      
+    echo sportsmanagementHelperHtml::getBootstrapModalImage('evplayer' . $row->pid, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture, $playerName, $this->config['player_picture_width'])      
         ?>
 
         </td>
             <?php endif; ?>
 
         <td class="td_l playername" width="30%">
-        <?php	        
+        <?php	      
         if ($this->config['link_to_player'] ) {
             $routeparameter = array();
             $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -152,7 +152,7 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
         <td class="td_l playerteam" width="30%">
             <?php
             $team = $this->teams[$row->tid];
-            if (( $this->config['link_to_team'] ) 
+            if (( $this->config['link_to_team'] )
                 && ($this->project->id > 0) && ($row->tid > 0)
             ) {
                 $routeparameter = array();
@@ -164,7 +164,7 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
             } else {
                 $link = null;
-            } 
+            }
             $teamName = sportsmanagementHelper::formatTeamName($team, 'e'.$rows->id.'c'.$counter.'t'.$row->tid, $this->config, $highlightFavTeam, $link);
             echo $teamName;
             ?>
@@ -174,12 +174,12 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
             $value=($row->p > 9) ? $row->p : '&nbsp;'.$row->p;
             ?>
            <td class="td_c playertotal"><?php echo $value; ?></td>
-        
+      
             <?php
             if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
                 ?>
-              <td class="td_c playertotal"><?php echo $row->zaehler; ?></td>        
-        <?php	    
+              <td class="td_c playertotal"><?php echo $row->zaehler; ?></td>      
+        <?php	  
             }
             ?>
           </tr>
@@ -193,7 +193,7 @@ if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
 </table>
 <?php if ($this->multiple_events == 1) :?>
 <div class="fulltablelink">
-<?php 
+<?php
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);

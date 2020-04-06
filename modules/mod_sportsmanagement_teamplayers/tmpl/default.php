@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -38,7 +38,7 @@ if (!$items) {
     <li>
         <ul>
     <?php foreach (array_slice($items, 0, $params->get('limit', 24)) as $item) : ?>
-            <li><?php 
+            <li><?php
             echo modSportsmanagementTeamPlayersHelper::getPlayerLink($item, $params, $list['project'], $module);
     ?></li>
     <?php	endforeach; ?>

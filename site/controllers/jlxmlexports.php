@@ -1,7 +1,7 @@
 <?php
 
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjlxmlexports
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Pl�ger
  * @copyright 2016
  * @version   $Id$
@@ -31,10 +31,10 @@ class sportsmanagementControllerjlxmlexports extends BaseController
 
     /**
      * sportsmanagementControllerjlxmlexports::display()
-     * 
+     *
      * @return void
      */
-    function display() 
+    function display()
     {
 
         $this->showranking();
@@ -42,12 +42,12 @@ class sportsmanagementControllerjlxmlexports extends BaseController
 
     /**
      * sportsmanagementControllerjlxmlexports::showranking()
-     * 
+     *
      * @return void
      */
-    function showranking() 
+    function showranking()
     {
-        
+      
     }
 
 }

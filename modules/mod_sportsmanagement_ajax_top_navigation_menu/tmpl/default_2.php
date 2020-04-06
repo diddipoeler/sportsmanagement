@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.00
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
- */ 
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -219,7 +219,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 
 <ul class="nav-list">
 <?php if ($params->get('show_nav_links')) : ?>
-    
+  
     <?php for ($i = 1; $i < 18; $i++): ?>
     <?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))) : ?>
                 <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpoint_label'.$i)); ?></li>
@@ -227,57 +227,57 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
                 <li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
     <?php endif; ?>
     <?php endfor; ?>
-    
-    
-    
-        <?php 
+  
+  
+  
+        <?php
         if ($params->get('show_tournament_nav_links')) {
             $link = $helper->getLink('jltournamenttree')
-        ?>        
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text')); ?></li>        
-    <?php 
+        ?>      
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text')); ?></li>      
+    <?php
         }
-    
+  
         if ($params->get('show_alltimetable_nav_links')) {
               $link = $helper->getLink('rankingalltime')
-                ?>        
-      <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_alltimetable_text')); ?></li>        
-            <?php 
+                ?>      
+      <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_alltimetable_text')); ?></li>      
+            <?php
         }
-    
+  
         if ($user_name == 'diddipoeler' ) {
             $params_new = array(    "option" => "com_sportsmanagement",
             "view" => "jlusernewseason",
             "p" => $project_id);
-    
+  
             $query = sportsmanagementHelperRoute::buildQuery($params_new);
             $link = Route::_('index.php?' . $query, false);
-                ?>        
-        <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'neue Saison'); ?></li>        
-            <?php 
+                ?>      
+        <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'neue Saison'); ?></li>      
+            <?php
         }
-    
-    
-    
-endif; 
-    
+  
+  
+  
+endif;
+  
     //if ( $user_name != '' )
 if ($user_name == 'diddipoeler' ) {
     $params_new = array(    "option" => "com_sportsmanagement",
                 "view" => "jlxmlexports",
                 "p" => $project_id);
-    
+  
     $query = sportsmanagementHelperRoute::buildQuery($params_new);
     $link = Route::_('index.php?' . $query, false);
-?>        
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'XML Export'); ?></li>        
-    <?php 
+?>      
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'XML Export'); ?></li>      
+    <?php
 }
-        
-        
+      
+      
     ?>
-</ul> 
-</fieldset>	   
+</ul>
+</fieldset>	 
 </div>
 <?php } ?>
 </td>
@@ -289,7 +289,7 @@ if ($user_name == 'diddipoeler' ) {
 
 <ul class="nav-list">
 <?php if ($params->get('show_nav_links')) : ?>
-    
+  
     <?php for ($i = 17; $i < 23; $i++): ?>
     <?php if ($params->get('navpointct'.$i) && $link = $helper->getLink($params->get('navpointct'.$i))) : ?>
                 <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label'.$i)); ?></li>
@@ -297,17 +297,17 @@ if ($user_name == 'diddipoeler' ) {
                 <li class="nav-item separator"><?php echo $params->get('navpointct_label'.$i); ?></li>
     <?php endif; ?>
     <?php endfor; ?>
-    
-    
-    
-        
+  
+  
+  
+      
         <?php
-     
-    
-endif; 
+   
+  
+endif;
     ?>
-</ul> 
-</fieldset>	   
+</ul>
+</fieldset>	 
 </div>
 <?php } ?>
 </td>
@@ -336,5 +336,5 @@ echo HTMLHelper::_('sliders.end');
 ?>
 
 <?php
-if($ajax && $ajaxmod==$module->id) { exit(); 
+if($ajax && $ajaxmod==$module->id) { exit();
 } ?>

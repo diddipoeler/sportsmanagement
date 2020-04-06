@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -54,7 +54,7 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
     if (!isset($this->allowedAdmin)) {
                 $this->allowedAdmin = false;
     }
-    if (( $this->getName() == 'predictionusers' ) 
+    if (( $this->getName() == 'predictionusers' )
         || ( ( $this->allowedAdmin ) && ( $this->getName() == 'predictionentry' ) )
         //        || ( $this->getName() == 'predictionresults' )
     ) {
@@ -62,17 +62,17 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
       <td class='' style='text-align:right;' >
        <form name='predictionMemberSelect' method='post' >
        <input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
-                    
+                  
                     <input type='hidden' name='pj' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
                     <input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
                     <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
                     <input type='hidden' name='uid' value='<?php echo sportsmanagementModelPrediction::$predictionMemberID; ?>' />
-                    
+                  
       <input type='hidden' name='task' value='predictionusers.select' />
       <input type='hidden' name='option' value='com_sportsmanagement' />
-                    
+                  
         <?php echo HTMLHelper::_('form.token'); ?>
-        <?php 
+        <?php
         if ($this->getName() == 'predictionresults' ) {
             //echo $this->lists['predictionRounds'] ;
         }
@@ -80,10 +80,10 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
             {
             echo $this->lists['predictionMembers'];
         }
-            
-             
-            
-            
+          
+           
+          
+          
             ?>
        </form>
       </td>
@@ -94,11 +94,11 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
             <ul class="list-inline">
                 <?php
                 $output = '';
-                if ($this->config['show_prediction_button'] ) {        
+                if ($this->config['show_prediction_button'] ) {      
                             $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_ENTRY_IMAGE_TITLE');
                     $img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_entry.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                     $link = JSMPredictionHelperRoute::getPredictionTippEntryRoute(sportsmanagementModelPrediction::$predictionGameID, sportsmanagementModelPrediction::$predictionMemberID, sportsmanagementModelPrediction::$roundID, sportsmanagementModelPrediction::$pjID, '', 0, sportsmanagementModelPrediction::$cfg_which_database);
-                
+              
                             ?>
                             <li class="list-inline-item">
                             <?php
@@ -117,7 +117,7 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
                     {
                           $pmVar = 0;
                     }
-                        
+                      
                     $link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID, $pmVar, '', sportsmanagementModelPrediction::$pjID, sportsmanagementModelPrediction::$pggroup, sportsmanagementModelPrediction::$roundID, sportsmanagementModelPrediction::$cfg_which_database);
 
                             ?>
@@ -169,7 +169,7 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
                             <?php
                     }
                 }
-                if ($this->config['show_prediction_button'] ) {                
+                if ($this->config['show_prediction_button'] ) {              
                     $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RULES_IMAGE_TITLE');
                     $img = HTMLHelper::image(Uri::root().'media/com_sportsmanagement/jl_images/prediction_rules.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                     $link = JSMPredictionHelperRoute::getPredictionRulesRoute(sportsmanagementModelPrediction::$predictionGameID, sportsmanagementModelPrediction::$cfg_which_database);
@@ -186,7 +186,7 @@ if (( isset($this->config['show_prediction_heading']) ) && ( $this->config['show
                 </ul>
             </td>
     <?php
-            
+          
     ?>
         </tr>
     </table>

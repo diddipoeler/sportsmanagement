@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage predictionentry
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-    
+  
         $visible = 'hidden';
 
-if (((Factory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPredictionMembership())) 
+if (((Factory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPredictionMembership()))
     && ((!$this->allowedAdmin) || ($this->predictionMember->pmID==0))
 ) {
     if ($this->allowedAdmin) {
@@ -34,11 +34,11 @@ else
         if (( ( (int)sportsmanagementModelPredictionEntry::$pjID == (int)$predictionProject->project_id ) && ($gotSettings) ) || ( (int)sportsmanagementModelPredictionEntry::$pjID == 0 ) )
             //if ( ( ( $this->model->pjID == $predictionProject->project_id ) && ($gotSettings) )  )
         {
-               
+             
             sportsmanagementModelPredictionEntry::$pjID = sportsmanagementModelPrediction::$pjID;
             $this->model->predictionProject = $predictionProject;
             $actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings(sportsmanagementModelPrediction::$pjID);
-                
+              
             if (!isset(sportsmanagementModelPrediction::$roundID) || ( (int)sportsmanagementModelPrediction::$roundID < 1 ) ) {
                 sportsmanagementModelPrediction::$roundID = $actualProjectCurrentRound;
             }
@@ -56,27 +56,27 @@ else
             $round_ids = null;
             $proteams_ids = null;
             /**
-* 
- * nur spiele zum tippen ? 
+*
+ * nur spiele zum tippen ?
 */
             if ($this->config['use_pred_select_matches'] ) {
                 $match_ids = $this->config['predictionmatchid'];
             }
             /**
-* 
- * nur spieltage tippen ? 
+*
+ * nur spieltage tippen ?
 */
             if ($this->config['use_pred_select_rounds'] ) {
                 $round_ids = $this->config['predictionroundid'];
             }
             /**
-* 
- * nur bestimmte mannschaften tippen ? 
+*
+ * nur bestimmte mannschaften tippen ?
 */
             if ($this->config['use_pred_select_proteams'] ) {
                 $proteams_ids = $this->config['predictionproteamid'];
             }
-                
+              
             $roundResults = $this->model->getMatchesDataForPredictionEntry(
                 sportsmanagementModelPrediction::$predictionGameID,
                 sportsmanagementModelPrediction::$pjID,
@@ -106,8 +106,8 @@ else
 if ($this->config['use_pred_select_rounds'] ) {
     $round_ids = $this->config['predictionroundid'];
 }
-    
-    
+  
+  
 $rounds = sportsmanagementHelper::getRoundsOptions((int)sportsmanagementModelPrediction::$pjID, 'ASC', false, $round_ids);
 
 $htmlRoundsOptions = HTMLHelper::_('select.genericlist', $rounds, 'r', 'class="inputbox" size="1" onchange="this.form.submit();"', 'value', 'text', sportsmanagementModelPrediction::$roundID);
@@ -169,7 +169,7 @@ if ($predictionProject->use_goals ) {
 <input type="text" id="goals_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="goals[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
 value="<?php echo 0; ?>" />
 </td>
-<?php        
+<?php      
 }
 
 if ($predictionProject->use_penalties ) {
@@ -179,7 +179,7 @@ if ($predictionProject->use_penalties ) {
 <input type="text" id="penalties_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="penalties[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
 value="<?php echo 0; ?>" />
 </td>
-<?php        
+<?php      
 }
 
 if ($predictionProject->use_cards ) {
@@ -197,7 +197,7 @@ value="<?php echo 0; ?>" />
 <input type="text" id="redcards_<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>" name="redcards[<?php echo $predictionProject->project_id; ?>][<?php echo (int)sportsmanagementModelPrediction::$roundID; ?>]"
 value="<?php echo 0; ?>" />
 </td>
-<?php        
+<?php      
 }
 
 
@@ -231,13 +231,13 @@ $totalPoints=0;
 if (empty(sportsmanagementModelPrediction::$_predictionMember->fav_team)) {
     sportsmanagementModelPrediction::$_predictionMember->fav_team = '0,0';
 }
-    
+  
 $sFavTeamsList = explode(';', sportsmanagementModelPrediction::$_predictionMember->fav_team);
 foreach ($sFavTeamsList AS $key => $value)
 {
     $dFavTeamsList[] = explode(',', $value);
 }
-    
+  
 foreach ($dFavTeamsList AS $key => $value)
 {
     $favTeamsList[$value[0]] = $value[1];
@@ -245,7 +245,7 @@ foreach ($dFavTeamsList AS $key => $value)
 if (empty(sportsmanagementModelPrediction::$_predictionMember->champ_tipp)) {
     sportsmanagementModelPrediction::$_predictionMember->champ_tipp = '0,0';
 }
-    
+  
 $sChampTeamsList = explode(';', sportsmanagementModelPrediction::$_predictionMember->champ_tipp);
 foreach ($sChampTeamsList AS $key => $value)
 {
@@ -268,11 +268,11 @@ if (count($roundResults) > 0) {
         $resultAway = (isset($result->team2_result)) ? $result->team2_result : '-';
         if (isset($result->team2_result_decision)) {$resultAway=$result->team2_result_decision;
         }
-            
+          
         $closingtime = $this->config['closing_time'] ;//3600=1 hour
         $matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date, 1, $predictionProjectSettings->timezone);
         $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"), 1, $predictionProjectSettings->timezone);
-            
+          
         $matchTimeDate = $matchTimeDate - $closingtime;
         $tippAllowed =    ( ( $thisTimeDate < $matchTimeDate ) &&
                            ($resultHome=='-') &&
@@ -293,7 +293,7 @@ $jdate = Factory::getDate($result->match_date);
 $jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
 //echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
 $pred_matchdatetime = $jdate->format('D  d.M. Y H:i')." Uhr </br>";
-    
+  
 if ($pred_matchdatetime != $prev_pred_matchdatetime) {
     ?> <td  colspan='4' style="text-align: center;font-weight:bold; " ><?php echo $pred_matchdatetime;?></td><?php
         $prev_pred_matchdatetime = $pred_matchdatetime;
@@ -308,7 +308,7 @@ if ($pred_matchdatetime != $prev_pred_matchdatetime) {
     ?>
 <td nowrap='nowrap' class="td_r">
 <?php
-if     ((isset($favTeamsList[$predictionProject->project_id])) 
+if     ((isset($favTeamsList[$predictionProject->project_id]))
     && ($favTeamsList[$predictionProject->project_id]==$result->projectteam1_id)
 ) {
     ?>
@@ -337,7 +337,7 @@ case 'logo_big':
     }
     $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
 
-            
+          
     echo sportsmanagementHelperHtml::getBootstrapModalImage(
         'tippteaminfohome' . $result->projectteam1_id,
         $logo_home,
@@ -351,12 +351,12 @@ case 'logo_big':
 ?>
 
 <?PHP
-    
-    
+  
+  
 echo ' ';
     break;
 //}
-    
+  
 case 'country_flag':
     //if ( $this->config['show_logo_small'] == 2 )
     //                                {
@@ -375,7 +375,7 @@ case 'country_flag':
 <!-- <td nowrap='nowrap' class="td_r"> -->
 
 <?php
-if     ((isset($favTeamsList[$predictionProject->project_id])) 
+if     ((isset($favTeamsList[$predictionProject->project_id]))
     && ($favTeamsList[$predictionProject->project_id]==$result->projectteam2_id)
 ) {
     ?>
@@ -492,7 +492,7 @@ else    // Tipp in toto mode
         $tippAllowed
     );
 }
-    
+  
 ?>
 </td>
 <?php
@@ -583,7 +583,7 @@ else
 {
     $k = (1-$k);
 }
-    
+  
     }
 }
 ?>

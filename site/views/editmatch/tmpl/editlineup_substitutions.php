@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -63,19 +63,19 @@ $baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'"
                     ?>
                     <tr id="sub-<?php echo $substitution->id; ?>" class="<?php echo "row$k"; ?>">
                      <td>
-                <?php 
+                <?php
                 if($substitution->came_in==2) {
                     echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
                 } else {
                     echo sportsmanagementHelper::formatName(null, $substitution->out_firstname, $substitution->out_nickname, $substitution->out_lastname, 0);
-                } 
+                }
                         ?>
                      </td>
                      <td>
-                        <?php 
+                        <?php
                         if($substitution->came_in==1) {
                             echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
-                        } 
+                        }
                         ?>
                      </td>
                      <td>
@@ -101,7 +101,7 @@ $baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'"
                         <td><?php echo HTMLHelper::_('select.genericlist', $this->playersoptionsout, 'out', 'class="inputbox player-out"'); ?></td>
                         <td><?php echo HTMLHelper::_('select.genericlist', $this->playersoptionsin, 'in', 'class="inputbox player-in"'); ?></td>
                         <td>
-        <?php 
+        <?php
         if (isset($this->lists['projectpositions']) ) {
             echo $this->lists['projectpositions'];
         }
@@ -112,12 +112,12 @@ $baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'"
         ?>
                         </td>
                         <td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
-                        
-                        
-                        
+                      
+                      
+                      
                         <td>
 <input id="save-new-subst" onclick="save_new_subst(<?php echo implode(",", $savenewsubst); ?>)" type="button" class="inputbox button-save-subst" value="<?php echo Text::_('JSAVE'); ?>" />
-                            
+                          
                         </td>
                     </tr>
                 </tbody>

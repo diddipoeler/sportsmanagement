@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -27,9 +27,9 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewcpanel
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -42,7 +42,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
      *
      * @return void
      */
-    public function init() 
+    public function init()
     {
         $document = Factory::getDocument();
         $project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -160,21 +160,21 @@ class sportsmanagementViewcpanel extends sportsmanagementView
                 default:
                     break;
                 }
-                
+              
                 if ($checksporttype) {
                     $my_text .= '<span style="color:' . $model->existingInDbColor . '"><strong>';
                     $my_text .=  Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED'). '</strong></span><br />';
-                    
+                  
                     $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS', strtoupper($type_sport_type)) . '<br />';
 
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
                     /**
-* 
- * es können aber auch neue positionen oder ereignisse dazu kommen 
+*
+ * es können aber auch neue positionen oder ereignisse dazu kommen
 */
                     $insert_sport_type = $databasetool->insertSportType($type);
-                    
+                  
 
                     if ($country) {
                         foreach ($country as $keyc => $typec) {
@@ -193,8 +193,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
                     /**
-* 
- * es können aber auch neue positionen oder ereignisse dazu kommen 
+*
+ * es können aber auch neue positionen oder ereignisse dazu kommen
 */
                     $insert_sport_type = $databasetool->insertSportType($type);
                     if (isset($model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')])) {
@@ -202,8 +202,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
                     }
 
                     /**
-* 
- * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert 
+*
+ * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert
 */
                     if ($install_agegroup) {
                         if ($country) {
@@ -219,15 +219,15 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             }
         }
         /**
-* 
- * Get data from the model 
+*
+ * Get data from the model
 */
         $items = $this->get('Items');
         $pagination = $this->get('Pagination');
 
         /**
-* 
- * landesverbände 
+*
+ * landesverbände
 */
         if (!$cfg_which_database) {
             $checkassociations = $databasetool->checkAssociations();
@@ -247,15 +247,15 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            
-        } 
+          
+        }
 
         $this->sporttypes = $sporttypes;
         $this->version = $model->getVersion();
 
         /**
-* 
- * diddipoeler erst mal abgeschaltet 
+*
+ * diddipoeler erst mal abgeschaltet
 */
         $this->importData = $model->_success_text;
         $this->importData2 = $databasetool->_success_text;
@@ -265,16 +265,16 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
 
         /**
-* 
- * Check for errors. 
+*
+ * Check for errors.
 */
         if (count($errors = $this->get('Errors'))) {
             Log::add(implode('<br />', $errors));
             return false;
         }
         /**
-* 
- * Assign data to the view 
+*
+ * Assign data to the view
 */
         $this->items = $items;
         $this->pagination = $pagination;
@@ -284,7 +284,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
     /**
      * Setting the toolbar
      */
-    protected function addToolBar() 
+    protected function addToolBar()
     {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
@@ -293,7 +293,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
         $document->addScriptDeclaration($js);
-        
+      
         if ($this->app->isClient('administrator')) {
             if ($task == '' && $this->option == 'com_sportsmanagement') {
 
@@ -319,7 +319,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             */
             $bar = Toolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
-            
+          
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
             }
@@ -329,7 +329,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 
     /**
      * sportsmanagementViewcpanel::addIcon()
-     * 
+     *
      * @param  mixed   $image
      * @param  mixed   $url
      * @param  mixed   $text
@@ -339,7 +339,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
      * @param  string  $maxwidth
      * @return void
      */
-    public function addIcon($image, $url, $text, $newWindow = false, $width = 0, $height = 0, $maxwidth = '100%') 
+    public function addIcon($image, $url, $text, $newWindow = false, $width = 0, $height = 0, $maxwidth = '100%')
     {
         $lang = Factory::getLanguage();
         $newWindow = ( $newWindow ) ? ' target="_blank"' : '';

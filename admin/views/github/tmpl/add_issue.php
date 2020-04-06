@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -59,25 +59,25 @@ Factory::getDocument()->addScriptDeclaration(
     <fieldset class='adminform'>
         <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE', '<i>'.'</i>'); ?></legend>
         <form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
-        
+      
         <fieldset>
         <div class="fltrt">
             <button type="button" onclick="Joomla.submitform('github.addissue', this.form)">
                 <?php echo Text::_('JSAVE');?></button>
 
         </div>
-        
+      
 
-        
+      
     </fieldset>
-    
+  
 
-            
+          
     <?php echo HTMLHelper::_('form.token')."\n"; ?>
             <table class='table'>
             <tbody>
             <tr>
-            
+          
                 <td >
                 <?PHP
                 echo $this->lists['labels'];
@@ -115,7 +115,7 @@ Factory::getDocument()->addScriptDeclaration(
             <input type="hidden" name="gh.token" value="<?PHP echo $this->gh_token; ?>" />
             <input type="hidden" name="api.username" value="<?PHP echo $this->api_username; ?>" />
             <input type="hidden" name="api.password" value="<?PHP echo $this->api_password; ?>" />
-            
+          
         </form>
     </fieldset>
 </div>

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -29,7 +29,7 @@ HTMLHelper::_('behavior.modal');
 if (!empty($this->matchplayerpositions)) {
 ?>
 
-<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>        
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>      
 <table class="table ">
 <?php
 foreach ($this->matchplayerpositions as $pos)
@@ -64,10 +64,10 @@ foreach ($this->matchplayerpositions as $pos)
                                     <?php
                                     /**
 * ist der spieler ein spielführer ?
-*/                  
+*/                
                                     if ($player->captain != 0 ) {
-                                        echo ' '.'&copy;';                  
-                                    }                                            
+                                        echo ' '.'&copy;';                
+                                    }                                          
 
                                     $routeparameter = array();
                                     $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -81,7 +81,7 @@ foreach ($this->matchplayerpositions as $pos)
                                     }
                                     else
                                     {
-                                        $prefix = null;    
+                                        $prefix = null;  
                                     }
                                     $match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
                                     $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team));
@@ -90,7 +90,7 @@ foreach ($this->matchplayerpositions as $pos)
                                         if ($this->config['show_player_picture'] == 2) {
                                             echo '';
                                         } else {
-                                            
+                                          
                                             if ($this->config['show_player_profile_link_alignment'] == 0 ) {
                                                 echo HTMLHelper::link($player_link, $match_player.HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber, $player->jerseynumber, array('title'=> $player->jerseynumber)));
                                             }
@@ -115,10 +115,10 @@ foreach ($this->matchplayerpositions as $pos)
                                         if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) ) {
                                             echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
                                             ?>
-                                                
+                                              
                                             <?PHP
-                                        } 
-                                        else 
+                                        }
+                                        else
                                         {
                                             echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);
 
@@ -146,7 +146,7 @@ foreach ($this->matchplayerpositions as $pos)
                                 <?php
                                 foreach ($this->matchplayers as $player)
                                 {
-                                
+                              
                                     if ($player->trikot_number != 0 ) {
                                           $player->jerseynumber = $player->trikot_number;
                                     }
@@ -155,7 +155,7 @@ foreach ($this->matchplayerpositions as $pos)
                                     ?>
                                         <li <?php echo ($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_right"' : 'class="list"') ?>>
             <?php
-                                            
+                                          
             $routeparameter = array();
             $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
             $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -168,7 +168,7 @@ foreach ($this->matchplayerpositions as $pos)
             }
             else
             {
-                        $prefix = null;    
+                        $prefix = null;  
             }
             $match_player=sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
             $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team));
@@ -183,20 +183,20 @@ foreach ($this->matchplayerpositions as $pos)
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
                 if (($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) ) {
-                    echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
+                    echo HTMLHelper::link($player_link, HTMLHelper::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                              
                     if ($this->config['show_player_profile_link_alignment'] == 1 ) {
                         echo '<br>';
                         echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber, $player->jerseynumber, array('title'=> $player->jerseynumber)).$match_player);
                     }
                 }
-                else 
+                else
                         {
-                    echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);                         
+                    echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id, $picture, $imgTitle, $this->config['player_picture_width']);                       
                     ?>
                     <?PHP
 
                     ?>
-                                                     
+                                                   
                     <?PHP
                     if ($this->config['show_player_profile_link_alignment'] == 1 ) {
                         echo '<br>';
@@ -214,7 +214,7 @@ foreach ($this->matchplayerpositions as $pos)
                     if ($this->config['show_player_profile_link_alignment'] == 0 ) {
                         echo HTMLHelper::link($player_link, HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber, $player->jerseynumber, array('title'=> $player->jerseynumber)).$match_player);
                     }
-                          
+                        
                 }
             } else {
                 if ($this->config['show_player_picture'] == 2) {
@@ -226,10 +226,10 @@ foreach ($this->matchplayerpositions as $pos)
             }
                                     /**
 * ist der spieler ein spielführer ?
-*/                  
+*/                
             if ($player->captain != 0 ) {
-                        echo ' '.'&copy;';                  
-            } 
+                        echo ' '.'&copy;';                
+            }
                                     ?>
                                         </li>
                                     <?php

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,11 +31,11 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 
 echo $this->loadTemplate('data');
-?>            
+?>          
 <input type="hidden" name="project_id" value="<?php echo $this->projectws->id; ?>" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="view" value="treetos" />
@@ -47,4 +47,4 @@ echo $this->loadTemplate('data');
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

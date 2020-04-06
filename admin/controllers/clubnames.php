@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -16,11 +16,11 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
- 
+
 /**
  * sportsmanagementControllerclubnames
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -28,33 +28,35 @@ use Joomla\CMS\Router\Route;
  */
 class sportsmanagementControllerclubnames extends JSMControllerAdmin
 {
-  
-    /**
-   * sportsmanagementControllerclubnames::import()
-   * 
-   * @return void
-   */
-    public function import()
-    {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;    
-        
-        $model = $this->getModel();
-         $model->import();  
-        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));  
-        
-    } 
- 
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+
+	/**
+	 * sportsmanagementControllerclubnames::import()
+	 *
+	 * @return void
+	 */
+	public function import()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+
+			  $model = $this->getModel();
+		 $model->import();
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,12 +26,12 @@ if (!defined('JSM_PATH') ) {
 }
 
 /**
-* 
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist 
+*
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
 */
 if (!class_exists('sportsmanagementHelper') ) {
     /**
- * add the classes for handling 
+ * add the classes for handling
 */
     $classpath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
@@ -39,8 +39,8 @@ if (!class_exists('sportsmanagementHelper') ) {
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMStatistikRekordHelper', __DIR__ . '/helper.php');
 

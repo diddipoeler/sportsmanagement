@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,8 +24,8 @@ JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRA
 
 /**
  * sportsmanagementModelEditMatch
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -37,11 +37,11 @@ class sportsmanagementModelEditMatch extends AdminModel
     const MATCH_ROSTER_STARTER = 0;
     const MATCH_ROSTER_SUBSTITUTE_IN = 1;
     const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
-    const MATCH_ROSTER_RESERVE = 3;    
+    const MATCH_ROSTER_RESERVE = 3;  
     /* interfaces */
     var $latitude = null;
     var $longitude = null;
-    
+  
     static $projectid = 0;
     static $divisionid = 0;
     static $roundid = 0;
@@ -50,11 +50,11 @@ class sportsmanagementModelEditMatch extends AdminModel
     static $order = 0;
     static $cfg_which_database = 0;
     static $oldlayout = '';
-    
-    
+  
+  
     /**
      * sportsmanagementModelEditMatch::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
@@ -70,23 +70,23 @@ class sportsmanagementModelEditMatch extends AdminModel
         self::$cfg_which_database = $jinput->getVar('cfg_which_database', '0');
         self::$roundid = $jinput->getVar('r', '0');
         self::$seasonid = $jinput->getVar('s', '0');
-    }    
-    
+    }  
+  
     /**
  * sportsmanagementModelEditMatch::savestats()
- * 
+ *
  * @param  mixed $data
  * @return void
  */
     function savestats($data)
     {
-        $result = sportsmanagementModelMatch::savestats($data);    
+        $result = sportsmanagementModelMatch::savestats($data);  
     }
 
-    
+  
     /**
  * sportsmanagementModelEditMatch::updateReferees()
- * 
+ *
  * @param  mixed $data
  * @return void
  */
@@ -97,22 +97,22 @@ class sportsmanagementModelEditMatch extends AdminModel
         $option = Factory::getApplication()->input->getCmd('option');
           $db = sportsmanagementHelper::getDBConnection();
           $query = $db->getQuery(true);
-        
-        $sender = array( 
+      
+        $sender = array(
         $config->get('mailfrom'),
-        $config->get('fromname') 
+        $config->get('fromname')
         );
 
             $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3, $data['project_id']);
             $data['positions'] = $positions;
-        
+      
             $result = sportsmanagementModelMatch::updateReferees($data);
         return $result;
     }
-        
+      
     /**
      * sportsmanagementModelEditMatch::updateStaff()
-     * 
+     *
      * @param  mixed $data
      * @return void
      */
@@ -126,7 +126,7 @@ class sportsmanagementModelEditMatch extends AdminModel
 
     /**
  * sportsmanagementModelEditMatch::updateRoster()
- * 
+ *
  * @param  mixed $data
  * @return void
  */
@@ -135,27 +135,27 @@ class sportsmanagementModelEditMatch extends AdminModel
         $app = Factory::getApplication();
         $data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
         $result = sportsmanagementModelMatch::updateRoster($data);
-        return $result;    
+        return $result;  
     }
-    
+  
     /**
      * sportsmanagementModelEditMatch::updItem()
-     * 
+     *
      * @param  mixed $data
      * @return void
      */
     function updItem($data)
     {
         $app = Factory::getApplication();
-        
+      
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
         }
-        
+      
         /**
-* 
- * Specify which columns are to be ignored. This can be a string or an array. 
+*
+ * Specify which columns are to be ignored. This can be a string or an array.
 */
         $ignore = '';
         try{
@@ -165,11 +165,11 @@ class sportsmanagementModelEditMatch extends AdminModel
         }
         catch (Exception $e)
         {
-            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
-            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
+            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');  
+            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');  
         }
     }
-    
+  
     /**
      * Method to load content person data
      *
@@ -183,9 +183,9 @@ class sportsmanagementModelEditMatch extends AdminModel
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection(true, $jinput->getInt('cfg_which_database', 0));
         $query = $db->getQuery(true);
-       
+     
           $this->_id = $jinput->getVar('matchid', '0');
-    
+  
         $query->select('m.*');
         $query->select('t1.name as hometeam ');
         $query->select('t2.name as awayteam ');
@@ -198,11 +198,11 @@ class sportsmanagementModelEditMatch extends AdminModel
         $query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         $query->where('m.id = '.(int)$this->_id);
         $db->setQuery($query);
-        
-        
+      
+      
          $this->_data = $db->loadObject();
-            
-            
+          
+          
          return $this->_data;
     }
 
@@ -220,7 +220,7 @@ class sportsmanagementModelEditMatch extends AdminModel
     {
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -239,7 +239,7 @@ class sportsmanagementModelEditMatch extends AdminModel
         }
         return $form;
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -254,5 +254,5 @@ class sportsmanagementModelEditMatch extends AdminModel
         }
         return $data;
     }
-    
+  
 }

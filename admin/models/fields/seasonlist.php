@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,7 +24,7 @@ if (!defined('JSM_PATH') ) {
 }
 
 if (!class_exists('sportsmanagementHelper')) {
-    include_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';  
+    include_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 }
 
 jimport('joomla.filesystem.folder');
@@ -33,9 +33,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldseasonlist
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -68,9 +68,9 @@ class JFormFieldseasonlist extends FormField
         $view = $jinput->getCmd('view');
         $option = $jinput->getCmd('option');
         $lang = Factory::getLanguage();
-        $lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR); 
-        
-        
+        $lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
+      
+      
         $attribs = '';
         $ctrl = $this->name;
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
@@ -84,7 +84,7 @@ class JFormFieldseasonlist extends FormField
         //        {
         //        $div = 'request';
         //        }
-        
+      
         switch ($option)
         {
         case 'com_modules':
@@ -94,22 +94,22 @@ class JFormFieldseasonlist extends FormField
             $div = 'request';
             break;
         }
-        
+      
         if ($v = $this->element['size']) {
             $attribs .= ' size="'.$v.'"';
         }
-        
+      
         $cfg_which_database = $this->form->getValue('cfg_which_database', $div);
-       
+     
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
-            
+          
         $query->select('id AS value, name AS text');
         $query->from('#__sportsmanagement_season');
         $query->order('name DESC');
         $db->setQuery($query);
         $result = $db->loadObjectList();
-    
+  
         //// Merge any additional options in the XML definition.
         //		$options = array_merge(parent::getOptions(), $options);
         //		return $options;
@@ -120,9 +120,9 @@ class JFormFieldseasonlist extends FormField
         //     // Merge any additional options in the XML definition.
         //		$options = array_merge(parent::getOptions(), $options);
         //
-        //		return $options;   
+        //		return $options; 
         //return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
         return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
-    
+  
     }
 }

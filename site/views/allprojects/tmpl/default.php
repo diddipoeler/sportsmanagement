@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -56,22 +56,22 @@ function tableOrdering( order, dir, task )
 <?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
 <?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?>
 <?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?>
-        
+      
 </div>
-    
+  
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />
-        
+      
 <div class="display-limit">
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
 </div>
-        
+      
 </fieldset>
 
-<?php 
-echo $this->loadTemplate('items'); 
+<?php
+echo $this->loadTemplate('items');
 echo $this->loadTemplate('jsminfo');
 ?>
 </form>

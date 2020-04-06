@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -40,9 +40,9 @@ require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPA
 
 /**
  * sportsmanagementModelJLXMLImport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -67,29 +67,29 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     var $show_debug_info = false;
     var $_league_new_country = '';
     var $_import_project_id = 0;
-    
+  
     /**
      * sportsmanagementModelJLXMLImport::_getXml()
-     * 
+     *
      * @return
      */
     private function _getXml()
     {
           $app = Factory::getApplication();
           $option = Factory::getApplication()->input->getCmd('option');
-    
+  
         if (File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg')) {
-            
+          
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
-            
+          
                 if (function_exists('simplexml_load_file')) {
                     return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg', 'SimpleXMLElement', LIBXML_NOCDATA);
                 }
-             
+           
             }
             else
             {
-            
+          
                 if (function_exists('simplexml_load_file')) {
                     return @simplexml_load_file(JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg', 'SimpleXMLElement', LIBXML_NOCDATA);
                 }
@@ -97,7 +97,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 {
                               Factory::getApplication()->enqueueMessage(Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), 'error');
                 }
-            
+          
             }
         }
         else
@@ -105,47 +105,47 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
         }
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelJLXMLImport::getDataUpdateImportID()
-     * 
+     *
      * @return
      */
     public function getDataUpdateImportID()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $project_id = $app->getUserState("$option.pid", '0'); 
-   
+        $project_id = $app->getUserState("$option.pid", '0');
+ 
         if ($project_id ) {
             $model = BaseDatabaseModel::getInstance('project', 'sportsmanagementmodel');
-            $update_project = $model->getProject($project_id);  
-            return $update_project->import_project_id;  
+            $update_project = $model->getProject($project_id);
+            return $update_project->import_project_id;
         }
         else
         {
             return false;
         }
+  
     
-      
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelJLXMLImport::_importDataForSave()
-     * 
+     *
      * @param  mixed  $datas
      * @param  string $table
      * @return
      */
     public function _importDataForSave($datas=array(),$table='')
     {
-        $p_returndata = new stdClass();             
-        if ($table ) {    
-            $columnArr = Factory::getDbo()->getTableColumns("#__sportsmanagement_".$table);    
-    
+        $p_returndata = new stdClass();           
+        if ($table ) {  
+            $columnArr = Factory::getDbo()->getTableColumns("#__sportsmanagement_".$table);  
+  
             foreach ($datas as $import => $value )
             {
                 switch ($import)
@@ -156,19 +156,19 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (array_key_exists($import, $columnArr)) {
                         $p_returndata->$import = $this->_getDataFromObject($datas, $import);
                     }
-                    break;    
-                }   
-            }    
-        
-        
-        
-        }    
-        return $p_returndata;    
+                    break;  
+                } 
+            }  
+      
+      
+      
+        }  
+        return $p_returndata;  
     }
-        
+      
     /**
      * sportsmanagementModelJLXMLImport::getDataUpdate()
-     * 
+     *
      * @return
      */
     public function getDataUpdate()
@@ -203,7 +203,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 "<strong>$value->team2_result</strong>"
             );
             $my_text .= '<br />';
-                    
+                  
             $update_match = Table::getInstance('Match', 'sportsmanagementTable');
             $match_id = (int) $match_data->id;
             $update_match->load($match_id);
@@ -211,7 +211,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                    $update_match->team1_result = (int) $value->team1_result;
                    $update_match->team2_result = (int) $value->team2_result;
             }
-     
+   
             if (!$update_match->store() ) {
                   $my_text .= '<span style="color:'.$this->storeFailedColor. '"> nicht gesichert '.' - '.$match_data->match_date.'</span>';
                      $my_text .= '<br />';
@@ -221,16 +221,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                           $my_text .= '<span style="color:'.$this->storeSuccessColor.'"> gesichert '.' - '.$match_data->match_date.'</span>';
                   $my_text .= '<br />';
             }
-            
+          
         }
         $this->_success_text['Update match data:'] = $my_text;
         return $this->_success_text;
     }
 
-    
+  
     /**
      * sportsmanagementModelJLXMLImport::getData()
-     * 
+     *
      * @param  mixed $post
      * @return
      */
@@ -244,15 +244,15 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         }
         else
         {
-            $this->_season_id = 0;            
+            $this->_season_id = 0;          
         }
-      
+    
         $result = null;
-        
+      
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
         $this->pl_import = $app->getUserState($option.'pltree'); ;
-        
-        $importelanska = $app->getUserState($option.'importelanska');        
+      
+        $importelanska = $app->getUserState($option.'importelanska');      
         $country = $app->getUserState($option.'country');
         $agegroup = $app->getUserState($option.'agegroup');
         $season_id = $app->getUserState($option.'seasons');
@@ -270,7 +270,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('), 'error');
             }
         }
-        
+      
         $i=0;
         $j=0;
         $k=0;
@@ -302,7 +302,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $ttn=0;
         $ttm=0;
         $tt=0;
-      
+    
         // ist die xmldatei gelesen machen wir weiter
         if ((isset($xmlData->record)) && (is_object($xmlData->record))) {
             foreach ($xmlData->record as $value)
@@ -541,12 +541,12 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }
 
             /**
-* 
- * ############################ anpassungen anfang ########################################################### 
-*/           
+*
+ * ############################ anpassungen anfang ###########################################################
+*/         
             /**
-* 
- * bilderpfade anpassen 
+*
+ * bilderpfade anpassen
 */
             if (isset($this->_datas['person']) ) {
                 foreach ($this->_datas['person'] as $temppicture)
@@ -556,9 +556,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player', '');
                     }
-                }    
+                }  
             }
-            
+          
             if (isset($this->_datas['teamplayer']) ) {
                 foreach ($this->_datas['teamplayer'] as $temppicture)
                 {
@@ -567,9 +567,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player', '');
                     }
-                }    
+                }  
             }
-           
+         
             if (isset($this->_datas['teamstaff']) ) {
                 foreach ($this->_datas['teamstaff'] as $temppicture)
                 {
@@ -578,9 +578,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player', '');
                     }
-                }    
+                }  
             }
-            
+          
             if (isset($this->_datas['projectreferee']) ) {
                 foreach ($this->_datas['projectreferee'] as $temppicture)
                 {
@@ -589,9 +589,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player', '');
                     }
-                }    
+                }  
             }
-            
+          
             if (isset($this->_datas['team']) ) {
                 foreach ($this->_datas['team'] as $temppicture)
                 {
@@ -600,9 +600,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_team', '');
                     }
-                }    
+                }  
             }
-            
+          
             if (isset($this->_datas['projectteam']) ) {
                 foreach ($this->_datas['projectteam'] as $temppicture)
                 {
@@ -611,18 +611,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) {
                           $temppicture->picture = ComponentHelper::getParams($option)->get('ph_team', '');
                     }
-                }    
+                }  
             }
-            
+          
             if (isset($this->_datas['club']) ) {
                 foreach ($this->_datas['club'] as $temppicture)
                 {
                     $temppicture->logo_big = str_replace('com_joomleague', $option, $temppicture->logo_big);
                     $temppicture->logo_big = str_replace('media', 'images', $temppicture->logo_big);
-                
+              
                     $temppicture->logo_middle = str_replace('com_joomleague', $option, $temppicture->logo_middle);
                     $temppicture->logo_middle = str_replace('media', 'images', $temppicture->logo_middle);
-                
+              
                     $temppicture->logo_small = str_replace('com_joomleague', $option, $temppicture->logo_small);
                     $temppicture->logo_small = str_replace('media', 'images', $temppicture->logo_small);
                     if (preg_match("/placeholders/i", $temppicture->logo_big) || empty($temppicture->logo_big) ) {
@@ -634,20 +634,20 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $temppicture->logo_small) || empty($temppicture->logo_small) ) {
                           $temppicture->logo_small = ComponentHelper::getParams($option)->get('ph_logo_small', '');
                     }
-                
-                }    
+              
+                }  
             }
-    
+  
             if (isset($this->_datas['league']) ) {
                 $this->_league_new_country = (string) $this->_datas['league']->country;
             }
-            
+          
             /**
  * textelemente bereinigen
  */
             if (isset($this->_datas['sportstype']) ) {
                 $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
-          
+        
                 /**
  * ereignisse um die textelemente bereinigen
  */
@@ -656,16 +656,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }
             else
             {
-                $sport_type_name = '';    
+                $sport_type_name = '';  
             }
-            
+          
             if (isset($this->_datas['event']) ) {
                 foreach ($this->_datas['event'] as $event)
                 {
                     $event->name = str_replace('COM_JOOMLEAGUE', strtoupper($option).'_'.$sport_type_name, $event->name);
                 }
             }
-            
+          
             /**
  * klartexte in textvariable umwandeln.
  */
@@ -675,7 +675,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             if (Factory::getDbo()->getAffectedRows()) {
                 $result = Factory::getDbo()->loadObjectList();
             }
-            
+          
             if (isset($this->_datas['position']) ) {
                 foreach ($this->_datas['position'] as $position)
                 {
@@ -691,7 +691,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     }
                 }
             }
-            
+          
             if (isset($this->_datas['parentposition']) ) {
                 foreach ($this->_datas['parentposition'] as $position)
                 {
@@ -707,7 +707,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     }
                 }
             }
-           
+         
             if (isset($this->_datas['person']) ) {
                 /**
  * jetzt werden die positionen in den personen überprüft.
@@ -723,8 +723,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             }
                         }
                     }
-                
-                    if (isset($this->_datas['parentposition']) ) {    
+              
+                    if (isset($this->_datas['parentposition']) ) {  
                         foreach ( $this->_datas['parentposition'] as $parentposition )
                         {
                             if ($person->position_id == $parentposition->id ) {
@@ -732,14 +732,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             }
                         }
                     }
-                
+              
                     if ($pos_error ) {
                         //$app->enqueueMessage(Text::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
-                    } 
-                        
+                    }
+                      
                 }
             }
-            
+          
             /**
  * länder bei den spielorten vervollständigen
  * bilderpfad ändern
@@ -755,9 +755,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     if (preg_match("/placeholders/i", $playground->picture) || empty($playground->picture) ) {
                           $playground->picture = ComponentHelper::getParams($option)->get('ph_stadium', '');
                     }
-                }    
+                }  
             }
-            // ############################ anpassungen ende ###########################################################            
+            // ############################ anpassungen ende ###########################################################          
 
             if (isset($this->_datas['teamtool']) && is_array($this->_datas['teamtool']) && count($this->_datas['teamtool']) > 0) {
                 $i=0;
@@ -781,36 +781,36 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $arrayelanska = json_decode(json_encode((array)$xmlData), true);
 
                 $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
-                $seasons_name = $mdl->getSeasonName($season_id); 
-                $firststep = true; 
-                if (array_key_exists('all_seasons', $arrayelanska['dataroot']) ) {        
+                $seasons_name = $mdl->getSeasonName($season_id);
+                $firststep = true;
+                if (array_key_exists('all_seasons', $arrayelanska['dataroot']) ) {      
                        $object = new stdClass();
-                       $object->id = 1;    
-                       $object->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';             
-                       $this->_datas['sportstype'] = $object;    
+                       $object->id = 1;  
+                       $object->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';           
+                       $this->_datas['sportstype'] = $object;  
                        $object = new stdClass();
-                       $object->id = $season_id;    
-                       $object->name = $seasons_name;             
+                       $object->id = $season_id;  
+                       $object->name = $seasons_name;           
                        $this->_datas['season'] = $object;
-                       $this->_league_new_country = $country;    
+                       $this->_league_new_country = $country;  
                     for($a=0; $a < sizeof($arrayelanska['dataroot']['all_seasons']);$a++)
-                       {        
+                       {      
                         if ($arrayelanska['dataroot']['all_seasons'][$a]['season'] == $seasons_name ) {
- 
+
                             if ($firststep ) {
                                 $object = new stdClass();
-                                $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];    
+                                $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];  
                                 $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
                                 $object->country = $country;
                                 $object->agegroup_id = $agegroup;
-                                $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];    
+                                $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];  
                                 $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['league'];
                                 $this->_datas['league'] = $object;
                             }
                             if ($firststep ) {
                                 $object = new stdClass();
-                                $object->id = 1;    
-                                $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'].' '.$arrayelanska['dataroot']['all_seasons'][$a]['season'];    
+                                $object->id = 1;  
+                                $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['league'].' '.$arrayelanska['dataroot']['all_seasons'][$a]['season'];  
                                 $object->agegroup_id = $agegroup;
                                 $object->master_template = 0;
                                 $object->league_id = $arrayelanska['dataroot']['all_seasons'][$a]['league_id'];
@@ -819,79 +819,79 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 $this->_datas['project'] = $object;
                             }
                             /**
-* 
- * heim 
+*
+ * heim
 */
                             $object = new stdClass();
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];    
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];  
                             $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];
                             $object->country = $country;
                             $object->standard_playground = 0;
-                            $object->extended = '';    
+                            $object->extended = '';  
                             $object->logo_big = ComponentHelper::getParams($option)->get('ph_logo_big', '');
                             $object->logo_middle = ComponentHelper::getParams($option)->get('ph_logo_medium', '');
                             $object->logo_small = ComponentHelper::getParams($option)->get('ph_logo_small', '');
                             $this->_datas['club'][$object->id] = $object;
                             $object = new stdClass();
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];    
-                            $object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];    
-                            $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];    
-                            $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];    
-                            $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];    
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];  
+                            $object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];  
+                            $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];  
+                            $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];  
+                            $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['home'];  
                             $object->info = '';
                             $object->agegroup_id = $agegroup;
-                            $object->extended = '';        
+                            $object->extended = '';      
                             $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');
-                            $this->_datas['team'][$object->id] = $object;    
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];    
-                            $object->project_id = 1;    
+                            $this->_datas['team'][$object->id] = $object;  
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];  
+                            $object->project_id = 1;  
                             $object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];
-                            $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');    
+                            $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');  
                             $this->_datas['projectteam'][$object->id] = $object;
                             /**
-* 
- * gast 
+*
+ * gast
 */
                             $object = new stdClass();
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];    
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];  
                             $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];
                             $object->country = $country;
                             $object->standard_playground = 0;
-                            $object->extended = '';        
+                            $object->extended = '';      
                             $object->logo_big = ComponentHelper::getParams($option)->get('ph_logo_big', '');
                             $object->logo_middle = ComponentHelper::getParams($option)->get('ph_logo_medium', '');
                             $object->logo_small = ComponentHelper::getParams($option)->get('ph_logo_small', '');
                             $this->_datas['club'][$object->id] = $object;
                             $object = new stdClass();
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];    
-                            $object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];    
-                            $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];    
-                            $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];    
-                            $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];    
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];  
+                            $object->club_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];  
+                            $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];  
+                            $object->short_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];  
+                            $object->middle_name = $arrayelanska['dataroot']['all_seasons'][$a]['away'];  
                             $object->info = '';
                             $object->agegroup_id = $agegroup;
-                            $object->extended = '';        
+                            $object->extended = '';      
                             $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');
-                            $this->_datas['team'][$object->id] = $object;    
-                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];    
-                            $object->project_id = 1;    
+                            $this->_datas['team'][$object->id] = $object;  
+                            $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];  
+                            $object->project_id = 1;  
                             $object->team_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];
-                            $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');    
+                            $object->picture = ComponentHelper::getParams($option)->get('ph_team', '');  
                             $this->_datas['projectteam'][$object->id] = $object;
 
                             $object = new stdClass();
                             $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];
-                            $object->project_id = 1;    
-                            $object->roundcode = $arrayelanska['dataroot']['all_seasons'][$a]['round'];    
+                            $object->project_id = 1;  
+                            $object->roundcode = $arrayelanska['dataroot']['all_seasons'][$a]['round'];  
                             $object->name = $arrayelanska['dataroot']['all_seasons'][$a]['round'].'.Krog';
                             $this->_datas['round'][$object->id] = $object;
 
                             $object = new stdClass();
                             $object->id = $arrayelanska['dataroot']['all_seasons'][$a]['match_id'];
-                            $object->round_id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];    
-                            $object->match_number = $arrayelanska['dataroot']['all_seasons'][$a]['ID'];    
-                            $object->projectteam1_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];    
-                            $object->projectteam2_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];    
+                            $object->round_id = $arrayelanska['dataroot']['all_seasons'][$a]['round'];  
+                            $object->match_number = $arrayelanska['dataroot']['all_seasons'][$a]['ID'];  
+                            $object->projectteam1_id = $arrayelanska['dataroot']['all_seasons'][$a]['home_id'];  
+                            $object->projectteam2_id = $arrayelanska['dataroot']['all_seasons'][$a]['away_id'];  
                             $object->team1_result = $arrayelanska['dataroot']['all_seasons'][$a]['home_goals'];
                             $object->team2_result = $arrayelanska['dataroot']['all_seasons'][$a]['away_goals'];
                             $object->crowd = $arrayelanska['dataroot']['all_seasons'][$a]['spectators'];
@@ -900,27 +900,27 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             $object->match_date = $teile[0];
                             $this->_datas['match'][$object->id] = $object;
 
-                            $firststep = false;  
-                        }    
+                            $firststep = false;
+                        }  
 
-                    }            
+                    }          
                        $object = new stdClass();
-                       $object->version = '2.4.00';    
+                       $object->version = '2.4.00';  
                        $object->exportRoutine = '2010-09-23 15:00:00';
                        $object->exportDate = '2010-09-23';
                        $object->exportTime = '2010-09-23';
-                       $object->exportSystem = '1. Èlanska liga MNZ Maribor';             
+                       $object->exportSystem = '1. Èlanska liga MNZ Maribor';           
                        $this->_datas['exportversion'] = $object;
 
-             
-                }             
+           
+                }           
                 else
-                {      
+                {    
                     /*
                     $object = new stdClass();
                     $object->id = 1;	
-                    $object->name = 'Soccer';			 
-                    $this->_datas['sportstype'] = $object;			 
+                    $object->name = 'Soccer';			
+                    $this->_datas['sportstype'] = $object;			
                     $object = new stdClass();
                     $object->id = 1;	
                     $object->name = $arrayelanska['liga'];
@@ -949,9 +949,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     $object->exportRoutine = '2010-09-23 15:00:00';
                     $object->exportDate = '2010-09-23';
                     $object->exportTime = '2010-09-23';
-                    $object->exportSystem = '1. Èlanska liga MNZ Maribor';			 
+                    $object->exportSystem = '1. Èlanska liga MNZ Maribor';			
                     $this->_datas['exportversion'] = $object;
-			 
+			
                     for($a=0; $a < sizeof($arrayelanska['zapisniki']['zapisnik']);$a++)
                     {
                     $object = new stdClass();
@@ -1023,7 +1023,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::getUserList()
-     * 
+     *
      * @param  bool $is_admin
      * @return
      */
@@ -1033,7 +1033,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $query = Factory::getDbo()->getQuery(true);
           $query->select('id, username');
           $query->from('#__users');
-       
+     
         if ($is_admin==true) {
              $query->where("( usertype LIKE 'Super Administrator' OR usertype LIKE 'Administrator') ");
         }
@@ -1044,7 +1044,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::getTemplateList()
-     * 
+     *
      * @return
      */
     public function getTemplateList()
@@ -1053,9 +1053,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $query = Factory::getDbo()->getQuery(true);
           $query->select('id as value, name as text');
           $query->from('#__sportsmanagement_project');
-          $query->where('master_template = 0');  
+          $query->where('master_template = 0');
           $query->order('name ASC');
-       
+     
         Factory::getDbo()->setQuery($query);
         return Factory::getDbo()->loadObjectList();
     }
@@ -1063,7 +1063,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::getNewClubList()
-     * 
+     *
      * @return
      */
     public function getNewClubList()
@@ -1073,14 +1073,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $query->select('id, name, country');
           $query->from('#__sportsmanagement_club');
           $query->order('name ASC');
-       
+     
         Factory::getDbo()->setQuery($query);
         return Factory::getDbo()->loadObjectList();
     }
 
     /**
      * sportsmanagementModelJLXMLImport::getNewClubListSelect()
-     * 
+     *
      * @return
      */
     public function getNewClubListSelect()
@@ -1100,7 +1100,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::getClubAndTeamList()
-     * 
+     *
      * @return
      */
     public function getClubAndTeamList()
@@ -1111,14 +1111,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $query->from('#__sportsmanagement_club AS c');
           $query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id=c.id');
           $query->order('c.name, t.name ASC');
-       
+     
         Factory::getDbo()->setQuery($query);
         return Factory::getDbo()->loadObjectList();
     }
 
     /**
      * sportsmanagementModelJLXMLImport::getClubAndTeamListSelect()
-     * 
+     *
      * @return
      */
     public function getClubAndTeamListSelect()
@@ -1129,7 +1129,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $query->from('#__sportsmanagement_club AS c');
           $query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id=c.id');
           $query->order('c.name, t.name');
-       
+     
         Factory::getDbo()->setQuery($query);
         if ($results=Factory::getDbo()->loadObjectList()) {
             return $results;
@@ -1177,7 +1177,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getPersonFromTeamStaff()
-     * 
+     *
      * @param  mixed $teamstaff_id
      * @return
      */
@@ -1189,8 +1189,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // From the table
         $query->from('#__sportsmanagement_person as ppl');
         $query->join('INNER', '#__sportsmanagement_team_staff AS r on r.person_id = ppl.id');
-        $query->where('r.id = '.(int)$teamstaff_id);  
-        
+        $query->where('r.id = '.(int)$teamstaff_id);
+      
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if (Factory::getDbo()->getAffectedRows()) {
@@ -1202,7 +1202,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getPersonFromTeamPlayer()
-     * 
+     *
      * @param  mixed $teamplayer_id
      * @return
      */
@@ -1214,8 +1214,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // From the table
         $query->from('#__sportsmanagement_person as ppl');
         $query->join('INNER', '#__sportsmanagement_team_player AS r on r.person_id = ppl.id');
-        $query->where('r.id = '.(int)$teamplayer_id);   
-               
+        $query->where('r.id = '.(int)$teamplayer_id); 
+             
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if (Factory::getDbo()->getAffectedRows()) {
@@ -1227,7 +1227,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getPersonFromProjectReferee()
-     * 
+     *
      * @param  mixed $project_referee_id
      * @return
      */
@@ -1239,8 +1239,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // From the table
         $query->from('#__sportsmanagement_person as ppl');
         $query->join('INNER', '#__sportsmanagement_project_referee AS pr on pr.person_id = ppl.id');
-        $query->where('pr.id = '.(int)$project_referee_id);   
-               
+        $query->where('pr.id = '.(int)$project_referee_id); 
+             
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if (Factory::getDbo()->getAffectedRows()) {
@@ -1252,7 +1252,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getPersonName()
-     * 
+     *
      * @param  mixed $person_id
      * @return
      */
@@ -1264,7 +1264,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // From the seasons table
         $query->from('#__sportsmanagement_person');
         $query->where('id = '.(int)$person_id);
-       
+     
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if (Factory::getDbo()->getAffectedRows()) {
@@ -1276,7 +1276,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getClubName()
-     * 
+     *
      * @param  mixed $club_id
      * @return
      */
@@ -1301,7 +1301,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getTeamName()
-     * 
+     *
      * @param  mixed $team_id
      * @return
      */
@@ -1315,9 +1315,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // From the table
         $query->from('#__sportsmanagement_team as t');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');  
-        $query->where('pt.id = '.(int)$team_id);    
-        
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
+        $query->where('pt.id = '.(int)$team_id);  
+      
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
 
@@ -1329,7 +1329,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getTeamName2()
-     * 
+     *
      * @param  mixed $team_id
      * @return
      */
@@ -1339,7 +1339,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $query->select('t.name');
         $query->from('#__sportsmanagement_team as t');
         if ($season_team_id ) {
-            $query->join('INNER', ' #__sportsmanagement_season_team_id st ON st.team_id = t.id ');    
+            $query->join('INNER', ' #__sportsmanagement_season_team_id st ON st.team_id = t.id ');  
             $query->where('st.id = '.(int)$season_team_id);
         }
         else
@@ -1360,20 +1360,20 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getPlaygroundRecord()
-     * 
+     *
      * @param  mixed $id
      * @return
      */
     private function _getPlaygroundRecord($id)
     {
           $query = Factory::getDbo()->getQuery(true);
-       
+     
           // Select some fields
         $query->select('*');
         // From the table
         $query->from('#__sportsmanagement_playground');
         $query->where('id = '.(int)$id);
-        
+      
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if ($object = Factory::getDbo()->loadObject()) {
@@ -1384,7 +1384,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_updatePlaygroundRecord()
-     * 
+     *
      * @param  mixed $club_id
      * @param  mixed $playground_id
      * @return
@@ -1398,13 +1398,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $object->club_id = $club_id;
         // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_playground', $object, 'id');
-        
+      
         return $result;
     }
 
     /**
      * sportsmanagementModelJLXMLImport::_getRoundName()
-     * 
+     *
      * @param  mixed $round_id
      * @return
      */
@@ -1417,7 +1417,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $query->select('name');
         $query->from('#__sportsmanagement_round ');
         $query->where('id = '.(int)$round_id);
-                
+              
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if (Factory::getDbo()->getAffectedRows()) {
@@ -1429,7 +1429,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getProjectPositionName()
-     * 
+     *
      * @param  mixed $project_position_id
      * @return
      */
@@ -1443,13 +1443,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $query->from('#__sportsmanagement_project_position AS ppos ');
         $query->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         $query->where('ppos.id = '.(int)$project_position_id);
-        
+      
         Factory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         if ($object = Factory::getDbo()->loadResult()) {
             return $object;
         }
-        
+      
         return null;
     }
 
@@ -1718,7 +1718,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_checkProject()
-     * 
+     *
      * @return
      */
     private function _checkProject()
@@ -1735,7 +1735,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $query->from('#__sportsmanagement_project');
         $query->where('name LIKE '.$db->Quote(''.addslashes(stripslashes($this->_name)).''));
          $db->setQuery($query);
-       
+     
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
 
         if ($db->getNumRows() > 0) {
@@ -1746,7 +1746,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_getObjectName()
-     * 
+     *
      * @param  mixed  $tableName
      * @param  mixed  $id
      * @param  string $usedFieldName
@@ -1756,7 +1756,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $fieldName=($usedFieldName=='') ? 'name' : $usedFieldName;
         $query->clear();
           // Select some fields
@@ -1773,18 +1773,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importSportsType()
-     * 
+     *
      * @return
      */
     private function _importSportsType()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
-             $this->_success_text = array(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0') => "");    
-        }        
+             $this->_success_text = array(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0') => "");  
+        }      
         if (!empty($this->_sportstype_new)) {
              $query->clear();
               $query->select('id');
@@ -1818,10 +1818,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                     $my_text .= Text::sprintf('Sportstypename: %1$s', Text::_($this->_sportstype_new)).'<br />';
                     $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-                }                
-                
-                
-                
+                }              
+              
+              
+              
             }
         }
         else
@@ -1839,7 +1839,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importLeague()
-     * 
+     *
      * @return
      */
     private function _importLeague()
@@ -1847,11 +1847,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!empty($this->_league_new) ) {
              $query->clear();
               $query->select('id,name,country');
@@ -1859,7 +1859,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($this->_league_new)).''));
             Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
-                
+              
             if ($leagueObject = Factory::getDbo()->loadObject() ) {
                 $this->_league_id = $leagueObject->id;
                 $my_text .= '<span style="color:orange">';
@@ -1877,14 +1877,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $p_league->sports_type_id = $this->_sportstype_id;
                 $p_league->agegroup_id = $this->_agegroup_id;
                 $p_league->picture = ComponentHelper::getParams($option)->get('ph_logo_big', '');
-                
+              
                 try {
                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_league', $p_league);
                        $insertID = Factory::getDbo()->insertid();
                        $this->_league_id = $insertID;
                        $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                        $my_text .= Text::sprintf('Created new league data: %1$s', "</span><strong>$this->_league_new</strong>");
-                       $my_text .= '<br />';                    
+                       $my_text .= '<br />';                  
                 }
                 catch (Exception $e){
                     $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
@@ -1892,7 +1892,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     $my_text .= Text::sprintf('Leaguenname: %1$s', $this->_league_new).'<br />';
                     $my_text .= __LINE__.' '.$e->getMessage().'<br />';
                 }
-                
+              
             }
         }
         else
@@ -1910,18 +1910,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importSeason()
-     * 
+     *
      * @return
      */
     private function _importSeason()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!empty($this->_season_new)) {
              $query->clear();
               $query->select('id');
@@ -1938,7 +1938,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }
             else
             {
-                
+              
                 $p_season = new stdClass();
                 $p_season->name = trim($this->_season_new);
                 $p_season->alias = OutputFilter::stringURLSafe($this->_season_new);
@@ -1949,14 +1949,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                        $this->_season_id = $insertID;
                        $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                        $my_text .= Text::sprintf('Created new season data: %1$s', "</span><strong>$this->_season_new</strong>");
-                       $my_text .= '<br />';                   
+                       $my_text .= '<br />';                 
                 }
                 catch (Exception $e){
                     $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                     $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                     $my_text .= __LINE__.' '.Text::sprintf('Seasonname: %1$s', $this->_season_new).'<br />';
-                }                
-                
+                }              
+              
             }
         }
         else
@@ -1974,7 +1974,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importEvents()
-     * 
+     *
      * @return
      */
     private function _importEvents()
@@ -1985,7 +1985,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if (!isset($this->_datas['event']) || count($this->_datas['event'])==0) {return true;
         }
-        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0) 
+        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0)
             && (!isset($this->_dbeventsid) || count($this->_dbeventsid)==0)
         ) {return true;
         }
@@ -2011,16 +2011,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $oldID = $this->_getDataFromObject($import_event, 'id');
                 $p_eventtype = $this->_importDataForSave($import_event, 'eventtype');
 
-                $p_eventtype->name = trim($this->_neweventsname[$key]);             
-                $p_eventtype->sports_type_id = $this->_sportstype_id;                
+                $p_eventtype->name = trim($this->_neweventsname[$key]);           
+                $p_eventtype->sports_type_id = $this->_sportstype_id;              
                 $p_eventtype->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_eventtype, 'name'));
-                
+              
                 $query->clear();
                  $query->select('id,name');
                 $query->from('#__sportsmanagement_eventtype');
                  $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_eventtype->name)).''));
-        
-                Factory::getDbo()->setQuery($query); 
+      
+                Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if ($object=Factory::getDbo()->loadObject()) {
                     $this->_convertEventID[$oldID] = $object->id;
@@ -2030,22 +2030,22 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 }
                 else
                 {
-                    
+                  
                     try {
                             $result = Factory::getDbo()->insertObject('#__sportsmanagement_eventtype', $p_eventtype);
                             $insertID = Factory::getDbo()->insertid();
                             $this->_convertEventID[$oldID] = $insertID;
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                             $my_text .= Text::sprintf('Created new eventtype data: %1$s', '</span><strong>'.Text::_($p_eventtype->name).'</strong>');
-                            $my_text .= '<br />';                  
+                            $my_text .= '<br />';                
                     }
                     catch (Exception $e){
                          $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                          $my_text .= __LINE__.'error on event import: ';
                          $my_text .= $oldID.'<br />';
                          $my_text .= $e->getMessage().'<br />';
-                    }    
-                    
+                    }  
+                  
                 }
             }
         }
@@ -2056,7 +2056,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importStatistics()
-     * 
+     *
      * @return
      */
     private function _importStatistics()
@@ -2065,7 +2065,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text='';
         if (!isset($this->_datas['statistic']) || count($this->_datas['statistic'])==0) {return true;
         }
-        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0) 
+        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0)
             && (!isset($this->_dbstatisticsid) || count($this->_dbstatisticsid)==0)
         ) {return true;
         }
@@ -2087,10 +2087,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!empty($this->_newstatisticsid)) {
             foreach ($this->_newstatisticsid AS $key => $id)
             {
-                
+              
                 $mdl = BaseDatabaseModel::getInstance("statistic", "sportsmanagementModel");
                 $p_statistic = $mdl->getTable();
-                
+              
                 $import_statistic=$this->_datas['statistic'][$key];
                 $oldID=$this->_getDataFromObject($import_statistic, 'id');
                 $alias=$this->_getDataFromObject($import_statistic, 'alias');
@@ -2144,18 +2144,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importParentPositions()
-     * 
+     *
      * @return
      */
     private function _importParentPositions()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if (!isset($this->_datas['parentposition']) || count($this->_datas['parentposition'])==0) {return true;
         }
-        if ((!isset($this->_newparentpositionsid) || count($this->_newparentpositionsid)==0) 
+        if ((!isset($this->_newparentpositionsid) || count($this->_newparentpositionsid)==0)
             && (!isset($this->_dbparentpositionsid) || count($this->_dbparentpositionsid)==0)
         ) {return true;
         }
@@ -2186,13 +2186,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $p_position->sports_type_id = $this->_sportstype_id;
                 $p_position->published = 1;
                 $p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position, 'name'));
-                
+              
                 $query->clear();
                  $query->select('id,name');
                 $query->from('#__sportsmanagement_position');
                  $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
                  $query->where('parent_id = 0');
-        
+      
                 Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (Factory::getDbo()->getAffectedRows()) {
@@ -2207,7 +2207,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 {
                     try
                     {
-                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);    
+                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);  
                             $insertID = Factory::getDbo()->insertid();
                             $this->_convertParentPositionID[$oldID] = $insertID;
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -2219,9 +2219,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                          $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                          $my_text .= __LINE__.' error on parent-position import: ';
                          $my_text .= $oldID;
-                         $my_text .= $e->getMessage().'<br />';                        
-                    }                    
-                    
+                         $my_text .= $e->getMessage().'<br />';                      
+                    }                  
+                  
                 }
             }
         }
@@ -2231,21 +2231,21 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importPositions()
-     * 
+     *
      * @return
      */
     private function _importPositions()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['position']) || count($this->_datas['position'])==0) {return true;
         }
-        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) 
+        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0)
             && (!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)
         ) {return true;
         }
@@ -2281,13 +2281,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $p_position->sports_type_id = $this->_sportstype_id;
                 $p_position->published = 1;
                 $p_position->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_position, 'name'));
-                
+              
                 $query->clear();
                  $query->select('id,name');
                 $query->from('#__sportsmanagement_position');
                  $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
                  $query->where('parent_id = '.$p_position->parent_id);
-                
+              
                 Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (Factory::getDbo()->getAffectedRows()) {
@@ -2307,7 +2307,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
                     try
                     {
-                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);    
+                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_position', $p_position);  
                             $insertID = Factory::getDbo()->insertid();
                             $this->_convertPositionID[$oldID] = $insertID;
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -2319,8 +2319,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                          $my_text .= ' error on position import: ';
                          $my_text .= $oldID;
                          $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-                    }                    
-                    
+                    }                  
+                  
                 }
             }
         }
@@ -2330,7 +2330,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importPositionEventType()
-     * 
+     *
      * @return
      */
     private function _importPositionEventType()
@@ -2341,13 +2341,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
         if (!isset($this->_datas['event']) || count($this->_datas['event'])==0) {return true;
         }
-        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0) 
+        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0)
             && (!isset($this->_dbeventsid) || count($this->_dbeventsid)==0)
         ) {return true;
         }
         if (!isset($this->_datas['position']) || count($this->_datas['position'])==0) {return true;
         }
-        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) 
+        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0)
             && (!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)
         ) {return true;
         }
@@ -2356,13 +2356,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $import_positioneventtype=$this->_datas['positioneventtype'][$key];
             $oldID=$this->_getDataFromObject($import_positioneventtype, 'id');
-            
+          
             $mdl = BaseDatabaseModel::getInstance("positioneventtype", "sportsmanagementModel");
             $p_positioneventtype = $mdl->getTable();
-                
+              
             $oldEventID=$this->_getDataFromObject($import_positioneventtype, 'eventtype_id');
             $oldPositionID=$this->_getDataFromObject($import_positioneventtype, 'position_id');
-            if (!isset($this->_convertEventID[$oldEventID]) 
+            if (!isset($this->_convertEventID[$oldEventID])
                 || !isset($this->_convertPositionID[$oldPositionID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -2416,7 +2416,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importPlayground()
-     * 
+     *
      * @return
      */
     private function _importPlayground()
@@ -2427,7 +2427,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if (!isset($this->_datas['playground']) || count($this->_datas['playground'])==0) {return true;
         }
-        if ((!isset($this->_newplaygroundid) || count($this->_newplaygroundid)==0) 
+        if ((!isset($this->_newplaygroundid) || count($this->_newplaygroundid)==0)
             && (!isset($this->_dbplaygroundsid) || count($this->_dbplaygroundsid)==0)
         ) {return true;
         }
@@ -2451,17 +2451,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             {
                 //$p_playground = new stdClass();
                 $import_playground = $this->_datas['playground'][$key];
-                $p_playground = $this->_importDataForSave($import_playground, 'playground');                
-            
+                $p_playground = $this->_importDataForSave($import_playground, 'playground');              
+          
                 $oldID = $this->_getDataFromObject($import_playground, 'id');
                 $p_playground->alias = substr(OutputFilter::stringURLSafe($this->_getDataFromObject($p_playground, 'name')), 0, 74);
                 $p_playground->name = substr(trim($this->_newplaygroundname[$key]), 0, 74);
                 $p_playground->short_name = substr(trim($this->_newplaygroundname[$key]), 0, 14);
                 $p_playground->picture = $p_playground->picture ? $p_playground->picture : ComponentHelper::getParams($option)->get('ph_stadium', '');
-                
+              
                 /**
-* 
- * geo coding 
+*
+ * geo coding
 */
                 $address_parts = array();
                 $addressdata = $this->_getDataFromObject($import_playground, 'address');
@@ -2471,7 +2471,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (!empty($addressdata)) {
                     $address_parts[] = $addressdata;
                 }
-    
+  
                 if (!empty($city)) {
                     if (!empty($zipcode)) {
                         $address_parts[] = $zipcode. ' ' .$city;
@@ -2487,21 +2487,21 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $address = implode(', ', $address_parts);
                 $coords = sportsmanagementHelper::resolveLocation($address);
                 $p_playground->latitude = $coords['latitude'];
-                $p_playground->longitude = $coords['longitude'];        
-                
+                $p_playground->longitude = $coords['longitude'];      
+              
                 if ($this->_importType != 'playgrounds' )    // force club_id to be set to default if only playgrounds are imported
                 {
                     {
                      $p_playground->club_id = $this->_getDataFromObject($import_playground, 'club_id');
                     }
                 }
-                
+              
                 $query->clear();
                 $query->select('id,name,country');
                 $query->from('#__sportsmanagement_playground');
                 $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
                 Factory::getDbo()->setQuery($query);
- 
+
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if ($object = Factory::getDbo()->loadObject()) {
                        $this->_convertPlaygroundID[$oldID] = $object->id;
@@ -2518,14 +2518,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                         $my_text .= Text::sprintf('Created new playground data: %1$s (%2$s)', "</span><strong>$p_playground->name</strong>", "<strong>$p_playground->country</strong>");
                         $my_text .= Text::sprintf('Standard picture: %1$s (%2$s)', "</span><strong>Picture</strong>", "<strong>$p_playground->picture</strong>");
-                        $my_text .= '<br />';                   
+                        $my_text .= '<br />';                 
                     }
                     catch (Exception $e){
                         $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                         $my_text .= __LINE__.' '.Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                         $my_text .= Text::sprintf('Playgroundname: %1$s Shortname [%2$s]', $p_playground->name, $p_playground->short_name).'<br />';
                         $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-                    }                    
+                    }                  
 
                 }
             }
@@ -2536,7 +2536,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importClubs()
-     * 
+     *
      * @return
      */
     private function _importClubs()
@@ -2547,11 +2547,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
 
         if (!isset($this->_datas['club']) || count($this->_datas['club'])==0) {return true;
         }
-        if ((!isset($this->_newclubsid) || count($this->_newclubsid)==0) 
+        if ((!isset($this->_newclubsid) || count($this->_newclubsid)==0)
             && (!isset($this->_dbclubsid) || count($this->_dbclubsid)==0)
         ) {return true;
         }
@@ -2561,7 +2561,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $query->select('id,name,standard_playground,country');
             $query->from('#__sportsmanagement_club');
               $query->group('id');
-        
+      
             Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
             $dbClubs = Factory::getDbo()->loadObjectList('id');
@@ -2601,8 +2601,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $p_club->country = $this->_newclubscountry[$key];
 
                 /**
-* 
- * geo coding 
+*
+ * geo coding
 */
                 $address_parts = array();
                 $addressdata = $this->_getDataFromObject($import_club, 'address');
@@ -2631,7 +2631,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $address = implode(', ', $address_parts);
                 $coords = sportsmanagementHelper::resolveLocation($address);
                 $p_club->latitude = $coords['latitude'];
-                $p_club->longitude = $coords['longitude'];        
+                $p_club->longitude = $coords['longitude'];      
                 $p_club->alias = OutputFilter::stringURLSafe($this->_getDataFromObject($p_club, 'name'));
 
                 if ($this->_importType!='clubs')    // force playground_id to be set to default if only clubs are imported
@@ -2645,7 +2645,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (($this->import_version=='NEW') && ($import_club->extended!='')) {
                     $p_club->extended = $this->_getDataFromObject($import_club, 'extended');
                 }
-                
+              
                 $query->clear();
                  $query->select('id,name,country');
                 $query->from('#__sportsmanagement_club');
@@ -2665,7 +2665,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
                     try
                     {
-                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $p_club);    
+                            $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $p_club);  
                             $insertID = Factory::getDbo()->insertid();
                             $this->_convertClubID[$oldID] = $insertID;
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -2681,9 +2681,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                          $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                          $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                          $my_text .= Text::sprintf('Clubname: %1$s', $p_club->name).'<br />';
-                         $my_text .= __LINE__.' '.$e->getMessage().'<br />';                        
+                         $my_text .= __LINE__.' '.$e->getMessage().'<br />';                      
                     }
-                    
+                  
                 }
 
             }
@@ -2695,23 +2695,23 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_convertNewPlaygroundIDs()
-     * 
+     *
      * @return
      */
     private function _convertNewPlaygroundIDs()
     {
-          $app = Factory::getApplication();   
+          $app = Factory::getApplication(); 
         $my_text = '';
         $converted=false;
         if (isset($this->_convertPlaygroundID) && !empty($this->_convertPlaygroundID) ) {
-            
+          
             foreach ( $this->_datas['playground'] as $key => $value  )
             {
-                
+              
                 $import_playground = $this->_datas['playground'][$key];
                 $oldID = $this->_getDataFromObject($import_playground, 'id');
                 $club_id = $this->_getDataFromObject($import_playground, 'club_id');
-                
+              
                 $new_pg_id = $this->_convertPlaygroundID[$oldID];
                 if (isset($this->_convertClubID[$club_id]) ) {
                     $new_club_id = $this->_convertClubID[$club_id];
@@ -2734,11 +2734,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         );
                         $my_text .= '<br />';
                     }
-                        
+                      
                 }
-                
+              
             }
-            
+          
             if (!$converted) {$my_text .= '<span style="color:green">'.Text::_('Nothing needed to be converted').'<br />';
             }
             $this->_success_text['Converting new playground club-IDs of new playground data:'] = $my_text;
@@ -2748,7 +2748,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTeams()
-     * 
+     *
      * @return
      */
     private function _importTeams()
@@ -2759,10 +2759,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['team']) || count($this->_datas['team'])==0) {return true;
         }
-        if ((!isset($this->_newteams) || count($this->_newteams)==0) 
+        if ((!isset($this->_newteams) || count($this->_newteams)==0)
             && (!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)
         ) {return true;
         }
@@ -2772,7 +2772,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $query->select('id,name,club_id,short_name,middle_name,info');
             $query->from('#__sportsmanagement_team');
               $query->group('id');
-        
+      
             Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
 
@@ -2783,7 +2783,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (empty($this->_newteams[$key])) {
                     $oldID = $this->_getDataFromObject($this->_datas['team'][$key], 'id');
                     $this->_convertTeamID[$oldID] = $id;
-                    
+                  
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
                     $my_text .= Text::sprintf(
                         'Using existing team data 1: %1$s - %2$s - %3$s - %4$s <- %5$s',
@@ -2806,7 +2806,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             foreach ($this->_newteams AS $key => $value)
             {
                 $import_team = $this->_datas['team'][$key];
-                $p_team = $this->_importDataForSave($import_team, 'team');                
+                $p_team = $this->_importDataForSave($import_team, 'team');              
 
                 $oldID = $this->_getDataFromObject($import_team, 'id');
                 $oldClubID = $this->_getDataFromObject($import_team, 'club_id');
@@ -2827,7 +2827,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (($this->import_version=='NEW') && ($import_team->extended!='')) {
                     $p_team->extended = $this->_getDataFromObject($import_team, 'extended');
                 }
-                
+              
                 $query->clear();
                  $query->select('id,name,short_name,middle_name,info,club_id');
                 $query->from('#__sportsmanagement_team');
@@ -2835,7 +2835,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                  $query->where('middle_name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_team->middle_name)).''));
                  $query->where('info LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_team->info)).''));
 
-                Factory::getDbo()->setQuery($query); 
+                Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if ($object = Factory::getDbo()->loadObject()) {
                     $this->_convertTeamID[$oldID]=$object->id;
@@ -2859,14 +2859,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 "<strong>$p_team->club_id</strong>"
                             );
                             $my_text .= '<br />';
-                    }    
+                    }  
                     catch (Exception $e){
                          $insertID = 0;
                          $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                          $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                          $my_text .= Text::sprintf('Teamname: %1$s', $p_team->name).'<br />';
-                         $my_text .= __LINE__.' '.$e->getMessage().'<br />';    
-                    }    
+                         $my_text .= __LINE__.' '.$e->getMessage().'<br />';  
+                    }  
                     $this->_convertTeamID[$oldID] = $insertID;
                 }
             }
@@ -2877,17 +2877,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importPersons()
-     * 
+     *
      * @return
      */
     private function _importPersons()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-      
+    
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {return true;
         }
@@ -2895,7 +2895,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!empty($this->_dbpersonsid)) {
             foreach ($this->_dbpersonsid AS $key => $id)
             {
@@ -2907,13 +2907,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     '</span><strong>'.$this->_getObjectName('person', $id, "CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>'
                 );
                 $my_text .= '<br />';
-                
+              
                          $mdl = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
                          $update_person = $mdl->getTable();
-                
+              
                          $update_person->load($id);
                          $update_person->info = $this->_getDataFromObject($this->_datas['person'][$key], 'info');
-                $update_person->agegroup_id = $this->_dbpersonsagegroup[$key];        
+                $update_person->agegroup_id = $this->_dbpersonsagegroup[$key];      
                 if ($update_person->store() === false) {
                 }
                 else
@@ -2926,11 +2926,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             $newseasonperson->season_id = $this->_season_id;
                             $newseasonperson->persontype = 1;
                             // Insert the object
-                            $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);    
+                            $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);  
                         } catch (Exception $e) {
                             //$app->enqueueMessage(Text::_($e->getMessage()), 'error');
                         }
-                    }                        
+                    }                      
                 }
             }
         }
@@ -2941,10 +2941,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $p_person = $this->_importDataForSave($import_person, 'person');
                 $oldID = $this->_getDataFromObject($import_person, 'id');
                 $p_person->published = 1;
-                
+              
                 /**
-* 
- * geo coding 
+*
+ * geo coding
 */
                 $address_parts = array();
                 $addressdata = $this->_getDataFromObject($import_person, 'address');
@@ -2973,9 +2973,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $address = implode(', ', $address_parts);
                 $coords = sportsmanagementHelper::resolveLocation($address);
                 $p_person->latitude = $coords['latitude'];
-                $p_person->longitude = $coords['longitude'];       
-    
-    
+                $p_person->longitude = $coords['longitude'];     
+  
+  
                 if ($this->_importType!='persons')    // force position_id to be set to default if only persons are imported
                 {
                     if ($import_person->position_id > 0) {
@@ -2988,7 +2988,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $aliasparts = array(trim($p_person->firstname),trim($p_person->lastname));
                 $p_alias = OutputFilter::stringURLSafe(implode(' ', $aliasparts));
                 $p_person->alias = $p_alias;
-                
+              
                 $query->clear();
                  $query->select('*');
                 $query->from('#__sportsmanagement_person');
@@ -2996,8 +2996,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                  $query->where('lastname LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_person->lastname)).''));
                  $query->where('nickname LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_person->nickname)).''));
                  $query->where('birthday = '.Factory::getDbo()->Quote(''.$p_person->birthday.''));
-            
-                Factory::getDbo()->setQuery($query); 
+          
+                Factory::getDbo()->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if ($object=Factory::getDbo()->loadObject()) {
                     $this->_convertPersonID[$oldID]=$object->id;
@@ -3016,7 +3016,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 {
                     try
                     {
-                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $p_person);                        
+                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $p_person);                      
                         $insertID = Factory::getDbo()->insertid();
                         $this->_convertPersonID[$oldID] = $insertID;
                         $dNameStr=((!empty($p_person->lastname)) ?
@@ -3033,7 +3033,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1', "</span><strong>$dNameStr</strong>");
                         $my_text .= '<br />';
 
-                        if ($this->_season_id ) {    
+                        if ($this->_season_id ) {  
                             try {
                                 // wenn nichts gefunden wurde neu anlegen
                                 $newseasonperson = new stdClass();
@@ -3041,11 +3041,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 $newseasonperson->season_id = $this->_season_id;
                                 $newseasonperson->persontype = 1;
                                 // Insert the object
-                                $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);                                                
+                                $resultperson = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);                                              
                             } catch (Exception $e) {
                                  //$app->enqueueMessage(Text::_($e->getMessage()), 'error');
-                            }    
-                        }                        
+                            }  
+                        }                      
                     }
                     catch (Exception $e)
                     {
@@ -3058,7 +3058,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         $my_text .= $e->getMessage().'<br>';
                     }
 
-                    
+                  
                 }
             }
         }
@@ -3068,7 +3068,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importProject()
-     * 
+     *
      * @return
      */
     private function _importProject()
@@ -3078,7 +3078,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
 
         $import_project = $this->_datas['project'];
         $p_project = $this->_importDataForSave($import_project, 'project');
@@ -3095,17 +3095,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $p_project->sports_type_id = $this->_sportstype_id;
         $p_project->agegroup_id = $this->_agegroup_id;
          $p_project->picture = ComponentHelper::getParams($option)->get('ph_project', '');
-        
+      
         if (is_numeric($this->timezone) ) {
             // Get the list of time zones from the server.
               $zones = DateTimeZone::listIdentifiers();
-            $p_project->timezone = $zones[$this->timezone];    
+            $p_project->timezone = $zones[$this->timezone];  
         }
-        
+      
         if ($this->_publish) {$p_project->published = 1;
         }
 
-        try {        
+        try {      
              $result = Factory::getDbo()->insertObject('#__sportsmanagement_project', $p_project);
              $insertID = Factory::getDbo()->insertid();
              $this->_project_id = $insertID;
@@ -3116,10 +3116,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
              $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
              $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
              $my_text .= Text::sprintf('Projectname: %1$s', $p_project->name).'<br />';
-             $my_text .= __LINE__.' '.$e->getMessage().'<br />';    
-        }        
+             $my_text .= __LINE__.' '.$e->getMessage().'<br />';  
+        }      
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-        return true;        
+        return true;      
     }
 
     /**
@@ -3152,7 +3152,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $query='SELECT template FROM #__sportsmanagement_template_config WHERE project_id='.(int)$project_id;
 
         Factory::getDbo()->setQuery($query);
-    
+  
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             $records = $db->loadColumn();
@@ -3185,10 +3185,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 from the xml file */
                 while ($file=readdir($handle))
                 {
-                    if    ($file!='.' 
-                        && $file!='..' 
-                        && $file!='do_tipsl' 
-                        && strtolower(substr($file, -3))=='xml' 
+                    if    ($file!='.'
+                        && $file!='..'
+                        && $file!='do_tipsl'
+                        && strtolower(substr($file, -3))=='xml'
                         && strtolower(substr($file, 0, strlen($predictionTemplatePrefix))) != $predictionTemplatePrefix
                     ) {
                         $template = substr($file, 0, (strlen($file)-4));
@@ -3200,26 +3200,26 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 $strXmlFile = $xmlfile;
                                                         $form = JForm::getInstance($template, $strXmlFile, array('control'=> ''));
                                                         $fieldsets = $form->getFieldsets();
-                                foreach ($fieldsets as $fieldset) 
+                                foreach ($fieldsets as $fieldset)
                                                         {
-                                    foreach($form->getFieldset($fieldset->name) as $field) 
+                                    foreach($form->getFieldset($fieldset->name) as $field)
                                                                {
                                         $arrStandardSettings[$field->name] = $field->value;
                                     }
                                 }
-                                
+                              
                             }
-                            
+                          
                                                           $defaultvalues = json_encode($arrStandardSettings);
-                            
+                          
                                      $query="	INSERT INTO #__sportsmanagement_template_config (template,title,params,project_id)
 													VALUES ('$template','".$form->getName()."','$defaultvalues','$project_id')";
                                      Factory::getDbo()->setQuery($query);
-                            
+                          
                                                           $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                                                           $my_text .= Text::sprintf('Created new template data for empty Projectdata: %1$s %2$s', "</span><strong>$template</strong>", "<br><strong>".$defaultvalues."</strong>");
                                                  $my_text .= '<br />';
-                            
+                          
                                      //echo error,allows to check if there is a mistake in the template file
                             if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
                                 //$this->setError(Factory::getDbo()->getErrorMsg());
@@ -3229,9 +3229,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         }
                     }
                 }
-                
+              
                 $this->_success_text['Importing general template data:'] = $my_text;
-                                
+                              
                 closedir($handle);
             }
         }
@@ -3239,7 +3239,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTemplate()
-     * 
+     *
      * @return
      */
     private function _importTemplate()
@@ -3247,7 +3247,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
           $defaultpath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'default';
-       
+     
         $my_text='';
         if ($this->_template_id > 0) // Uses a master template
         {
@@ -3257,7 +3257,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             // From the table
             $query->from('#__sportsmanagement_project');
               $query->where('id = '.$this->_template_id);
-        
+      
             Factory::getDbo()->setQuery($query);
             $template_row = Factory::getDbo()->loadAssoc();
             if ($template_row['master_template']==0) {
@@ -3267,23 +3267,23 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             {
                 $this->_master_template=$template_row['master_template'];
             }
-            
+          
             $query->clear();
                 // Select some fields
               $query->select('id,master_template');
             // From the table
             $query->from('#__sportsmanagement_template_config');
               $query->where('project_id = '.$this->_master_template);
-        
+      
             Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
             $rows = Factory::getDbo()->loadObjectList();
             foreach ($rows AS $row)
             {
-                
+              
                 $mdl = BaseDatabaseModel::getInstance("template", "sportsmanagementModel");
                 $p_template = $mdl->getTable();
-                
+              
                 $p_template->load($row->id);
                 $p_template->set('project_id', $this->_project_id);
                 if ($p_template->store()===false) {
@@ -3305,25 +3305,25 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             if ((isset($this->_datas['template'])) && (is_array($this->_datas['template']))) {
                 foreach ($this->_datas['template'] as $value)
                 {
-                    
-                    
+                  
+                  
                     $mdl = BaseDatabaseModel::getInstance("template", "sportsmanagementModel");
                     $p_template = $mdl->getTable();
-                    
+                  
                     $template = $this->_getDataFromObject($value, 'template');
                     $p_template->set('template', $template);
-                    
-                    
+                  
+                  
                     //actually func is unused in 1.5.0
                     //$p_template->set('func',$this->_getDataFromObject($value,'func'));
                     $p_template->set('title', $this->_getDataFromObject($value, 'title'));
                     $p_template->set('project_id', $this->_project_id);
-                    
+                  
                     $t_params = $this->_getDataFromObject($value, 'params');
                     $defaultvalues = array();
                     $defaultvalues = explode('\n', $t_params);
                     $parameter = new JRegistry;
-                    
+                  
                     if(version_compare(JVERSION, '3.0.0', 'ge')) {
                            $ini = $parameter->loadString($defaultvalues[0]);
                     }
@@ -3331,7 +3331,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     {
                         $ini = $parameter->loadINI($defaultvalues[0]);
                     }
-        
+      
                     // beim import kann es vorkommen, das wir in der neuen komponente
                     // zusätzliche felder haben, die mit abgespeichert werden müssen
                     $xmlfile = $defaultpath.DIRECTORY_SEPARATOR.$template.'.xml';
@@ -3346,7 +3346,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                                    {
                                 $newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
                             }
-                        } 
+                        }
 
                         foreach ( $newparams as $key => $value )
                         {
@@ -3360,23 +3360,23 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             if (isset($value) ) {
                                 $newparams[$key] = $value;
                             }
-                        } 
-   
-                        $t_params = json_encode($newparams); 
+                        }
+ 
+                        $t_params = json_encode($newparams);
                     }
                     else
                     {
                             $ini = $parameter->toArray($ini);
-                            $t_params = json_encode($ini); 
+                            $t_params = json_encode($ini);
                     }
                     $p_template->set('params', $t_params);
                          unset($t_params);
-                    if    ((strtolower(substr($template, 0, strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) 
-                        && ($template!='do_tipsl') 
-                        && ($template!='frontpage') 
-                        && ($template!='table') 
-                        && ($template!='tipranking') 
-                        && ($template!='tipresults') 
+                    if    ((strtolower(substr($template, 0, strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix)
+                        && ($template!='do_tipsl')
+                        && ($template!='frontpage')
+                        && ($template!='table')
+                        && ($template!='tipranking')
+                        && ($template!='tipresults')
                         && ($template!='user')
                     ) {
                         if ($p_template->store()===false) {
@@ -3394,7 +3394,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 }
             }
         }
-        
+      
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
@@ -3402,11 +3402,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $object->master_template = $this->_master_template;
         // Update their details in the table using id as the primary key.
         $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
-        
+      
         //		$query="UPDATE #__sportsmanagement_project SET master_template=$this->_master_template WHERE id=$this->_project_id";
         //        Factory::getDbo()->setQuery($query);
         //		sportsmanagementModeldatabasetool::runJoomlaQuery();
-        
+      
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         if ($this->_master_template == 0 ) {
             // check and create missing templates if needed
@@ -3421,7 +3421,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importDivisions()
-     * 
+     *
      * @return
      */
     private function _importDivisions()
@@ -3434,13 +3434,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             {
                 $import_division = $this->_datas['division'][$key];
                 $oldId = (int)$division->id;
-                
+              
                 if ($division->id == $this->_datas['division'][$key]->id ) {
-                    $p_division = $this->_importDataForSave($import_division, 'division');                    
+                    $p_division = $this->_importDataForSave($import_division, 'division');                  
                     $p_division->project_id =  $this->_project_id;
-                    $p_division->alias = OutputFilter::stringURLSafe($p_division->name);                    
+                    $p_division->alias = OutputFilter::stringURLSafe($p_division->name);                  
                 }
-            
+          
                 try {
                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_division', $p_division);
                        $insertID = Factory::getDbo()->insertid();
@@ -3449,13 +3449,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                        $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                        $my_text .= Text::sprintf('Created new division data: %1$s', "</span><strong>$p_division->name</strong>");
                        $my_text .= '<br />';
-                }    
+                }  
                 catch (Exception $e){
                     $my_text .= ' error on division import: ';
                     $my_text .= '#'.$oldID.'#<br />';
                     $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-                }            
-            
+                }          
+          
             }
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
             return true;
@@ -3464,18 +3464,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importProjectTeam()
-     * 
+     *
      * @return
      */
     private function _importProjectTeam()
     {
           $app = Factory::getApplication();
         $db = Factory::getDbo();
-        
+      
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam']) == 0 ) {
             return true;
         }
@@ -3483,20 +3483,20 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['team']) || count($this->_datas['team']) == 0 ) {
             return true;
         }
-        
-        if (( !isset($this->_newteams) || count($this->_newteams) == 0 ) 
+      
+        if (( !isset($this->_newteams) || count($this->_newteams) == 0 )
             && ( !isset($this->_dbteamsid) || count($this->_dbteamsid) == 0 )
         ) {
                 return true;
         }
-           
+         
         foreach ($this->_datas['projectteam'] as $key => $projectteam)
         {
 
             //  $p_projectteam = new stdClass();
             $import_projectteam = $this->_datas['projectteam'][$key];
             $oldID = $this->_getDataFromObject($import_projectteam, 'id');
-            $p_projectteam = $this->_importDataForSave($import_projectteam, 'project_team');    
+            $p_projectteam = $this->_importDataForSave($import_projectteam, 'project_team');  
 
             if (array_key_exists('description', $import_projectteam)) {
                         $p_projectteam->notes = $this->_getDataFromObject($projectteam, 'description');
@@ -3506,26 +3506,26 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }
 
             $p_projectteam->project_id = $this->_project_id;
-            
+          
             /**
-* jetzt erfolgt die umsetzung der team_id in die neue struktur 
+* jetzt erfolgt die umsetzung der team_id in die neue struktur
 * $p_projectteam->set('team_id',$this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
-*/            
+*/          
             $new_team_id = 0;
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam, 'team_id')];
-           
+         
             if ($team_id ) {
                 /**
  * ist das team schon durch ein anderes projekt angelegt ?
  */
                 $query = $db->getQuery(true);
-                $query->select('id');        
+                $query->select('id');      
                 $query->from('#__sportsmanagement_season_team_id AS t');
                 $query->where('t.team_id = '.$team_id);
                 $query->where('t.season_id = '.$this->_season_id);
                 $db->setQuery($query);
                 $new_team_id = $db->loadResult();
-               
+             
                 if ($new_team_id ) {
                     $p_projectteam->team_id = $new_team_id;
                 }
@@ -3544,16 +3544,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     else
                     {
                            /**
-* 
- * die neue id übergeben 
+*
+ * die neue id übergeben
 */
                            $new_team_id = $db->insertid();
                            $p_projectteam->team_id = $new_team_id;
                     }
                 }
             }
-            
-            
+          
+          
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam, 'team_id')];
 
             if (isset($this->_convertDivisionID) ) {
@@ -3563,7 +3563,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             }
 
             $p_projectteam->admin = $this->_sportsmanagement_admin;
-            
+          
             if ((isset($projectteam->standard_playground)) && ($projectteam->standard_playground > 0)) {
                 if (isset($this->_convertPlaygroundID[$this->_getDataFromObject($projectteam, 'standard_playground')])) {
                     $p_projectteam->standard_playground = $this->_convertPlaygroundID[$this->_getDataFromObject($projectteam, 'standard_playground')];
@@ -3581,23 +3581,23 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             '<strong>'.$team_id.'</strong>'
                         );
                         $my_text .= '<br />';
-            }    
+            }  
             catch (Exception $e){
-                        $p_projectteam->id = 0;    
+                        $p_projectteam->id = 0;  
                         $my_text .= __LINE__.' error on projectteam import: ';
                         $my_text .= $oldID;
                         $my_text .= '<br />';
                         $my_text .= $e->getMessage().'<br />';
-            }    
-           
+            }  
+         
             $insertID = $p_projectteam->id;//Factory::getDbo()->insertid();
-            
+          
             if ($this->import_version=='NEW') {
                 $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam, 'id')] = $p_projectteam->id;
             }
             else
             {
-                $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam, 'team_id')] = $p_projectteam->id;    
+                $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam, 'team_id')] = $p_projectteam->id;  
             }
 
         }
@@ -3608,7 +3608,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importProjectReferees()
-     * 
+     *
      * @return
      */
     private function _importProjectReferees()
@@ -3619,7 +3619,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {return true;
         }
@@ -3628,14 +3628,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $import_projectreferee = $this->_datas['projectreferee'][$key];
             $oldID = $this->_getDataFromObject($import_projectreferee, 'id');
-            
-            $p_projectreferee = $this->_importDataForSave($import_projectreferee, 'project_referee');    
+          
+            $p_projectreferee = $this->_importDataForSave($import_projectreferee, 'project_referee');  
 
             $p_projectreferee->project_id = $this->_project_id;
             $p_projectreferee->person_id = $this->_convertPersonID[$this->_getDataFromObject($import_projectreferee, 'person_id')];
             $p_projectreferee->project_position_id = $this->_convertProjectPositionID[$this->_getDataFromObject($import_projectreferee, 'project_position_id')];
             $p_projectreferee->published = 1;
-           
+         
             try {
                   $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_referee', $p_projectreferee);
                   $insertID = Factory::getDbo()->insertid();
@@ -3645,13 +3645,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                   $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                   $my_text .= Text::sprintf('Created new projectreferee data: %1$s,%2$s', "</span><strong>$dPerson->lastname", "$dPerson->firstname</strong>");
                   $my_text .= '<br />';
-            }    
+            }  
             catch (Exception $e){
                   $my_text .= ' error on projectreferee import: ';
                   $my_text .= '#'.$oldID.'#<br />';
                   $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-            }                
-            
+            }              
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -3659,7 +3659,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importProjectPositions()
-     * 
+     *
      * @return
      */
     private function _importProjectPositions()
@@ -3667,16 +3667,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $app = Factory::getApplication();
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
-        
+      
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['projectposition']) || count($this->_datas['projectposition'])==0) {return true;
         }
         if (!isset($this->_datas['position']) || count($this->_datas['position'])==0) {return true;
         }
-        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) 
+        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0)
             && (!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)
         ) {return true;
         }
@@ -3688,7 +3688,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $p_projectposition = new stdClass();
             $p_projectposition->project_id = $this->_project_id;
             $oldPositionID = $this->_getDataFromObject($import_projectposition, 'position_id');
-            
+          
             if (!isset($this->_convertPositionID[$oldPositionID])) {
                 $my_text .= '<span style="color:red">';
                 $my_text .= Text::sprintf(
@@ -3698,9 +3698,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 ).'<br />';
                 continue;
             }
-            
+          
             $p_projectposition->position_id = $this->_convertPositionID[$oldPositionID];
-            
+          
             $query->clear();
             $query->select('id');
               $query->from('#__sportsmanagement_project_position');
@@ -3709,13 +3709,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $db->setQuery($query);
             $db->execute();
               $p_projectposition->id = $db->loadResult();
-        
+      
             if ($p_projectposition->id ) {
-            
+          
             }
             else
               {
-            
+          
                 try {
                             $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_position', $p_projectposition);
                             $insertID = Factory::getDbo()->insertid();
@@ -3728,15 +3728,15 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 "</span><strong>".$p_projectposition->position_id.'</strong>'
                             );
                             $my_text .= '<br />';
-                }    
+                }  
                 catch (Exception $e){
                             $my_text .= __LINE__.' error on ProjectPosition import: ';
                             $my_text .= '#'.$oldID.'#<br />';
                             $my_text .= $e->getMessage().'<br />';
-                }               
-            
+                }             
+          
             }
-            
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -3744,7 +3744,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTeamPlayer()
-     * 
+     *
      * @return
      */
     private function _importTeamPlayer()
@@ -3753,28 +3753,28 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['teamplayer']) || count($this->_datas['teamplayer'])==0) {return true;
         }
 
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {return true;
         }
 
         foreach ($this->_datas['teamplayer'] as $key => $teamplayer)
         {
-            
+          
             $import_teamplayer = $this->_datas['teamplayer'][$key];
             $p_teamplayer = $this->_importDataForSave($import_teamplayer, 'team_player');
-            
+          
             $oldID = $this->_getDataFromObject($import_teamplayer, 'id');
             $oldTeamID = $this->_getDataFromObject($import_teamplayer, 'projectteam_id');
             $oldPersonID = $this->_getDataFromObject($import_teamplayer, 'person_id');
-            
-            if (!isset($this->_convertProjectTeamID[$oldTeamID]) 
+          
+            if (!isset($this->_convertProjectTeamID[$oldTeamID])
                 || !isset($this->_convertPersonID[$oldPersonID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -3792,9 +3792,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             if (isset($this->_convertProjectPositionID[$oldPositionID])) {
                 $p_teamplayer->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
             }
-            
+          
             $p_teamplayer->published = 1;
-            
+          
             try {
                   $result = Factory::getDbo()->insertObject('#__sportsmanagement_team_player', $p_teamplayer);
                   $insertID = Factory::getDbo()->insertid();
@@ -3828,16 +3828,16 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     );
                     $my_text .= '<br />';
                 }
-            }    
+            }  
             catch (Exception $e){
                   $insertID = 0;
                   $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                   $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                   $my_text .= $oldID.'<br />';
-                  $my_text .= __LINE__.' '.$e->getMessage().'<br />';    
-            }    
+                  $my_text .= __LINE__.' '.$e->getMessage().'<br />';  
+            }  
 
-            
+          
             //$insertID = $p_teamplayer->id;//Factory::getDbo()->insertid();
             $this->_convertTeamPlayerID[$oldID] = $insertID;
         }
@@ -3848,7 +3848,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTeamStaff()
-     * 
+     *
      * @return
      */
     private function _importTeamStaff()
@@ -3856,13 +3856,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['teamstaff']) || count($this->_datas['teamstaff'])==0) {return true;
         }
 
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {return true;
         }
@@ -3874,10 +3874,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $oldID = $this->_getDataFromObject($import_teamstaff, 'id');
             $oldProjectTeamID = $this->_getDataFromObject($import_teamstaff, 'projectteam_id');
             $oldPersonID = $this->_getDataFromObject($import_teamstaff, 'person_id');
-            
-            
-            
-            if (!isset($this->_convertProjectTeamID[$oldProjectTeamID]) 
+          
+          
+          
+            if (!isset($this->_convertProjectTeamID[$oldProjectTeamID])
                 || !isset($this->_convertPersonID[$oldPersonID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -3892,7 +3892,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $p_teamstaff->projectteam_id = $this->_convertProjectTeamID[$oldProjectTeamID];
             $p_teamstaff->person_id = $this->_convertPersonID[$oldPersonID];
             $oldPositionID = $this->_getDataFromObject($import_teamstaff, 'project_position_id');
-            
+          
             if (isset($this->_convertProjectPositionID[$oldPositionID])) {
                 $p_teamstaff->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
             }
@@ -3920,8 +3920,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         "</span><strong>$dPosName</strong>"
                     );
                     $my_text .= '<br />';
-                } 
-                else 
+                }
+                else
                 {
                     $dPosName='<span style="color:orange">'.Text::_('Has no position').'</span>';
                     $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -3933,14 +3933,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     );
                     $my_text .= '<br />';
                 }
-            }    
+            }  
             catch (Exception $e){
                   $insertID = 0;
                   $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                   $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION', __FUNCTION__).'</strong></span><br />';
                   $my_text .= $oldID.'<br />';
-                  $my_text .= __LINE__.' '.$e->getMessage().'<br />';    
-            }    
+                  $my_text .= __LINE__.' '.$e->getMessage().'<br />';  
+            }  
 
 
 
@@ -3954,14 +3954,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTeamTraining()
-     * 
+     *
      * @return
      */
     private function _importTeamTraining()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text='';
         if (!isset($this->_datas['teamtraining']) || count($this->_datas['teamtraining'])==0) {
               return true;
@@ -3969,10 +3969,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
         foreach ($this->_datas['teamtraining'] as $key => $teamtraining)
         {
-            
+          
             $mdl = BaseDatabaseModel::getInstance("trainingdata", "sportsmanagementModel");
             $p_teamtraining = $mdl->getTable();
-            
+          
             $import_teamtraining = $this->_datas['teamtraining'][$key];
             $oldID = $this->_getDataFromObject($import_teamtraining, 'id');
             $p_teamtraining->set('project_team_id', $this->_convertProjectTeamID[$this->_getDataFromObject($import_teamtraining, 'project_team_id')]);
@@ -3983,12 +3983,12 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $query->select('st.team_id');
             // From the table
             $query->from('#__sportsmanagement_season_team_id AS st');
-              $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');  
-              $query->where('pt.id = '.(int)$p_teamtraining->project_team_id);    
+              $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
+              $query->where('pt.id = '.(int)$p_teamtraining->project_team_id);  
             Factory::getDbo()->setQuery($query);
               sportsmanagementModeldatabasetool::runJoomlaQuery();
               $team_id = Factory::getDbo()->loadResult();
-       
+     
             $p_teamtraining->set('team_id', $team_id);
             $p_teamtraining->set('dayofweek', $this->_getDataFromObject($import_teamtraining, 'dayofweek'));
             $p_teamtraining->set('time_start', $this->_getDataFromObject($import_teamtraining, 'time_start'));
@@ -4002,12 +4002,12 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $query->clear();
             $query->select('id');
             $query->from('#__sportsmanagement_team_trainingdata');
-            $query->where('project_id = '.(int)$p_teamtraining->project_id);  
-            $query->where('team_id = '.(int)$p_teamtraining->team_id);  
-            $query->where('project_team_id = '.(int)$p_teamtraining->project_team_id);  
-            $query->where('dayofweek = '.(int)$p_teamtraining->dayofweek);  
-            $query->where('time_start = '.(int)$p_teamtraining->time_start);  
-            $query->where('time_end = '.(int)$p_teamtraining->time_end);  
+            $query->where('project_id = '.(int)$p_teamtraining->project_id);
+            $query->where('team_id = '.(int)$p_teamtraining->team_id);
+            $query->where('project_team_id = '.(int)$p_teamtraining->project_team_id);
+            $query->where('dayofweek = '.(int)$p_teamtraining->dayofweek);
+            $query->where('time_start = '.(int)$p_teamtraining->time_start);
+            $query->where('time_end = '.(int)$p_teamtraining->time_end);
             Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
             //            $team_tr_id = Factory::getDbo()->loadResult();
@@ -4034,18 +4034,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importRounds()
-     * 
+     *
      * @return
      */
     private function _importRounds()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['round']) || count($this->_datas['round']) == 0 ) {
               return true;
         }
@@ -4069,13 +4069,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                   $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
                   $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1', "</span><strong>$p_round->name</strong>");
                   $my_text .= '<br />';
-            }    
+            }  
             catch (Exception $e){
-                  $insertID = 0;    
+                  $insertID = 0;  
                   $my_text .= ' error on round import: ';
                   $my_text .= '#'.$oldID.'#<br />';
                   $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-            }    
+            }  
             $this->_convertRoundID[$oldId] = $insertID;
 
         }
@@ -4085,18 +4085,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatches()
-     * 
+     *
      * @return
      */
     private function _importMatches()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         if (!isset($this->_datas['match']) || count($this->_datas['match']) == 0 ) {
               return true;
         }
@@ -4104,7 +4104,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['team']) || count($this->_datas['team']) == 0 ) {
               return true;
         }
-        if (( !isset($this->_newteams) || count($this->_newteams) == 0 ) 
+        if (( !isset($this->_newteams) || count($this->_newteams) == 0 )
             && ( !isset($this->_dbteamsid) || count($this->_dbteamsid) == 0 )
         ) {
             return true;
@@ -4119,8 +4119,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $oldteam1 = 0;
             $oldteam2 = 0;
             $p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match, 'round_id')];
-            $p_match->projectteam1_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match, 'projectteam1_id'))];            
-            $p_match->projectteam2_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match, 'projectteam2_id'))];            
+            $p_match->projectteam1_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match, 'projectteam1_id'))];          
+            $p_match->projectteam2_id = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match, 'projectteam2_id'))];          
             if (!empty($this->_convertPlaygroundID)) {
                 if (array_key_exists((int)$this->_getDataFromObject($match, 'playground_id'), $this->_convertPlaygroundID)) {
                     $p_match->playground_id = $this->_convertPlaygroundID[$this->_getDataFromObject($match, 'playground_id')];
@@ -4218,7 +4218,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     );
                     $my_text .= '<br />';
                 }
-                
+              
                 if ($this->import_version == 'OLD' ) {
                     if ($match->matchpart1 > 0) {
                         $teamname1 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart1)]);
@@ -4244,14 +4244,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                       $my_text .= '<br />';
                 }
 
-            }    
+            }  
             catch (Exception $e){
-                  $p_match->id = 0;    
+                  $p_match->id = 0;  
                   $my_text .= 'error on match import: ';
                   $my_text .= $oldID;
                   $my_text .= $e->getMessage().'<br />';
-                  $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;    
-            }    
+                  $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;  
+            }  
 
             $insertID = $p_match->id;
             $this->_convertMatchID[$oldId] = $insertID;
@@ -4262,14 +4262,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchPlayer()
-     * 
+     *
      * @return
      */
     private function _importMatchPlayer()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if (!isset($this->_datas['matchplayer']) || count($this->_datas['matchplayer'])==0) {
             return true;
@@ -4278,7 +4278,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {
             return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {
                 return true;
@@ -4288,11 +4288,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $import_matchplayer = $this->_datas['matchplayer'][$key];
             $oldID = $this->_getDataFromObject($import_matchplayer, 'id');
-            
+          
             $p_matchplayer = $this->_importDataForSave($import_matchplayer, 'match_player');
             $oldMatchID = $this->_getDataFromObject($import_matchplayer, 'match_id');
             $oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer, 'teamplayer_id');
-            if (!isset($this->_convertMatchID[$oldMatchID]) 
+            if (!isset($this->_convertMatchID[$oldMatchID])
                 || !isset($this->_convertTeamPlayerID[$oldTeamPlayerID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -4334,7 +4334,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                       "</span><strong>$oldTeamPlayerID</strong>",
                       "</span><strong>$newTeamPlayerID</strong>"
                   );
-                  $my_text .= '<br />';                  
+                  $my_text .= '<br />';                
             }
             catch (Exception $e){
                   $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
@@ -4342,8 +4342,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                   $my_text .= 'error on matchplayer import: ';
                   $my_text .= $oldID;
                   $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-            }           
-            
+            }         
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -4351,14 +4351,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchStaff()
-     * 
+     *
      * @return
      */
     private function _importMatchStaff()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if (!isset($this->_datas['matchstaff']) || count($this->_datas['matchstaff'])==0) {
             return true;
@@ -4367,7 +4367,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {
             return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {
                 return true;
@@ -4381,7 +4381,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $p_matchstaff = $this->_importDataForSave($import_matchstaff, 'match_staff');
             $oldMatchID = $this->_getDataFromObject($import_matchstaff, 'match_id');
             $oldTeamStaffID = $this->_getDataFromObject($import_matchstaff, 'team_staff_id');
-            if (!isset($this->_convertMatchID[$oldMatchID]) 
+            if (!isset($this->_convertMatchID[$oldMatchID])
                 || !isset($this->_convertTeamStaffID[$oldTeamStaffID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -4399,7 +4399,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             if (isset($this->_convertProjectPositionID[$oldPositionID])) {
                 $p_matchstaff->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
             }
-            
+          
             try {
                   $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_staff', $p_matchstaff);
                   $dPerson = $this->_getPersonFromTeamStaff($p_matchstaff->team_staff_id);
@@ -4422,10 +4422,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                   $my_text .= 'error on matchstaff import: ';
                   $my_text .= $oldID;
                   $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-            }              
-            
-            
-            
+            }            
+          
+          
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -4433,14 +4433,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchReferee()
-     * 
+     *
      * @return
      */
     private function _importMatchReferee()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if (!isset($this->_datas['matchreferee']) || count($this->_datas['matchreferee'])==0) {
             return true;
@@ -4449,7 +4449,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {
             return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {
                 return true;
@@ -4459,11 +4459,11 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $import_matchreferee = $this->_datas['matchreferee'][$key];
             $oldID = $this->_getDataFromObject($import_matchreferee, 'id');
-            
+          
             $p_matchreferee = $this->_importDataForSave($import_matchreferee, 'match_referee');
             $oldMatchID = $this->_getDataFromObject($import_matchreferee, 'match_id');
             $oldProjectRefereeID = $this->_getDataFromObject($import_matchreferee, 'project_referee_id');
-            if (!isset($this->_convertMatchID[$oldMatchID]) 
+            if (!isset($this->_convertMatchID[$oldMatchID])
                 || !isset($this->_convertProjectRefereeID[$oldProjectRefereeID])
             ) {
                 $my_text .= '<span style="color:red">';
@@ -4481,7 +4481,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             if (isset($this->_convertProjectPositionID[$oldPositionID])) {
                 $p_matchreferee->project_position_id = $this->_convertProjectPositionID[$oldPositionID];
             }
-            
+          
             try
             {
                   $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_referee', $p_matchreferee);
@@ -4506,8 +4506,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                   $my_text .= $oldID.'<br />';
                   $my_text .= $e->getMessage().'<br />';
             }
-            
-            
+          
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -4515,14 +4515,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchEvent()
-     * 
+     *
      * @return
      */
     private function _importMatchEvent()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text = '';
         if (!isset($this->_datas['matchevent']) || count($this->_datas['matchevent'])==0) {
             return true;
@@ -4531,7 +4531,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['person']) || count($this->_datas['person'])==0) {
             return true;
         }
-        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) 
+        if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0)
             && (!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)
         ) {
                 return true;
@@ -4539,7 +4539,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['event']) || count($this->_datas['event'])==0) {
             return true;
         }
-        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0) 
+        if ((!isset($this->_neweventsid) || count($this->_neweventsid)==0)
             && (!isset($this->_dbeventsid) || count($this->_dbeventsid)==0)
         ) {
                 return true;
@@ -4549,14 +4549,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $import_matchevent = $this->_datas['matchevent'][$key];
             $oldID = $this->_getDataFromObject($import_matchevent, 'id');
-            
+          
             $p_matchevent = $this->_importDataForSave($import_matchevent, 'match_event');
             $p_matchevent->match_id = $this->_convertMatchID[$this->_getDataFromObject($import_matchevent, 'match_id')];
             $p_matchevent->projectteam_id = $this->_convertProjectTeamID[$this->_getDataFromObject($import_matchevent, 'projectteam_id')];
             $p_matchevent->teamplayer_id = $this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent, 'teamplayer_id')];
             $p_matchevent->teamplayer_id2 = $this->_convertTeamPlayerID[$this->_getDataFromObject($import_matchevent, 'teamplayer_id2')];
             $p_matchevent->event_type_id = $this->_convertEventID[$this->_getDataFromObject($import_matchevent, 'event_type_id')];
-            
+          
             try {
                   $result = Factory::getDbo()->insertObject('#__sportsmanagement_match_event', $p_matchevent);
                   $insertID = Factory::getDbo()->insertid();
@@ -4574,13 +4574,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                       "</span><strong>$dEventName</strong>"
                   );
                   $my_text .= '<br />';
-            }    
+            }  
             catch (Exception $e){
                   $my_text .= ' error on matchevent import: ';
                   $my_text .= '#'.$oldID.'#<br />';
                   $my_text .= __LINE__.' '.$e->getMessage().'<br />';
-            }              
-            
+            }            
+          
         }
         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         return true;
@@ -4588,25 +4588,25 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importPositionStatistic()
-     * 
+     *
      * @return
      */
     private function _importPositionStatistic()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text='';
         if (!isset($this->_datas['positionstatistic']) || count($this->_datas['positionstatistic'])==0) {
             return true;
         }
 
-        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) 
+        if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0)
             && (!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)
         ) {
                 return true;
         }
-        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0) 
+        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0)
             && (!isset($this->_dbstatisticsid) || count($this->_dbstatisticsid)==0)
         ) {
                 return true;
@@ -4633,7 +4633,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $import_positionstatistic=$this->_datas['positionstatistic'][$key];
             $oldID=$this->_getDataFromObject($import_positionstatistic, 'id');
 
-            
+          
             $mdl = BaseDatabaseModel::getInstance("positionstatistic", "sportsmanagementModel");
             $p_positionstatistic = $mdl->getTable();
 
@@ -4649,7 +4649,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
               $query->where('position_id = '.(int)$p_positionstatistic->position_id);
               $query->where('statistic_id = '.(int)$p_positionstatistic->statistic_id);
 
-            Factory::getDbo()->setQuery($query); 
+            Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ($object=Factory::getDbo()->loadObject()) {
                 $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -4685,19 +4685,19 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchStaffStatistic()
-     * 
+     *
      * @return
      */
     private function _importMatchStaffStatistic()
     {
           $app = Factory::getApplication();
           $query = Factory::getDbo()->getQuery(true);
-       
+     
         $my_text='';
         if (!isset($this->_datas['matchstaffstatistic']) || count($this->_datas['matchstaffstatistic'])==0) {return true;
         }
 
-        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0) 
+        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0)
             && (!isset($this->_dbstatisticsid) || count($this->_dbstatisticsid)==0)
         ) {return true;
         }
@@ -4735,7 +4735,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $import_matchstaffstatistic=$this->_datas['matchstaffstatistic'][$key];
             $oldID=$this->_getDataFromObject($import_matchstaffstatistic, 'id');
 
-            
+          
             $mdl = BaseDatabaseModel::getInstance("matchstaffstatistic", "sportsmanagementModel");
             $p_matchstaffstatistic = $mdl->getTable();
 
@@ -4772,7 +4772,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importMatchStatistic()
-     * 
+     *
      * @return
      */
     private function _importMatchStatistic()
@@ -4781,7 +4781,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (!isset($this->_datas['matchstatistic']) || count($this->_datas['matchstatistic'])==0) {return true;
         }
 
-        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0) 
+        if ((!isset($this->_newstatisticsid) || count($this->_newstatisticsid)==0)
             && (!isset($this->_dbstatisticsid) || count($this->_dbstatisticsid)==0)
         ) {return true;
         }
@@ -4819,7 +4819,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $import_matchstatistic=$this->_datas['matchstatistic'][$key];
             $oldID=$this->_getDataFromObject($import_matchstatistic, 'id');
 
-            
+          
             $mdl = BaseDatabaseModel::getInstance("matchstatistic", "sportsmanagementModel");
             $p_matchstatistic = $mdl->getTable();
 
@@ -4856,7 +4856,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTreetos()
-     * 
+     *
      * @return
      */
     private function _importTreetos()
@@ -4867,10 +4867,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (isset($this->_datas['treeto'])) {
             foreach ($this->_datas['treeto'] as $key => $treeto)
             {
-                
+              
                 $mdl = BaseDatabaseModel::getInstance("treeto", "sportsmanagementModel");
                 $p_treeto = $mdl->getTable();
-            
+          
                 $oldId=(int)$treeto->id;
                 $p_treeto->set('project_id', $this->_project_id);
                 if ($treeto->id ==$this->_datas['treeto'][$key]->id) {
@@ -4915,7 +4915,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTreetonode()
-     * 
+     *
      * @return
      */
     private function _importTreetonode()
@@ -4926,10 +4926,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (isset($this->_datas['treetonode'])) {
             foreach ($this->_datas['treetonode'] as $key => $treetonode)
             {
-                
+              
                 $mdl = BaseDatabaseModel::getInstance("treetonode", "sportsmanagementModel");
                 $p_treetonode = $mdl->getTable();
-            
+          
                 $oldId=(int)$treetonode->id;
                 if ($treetonode->id ==$this->_datas['treetonode'][$key]->id) {
                     $p_treetonode->set('treeto_id', $this->_convertTreetoID[$this->_getDataFromObject($treetonode, 'treeto_id')]);
@@ -4967,7 +4967,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_importTreetomatch()
-     * 
+     *
      * @return
      */
     private function _importTreetomatch()
@@ -4978,10 +4978,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         if (isset($this->_datas['treetomatch'])) {
             foreach ($this->_datas['treetomatch'] as $key => $treetomatch)
             {
-                
+              
                 $mdl = BaseDatabaseModel::getInstance("treetomatch", "sportsmanagementModel");
                 $p_treetomatch = $mdl->getTable();
-                
+              
                 $oldId=(int)$treetomatch->id;
                 if ($treetomatch->id ==$this->_datas['treetomatch'][$key]->id) {
                     $p_treetomatch->set('node_id', $this->_convertTreetonodeID[$this->_getDataFromObject($treetomatch, 'node_id')]);
@@ -5008,7 +5008,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::_beforeFinish()
-     * 
+     *
      * @return void
      */
     private function _beforeFinish()
@@ -5032,7 +5032,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::importData()
-     * 
+     *
      * @param  mixed $post
      * @return
      */
@@ -5044,7 +5044,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $this->master_template = $post['copyTemplate'];
         $this->_template_id = $post['copyTemplate'];
         $this->timezone = $post['timezone'];
-       
+     
         $option = Factory::getApplication()->input->getCmd('option');
         $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
         $this->_datas = $this->getData();
@@ -5178,12 +5178,12 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     $tempplayground=explode("_", $key);
                     $this->_newplaygroundname[$tempplayground[1]]=$element;
                 }
-                
+              
                 elseif (substr($key, 0, 17)=='playgroundCountry') {
                     $tempplayground=explode("_", $key);
                     $this->_newplaygroundcountry[$tempplayground[1]]=$element;
                 }
-                
+              
                 elseif (substr($key, 0, 19)=='playgroundShortname') {
                     $tempplayground=explode("_", $key);
                     $this->_newplaygroundshort[$tempplayground[1]]=$element;
@@ -5344,7 +5344,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
              * ab hier startet der import
              */
              $step = ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step', 1);
-             
+           
             if ($post['importProject'] || $post['importType']=='events' || $post['importType'] == 'positions' ) {
                 // import sportstype
                 if(version_compare($step, '1', 'ge') ) {
@@ -5441,7 +5441,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                      return $this->_success_text;
                     }
                 }
-                
+              
             }
 
             // import divisions
@@ -5576,8 +5576,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             /**
  * zum schluss werden noch die bilderpfade umgesetzt
  */
-            $mdl = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel"); 
-            $mdl->setNewPicturePath();            
+            $mdl = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+            $mdl->setNewPicturePath();          
 
             return $this->_success_text;
         }
@@ -5590,7 +5590,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::dump_header()
-     * 
+     *
      * @param  mixed $text
      * @return void
      */
@@ -5601,19 +5601,19 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelJLXMLImport::dump_variable()
-     * 
+     *
      * @param  mixed $description
      * @param  mixed $variable
      * @return void
      */
     private function dump_variable($description, $variable)
     {
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModelJLXMLImport::setNewDataStructur()
-     * 
+     *
      * @return void
      */
     function setNewDataStructur()
@@ -5622,17 +5622,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         // Get a db connection.
         $db = Factory::getDbo();
         // $this->_project_id
-        // $this->_season_id 
+        // $this->_season_id
         $my_text = '';
         if(!isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
             $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        }        
+        }      
         $update_match_ids = array();
-        
+      
         // zum update der neue spieler id benötigen wir die match id´s aus dem projekt.
         $query = $db->getQuery(true);
         $query->clear();
-        $query->select('m.id');        
+        $query->select('m.id');      
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER', '#__sportsmanagement_round r ON m.round_id = r.id ');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
@@ -5643,30 +5643,30 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             $update_match_ids[] = $match_id->id;
         }
-            
+          
         // die schiedsrichter verarbeiten
         $query = 'SELECT * FROM #__sportsmanagement_project_referee where project_id = '.$this->_project_id ;
         Factory::getDbo()->setQuery($query);
         $result_pr = Factory::getDbo()->loadObjectList();
-        
+      
         foreach ( $result_pr as $protref )
         {
             // ist der schiedsrichter schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
             $query->clear();
-            $query->select('id');        
+            $query->select('id');      
             $query->from('#__sportsmanagement_season_person_id AS t');
             $query->where('t.person_id = '.$protref->person_id);
             $query->where('t.season_id = '.$this->_season_id);
             $query->where('t.persontype IN (0,3) ');
             $db->setQuery($query);
             $new_person_id = $db->loadResult();
-         
+       
             if ($new_person_id ) {
-                $new_match_referee_id = $new_person_id;  
+                $new_match_referee_id = $new_person_id;
             }
             else
-            {   
+            { 
                   // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -5680,15 +5680,15 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                     ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
-            
+          
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                 }
                 else
                 {
                       // die match referee tabelle updaten
                          $new_match_referee_id = $db->insertid();
-                                 
+                               
                 }
             }
             // Fields to update.
@@ -5703,25 +5703,25 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 );
                 $query->update($db->quoteName('#__sportsmanagement_project_referee'))->set($fields)->where($conditions);
                 $db->setQuery($query);
-                $result = sportsmanagementModeldatabasetool::runJoomlaQuery();  
+                $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if (!$result) {
-                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
-            } 
-                
-                
-        
+                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
+            }
+              
+              
+      
         }
-        
+      
         // die teams verarbeiten
         $query = 'SELECT * FROM #__sportsmanagement_project_team where project_id = '.$this->_project_id ;
         Factory::getDbo()->setQuery($query);
         $result_pt = Factory::getDbo()->loadObjectList();
-        
+      
         foreach ( $result_pt as $proteam )
         {
             // ist das team schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
-            $query->select('team_id');        
+            $query->select('team_id');      
             $query->from('#__sportsmanagement_season_team_id AS t');
             $query->where('t.id = '.$proteam->team_id);
             $query->where('t.season_id = '.$this->_season_id);
@@ -5745,17 +5745,17 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 if (!$team_member->project_position_id || $team_member->project_position_id == '' ) {
                     $team_member->project_position_id = 0;
                 }
-                
+              
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
-                $query->select('id');        
+                $query->select('id');      
                 $query->from('#__sportsmanagement_season_person_id AS t');
                 $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
                 $query->where('t.persontype IN (0,1)');
                 $db->setQuery($query);
                 $new_player_id = $db->loadResult();
-                
+              
                 if ($new_player_id ) {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -5782,19 +5782,19 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         ->values(implode(',', $values));
                     // Set the query using our newly populated query object and execute it.
                     $db->setQuery($insertquery);
-            
+          
                     if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                     }
                     else
                     {
                     }
-                
+              
                 }
-                
+              
                 // spieler dem team/saison schon zugeordnet ?
                 $query = $db->getQuery(true);
-                $query->select('id');        
+                $query->select('id');      
                 $query->from('#__sportsmanagement_season_team_person_id AS t');
                 $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
@@ -5802,7 +5802,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $query->where('t.persontype IN (0,1)');
                 $db->setQuery($query);
                 $new_match_player_id = $db->loadResult();
-                
+              
                 if ($new_match_player_id ) {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -5830,9 +5830,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         ->values(implode(',', $values));
                     // Set the query using our newly populated query object and execute it.
                     $db->setQuery($insertquery);
-                
+              
                     if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                     }
                     else
                     {
@@ -5848,10 +5848,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 );
                                 $my_text .= '<br />';
                     }
-                
+              
                 }
-                
-                
+              
+              
                 $query->clear();
                 // Select some fields
                 $query->select('person_id');
@@ -5864,9 +5864,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $db->setQuery($query);
                 $db->execute();
                 $result_ppp = $db->loadResult();
-        
+      
                 if ($result_ppp ) {
-                    
+                  
                 }
                 else
                 {
@@ -5892,7 +5892,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             "<strong>$this->_project_id</strong>",
                             "<strong>$team_member->project_position_id</strong>"
                         );
-                        $my_text .= '<br />'; 
+                        $my_text .= '<br />';
                     }
                     else
                     {
@@ -5906,7 +5906,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 $my_text .= '<br />';
                     }
                 }
-                
+              
                 // Fields to update. match ids = $update_match_ids
                 $query = $db->getQuery(true);
                 $fields = array(
@@ -5921,13 +5921,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result) {
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                 }
                 $query->update($db->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result) {
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                 }
                 // Fields to update.
                 $query = $db->getQuery(true);
@@ -5941,13 +5941,13 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 );
                 $query->update($db->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
-                $result = sportsmanagementModeldatabasetool::runJoomlaQuery(); 
+                $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result) {
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
-                } 
-                
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
+                }
+              
             }
-            
+          
             // staffs verarbeiten
             $query = $db->getQuery(true);
             $query->select('tp.*');
@@ -5956,7 +5956,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
             $query->join('INNER', '#__sportsmanagement_person as p ON p.id = tp.person_id ');
             $query->where('tp.projectteam_id = '.$proteam->id);
             Factory::getDbo()->setQuery($query);
-           
+         
             $result_tp = Factory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
             {
@@ -5965,14 +5965,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 }
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
-                $query->select('id');        
+                $query->select('id');      
                 $query->from('#__sportsmanagement_season_person_id AS t');
                 $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
                 $query->where('t.persontype IN (0,2)');
                 $db->setQuery($query);
                 $new_staff_id = $db->loadResult();
-                
+              
                 if ($new_staff_id ) {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -5999,18 +5999,18 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         ->values(implode(',', $values));
                     // Set the query using our newly populated query object and execute it.
                     $db->setQuery($insertquery);
-                
+              
                     if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
- 
+
                     }
                     else
                     {
                     }
                 }
-                
+              
                 // spieler dem team/saison schon zugeordnet ?
                 $query = $db->getQuery(true);
-                $query->select('id');        
+                $query->select('id');      
                 $query->from('#__sportsmanagement_season_team_person_id AS t');
                 $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
@@ -6018,7 +6018,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $query->where('t.persontype IN (0,2)');
                 $db->setQuery($query);
                 $new_match_staff_id = $db->loadResult();
-                
+              
                 if ($new_match_staff_id ) {
                     //vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
@@ -6046,9 +6046,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                         ->values(implode(',', $values));
                     // Set the query using our newly populated query object and execute it.
                     $db->setQuery($insertquery);
-                
+              
                     if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
- 
+
                     }
                     else
                     {
@@ -6064,9 +6064,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                 );
                                 $my_text .= '<br />';
                     }
-                
-                } 
-                
+              
+                }
+              
                  $query->clear();
                 // Select some fields
                 $query->select('person_id');
@@ -6079,9 +6079,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $db->setQuery($query);
                 $db->execute();
                 $result_ppp = $db->loadResult();
-        
+      
                 if ($result_ppp ) {
-                    
+                  
                 }
                 else
                 {
@@ -6107,7 +6107,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                             "<strong>$this->_project_id</strong>",
                             "<strong>$team_member->project_position_id</strong>"
                         );
-                        $my_text .= '<br />'; 
+                        $my_text .= '<br />';
                     }
                     else
                     {
@@ -6135,30 +6135,30 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result) {
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__); 
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
                 }
 
             }
-            
-            
+          
+          
 
         }
-        
+      
         // zum schluss den inhalt der alten tabellen löschen
         // wegen speicherplatz
         $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
         $successTable = $databasetool->setSportsManagementTableQuery('#__sportsmanagement_team_staff', 'truncate');
         $successTable = $databasetool->setSportsManagementTableQuery('#__sportsmanagement_team_player', 'truncate');
-        
+      
          $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-        
+      
         self::setNewRoundDates();
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModelJLXMLImport::setNewRoundDates()
-     * 
+     *
      * @return void
      */
     function setNewRoundDates()
@@ -6167,7 +6167,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         $option = Factory::getApplication()->input->getCmd('option');
         // Get a db connection.
         $db = Factory::getDbo();
-        
+      
         $query = "SELECT r.id as round_id
 FROM #__sportsmanagement_round AS r
 WHERE r.project_id = " . $this->_project_id .' ORDER by roundcode DESC';
@@ -6178,13 +6178,13 @@ WHERE r.project_id = " . $this->_project_id .' ORDER by roundcode DESC';
         $current_round = 0;
         $current_round_old = 0;
 
-        // anfang schleife runden        
+        // anfang schleife runden      
         foreach( $rounds as $rounddate)
         {
 
                 // current round für das projekt
                 $current_round_old = $rounddate->round_id;
-    
+  
                 $query = "SELECT min(m.match_date)
 from #__sportsmanagement_match as m
 where m.round_id = '$rounddate->round_id'
@@ -6209,14 +6209,14 @@ where m.round_id = '$rounddate->round_id'
             if ($von && $bis ) {
                 // Create an object for the record we are going to update.
                 $object = new stdClass();
- 
+
                 // Must be a valid primary key value.
                 $object->id = $rounddate->round_id;
                 $object->round_date_first = $von;
                 $object->round_date_last = $bis;
- 
+
                 // Update their details in the users table using id as the primary key.
-                $result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');                
+                $result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');              
 
                 if (!$result) {
 
@@ -6225,15 +6225,15 @@ where m.round_id = '$rounddate->round_id'
                 {
 
                 }
-        
-        
+      
+      
                 // gibt es noch nicht ausgetragene spiele in der runde ?
                 // Create a new query object.
                 $query = Factory::getDbo()->getQuery(true);
                 $query->select(array('id'))
                     ->from('#__sportsmanagement_match')
                     ->where('team1_result IS NULL ')
-                    ->where('round_id = '.$rounddate->round_id);    
+                    ->where('round_id = '.$rounddate->round_id);  
                 Factory::getDbo()->setQuery($query);
                   $match_id = Factory::getDbo()->loadResult();
 
@@ -6244,8 +6244,8 @@ where m.round_id = '$rounddate->round_id'
             }
                 // ende bedingung
 
-        }        
-        // ende schleife runden        
+        }      
+        // ende schleife runden      
 
         if (empty($current_round) ) {
             $current_round = $current_round_old;
@@ -6253,13 +6253,13 @@ where m.round_id = '$rounddate->round_id'
 
         // Create an object for the record we are going to update.
         $object = new stdClass();
- 
+
         // Must be a valid primary key value.
         $object->id = $this->_project_id;
         $object->current_round = $current_round;
- 
+
         // Update their details in the users table using id as the primary key.
-        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');                
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');              
 
         if (!$result) {
 
@@ -6268,8 +6268,8 @@ where m.round_id = '$rounddate->round_id'
         {
 
         }
-                
-        
-    }    
+              
+      
+    }  
 }
 ?>

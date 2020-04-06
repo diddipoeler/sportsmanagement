@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -53,7 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <?php echo HTMLHelper::_('form.token'); ?>
     </fieldset>
 
-    
+  
     <?php echo $this->form->getInput('filename'); ?>
 
 </form>
@@ -61,4 +61,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

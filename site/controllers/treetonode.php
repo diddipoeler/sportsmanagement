@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerTreetonode
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -27,5 +27,5 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 class sportsmanagementControllerTreetonode extends BaseController
 {
-    
+  
 }

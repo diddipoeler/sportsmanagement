@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage stats
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -46,7 +46,7 @@ use Joomla\CMS\Language\Text;
         <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PLAYED');?>:</td>
         <td class="statvalue"><?php	echo $this->totals->playedmatches;?></td>
     </tr>
-    
+  
     <?php	if ($this->config['home_away_stats']) : ?>
     <tr  class="sectiontableentry2">
         <td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_HOME');?>:</b>
@@ -70,9 +70,9 @@ use Joomla\CMS\Language\Text;
     if($this->totals->playedmatches>0 && $this->highest_away) {
         $projectteamid = $this->highest_away->project_hometeam_id;
         $homeTeaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid);
-        echo $homeTeaminfo->name ." - ".$this->highest_away->guestteam; 
+        echo $homeTeaminfo->name ." - ".$this->highest_away->guestteam;
     }
-        
+      
     ?>
         </td>
         <td class="statvalue"><br />
@@ -83,7 +83,7 @@ use Joomla\CMS\Language\Text;
         </td>
     </tr>
     <?php	else :
-    if (( $this->highest_home->homegoals - $this->highest_home->guestgoals ) >        ( $this->highest_away->guestgoals - $this->highest_away->homegoals ) 
+    if (( $this->highest_home->homegoals - $this->highest_home->guestgoals ) >        ( $this->highest_away->guestgoals - $this->highest_away->homegoals )
     ) {
         $this->highest = $this->highest_home;
     }

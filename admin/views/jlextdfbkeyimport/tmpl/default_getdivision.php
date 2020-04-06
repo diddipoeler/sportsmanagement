@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -30,5 +30,5 @@ echo '<br>'.HTMLHelper::_(
 ?>
 <input type="hidden" name="sent"			value="1" />
 <input type="hidden" name="task"			value="" />
-                            
+                          
 </form>

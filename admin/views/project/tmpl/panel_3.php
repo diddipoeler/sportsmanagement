@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  *
  * @version   1.0.05
@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="well well-small">        
+                        <div class="well well-small">      
                             <div id="dashboard-icons" class="btn-group">
 
                                 <a class="btn" href="index.php?option=com_sportsmanagement&task=project.edit&id=<?PHP echo $this->project->id; ?>">
@@ -40,20 +40,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 </a>
 
                                 <?php
-                                if ((isset($this->project->project_type)) 
-                                    && (($this->project->project_type == 'PROJECT_DIVISIONS') 
+                                if ((isset($this->project->project_type))
+                                    && (($this->project->project_type == 'PROJECT_DIVISIONS')
                                     || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
                                 ) {
                                     ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $this->project->id; ?>">
                                         <img src="components/com_sportsmanagement/assets/icons/divisionen.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?>" /><br />
                                         <span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?></span>
-                                    </a>                                
+                                    </a>                              
                                     <?php
                                 }
 
-                                if ((isset($this->project->project_type)) 
-                                    && (($this->project->project_type == 'TOURNAMENT_MODE') 
+                                if ((isset($this->project->project_type))
+                                    && (($this->project->project_type == 'TOURNAMENT_MODE')
                                     || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
                                 ) {
                                     ?>
@@ -90,7 +90,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                     <img src="components/com_sportsmanagement/assets/icons/xmlexport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?>" /><br />
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?></span>
                                 </a>
-                            </div>        
+                            </div>      
                         </div>
                     </div>
                     <div class="span3">

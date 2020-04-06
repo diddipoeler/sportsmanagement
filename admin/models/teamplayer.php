@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,25 +11,25 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
- 
+
 /**
  * SportsManagement Model
  */
 class sportsmanagementModelteamplayer extends AdminModel
 {
-    
+  
     var $_project_id = 0;
     var $_team_id = 0;
     var $_project_team_id = 0;
-  
+
     /**
      * Method override to check if you can edit an existing record.
      *
@@ -44,7 +44,7 @@ class sportsmanagementModelteamplayer extends AdminModel
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -54,12 +54,12 @@ class sportsmanagementModelteamplayer extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -68,7 +68,7 @@ class sportsmanagementModelteamplayer extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -78,31 +78,31 @@ class sportsmanagementModelteamplayer extends AdminModel
         if (empty($form)) {
             return false;
         }
-        
+      
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_player', ''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamplayers');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+      
         return $form;
     }
-    
+  
     /**
      * Method to get the script that have to be included on the form
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.teamplayer.data', array());
@@ -111,8 +111,8 @@ class sportsmanagementModelteamplayer extends AdminModel
         }
         return $data;
     }
-    
-    
+  
+  
     /**
      * Method to update checked teamplayers
      *
@@ -125,7 +125,7 @@ class sportsmanagementModelteamplayer extends AdminModel
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-        
+      
         $result=true;
         for ($x=0; $x < count($pks); $x++)
         {
@@ -142,8 +142,8 @@ class sportsmanagementModelteamplayer extends AdminModel
         }
         return $result;
     }
-    
-    
+  
+  
     /**
      * Method to save item order
      *
@@ -154,7 +154,7 @@ class sportsmanagementModelteamplayer extends AdminModel
     function saveorder($pks = null, $order = null)
     {
         $row =& $this->getTable();
-        
+      
         // update ordering values
         for ($i = 0; $i < count($pks); $i++)
         {
@@ -169,7 +169,7 @@ class sportsmanagementModelteamplayer extends AdminModel
         }
         return true;
     }
-    
+  
     /**
      * Method to remove teamplayer
      *
@@ -184,13 +184,13 @@ class sportsmanagementModelteamplayer extends AdminModel
           $db = Factory::getDbo();
           /* Ein JDatabaseQuery Objekt beziehen */
           $query = $db->getQuery(true);
-    
+  
         $result = false;
         if (count($pks)) {
             $cids = implode(',', $pks);
             // wir löschen mit join
             $query = 'DELETE mp,ms,me
-            FROM #__sportsmanagement_team_player as m    
+            FROM #__sportsmanagement_team_player as m  
             LEFT JOIN #__sportsmanagement_match_player as mp
             ON mp.teamplayer_id = m.id
             LEFT JOIN #__sportsmanagement_match_statistic as ms
@@ -201,19 +201,19 @@ class sportsmanagementModelteamplayer extends AdminModel
             $db->setQuery($query);
             $db->execute();
             if (!$db->execute()) {
-                return false; 
+                return false;
             }
-            
-        }  
-    
-    
+          
+        }
+  
+  
           //if ( $result )
-          //{        
+          //{      
           return parent::delete($pks);
           //}
-     
-    } 
    
+    }
+ 
     /**
      * Method to save the form data.
      *
@@ -230,7 +230,7 @@ class sportsmanagementModelteamplayer extends AdminModel
           $db        = $this->getDbo();
           $query    = $db->getQuery(true);
           $query2    = $db->getQuery(true);
-      
+    
           // update personendaten
           // Fields to update.
           $fields = array(
@@ -258,17 +258,17 @@ class sportsmanagementModelteamplayer extends AdminModel
           $db->quoteName('id') .'='. $data['person_id']
           );
         $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-        $db->setQuery($query);   
- 
-  
+        $db->setQuery($query); 
+
+
         if (!$db->execute()) {
 
         }
-        
+      
         // update personendaten pro saison
           // Fields to update.
           unset($fields);
-          unset($conditions);   
+          unset($conditions); 
           $fields = array(
           $db->quoteName('picture') .'=\''.$data['picture'].'\''
         );
@@ -278,27 +278,27 @@ class sportsmanagementModelteamplayer extends AdminModel
           $db->quoteName('season_id') .'='. $season_id
           );
         $query2->update($db->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
-        $db->setQuery($query2);   
- 
+        $db->setQuery($query2); 
+
         if (!$db->execute()) {
 
         }
-                
-        
- 
-        
+              
+      
+
+      
         if (isset($post['extended']) && is_array($post['extended'])) {
             // Convert the extended field to a string.
             $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string)$parameter;
         }
-        
-        
+      
+      
         // Proceed with the save
         return parent::save($data);
     }
-    
-    
-   
+  
+  
+ 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage cpanel
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -20,9 +20,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelcpanel
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -37,10 +37,10 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
     /**
      * sportsmanagementModelcpanel::getVersion()
-     * 
+     *
      * @return
      */
-    public function getVersion() 
+    public function getVersion()
     {
         $this->jsmdb->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
         $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
@@ -49,10 +49,10 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
     /**
      * sportsmanagementModelcpanel::getGithubRequests()
-     * 
+     *
      * @return
      */
-    public function getGithubRequests() 
+    public function getGithubRequests()
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -86,15 +86,15 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
     /**
      * sportsmanagementModelcpanel::getInstalledPlugin()
-     * 
+     *
      * @param  mixed $plugin
      * @return
      */
-    function getInstalledPlugin($plugin) 
+    function getInstalledPlugin($plugin)
     {
         //$app = Factory::getApplication();
-        //  $option = Factory::getApplication()->input->getCmd('option'); 
-        //  $db = sportsmanagementHelper::getDBConnection();    
+        //  $option = Factory::getApplication()->input->getCmd('option');
+        //  $db = sportsmanagementHelper::getDBConnection();  
         //        $query = $db->getQuery(true);
         $this->jsmquery->clear();
         $this->jsmquery->select('a.extension_id');
@@ -109,10 +109,10 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
     /**
      * sportsmanagementModelcpanel::checkcountry()
-     * 
+     *
      * @return
      */
-    function checkcountry() 
+    function checkcountry()
     {
         $starttime = microtime();
 
@@ -128,11 +128,11 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
 
     /**
      * sportsmanagementModelcpanel::checksporttype()
-     * 
+     *
      * @param  mixed $type
      * @return
      */
-    function checksporttype($type) 
+    function checksporttype($type)
     {
         $starttime = microtime();
         $type = strtoupper($type);
@@ -157,7 +157,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
      *
      * @since 1.0
      */
-    static function getJSON($req) 
+    static function getJSON($req)
     {
         // Create a new CURL resource
         $ch = curl_init($req);
@@ -191,7 +191,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
      *
      * @since 1.0
      */
-    static function processData($obj, $params) 
+    static function processData($obj, $params)
     {
         $app = Factory::getApplication();
         // Initialize
@@ -267,7 +267,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
      *
      * @since 1.0
      */
-    static function toAscii($repo) 
+    static function toAscii($repo)
     {
         $clean = preg_replace("/[^a-z'A-Z0-9\/_|+ -]/", '', $repo);
         $clean = strtolower(trim($clean, '-'));
@@ -277,4 +277,4 @@ class sportsmanagementModelcpanel extends JSMModelLegacy
     }
 
 }
-?>    
+?>  

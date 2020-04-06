@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -26,10 +26,10 @@ switch ( $this->project->sport_type_name )
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
     echo $this->loadTemplate('projectheading');
     echo $this->loadTemplate('sectionheader');
-    
+  
     echo $this->loadTemplate('result');
     echo $this->loadTemplate('details');
-    
+  
     echo $this->loadTemplate('sporttype_tennis');
     break;
 default:
@@ -50,7 +50,7 @@ default:
                     }
                 }
             }
-        }    
+        }  
         foreach ( $this->matchstaffpositions as $pos )
          {
             if(isset($this->stats[$pos->position_id]) && count($this->stats[$pos->position_id])>0) {
@@ -61,7 +61,7 @@ default:
                 }
             }
         }
-    }    
+    }  
 
 
 ?>
@@ -82,11 +82,11 @@ if ($this->config['show_sectionheader'] ) {
 if ($this->config['show_result'] ) {
     echo $this->loadTemplate('result');
 }
-    
+  
 if (!empty($this->matchevents) ) {
-          
+        
 }
-    
+  
 // ################################################################
 // diddipoeler
 // aufbau der templates
@@ -96,7 +96,7 @@ if ($this->config['show_details'] ) {
 }
 if ($this->config['show_youtube'] ) {
     $output['COM_SPORTSMANAGEMENT_TABS_YOUTUBE'] = 'youtube';
-}        
+}      
 if ($this->config['show_extended'] && $this->extended ) {
     $output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 }
@@ -115,12 +115,12 @@ if ($this->config['show_roster_playground'] ) {
     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_PLAYGROUND'] = 'rosterplayground';
 }
 if (!empty($this->matchevents) ) {
-        
+      
     if ($this->config['show_events'] ) {
         switch ($this->config['use_tabs_events'])
         {
         case 0:
-            // No tabs 
+            // No tabs
             if (!empty($this->eventtypes) ) {
                 $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events';
             }
@@ -133,13 +133,13 @@ if (!empty($this->matchevents) ) {
             }
             break;
         case 2:
-            // Table/Ticker layout 
+            // Table/Ticker layout
             $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events_ticker';
             break;
         }
     }
-        
-}    
+      
+}  
 if ($this->config['show_stats'] && ( $hasMatchPlayerStats || $hasMatchStaffStats ) ) {
     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'] = 'stats';
 }
@@ -155,26 +155,26 @@ if ($this->config['show_comments'] ) {
 if ($this->config['show_article'] ) {
     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE'] = 'article';
 }
-    
+  
 if ($this->config['show_commentary'] && $this->matchcommentary ) {
     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';
 }
-    
+  
 if ($this->config['show_pictures'] && isset($this->matchimages) ) {
     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_PICTURES'] = 'pictures';
-} 
+}
     break;
-    
-}       
+  
+}     
 
 $this->output = $output;
 
 if($this->config['show_result_tabs'] == "show_slider") {
     echo $this->loadTemplate($this->config['show_result_tabs']);
 }
-    
+  
 if($this->config['show_result_tabs'] == "show_tabs" ) {
-    echo $this->loadTemplate($this->config['show_result_tabs']);    
+    echo $this->loadTemplate($this->config['show_result_tabs']);  
 }
 
 if($this->config['show_result_tabs'] == "no_tabs" ) {

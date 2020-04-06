@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,10 +12,10 @@
  * @subpackage roster
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster"> 
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster">
 <?php
     // Show team-picture if defined.
 if ($this->config['show_team_logo'] ) {
@@ -29,9 +29,9 @@ if ($this->config['show_team_logo'] ) {
     if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("team") )) {
         $picture = $this->team->picture;
     }
-                                        
+                                      
     $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name);
-           
+         
     echo sportsmanagementHelperHtml::getBootstrapModalImage(
         'roster'.$this->team->name,
         $picture,
@@ -41,10 +41,10 @@ if ($this->config['show_team_logo'] ) {
         $this->modalwidth,
         $this->modalheight,
         $this->overallconfig['use_jquery_modal']
-    );      
+    );    
     ?>
 
-   
+ 
                 </td>
             </tr>
         </table>

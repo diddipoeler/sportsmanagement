@@ -1,6 +1,6 @@
 <?php	
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage roster
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -30,8 +30,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
  */
 
 /**
-* 
- * Show team-players as defined 
+*
+ * Show team-players as defined
 */
 if (!empty($this->rows)) {
     $k = 0;
@@ -54,7 +54,7 @@ if (!empty($this->rows)) {
  *                            multiple columns possible (depends on the number of event types for the position))
  *      11. Stats type       (optional : $this->config['show_stats'] && isset($this->stats[$row->position_id]),
  */
-    
+  
 
     $positionHeaderSpan = 0;
     $totalcolspan = 0;
@@ -74,8 +74,8 @@ if (!empty($this->rows)) {
         $totalcolspan++;
     }
     /**
-* 
- * Player name and injured/suspended/away columns are always there 
+*
+ * Player name and injured/suspended/away columns are always there
 */
     $positionHeaderSpan += 2;
     $totalcolspan       += 2;
@@ -91,12 +91,12 @@ if (!empty($this->rows)) {
         }
     }
     ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultplayers">    
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultplayers">  
 <table class="<?php echo $this->config['table_class'];?>">
     <?php
     /**
-* 
- * jetzt kommt die schleife über die positionen 
+*
+ * jetzt kommt die schleife über die positionen
 */
     foreach ($this->rows as $position_id => $players)
     {
@@ -104,8 +104,8 @@ if (!empty($this->rows)) {
           $countplayer = 0;
           $age = 0;
           /**
-* 
- * position header 
+*
+ * position header
 */
         $row = current($players);
         $position = $row->position;
@@ -145,46 +145,46 @@ if (!empty($this->rows)) {
         }
         elseif ($this->config['show_birthday_staff'] ) {
             /**
-* 
- * Put empty column to keep vertical alignment with the staff table 
+*
+ * Put empty column to keep vertical alignment with the staff table
 */
         ?>
        <th class="td_c">&nbsp;</th><?php
         }
         if ($this->overallconfig['use_jl_substitution'] ) {
-            if ($this->config['show_games_played'] ) { 
+            if ($this->config['show_games_played'] ) {
                 ?>
               <th class="td_c">
                 <?php
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
                 $picture = $picture_path_sport_type_name.'/played.png';
-                
+              
                 echo HTMLHelper::image($picture, $imageTitle, array('title'=> $imageTitle,'height'=> 20));
                 ?></th>
-                <?php 
+                <?php
             }
-            if ($this->config['show_substitution_stats'] ) { 
+            if ($this->config['show_substitution_stats'] ) {
                 ?>
               <th class="td_c">
                 <?php
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
                 $picture = $picture_path_sport_type_name.'/startroster.png';
-                
+              
                 echo HTMLHelper::image($picture, $imageTitle, array('title'=> $imageTitle,'height'=> 20));
                 ?></th>
               <th class="td_c"><?php
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
                 $picture = $picture_path_sport_type_name.'/in.png';
-                
+              
                 echo HTMLHelper::image($picture, $imageTitle, array('title'=> $imageTitle,'height'=> 20));
                 ?></th>
               <th class="td_c"><?php
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
                 $picture = $picture_path_sport_type_name.'/out.png';
-                
+              
                 echo HTMLHelper::image($picture, $imageTitle, array('title'=> $imageTitle,'height'=> 20));
                 ?></th>
-        
+      
                <th class="td_c">
                 <?php
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
@@ -192,14 +192,14 @@ if (!empty($this->rows)) {
 
                 echo HTMLHelper::image($picture, $imageTitle, array('title'=> $imageTitle,'height'=> 11));
                 ?></th>
-        
+      
                 <?php
             }
         }
-    
+  
         if ($this->config['show_events_stats']) {
             if ($this->positioneventtypes) {
-                if (isset($this->positioneventtypes[$row->position_id]) 
+                if (isset($this->positioneventtypes[$row->position_id])
                     && count($this->positioneventtypes[$row->position_id])
                 ) {
                     $eventCounter=0;
@@ -247,8 +247,8 @@ if (!empty($this->rows)) {
             }
         }
         /**
-* 
- * diddipoeler marktwert 
+*
+ * diddipoeler marktwert
 */
         if ($this->config['show_player_market_value']) {
     ?>
@@ -257,8 +257,8 @@ if (!empty($this->rows)) {
         </th>
     <?php
         }
-        
-        
+      
+      
         ?>
        </tr>
        </thead>
@@ -284,9 +284,9 @@ if (!empty($this->rows)) {
            <td width="30" class="td_c"><?php echo $value;?></td><?php
             }
             $playerName = sportsmanagementHelper::formatName(
-                null, $row->firstname, 
-                $row->nickname, 
-                $row->lastname, 
+                null, $row->firstname,
+                $row->nickname,
+                $row->lastname,
                 $this->config["name_format"]
             );
             if ($this->config['show_player_icon']) {
@@ -294,7 +294,7 @@ if (!empty($this->rows)) {
                 if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") )) {
                     $picture = $row->ppic;
                 }
-            
+          
                         ?>
                   <td width="40" class="td_c" nowrap="nowrap">
                 <?PHP
@@ -306,17 +306,17 @@ if (!empty($this->rows)) {
                     '',
                     $this->modalwidth,
                     $this->modalheight,
-                    $this->overallconfig['use_jquery_modal']                            
+                    $this->overallconfig['use_jquery_modal']                          
                 );
                 ?>
 
                  </td>
                     <?php
             }
-            elseif ($this->config['show_staff_icon']) { 
+            elseif ($this->config['show_staff_icon']) {
                  /**
-* 
-    * Put empty column to keep vertical alignment with the staff table 
+*
+    * Put empty column to keep vertical alignment with the staff table
 */
                 ?>
                    <td width="40" class="td_c" nowrap="nowrap">&nbsp;</td><?php
@@ -328,8 +328,8 @@ if (!empty($this->rows)) {
             }
             elseif ($this->config['show_country_flag_staff']) {
                  /**
-* 
-    * Put empty column to keep vertical alignment with the staff table 
+*
+    * Put empty column to keep vertical alignment with the staff table
 */
                 ?>
                    <td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
@@ -343,7 +343,7 @@ if (!empty($this->rows)) {
             $routeparameter['p'] = $this->project->slug;
             $routeparameter['tid'] = $this->team->slug;
             $routeparameter['pid'] = $row->person_slug;
-        
+      
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
             echo HTMLHelper::link($link, '<span class="playername">'.$playerName.'</span>');
         }
@@ -407,20 +407,20 @@ if (!empty($this->rows)) {
  */
             $age += sportsmanagementHelper::getAge($row->birthday, $this->lastseasondate);
             $countplayer++;
-        
+      
         }
         else
         {
             $birthdateStr="-";
         }
         /**
-* 
- * deathday 
+*
+ * deathday
 */
         if ($row->deathday !="0000-00-00" ) {
             $birthdateStr .= ' [&dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
         }
-                    
+                  
         echo $birthdateStr;
     ?>
     </td><?php
@@ -431,7 +431,7 @@ if (!empty($this->rows)) {
         }
         if ($this->overallconfig['use_jl_substitution']) {
             $model = $this->getModel();
-            
+          
             $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id, $row->projectteam_id, $row->season_team_person_id, $this->project->game_regular_time, 0, Factory::getApplication()->input->get('cfg_which_database', 0));
 
             if (isset($this->InOutStat) && ($this->InOutStat->played > 0)) {
@@ -452,10 +452,10 @@ if (!empty($this->rows)) {
               <td class="td_c" nowrap="nowrap"><?php echo $played;?></td>
             <?php
             }
-            
+          
             /**
-* 
- * spielzeit des spielers 
+*
+ * spielzeit des spielers
 */
             $timePlayed = 0;
             if (!isset($this->overallconfig['person_events']) ) {
@@ -474,8 +474,8 @@ if (!empty($this->rows)) {
         }
         if ($this->config['show_events_stats'] && count($this->playereventstats) > 0) {
             /**
-* 
- * user_defined events in the database are shown 
+*
+ * user_defined events in the database are shown
 */
             foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
             {
@@ -492,14 +492,14 @@ if (!empty($this->rows)) {
               </td>
             <?php
             }
-        
-            
+      
+          
         }
         if ($this->config['show_stats'] && isset($this->stats[$row->position_id])) {
             foreach ($this->stats[$row->position_id] as $stat)
             {
                 if ($stat->showInRoster() && ($stat->position_id==$row->position_id)) {
-                    if (isset($this->playerstats[$row->position_id][$stat->id][$row->pid]) 
+                    if (isset($this->playerstats[$row->position_id][$stat->id][$row->pid])
                         && isset($this->playerstats[$row->position_id][$stat->id][$row->pid]->value)
                     ) {
                         $value = $this->playerstats[$row->position_id][$stat->id][$row->pid]->value;
@@ -516,8 +516,8 @@ if (!empty($this->rows)) {
                             if (isset($dens['den']) && count($dens['den']) > 0) {
                                 foreach($dens['den'] as $den)
                                 {
-                                    if (isset($this->playerstats[$row->position_id][$den][$row->pid]) 
-                                        && isset($this->playerstats[$row->position_id][$den][$row->pid]->value)  
+                                    if (isset($this->playerstats[$row->position_id][$den][$row->pid])
+                                        && isset($this->playerstats[$row->position_id][$den][$row->pid]->value)
                                         && $this->playerstats[$row->position_id][$den][$row->pid]->value
                                     ) {
                                         $nonZeroDen = true;
@@ -547,43 +547,43 @@ if (!empty($this->rows)) {
                 }
             }
         }
-        
+      
         /**
-* 
- * diddipoeler marktwert 
+*
+ * diddipoeler marktwert
 */
         if ($this->config['show_player_market_value']) {
             $total_market_value += $row->market_value;
     ?>
         <td class="td_r" class="hasTip" title="">
-    <?php 
-        echo ($row->market_value > 0 ? number_format($row->market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']); 
+    <?php
+        echo ($row->market_value > 0 ? number_format($row->market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']);
         ?>
         </td>
         <?php
         }
-        
-        
+      
+      
         ?>
        </tr>
         <?php
         /**
-* 
- * dartanzeige 
+*
+ * dartanzeige
 */
-        if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {            
-            ?>  
+        if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {          
+            ?>
          <tr>
          <td colspan="4">
          <div class="panel-group" id="dartereignisse">
-         <div class="panel panel-default">        
+         <div class="panel panel-default">      
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#dartereignisse" href="#<?php echo $row->pid; ?>"><?php echo 'Dart Ereignisse'; ?></a>
                 </h4>
-     </div>            
-     <div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">            
-     <div class="panel-body">     
+     </div>          
+     <div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">          
+     <div class="panel-body">   
 
      <table>
      <tr>
@@ -628,10 +628,10 @@ if (!empty($this->rows)) {
      </div>
      </div>
      </td>
-     </tr>        
-        <?php	        
-        }        
-    
+     </tr>      
+        <?php	      
+        }      
+  
         $k=(1-$k);
         }
         ?>
@@ -639,7 +639,7 @@ if (!empty($this->rows)) {
        <!-- position totals anfang -->
         <?php
         if ($this->config['show_totals'] && ($this->config['show_stats'] || $this->config['show_events_stats'])) {
-  
+
             if ($age && $countplayer ) {
                 $meanage = round($age / $countplayer, 2);
             }
@@ -668,7 +668,7 @@ if (!empty($this->rows)) {
                         }
                         ?>
                      <td class="td_c">
-                    <?php 
+                    <?php
                     echo ($value > 0 ? number_format($value, 0, '', '.') : $this->overallconfig['zero_events_value']);
                     ?>
                    </td>
@@ -690,8 +690,8 @@ if (!empty($this->rows)) {
                         }
                     ?>
                <td class="td_c">
-                <?php 
-                echo ($value > 0 ? $value : $this->overallconfig['zero_events_value']); 
+                <?php
+                echo ($value > 0 ? $value : $this->overallconfig['zero_events_value']);
                 ?>
                 </td>
                 <?php
@@ -699,17 +699,17 @@ if (!empty($this->rows)) {
                 }
             }
             /**
-* 
- * diddipoeler marktwert  
+*
+ * diddipoeler marktwert
 */
             if ($this->config['show_player_market_value']) {
             ?>
            <td class="td_r">
-        <?php 
-        echo ($total_market_value > 0 ? number_format($total_market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']); 
+        <?php
+        echo ($total_market_value > 0 ? number_format($total_market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']);
         ?>
         </td>
-        <?php    
+        <?php  
             }
             ?>
         </tr>

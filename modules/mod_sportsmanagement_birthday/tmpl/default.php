@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -20,11 +20,11 @@ use Joomla\CMS\Factory;
 
 switch ($mode) {
     /**
-* 
- * bootstrap mode template 
+*
+ * bootstrap mode template
 */
 case 'B':
-    ?>    
+    ?>  
     <div class="row">
     <!-- Controls -->
     <div class="controls pull-right hidden-xs">
@@ -72,7 +72,7 @@ case 'B':
                 $birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
                 $birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
                 $birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-                ?>              
+                ?>            
                 <div class="item <?php echo $active; ?>">
                     <div class="row">
                         <div class="col-md-12">
@@ -81,7 +81,7 @@ case 'B':
                                     <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" width="<?php echo $params->get('picture_width'); ?>" />
                                 </div>
                             </div>
-                        </div>        
+                        </div>      
                     </div>
 
                     <div class="info">
@@ -93,22 +93,22 @@ case 'B':
                             <div class="price col-md-6">
 
                                 <h5 class="price-text-color"><?php echo $birthdaytext; ?></h5>
-                            </div>    
+                            </div>  
                         </div>
                     </div>
-                    </div>  
+                    </div>
                     <?PHP
                     $a++;
             }
-            ?>            
+            ?>          
             </div>
             </div>
-        </div>         
+        </div>       
         <?PHP
     break;
     /**
-* 
- * bootstrap mode template 
+*
+ * bootstrap mode template
 */
 case 'B2':
     ?>
@@ -118,7 +118,7 @@ case 'B2':
         <?PHP
         for ($a = 0; $a < count($persons); $a++) {
             $active = ($a == 0) ? 'class="active"' : '';
-            ?>    
+            ?>  
             <li data-target="#myBirthday<?php echo $module->id; ?>" data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
                 <?PHP
         }
@@ -160,7 +160,7 @@ case 'B2':
             $birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
             $birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
             $birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-            ?>    
+            ?>  
             <div class="item <?php echo $active; ?>">
                 <img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>" width="<?php echo $params->get('picture_width'); ?>"  >
                 <div class="carousel-caption">

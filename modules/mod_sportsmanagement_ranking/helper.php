@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Factory;
 
 /**
  * modJSMRankingHelper
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -28,10 +28,10 @@ use Joomla\CMS\Factory;
  */
 class modJSMRankingHelper
 {
-    
+  
     /**
      * modJSMRankingHelper::getData()
-     * 
+     *
      * @param  mixed $params
      * @return
      */
@@ -44,7 +44,7 @@ class modJSMRankingHelper
             JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
             JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
         }
-        
+      
         sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
         sportsmanagementModelProject::setProjectId($params->get('p'), $params->get('cfg_which_database'));
 
@@ -57,9 +57,9 @@ class modJSMRankingHelper
         $divisionid = (int) $params->get('division_id', 0);
         $res   = $ranking->getRanking(null, null, $divisionid, $params->get('cfg_which_database'));
         $teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $params->get('cfg_which_database'), __METHOD__);
-        
+      
         $list = array();
-        foreach ($res as $ptid => $t) 
+        foreach ($res as $ptid => $t)
         {
             $t->team = $teams[$ptid];
             $list[] = $t;
@@ -78,10 +78,10 @@ class modJSMRankingHelper
         return array('project' => $project, 'ranking' => $list, 'colors' => $colors);
 
     }
-  
+
     /**
      * modJSMRankingHelper::getCountGames()
-     * 
+     *
      * @param  mixed $projectid
      * @param  mixed $ishd_update_hour
      * @return void
@@ -90,11 +90,11 @@ class modJSMRankingHelper
     {
         $db = Factory::getDBO();
         $app = Factory::getApplication();
-        $query = $db->getQuery(true);      
-        $date = time();    // aktuelles Datum     
-        $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
+        $query = $db->getQuery(true);    
+        $date = time();    // aktuelles Datum   
+        $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden)
         $match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
-        $query->clear(); 
+        $query->clear();
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
@@ -175,7 +175,7 @@ class modJSMRankingHelper
         case 'lot':
             return $item->cnt_lot;
         case 'lso':
-            return $item->cnt_lso;                
+            return $item->cnt_lso;              
         case 'scorefor':
             return $item->sum_team1_result;
         case 'scoreagainst':
@@ -186,7 +186,7 @@ class modJSMRankingHelper
         case 'scorediff':
             return $item->diff_team_results;
         case 'scorepct':
-            return round(($item->scorePct()), 2);                
+            return round(($item->scorePct()), 2);              
         case 'bonus':
             return $item->bonus_points;
         case 'start':
@@ -208,12 +208,12 @@ class modJSMRankingHelper
         case 'gfa':
             return round(($item->getGFA()), 2);
         case 'gaa':
-            return round(($item->getGAA()), 2);    
+            return round(($item->getGAA()), 2);  
         case 'ppg':
-            return round(($item->getPPG()), 2);    
+            return round(($item->getPPG()), 2);  
         case 'ppp':
-            return round(($item->getPPP()), 2);                    
-                
+            return round(($item->getPPP()), 2);                  
+              
         default:
             if (isset($item->$column)) {
                 return $item->$column;
@@ -258,7 +258,7 @@ class modJSMRankingHelper
 
     /**
      * modJSMRankingHelper::getTeamLink()
-     * 
+     *
      * @param  mixed $item
      * @param  mixed $params
      * @param  mixed $project

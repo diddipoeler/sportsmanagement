@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,9 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {@set_time_limit($maxIm
 
 /**
  * sportsmanagementModeljlextDfbkeyimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,17 +34,17 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 
     /**
  * sportsmanagementModeljlextDfbkeyimport::_loadData()
- * 
+ *
  * @return void
  */
     function _loadData()
     {
-  
+
     }
 
     /**
  * sportsmanagementModeljlextDfbkeyimport::_initData()
- * 
+ *
  * @return void
  */
     function _initData()
@@ -54,16 +54,16 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 
     /**
  * sportsmanagementModeljlextDfbkeyimport::getProjectType()
- * 
+ *
  * @param  integer $project_id
  * @return
  */
     function getProjectType($project_id = 0)
     {
         $this->jsmquery->clear();
-        $this->jsmquery->select('project_type');    
+        $this->jsmquery->select('project_type');  
         $this->jsmquery->from('#__sportsmanagement_project');
-        $this->jsmquery->where('id = ' . $project_id);    
+        $this->jsmquery->where('id = ' . $project_id);  
         try {
             $this->jsmdb->setQuery($this->jsmquery);
             $project_type = $this->jsmdb->loadResult();
@@ -77,21 +77,21 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         }
 
     }
-    
+  
 
     /**
  * sportsmanagementModeljlextDfbkeyimport::getCountry()
- * 
+ *
  * @param  integer $project_id
  * @return
  */
     function getCountry($project_id = 0)
     {
         $this->jsmquery->clear();
-        $this->jsmquery->select('l.country');    
+        $this->jsmquery->select('l.country');  
         $this->jsmquery->from('#__sportsmanagement_league as l');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_project as p on p.league_id = l.id');
-        $this->jsmquery->where('p.id = ' . $project_id);    
+        $this->jsmquery->where('p.id = ' . $project_id);  
         try {
             $this->jsmdb->setQuery($this->jsmquery);
             $country = $this->jsmdb->loadResult();
@@ -109,7 +109,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 
     /**
      * sportsmanagementModeljlextDfbkeyimport::getProjectteams()
-     * 
+     *
      * @param  integer $project_id
      * @param  integer $division_id
      * @return
@@ -125,15 +125,15 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         $this->jsmquery->where('pt.project_id = ' . $project_id);
 
         if ($division_id ) {
-            $this->jsmquery->where('pt.division_id = ' . $division_id);    
+            $this->jsmquery->where('pt.division_id = ' . $division_id);  
         }
-        
+      
         try {
              $this->jsmdb->setQuery($this->jsmquery);
              $this->jsmdb->execute();
              $number = $this->jsmdb->getNumRows();
-             $result = $this->jsmdb->loadObjectList();    
-        
+             $result = $this->jsmdb->loadObjectList();  
+      
             if ($number > 0 ) {
                 return $result;
             }
@@ -147,13 +147,13 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
             $code = $e->getCode(); // Returns '500';
             $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
             return false;
-        }    
-        
+        }  
+      
     }
 
     /**
  * sportsmanagementModeljlextDfbkeyimport::getDFBKey()
- * 
+ *
  * @param  mixed $number
  * @param  mixed $matchdays
  * @return
@@ -176,18 +176,18 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         $this->jsmquery->from('#__sportsmanagement_dfbkey');
         $this->jsmquery->where('schluessel = ' . (int) $number);
         $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.''));
-    
+  
         if ($matchdays == 'ALL' ) {
             $this->jsmquery->group('spieltag');
         }
         elseif ($matchdays == 'FIRST' ) {
             $this->jsmquery->where('spieltag = 1');
         }
-    
+  
         try{
             $this->jsmdb->setQuery($this->jsmquery);
               $result = $this->jsmdb->loadObjectList();
-    
+  
               return $result;
         } catch (Exception $e) {
               $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -195,14 +195,14 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
               $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
               return false;
         }
-    
+  
     }
 
 
-  
+
     /**
    * sportsmanagementModeljlextDfbkeyimport::getMatchdays()
-   * 
+   *
    * @param  integer $project_id
    * @return
    */
@@ -225,11 +225,11 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         }
 
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModeljlextDfbkeyimport::getMatches()
-     * 
+     *
      * @param  integer $project_id
      * @param  integer $division_id
      * @return
@@ -240,10 +240,10 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         $this->jsmquery->select('*');
         $this->jsmquery->from('#__sportsmanagement_round');
         $this->jsmquery->where('project_id = ' . (int)$project_id);
-    
-        try{    
-            $this->jsmdb->setQuery($this->jsmquery);
   
+        try{  
+            $this->jsmdb->setQuery($this->jsmquery);
+
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
                 // Joomla! 3.0 code here
                 $result = $this->jsmdb->loadColumn();
@@ -269,13 +269,13 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         }
 
     }
-    
-    
-    
-    
+  
+  
+  
+  
     /**
      * sportsmanagementModeljlextDfbkeyimport::getSchedule()
-     * 
+     *
      * @param  mixed   $post
      * @param  integer $project_id
      * @param  integer $division_id
@@ -296,11 +296,11 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
                 $this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
                 $this->jsmquery->where('pt.id = ' . (int)$element);
                 if ($division_id ) {
-                    $this->jsmquery->where('pt.division_id = ' . $division_id);    
+                    $this->jsmquery->where('pt.division_id = ' . $division_id);  
                 }
                   $this->jsmdb->setQuery($this->jsmquery);
                   $chooseteam[$tempteams[1]]['teamname'] = $this->jsmdb->loadResult();
-  
+
             }
 
         }
@@ -328,7 +328,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 
         $result = array();
 
-        foreach($dfbresult as $row) 
+        foreach($dfbresult as $row)
         {
 
              $teile = explode(",", $row->paarung);
@@ -339,7 +339,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
                 $temp->round_id = $row->id;
                 $temp->spielnummer = $row->spielnummer;
                 $temp->match_date = $row->round_date_first;
-                $temp->division_id = $division_id;    
+                $temp->division_id = $division_id;  
                 $temp->projectteam1_id = $chooseteam[$teile[0]]['projectteamid'];
                 $temp->projectteam2_id = $chooseteam[$teile[1]]['projectteamid'];
                 $temp->projectteam1_name = $chooseteam[$teile[0]]['teamname'];
@@ -355,19 +355,19 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
         $this->savedfb = $result ;
         return $result;
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModeljlextDfbkeyimport::checkTable()
-     * 
+     *
      * @return void
      */
     function checkTable()
     {
         //$app = Factory::getApplication();
           //$option = Factory::getApplication()->input->getCmd('option');
-          include_once JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' .DIRECTORY_SEPARATOR. 'jinstallationhelper.php';    
+          include_once JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' .DIRECTORY_SEPARATOR. 'jinstallationhelper.php';  
           //$db = sportsmanagementHelper::getDBConnection();
           $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/dfbkeys.sql';
 
@@ -377,17 +377,17 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadResult();
-        
+      
         if (!$result ) {
-            $result = JInstallationHelper::populateDatabase($this->jsmdb, $db_table, $errors);    
-            
+            $result = JInstallationHelper::populateDatabase($this->jsmdb, $db_table, $errors);  
+          
         }
-        
+      
 
 
     }
-  
-  
+
+
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage teampersons
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,9 +22,9 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewteampersons
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,10 +34,10 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 
     /**
      * sportsmanagementViewteampersons::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
 
         $this->restartpage = false;
@@ -66,7 +66,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         if (!$items) {
             /**
             fehlen im projekt die positionen ?
-            wenn ja, dann fehlende positionen hinzufügen 
+            wenn ja, dann fehlende positionen hinzufügen
 */
         } else {
             $this->restartpage = false;
@@ -109,7 +109,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
             $nation = array_merge($nation, $res);
             $this->search_nation = $res;
         }
-        
+      
         $lists['nation'] = $nation;
         $this->lists = $lists;
         $this->project = $project;
@@ -121,7 +121,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         $this->app->setUserState("$this->option.pid", $this->project_id);
         $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);

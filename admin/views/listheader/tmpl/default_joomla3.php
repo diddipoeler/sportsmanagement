@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -55,7 +55,7 @@ $buttons = array(
                         'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'),
                         'access' => array('core.manage', 'com_sportsmanagement'),
                         'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-                        ),      
+                        ),    
                     array(
                         'link' => Route::_('index.php?option=com_sportsmanagement&view=jlextfederations'),
                         'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
@@ -63,7 +63,7 @@ $buttons = array(
                         'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'),
                         'access' => array('core.manage', 'com_sportsmanagement'),
                         'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-                        ),    
+                        ),  
                     array(
                         'link' => Route::_('index.php?option=com_sportsmanagement&view=jlextcountries'),
                         'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
@@ -71,7 +71,7 @@ $buttons = array(
                         'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'),
                         'access' => array('core.manage', 'com_sportsmanagement'),
                         'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-                        ),    
+                        ),  
                     array(
                         'link' => Route::_('index.php?option=com_sportsmanagement&view=jlextassociations'),
                         'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
@@ -79,7 +79,7 @@ $buttons = array(
                         'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'),
                         'access' => array('core.manage', 'com_sportsmanagement'),
                         'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-                        ),    
+                        ),  
                      array(
                         'link' => Route::_('index.php?option=com_sportsmanagement&view=positions'),
                         'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
@@ -103,7 +103,7 @@ $buttons = array(
                         'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
                         'access' => array('core.manage', 'com_sportsmanagement'),
                         'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-                        )          
+                        )        
                         );
 
 
@@ -165,7 +165,7 @@ array('link' => Route::_('index.php?option=com_sportsmanagement&view=templates&p
             'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
             )
 
-            
+          
                         );
 
 
@@ -184,10 +184,10 @@ else
     {
         $groupedButtons[$button['group']][] = $button;
     }
-}            
-        
+}          
+      
 $html = HTMLHelper::_('links.linksgroups', $groupedButtons);
-        
+      
 ?>
 <?php if (!empty($this->sidebar)) : ?>
 
@@ -224,11 +224,11 @@ case 'treetomatchs':
 default:
     if (preg_match("/jsm/i", $view)) {
         echo "Es wurde eine Übereinstimmung gefunden.";
-    } 
-    else 
+    }
+    else
     {
         ?>
-    
+  
         <div id="filter-bar" class="btn-toolbar">
            <div class="filter-search btn-group pull-left">
         <label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></label>
@@ -237,24 +237,24 @@ default:
        <div class="btn-group pull-left">
                 <button type="submit" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
                 <button type="button" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-                       
+                     
             </div>
                 <?php
                 $startRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
                 $endRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
-   
+ 
                 for ($i=$startRange; $i <= $endRange; $i++)
                 {
                           printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#'.$i.';', '&#'.$i.';');
                 }
-                
+              
             ?>
            <div class="btn-group pull-right hidden-phone">
             <label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
         <?php echo $this->pagination->getLimitBox(); ?>
            </div>
-            
-            
+          
+          
           </div>
         <?PHP
     }
@@ -262,4 +262,4 @@ default:
 }
 
 
-?>      
+?>    

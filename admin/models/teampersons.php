@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelTeamPersons
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -35,15 +35,15 @@ class sportsmanagementModelTeamPersons extends JSMModelList
     var $_project_team_id = 0;
     var $_persontype = 0;
     static $db_num_rows = 0;
-    
+  
     /**
      * sportsmanagementModelTeamPersons::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'ppl.lastname',
                         'tp.person_id',
@@ -80,41 +80,41 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 
         $published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
         $this->setState('filter.state', $published);
-        
+      
         if (Factory::getApplication()->input->getVar('team_id') ) {
-            $this->setState('filter.team_id', Factory::getApplication()->input->getVar('team_id'));    
+            $this->setState('filter.team_id', Factory::getApplication()->input->getVar('team_id'));  
         }
         else
         {
             $this->setState('filter.team_id', $this->jsmapp->getUserState("$this->jsmoption.team_id", '0'));
         }
-        
+      
         if (Factory::getApplication()->input->getVar('persontype') ) {
-            $this->setState('filter.persontype', Factory::getApplication()->input->getVar('persontype'));    
+            $this->setState('filter.persontype', Factory::getApplication()->input->getVar('persontype'));  
         }
         else
         {
             $this->setState('filter.persontype', $this->jsmapp->getUserState("$this->jsmoption.persontype", '0'));
         }
-        
+      
         if (Factory::getApplication()->input->getVar('project_team_id') ) {
-            $this->setState('filter.project_team_id', Factory::getApplication()->input->getVar('project_team_id'));    
+            $this->setState('filter.project_team_id', Factory::getApplication()->input->getVar('project_team_id'));  
         }
         else
         {
             $this->setState('filter.project_team_id', $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0'));
         }
-        
+      
         $this->setState('filter.pid', $this->jsmapp->getUserState("$this->jsmoption.pid", '0'));
         $this->setState('filter.season_id', $this->jsmapp->getUserState("$this->jsmoption.season_id", '0'));
 
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
-        $this->setState('list.limit', $value);    
+        $this->setState('list.limit', $value);  
         // List state information.
         parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
         $this->setState('list.start', $value);
-        
+      
         // Filter.order
         $orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
         if (!in_array($orderCol, $this->filter_fields)) {
@@ -126,25 +126,25 @@ class sportsmanagementModelTeamPersons extends JSMModelList
             $listOrder = 'ASC';
         }
         $this->setState('list.direction', $listOrder);
-        
-        
-        
-        
+      
+      
+      
+      
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTeamPersons::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
     {
         // Create a new query object.		
         $this->jsmquery->clear();
-                
+              
         $this->_project_id = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
-            
+          
         $this->jsmquery->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
         $this->jsmquery->select('ppl.position_id as person_position_id');
         $this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
@@ -161,7 +161,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season_id'));
         $this->jsmquery->where('tp.season_id = '.$this->getState('filter.season_id'));
         $this->jsmquery->where('tp.persontype = '.$this->getState('filter.persontype'));
-        
+      
         $this->jsmsubquery1->clear();
         $this->jsmsubquery1->select('ppos.id');
         $this->jsmsubquery1->from('#__sportsmanagement_project_position AS ppos');
@@ -170,7 +170,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id);
         $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype'));
         $this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
-        
+      
         $this->jsmsubquery2->clear();
         $this->jsmsubquery2->select('ppp.published');
         $this->jsmsubquery2->from('#__sportsmanagement_person_project_position AS ppp');
@@ -178,11 +178,11 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmsubquery2->where('ppp.project_id = '.$this->_project_id);
         $this->jsmsubquery2->where('ppp.persontype = '.$this->getState('filter.persontype'));
         $this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS project_published');
-        
+      
         if (is_numeric($this->getState('filter.state')) ) {
             $this->jsmquery->where('tp.published = '.$this->getState('filter.state'));
         }
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where(
                 '(LOWER(ppl.lastname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%').
@@ -190,19 +190,19 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                 'OR LOWER(ppl.nickname) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')'
             );
         }
-            
+          
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-       
+     
            return $this->jsmquery;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelTeamPersons::PersonProjectPosition()
-     * 
+     *
      * @return void
      */
     function PersonProjectPosition($project_id,$_persontype)
@@ -213,32 +213,32 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(); 
-        $query = $db->getQuery(true);    
-        
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);  
+      
         // Select some fields
         $query->select('ppl.*');
         // From table
         $query->from('#__sportsmanagement_person_project_position AS ppl');
         $query->where('ppl.project_id = '.$project_id);
         $query->where('ppl.persontype = '.$_persontype);
-        
+      
         $db->setQuery($query);
         //$db->query();
         $result = $db->loadObjectList();
-        
+      
         if (!$result) {
                return false;
         }
         return $result;
-        
+      
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelTeamPersons::checkProjectPositions()
-     * 
+     *
      * @param  mixed $project_id
      * @param  mixed $persontype
      * @param  mixed $team_id
@@ -260,13 +260,13 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $user = Factory::getUser();
         $modified = $date->toSql();
         $modified_by = $user->get('id');
-       
+     
         /**
  * tabelle: sportsmanagement_person_project_position
  * feld import_id einfügen
  */
-        $jsm_table = '#__sportsmanagement_person_project_position'; 
-        try { 
+        $jsm_table = '#__sportsmanagement_person_project_position';
+        try {
                 $query = $db->getQuery(true);
                 $query->clear();
                 $query = "ALTER TABLE `".$jsm_table."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
@@ -285,15 +285,15 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $query->clear();
         $query->select('stp.person_id,ppos.id as project_position_id');
         $query->from('#__sportsmanagement_season_team_person_id as stp');
-        $query->join('INNER', '#__sportsmanagement_person AS p ON p.id = stp.person_id'); 
-        
-        $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = p.position_id'); 
-        
+        $query->join('INNER', '#__sportsmanagement_person AS p ON p.id = stp.person_id');
+      
+        $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = p.position_id');
+      
         $query->where('stp.team_id = '.$team_id);
         $query->where('stp.season_id = '.$season_id);
         $query->where('stp.persontype = '.$persontype);
         $query->where('ppos.project_id = '.$project_id);
-        try { 
+        try {
                  $db->setQuery($query);
                 $result = $db->loadObjectList();
         }
@@ -304,7 +304,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                 //    $db->transactionRollback();
                 //    JErrorPage::render($e);
         }
-       
+     
         if ($result ) {
             foreach( $result as $row )
             {
@@ -333,7 +333,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                         ->values(implode(',', $values));
                     // Set the query using our newly populated query object and execute it.
                     $db->setQuery($insertquery);
-               
+             
                     if ($insert ) {
                         if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) {
                         }
@@ -341,7 +341,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                         {
                         }
                     }
-                
+              
                 }
             }
             return true;
@@ -351,14 +351,14 @@ class sportsmanagementModelTeamPersons extends JSMModelList
             return false;
         }
 
-        
+      
     }
 
 
 
     /**
      * sportsmanagementModelTeamPersons::getProjectTeamplayers()
-     * 
+     *
      * @param  mixed $project_team_id
      * @return
      */
@@ -370,10 +370,10 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-        $db = sportsmanagementHelper::getDBConnection(); 
+        $db = sportsmanagementHelper::getDBConnection();
         $query    = $db->getQuery(true);
-        $user    = Factory::getUser(); 
-       
+        $user    = Factory::getUser();
+     
         // Select some fields
         $query->select('ppl.*');
         // From table
@@ -393,11 +393,11 @@ class sportsmanagementModelTeamPersons extends JSMModelList
              //    $db->transactionRollback();
              //    JErrorPage::render($e);
         }
-                
-        
+              
+      
         return $result;
     }
-    
+  
 
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -42,7 +42,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME', 'objassoc.short_name', $this->sortDirection, $this->sortColumn);
                     ?>
-                </th>                    
+                </th>                  
                 <th width="5%" class="title" style="vertical-align: top; ">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_COUNTRY', 'objassoc.country', $this->sortDirection, $this->sortColumn);
@@ -132,7 +132,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         if (empty($row->assocflag) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->assocflag)) {
                             echo '<i class="fa fa-flag text-danger"></i>';
                         } else {
-                            ?>                                    
+                            ?>                                  
                             <a href="<?php echo Uri::root() . $row->assocflag; ?>" title="<?php echo $row->name; ?>" class="modal">
                                 <img src="<?php echo Uri::root() . $row->assocflag; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>
@@ -149,7 +149,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         if (empty($row->picture) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->picture)) {
                             echo '<i class="fa fa-picture-o text-danger"></i>';
                         } else {
-                            ?>                                    
+                            ?>                                  
                             <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
                                 <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>

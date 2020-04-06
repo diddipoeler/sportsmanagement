@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,8 +33,8 @@ foreach( $current as $ptid => $team )
     $team->team = $this->teams[$ptid];
 
     /**
-* 
- * Table colors 
+*
+ * Table colors
 */
     $color = "";
 
@@ -42,8 +42,8 @@ foreach( $current as $ptid => $team )
         $color = $this->colors[$j]["color"];
     }
 
-    if (isset($this->colors[$j]["from"]) && isset($this->colors[$j]["to"]) 
-        && ( $counter > $this->colors[$j]["from"] && $counter <= $this->colors[$j]["to"] ) 
+    if (isset($this->colors[$j]["from"]) && isset($this->colors[$j]["to"])
+        && ( $counter > $this->colors[$j]["from"] && $counter <= $this->colors[$j]["to"] )
     ) {
         $color = $this->colors[$j]["color"];
     }
@@ -53,8 +53,8 @@ foreach( $current as $ptid => $team )
     }
 
     /**
-* 
- * Favorite Team 
+*
+ * Favorite Team
 */
     $format = "%s";
     $favStyle = '';
@@ -80,8 +80,8 @@ foreach( $current as $ptid => $team )
     echo "\n";
 
     /**
-* 
- * rank row 
+*
+ * rank row
 */
     echo '<td class="rankingrow_rank" ';
     if($color != '') {
@@ -101,8 +101,8 @@ foreach( $current as $ptid => $team )
     echo "\n";
 
     /**
-* 
- * Last rank (image) 
+*
+ * Last rank (image)
 */
     echo '<td class="rankingrow_lastrankimg" ';
     if($color != '' && $config['use_background_row_color']) {
@@ -114,8 +114,8 @@ foreach( $current as $ptid => $team )
     echo "\n";
 
     /**
-* 
- * Last rank (number) 
+*
+ * Last rank (number)
 */
     echo '<td class="rankingrow_lastrank" nowrap="nowrap" ';
     if($color != '' && $config['use_background_row_color']) {
@@ -130,8 +130,8 @@ foreach( $current as $ptid => $team )
     echo "\n";
 
     /**
-* 
- * logo - jersey 
+*
+ * logo - jersey
 */
     if ($config['show_logo_small_table'] != "no_logo" ) {
         echo '<td class="rankingrow_logo"';
@@ -160,8 +160,8 @@ foreach( $current as $ptid => $team )
                 $config['team_picture_width'],
                 $config['team_picture_height'], 3
             );
-        }  
-        else 
+        }
+        else
         {
             $pic = $config['show_logo_small_table'];
             switch ($pic)
@@ -175,9 +175,9 @@ foreach( $current as $ptid => $team )
             case 'logo_big';
                 echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
-                
+              
             }
-                  
+                
         }
 
         echo '</td>';
@@ -185,8 +185,8 @@ foreach( $current as $ptid => $team )
     }
 
     /**
-* 
- * Team name 
+*
+ * Team name
 */
     echo '<td class="rankingrow_teamname" nowrap="nowrap"';
     if($color != '' && $config['use_background_row_color']) {
@@ -201,8 +201,8 @@ foreach( $current as $ptid => $team )
     echo "\n";
 
     /**
-* 
- * START OPTIONAL COLUMNS DISPLAY 
+*
+ * START OPTIONAL COLUMNS DISPLAY
 */
     foreach ( $columns AS $c )
     {
@@ -214,7 +214,7 @@ foreach( $current as $ptid => $team )
         //       $routeparameter['division'] = 0;
         //       $routeparameter['mode'] = 0;
         //       $routeparameter['ptid'] = $team->ptid_slug;
-        
+      
         switch ( trim(strtoupper($c)) )
         {
         case 'PLAYED':
@@ -320,7 +320,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'LSO':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -331,7 +331,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'WINPCT':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -370,7 +370,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'LEGS_DIFF':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -393,7 +393,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'SCOREFOR':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -415,7 +415,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'SCOREPCT':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -424,11 +424,11 @@ foreach( $current as $ptid => $team )
             echo '>';
             $scorepct=round(($team->scorePct()), 2);
             printf($format, $scorepct);
-                    
+                  
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'RESULTS':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -483,7 +483,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'POINTS_RATIO':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {
@@ -495,7 +495,7 @@ foreach( $current as $ptid => $team )
             echo '</td>';
             echo "\n";
             break;
-                    
+                  
         case 'BONUS':
             echo '<td class="rankingrow"';
             if($color != '' && $config['use_background_row_color']) {

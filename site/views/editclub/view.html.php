@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewEditClub
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -27,15 +27,15 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementViewEditClub extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewEditClub::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-    
+  
         $this->item = $this->model->getData();
         $lists = array();
         $this->form = $this->get('Form');
@@ -49,26 +49,26 @@ class sportsmanagementViewEditClub extends sportsmanagementView
                 $this->item->dissolved = '';
                 $this->form->setValue('dissolved', '');
             }
-            
+          
         }
         else
         {
             $this->form->setValue('founded', '');
             $this->form->setValue('dissolved', '');
         }
-        
+      
           $this->item->merge_teams = explode(",", $this->item->merge_teams);
-    
+  
 
-            
+          
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
         $this->extended = $extended;
         $this->lists = $lists;
 
         $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
-    
+  
     }
 
-    
+  
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,8 +30,8 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory) {@ini_set('memory_limi
 
 /**
  * sportsmanagementModeljsminlinehockey
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -46,7 +46,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
     static public $success_text = '';
     var $success_text_teams = '';
     var $success_text_results = '';
-    
+  
     var $teamart = '';
     var $country = '';
     var $project_type = '';
@@ -62,16 +62,16 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljsminlinehockey::__construct()
- * 
+ *
  * @return void
  */
     function __construct()
     {
           $mainframe = Factory::getApplication();
-        
+      
         if($mainframe->isClient('administrator') ) {
             /**
- * es wird keine excel verarbeitung mehr angeboten 
+ * es wird keine excel verarbeitung mehr angeboten
 */
             //require_once(JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'PHPExcel'.DIRECTORY_SEPARATOR.'PHPExcel.php');
         }
@@ -81,7 +81,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljsminlinehockey::checkProjectTeam()
- * 
+ *
  * @param  mixed $team_id
  * @param  mixed $project_id
  * @param  mixed $season_id
@@ -119,7 +119,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
             }
             else
             {
-    
+  
                 // und dem projekt hinzuf?gen
                 $temp_project_team = new stdClass();
                 $temp_project_team->team_id = $season_team_id;
@@ -131,15 +131,15 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 }
                 else
                 {
-                    return 0;     
-                }    
+                    return 0;   
+                }  
 
-            }    
+            }  
 
         }
         else
         {
-            // team ist nicht der saison zugeordnet  
+            // team ist nicht der saison zugeordnet
             $temp_season_team_id = new stdClass();
             $temp_season_team_id->team_id = $team_id;
             $temp_season_team_id->season_id = $season_id;
@@ -157,15 +157,15 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 }
                 else
                 {
-                    return 0;     
+                    return 0;   
                 }
 
             }
             else
             {
-                return 0;                   
-            }    
-    
+                return 0;                 
+            }  
+  
         }
 
     }
@@ -174,7 +174,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljsminlinehockey::getmatches()
- * 
+ *
  * @param  integer $projectid
  * @param  string  $username
  * @param  string  $password
@@ -234,8 +234,8 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
             $result = Factory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
             // runde angelegt
             if ($result ) {
-                $round_id = $db->insertid();      
-            }   
+                $round_id = $db->insertid();    
+            } 
 
         }
 
@@ -299,13 +299,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 /**
  * hier überprüfen wir den heimverein
  */
- 
-                $query->clear(); 
-                $query->select('id'); 
- 
-                $query->from('#__sportsmanagement_club'); 
-                $query->where('id = '.$temp->club_id_home); 
-                $db->setQuery($query); 
+
+                $query->clear();
+                $query->select('id');
+
+                $query->from('#__sportsmanagement_club');
+                $query->where('id = '.$temp->club_id_home);
+                $db->setQuery($query);
 
                 try {
                     $club_id_heim = $db->loadResult();
@@ -321,12 +321,12 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                     $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
                     $linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
                     if (!copy($linkaddress, $filepath) ) {
-                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.$linkaddress.'</pre>'), 'Error');    
+                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.$linkaddress.'</pre>'), 'Error');  
                     }
                     else
                     {
                     }
-    
+  
                     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''), '');
                     $profile = new stdClass();
                     $profile->id = $temp->club_id_home;
@@ -342,14 +342,14 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 if ($temp->team_id_home ) {
                     /**
  * hier überprüfen wir die heimmannschaft
- */     
- 
-                    $query->clear(); 
-                    $query->select('id'); 
- 
-                    $query->from('#__sportsmanagement_team'); 
-                    $query->where('id = '.$temp->team_id_home); 
-                    $db->setQuery($query); 
+ */   
+
+                    $query->clear();
+                    $query->select('id');
+
+                    $query->from('#__sportsmanagement_team');
+                    $query->where('id = '.$temp->team_id_home);
+                    $db->setQuery($query);
                     if (!$db->loadResult() ) {
                         $profile = new stdClass();
                         $profile->id = $temp->team_id_home;
@@ -360,7 +360,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                         $profile->info = $temp->team_info_home;
                         $profile->sports_type_id = $sports_type_id;
                         $profile->alias = JFilterOutput::stringURLSafe($temp->team_name_home);;
- 
+
                         // Insert the object into the user profile table.
                         $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
                     }
@@ -398,13 +398,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 /**
  * hier überprüfen wir den auswärtsverein
  */
- 
-                $query->clear(); 
-                $query->select('id'); 
- 
-                $query->from('#__sportsmanagement_club'); 
-                $query->where('id = '.$temp->club_id_away); 
-                $db->setQuery($query); 
+
+                $query->clear();
+                $query->select('id');
+
+                $query->from('#__sportsmanagement_club');
+                $query->where('id = '.$temp->club_id_away);
+                $db->setQuery($query);
 
                 try {
                     $club_id_away = $db->loadResult();
@@ -417,7 +417,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 }
 
                 if (!$club_id_away ) {
-                    $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
+                    $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);  
                     $profile = new stdClass();
                     $profile->id = $temp->club_id_away;
                     $profile->name = $temp->club_name_away;
@@ -432,14 +432,14 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 if ($temp->team_id_away) {
                     /**
  * hier überprüfen wir die auswärtsmannschaft
- */    
- 
-                    $query->clear(); 
-                    $query->select('id'); 
- 
-                    $query->from('#__sportsmanagement_team'); 
-                    $query->where('id = '.$temp->team_id_away); 
-                    $db->setQuery($query); 
+ */  
+
+                    $query->clear();
+                    $query->select('id');
+
+                    $query->from('#__sportsmanagement_team');
+                    $query->where('id = '.$temp->team_id_away);
+                    $db->setQuery($query);
                     if (!$db->loadResult() ) {
                         $profile = new stdClass();
                         $profile->id = $temp->team_id_away;
@@ -450,7 +450,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                         $profile->info = $temp->team_info_away;
                         $profile->sports_type_id = $sports_type_id;
                         $profile->alias = JFilterOutput::stringURLSafe($temp->team_name_away);;
- 
+
                         // Insert the object into the table.
                         $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
                     }
@@ -529,13 +529,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 $query->where('projectteam1_id = '.$match->projectteam1_id);
                 $query->where('projectteam2_id = '.$match->projectteam2_id);
                 $db->setQuery($query);
-                $match_id  = $db->loadResult();        
+                $match_id  = $db->loadResult();      
 
                 if ($match_id ) {
 
-                    if (is_numeric($match->team1_result) && is_numeric($match->team2_result) ) {    
-                        $row = new stdClass();    
-                        $row->id = $match_id;    
+                    if (is_numeric($match->team1_result) && is_numeric($match->team2_result) ) {  
+                        $row = new stdClass();  
+                        $row->id = $match_id;  
                         $row->team1_result = $match->team1_result;
                         $row->team2_result = $match->team2_result;
                         $row->team1_result_split = $match->team1_result_split;
@@ -562,8 +562,8 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                     else
                     {
                         // aber das datum updaten
-                        $row = new stdClass(); 
-                        $row->id = $match_id;     
+                        $row = new stdClass();
+                        $row->id = $match_id;   
                         $row->match_date = $match->match_date;
                         $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
                         $row->division_id = $match->division_id;
@@ -572,23 +572,23 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                         $row->match_number = $match->match_id;
                         // update the object into the table.
                         $result = Factory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
-    
+  
                     }
-    
-                }    
+  
+                }  
                 else
                 {
                     // bei einer normalen liga und vorhandener runde
                     // kann das spiel angelegt werden
-                    if ($match->round_id && $match->projectteam1_id && $match->projectteam2_id ) {    
-                        $rowInsert = new stdClass();    
+                    if ($match->round_id && $match->projectteam1_id && $match->projectteam2_id ) {  
+                        $rowInsert = new stdClass();  
                         $rowInsert->import_match_id = $match->match_id;
                         $rowInsert->match_number = $match->match_id;
                         $rowInsert->round_id = $match->round_id;
                         $rowInsert->projectteam1_id = $match->projectteam1_id;
                         $rowInsert->projectteam2_id = $match->projectteam2_id;
 
-                        if (is_numeric($match->team1_result) && is_numeric($match->team2_result) ) { 
+                        if (is_numeric($match->team1_result) && is_numeric($match->team2_result) ) {
                             $rowInsert->team1_result = $match->team1_result;
                             $rowInsert->team2_result = $match->team2_result;
                             $rowInsert->team1_result_ot = $match->team1_result_ot;
@@ -604,13 +604,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
                         // update the object into the table.
                         $result = Factory::getDbo()->insertObject('#__sportsmanagement_match', $rowInsert);
-   
-    
-                    }    
-    
+ 
+  
+                    }  
+  
                 }
-    
-            }    
+  
+            }  
 
 
 
@@ -651,35 +651,35 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 /**
  * verein mit dem spielort updaten
  */
-                $profile = new stdClass(); 
+                $profile = new stdClass();
                 $profile->id = $playground_club_id;
                 $profile->standard_playground = $playground_id;
-                // update the object into the table. 
+                // update the object into the table.
                 $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $profile, 'id');
 
 
-  
-                $query->clear();  
-                $query->select('id');  
-  
-                $query->from('#__sportsmanagement_playground');  
-                $query->where('id = '.$playground_id);  
-                try {    
-                    $db->setQuery($query);  
+
+                $query->clear();
+                $query->select('id');
+
+                $query->from('#__sportsmanagement_playground');
+                $query->where('id = '.$playground_id);
+                try {  
+                    $db->setQuery($query);
                     $result = $db->loadResult();
                     if (!$result ) {
-                        $profile = new stdClass(); 
-                        $profile->id = $playground_id; 
-                        $profile->club_id = $playground_club_id; 
-                        $profile->name = $playground_name; 
-                        $profile->short_name = $playground_short_name; 
-                        $profile->address = $playground_street; 
-                        $profile->zipcode = $playground_postal_code; 
-                        $profile->city = $playground_city; 
+                        $profile = new stdClass();
+                        $profile->id = $playground_id;
+                        $profile->club_id = $playground_club_id;
+                        $profile->name = $playground_name;
+                        $profile->short_name = $playground_short_name;
+                        $profile->address = $playground_street;
+                        $profile->zipcode = $playground_postal_code;
+                        $profile->city = $playground_city;
                         $profile->country = 'DEU';
-                        $profile->alias = JFilterOutput::stringURLSafe($playground_name);; 
-                        // Insert the object into the table. 
-                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
+                        $profile->alias = JFilterOutput::stringURLSafe($playground_name);;
+                        // Insert the object into the table.
+                        $result = Factory::getDbo()->insertObject('#__sportsmanagement_playground', $profile);
                     }
                 } catch (Exception $e) {
                              //   $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
@@ -699,12 +699,12 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         $query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);
         $db->setQuery($query);
-        $rounds = $db->loadObjectList(); 
+        $rounds = $db->loadObjectList();
         foreach( $rounds as $round )
         {
             $query->clear();
             $query->select('min(match_date)');
-            $query->from('#__sportsmanagement_match ');   
+            $query->from('#__sportsmanagement_match '); 
             $query->where('round_id = '.$round->id);
             $db->setQuery($query);
             $von = $db->loadResult();
@@ -713,7 +713,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
             $query->clear();
             $query->select('max(match_date)');
-            $query->from('#__sportsmanagement_match ');   
+            $query->from('#__sportsmanagement_match '); 
             $query->where('round_id = '.$round->id);
             $db->setQuery($query);
             $bis = $db->loadResult();
@@ -722,16 +722,16 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
             // Create an object for the record we are going to update.
             $object = new stdClass();
- 
+
             // Must be a valid primary key value.
             $object->id = $round->id;
             $object->round_date_first = $von;
             $object->round_date_last = $bis;
- 
-            // Update their details in the users table using id as the primary key.
-            $result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');     
 
-        } 
+            // Update their details in the users table using id as the primary key.
+            $result = Factory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');   
+
+        }
 
 
 
@@ -740,7 +740,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljsminlinehockey::getMatchLink()
- * 
+ *
  * @param  mixed $projectid
  * @return
  */
@@ -750,16 +750,16 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         $app = Factory::getApplication();
         $post = Factory::getApplication()->input->post->getArray(array());
 
-        if ($app->isClient('administrator') ) { 
+        if ($app->isClient('administrator') ) {
             $view = Factory::getApplication()->input->getVar('view');
         }
         else
         {
-            $view = 'jsminlinehockey';    
+            $view = 'jsminlinehockey';  
         }
         //$project_id = $mainframe->getUserState( "$option.pid", '0' );
         $db = Factory::getDBO();
-        $query = $db->getQuery(true);    
+        $query = $db->getQuery(true);  
 
         $query->select('ev.fieldvalue');
         $query->from('#__sportsmanagement_user_extra_fields_values as ev ');
@@ -770,14 +770,14 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         $query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
         $db->setQuery($query);
         $derlink  = $db->loadResult();
-    
+  
         return $derlink;
     }
 
-        
+      
     /**
  * sportsmanagementModeljsminlinehockey::getClubs()
- * 
+ *
  * @return void
  */
     function getClubs()
@@ -800,13 +800,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
         //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 
- 
-        $query->clear(); 
-        $query->select('id'); 
- 
-        $query->from('#__sportsmanagement_sports_type'); 
-        $query->where('name LIKE '.$db->Quote(''.'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY'.'')); 
-        $db->setQuery($query); 
+
+        $query->clear();
+        $query->select('id');
+
+        $query->from('#__sportsmanagement_sports_type');
+        $query->where('name LIKE '.$db->Quote(''.'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY'.''));
+        $db->setQuery($query);
         $sports_type_id = $db->loadResult();
         if (!$sports_type_id ) {
             $profile = new stdClass();
@@ -861,13 +861,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                     $club_id = $value_club->id;
                     $club_name = $value_club->name;
 
- 
-                    $query->clear(); 
-                    $query->select('id'); 
- 
-                    $query->from('#__sportsmanagement_club'); 
-                    $query->where('id = '.$club_id); 
-                    $db->setQuery($query); 
+
+                    $query->clear();
+                    $query->select('id');
+
+                    $query->from('#__sportsmanagement_club');
+                    $query->where('id = '.$club_id);
+                    $db->setQuery($query);
 
                     try {
                         $club_id_db = $db->loadResult();
@@ -888,7 +888,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                         $profile->name = $club_name;
                         $profile->country = 'DEU';
                         $profile->alias = JFilterOutput::stringURLSafe($club_name);;
- 
+
                         // Insert the object into the user profile table.
 
                         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''), '');
@@ -902,12 +902,12 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
             break;
 
         case 'teams':
- 
-            $query->clear(); 
-            $query->select('id'); 
- 
-            $query->from('#__sportsmanagement_club'); 
-            $db->setQuery($query); 
+
+            $query->clear();
+            $query->select('id');
+
+            $query->from('#__sportsmanagement_club');
+            $db->setQuery($query);
 
             $db_clubs = $db->loadObjectList();
 
@@ -941,13 +941,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                     $team_age_group = $value_team->team_age_group;
                     $team_league = $value_team->team_league;
 
- 
-                    $query->clear(); 
-                    $query->select('id'); 
- 
-                    $query->from('#__sportsmanagement_team'); 
-                    $query->where('id = '.$team_id); 
-                    $db->setQuery($query); 
+
+                    $query->clear();
+                    $query->select('id');
+
+                    $query->from('#__sportsmanagement_team');
+                    $query->where('id = '.$team_id);
+                    $db->setQuery($query);
 
                     if (!$db->loadResult() ) {
                         $profile = new stdClass();
@@ -975,7 +975,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                         $object->alias = JFilterOutput::stringURLSafe($team);;
                         // Update their details in the users table using id as the primary key.
                         $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
-    
+  
                     }
                 }
 
@@ -983,12 +983,12 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
             break;
 
         case 'players':
- 
-            $query->clear(); 
-            $query->select('id,club_id'); 
- 
-            $query->from('#__sportsmanagement_team'); 
-            $db->setQuery($query); 
+
+            $query->clear();
+            $query->select('id,club_id');
+
+            $query->from('#__sportsmanagement_team');
+            $db->setQuery($query);
 
             $db_teams = $db->loadObjectList();
 
@@ -1026,13 +1026,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
 
                     $parts = array();
- 
-                    $query->clear(); 
-                    $query->select('id'); 
- 
-                    $query->from('#__sportsmanagement_person'); 
-                    $query->where('id = '.$player_id); 
-                    $db->setQuery($query); 
+
+                    $query->clear();
+                    $query->select('id');
+
+                    $query->from('#__sportsmanagement_person');
+                    $query->where('id = '.$player_id);
+                    $db->setQuery($query);
 
                     if (!$db->loadResult() ) {
                         $profile = new stdClass();
@@ -1073,18 +1073,18 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
 
         if ($xml ) {
-            foreach( $xml->children() as $quote )  
-            { 
+            foreach( $xml->children() as $quote )
+            {
                 $club_id = (string)$quote->club_id;
                 $club_name = (string)$quote->club_name;
 
- 
-                $query->clear(); 
-                $query->select('id'); 
- 
-                $query->from('#__sportsmanagement_club'); 
-                $query->where('id = '.$club_id); 
-                $db->setQuery($query); 
+
+                $query->clear();
+                $query->select('id');
+
+                $query->from('#__sportsmanagement_club');
+                $query->where('id = '.$club_id);
+                $db->setQuery($query);
                 if (!$db->loadResult() ) {
                     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''), '');
                     $profile = new stdClass();
@@ -1116,8 +1116,8 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                 $xml_team = simplexml_load_string($result);
 
 
-                foreach( $xml_team->children() as $quote_team )  
-                { 
+                foreach( $xml_team->children() as $quote_team )
+                {
                     $team = (string)$quote_team->team;
                     $team_name = (string)$quote_team->team_name;
                     $team_number= (string)$quote_team->team_number;
@@ -1125,16 +1125,16 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                     $team_age_group = (string)$quote_team->team_age_group;
                     $team_league = (string)$quote_team->team_league;
 
- 
-                    $query->clear(); 
-                    $query->select('t.id'); 
- 
-                    $query->from('#__sportsmanagement_team as t'); 
+
+                    $query->clear();
+                    $query->select('t.id');
+
+                    $query->from('#__sportsmanagement_team as t');
                     $query->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id ');
-                    $query->where('c.id = '.$club_id); 
+                    $query->where('c.id = '.$club_id);
                     $query->where('LOWER(t.name) LIKE '.$db->Quote(''.strtolower($team_name).''));
                     $query->where('LOWER(t.info) LIKE '.$db->Quote(''.strtolower($team).''));
-                    $db->setQuery($query); 
+                    $db->setQuery($query);
 
                     if (!$db->loadResult() ) {
 
@@ -1177,8 +1177,8 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
 
 
-                            foreach( $xml_player->children() as $quote_player )  
-                            { 
+                            foreach( $xml_player->children() as $quote_player )
+                            {
                                 $player_id = (string)$quote_player->player_id;
                                 $player_last_name = (string)$quote_player->last_name;
                                 $player_first_name = (string)$quote_player->first_name;
@@ -1194,13 +1194,13 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                                 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth), '');
 
                                 $parts = array();
- 
-                                $query->clear(); 
-                                $query->select('id'); 
- 
-                                $query->from('#__sportsmanagement_person'); 
-                                $query->where('id = '.$player_id); 
-                                $db->setQuery($query); 
+
+                                $query->clear();
+                                $query->select('id');
+
+                                $query->from('#__sportsmanagement_person');
+                                $query->where('id = '.$player_id);
+                                $db->setQuery($query);
 
                                 if (!$db->loadResult() ) {
                                     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''), 'Notice');
@@ -1214,7 +1214,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
                                     $profile->published = 1;
                                     $parts = array( trim($player_first_name), trim($player_last_name) );
                                     $profile->alias = JFilterOutput::stringURLSafe(implode(' ', $parts));
- 
+
                                     $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
                                     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''), 'Notice');
                                 }
@@ -1249,16 +1249,16 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljsminlinehockey::getdata()
- * 
+ *
  * @return void
  */
     function getdata()
     {
         /**
-* 
- * es wird keine excel verarbeitung mehr angeboten 
+*
+ * es wird keine excel verarbeitung mehr angeboten
 */
-    
+  
     }
 
 

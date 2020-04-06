@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -48,15 +48,15 @@ use Joomla\CMS\Component\ComponentHelper;
 
 $css = Uri::base().'modules/'.$module->module.'/assets/rquote.css';
 $document = Factory::getDocument();
-$document->addStyleSheet($css); 
+$document->addStyleSheet($css);
 
 $quotemarks = $params->get('quotemarks');
-$showpicture = $params->get('showpicture');  
+$showpicture = $params->get('showpicture');
 $cfg_which_database = $params->get('cfg_which_database');
 
-if ($cfg_which_database ) {    
+if ($cfg_which_database ) {  
     $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
-    DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));    
+    DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));  
 }
 else
 {
@@ -73,9 +73,9 @@ if($quotemarks == 0 ) {
     if ($showpicture ) {
         //if ( sportsmanagementHelper::existPicture($rquote->person_picture) )
         //{
-            
+          
         echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        //}    
+        //}  
         //else
         //{
         //    echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
@@ -86,15 +86,15 @@ if($quotemarks == 0 ) {
         echo '</p>';
         echo '</strong>';
 }
- 
+
 if($quotemarks == 1 ) {
        echo '<strong>';
         echo '<p>';
     if ($showpicture ) {
         if (sportsmanagementHelper::existPicture($rquote->person_picture) ) {
-            
+          
             echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        }    
+        }  
         else
         {
             echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
@@ -112,9 +112,9 @@ if($quotemarks == 2 ) {
         echo '<p>';
     if ($showpicture ) {
         if (sportsmanagementHelper::existPicture($rquote->person_picture) ) {
-            
+          
             echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        }    
+        }  
         else
         {
             echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
@@ -132,9 +132,9 @@ if($quotemarks == 3 ) {
         echo '<p>';
     if ($showpicture ) {
         if (sportsmanagementHelper::existPicture($rquote->person_picture) ) {
-            
+          
             echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        }    
+        }  
         else
         {
             echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
@@ -147,4 +147,4 @@ if($quotemarks == 3 ) {
      echo '</p>';
         echo '</strong>';
 }
-    
+  

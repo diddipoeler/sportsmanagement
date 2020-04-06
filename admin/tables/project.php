@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableProject
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -28,7 +28,7 @@ use Joomla\CMS\Filter\OutputFilter;
 class sportsmanagementTableProject extends JSMTable
 {
 
-    
+  
     /**
      * Constructor
      *
@@ -41,7 +41,7 @@ class sportsmanagementTableProject extends JSMTable
         parent::__construct('#__sportsmanagement_project', 'id', $db);
     }
 
-    
+  
     /**
      * Overloaded check method to ensure data integrity
      *
@@ -56,8 +56,8 @@ class sportsmanagementTableProject extends JSMTable
 
         return true;
     }
-    
-    
-    
+  
+  
+  
 }
 ?>

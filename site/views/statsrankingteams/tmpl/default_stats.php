@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,22 +21,22 @@ use Joomla\CMS\Component\ComponentHelper;
 <table class="<?php echo $this->config['table_class'];?>">
 <thead>
 <tr class="">
-<th class="td_r rank"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_RANK');    ?></th>  
-<th class="td_l"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TEAM');    ?></th>  
-<?php  
+<th class="td_r rank"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_RANK');    ?></th>
+<th class="td_l"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TEAM');    ?></th>
+<?php
 foreach ( $this->stats AS $rows )
 {
-    if ($rows->_name == 'basic' ) {  
-    ?>  
+    if ($rows->_name == 'basic' ) {
+    ?>
     <th class="td_r" class="nowrap"><?php	echo Text::_($rows->name); ?></th>
-    <?php  
+    <?php
     }
-}  
-  
-?>  
+}
+
+?>
 <th class="td_r" class="nowrap"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'); ?></th>
 </tr>
-</thead>  
+</thead>
 
 
 <?php
@@ -50,8 +50,8 @@ foreach ( $this->teamstotal as $key => $value )
     $routeparameter['p'] = $this->project->id;
     $routeparameter['tid'] = $value[team_id];
     $routeparameter['ptid'] = 0;
-    $routeparameter['division'] = 0;                
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);    
+    $routeparameter['division'] = 0;              
+    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);  
     $teamName = sportsmanagementHelper::formatTeamName($team, 't'.$value[team_id].'st'.$rank.'p', $this->config, $isFavTeam, $link);
 
 ?>
@@ -61,10 +61,10 @@ foreach ( $this->teamstotal as $key => $value )
 <?php
 foreach ( $this->stats AS $rows => $rowvalue )
 {
-    if ($rowvalue->_name == 'basic' ) {  
-        ?>  
+    if ($rowvalue->_name == 'basic' ) {
+        ?>
         <td class="td_r" class="nowrap"><?php echo $value[$rows]; ?></td>
-    <?php  
+    <?php
     }
 
 }
@@ -85,4 +85,4 @@ $rank++;
 
 
 
-</table>  
+</table>

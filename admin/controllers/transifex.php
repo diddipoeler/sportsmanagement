@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,37 +19,37 @@ JLoader::import('components.com_sportsmanagement.helpers.transifex', JPATH_ADMIN
 
 /**
  * sportsmanagementControllertransifex
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllertransifex extends JSMControllerAdmin
 {
-    /**
-     * Class Constructor
-     *
-     * @param  array $config An optional associative array of configuration settings.
-     * @return void
-     * @since  1.5
-     */
-    function __construct($config = array())
-    {
-        parent::__construct($config);
-    }  
-    
-    /**
- * sportsmanagementControllertransifex::gettransifexinfo()
- * 
- * @return void
- */
-    function gettransifexinfo()    
-    {
-    
-    }
-    
-    
-    
+	/**
+	 * Class Constructor
+	 *
+	 * @param   array $config An optional associative array of configuration settings.
+	 * @return void
+	 * @since  1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
+
+	/**
+	 * sportsmanagementControllertransifex::gettransifexinfo()
+	 *
+	 * @return void
+	 */
+	function gettransifexinfo()
+	{
+
+	}
+
+
+
 }

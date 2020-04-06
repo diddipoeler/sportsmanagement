@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 Joomla.submitbutton = function(task)    {
-jQuery('select#node_matcheslist > option').prop('selected', 'selected');        
+jQuery('select#node_matcheslist > option').prop('selected', 'selected');      
 //        if (task == "simplelistitem.cancel"){
 //           Joomla.submitform(task, thisForm );
 //        }
@@ -59,11 +59,11 @@ if(version_compare(JVERSION, '3.0.0', 'ge')) {
 }
 else
 {
-    echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');  
 }
 echo $this->loadTemplate('data');
 ?>
-    
+  
 <div class="clr"></div>
 <input type="hidden" name="matcheschanges_check" value="0" id="matcheschanges_check" />
 <input type="hidden" name="option" value="com_sportsmanagement" />

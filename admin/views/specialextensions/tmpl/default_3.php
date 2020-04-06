@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -32,7 +32,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="well well-small">        
+                        <div class="well well-small">      
                             <div id="dashboard-icons" class="btn-group">
                                 <?php
                                 foreach ($this->Extensions as $key => $value) {
@@ -57,9 +57,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </div>
             </section>
         </div>
-    </div>                
+    </div>              
     <?PHP
     echo "<div>";
     echo $this->loadTemplate('footer');
     echo "</div>";
-    ?>   
+    ?> 

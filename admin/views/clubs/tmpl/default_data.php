@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,7 +22,7 @@ if(version_compare(JSM_JVERSION, '4', 'eq') ) {
     //HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 }
 else
-{    
+{  
 
 }
 
@@ -32,24 +32,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <div class="table-responsive" id="editcell">
         <table class="<?php echo $this->table_data_class; ?>">
             <thead>
-           
+         
                 <tr>
                     <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                     <th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-                    
+                  
                     <th class="title">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NAME_OF_CLUB', 'a.name', $this->sortDirection, $this->sortColumn); ?>
                     </th>
                     <th>
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE', 'a.website', $this->sortDirection, $this->sortColumn); ?>
                     </th>
-                    
+                  
                     <th>
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID', 'a.unique_id', $this->sortDirection, $this->sortColumn); ?>
                         <br />
                         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
                     </th>
-                    
+                  
                     <th width="20">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO', 'a.logo_big', $this->sortDirection, $this->sortColumn); ?>
                     </th>
@@ -59,7 +59,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th width="20">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_S_LOGO', 'a.logo_small', $this->sortDirection, $this->sortColumn); ?>
                     </th>
-                    
+                  
                     <th width="">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE', 'a.zipcode', $this->sortDirection, $this->sortColumn); ?>
                     <br />
@@ -67,17 +67,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <br />
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS', 'a.address', $this->sortDirection, $this->sortColumn); ?>
                     </th>
-                    
-                    
-                    
+                  
+                  
+                  
                     <th width="">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE', 'a.latitude', $this->sortDirection, $this->sortColumn); ?>
                     <br />
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LONGITUDE', 'a.longitude', $this->sortDirection, $this->sortColumn); ?>
                     </th>
-                    
-                    
-                    
+                  
+                  
+                  
                     <th width="">
         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_COUNTRY', 'a.country', $this->sortDirection, $this->sortColumn); ?>
                     </th>
@@ -113,7 +113,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <tbody>
                 <?php
                 $k=0;
-                
+              
                 for ($i=0,$n=count($this->items); $i < $n; $i++)
                 {
                     $row =& $this->items[$i];
@@ -131,12 +131,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                         </td>
                         <td class="center">
-                        <?php 
-                        echo HTMLHelper::_('grid.id', $i, $row->id);  
+                        <?php
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                         </td>
         <?php
-                        
+                      
         $inputappend='';
         ?>
                             <td class="center">
@@ -152,7 +152,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             );
             ?>
                                 </a>
-                                
+                              
                             <?php if ($row->checked_out) : ?>
         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'clubs.', $canCheckin); ?>
                             <?php endif; ?>
@@ -162,20 +162,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <?php else : ?>
         <?php echo $this->escape($row->name); ?>
         <?php endif; ?>
-                        
-                        
-                        
+                      
+                      
+                      
                         <?php //echo $checked; ?>
-                        
+                      
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-        <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>    
+        <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>  
                             </td>
         <?php
-                        
+                      
         ?>
-                        
-                        
+                      
+                      
                         </td>
                         <td>
         <?php
@@ -187,14 +187,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         ?>
                         </td>
                         <td>
-                        <?php 
-                        // echo $row->unique_id; 
+                        <?php
+                        // echo $row->unique_id;
                         ?>
                         <input<?php echo $inputappend; ?>    type="text" size="10" class="form-control form-control-inline"
                                                                     name="unique_id<?php echo $row->id; ?>"
                                                                     value="<?php echo $row->unique_id; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-                        
+                      
                         <br />
                         <input<?php echo $inputappend; ?>    type="text" size="10" class="form-control form-control-inline"
                                                                     name="new_club_id<?php echo $row->id; ?>"
@@ -203,29 +203,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         </td>
                         <td class="center">
         <?php
-        $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
+        $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png';
         $imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
         echo HTMLHelper::_(
             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
             $imageTitle, 'title= "'.$imageTitle.'"'
         );
-        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id, Uri::root().$row->logo_big, $imageTitle, '20', Uri::root().$row->logo_big);                            
+        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id, Uri::root().$row->logo_big, $imageTitle, '20', Uri::root().$row->logo_big);                          
         ?>
                         </td>
                         <td class="center">
         <?php
-        $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
+        $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png';
         $imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
         echo HTMLHelper::_(
             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
             $imageTitle, 'title= "'.$imageTitle.'"'
         );
-        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id, Uri::root().$row->logo_middle, $imageTitle, '20', Uri::root().$row->logo_middle);                            
+        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id, Uri::root().$row->logo_middle, $imageTitle, '20', Uri::root().$row->logo_middle);                          
         ?>
                         </td>
                         <td class="center">
         <?php
-        $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
+        $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png';
         $imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
         echo HTMLHelper::_(
             'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
@@ -236,7 +236,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <td class=""><?php echo $row->zipcode; ?></td>
         <td class=""><?php echo $row->location; ?></td>
         <td class=""><?php echo $row->address; ?></td>
-        */                        
+        */                      
                             ?>
                         </td>
                         <td class="">
@@ -255,26 +255,26 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                                                     value="<?php echo $row->address; ?>"
                                                                     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
                             </td>
-                            
+                          
                         <td class="">
                         <?php echo $row->latitude; ?>
                         <br />
                         <?php echo $row->longitude; ?>
                         </td>
 <td class="center">
-<?php 
+<?php
 $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" style="background-color:#bbffff"';
 echo HTMLHelper::_(
     'select.genericlist', $this->lists['nation'], 'country'.$row->id,
     'class="form-control form-control-inline" size="1"'.$append, 'value', 'text', $row->country
-); 
+);
 ?>
 </td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center">
             <div class="btn-group">
             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'clubs.', $canChange, 'cb'); ?>
-            <?php 
+            <?php
             // Create dropdown items and render the dropdown list.
             if ($canChange) {
                  HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'clubs');
@@ -283,7 +283,7 @@ echo HTMLHelper::_(
             }
                                 ?>
             </div>
-            </td>    
+            </td>  
                         <td class="order">
                             <span>
                                 <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'clubs.orderup', 'JLIB_HTML_MOVE_UP', true); ?>
@@ -305,4 +305,4 @@ echo HTMLHelper::_(
             </tbody>
         </table>
     </div>
-    
+  

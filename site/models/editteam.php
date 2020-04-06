@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
 
 /**
  * sportsmanagementModelEditteam
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -32,60 +32,60 @@ JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SIT
  */
 class sportsmanagementModelEditteam extends AdminModel
 {
-  
+
     /* interfaces */
     var $latitude    = null;
     var $longitude    = null;
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelEditteam::updItem()
-     * 
+     *
      * @param  mixed $data
      * @return void
      */
     function updItem($data)
     {
         $app = Factory::getApplication();
-        
+      
         foreach( $data['request'] as $key => $value)
         {
             $data[$key] = $value;
         }
-        
+      
         /**
-* 
- * Specify which columns are to be ignored. This can be a string or an array. 
+*
+ * Specify which columns are to be ignored. This can be a string or an array.
 */
         //$ignore = 'id';
         $ignore = '';
         try{
               /**
-* 
- * Get the table object from the model. 
+*
+ * Get the table object from the model.
 */
               $table = $this->getTable('team');
               /**
-* 
- * Bind the array to the table object. 
+*
+ * Bind the array to the table object.
 */
               $table->bind($data, $ignore);
               $table->store();
         }
         catch (Exception $e)
         {
-            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');    
-            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');    
+            Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');  
+            Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');  
         }
 
     }
-    
-    
-    
+  
+  
+  
     /**
      * sportsmanagementModelEditteam::getData()
-     * 
+     *
      * @return
      */
     function getData()
@@ -111,7 +111,7 @@ class sportsmanagementModelEditteam extends AdminModel
     {
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -129,10 +129,10 @@ class sportsmanagementModelEditteam extends AdminModel
         if (empty($form)) {
             return false;
         }
-       
+     
         return $form;
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -148,6 +148,6 @@ class sportsmanagementModelEditteam extends AdminModel
         }
         return $data;
     }
-    
+  
 }
 

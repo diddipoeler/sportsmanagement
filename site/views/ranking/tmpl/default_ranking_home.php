@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ foreach ($this->homeRank as $division => $cu_rk) {
             <tr>
                 <td class="contentheading">
         <?php
-        //get the division name from the first team of the division 
+        //get the division name from the first team of the division
         foreach ($cu_rk as $ptid => $team) {
             echo $this->divisions[$division]->name;
             break;

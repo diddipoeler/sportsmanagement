@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,8 +44,8 @@ jimport('joomla.html.parameter');
 
 /**
  * PlgSystemjsm_ishupdate
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -63,10 +63,10 @@ class PlgSystemjsm_ishupdate extends JPlugin
     static $match_timestamp = 0;
     static $linkresult = '';
     static $classname = 'sportsmanagementHelper';
-    
+  
     /**
      * PlgSystemjsm_ishupdate::__construct()
-     * 
+     *
      * @param  mixed $subject
      * @param  mixed $params
      * @return void
@@ -75,32 +75,32 @@ class PlgSystemjsm_ishupdate extends JPlugin
     {
         parent::__construct($subject, $params);
         $app = Factory::getApplication();
-   
-        $date = time();    // aktuelles Datum 
-        //echo date('d.m.Y h:i:s', $date) . ""; 
-        $stunden = 4;   // z.B. ein Tag 
-        $enddatum = $date + ($stunden * 60 * 60);  // Ein Tag sp?ter (stunden * minuten * sekunden) 
-        self::$datstring = date('Y-m-d H:i:s', $enddatum); // Datum im DB-Format   
-    
+ 
+        $date = time();    // aktuelles Datum
+        //echo date('d.m.Y h:i:s', $date) . "";
+        $stunden = 4;   // z.B. ein Tag
+        $enddatum = $date + ($stunden * 60 * 60);  // Ein Tag sp?ter (stunden * minuten * sekunden)
+        self::$datstring = date('Y-m-d H:i:s', $enddatum); // Datum im DB-Format 
+  
         if (!class_exists(self::$classname)) {
             $file = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.JSM_PATH.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
             if (file_exists($file)) {
                 include_once $file;
             }
         }
-        self::$match_timestamp = sportsmanagementHelper::getTimestamp(self::$datstring);      
-    
+        self::$match_timestamp = sportsmanagementHelper::getTimestamp(self::$datstring);    
+  
         if ($this->params->get('load_debug', 1) ) {
 
         }
 
-    
+  
     }
 
-   
+ 
     /**
      * PlgSystemjsm_ishupdate::onBeforeRender()
-     * 
+     *
      * @return void
      */
     public function onBeforeRender()
@@ -109,17 +109,17 @@ class PlgSystemjsm_ishupdate extends JPlugin
         if ($this->params->get('load_debug', 1) ) {
 
         }
-        
+      
         if (self::$projectid ) {
             $this->getmatchestoupdate(2);
         }
-        
+      
     }
 
-    
+  
     /**
      * PlgSystemjsm_ishupdate::onAfterRender()
-     * 
+     *
      * @return void
      */
     public function onAfterRender()
@@ -128,13 +128,13 @@ class PlgSystemjsm_ishupdate extends JPlugin
         if ($this->params->get('load_debug', 1) ) {
 
         }
-        
+      
     }
 
-   
+ 
     /**
      * PlgSystemjsm_ishupdate::onAfterRoute()
-     * 
+     *
      * @return void
      */
     public function onAfterRoute()
@@ -144,21 +144,21 @@ class PlgSystemjsm_ishupdate extends JPlugin
         if ($this->params->get('load_debug', 1) ) {
 
         }
-        
+      
         if (self::$projectid ) {
             $this->getmatchestoupdate(1);
             if (self::$matchestoupdate ) {
-                 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
+                 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');  
                   $actionsModel->getmatches(self::$projectid);
             }
         }
-        
+      
     }
 
-    
+  
     /**
      * PlgSystemjsm_ishupdate::onAfterDispatch()
-     * 
+     *
      * @return void
      */
     public function onAfterDispatch()
@@ -170,10 +170,10 @@ class PlgSystemjsm_ishupdate extends JPlugin
 
     }
 
-    
+  
     /**
      * PlgSystemjsm_ishupdate::onAfterInitialise()
-     * 
+     *
      * @return void
      */
     public function onAfterInitialise()
@@ -182,36 +182,36 @@ class PlgSystemjsm_ishupdate extends JPlugin
         if ($this->params->get('load_debug', 1) ) {
 
         }
-        
-        
+      
+      
     }
-    
-    
-    
+  
+  
+  
     /**
      * PlgSystemjsm_ishupdate::getmatchestoupdate()
-     * 
+     *
      * @return void
      */
     public function getmatchestoupdate($step=1)
     {
         $app = Factory::getApplication();
         $db = Factory::getDBO();
-        $query = $db->getQuery(true); 
+        $query = $db->getQuery(true);
         if ($this->params->get('load_debug', 1) ) {
 
         }
-        $query->clear(); 
+        $query->clear();
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
         $query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
         $query->where('p.id ='. self::$projectid);
         $query->where('m.team1_result IS NULL ');
-        
+      
         //$query->where('m.match_date < '. $db->Quote(''.self::$datstring.'') );
         $query->where('m.match_timestamp < '. self::$match_timestamp);
-        
+      
         try {
             $db->setQuery($query);
             $result = $db->loadResult();
@@ -222,7 +222,7 @@ class PlgSystemjsm_ishupdate extends JPlugin
                     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
             }
         }
-    
+  
         switch ($step)
         {
         case 1:
@@ -235,10 +235,10 @@ class PlgSystemjsm_ishupdate extends JPlugin
             $app->enqueueMessage(JText::sprintf('Es wurden [ %1$s ] Spiele aktualisiert !', "<strong>".$dif."</strong>"), 'Notice');
             break;
         }
-    
-        
+  
+      
     }
-    
+  
 
 }
 

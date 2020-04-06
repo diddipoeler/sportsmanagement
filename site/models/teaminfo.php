@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage teaminfo
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelTeamInfo
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -39,10 +39,10 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::__construct()
-     * 
+     *
      * @return void
      */
-    function __construct() 
+    function __construct()
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -57,12 +57,12 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::updateHits()
-     * 
+     *
      * @param  integer $teamid
      * @param  integer $inserthits
      * @return void
      */
-    public static function updateHits($teamid = 0, $inserthits = 0) 
+    public static function updateHits($teamid = 0, $inserthits = 0)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -75,7 +75,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
             $db->setQuery($query);
 
             $result = $db->execute();
-            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
         }
 
     }
@@ -86,7 +86,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
      * @param  int projectid
      * @return array
      */
-    public static function getTrainigData($projectid) 
+    public static function getTrainigData($projectid)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -107,7 +107,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
         $query->select('*');
         $query->from('#__sportsmanagement_team_trainingdata');
-        //$query->where('project_id = '. $projectid);  
+        //$query->where('project_id = '. $projectid);
         //$query->where('project_team_id = '. $projectTeamID);
         $query->where('team_id = ' . self::$teamid);
         $query->order('dayofweek ASC');
@@ -121,11 +121,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getTeamByProject()
-     * 
+     *
      * @param  integer $inserthits
      * @return
      */
-    public static function getTeamByProject($inserthits = 0) 
+    public static function getTeamByProject($inserthits = 0)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -166,7 +166,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
                 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
                 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
             }
-            
+          
 
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -178,7 +178,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
      *
      * @return object
      */
-    public static function getClub() 
+    public static function getClub()
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -208,12 +208,12 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getSeasons()
-     * 
+     *
      * @param  mixed   $config
      * @param  integer $history
      * @return
      */
-    public static function getSeasons($config, $history = 0) 
+    public static function getSeasons($config, $history = 0)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -325,13 +325,13 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getPlayerMarketValue()
-     * 
+     *
      * @param  mixed $projectid
      * @param  mixed $projectteamid
      * @param  mixed $season_id
      * @return
      */
-    public static function getPlayerMarketValue($projectid, $projectteamid, $season_id) 
+    public static function getPlayerMarketValue($projectid, $projectteamid, $season_id)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -369,7 +369,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
      * @param  int division_id
      * @return array
      */
-    public static function getTeamRanking($projectid, $division_id) 
+    public static function getTeamRanking($projectid, $division_id)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -380,7 +380,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
         $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-        
+      
         $rank = array();
 
         sportsmanagementModelProject::setProjectID($projectid, self::$cfg_which_database);
@@ -398,7 +398,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
             //				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
             //				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
             //				break;
-            //			} 
+            //			}
             if ($value->getTeamId() == self::$teamid) {
                 $rank['rank'] = $value->rank;
                 $rank['games'] = $value->cnt_matches;
@@ -410,7 +410,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
         }
 
         //}
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $rank;
@@ -418,11 +418,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getMergeClubs()
-     * 
+     *
      * @param  mixed $merge_clubs
      * @return
      */
-    function getMergeClubs($merge_clubs) 
+    function getMergeClubs($merge_clubs)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -438,7 +438,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
         $db->setQuery($query);
         $result = $db->loadObjectList();
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
     }
@@ -449,7 +449,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
      * @param  int $projectid
      * @return string
      */
-    public static function getLeague($projectid) 
+    public static function getLeague($projectid)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -469,7 +469,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
         $db->setQuery($query, 0, 1);
         $league = $db->loadResult();
 
-        
+      
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 
@@ -478,11 +478,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail()
-     * 
+     *
      * @param  mixed $seasonsranking
      * @return
      */
-    public static function getLeagueRankOverviewDetail($seasonsranking) 
+    public static function getLeagueRankOverviewDetail($seasonsranking)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -529,18 +529,18 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::getLeagueRankOverview()
-     * 
+     *
      * @param  mixed $seasonsranking
      * @return
      */
-    public static function getLeagueRankOverview($seasonsranking) 
+    public static function getLeagueRankOverview($seasonsranking)
     {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
+      
         $leaguesoverview = array();
 
         foreach ($seasonsranking as $season) {
@@ -561,16 +561,16 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
         return $leaguesoverview;
     }
 
-    
+  
     /**
      * sportsmanagementModelTeamInfo::getPlayerMeanAge()
-     * 
+     *
      * @param  mixed $projectid
      * @param  mixed $projectteamid
      * @param  mixed $season_id
      * @return
      */
-    public static function getPlayerMeanAge($projectid, $projectteamid, $season_id) 
+    public static function getPlayerMeanAge($projectid, $projectteamid, $season_id)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -601,7 +601,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
         $db->setQuery($query);
         $players = $db->loadObjectList();
-       
+     
         foreach ($players as $player) {
             if ($player->birthday != '0000-00-00') {
                 $age += sportsmanagementHelper::getAge($player->birthday, $player->deathday);
@@ -625,7 +625,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
      * @param  int projectteamid
      * @return int
      */
-    public static function getPlayerCount($projectid, $projectteamid, $season_id) 
+    public static function getPlayerCount($projectid, $projectteamid, $season_id)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -659,11 +659,11 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelTeamInfo::hasEditPermission()
-     * 
+     *
      * @param  mixed $task
      * @return
      */
-    function hasEditPermission($task = null) 
+    function hasEditPermission($task = null)
     {
         // Reference global application object
         $app = Factory::getApplication();

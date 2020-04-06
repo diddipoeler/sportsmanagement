@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -32,15 +32,15 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
      * @var object
      */
     var $_pagination = null;
-    
+  
     var $order = null;
     static $divisionid = 0;
     static $teamid = 0;
-    
+  
     static $cfg_which_database = 0;
     static $projectid = 0;
-    
-    
+  
+  
     function __construct( )
     {
         // Reference global application object
@@ -65,15 +65,15 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
         }
         $this->limitstart = $jinput->getInt('limitstart', 0);
         $this->setOrder($jinput->getVar('order'));
-        
+      
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
-        
+      
     }
-    
-    
+  
+  
 
-    
+  
 
     /**
      * set order (asc or desc)
@@ -89,19 +89,19 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
         return $this->order;
     }
 
-    
+  
     function getLimit( )
     {
         return $this->limit;
     }
 
-    
+  
     function getLimitStart( )
     {
         return $this->limitstart;
     }
 
-    
+  
     function setStatid($statid)
     {
         // Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
@@ -118,30 +118,30 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
         }
     }
 
-    
-    
+  
+  
     function getProjectUniqueStats()
     {
         $pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id, 0, self::$cfg_which_database);
-        
+      
         $allstats = array();
-        foreach ($pos_stats as $pos => $stats) 
+        foreach ($pos_stats as $pos => $stats)
         {
             foreach ($stats as $stat) {
                 $allstats[$stat->id] = $stat;
-            } 
+            }
         }
         return $allstats;
     }
-    
-    
+  
+  
     function getPlayersStats($order=null)
     {
         $stats = self::getProjectUniqueStats();
         $order = ($order ? $order : $this->order);
         $results = array();
         $results2 = array();
-        foreach ($stats as $stat) 
+        foreach ($stats as $stat)
         {
             $results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
             $results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
@@ -155,7 +155,7 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
         $order = ($order ? $order : $this->order);
         $results = array();
         $results2 = array();
-        foreach ($stats as $stat) 
+        foreach ($stats as $stat)
         {
             $results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
             $results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
@@ -165,23 +165,23 @@ class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 
     function getTeamsTotal($teamsstats = array() )
     {
-        $teamstotal = array();    
+        $teamstotal = array();  
         foreach((array) $teamsstats as $rows => $value )
         {
             foreach ( $value AS $row )
             {
                 $teamstotal[$row->team_id][team_id] = $row->team_id;
-                $teamstotal[$row->team_id][total] += $row->total;    
+                $teamstotal[$row->team_id][total] += $row->total;  
                 $teamstotal[$row->team_id][$rows] = $row->total;
             }
-    
+  
         }
         // Hole eine Liste von Spalten
         foreach ($teamstotal as $key => $row) {
             $total[$key]    = $row['total'];
         }
-        array_multisort($total, SORT_DESC, $teamstotal);    
-        return $teamstotal;    
+        array_multisort($total, SORT_DESC, $teamstotal);  
+        return $teamstotal;  
     }
 }
 ?>

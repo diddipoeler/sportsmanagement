@@ -1,6 +1,6 @@
 <?PHP
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage extension jsminlinehockey controllers
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -22,8 +22,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerjsminlinehockey
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -34,17 +34,17 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 
     /**
  * sportsmanagementControllerjsminlinehockey::__construct()
- * 
+ *
  * @return void
  */
     function __construct()
     {
         parent::__construct();
     }
-    
+  
     /**
      * sportsmanagementControllerjsminlinehockey::getmatches()
-     * 
+     *
      * @return void
      */
     function getmatches()
@@ -52,13 +52,13 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $model = $this->getModel('jsminlinehockey');
         $clubs  = $model->getmatches();
         $msg = 'Spiele importiert';
-        $link = 'index.php?option=com_sportsmanagement&view=projects'; 
-        $this->setRedirect($link, $msg); 
+        $link = 'index.php?option=com_sportsmanagement&view=projects';
+        $this->setRedirect($link, $msg);
     }
 
     /**
      * sportsmanagementControllerjsminlinehockey::getclubs()
-     * 
+     *
      * @return void
      */
     function getclubs()
@@ -66,17 +66,17 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $model = $this->getModel('jsminlinehockey');
         $clubs  = $model->getClubs();
         $msg = 'Vereine importiert';
-        $link = 'index.php?option=com_sportsmanagement&view=clubs'; 
-        $this->setRedirect($link, $msg); 
+        $link = 'index.php?option=com_sportsmanagement&view=clubs';
+        $this->setRedirect($link, $msg);
 
     }
 
     /**
      * sportsmanagementControllerjsminlinehockey::save()
-     * 
+     *
      * @return
      */
-    function save() 
+    function save()
     {
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -86,7 +86,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 
         $model = $this->getModel('jsminlinehockey');
         $post = $jinput->post->getArray(array());
-        
+      
         // first step - upload
         if (isset($post ['sent']) && $post ['sent'] == 1) {
                $upload = Factory::getApplication()->input->getVar('import_package', null, 'files', 'array');
@@ -94,7 +94,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
             $dest = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. $upload ['name'];
                $extractdir = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp';
                $importFile = JPATH_SITE .DIRECTORY_SEPARATOR. 'tmp' .DIRECTORY_SEPARATOR. 'ish_bw_import.xls';
-            
+          
             if (File::exists($importFile)) {
                 File::delete($importFile);
             }
@@ -141,14 +141,14 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
                     }
                 }
             }
-            
+          
         }
         /**
-* 
- * es wird keine excel verarbeitung mehr angeboten 
+*
+ * es wird keine excel verarbeitung mehr angeboten
 */
         // $xml_file = $model->getData ();
-        
+      
     }
 
 }

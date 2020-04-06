@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewTeams
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -26,15 +26,15 @@ use Joomla\CMS\Language\Text;
  */
 class sportsmanagementViewTeams extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewTeams::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-    
+  
         $this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt("division", 0), $this->jinput->getInt('cfg_which_database', 0));
         $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt("division", 0), 'name', $this->jinput->getInt('cfg_which_database', 0), '', $this->config['show_club_playground']);
 
@@ -47,7 +47,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
             }
         }
         $this->document->setTitle($pageTitle);
-        
+      
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMS_TITLE');
 
     }

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -20,8 +20,8 @@ use Joomla\CMS\Factory;
 ?>
 <!-- Details-->
 <h2>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 ?>
 </h2>
 <div class="<?php echo $this->divclassrow;?>" id="matchreport-details">
@@ -46,7 +46,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
             </address>
         <?php
     }
-    ?>    
+    ?>  
     <!-- Date -->
     <?php
     $timestamp = strtotime($this->match->match_date);
@@ -56,11 +56,11 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
               <div class="<?php echo $this->divclassrow;?>">
 <div class="col-xs-<?php echo $this->config['extended_cols'];?> col-sm-<?php echo $this->config['extended_cols'];?> col-md-<?php echo $this->config['extended_cols'];?> col-lg-<?php echo $this->config['extended_cols'];?>">
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
-            
+          
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DATE'); ?></strong>
               </div>
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
-                            
+                          
                 <?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
             </div>
                 </div>
@@ -127,15 +127,15 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT'); ?></strong>
               </div>
-<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">        
-        
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">      
+      
 
     <?php echo $this->match->time_present; ?>
 </div>
                 </div>
                 </div>
         <?php endif;
-    
+  
     }
     ?>
 
@@ -148,12 +148,12 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></strong>
               </div>
-<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">       
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">     
     <?php echo $this->match->match_number; ?>
 </div>
                 </div>
                 </div>
-        
+      
         <?php endif;
     }
     ?>
@@ -161,7 +161,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
     <?php
     if ($this->config['show_match_playground'] ) {
         if ($this->match->playground_id > 0) : ?>
-        <?php 
+        <?php
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -175,15 +175,15 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND'); ?></strong>
               </div>
-<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">        
-    <?php 
-    if (isset($this->playground->name) ) { 
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">      
+    <?php
+    if (isset($this->playground->name) ) {
         echo HTMLHelper::link($playground_link, $this->playground->name);
     }
     else
                     {
-        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN');    
-    } 
+        echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN');  
+    }
     if ($this->config["show_playground_picture"] ) {
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'matchpg'.$this->match->playground_id,
@@ -195,18 +195,18 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
         );
-    }                     
+    }                   
                     ?>
 </div>
                 </div>
                 </div>
-        
+      
         <?php endif;
     }
     ?>
     <!-- referees -->
     <?php
-    if ($this->config['show_match_referees'] ) {    
+    if ($this->config['show_match_referees'] ) {  
         if ($this->matchreferees ) {
             ?>
 <div class="<?php echo $this->divclassrow;?>">
@@ -214,11 +214,11 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 <div class="col-xs-<?php echo $this->config['extended_description_cols'];?> col-sm-<?php echo $this->config['extended_description_cols'];?> col-md-<?php echo $this->config['extended_description_cols'];?> col-lg-<?php echo $this->config['extended_description_cols'];?>">
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE'); ?></strong>
               </div>
-<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">                        
-    <?php 
-            
+<div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">                      
+    <?php
+          
             $first = true;
-    foreach ( $this->matchreferees as $referee ) : 
+    foreach ( $this->matchreferees as $referee ) :
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -233,7 +233,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         $link = HTMLHelper::link($referee_link, $referee_name);
         if ($this->config["show_referee_position"] == 1) { $link .= ' ('.$referee->position_name.')';
         }
-        echo $link; 
+        echo $link;
         $first = false;
         if ($this->config["show_referee_picture"] ) {
                 echo sportsmanagementHelperHtml::getBootstrapModalImage(
@@ -245,15 +245,15 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
                     $this->modalwidth,
                     $this->modalheight,
                     $this->overallconfig['use_jquery_modal']
-                );                        
-        }                        
-    endforeach;    
-            
+                );                      
+        }                      
+    endforeach;  
+          
             ?>
 </div>
                 </div>
                 </div>
-                       
+                     
             <?php
         }
     }
@@ -272,7 +272,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
             </div>
                 </div>
                 </div>
-            
+          
         <?php endif;
     }
     ?>

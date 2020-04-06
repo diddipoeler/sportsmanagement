@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage editclubs
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -21,8 +21,8 @@ use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerEditClub
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -38,33 +38,33 @@ class sportsmanagementControllerEditClub extends FormController
      * @return void
      * @since  1.5
      */
-    function __construct($config = array()) 
+    function __construct($config = array())
     {
         parent::__construct($config);
 
         /**
-* 
- * Map the apply task to the save method. 
+*
+ * Map the apply task to the save method.
 */
         $this->registerTask('apply', 'save');
     }
 
     /**
      * sportsmanagementControllerEditClub::getModel()
-     * 
+     *
      * @param  string $name
      * @param  string $prefix
      * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
     {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
          /**
           * sportsmanagementControllerEditClub::cancel()
-          * 
+          *
           * @param  mixed $key
           * @return
           */
@@ -74,14 +74,14 @@ class sportsmanagementControllerEditClub extends FormController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
         return true;
     }
- 
-     
+
+   
     /**
      * sportsmanagementControllerEditClub::load()
-     * 
+     *
      * @return void
      */
-    function load() 
+    function load()
     {
         $cid = Factory::getApplication()->input->getInt('cid', 0);
 
@@ -92,28 +92,28 @@ class sportsmanagementControllerEditClub extends FormController
         $this->display();
     }
 
-    
+  
     /**
      * sportsmanagementControllerEditClub::display()
-     * 
+     *
      * @param  bool  $cachable
      * @param  mixed $urlparams
      * @return void
      */
-    function display($cachable = false, $urlparams = Array() ) 
+    function display($cachable = false, $urlparams = Array() )
     {
 
     }
 
-   
+ 
     /**
      * sportsmanagementControllerEditClub::save()
-     * 
+     *
      * @param  mixed $key
      * @param  mixed $urlVar
      * @return void
      */
-    function save($key = null, $urlVar = null) 
+    function save($key = null, $urlVar = null)
     {
         $app = Factory::getApplication();
         // Check for request forgeries
@@ -165,7 +165,7 @@ class sportsmanagementControllerEditClub extends FormController
         } else {
             $post['merge_teams'] = '';
         }
-        
+      
         $updateresult = $model->updItem($post);
 
         //        if ($model->updItem($post)) {

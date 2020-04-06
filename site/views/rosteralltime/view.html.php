@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewRosteralltime
- * 
- * @package 
+ *
+ * @package
  * @author    abcde
  * @copyright 2015
  * @version   $Id$
@@ -33,7 +33,7 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
 
     /**
      * sportsmanagementViewRosteralltime::display()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
@@ -44,26 +44,26 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
         $model = $this->getModel();
         $user = Factory::getUser();
         $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
-        
+      
         $state = $this->get('State');
         $items = $this->get('Items');
-        
+      
         $pagination    = $this->get('Pagination');
 
         $this->config = $config;
         $this->team = $model->getTeam();
-    
+  
           $this->playerposition = $model->getPlayerPosition();
           $this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database, __METHOD__);
           $this->positioneventtypes = $model->getPositionEventTypes();
 
         $this->rows = $model->getTeamPlayers(1, $this->positioneventtypes, $items);
-        
+      
         $this->items = $items;
         $this->state = $state;
         $this->user = $user;
         $this->pagination = $pagination;
-        
+      
         parent::display($tpl);
     }
 

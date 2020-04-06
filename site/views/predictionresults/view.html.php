@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,19 +22,19 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewPredictionResults
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewPredictionResults extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewPredictionResults::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -46,7 +46,7 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
         $this->limitstart = $this->model->getLimitStart();
         $this->ausgabestart = $this->limitstart + 1;
         $this->ausgabeende = $this->limitstart + $this->limit;
-    
+  
         if (isset($this->predictionGame)) {
             $config    = sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
             $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
@@ -71,19 +71,19 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
             $lists['predictionRounds'] = HTMLHelper::_('select.genericList', $predictionRounds, 'r', 'class="inputbox" onchange="this.form.submit(); "', 'value', 'text', sportsmanagementModelPrediction::$roundID);
             unset($res);
             unset($predictionRounds);
-            
+          
             $this->lists = $lists;
             $this->show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
             // Set page title
             $pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
-        
+      
             $this->memberList = $this->get('Data');
             $this->pagination = $this->get('Pagination');
 
             $this->headertitle = $pageTitle;
 
             if (!isset($this->config['table_class']) ) {
-                  $this->config['table_class'] = 'table';    
+                  $this->config['table_class'] = 'table';  
             }
 
             $this->document->setTitle($pageTitle);

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -39,12 +39,12 @@ $project_id = $app->getUserState("$option.pid", '0');
 </div>
 <div class="col-md-10">
 <div id="j-main-container" class="j-main-container">
-<?php        
+<?php      
 
 if ($this->jsmmessage ) {
-    echo $this->loadTemplate('info_message');    
+    echo $this->loadTemplate('info_message');  
 }
-        
+      
 switch ($view)
 {
 case 'githubinstall':
@@ -58,7 +58,7 @@ case 'treetonodes':
 case 'treetomatchs':
     break;
 default:
-?>    
+?>  
 <div id="filter-bar" class="btn-toolbar">
             <div class="filter-search btn-group pull-left">
                 <label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></label>
@@ -67,31 +67,31 @@ default:
             <div class="btn-group pull-left">
                 <button type="submit" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
                 <button type="button" class="btn hasTooltip" title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-                       
+                     
             </div>
                 <?php
                 $startRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
                 $endRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
-   
+ 
                 for ($i=$startRange; $i <= $endRange; $i++)
                 {
                           printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#'.$i.';', '&#'.$i.';');
                 }
-                
+              
                 ?>
             <div class="btn-group pull-right hidden-phone">
                 <label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
                 <?php echo $this->pagination->getLimitBox(); ?>
             </div>
-            
-            
+          
+          
 </div>
 <?php
-    break;        
-}        
-?>        
-        
-        
-        
-        
-        
+    break;      
+}      
+?>      
+      
+      
+      
+      
+      

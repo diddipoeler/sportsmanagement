@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelStatsRanking
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -41,17 +41,17 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
      * @var object
      */
     var $_pagination = null;
-    
+  
     var $order = null;
     static $divisionid = 0;
     static $teamid = 0;
-    
+  
     static $cfg_which_database = 0;
     static $projectid = 0;
-    
+  
     /**
      * sportsmanagementModelStatsRanking::__construct()
-     * 
+     *
      * @return void
      */
     function __construct( )
@@ -78,15 +78,15 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
         }
         $this->limitstart = $jinput->getInt('limitstart', 0);
         $this->setOrder($jinput->getVar('order'));
-        
+      
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
-        
+      
     }
-    
+  
     /**
      * sportsmanagementModelStatsRanking::getDivision()
-     * 
+     *
      * @return
      */
     function getDivision()
@@ -100,7 +100,7 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelStatsRanking::getTeamId()
-     * 
+     *
      * @return
      */
     function getTeamId()
@@ -124,7 +124,7 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelStatsRanking::getLimit()
-     * 
+     *
      * @return
      */
     function getLimit( )
@@ -134,7 +134,7 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelStatsRanking::getLimitStart()
-     * 
+     *
      * @return
      */
     function getLimitStart( )
@@ -144,7 +144,7 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelStatsRanking::setStatid()
-     * 
+     *
      * @param  mixed $statid
      * @return void
      */
@@ -164,29 +164,29 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
         }
     }
 
-    
+  
     /**
      * sportsmanagementModelStatsRanking::getProjectUniqueStats()
-     * 
+     *
      * @return
      */
     function getProjectUniqueStats()
     {
         $pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id, 0, self::$cfg_which_database);
-        
+      
         $allstats = array();
-        foreach ($pos_stats as $pos => $stats) 
+        foreach ($pos_stats as $pos => $stats)
         {
             foreach ($stats as $stat) {
                 $allstats[$stat->id] = $stat;
-            } 
+            }
         }
         return $allstats;
     }
-    
+  
     /**
      * sportsmanagementModelStatsRanking::getPlayersStats()
-     * 
+     *
      * @param  mixed $order
      * @return
      */
@@ -196,7 +196,7 @@ class sportsmanagementModelStatsRanking extends BaseDatabaseModel
         $order = ($order ? $order : $this->order);
         $results = array();
         $results2 = array();
-        foreach ($stats as $stat) 
+        foreach ($stats as $stat)
         {
             $results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
             $results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);

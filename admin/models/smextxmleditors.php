@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementModelsmextxmleditors
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -35,7 +35,7 @@ class sportsmanagementModelsmextxmleditors extends BaseDatabaseModel
 
     /**
  * sportsmanagementModelsmextxmleditors::getXMLFiles()
- * 
+ *
  * @return
  */
     function getXMLFiles()
@@ -48,10 +48,10 @@ class sportsmanagementModelsmextxmleditors extends BaseDatabaseModel
         $path = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$option.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended';
         // Get a list of files in the search path with the given filter.
            $files = Folder::files($path, '.xml$|.php$');
-       
+     
         return $files;
-        
-    }    
+      
+    }  
 
 }
 ?>

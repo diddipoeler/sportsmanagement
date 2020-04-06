@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -41,14 +41,14 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Table\Table; 
-use Joomla\Registry\Registry; 
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementTablesportsmanagement
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -60,7 +60,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
      *
      * @param object Database connector object
      */
-    function __construct(&$db) 
+    function __construct(&$db)
     {
         parent::__construct('#__session', 'session_id', $db);
     }
@@ -72,7 +72,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
      * @see    JTable:bind
      * @since  1.5
      */
-    public function bind($array, $ignore = '') 
+    public function bind($array, $ignore = '')
     {
         if (isset($array['params']) && is_array($array['params'])) {
             // Convert the params field to a string.
@@ -82,7 +82,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
         }
         return parent::bind($array, $ignore);
     }
- 
+
     /**
      * Overloaded load function
      *
@@ -91,7 +91,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
      * @return boolean
      * @see    JTable:load
      */
-    public function load($pk = null, $reset = true) 
+    public function load($pk = null, $reset = true)
     {
         if (parent::load($pk, $reset)) {
             // Convert the params field to a registry.
@@ -118,7 +118,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
         $k = $this->_tbl_key;
         return 'com_sportsmanagement.message.'.(int) $this->$k;
     }
- 
+
     /**
      * Method to return the title to use for the asset table.
      *
@@ -129,7 +129,7 @@ class sportsmanagementTablesportsmanagement extends JSMTable
     {
         return $this->greeting;
     }
- 
+
     /**
      * Get the parent asset id for the record
      *

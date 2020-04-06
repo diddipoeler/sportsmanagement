@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,9 +33,9 @@ if (!class_exists('sportsmanagementHelperHtml')) {
 
 /**
  * sportsmanagementViewallclubs
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -50,10 +50,10 @@ class sportsmanagementViewallclubs extends sportsmanagementView
 
     /**
      * sportsmanagementViewallclubs::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
 
         $inputappend = '';

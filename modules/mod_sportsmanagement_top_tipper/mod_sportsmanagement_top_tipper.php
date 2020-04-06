@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -52,8 +52,8 @@ JLoader::import('components.com_sportsmanagement.models.predictionranking', JPAT
 JLoader::import('components.com_sportsmanagement.models.prediction', JPATH_SITE);
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modJSMTopTipper', __DIR__ . '/helper.php');
 

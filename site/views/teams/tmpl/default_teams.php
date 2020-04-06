@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,7 +18,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 usort(
     $this->teams, function ($a, $b) {
-        return $b->club_name < $a->club_name; 
+        return $b->club_name < $a->club_name;
     }
 );
 
@@ -35,7 +35,7 @@ usort(
     <?php if ($this->config['show_medium_logo']) { ?>
         <th ><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_LOGO_CLUB'); ?></th>
     <?php } ?>
-    
+  
     <?php if ($this->config['show_club_internetadress_picture']) { ?>
         <th ><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE'); ?></th>
     <?php } ?>
@@ -44,9 +44,9 @@ usort(
     <?php } ?>
         <th ><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS'); ?></th>
 <?php if ($this->config['show_club_playground']) { ?>
-<th ><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>        
-<?php } ?>        
-    
+<th ><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>      
+<?php } ?>      
+  
     </tr>
     </thead>
     <?php
@@ -68,7 +68,7 @@ usort(
         if ($this->config['show_small_logo']) {
             $teampic = $this->config['team_picture'];
             $picture = $team->$teampic;
-            
+          
             switch($teampic)
             {
             case 'logo_small':
@@ -79,7 +79,7 @@ usort(
             default:
                 break;
             }
-            
+          
             if (( is_null($picture) ) || ( !file_exists($picture) ) ) {
                 $picture = sportsmanagementHelper::getDefaultPlaceholder("team_picture");
                 $image = HTMLHelper::image($picture, $teamTitle, array( 'title' => $teamTitle, ' border' => 0,' width' => $this->config['team_picture_width']));
@@ -143,18 +143,18 @@ usort(
             <?php if ($this->config['show_medium_logo'] ) { ?>
             <td name="show_medium_logo"><?php echo $mediumClubLogoLink; ?></td>
             <?php } ?>
-      
-        <?php 
-        if ($this->config['show_club_internetadress_picture'] && !empty($team->club_www) ) { 
+    
+        <?php
+        if ($this->config['show_club_internetadress_picture'] && !empty($team->club_www) ) {
         ?>
      <td >
-            <?php 
-            
+            <?php
+          
             switch ($this->config['which_internetadress_picture_provider'])
             {
             case 'thumbshots':
                 echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
-                break;    
+                break;  
             case 'thumbsniper':
                 echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect='.$this->config['internetadress_picture_thumbsniper_preview'].'&url='.$team->club_www.'">';
                 break;
@@ -164,25 +164,25 @@ usort(
             }
             ?>
             </td>
-        <?php 
+        <?php
         }
         else
          {
         ?>
         <td ></td>
-        <?php 
+        <?php
         }
-      
-        if ($this->config['show_club_number'] ) { 
+    
+        if ($this->config['show_club_number'] ) {
         ?>
         <td ><?php echo $team->unique_id; ?></td>
-    <?php 
+    <?php
         }
         else
          {
         ?>
         <td ></td>
-        <?php 
+        <?php
         }
             ?>
 
@@ -195,68 +195,68 @@ usort(
             $team->club_zipcode,
             $team->club_location,
             $team->club_country,
-            'COM_SPORTSMANAGEMENT_TEAMS_ADDRESS_FORM' 
+            'COM_SPORTSMANAGEMENT_TEAMS_ADDRESS_FORM'
         );
-        if ($this->config['show_club_phone'] && $team->club_phone ) { 
+        if ($this->config['show_club_phone'] && $team->club_phone ) {
             ?>
         <br />
             <?php
-            echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', 'width="16"');    
+            echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/phone_14402.png', '', 'width="16"');  
             echo $team->club_phone;
         }
-        if ($this->config['show_club_fax'] && $team->club_fax ) { 
+        if ($this->config['show_club_fax'] && $team->club_fax ) {
             ?>
          <br />
             <?php
-            echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', 'width="16"');    
+            echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/fax_icon-icons_com_52496.png', '', 'width="16"');  
             echo $team->club_fax;
         }
-        if ($this->config['show_club_email'] && $team->club_email ) { 
+        if ($this->config['show_club_email'] && $team->club_email ) {
             ?>
          <br />
             <?php
             echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
             echo $team->club_email;
-        }    
+        }  
 
-        if ($this->config['show_club_facebook'] && $team->facebook ) { 
+        if ($this->config['show_club_facebook'] && $team->facebook ) {
             ?>
          <br />
             <?php
-            $googlelink = $team->facebook;    
+            $googlelink = $team->facebook;  
             echo HTMLHelper::link(
                 $googlelink,
-                HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png', $team->facebook), array('target' => '_blank' ,'title' => $team->club_name ) 
-            );    
-        }    
+                HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/facebook.png', $team->facebook), array('target' => '_blank' ,'title' => $team->club_name )
+            );  
+        }  
 
-        if ($this->config['show_club_twitter'] && $team->twitter ) { 
+        if ($this->config['show_club_twitter'] && $team->twitter ) {
             ?>
          <br />
             <?php
-            $googlelink = $team->twitter;    
+            $googlelink = $team->twitter;  
             echo HTMLHelper::link(
                 $googlelink,
-                HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/twitter.png', $team->twitter), array('target' => '_blank' ,'title' => $team->club_name ) 
-            );    
-        }          
-        
+                HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/twitter.png', $team->twitter), array('target' => '_blank' ,'title' => $team->club_name )
+            );  
+        }        
+      
         if ($this->config['show_googlemap_link'] ) {
             ?>
          <br />
             <?php	
-            $googlelink = 'http://maps.google.com/maps?f=q&hl=de&geocode=&q='.$team->club_address.', '.$team->club_zipcode.' '.$team->club_location;    
+            $googlelink = 'http://maps.google.com/maps?f=q&hl=de&geocode=&q='.$team->club_address.', '.$team->club_zipcode.' '.$team->club_location;  
             echo HTMLHelper::link(
                 $googlelink,
-                HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif', $team->club_name), array('target' => '_blank' ,'title' => $team->club_name ) 
-            );    
+                HTMLHelper::image('images/com_sportsmanagement/database/jl_images/map.gif', $team->club_name), array('target' => '_blank' ,'title' => $team->club_name )
+            );  
             ?>
-    
+  
             <?php
-        } 
-        ?> 
+        }
+        ?>
       </td>
-            
+          
         <?php if ($this->config['show_club_playground'] ) { ?>
 <td >
 <?php
@@ -265,16 +265,16 @@ $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pgid'] = $team->playground_slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);    
-echo HTMLHelper::link($link, $team->playground_name);    
-                    
-if ($this->config['show_playground_picture'] ) {                    
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);  
+echo HTMLHelper::link($link, $team->playground_name);  
+                  
+if ($this->config['show_playground_picture'] ) {                  
 ?>
 <br>	
 <?php	
 if (( is_null($team->playground_picture) ) || ( !file_exists($team->playground_picture) ) ) {
     $team->playground_picture = sportsmanagementHelper::getDefaultPlaceholder("stadium");
-}    
+}  
 echo sportsmanagementHelperHtml::getBootstrapModalImage(
     'playgroundclubinfo' . $team->team_name,
     $team->playground_picture,
@@ -284,13 +284,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
     $this->modalwidth,
     $this->modalheight,
     $this->overallconfig['use_jquery_modal']
-);      
-}                    
+);    
+}                  
 ?>
 </td>		
-        <?php } ?>            
-            
-            
+        <?php } ?>          
+          
+          
         </tr>
     <?php
      $k = 1 - $k;

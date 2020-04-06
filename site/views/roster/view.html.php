@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,29 +18,29 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewRoster
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewRoster extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewRoster::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-        
+      
         sportsmanagementModelRoster::$seasonid = $this->project->season_id;
 
         $this->projectteam = $this->model->getProjectTeam($this->config['team_picture_which']);
         $this->lastseasondate = $this->model->getLastSeasonDate();
-        
+      
         $type = $this->jinput->getVar("type", 0);
         $typestaff = $this->jinput->getVar("typestaff", 0);
         if (!$type ) {
@@ -51,24 +51,24 @@ class sportsmanagementViewRoster extends sportsmanagementView
         }
         $this->type = $type;
         $this->typestaff = $typestaff;
-        
+      
         $this->config['show_players_layout'] = $type;
         $this->config['show_staff_layout'] = $typestaff;
-        
+      
         if ($this->projectteam) {
             $this->team = $this->model->getTeam();
             $this->rows = $this->model->getTeamPlayers(1);
             // events
             if ($this->config['show_events_stats']) {
                 $this->positioneventtypes = $this->model->getPositionEventTypes();
-                
+              
                 if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
                     $this->playereventstats = $this->model->getPlayerEventStats(true, true);
-                    $this->playereventstatsdart = $this->model->getPlayerEventStats(true, false);    
+                    $this->playereventstatsdart = $this->model->getPlayerEventStats(true, false);  
                 }
                 else
                 {
-                    $this->playereventstats = $this->model->getPlayerEventStats(false, false);    
+                    $this->playereventstats = $this->model->getPlayerEventStats(false, false);  
                 }
             }
             //stats
@@ -87,10 +87,10 @@ class sportsmanagementViewRoster extends sportsmanagementView
             // Set page title
             $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')));
         }
-        
+      
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
-        
+      
 
           // select roster view
           $opp_arr = array ();
@@ -107,7 +107,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
         $lists['typestaff'] = $opp_arr;
         $this->lists = $lists;
-    
+  
         if (!isset($this->config['table_class']) ) {
             $this->config['table_class'] = 'table';
         }

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,9 +33,9 @@ $i    = 1;
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=predictiontemplate&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-    
+  
     <?php
-    
+  
     ?>
     <fieldset class="adminform">
         <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
@@ -46,17 +46,17 @@ $i    = 1;
         </fieldset>
 
 <div class="form-horizontal">
-<?php 
+<?php
 
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS')); 
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS'));
 
 
 ?>
 
-<?PHP    
-foreach ($fieldsets as $fieldset) 
+<?PHP  
+foreach ($fieldsets as $fieldset)
 {
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));  
 
 
     ?>
@@ -65,7 +65,7 @@ foreach ($fieldsets as $fieldset)
                 <div class="row-fluid form-horizontal-desktop">
                     <div class="span6">
     <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    foreach( $this->form->getFieldset($fieldset->name) as $field )
     {
         ?>
                     <div class="control-group">
@@ -86,15 +86,15 @@ foreach ($fieldsets as $fieldset)
             </div>
     <?PHP
 
-    echo HTMLHelper::_('bootstrap.endTab');    
-}    
+    echo HTMLHelper::_('bootstrap.endTab');  
+}  
 
-?>    
-    
+?>  
+  
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div> 			
-    
-</fieldset>    
+  
+</fieldset>  
 <div>		
 <input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
@@ -108,4 +108,4 @@ foreach ($fieldsets as $fieldset)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

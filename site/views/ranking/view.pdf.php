@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,54 +24,54 @@ jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewRanking
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewRanking extends HtmlView
 {
-    
+  
     /**
      * sportsmanagementViewRanking::display()
-     * 
+     *
      * @param  mixed $tpl
      * @return void
      */
-    function display($tpl = null) 
+    function display($tpl = null)
     {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         $uri = Factory::getURI();
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         $document->addScript(Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js');
 
         $model = $this->getModel();
         $mdlDivisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
         $mdlTeams = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
-        
+      
         $config = sportsmanagementModelProject::getTemplateConfig($this->getName());
         $project = sportsmanagementModelProject::getProject();
-        
+      
         $rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
-            
+          
         sportsmanagementModelProject::setProjectId($project->id);
-        
+      
         $this->model = $model;
         $this->project = $project;
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->extended = $extended;
-        
+      
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         $this->tableconfig = $config;
         $this->config = $config;
-        
-        
+      
+      
 
 
         if (($this->overallconfig['show_project_rss_feed']) == 1 ) {
@@ -85,10 +85,10 @@ class sportsmanagementViewRanking extends HtmlView
             {
                 $this->rssfeeditems = $rssfeeditems;
             }
-    
-        
+  
+      
         }
-       
+     
         if ($this->config['show_half_of_season'] == 1) {
             if ($this->config['show_table_4'] == 1) {
                 $model->part = 1;
@@ -99,7 +99,7 @@ class sportsmanagementViewRanking extends HtmlView
                 $model->computeRanking($model::$cfg_which_database);
                 $this->firstRank = $model->currentRanking;
             }
-     
+   
             if ($this->config['show_table_5']==1) {
                 $model->part = 2;
                 $model->from = 0;
@@ -108,13 +108,13 @@ class sportsmanagementViewRanking extends HtmlView
                 unset($model->previousRanking);
                 $model->computeRanking($model::$cfg_which_database);
                 $this->secondRank = $model->currentRanking;
-            }  
-       
+            }
+     
             $model->part = 0;
             unset($model->currentRanking);
             unset($model->previousRanking);
         }
-       
+     
         $model->computeRanking($model::$cfg_which_database);
 
         $this->round = $model->round;
@@ -125,34 +125,34 @@ class sportsmanagementViewRanking extends HtmlView
         $this->from = $model->from;
         $this->to = $model->to;
         $this->divLevel = $model->divLevel;
-        
+      
         if ($this->config['show_table_1'] == 1) {
             $this->currentRanking = $model->currentRanking;
         }
-        
+      
         $this->previousRanking = $model->previousRanking;
-        
+      
         if ($this->config['show_table_2'] == 1) {
             $this->homeRank = $model->homeRank;
         }
-        
+      
         if ($this->config['show_table_3'] == 1) {
             $this->awayRank = $model->awayRank;
         }
-        
+      
         $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.Factory::getApplication()->input->getVar("view"));
-        
+      
         // mannschaften holen
         $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
-    
+  
         $no_ranking_reason = '';
         if ($this->config['show_notes'] == 1 ) {
             $ranking_reason = array();
-            Uri:: ( $this->teams as $teams ) 
+            Uri:: ( $this->teams as $teams )
               {
-        
+      
             if ($teams->start_points ) {
-        
+      
                 if ($teams->start_points < 0 ) {
                     $color = "red";
                 }
@@ -160,13 +160,13 @@ class sportsmanagementViewRanking extends HtmlView
                 {
                     $color = "green";
                 }
-        
+      
                 $ranking_reason[$teams->name] = '<font color="'.$color.'">'.$teams->name.': '.$teams->start_points.' Punkte Grund: '.$teams->reason.'</font>';
             }
-        
+      
               }
         }
-        
+      
         if (sizeof($ranking_reason) > 0 ) {
             $this->ranking_notes = implode(", ", $ranking_reason);
         }
@@ -174,10 +174,10 @@ class sportsmanagementViewRanking extends HtmlView
         {
              $this->ranking_notes = $no_ranking_reason;
         }
-        
-        
-        
-        
+      
+      
+      
+      
         $this->previousgames = $model->getPreviousGames();
         $this->action = $uri->toString();
 
@@ -204,11 +204,11 @@ class sportsmanagementViewRanking extends HtmlView
 
           // diddipoeler
         $this->allteams = $mdlProjectteams->getAllProjectTeams($project->id);
-        
+      
         if (($this->config['show_ranking_maps'])==1) {
             $this->geo = new JSMsimpleGMapGeocoder();
             $this->geo->genkml3($project->id, $this->allteams);
-  
+
             Uri:: ( $this->allteams as $row )
              {
               $address_parts = array();
@@ -231,9 +231,9 @@ class sportsmanagementViewRanking extends HtmlView
                 $address_parts[] = JSMCountries::getShortCountryName($row->club_country);
             }
             $row->address_string = implode(', ', $address_parts);
-    
+  
              }
- 
+
         }
 
         // Set page title
@@ -246,6 +246,6 @@ class sportsmanagementViewRanking extends HtmlView
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         parent :: display($tpl);
     }
-        
+      
 }
 ?>

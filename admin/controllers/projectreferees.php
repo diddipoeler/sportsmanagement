@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,47 +14,48 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
- 
+
 /**
  * sportsmanagementControllerprojectreferees
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllerprojectreferees extends JSMControllerAdmin
 {
-    
-  
-  
-   
-    /**
-     * Method to update checked projectreferees
-     *
-     * @access public
-     * @return boolean    True on success
-     */
-    function saveshort()
-    {
-        $model = $this->getModel();
-        $model->saveshort();
-        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-    } 
-  
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'Projectreferee', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
-    
 
 
-    
+
+
+	/**
+	 * Method to update checked projectreferees
+	 *
+	 * @access public
+	 * @return boolean    True on success
+	 */
+	function saveshort()
+	{
+		$model = $this->getModel();
+		$model->saveshort();
+		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'Projectreferee', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
+
+
+
+
 }

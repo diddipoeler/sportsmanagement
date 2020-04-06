@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementControllerEditMatch
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2016
  * @version   $Id$
@@ -32,65 +32,65 @@ class sportsmanagementControllerEditMatch extends FormController
 
     /**
      * sportsmanagementControllerEditMatch::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
-    function __construct($config = array()) 
+    function __construct($config = array())
     {
         parent::__construct($config);
     }
 
     /**
  * sportsmanagementControllerEditMatch::savestats()
- * 
+ *
  * @return void
  */
     function savestats()
     {
         $app = Factory::getApplication();
-        $post = $app->input->post->getArray(array());    
+        $post = $app->input->post->getArray(array());  
         $model = $this->getModel('editmatch');
-        $return = $model->savestats($post);  
+        $return = $model->savestats($post);
 
         $link = $_SERVER['HTTP_REFERER'];
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
 
-        $this->setRedirect($link, $msg);    
+        $this->setRedirect($link, $msg);  
     }
-    
+  
      /**
       * sportsmanagementControllerEditMatch::cancel()
-      * 
+      *
       * @return
       */
     public function cancel()
     {
           $msg = 'cancel';
           $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
- 
+
               return true;
     }
-    
+  
     /**
      * sportsmanagementControllerEditMatch::getModel()
-     * 
+     *
      * @param  string $name
      * @param  string $prefix
      * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
     {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
     /**
      * sportsmanagementControllerEditMatch::saveReferees()
-     * 
+     *
      * @return void
      */
-    function saveReferees() 
+    function saveReferees()
     {
         $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
@@ -104,13 +104,13 @@ class sportsmanagementControllerEditMatch extends FormController
         $this->setRedirect($link, $msg);
     }
 
-    
+  
     /**
      * sportsmanagementControllerEditMatch::saveroster()
-     * 
+     *
      * @return void
      */
-    function saveroster() 
+    function saveroster()
     {
         $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
@@ -127,32 +127,32 @@ class sportsmanagementControllerEditMatch extends FormController
 
     /**
      * sportsmanagementControllerEditMatch::saveshort()
-     * 
+     *
      * @return void
      */
-    function saveshort() 
+    function saveshort()
     {
         $app = Factory::getApplication();
         $date = Factory::getDate();
         $user = Factory::getUser();
         $post = Factory::getApplication()->input->post->getArray(array());
         $option = Factory::getApplication()->input->getCmd('option');
-        
+      
         /**
-* 
- * Ein Datenbankobjekt beziehen 
+*
+ * Ein Datenbankobjekt beziehen
 */
         $db = Factory::getDbo();
-        
+      
         /**
-* 
- * Set the values 
+*
+ * Set the values
 */
         $data['team1_bonus'] = null;
         $data['team2_bonus'] = null;
         $data['team1_legs'] = null;
         $data['team2_legs'] = null;
-        
+      
         $data['modified'] = $date->toSql();
         $data['modified_by'] = $user->get('id');
         $data['id'] = $post['matchid'];
@@ -187,8 +187,8 @@ class sportsmanagementControllerEditMatch extends FormController
 
         if (isset($post['extended']) && is_array($post['extended'])) {
             /**
-* 
- * Convert the extended field to a string. 
+*
+ * Convert the extended field to a string.
 */
             $parameter = new Registry;
             $parameter->loadArray($post['extended']);

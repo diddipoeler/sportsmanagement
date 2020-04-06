@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage referee
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -22,8 +22,8 @@ use Joomla\CMS\Factory;
 <?php if (count($this->games)) {
 ?>
 <h2>
-<?php 
-echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); 
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY');
 ?>
 </h2>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="referee_gameshistory">
@@ -48,7 +48,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY');
                     $routeparameter['p'] = $this->project->slug;
                     $routeparameter['mid'] = $game->id;
                     $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-                    
+                  
                     //$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
         ?>
 
@@ -58,9 +58,9 @@ echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY');
         ?>
                         </td>
                         <td class="td_r">
-                        <?php 
-                        echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam1_id, $game->home_logo, $game->home_name, '20');                        
-                        echo $this->teams[$game->projectteam1_id]->name; 
+                        <?php
+                        echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam1_id, $game->home_logo, $game->home_name, '20');                      
+                        echo $this->teams[$game->projectteam1_id]->name;
                         ?>
                         </td>
                         <td class="td_r"><?php echo $game->team1_result; ?></td>
@@ -68,9 +68,9 @@ echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY');
                         </td>
                         <td class="td_l"><?php echo $game->team2_result; ?></td>
                         <td class="td_l">
-                        <?php 
-                        echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam2_id, $game->away_logo, $game->away_name, '20');                        
-                        echo $this->teams[$game->projectteam2_id]->name; 
+                        <?php
+                        echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam2_id, $game->away_logo, $game->away_name, '20');                      
+                        echo $this->teams[$game->projectteam2_id]->name;
                         ?>
                         </td>
                     </tr>

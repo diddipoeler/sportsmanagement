@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,11 +14,11 @@
 
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * sportsmanagementControllerjlextfederations
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -26,16 +26,17 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementControllerjlextfederations extends JSMControllerAdmin
 {
-  
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'jlextfederation', $prefix = 'sportsmanagementModel') 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
-    
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'jlextfederation', $prefix = 'sportsmanagementModel')
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
+
 }

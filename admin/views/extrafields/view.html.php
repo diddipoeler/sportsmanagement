@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,28 +20,28 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewextrafields
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewextrafields extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewextrafields::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-              
+            
         $this->table = Table::getInstance('club', 'sportsmanagementTable');
-        
+      
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
@@ -55,7 +55,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
         ToolbarHelper::editList('extrafield.edit');
         ToolbarHelper::custom('extrafield.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::archiveList('extrafield.export', Text::_('JTOOLBAR_EXPORT'));
-    
+  
         parent::addToolbar();
     }
 }

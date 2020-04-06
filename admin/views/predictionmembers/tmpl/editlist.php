@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,15 +19,15 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.tooltip');
 
-//save and close 
+//save and close
 $close = Factory::getApplication()->input->getInt('close', 0);
 if($close == 1) {
     ?><script>
     window.addEvent('domready', function() {
-        $('cancel').onclick();    
+        $('cancel').onclick();  
     });
     </script>
-    <?php 
+    <?php
 }
 
 
@@ -41,7 +41,7 @@ if($close == 1) {
 
 
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-    
+  
     <fieldset>
         <div class="fltrt">
             <button type="button" onclick="Joomla.submitform('predictionmembers.save_memberlist', this.form)">
@@ -49,9 +49,9 @@ if($close == 1) {
             <button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
                 <?php echo Text::_('JCANCEL');?></button>
         </div>
-        
+      
     </fieldset>
-    
+  
     <div class="col50">
         <fieldset class="adminform">
             <legend>
@@ -59,9 +59,9 @@ if($close == 1) {
                 echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_TITLE', '<i>' . $this->prediction_name . '</i>');
                 ?>
             </legend>
-            
-            
-            
+          
+          
+          
             <table class="admintable" border="0">
                 <tr>
                     <td>
@@ -76,7 +76,7 @@ if($close == 1) {
         }
         else
         {
-                            
+                          
         }
         ?>
                     </td>

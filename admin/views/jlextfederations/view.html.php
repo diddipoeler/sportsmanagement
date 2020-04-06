@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,33 +21,33 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextfederations
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewjlextfederations extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewjlextfederations::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-        
+      
         $this->table = Table::getInstance('jlextfederation', 'sportsmanagementTable');
-        
+      
         //build the html options for nation
         $nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
         if ($res = JSMCountries::getCountryOptions()) {
             $nation = array_merge($nation, $res);
             $this->search_nation = $res;
         }
-        
+      
         $lists['nation'] = $nation;
         $lists['nation2'] = JHtmlSelect::genericlist(
             $nation,
@@ -59,12 +59,12 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
         );
 
         $this->lists = $lists;
-        
-        
-        
-       
+      
+      
+      
+     
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
@@ -80,11 +80,11 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
         ToolbarHelper::editList('jlextfederation.edit');
         ToolbarHelper::custom('jlextfederation.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::archiveList('jlextfederation.export', Text::_('JTOOLBAR_EXPORT'));
-        
+      
         parent::addToolbar();
     }
-    
-    
+  
+  
 
 }
 ?>

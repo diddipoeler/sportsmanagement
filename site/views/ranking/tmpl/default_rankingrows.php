@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -45,7 +45,7 @@ foreach ($current as $ptid => $team) {
         $color = $this->colors[$j]["color"];
     }
 
-    if (isset($this->colors[$j]["from"]) && isset($this->colors[$j]["to"]) 
+    if (isset($this->colors[$j]["from"]) && isset($this->colors[$j]["to"])
         && ( $counter > $this->colors[$j]["from"] && $counter <= $this->colors[$j]["to"] )
     ) {
         $color = $this->colors[$j]["color"];
@@ -119,9 +119,9 @@ foreach ($current as $ptid => $team) {
     echo "\n";
 
     //**************logo - jersey
-    $team->team->logo_small = empty($team->team->logo_small) ? sportsmanagementHelper::getDefaultPlaceholder('clublogosmall') : $team->team->logo_small;    
-    $team->team->logo_big = empty($team->team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->team->logo_big;    
-    
+    $team->team->logo_small = empty($team->team->logo_small) ? sportsmanagementHelper::getDefaultPlaceholder('clublogosmall') : $team->team->logo_small;  
+    $team->team->logo_big = empty($team->team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->team->logo_big;  
+  
     if ($config['show_logo_small_table'] != "no_logo") {
         echo '<td class="rankingrow_logo"';
         if ($color != '' && $config['use_background_row_color']) {
@@ -137,7 +137,7 @@ foreach ($current as $ptid => $team) {
         } elseif ($config['show_logo_small_table'] == "country_flag_logo_small") {
             sportsmanagementHelper::showClubIcon($team->team, 2);
             echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_small, $team->team->name, $config['team_picture_width'], 'auto', 3);
-        } 
+        }
         elseif ($config['show_logo_small_table'] == "logo_big_country_flag") {
             echo sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3) . ' ';
             sportsmanagementHelper::showClubIcon($team->team, 2);
@@ -145,7 +145,7 @@ foreach ($current as $ptid => $team) {
         elseif ($config['show_logo_small_table'] == "country_flag_logo_big") {
             sportsmanagementHelper::showClubIcon($team->team, 2);
             echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3);
-        } 
+        }
         else {
             $pic = $config['show_logo_small_table'];
             if ($this->config['club_link_logo'] ) {
@@ -162,9 +162,9 @@ foreach ($current as $ptid => $team) {
             }
             else
             {
-                        echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->$pic, $team->team->name, $config['team_picture_width'], 'auto', 3);    
+                        echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->$pic, $team->team->name, $config['team_picture_width'], 'auto', 3);  
             }
-            
+          
         }
 
         echo '</td>';
@@ -370,8 +370,8 @@ foreach ($current as $ptid => $team) {
             echo "\n";
             break;
 
-        // ######################################################################################                
-        // ausgabe z.b. für tennis                
+        // ######################################################################################              
+        // ausgabe z.b. für tennis              
         case 'MATCHPOINTS':
             echo '<td class="rankingrow"';
             if ($color != '' && $config['use_background_row_color']) {

@@ -1,28 +1,28 @@
 <?php
-// 
+//
 // DATE : 01.08.2006  #
 // Short description :                                                         #
-// 
+//
 // Internet Calendaring Specification Parser                              #
 // (http://www.ietf.org/rfc/rfc2445.txt)                                   #
-// 
+//
 // Author info :                                                               #
-// 
+//
 // ROMAN OŽANA (c) 2006                                                    #
 // ICQ (99950132)                                                  #
 // WWW (www.nabito.net)                                            #
 // E-mail (admin@nabito.net)                                          #
-// 
+//
 // Country:                                                                    #
-// 
+//
 // CZECH REPUBLIC                                                          #
-// 
+//
 // Licence:                                                                    #
-// 
+//
 // IF YOU WANT USE THIS CODE PLEASE CONTACT AUTHOR, Thank You              #
-// 
+//
 // it was written in SCITE   #
-// 
+//
 /**
  * This class Parse iCal standard. Is prepare to iCal feature version. Now is testing with apple iCal standard 2.0.
  *
@@ -84,18 +84,18 @@ class ical
     {
         $this->file = $file;
         $file_text = join("", file($file)); //load file
-        
+      
         // next line withp preg_replace is because Mozilla Calendar save values wrong, like this ->
-        
+      
         // SUMMARY
         // :Text of sumary
-        
+      
         // good way is, for example in SunnyBird. SunnyBird save iCal like this example ->
-        
+      
         // SUMMARY:Text of sumary
-        
+      
         $file_text = preg_replace("/[\r\n]{1,} ([:;])/", "\\1", $file_text);
-        
+      
         return $file_text; // return all text
     }
 
@@ -127,13 +127,13 @@ class ical
     {
         $this->cal = array(); // new empty array
 
-        $this->event_count = -1; 
+        $this->event_count = -1;
 
         // read FILE text
         $this->file_text = $this->read_file($uri);
 
         $this->file_text = split("[\n]", $this->file_text);
-        
+      
         // is this text vcalendar standart text ? on line 1 is BEGIN:VCALENDAR
         if (!stristr($this->file_text[0], 'BEGIN:VCALENDAR')) { return 'error not VCALENDAR';
         }
@@ -144,7 +144,7 @@ class ical
             if (!empty($text)) {
                 // get Key and Value VCALENDAR:Begin -> Key = VCALENDAR, Value = begin
                 list($key, $value) = $this->retun_key_value($text);
-                
+              
                 switch ($text) // search special string
                 {
                 case "BEGIN:VTODO":
@@ -227,7 +227,7 @@ class ical
         $this->last_key = $key;
     }
     /**
-     * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value"); 
+     * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value");
      *
      * @param  unknown_type $text
      * @return unknown
@@ -235,7 +235,7 @@ class ical
     function retun_key_value($text)
     {
         preg_match("/([^:]+)[:]([\w\W]+)/", $text, $matches);
-        
+      
         if (empty($matches)) {
             return array(false,$text);
         } else  {
@@ -293,7 +293,7 @@ class ical
         // zjisteni TZID
         $temp = explode(";", $key);
         $data = '';
-        
+      
         if (empty($temp[1])) // neni TZID
         {
             $data = str_replace('T', '', $data);
@@ -304,7 +304,7 @@ class ical
         $temp = explode("=", $temp[1]);
         $return_value[$temp[0]] = $temp[1];
         $return_value['unixtime'] = $value;
-        
+      
         return array($key,$return_value);
     }
     /**
@@ -318,7 +318,7 @@ class ical
         if (!empty($temp)) {
             usort($temp, array(&$this, "ical_dtstart_compare"));
             return    $temp;
-        } else 
+        } else
         {
             return false;
         }
@@ -332,7 +332,7 @@ class ical
      */
     function ical_dtstart_compare($a, $b)
     {
-        return strnatcasecmp($a['DTSTART']['unixtime'], $b['DTSTART']['unixtime']);    
+        return strnatcasecmp($a['DTSTART']['unixtime'], $b['DTSTART']['unixtime']);  
     }
     /**
      * Return eventlist array (not sort eventlist array)

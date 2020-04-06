@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,14 +30,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         if(f)
         {
         f.elements['filter_search'].value=val;
-        
+      
         f.submit();
         }
     }
 
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-    
+  
 <?PHP
 echo $this->loadTemplate('joomla_version');
 ?>
@@ -49,4 +49,4 @@ echo $this->loadTemplate('joomla_version');
 </form>
 <?PHP
 echo $this->loadTemplate('footer');
-?>   
+?> 

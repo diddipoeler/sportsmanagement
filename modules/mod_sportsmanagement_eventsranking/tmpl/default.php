@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,8 +12,8 @@
  * @subpackage mod_sportsmanagement_eventsranking
  */
 
-defined('_JEXEC') or die; 
-use Joomla\CMS\HTML\HTMLHelper; 
+defined('_JEXEC') or die;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 ?>
@@ -21,7 +21,7 @@ use Joomla\CMS\Language\Text;
 <div class="row-fluid">
 
 <?php
-$header = ""; 
+$header = "";
 if ($params->get('show_project_name', 0)) {
     $header .= $list['project']->name;
 }
@@ -35,12 +35,12 @@ $teamLink = $params->get('teamlink', '');
 $teamnametype = $params->get('teamnametype', 'short_name');
 ?>
 <p class="projectname"><?php echo $header; ?></p>
-<?php 
+<?php
 if (count($list['eventtypes']) > 0) {
 ?>
 <table class="table">
     <tbody>
-    <?php 
+    <?php
     foreach ($list['eventtypes'] as $eventtype)
     {
          $rankingforevent = $list['ranking'];
@@ -63,14 +63,14 @@ if (count($list['eventtypes']) > 0) {
           <th class="personname"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_NAME')?></th>
             <?php if ($showTeam == 1) : ?>
                             <th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_TEAM');?></th>
-            <?php endif; 
+            <?php endif;
 if ($list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-    $colspan = 2; 
+    $colspan = 2;
 }
 else
          {
-    $colspan = 1;    
-}                   
+    $colspan = 1;  
+}                 
                             ?>
               <th class="td_c" colspan="<?php echo $colspan;?>">
                 <?php if ($params->get('show_event_icon', 1)) : ?>
@@ -142,9 +142,9 @@ else
               <td class="td_c"><?php echo $item->p; ?></td>
                             <?php
                             if ($list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-                            ?>    
+                            ?>  
                               <td class="td_c"><?php echo $item->zaehler; ?></td>
-                                <?php  
+                                <?php
                             }
                             ?>
                  </tr>
@@ -182,7 +182,7 @@ else
 ?>
 <?php if ($params->get('show_full_link', 1)) :?>
 <p class="fulltablelink">
-    <?php //echo HTMLHelper::link(	sportsmanagementHelperRoute::getEventsRankingRoute($list['project']->slug, $params->get('divisionid',0) , $params->get('tid',0), $params->get('evid',0), $params->get('mid',0)), 
+    <?php //echo HTMLHelper::link(	sportsmanagementHelperRoute::getEventsRankingRoute($list['project']->slug, $params->get('divisionid',0) , $params->get('tid',0), $params->get('evid',0), $params->get('mid',0)),
                             //Text::_('MOD_JOOMLEAGUE_EVENTSRANKING_VIEW_FULL_TABLE')); ?>
 </p>
 <?php endif; ?>

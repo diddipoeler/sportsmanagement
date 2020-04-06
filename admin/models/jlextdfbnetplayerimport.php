@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -46,9 +46,9 @@ jimport('joomla.utilities.utility');
 
 /**
  * sportsmanagementModeljlextdfbnetplayerimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -66,7 +66,7 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::__construct()
- * 
+ *
  * @return void
  */
     function __construct( )
@@ -82,12 +82,12 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
         }
 
           parent::__construct();
-    
+  
     }
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::multisort()
- * 
+ *
  * @param  mixed $array
  * @param  mixed $sort_by
  * @param  mixed $key1
@@ -107,7 +107,7 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
             $tmp_array[$pos] = $val[$sort_by];
         }
         asort($tmp_array);
-    
+  
         // display however you want
         foreach ($tmp_array as $pos =>  $val){
             $return_array[$pos][$sort_by] = $array[$pos][$sort_by];
@@ -134,37 +134,37 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::super_unique()
- * 
+ *
  * @param  mixed $array
  * @return
  */
-    function super_unique($array) 
-    { 
+    function super_unique($array)
+    {
         $result = array_map("unserialize", array_unique(array_map("serialize", $array)));
 
-        foreach ($result as $key => $value) 
-        { 
-            if (is_array($value) ) { 
-                $result[$key] = $this->super_unique($value); 
-            } 
+        foreach ($result as $key => $value)
+        {
+            if (is_array($value) ) {
+                $result[$key] = $this->super_unique($value);
+            }
         }
 
-        return $result; 
+        return $result;
     }
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::property_value_in_array()
- * 
+ *
  * @param  mixed $array
  * @param  mixed $property
  * @param  mixed $value
  * @return
  */
-    function property_value_in_array($array, $property, $value) 
+    function property_value_in_array($array, $property, $value)
     {
         $flag = false;
 
-        foreach($array[0] as $object) 
+        foreach($array[0] as $object)
         {
 
             if($object->$property == $value) {
@@ -172,17 +172,17 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
             }
             else
             {
-                $flag = false;        
+                $flag = false;      
             }
         }
-   
+ 
         return $flag;
     }
 
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::getUpdateData()
- * 
+ *
  * @return
  */
     function getUpdateData()
@@ -194,35 +194,35 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
           $lang = Factory::getLanguage();
           $this->_success_text = '';
           $my_text = '';
-   
+ 
           $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
-  
+
          $project = $app->getUserState("$option.pid", '0');
-    
+  
         if (!$project ) {
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_NO_PROJECT'), 'Error');
         }
         else
           {
-      
+    
             $this->getData();
 
             $updatedata = $this->getProjectUpdateData($this->_datas['match'], $project);
-  
+
             foreach ( $updatedata as $row)
             {
                 $mdl = BaseDatabaseModel::getInstance("match", "sportsmanagementModel");
                 $p_match = $mdl->getTable();
-  
-  
-                // paarung ist nicht vorhanden ?  
+
+
+                // paarung ist nicht vorhanden ?
                 if (!$row->id ) {
                     // sicherheitshalber nachschauen ob die paarung schon da ist
                     $query = "SELECT ma.id
 from #__sportsmanagement_match as ma
 where ma.round_id = '$row->round_id'
 and ma.projectteam1_id = '$row->projectteam1_id'
-and ma.projectteam2_id = '$row->projectteam2_id' 
+and ma.projectteam2_id = '$row->projectteam2_id'
 ";
                     $this->_db->setQuery($query);
                     $tempid = $this->_db->loadResult();
@@ -234,14 +234,14 @@ and ma.projectteam2_id = '$row->projectteam2_id'
                     {
                         $p_match->set('round_id', $row->round_id);
                     }
-  
+
                 }
                 else
                 {
                     $p_match->set('id', $row->id);
                 }
-  
-                // spiel wurde verlegt  
+
+                // spiel wurde verlegt
                 if ($row->match_date_verlegt ) {
                     $p_match->set('match_date', $row->match_date_verlegt);
                 }
@@ -249,21 +249,21 @@ and ma.projectteam2_id = '$row->projectteam2_id'
                 {
                     $p_match->set('match_date', $row->match_date);
                 }
+
+
   
-  
-    
                 $p_match->set('published', $row->published);
                 $p_match->set('count_result', $row->count_result);
                 $p_match->set('show_report', $row->show_report);
                 $p_match->set('summary', $row->summary);
-    
+  
                 $p_match->set('projectteam1_id', $row->projectteam1_id);
                 $p_match->set('projectteam2_id', $row->projectteam2_id);
                 $p_match->set('match_number', $row->match_number);
-  
- 
-                if (is_numeric($row->team1_result) && is_numeric($row->team2_result) 
-                    && isset($row->team1_result) && isset($row->team2_result) 
+
+
+                if (is_numeric($row->team1_result) && is_numeric($row->team2_result)
+                    && isset($row->team1_result) && isset($row->team2_result)
                 ) {
                       $my_text .= '<span style="color:blue">';
                       $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_RESULT_YES');
@@ -277,7 +277,7 @@ and ma.projectteam2_id = '$row->projectteam2_id'
                     $my_text .= '</span><br />';
                     $this->_success_text['COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA']=$my_text;
                 }
-    
+  
                 if ($p_match->store()===false) {
                       $my_text .= 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA_ERROR';
                       $my_text .= $row->match_number;
@@ -294,24 +294,24 @@ and ma.projectteam2_id = '$row->projectteam2_id'
                          "<strong>$row->projectteam2_dfbnet</strong>"
                      );
                          $my_text .= '<br />';
-                
+              
                       $this->_success_text['COM_SPORTSMANAGEMENT_ADMIN_DFBNET_UPDATE_MATCH_DATA']=$my_text;
 
                 }
 
             }
-  
-  
+
+
         }
-    
+  
          $this->_SetRoundDates($project);
-    
+  
          return $this->_success_text;
     }
 
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::getProjectUpdateData()
- * 
+ *
  * @param  mixed $csvdata
  * @param  mixed $project
  * @return
@@ -322,8 +322,8 @@ and ma.projectteam2_id = '$row->projectteam2_id'
           $app = Factory::getApplication();
           $document    = Factory::getDocument();
           $exportmatch = array();
-  
-  
+
+
         foreach ( $csvdata as $row )
           {
 
@@ -353,9 +353,9 @@ and r.roundcode = '$row->round_id'
             $query = "SELECT pt.id
 from #__sportsmanagement_project_team as pt
 inner join #__sportsmanagement_team as te
-on te.id = pt.team_id 
+on te.id = pt.team_id
 where pt.project_id = '$project'
-and te.name like '$row->projectteam1_dfbnet' 
+and te.name like '$row->projectteam1_dfbnet'
 ";
             $this->_db->setQuery($query);
             $tempmatch->projectteam1_id = $this->_db->loadResult();
@@ -364,9 +364,9 @@ and te.name like '$row->projectteam1_dfbnet'
             $query = "SELECT pt.id
 from #__sportsmanagement_project_team as pt
 inner join #__sportsmanagement_team as te
-on te.id = pt.team_id 
+on te.id = pt.team_id
 where pt.project_id = '$project'
-and te.name like '$row->projectteam2_dfbnet' 
+and te.name like '$row->projectteam2_dfbnet'
 ";
             $this->_db->setQuery($query);
             $tempmatch->projectteam2_id = $this->_db->loadResult();
@@ -379,22 +379,22 @@ and te.name like '$row->projectteam2_dfbnet'
 from #__sportsmanagement_match as ma
 where ma.round_id = '$tempmatch->round_id'
 and ma.projectteam1_id = '$tempmatch->projectteam1_id'
-and ma.projectteam2_id = '$tempmatch->projectteam2_id' 
+and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 ";
             $this->_db->setQuery($query);
             $tempmatch->id = $this->_db->loadResult();
 
             $exportmatch[] = $tempmatch;
-  
+
         }
           $updatematches = array_merge($exportmatch);
           return $updatematches;
     }
-  
-      
+
+    
     /**
  * sportsmanagementModeljlextdfbnetplayerimport::getData()
- * 
+ *
  * @return
  */
     function getData()
@@ -402,20 +402,20 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
           $option = Factory::getApplication()->input->getCmd('option');
           $app = Factory::getApplication();
           $document    = Factory::getDocument();
- 
+
           $country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
           $project = $app->getUserState("$option.pid", '0');
-    
-          $whichfile=$app->getUserState($option.'whichfile');
   
+          $whichfile=$app->getUserState($option.'whichfile');
+
           $app->enqueueMessage(Text::_('Welches Land? '.$country), '');
           $app->enqueueMessage(Text::_('Welche Art von Datei? '.$whichfile), '');
-  
+
           $post = Factory::getApplication()->input->post->getArray(array());
-  
+
           $this->_league_new_country = $country;
-  
-        $exportpositioneventtype = array();  
+
+        $exportpositioneventtype = array();
         $exportplayer = array();
         $exportpersons = array();
         $exportpersonstemp = array();
@@ -440,8 +440,8 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
         $exportmatch = array();
         $exportmatchplayer = array();
         $exportmatchevent = array();
-        $exportevent = array();  
-        $exportpositiontemp = array(); 
+        $exportevent = array();
+        $exportpositiontemp = array();
 
         $exportposition = array();
         $exportparentposition = array();
@@ -456,12 +456,12 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
         $startline = 0;
 
         if (isset($post['projects']) ) {
-            $this->_project_id = $post['projects'];  
+            $this->_project_id = $post['projects'];
         }
 
         $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.csv';
         $app->enqueueMessage(Text::_('Datei? '.$file), '');
-    
+  
         if ($whichfile == 'playerfile' ) {
 
             /*
@@ -527,7 +527,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
         elseif ($whichfile == 'icsfile' ) {
             /**
 * kalender file vom bfv anfang
-*/    
+*/  
             $ical = new ical();
             $ical->parse($file);
 
@@ -581,18 +581,18 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                           '-BSK'   => ':BSK'
                          );
 
-                        if (preg_match("/-SV/i", $teile[0]) 
-                            || preg_match("/-SVO/i", $teile[0]) 
-                            || preg_match("/-TSV/i", $teile[0]) 
-                            || preg_match("/-JFG/i", $teile[0]) 
-                            || preg_match("/-TV/i", $teile[0]) 
-                            || preg_match("/-ASV/i", $teile[0]) 
-                            || preg_match("/-SSV/i", $teile[0]) 
-                            || preg_match("/-(SG)/i", $teile[0]) 
-                            || preg_match("/-SpVgg/i", $teile[0]) 
-                            || preg_match("/-VfB/i", $teile[0]) 
-                            || preg_match("/-FSV/i", $teile[0]) 
-                            || preg_match("/-BSK/i", $teile[0]) 
+                        if (preg_match("/-SV/i", $teile[0])
+                            || preg_match("/-SVO/i", $teile[0])
+                            || preg_match("/-TSV/i", $teile[0])
+                            || preg_match("/-JFG/i", $teile[0])
+                            || preg_match("/-TV/i", $teile[0])
+                            || preg_match("/-ASV/i", $teile[0])
+                            || preg_match("/-SSV/i", $teile[0])
+                            || preg_match("/-(SG)/i", $teile[0])
+                            || preg_match("/-SpVgg/i", $teile[0])
+                            || preg_match("/-VfB/i", $teile[0])
+                            || preg_match("/-FSV/i", $teile[0])
+                            || preg_match("/-BSK/i", $teile[0])
                             || preg_match("/-FC/i", $teile[0])
                         ) {
                                            $teile[0] = str_replace(array_keys($convert), array_values($convert), $teile[0]);
@@ -690,12 +690,12 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                     }
 
                     if (empty($lfdnumber) ) {
-  
+
                           $temp = new stdClass();
                           $temp->name = $projectname;
-                          $temp->exportRoutine = '2010-09-19 23:00:00';  
+                          $temp->exportRoutine = '2010-09-19 23:00:00';
                           $this->_datas['exportversion'] = $temp;
-  
+
                           $temp = new stdClass();
                           $temp->name = '';
                           $this->_datas['season'] = $temp;
@@ -712,15 +712,15 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                           $temp->middle_name = $projectname;
                           $temp->country = $country;
                           $this->_datas['league'] = $temp;
-  
+
                           $temp = new stdClass();
                           $temp->name = $projectname;
                           $temp->serveroffset = 0;
                           $temp->project_type = 'SIMPLE_LEAGUE';
-  
+
                           $temp->current_round_auto = '2';
                           $temp->auto_time = '2880';
-                          $temp->start_date = '2013-08-08';  
+                          $temp->start_date = '2013-08-08';
                           $temp->start_time = '15:30';
                           $temp->game_regular_time = '90';
                           $temp->game_parts = '2';
@@ -731,11 +731,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                           $temp->add_time = '30';
                           $temp->points_after_add_time = '3,1,0';
                           $temp->points_after_penalty = '3,1,0';
-  
+
                           $this->_datas['project'] = $temp;
                     }
-  
-  
+
+
                     $lfdnumber++;
                     $lfdnumbermatch++;
                 } //spielfreie Mannschaften ausschließen
@@ -792,11 +792,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
               {
                 //$anzahltage = ( $anzahlteams - 1 ) * 2;
                 $anzahltage = $anzahlteams * 2;
-                $anzahlpaarungen = ( $anzahlteams - 1 ) / 2;   
+                $anzahlpaarungen = ( $anzahlteams - 1 ) / 2; 
             }
             $app->enqueueMessage(Text::_('Wir haben '.$anzahltage.' Spieltage'), '');
             $app->enqueueMessage(Text::_('Wir haben '.$anzahlpaarungen.' Paarungen pro Spieltag'), '');
-  
+
             // so jetzt die runden erstellen
             for ($a=1; $a <= $anzahltage ;$a++ )
             {
@@ -822,12 +822,12 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                  $tempmatch->match_number = $lfdnumbermatch;
                  $tempmatch->published = 1;
                  $tempmatch->count_result = 1;
-                 $tempmatch->show_report = 1;  
+                 $tempmatch->show_report = 1;
                   $tempmatch->team1_result = '';
                  $tempmatch->team2_result = '';
                   $tempmatch->summary = '';
                   $tempmatch->match_date = $value['match_date'];
-     
+   
                 if (isset($value['playground']) ) {
                     if (array_key_exists($value['playground'], $exportplaygroundtemp) ) {
                         $tempmatch->playground_id = $exportplaygroundtemp[$value['playground']];
@@ -838,7 +838,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                   $tempmatch->projectteam2_id = $exportteamstemp[$value['gast']];
                   $tempmatch->round_id = $lfdnumberspieltag;
                   $exportmatch[] = $tempmatch;
-  
+
                 if ($lfdnumberpaarung == $anzahlpaarungen ) {
                     $lfdnumberpaarung = 0;
                     $lfdnumberspieltag++;
@@ -846,7 +846,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                 $lfdnumbermatch++;
                 $lfdnumberpaarung++;
-            }   
+            } 
 
             // daten übergeben
             $this->_datas['round'] = array_merge($exportround);
@@ -939,7 +939,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             if (isset($this->_datas['playground']) ) {
                 $app->enqueueMessage(Text::_('playground Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
-            }            
+            }          
 
             // close the project
             $output .= '</project>';
@@ -947,11 +947,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             $xmlfile = $output;
             $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.jlg';
             File::write($file, $xmlfile);
-  
-        }    
+
+        }  
         /**
  * kalender file vom bfv ende
- */  
+ */
 
 
 
@@ -990,16 +990,16 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             [Spielleitung] => ,
             [Assistent 1] => ,
             [Assistent 2] => ,
-            [verlegtWochentag] => 
-            [verlegtSpieldatum] => 
-            [verlegtUhrzeit] => 
+            [verlegtWochentag] =>
+            [verlegtSpieldatum] =>
+            [verlegtUhrzeit] =>
         )
 	
         */
-  
+
         $teamid = 1;
         //$this->fileName = File::read($file);
-        $this->lines = file($file);  
+        $this->lines = file($file);
         if($this->lines ) {
             $row = 0;
 
@@ -1013,29 +1013,29 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                  // Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
                 $csv->delimiter = ";";
                 $row = 0;
-                $start = 0;  
+                $start = 0;
                 $header = array();
                 if (($handle = fopen($file, "r")) !== false) {
                     while (($data = fgetcsv($handle, 4000, $csv->delimiter)) !== false) {
- 
+
                         if ($row == 8 ) {
-                            $num = count($data);  
-                            for ($c=0; $c < $num; $c++) {  
-                                $header[$c] = $data[$c];    
+                            $num = count($data);
+                            for ($c=0; $c < $num; $c++) {
+                                $header[$c] = $data[$c];  
                             }
                         }
                         elseif ($row > 8 ) {
-                            $num = count($data); 
-                            for ($c=0; $c < $num; $c++) {   
-                                $csv->data[$start][$header[$c]] = $data[$c]; 
-                            }  
-                            $start++;   
-                        }  
- 
-                        $row++;  
+                            $num = count($data);
+                            for ($c=0; $c < $num; $c++) { 
+                                $csv->data[$start][$header[$c]] = $data[$c];
+                            }
+                            $start++; 
+                        }
+
+                        $row++;
                     }
-  
-                    fclose($handle);  
+
+                    fclose($handle);
                 }
 
 
@@ -1071,80 +1071,80 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             elseif ($whichfile == 'matchfile' ) {
                 /**
  * Spielplan
- */    
+ */  
                 $row = 0;
                 $header = array();
                 $dfbnetspiele = array();
                 $csv = new JSMparseCSV();
 
-                $input = file_get_contents($file);    
-                $encoding = mb_detect_encoding($input, mb_list_encodings(), true);  
+                $input = file_get_contents($file);  
+                $encoding = mb_detect_encoding($input, mb_list_encodings(), true);
 
                 if($encoding !== "UTF-8" ) {
                     $csvneu = explode("\n", $input);
                     $numcsv = count($csvneu);
                     for($a=0; $a <= $numcsv; $a++  )
-                    {  
+                    {
                         $csvneu[$a] = mb_convert_encoding($csvneu[$a], "UTF-8", $encoding);
                         $data = explode("\t", $csvneu[$a]);
 
                         $num = count($data);
                         for ($c=1; $c < $num; $c++) {
                             if (empty($row) ) {
-                                $header[$c] = trim(strip_tags($data[$c]));    
-                            }  
+                                $header[$c] = trim(strip_tags($data[$c]));  
+                            }
                             else
                             {
 
                                 if ($header[$c] == 'Spielkennung' ) {
-                                    $dfbnetspiele[$data[$c]] = '';    
+                                    $dfbnetspiele[$data[$c]] = '';  
                                 }
-    
-                                $csv->data[$row][$header[$c]] = trim(strip_tags($data[$c])); 
-                            }   
   
-                        }  
+                                $csv->data[$row][$header[$c]] = trim(strip_tags($data[$c]));
+                            } 
+
+                        }
                         $row++;
-                    }  
- 
+                    }
+
                 }
                 else
-                {    
+                {  
 
                     if (($handle = fopen($file, "r")) !== false) {
-  
+
                         while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
-  
+
                             $num = count($data);
                             for ($c=0; $c < $num; $c++) {
                                 if (empty($row) ) {
-                                    $header[$c] = $data[$c];    
+                                    $header[$c] = $data[$c];  
                                 }
                                 else
                                 {
 
                                     if ($header[$c] == 'Spielkennung' ) {
-                                        $dfbnetspiele[$data[$c]] = '';    
+                                        $dfbnetspiele[$data[$c]] = '';  
                                     }
-    
-                                    $csv->data[$row][$header[$c]] = $data[$c]; 
-                                }         
+  
+                                    $csv->data[$row][$header[$c]] = $data[$c];
+                                }       
                             }
                             $row++;
                         }
                         fclose($handle);
-                    }    
+                    }  
                 }
- 
+
                 for($a=1; $a <= sizeof($csv->data); $a++  )
                 {
                     $temp = array();
                     $spielkennung = '';
-                    $anhaengengast = false;    
-                    $anhaengenheim = false;        
+                    $anhaengengast = false;  
+                    $anhaengenheim = false;      
                     foreach ($csv->data[$a] as $pos =>  $val)
                     {
-                        $temp[$pos] = $val;  
+                        $temp[$pos] = $val;
 
                         switch (trim($pos))
                         {
@@ -1152,29 +1152,29 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             if ($val ) {
                                 $anhaengenheim = true;
                             }
-                            break;        
+                            break;      
                         case 'Gastmannschaft':
                             if ($val ) {
                                 $anhaengengast = true;
                             }
-                            break;        
+                            break;      
                         case 'Spielkennung':
                             $spielkennung = $val;
                             break;
                         case 'verlegtSpieldatum':
                             if ($val ) {
-                                $temp['Spieldatum'] = $val; 
+                                $temp['Spieldatum'] = $val;
                             }
                             break;
                         case 'verlegtUhrzeit':
                             if ($val ) {
-                                $temp['Uhrzeit'] = $val; 
+                                $temp['Uhrzeit'] = $val;
                             }
                             break;
                         }
 
                     }
-  
+
                     if ($spielkennung && $anhaengenheim && $anhaengengast ) {
                         $dfbnetspiele[$spielkennung] = $temp;
                     }
@@ -1182,14 +1182,14 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                     {
                         unset($dfbnetspiele[$spielkennung]);
                     }
-    
+  
                 }
 
                 unset($csv->data);
                 foreach ($dfbnetspiele as $pos => $val)
                 {
                     $csv->data[] = $val;
-                }    
+                }  
                 if (sizeof($csv->data) == 0 ) {
                     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'-'.'Falsches Dateiformat'), 'Error');
                     $importcsv = false;
@@ -1211,9 +1211,9 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
  */
                 for($a=0; $a < sizeof($csv->data); $a++  )
                   {
-  
+
                     if (empty($lfdnumber) ) {
-  
+
                         /*
                         [Saison] => 10/11
                               [Verband] => Schleswig-Holsteinischer Fußballverband
@@ -1226,22 +1226,22 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                               [Rahmenspielplan] => 3
                               [Staffel_Nr] => 2
                               [Staffel] => Kreisklasse C-Süd
-                        */  
-  
+                        */
+
                         $temp = new stdClass();
                         $temp->name = $csv->data[$a]['Verband'];
-                        $temp->exportRoutine = '2010-09-19 23:00:00';  
+                        $temp->exportRoutine = '2010-09-19 23:00:00';
                         $this->_datas['exportversion'] = $temp;
-  
+
                         $temp = new stdClass();
                         $temp->name = $csv->data[$a]['Saison'];
                         $this->_datas['season'] = $temp;
-  
+
                         $temp = new stdClass();
                         $temp->name = $csv->data[$a]['Staffel'].' '.$csv->data[$a]['Staffel_Nr'];
                         $temp->country = $country;
                         $this->_datas['league'] = $temp;
-  
+
                         $temp = new stdClass();
                         $temp->id = 1;
                         $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
@@ -1252,10 +1252,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         $temp->serveroffset = 0;
                         $temp->sports_type_id = 1;
                         $temp->project_type = 'SIMPLE_LEAGUE';
-  
+
                         $temp->current_round_auto = '2';
                         $temp->auto_time = '2880';
-                        $temp->start_date = '2013-08-08';  
+                        $temp->start_date = '2013-08-08';
                         $temp->start_time = '15:30';
                         $temp->game_regular_time = '90';
                         $temp->game_parts = '2';
@@ -1266,12 +1266,12 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         $temp->add_time = '30';
                         $temp->points_after_add_time = '3,1,0';
                         $temp->points_after_penalty = '3,1,0';
-  
+
                         $this->_datas['project'] = $temp;
                     }
-    
-                    $valuematchday = $csv->data[$a]['Spieltag'];
   
+                    $valuematchday = $csv->data[$a]['Spieltag'];
+
                     if (isset($exportround[$valuematchday]) ) {
                     }
                     else
@@ -1288,7 +1288,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         }
                     }
 
-                    // dfbnet heimmannschaft  
+                    // dfbnet heimmannschaft
                     $valueheim = $csv->data[$a]['Heim Mannschaft'];
                     if (empty($valueheim) ) {
                         $valueheim = $csv->data[$a]['Heimmannschaft'];
@@ -1380,12 +1380,12 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                             $temp->standard_playground = $lfdnumberplayground;
                             $exportprojectteams[] = $temp;
-     
+   
                             $lfdnumberteam++;
                         }
                     }
 
-                    // dfbnet gastmannschaft  
+                    // dfbnet gastmannschaft
                     $valuegast = $csv->data[$a]['Gast Mannschaft'];
                     if (empty($valuegast) ) {
                         $valuegast = $csv->data[$a]['Gastmannschaft'];
@@ -1469,16 +1469,16 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                             $temp->standard_playground = 0;
                             $exportprojectteams[] = $temp;
-     
+   
                             $lfdnumberteam++;
                         }
-                    }  
- 
-                    // dfbnet spielstaette 
+                    }
+
+                    // dfbnet spielstaette
                     $valueplayground = $csv->data[$a]['Spielstätte'];
                     if (!$valueplayground ) {
                         $valueplayground = $csv->data[$a]['Spielstaette'];
-                    }    
+                    }  
 
                     if ($valueplayground ) {
                         if (array_key_exists($valueplayground, $exportplaygroundtemp) ) {
@@ -1487,7 +1487,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         else
                         {
                             // echo $valueplayground." <- nicht enthalten<br>";
- 
+
                             $exportplaygroundtemp[$valueplayground] = $lfdnumberplayground;
                             $temp = new stdClass();
                             $temp->id = $lfdnumberplayground;
@@ -1514,27 +1514,27 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             $lfdnumberplayground++;
                         }
                     }
-  
+
                     $valueperson = $csv->data[$a]['Spielleitung'];
                     $valueperson1 = $csv->data[$a]['Assistent 1'];
                     $valueperson2 = $csv->data[$a]['Assistent 2'];
 
-                    //if (in_array($valueperson, $exportpersonstemp)) 
+                    //if (in_array($valueperson, $exportpersonstemp))
                     if (array_key_exists($valueperson, $exportpersonstemp)) {
 
                         if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                        }  
-    
+                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                        }
+  
                         if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '') {
                             /**
  * nichts machen
@@ -1543,10 +1543,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         else
                         {
                             $tempmatchreferee = new stdClass();
-                            $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                            $tempmatchreferee->match_id = $lfdnumbermatch; 
-                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson]; 
-                            $tempmatchreferee->project_position_id = 1000; 
+                            $tempmatchreferee->id = $lfdnumbermatchreferee;
+                            $tempmatchreferee->match_id = $lfdnumbermatch;
+                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson];
+                            $tempmatchreferee->project_position_id = 1000;
                             $exportmatchreferee[] = $tempmatchreferee;
                             $lfdnumbermatchreferee++;
                         }
@@ -1557,7 +1557,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                         if (strlen($valueperson) > 6 && $valueperson ) {
                             // echo $valueperson." <- nicht enthalten<br>";
-                            $exportpersonstemp[$valueperson] = $lfdnumberperson;  
+                            $exportpersonstemp[$valueperson] = $lfdnumberperson;
 
                             // nach- und vorname richtig setzen
                             $teile = explode(",", $valueperson);
@@ -1579,21 +1579,21 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             $temp->country = $country;
                             $temp->position_id = 1000;
                             $temp->info = 'Schiri';
-                            $exportpersons[] = $temp; 
+                            $exportpersons[] = $temp;
 
                             if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                            }  
-    
+                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                            }
+  
                             if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' ) {
                                 /**
  * nichts machen
@@ -1602,10 +1602,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             else
                             {
                                 $tempmatchreferee = new stdClass();
-                                $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                                $tempmatchreferee->match_id = $lfdnumbermatch; 
-                                $tempmatchreferee->project_referee_id = $lfdnumberperson; 
-                                $tempmatchreferee->project_position_id = 1000; 
+                                $tempmatchreferee->id = $lfdnumbermatchreferee;
+                                $tempmatchreferee->match_id = $lfdnumbermatch;
+                                $tempmatchreferee->project_referee_id = $lfdnumberperson;
+                                $tempmatchreferee->project_position_id = 1000;
                                 $exportmatchreferee[] = $tempmatchreferee;
                                 $lfdnumbermatchreferee++;
                             }
@@ -1618,18 +1618,18 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                     if (array_key_exists($valueperson1, $exportpersonstemp)) {
 
                         if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                        }  
-    
+                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                        }
+  
                         if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' ) {
                             /**
  * nichts machen
@@ -1638,10 +1638,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         else
                         {
                             $tempmatchreferee = new stdClass();
-                            $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                            $tempmatchreferee->match_id = $lfdnumbermatch; 
-                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson1]; 
-                            $tempmatchreferee->project_position_id = 1001; 
+                            $tempmatchreferee->id = $lfdnumbermatchreferee;
+                            $tempmatchreferee->match_id = $lfdnumbermatch;
+                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson1];
+                            $tempmatchreferee->project_position_id = 1001;
                             $exportmatchreferee[] = $tempmatchreferee;
                             $lfdnumbermatchreferee++;
                         }
@@ -1652,7 +1652,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                         if (strlen($valueperson1) > 6 && $valueperson1 ) {
                             // echo $valueperson." <- nicht enthalten<br>";
-                            $exportpersonstemp[$valueperson1] = $lfdnumberperson;  
+                            $exportpersonstemp[$valueperson1] = $lfdnumberperson;
 
                             // nach- und vorname richtig setzen
                             $teile = explode(",", $valueperson1);
@@ -1674,21 +1674,21 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             $temp->country = $country;
                             $temp->position_id = 1001;
                             $temp->info = 'Schiri';
-                            $exportpersons[] = $temp; 
+                            $exportpersons[] = $temp;
 
                             if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                            }  
-    
+                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                            }
+  
                             if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' ) {
                                 /**
  * nichts machen
@@ -1697,10 +1697,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             else
                             {
                                 $tempmatchreferee = new stdClass();
-                                $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                                $tempmatchreferee->match_id = $lfdnumbermatch; 
-                                $tempmatchreferee->project_referee_id = $lfdnumberperson; 
-                                $tempmatchreferee->project_position_id = 1001; 
+                                $tempmatchreferee->id = $lfdnumbermatchreferee;
+                                $tempmatchreferee->match_id = $lfdnumbermatch;
+                                $tempmatchreferee->project_referee_id = $lfdnumberperson;
+                                $tempmatchreferee->project_position_id = 1001;
                                 $exportmatchreferee[] = $tempmatchreferee;
                                 $lfdnumbermatchreferee++;
                             }
@@ -1713,18 +1713,18 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                     if (array_key_exists($valueperson2, $exportpersonstemp)) {
 
                         if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                            $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                            $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                        }  
-    
+                            $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                        }
+  
                         if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' ) {
                             /**
  * nichts machen
@@ -1733,10 +1733,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         else
                         {
                             $tempmatchreferee = new stdClass();
-                            $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                            $tempmatchreferee->match_id = $lfdnumbermatch; 
-                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson2]; 
-                            $tempmatchreferee->project_position_id = 1002; 
+                            $tempmatchreferee->id = $lfdnumbermatchreferee;
+                            $tempmatchreferee->match_id = $lfdnumbermatch;
+                            $tempmatchreferee->project_referee_id = $exportpersonstemp[$valueperson2];
+                            $tempmatchreferee->project_position_id = 1002;
                             $exportmatchreferee[] = $tempmatchreferee;
                             $lfdnumbermatchreferee++;
                         }
@@ -1747,7 +1747,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
                         if (strlen($valueperson2) > 6 && $valueperson2 ) {
                             // echo $valueperson." <- nicht enthalten<br>";
-                            $exportpersonstemp[$valueperson2] = $lfdnumberperson;  
+                            $exportpersonstemp[$valueperson2] = $lfdnumberperson;
 
                             // nach- und vorname richtig setzen
                             $teile = explode(",", $valueperson2);
@@ -1769,20 +1769,20 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             $temp->country = $country;
                             $temp->position_id = 1002;
                             $temp->info = 'Schiri';
-                            $exportpersons[] = $temp; 
+                            $exportpersons[] = $temp;
 
                             if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                                $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                             }
                             if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                                $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                             }
                             if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                            }  
+                                $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                            }
                             if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '') {
                                 /**
  * nichts machen
@@ -1791,10 +1791,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                             else
                             {
                                 $tempmatchreferee = new stdClass();
-                                $tempmatchreferee->id = $lfdnumbermatchreferee; 
-                                $tempmatchreferee->match_id = $lfdnumbermatch; 
-                                $tempmatchreferee->project_referee_id = $lfdnumberperson; 
-                                $tempmatchreferee->project_position_id = 1002; 
+                                $tempmatchreferee->id = $lfdnumbermatchreferee;
+                                $tempmatchreferee->match_id = $lfdnumbermatch;
+                                $tempmatchreferee->project_referee_id = $lfdnumberperson;
+                                $tempmatchreferee->project_position_id = 1002;
                                 $exportmatchreferee[] = $tempmatchreferee;
                                 $lfdnumbermatchreferee++;
                             }
@@ -1805,17 +1805,17 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
 
 
                     if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                        $bemerkung = $csv->data[$a]['Heimmannschaft'];    
+                        $bemerkung = $csv->data[$a]['Heimmannschaft'];  
                     }
                     if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                        $bemerkung = $csv->data[$a]['Gastmannschaft'];    
+                        $bemerkung = $csv->data[$a]['Gastmannschaft'];  
                     }
                     if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                        $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+                        $bemerkung = $csv->data[$a]['Heim Mannschaft'];  
                     }
                     if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                        $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-                    }  
+                        $bemerkung = $csv->data[$a]['Gast Mannschaft'];  
+                    }
 
                     if ($bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' ) {
                         /**
@@ -1830,7 +1830,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         $tempmatch->round_id = $round_id;
                         $datetime = strtotime($csv->data[$a]['Spieldatum']);
                         $tempmatch->match_date = date('Y-m-d', $datetime)." ".$csv->data[$a]['Uhrzeit'];
-  
+
                         if ($csv->data[$a]['verlegtSpieldatum'] ) {
                             $datetime = strtotime($csv->data[$a]['verlegtSpieldatum']);
                             $tempmatch->match_date_verlegt = date('Y-m-d', $datetime)." ".$csv->data[$a]['verlegtUhrzeit'];
@@ -1839,7 +1839,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         {
                             $tempmatch->match_date_verlegt = '';
                         }
-  
+
                         // datum im spieltag setzen
                         if (!$exportround[$round_id]->round_date_first && !$exportround[$round_id]->round_date_last && $valuematchday ) {
                               $exportround[$round_id]->round_date_first = date('Y-m-d', $datetime);
@@ -1848,17 +1848,17 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         if ($exportround[$round_id]->round_date_first && $exportround[$round_id]->round_date_last && $valuematchday ) {
                               $datetime_first = strtotime($exportround[$round_id]->round_date_first);
                               $datetime_last = strtotime($exportround[$round_id]->round_date_last);
-       
+     
                             if ($datetime_first > $datetime ) {
                                 $exportround[$round_id]->round_date_first = date('Y-m-d', $datetime);
                             }
                             if ($datetime_last < $datetime ) {
                                   $exportround[$round_id]->round_date_last = date('Y-m-d', $datetime);
                             }
-    
-    
-                        }
   
+  
+                        }
+
                         $tempmatch->match_number = $csv->data[$a]['Spielkennung'];
                         //$tempmatch->match_number = $lfdnumbermatch;
                         $tempmatch->published = 1;
@@ -1867,19 +1867,19 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         $tempmatch->projectteam1_id = 0;
                         $tempmatch->projectteam2_id = 0;
                         if (isset($csv->data[$a]['Heimmannschaft']) ) {
-                            $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heimmannschaft'];    
+                            $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heimmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gastmannschaft']) ) {
-                            $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gastmannschaft'];    
+                            $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gastmannschaft'];  
                         }
                         if (isset($csv->data[$a]['Heim Mannschaft']) ) {
-                            $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heim Mannschaft'];    
+                            $tempmatch->projectteam1_dfbnet = $csv->data[$a]['Heim Mannschaft'];  
                         }
                         if (isset($csv->data[$a]['Gast Mannschaft']) ) {
-                            $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gast Mannschaft'];    
+                            $tempmatch->projectteam2_dfbnet = $csv->data[$a]['Gast Mannschaft'];  
                         }
-    
-    
+  
+  
                         $tempmatch->team1_result = '';
                         $tempmatch->team2_result = '';
                         $tempmatch->summary = '';
@@ -1892,10 +1892,10 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                         if (empty($tempmatch->projectteam1_dfbnet) || empty($tempmatch->projectteam2_dfbnet) ) {
                             /**
  * keine spiele anfügen
- */    
+ */  
                         }
                         else
-                        {    
+                        {  
                             if (array_key_exists($tempmatch->match_number, $temp_match_number) ) {
                                 $exportmatch[] = $tempmatch;
                             }
@@ -1904,11 +1904,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                                 $temp_match_number[$tempmatch->match_number] = $tempmatch->match_number;
                                 $exportmatch[] = $tempmatch;
                             }
-                        }  
-                        $lfdnumbermatch++; 
+                        }
+                        $lfdnumbermatch++;
                         $lfdnumber++;
                     }
-  
+
                 }
                 // ende schleife csv file
 
@@ -1918,15 +1918,15 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                     {
 
                         if ($rowmatch->projectteam1_dfbnet == $rowteam->name) {
-                            $rowmatch->projectteam1_id = $rowteam->id; 
+                            $rowmatch->projectteam1_id = $rowteam->id;
                         }
                         if ($rowmatch->projectteam2_dfbnet == $rowteam->name) {
-                            $rowmatch->projectteam2_id = $rowteam->id; 
+                            $rowmatch->projectteam2_id = $rowteam->id;
                         }
 
                     }
 
-                }     
+                }   
 
                 if ($importcsv && sizeof($exportreferee) > 0  ) {
                     $temp = new stdClass();
@@ -1981,35 +1981,35 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                 foreach ( $exportteams as $rowteam )
                 {
 
-                    $play_ground = $exportclubsstandardplayground[$rowteam->name];    
+                    $play_ground = $exportclubsstandardplayground[$rowteam->name];  
                     $club_id = $rowteam->club_id;
 
                     foreach ( $exportplayground as $rowground )
                     {
                         if ($play_ground == $rowground->name ) {
-                            $play_ground_id = $rowground->id;    
+                            $play_ground_id = $rowground->id;  
                             foreach ( $exportclubs as $rowclubs )
                             {
                                 if ($club_id == $rowclubs->id ) {
-                                    $rowclubs->standard_playground = $play_ground_id;    
-                                }    
-                            }    
+                                    $rowclubs->standard_playground = $play_ground_id;  
+                                }  
+                            }  
 
-                        }     
-                    }    
+                        }   
+                    }  
 
-    
+  
                 }
 
-                // von mir 
+                // von mir
                 $this->_datas['position'] = array_merge($exportposition);
-                // von mir 
+                // von mir
                 $this->_datas['projectposition'] = array_merge($exportprojectposition);
-                // von mir 
+                // von mir
                 $this->_datas['parentposition'] = array_merge($exportparentposition);
-                // von mir 
+                // von mir
                 $this->_datas['person'] = array_merge($exportpersons);
-                // von mir 
+                // von mir
                 $this->_datas['projectreferee'] = array_merge($exportreferee);
                 $this->_datas['team'] = array_merge($exportteams);
                 $this->_datas['projectteam'] = array_merge($exportprojectteams);
@@ -2019,7 +2019,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
                 ksort($exportround);
                 $this->_datas['round'] = array_merge($exportround);
                 $this->_datas['match'] = array_merge($exportmatch);
-                // von mir 
+                // von mir
                 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 
             }
@@ -2027,7 +2027,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
         }
 
 
-    
+  
 
         if ($whichfile == 'playerfile' ) {
              /**
@@ -2052,7 +2052,7 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
              $this->import_version='NEW';
         }
         else
-        {    
+        {  
             /**
  * das ganze für den standardimport aufbereiten
  */
@@ -2106,36 +2106,36 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             // set the positions data
             if (isset($this->_datas['position']) ) {
                 // von mir
-                $app->enqueueMessage(Text::_('position Daten '.'generiert'), ''); 
+                $app->enqueueMessage(Text::_('position Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
             }
             // set the positions parent data
             if (isset($this->_datas['parentposition']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('parentposition Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
             }
             // set position data of project
             if (isset($this->_datas['projectposition']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('projectposition Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
             }
             // set the matchreferee data
             if (isset($this->_datas['matchreferee']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('matchreferee Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
             }
             // set the person data
             if (isset($this->_datas['person']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('person Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
             }
             // set the projectreferee data
             if (isset($this->_datas['projectreferee']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('projectreferee Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
             }
@@ -2146,11 +2146,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
             }
             // set playground data of project
             if (isset($this->_datas['playground']) ) {
-                // von mir 
+                // von mir
                 $app->enqueueMessage(Text::_('playground Daten '.'generiert'), '');
                 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
-            }            
-            
+            }          
+          
             // close the project
             $output .= '</project>';
             // mal als test
@@ -2162,11 +2162,11 @@ and ma.projectteam2_id = '$tempmatch->projectteam2_id'
         $this->import_version='NEW';
 
         if ($this->debug_info ) {
-            echo $this->pane->endPane();    
+            echo $this->pane->endPane();  
         }
 
         return $this->_datas;
-    
+  
     }
 
 }

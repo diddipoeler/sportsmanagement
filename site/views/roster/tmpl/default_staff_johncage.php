@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ else
 ?>
         </div><!-- /.jl_roster_staffheading -->
 <?php
-for ($i=0, $n=count($this->stafflist); $i < $n; $i++) 
+for ($i=0, $n=count($this->stafflist); $i < $n; $i++)
         {
     $k = $i % 2;
     if ($k == 0) {

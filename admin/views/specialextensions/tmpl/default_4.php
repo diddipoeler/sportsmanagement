@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage specialextensions
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div class="col-md-8">
         <?php else : ?>
             <div class="col-md-10">
-        <?php endif; ?>      
+        <?php endif; ?>    
             <div id="dashboard-iconss" class="dashboard-icons">
                 <?php
                 foreach ($this->Extensions as $key => $value) {
@@ -49,9 +49,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <?php sportsmanagementHelper::jsminfo(); ?>
         </div>
     </div>
-</div>                
+</div>              
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

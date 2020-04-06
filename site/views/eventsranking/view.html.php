@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEventsRanking
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -27,10 +27,10 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewEventsRanking extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewEventsRanking::init()
-     * 
+     *
      * @return void
      */
     function init()
@@ -50,14 +50,14 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
         $this->limitstart = $this->model->getLimitStart();
         $this->pagination = $this->get('Pagination');
         if ($this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' ) {
-            $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);                    
+            $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, true);                  
         }
         else
         {
             $this->eventranking = $this->model->getEventRankings($this->limit, $this->limitstart, null, false);
         }
         $this->multiple_events = count($this->eventtypes) > 1 ;
-        
+      
         $prefix = Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
         if ($this->multiple_events ) {
             $prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TITLE');
@@ -86,7 +86,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
         }
         $this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
         $this->document->setTitle($this->pagetitle);
-        
+      
         $this->headertitle = $this->pagetitle;
         if (!isset($this->config['table_class']) ) {
             $this->config['table_class'] = 'table';

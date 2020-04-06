@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage globalviews
- */ 
+ */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 ?>
@@ -34,5 +34,5 @@ foreach ($this->output as $key => $templ) {
     echo $this->loadTemplate($template);
 }
 ?>
-    </div> 
+    </div>
 </div>

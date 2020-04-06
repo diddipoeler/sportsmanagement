@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ try{
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');    
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');  
     return false;
 }
 
@@ -42,7 +42,7 @@ try{
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');    
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');  
     return false;
 }
 ?>
@@ -59,27 +59,27 @@ if ($this->tmpl ) {
         <?php echo Text::_('JSAVE');?></button>
                     <button type="button" onclick="Joomla.submitform('club.cancelmodal', this.form);">
         <?php echo Text::_('JCANCEL');?></button>
-                
-                
+              
+              
                 </div>
-                
+              
             </fieldset>
-<?PHP                
+<?PHP              
 }
-?> 
+?>
 
 <?PHP
 
 if (!$this->item->id && $this->view == 'club' ) {
-                    
+                  
                 ?>
                 <fieldset class="adminform">
             <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
                 <input type="checkbox" name="createTeam" />
                 </fieldset>
                 <?PHP
-}               
-                
-echo $this->loadTemplate('editdata');                
+}             
+              
+echo $this->loadTemplate('editdata');              
 ?>
-                
+              

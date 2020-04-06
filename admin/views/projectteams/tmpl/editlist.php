@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -91,14 +91,14 @@ HTMLHelper::_('behavior.tooltip');
         ?>
                     </td>
                     <td style="text-align:center; ">
-                    
+                  
 <input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
 <br />
 <input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
 <br />
 <input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
 <br />
-<input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
+<input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                  
 <br />						
                     </td>
                     <td>

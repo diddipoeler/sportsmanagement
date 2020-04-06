@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage imagehandler
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -24,8 +24,8 @@ use Joomla\CMS\MVC\View\HtmlView;
 
 /**
  * sportsmanagementViewImagehandler
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -39,7 +39,7 @@ class sportsmanagementViewImagehandler extends HtmlView
      *
      * @since 0.9
      */
-    function display($tpl = null) 
+    function display($tpl = null)
     {
         $app = Factory::getApplication();
         $document = Factory::getDocument();
@@ -56,8 +56,8 @@ class sportsmanagementViewImagehandler extends HtmlView
         }
 
         /**
-* 
- * get vars 
+*
+ * get vars
 */
         $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
@@ -69,14 +69,14 @@ class sportsmanagementViewImagehandler extends HtmlView
         Factory::getApplication()->input->setVar('folder', $folder);
 
         /**
-* 
- * Do not allow cache 
+*
+ * Do not allow cache
 */
         JResponse::allowCache(false);
 
         /**
-* 
- * get images 
+*
+ * get images
 */
         $images = $this->get('Images');
         $pageNav = $this->get('Pagination');
@@ -95,8 +95,8 @@ class sportsmanagementViewImagehandler extends HtmlView
             parent::display($tpl);
         } else {
             /**
-* 
- * no images in the folder, redirect to uploadscreen and raise notice 
+*
+ * no images in the folder, redirect to uploadscreen and raise notice
 */
             Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'), Log::INFO, 'jsmerror');
             $this->setLayout('upload');
@@ -106,7 +106,7 @@ class sportsmanagementViewImagehandler extends HtmlView
         }
     }
 
-    function setImage($index = 0) 
+    function setImage($index = 0)
     {
         if (isset($this->images[$index])) {
             $this->_tmp_img = &$this->images[$index];
@@ -122,14 +122,14 @@ class sportsmanagementViewImagehandler extends HtmlView
      *
      * @since 0.9
      */
-    function _displayupload($tpl = null) 
+    function _displayupload($tpl = null)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
 
         /**
-* 
- * initialise variables 
+*
+ * initialise variables
 */
         $document = Factory::getDocument();
         $uri = Factory::getURI();
@@ -140,8 +140,8 @@ class sportsmanagementViewImagehandler extends HtmlView
         $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $menu = Factory::getApplication()->input->setVar('hidemainmenu', 1);
         /**
-* 
- * get vars 
+*
+ * get vars
 */
         $task = Factory::getApplication()->input->getVar('task');
 
@@ -149,8 +149,8 @@ class sportsmanagementViewImagehandler extends HtmlView
         $ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
         /**
-* 
- * assign data to template 
+*
+ * assign data to template
 */
         $this->params = $params;
         $this->request_url = $uri->toString();

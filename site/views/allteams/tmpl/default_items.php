@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,13 +11,13 @@
  * @package    sportsmanagement
  * @subpackage allteams
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="allteams">        
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allteams">      
     <table class="<?php echo $this->tableclass; ?>">
 
         <thead>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.00
@@ -9,22 +9,22 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
- */ 
+ */
 
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper; 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder; 
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.form.formfield');
- 
+
 defined('JPATH_BASE') or die();
 
 /**
  * JFormFieldTemplatelist
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -33,10 +33,10 @@ defined('JPATH_BASE') or die();
 class JFormFieldTemplatelist extends JFormField
 {
     protected $type = 'Templatelist';
-    
+  
     /**
      * JFormFieldTemplatelist::getInput()
-     * 
+     *
      * @return
      */
     function getInput()
@@ -46,7 +46,7 @@ class JFormFieldTemplatelist extends JFormField
         $filter        = $this->element['filter'];
         $exclude    = $this->element['exclude'];
         $folders    = Folder::folders($path, $filter);
-        
+      
         $options = array ();
         foreach ($folders as $folder)
         {
@@ -57,17 +57,17 @@ class JFormFieldTemplatelist extends JFormField
             }
             $options[] = HTMLHelper::_('select.option', $folder, $folder);
         }
-        
+      
         $lang = Factory::getLanguage();
         $lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
         if (!$this->element['hide_none']) {
             array_unshift($options, HTMLHelper::_('select.option', '-1', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
         }
-        
+      
         if (!$this->element['hide_default']) {
             array_unshift($options, HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
         }
-        
+      
         $doc = Factory::getDocument();
         $doc->addScriptDeclaration(
             '
@@ -99,7 +99,7 @@ class JFormFieldTemplatelist extends JFormField
 			}
 			'
         );
-        
+      
         $mainframe = Factory::getApplication();
 
         $select = '<table>'
@@ -109,7 +109,7 @@ class JFormFieldTemplatelist extends JFormField
               'select.genericlist',  $options, $this->name,
               'class="inputbox" onchange="$(\'TemplateImage\').src=\''
                            .$mainframe->getCfg('live_site')
-              .'/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"', 
+              .'/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"',
               'value', 'text', $this->value, $this->id
           )
           . '<br /><br />'
@@ -119,7 +119,7 @@ class JFormFieldTemplatelist extends JFormField
           . '<tr>'
           . '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
           . HTMLHelper::_(
-              'image', 'modules/mod_sportsmanagement_matches/tmpl/'.$this->value.'/template.png', 
+              'image', 'modules/mod_sportsmanagement_matches/tmpl/'.$this->value.'/template.png',
               'TemplateImage', 'id="TemplateImage" width="200"'
           )
              . '</td>'
@@ -129,4 +129,4 @@ class JFormFieldTemplatelist extends JFormField
         return $select;
     }
 }
- 
+

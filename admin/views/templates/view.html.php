@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage templates
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
@@ -22,9 +22,9 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTemplates
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,10 +34,10 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 
     /**
      * sportsmanagementViewTemplates::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
         $starttime = microtime();
 
@@ -93,7 +93,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 

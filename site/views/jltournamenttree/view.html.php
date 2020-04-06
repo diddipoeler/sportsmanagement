@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage jltournamenttree
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -20,8 +20,8 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjltournamenttree
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -30,17 +30,17 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementViewjltournamenttree extends sportsmanagementView
 {
 
-    
+  
     /**
      * sportsmanagementViewjltournamenttree::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
 
-        if ($this->project->project_type == 'TOURNAMENT_MODE' 
-            || $this->project->project_type == 'DIVISIONS_LEAGUE' 
+        if ($this->project->project_type == 'TOURNAMENT_MODE'
+            || $this->project->project_type == 'DIVISIONS_LEAGUE'
         ) {
             $this->rounds = $this->model->getTournamentRounds();
 

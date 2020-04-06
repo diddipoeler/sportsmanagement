@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
-<?php 
+<?php
 $personName = sportsmanagementHelper::formatName(null, $this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
 if ($this->config['show_staff_icon'] == 1) {
     $imgTitle = Text::sprintf($personName);
@@ -62,8 +62,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 $routeparameter['p'] = $this->project->slug;
                 $routeparameter['tid'] = $this->team->slug;
                 $routeparameter['pid'] = $this->row->person_slug;
-                                        
-                echo ($this->config['link_staff']==1) ? 
+                                      
+                echo ($this->config['link_staff']==1) ?
                 HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter), $personName)
                 : $personName;
 ?>
@@ -73,7 +73,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
             <div class="jl_roster_persondetails">
                     <div>
                         <span class="jl_roster_persondetails_label">
-<?php 
+<?php
                             echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION');
 ?>
                         </span><!-- /.jl_roster_persondetails_label -->
@@ -110,11 +110,11 @@ default: // show member+function with text
     break;
                 }
                 echo $staff_position;
-                        
+                      
         ?>
                         </span><!-- /.jl_roster_persondetails_data -->
                     </div>
-<?php 
+<?php
 if ($this->config['show_birthday_staff'] > 0 AND $this->row->birthday !="0000-00-00") {
     switch ($this->config['show_birthday_staff'])
     {

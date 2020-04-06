@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -45,9 +45,9 @@ jimport('joomla.utilities.utility');
 
 /**
  * sportsmanagementModeljlextprofleagimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -63,7 +63,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljlextprofleagimport::__construct()
- * 
+ *
  * @return void
  */
     function __construct( )
@@ -88,7 +88,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
     /**
   * sportsmanagementModeljlextprofleagimport::_getXml()
-  * 
+  *
   * @return
   */
     function _getXml()
@@ -121,7 +121,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
     {
         $form = $this->loadForm(
             $this->jsmoption.'.'.$this->name, $this->name,
-            array('load_data' => $loadData) 
+            array('load_data' => $loadData)
         );
         if (empty($form)) {
             return false;
@@ -146,43 +146,43 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
     /**
  * sportsmanagementModeljlextprofleagimport::xml2assoc()
- * 
+ *
  * @param  mixed $xml
  * @param  mixed $target
  * @return
  */
-    function xml2assoc($xml, array &$target = array()) 
-    { 
-        while ($xml->read()) { 
-            switch ($xml->nodeType) { 
-            case XMLReader::END_ELEMENT: 
-                return $target; 
-            case XMLReader::ELEMENT: 
-                $name = $xml->name; 
-                $target[$name] = $xml->hasAttributes ? array() : ''; 
-                if (!$xml->isEmptyElement) { 
-                    $target[$name] = array(); 
-                    self::xml2assoc($xml, $target[$name]); 
-                } 
+    function xml2assoc($xml, array &$target = array())
+    {
+        while ($xml->read()) {
+            switch ($xml->nodeType) {
+            case XMLReader::END_ELEMENT:
+                return $target;
+            case XMLReader::ELEMENT:
+                $name = $xml->name;
+                $target[$name] = $xml->hasAttributes ? array() : '';
+                if (!$xml->isEmptyElement) {
+                    $target[$name] = array();
+                    self::xml2assoc($xml, $target[$name]);
+                }
 
-                if ($xml->hasAttributes) { 
-                    while($xml->moveToNextAttribute()) { 
+                if ($xml->hasAttributes) {
+                    while($xml->moveToNextAttribute()) {
                         $target[$name]['@'.$xml->name] = $xml->value;
                     }
-                } 
-                break; 
-            case XMLReader::TEXT: 
-            case XMLReader::CDATA: 
-                $target = $xml->value; 
-            } 
-        } 
-        return $target; 
-    } 
+                }
+                break;
+            case XMLReader::TEXT:
+            case XMLReader::CDATA:
+                $target = $xml->value;
+            }
+        }
+        return $target;
+    }
 
 
     /**
  * sportsmanagementModeljlextprofleagimport::DumpStructure()
- * 
+ *
  * @param  mixed $structure
  * @param  mixed $positions
  * @param  mixed $path
@@ -216,10 +216,10 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 
 
-            
+          
     /**
  * sportsmanagementModeljlextprofleagimport::getData()
- * 
+ *
  * @return
  */
     function getData()
@@ -228,22 +228,22 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
           $app = Factory::getApplication();
           $document    = Factory::getDocument();
-  
+
           $lang = Factory::getLanguage();
           $teile = explode("-", $lang->getTag());
-  
+
           $post = Factory::getApplication()->input->post->getArray(array());
           $country = $post['country'];
           //$country = JSMCountries::convertIso2to3($teile[1]);
-  
+
           $app->enqueueMessage(Text::_('land '.$country.''), '');
-  
+
           $option = Factory::getApplication()->input->getCmd('option');
          $project = $app->getUserState($option . 'project', 0);
-    
-        
-    
   
+      
+  
+
           $temp = new stdClass();
           $temp->id = 1;
           $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
@@ -251,14 +251,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
         $file = JPATH_SITE.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sportsmanagement_import.xml';
 
-    
+  
 
 
 
-        $xml = new SofeeXmlParser(); 
-        $xml->parseFile($file); 
-        $tree = $xml->getTree(); 
-        unset($xml); 
+        $xml = new SofeeXmlParser();
+        $xml->parseFile($file);
+        $tree = $xml->getTree();
+        unset($xml);
 
         $app->setUserState($option.'pltree', $tree);
 
@@ -284,7 +284,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
         $temp->project_type = 'SIMPLE_LEAGUE';
         $temp->current_round_auto = '2';
         $temp->auto_time = '2880';
-        $temp->start_date = '2013-08-08';  
+        $temp->start_date = '2013-08-08';
         $temp->start_time = '15:30';
         $temp->game_regular_time = '90';
         $temp->game_parts = '2';
@@ -313,7 +313,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
             $temp->firstname = $tree[tournament][player][$a][firstName];
             $temp->birthday = $tree[tournament][player][$a][dateOfBirth][date][value];
             if (!$temp->birthday ) {
-                $temp->birthday = '0000-00-00';    
+                $temp->birthday = '0000-00-00';  
             }
             $temp->country = $country;
             $temp->show_persdata = 1;
@@ -338,7 +338,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
             $temp->firstname = $tree[tournament][coach][$a][firstName];
             $temp->birthday = $tree[tournament][coach][$a][dateOfBirth][date][value];
             if (!$temp->birthday ) {
-                $temp->birthday = '0000-00-00';    
+                $temp->birthday = '0000-00-00';  
             }
             $temp->country = $country;
             $temp->show_persdata = 1;
@@ -363,7 +363,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
             $temp->location = $tree[tournament][referee][$a][location];
             $temp->birthday = $tree[tournament][referee][$a][dateOfBirth][date][value];
             if (!$temp->birthday ) {
-                $temp->birthday = '0000-00-00';    
+                $temp->birthday = '0000-00-00';  
             }
             $temp->country = $country;
             $temp->show_persdata = 1;
@@ -374,7 +374,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
             $temp = new stdClass();
             //$temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][referee][$a][id] );
-            $tempexportreferee[$tree[tournament][referee][$a][id]] = $lfdnummerperson; 
+            $tempexportreferee[$tree[tournament][referee][$a][id]] = $lfdnummerperson;
             //$tempexportreferee[$tree[tournament][referee][$a][id]] = $temp->id;
             $temp->id = $lfdnummerperson;
             $temp->plid = $tree[tournament][referee][$a][id];
@@ -1114,7 +1114,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
         /**
  * PositionEventType generieren
  */
-        $lfd_nummer = 1; 
+        $lfd_nummer = 1;
         foreach ( $exportevent as $row )
         {
             for($a=1; $a < 5;$a++  )
@@ -1124,7 +1124,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
                 $temp->position_id = $a;
                 $temp->eventtype_id = $row->id;
                 $temp->published = 1;
-                $exportpositioneventtype[] = $temp;    
+                $exportpositioneventtype[] = $temp;  
             }
         }
         //$selectposition = implode(",",$exportpositiontemp);
@@ -1283,134 +1283,134 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
         $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsManagementVersion());
         // set the project datas
         if (isset($this->_datas['project']) ) {
-            $app->enqueueMessage(Text::_('project daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('project daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
         }
         // set league data of project
         if (isset($this->_datas['league']) ) {
-            $app->enqueueMessage(Text::_('league daten '.'generiert'), '');      
+            $app->enqueueMessage(Text::_('league daten '.'generiert'), '');    
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
         }
         // set season data of project
         if (isset($this->_datas['season']) ) {
-            $app->enqueueMessage(Text::_('season daten '.'generiert'), '');      
+            $app->enqueueMessage(Text::_('season daten '.'generiert'), '');    
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
         }
 
         // set the rounds sportstype
         if (isset($this->_datas['sportstype']) ) {
-            $app->enqueueMessage(Text::_('sportstype daten '.'generiert'), '');      
-            $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
+            $app->enqueueMessage(Text::_('sportstype daten '.'generiert'), '');    
+            $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));  
         }
 
         // set the rounds data
         if (isset($this->_datas['round']) ) {
-            $app->enqueueMessage(Text::_('round daten '.'generiert'), '');      
+            $app->enqueueMessage(Text::_('round daten '.'generiert'), '');    
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round'));
         }
         // set the teams data
         if (isset($this->_datas['team']) ) {
-            $app->enqueueMessage(Text::_('team daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('team daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
         }
 
         // set the teamplayer data
         if (isset($this->_datas['teamplayer']) ) {
-            $app->enqueueMessage(Text::_('teamplayer daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('teamplayer daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamplayer'], 'TeamPlayer'));
         }
         // set the teamstaff data
         if (isset($this->_datas['teamstaff']) ) {
-            $app->enqueueMessage(Text::_('teamstaff daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('teamstaff daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamstaff'], 'TeamStaff'));
         }
 
 
         // set the clubs data
         if (isset($this->_datas['club']) ) {
-            $app->enqueueMessage(Text::_('club daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('club daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
         }
         // set the matches data
         if (isset($this->_datas['match']) ) {
-            $app->enqueueMessage(Text::_('match daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('match daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
         }
         // set the positions data
         if (isset($this->_datas['position']) ) {
-            $app->enqueueMessage(Text::_('position daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('position daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
         }
         // set the positions parent data
         if (isset($this->_datas['parentposition']) ) {
-            $app->enqueueMessage(Text::_('parentposition daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('parentposition daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
         }
         // set position data of project
         if (isset($this->_datas['projectposition']) ) {
-            $app->enqueueMessage(Text::_('projectposition daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('projectposition daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
         }
 
         // set event data of project
         if (isset($this->_datas['event']) ) {
-            $app->enqueueMessage(Text::_('event daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('event daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['event'], 'EventType'));
         }
 
         // set positioneventtype data of project
         if (isset($this->_datas['positioneventtype']) ) {
-            $app->enqueueMessage(Text::_('positioneventtype daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('positioneventtype daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['positioneventtype'], 'PositionEventType'));
         }
 
         // set the matchreferee data
         if (isset($this->_datas['matchreferee']) ) {
-            $app->enqueueMessage(Text::_('matchreferee daten '.'generiert'), '');   
+            $app->enqueueMessage(Text::_('matchreferee daten '.'generiert'), ''); 
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
         }
 
 
         // set the matchplayer data
         if (isset($this->_datas['matchplayer']) ) {
-            $app->enqueueMessage(Text::_('matchplayer daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('matchplayer daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchplayer'], 'MatchPlayer'));
         }
 
         // set the matchstaff data
         if (isset($this->_datas['matchstaff']) ) {
-            $app->enqueueMessage(Text::_('matchstaff daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('matchstaff daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchstaff'], 'MatchStaff'));
         }
 
         // set the matchevent data
         if (isset($this->_datas['matchevent']) ) {
-            $app->enqueueMessage(Text::_('matchevent daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('matchevent daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchevent'], 'MatchEvent'));
         }
 
 
         // set the person data
         if (isset($this->_datas['person']) ) {
-            $app->enqueueMessage(Text::_('person daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('person daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
         }
         // set the projectreferee data
         if (isset($this->_datas['projectreferee']) ) {
-            $app->enqueueMessage(Text::_('projectreferee daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('projectreferee daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
         }
         // set the projectteam data
         if (isset($this->_datas['projectteam']) ) {
-            $app->enqueueMessage(Text::_('projectteam daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('projectteam daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
         }
         // set playground data of project
         if (isset($this->_datas['playground']) ) {
-            $app->enqueueMessage(Text::_('playground daten '.'generiert'), '');    
+            $app->enqueueMessage(Text::_('playground daten '.'generiert'), '');  
             $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
-        }            
-            
+        }          
+          
         // close the project
         $output .= '</project>';
         // mal als test
@@ -1420,18 +1420,18 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 
         if ($this->debug_info ) {
-            echo $this->pane->endPane();    
+            echo $this->pane->endPane();  
         }
-  
+
         $this->import_version='NEW';
         //$this->import_version='';
         return $this->_datas;
-    
+  
     }
 
     /**
  * sportsmanagementModeljlextprofleagimport::getProfLeagPosition()
- * 
+ *
  * @param  mixed $val
  * @param  mixed $posplayer
  * @return
@@ -1462,28 +1462,28 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
         if (($val >= 176 && $val <= 255) ) {
             return 4;
         }
-    
-    }    
-    
+  
+    }  
+  
 
-    
-              
+  
+            
     /**
  * sportsmanagementModeljlextprofleagimport::_loadData()
- * 
+ *
  * @return
  */
     function _loadData()
     {
           global $app, $option;
           $this->_data =  $app->getUserState($option . 'project', 0);
-   
+ 
           return $this->_data;
     }
 
     /**
  * sportsmanagementModeljlextprofleagimport::_initData()
- * 
+ *
  * @return
  */
     function _initData()

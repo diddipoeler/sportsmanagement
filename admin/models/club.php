@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelclub
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -39,9 +39,9 @@ class sportsmanagementModelclub extends JSMModelAdmin
     public function __construct($config = array())
     {
         parent::__construct($config);
-    
-    }    
-   
+  
+    }  
+ 
     /**
      * Method to update checked clubs
      *
@@ -55,28 +55,28 @@ class sportsmanagementModelclub extends JSMModelAdmin
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
-      
+    
         $result=true;
         for ($x=0; $x < count($pks); $x++)
         {
              $address_parts = array();
                 $address_parts2 = array();
             $tblClub = & $this->getTable();
-            
-            
+          
+          
             $tblClub->id    = $pks[$x];
             $tblClub->zipcode = $post['zipcode' . $pks[$x]];
             $tblClub->location = $post['location' .$pks[$x]];
             $tblClub->address = $post['address' .$pks[$x]];
             $tblClub->country = $post['country' .$pks[$x]];
-            
+          
             $tblClub->unique_id = $post['unique_id' .$pks[$x]];
             $tblClub->new_club_id = $post['new_club_id' .$pks[$x]];
-            
+          
             if (!empty($tblClub->address)) {
                 $address_parts[] = $tblClub->address;
             }
-        
+      
             if (!empty($tblClub->location)) {
                 if (!empty($tblClub->zipcode)) {
                     $address_parts[] = $tblClub->zipcode. ' ' .$tblClub->location;
@@ -94,14 +94,14 @@ class sportsmanagementModelclub extends JSMModelAdmin
             }
             $address = implode(', ', $address_parts);
             $coords = sportsmanagementHelper::resolveLocation($address);
-       
+     
             if ($coords ) {
                 $tblClub->latitude = $coords['latitude'];
                 $tblClub->longitude = $coords['longitude'];
             }
             else
               {
-            
+          
             }
 
             if(!$tblClub->store()) {
@@ -110,11 +110,11 @@ class sportsmanagementModelclub extends JSMModelAdmin
         }
         return $result;
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelclub::teamsofclub()
-     * 
+     *
      * @param  mixed $club_id
      * @return void
      */
@@ -127,16 +127,16 @@ class sportsmanagementModelclub extends JSMModelAdmin
         $option = $jinput->getCmd('option');
         $db    = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         $query->clear();
         $query->select('t.id,t.name');
         $query->from('#__sportsmanagement_team AS t');
         $query->where('t.club_id = '.$club_id);
         $db->setQuery($query);
         $teamsofclub = $db->loadObjectList();
-        return $teamsofclub; 
-        
+        return $teamsofclub;
+      
     }
-    
-    
+  
+  
 }

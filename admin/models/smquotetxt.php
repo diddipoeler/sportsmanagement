@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,15 +11,15 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 jimport('joomla.filesystem.folder');
 use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Log\Log; 
+use Joomla\CMS\Log\Log;
 
 class sportsmanagementModelsmquotetxt extends AdminModel
 {
@@ -32,7 +32,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
@@ -46,7 +46,7 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 
         return $form;
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -65,8 +65,8 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 
         return $data;
     }
-    
-    
+  
+  
     /**
      * Method to store the source file contents.
      *
@@ -80,10 +80,10 @@ class sportsmanagementModelsmquotetxt extends AdminModel
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         jimport('joomla.filesystem.file');
-       
+     
         $filePath = JPATH_SITE.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.'mod_sportsmanagement_rquotes'.DIRECTORY_SEPARATOR.$data['filename'];
         //$return = File::write($filePath, $data['source']);
-        
+      
         if (!File::write($filePath, $data['source']) ) {
             Log::add('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
@@ -91,8 +91,8 @@ class sportsmanagementModelsmquotetxt extends AdminModel
         {
             Log::add('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
         }
-    }    
-  
+    }  
+
     /**
      * Method to get a single record.
      *
@@ -127,8 +127,8 @@ class sportsmanagementModelsmquotetxt extends AdminModel
 
         return $item;
     }
-    
+  
 
-    
+  
 
 }

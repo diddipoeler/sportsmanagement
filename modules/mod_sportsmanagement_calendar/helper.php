@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,8 +24,8 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'calendarClass.php';
 
 /**
  * modJSMCalendarHelper
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -36,7 +36,7 @@ class modJSMCalendarHelper
 
     /**
      * modJSMCalendarHelper::showCal()
-     * 
+     *
      * @param  mixed   $params
      * @param  mixed   $year
      * @param  mixed   $month
@@ -49,7 +49,7 @@ class modJSMCalendarHelper
         //global $mainframe;
         // Reference global application object
         $app = Factory::getApplication();
-    
+  
         $language= Factory::getLanguage(); //get the current language
         $language->load('mod_sportsmanagement_calendar'); //load the language ini file of the module
         $article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
@@ -103,23 +103,23 @@ class modJSMCalendarHelper
            $cal::getMatches($month, $year);
         $counter= Array();
         jimport('joomla.utilities.date');
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             $config = Factory::getConfig();
-            $offset = $config->get('offset'); 
-            $dateformat = 'Format';    
+            $offset = $config->get('offset');
+            $dateformat = 'Format';  
         }
         else
-              {    
+              {  
             $config = Factory::getConfig();
-            $offset = $config->get('offset'); 
+            $offset = $config->get('offset');
             $dateformat = 'toFormat';
         }
-        
+      
         foreach ( $cal::$matches as $row )
         {
             $created = new JDate($row['date'], $offset);
-            
+          
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
                 $createdYear = $created->$dateformat('Y');
                 $createdMonth = $created->$dateformat('m');
@@ -129,9 +129,9 @@ class modJSMCalendarHelper
              {
                    $createdYear = $created->$dateformat('%Y');
                    $createdMonth = $created->$dateformat('%m');
-                   $createdDay = $created->$dateformat('%d'); //have to use %d because %e doesn't works on windows    
+                   $createdDay = $created->$dateformat('%d'); //have to use %d because %e doesn't works on windows  
             }
-            
+          
                 $createdDate = $createdYear . $createdMonth . $createdDay; //this makes an unique variable for every day
                 $counter[$createdDate]['createdYear'] = $createdYear;
                 $counter[$createdDate]['createdMonth'] = $createdMonth;
@@ -141,15 +141,15 @@ class modJSMCalendarHelper
             }
             else
              {
-                   $counter[$createdDate]['tiptitle'] = $created->$dateformat('%A, %d.%m.%Y');    
+                   $counter[$createdDate]['tiptitle'] = $created->$dateformat('%A, %d.%m.%Y');  
             }
-            
+          
             if (!isset($counter[$createdDate]['count'])) { $counter[$createdDate]['count'] = 1;
             } else { $counter[$createdDate]['count'] += 1; //$counter[$date] counts the number of articles in each day, to display it as a title in the link of the day
             }
         }
-       
-        foreach ($counter AS $createdDate => $val) 
+     
+        foreach ($counter AS $createdDate => $val)
               {
                 $title =  $counter[$createdDate]['tiptitle'].' :: ' .$counter[$createdDate]['count'] . ' ';
                 $title .= ($counter[$createdDate]['count'] > 1)? $articles : $article;
@@ -175,7 +175,7 @@ class modJSMCalendarHelper
 
     /**
      * modJSMCalendarHelper::getDate_byId()
-     * 
+     *
      * @param  mixed $id
      * @return
      */
@@ -188,24 +188,24 @@ class modJSMCalendarHelper
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             $config = Factory::getConfig();
-            $offset = $config->get('offset');    
-            $dateformat = 'Format';    
+            $offset = $config->get('offset');  
+            $dateformat = 'Format';  
         }
         else
-        {    
+        {  
             $offset = 0;
             $dateformat = 'toFormat';
         }
 
         $query->select("match_date");
-        $query->from('#__sportsmanagement_matches'); 
+        $query->from('#__sportsmanagement_matches');
         $query->where('match_id=\'' . $id . '\'');
         $db->setQuery($query);
         $row = $db->loadObjectList();
-        
+      
         jimport('joomla.utilities.date');
         $created = new JDate($row[0]->match_date, $offset);
 
@@ -228,7 +228,7 @@ class modJSMCalendarHelper
 
     /**
      * modJSMCalendarHelper::showDropDown()
-     * 
+     *
      * @param  mixed   $params
      * @param  mixed   $year
      * @param  mixed   $month
@@ -239,10 +239,10 @@ class modJSMCalendarHelper
     function showDropDown($params,$year,$month,$day,$ajax=0)
     {
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
-            $dateformat = 'Format';    
+            $dateformat = 'Format';  
         }
         else
-        {    
+        {  
             $dateformat = 'toFormat';
         }
 
@@ -251,7 +251,7 @@ class modJSMCalendarHelper
         foreach($results as $key => $result)
         {
             $created=new JDate($results[$key]->match_date);
-            
+          
             if(version_compare(JVERSION, '3.0.0', 'ge')) {
                 $createdYear = $created->$dateformat('Y');
                 $createdMonth = $created->$dateformat('m');
@@ -259,7 +259,7 @@ class modJSMCalendarHelper
             else
             {
                 $createdYear = $created->$dateformat('%Y');
-                $createdMonth = $created->$dateformat('%m');    
+                $createdMonth = $created->$dateformat('%m');  
             }
 
 
@@ -285,8 +285,8 @@ class modJSMCalendarHelper
 
 /**
  * JSMCalendar
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2015
  * @version   $Id$
@@ -304,7 +304,7 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::addTeam()
-     * 
+     *
      * @param  mixed  $id
      * @param  string $name
      * @param  string $pic
@@ -323,7 +323,7 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::getDateLink()
-     * 
+     *
      * @param  mixed $day
      * @param  mixed $month
      * @param  mixed $year
@@ -334,7 +334,7 @@ class JSMCalendar extends PHPCalendar
                                           //if this function returns nothing (""), then getMonthView wont put a link on that day
         // Reference global application object
         $app = Factory::getApplication();
-        
+      
         $link = "";
         if(strlen($month)<2) {
             $month = '0'.$month;
@@ -344,7 +344,7 @@ class JSMCalendar extends PHPCalendar
         }
 
         $date = $year . $month . $day;
-       
+     
         if(isset(JSMCalendar::$linklist[$date]['link'])) {
             $link = JSMCalendar::$linklist[$date]['link'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
         }
@@ -353,7 +353,7 @@ class JSMCalendar extends PHPCalendar
     }
     /**
      * JSMCalendar::getDateClick()
-     * 
+     *
      * @param  mixed $day
      * @param  mixed $month
      * @param  mixed $year
@@ -383,7 +383,7 @@ class JSMCalendar extends PHPCalendar
     //this function is called to get the links of the two arrows in the header.
     /**
      * JSMCalendar::getCalendarLink()
-     * 
+     *
      * @param  mixed $month
      * @param  mixed $year
      * @return
@@ -397,7 +397,7 @@ class JSMCalendar extends PHPCalendar
                 if($key!='month' AND $key!='year' AND $key!='day' AND $value) { /*the month,year, and day Variables must be diferent of the current ones, because this is a link for a diferent month */
                     $calendarLink.= $key . '=' . $value . '&amp;';
                 }
-            }    
+            }  
             $calendarLink.='month='.$month.'&amp;year='.$year; //add the month and the year that was passed to the function to the GET string
         }
         return $calendarLink;
@@ -406,7 +406,7 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::jl_utf8_convert()
-     * 
+     *
      * @param  mixed  $text
      * @param  string $fromenc
      * @param  string $toenc
@@ -430,7 +430,7 @@ class JSMCalendar extends PHPCalendar
     }
     /**
      * JSMCalendar::sortObject()
-     * 
+     *
      * @param  mixed  $array
      * @param  mixed  $comparefunction
      * @param  string $property
@@ -441,7 +441,7 @@ class JSMCalendar extends PHPCalendar
         $zcount=count($array);
         for($i=1;$i<$zcount;$i++)
         {
-            for ($a=$zcount-1;$a>=$i;$a--) 
+            for ($a=$zcount-1;$a>=$i;$a--)
             {
                 if($this->$comparefunction($array[$a-1]->$property, $array[$a]->$property)>0) {
                     $tempzal=$array[$a-1];
@@ -454,7 +454,7 @@ class JSMCalendar extends PHPCalendar
     }
     /**
      * JSMCalendar::sortArray()
-     * 
+     *
      * @param  mixed  $array
      * @param  mixed  $comparefunction
      * @param  string $property
@@ -464,7 +464,7 @@ class JSMCalendar extends PHPCalendar
     {
         $zcount=count($array);
         for($i=1;$i<$zcount;$i++){
-            for ($a=$zcount-1;$a>=$i;$a--) 
+            for ($a=$zcount-1;$a>=$i;$a--)
             {
                 if(JSMCalendar::$comparefunction($array[$a-1][$property], $array[$a][$property])>0) {
                     $tempzal=$array[$a-1];
@@ -479,7 +479,7 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::asc()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -495,7 +495,7 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::desc()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -511,12 +511,12 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::getMatches()
-     * 
+     *
      * @param  mixed $month
      * @param  mixed $year
      * @return
      */
-    static function getMatches($month, $year) 
+    static function getMatches($month, $year)
     {
         // Reference global application object
         $app = Factory::getApplication();
@@ -530,7 +530,7 @@ class JSMCalendar extends PHPCalendar
         $caldates['endtimestamp'] = sportsmanagementHelper::getTimestamp($caldates['end']);
         $caldates['roundstart'] = "$year-$month-01";
         $caldates['roundend'] = "$year-$month-31";
-        
+      
         $jlrows = array();
         $lsrows = array();
         $usejevents = JSMCalendar::$params->get('jevents', 0);
@@ -554,31 +554,31 @@ class JSMCalendar extends PHPCalendar
 
     /**
      * JSMCalendar::matches_output()
-     * 
+     *
      * @param  mixed $month
      * @param  mixed $year
      * @return
      */
-    function matches_output($month, $year) 
+    function matches_output($month, $year)
     {
         //global $mainframe;
         // Reference global application object
         $app = Factory::getApplication();
-        
+      
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             $config = Factory::getConfig();
-            $offset = $config->get('offset');    
+            $offset = $config->get('offset');  
             $dateformat = 'Format';
-            $dateoutformat = 'Y-m-d';      
+            $dateoutformat = 'Y-m-d';    
         }
         else
-        {    
+        {  
             $config = Factory::getConfig();
-            $offset = $config->get('offset'); 
+            $offset = $config->get('offset');
             $dateformat = 'toFormat';
             $dateoutformat = '%Y-%m-%d';
         }
-       
+     
         $language= Factory::getLanguage(); //get the current language
         $language->load('mod_sportsmanagement_calendar'); //load the language ini file of the module
         $article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
@@ -590,7 +590,7 @@ class JSMCalendar extends PHPCalendar
         $matches = JSMCalendar::$matches;
         $div = '';
         $now = new JDate();
-        
+      
         $today = $now->$dateformat($dateoutformat);
 
         $todaytitle = '';
@@ -608,14 +608,14 @@ class JSMCalendar extends PHPCalendar
         $format[] = array('tag' => 'span', 'divid' => 'oldjlCalListTitle-'.$this->modid, 'class' => 'jlcal_hiddenmatches', 'text' => $totalgamesstring);
         $format[] = array('tag' => 'span', 'divid' => 'jlCalListTitle-'.$this->modid, 'class' => 'jlCalListTitle', 'text' => $thistitle);
         $format[] = array('tag' => 'span', 'divid' => 'jlCalListDayTitle-'.$this->modid, 'class' => 'jlCalListTitle', 'text' => '');
-        for ($x=0;$x<count($matches);$x++) 
+        for ($x=0;$x<count($matches);$x++)
         {
             $sclass = ($x%2) ? 'sectiontableentry1' : 'sectiontableentry2';
             $row = $matches[$x];
             $thispm = $row['project_id'].'_'.$row['matchcode'].'_'.$row['type'];
-            
+          
             $da = new JDate($row['date'], $offset);
-            
+          
             if ($div !=$da->$dateformat($dateoutformat)) {
                 $counter = 0;
                 $div = $da->$dateformat($dateoutformat);
@@ -630,7 +630,7 @@ class JSMCalendar extends PHPCalendar
             $pm = $thispm;
             $format[] = $row;
             $counter++;
-            
+          
             if (isset($matches[$x+1])) { $nd= new JDate($matches[$x+1]['date'], $offset);
             } else { $nd = false;
             }
@@ -653,19 +653,19 @@ class JSMCalendar extends PHPCalendar
 
         return $format;
     }
-    
+  
     /**
      * JSMCalendar::output_teamlist()
-     * 
+     *
      * @return
      */
-    function output_teamlist() 
+    function output_teamlist()
     {
         $teamslist = array();
         if(count(JSMCalendar::$teams) > 0 && JSMCalendar::$params->get('show_teamslist', 0) == 1) {
             $teams = JSMCalendar::sortObject(JSMCalendar::$teamslist, 'asc', 'name');
             $teamslist[] = HTMLHelper::_('select.option', 0, Text::_(JSMCalendar::$params->get('teamslist_option')));
-            foreach ($teams AS $id => $obj) 
+            foreach ($teams AS $id => $obj)
             {
                 $teamslist[] = HTMLHelper::_('select.option', $obj->value, Text::_($obj->name));
             }

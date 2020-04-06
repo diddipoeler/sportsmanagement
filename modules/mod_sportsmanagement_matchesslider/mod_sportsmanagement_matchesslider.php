@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.00
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
- */ 
+ */
 
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 use Joomla\CMS\HTML\HTMLHelper;
@@ -41,11 +41,11 @@ if (!class_exists('JSMCountries')) {
  * soll die externe datenbank genutzt werden ?
  */
 if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database') ) {
-    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');    
+    $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');  
 }
 else
 {
-    $module->picture_server = Uri::root();    
+    $module->picture_server = Uri::root();  
 }
 
 /**
@@ -58,18 +58,18 @@ if (!class_exists('sportsmanagementHelper')) {
     $classpath = JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-} 
+}
 JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.models.results', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE); 
+JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 //if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
 if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', Uri::base().'modules/'.$module->module.'/');
 }
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modMatchesSliderHelper', __DIR__ . '/helper.php');
 JLoader::register('MatchesSliderSportsmanagementConnector', __DIR__ . '/connectors/sportsmanagement.php');
@@ -101,10 +101,10 @@ $projectid = $jinput->getInt('p', 0);
 if (!$projectid ) {
     $cfg_which_database = $params->get('cfg_which_database');
     $s = $params->get('s');
-    
+  
     foreach( $params->get('p') as $key => $value )
     {
-      
+    
         $projectid = (int)$value;
         if ($params->get('teams') ) {
             foreach( $params->get('teams') as $keyteam => $valueteam )
@@ -114,7 +114,7 @@ if (!$projectid ) {
                    sportsmanagementModelResults::$projectid = $projectid;
                    sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
                    $matches = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database, (int)$valueteam);
-                   $slidermatches = array_merge($slidermatches, $matches);    
+                   $slidermatches = array_merge($slidermatches, $matches);  
             }
         }
         else
@@ -126,12 +126,12 @@ if (!$projectid ) {
               $matches = sportsmanagementModelResults::getResultsRows(0, 0, $config, $params, $cfg_which_database);
               $slidermatches = array_merge($slidermatches, $matches);
         }
-      
-      
-      
-    }
     
-}    
+    
+    
+    }
+  
+}  
 else
 {
     sportsmanagementModelProject::$projectid = $projectid;
@@ -144,7 +144,7 @@ else
 
 usort(
     $slidermatches, function ($a, $b) {
-        return $a->match_timestamp - $b->match_timestamp; 
+        return $a->match_timestamp - $b->match_timestamp;
     }
 );
 

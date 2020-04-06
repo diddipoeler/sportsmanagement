@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -36,12 +36,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <!--    <th width="20">&nbsp;</th> -->
                          <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn); ?></th>
                         <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'r.name', $this->sortDirection, $this->sortColumn); ?></th>
-                        
+                      
                         <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_STARTDATE', 'r.round_date_first', $this->sortDirection, $this->sortColumn); ?></th>
-                        
+                      
                         <th width="1%">&nbsp;</th>
                         <th width="20"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ENDDATE', 'r.round_date_last', $this->sortDirection, $this->sortColumn); ?></th>
-                        
+                      
                         <th width="10%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
                         <th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
                         <th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
@@ -54,14 +54,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <th width="5%"><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn); ?></th>
                     </tr>
                 </thead>
-                
+              
                 <tfoot>
                 <tr>
                 <td colspan="11"><?php echo $this->pagination->getListFooter(); ?></td>
                 <td colspan="3"><?php echo $this->pagination->getResultsCounter();?></td>
                 </tr>
                 </tfoot>
-                
+              
                 <tbody>
         <?php
         $k=0;
@@ -77,14 +77,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             ?>
             <tr class="<?php echo "row$k"; ?>">
              <td class="center">
-                            <?php 
+                            <?php
                             echo $this->pagination->getRowOffset($i); ?>
                                   </td>
              <td class="center">
                                     <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                                 <!--  </td> -->
             <!--    <td class="center"> -->
-                            
+                          
                                     <?php
                                     if ($row->checked_out) : ?>
                     <?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
@@ -95,7 +95,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                         $imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
                                         $imageParams = "title='$imageTitle'";
                                         echo HTMLHelper::link($link1, HTMLHelper::image($imageFile, $imageTitle, $imageParams));
-                                    endif;    
+                                    endif;  
                 ?>
                             </td>
              <td class="center">
@@ -122,7 +122,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
-                                
+                              
                                 $attribs = array(
             'onChange' => "document.getElementById('cb".$i."').checked=true",
             );
@@ -136,7 +136,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                   $date1,
                   'round_date_first'.$row->id,
                   'round_date_first'.$row->id,
-                  '%d-%m-%Y', 
+                  '%d-%m-%Y',
                   $attribs
               );
             ?>
@@ -212,7 +212,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 }
                 ?>
                                 </td>
-                                                                
+                                                              
                                 <td class="center">
                 <?php
                                     $append=' style="background-color:#bbffff"';
@@ -226,11 +226,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 );
                 ?>
               </td>
-                                
+                              
                 <td class="center">
       <div class="btn-group">
                 <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'rounds.', $canChange, 'cb'); ?>
-            <?php 
+            <?php
             // Create dropdown items and render the dropdown list.
             if ($canChange) {
                 HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'rounds');
@@ -239,8 +239,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             }
                 ?>
                </div>
-                
-                
+              
+              
                 </td>
              <td class="center"><?php echo $row->id; ?></td>
             </tr>
@@ -251,5 +251,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </tbody>
             </table>
     <!--    </fieldset> -->
-    </div> 
-    
+    </div>
+  

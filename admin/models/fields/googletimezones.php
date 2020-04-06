@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -26,8 +26,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldGoogletimezones
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -39,7 +39,7 @@ class JFormFieldGoogletimezones extends \JFormFieldList
 
     /**
      * FormFieldGoogletimezones::getOptions()
-     * 
+     *
      * @return
      */
     function getOptions()

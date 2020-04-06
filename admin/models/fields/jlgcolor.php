@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Uri\Uri;
 
 /**
  * FormFieldJLGColor
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -36,10 +36,10 @@ class JFormFieldJLGColor extends FormField
      */
     protected $type = 'JLGColor';
 
-    
+  
     /**
      * FormFieldJLGColor::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()
@@ -47,36 +47,36 @@ class JFormFieldJLGColor extends FormField
         $app = Factory::getApplication();
         $document = Factory::getDocument();
         $document->addScript(Uri::base().'components/com_sportsmanagement/assets/js/301a.js');
-        
+      
         // Initialize some field attributes.
         $size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
         $classes = (string) $this->element['class'];
         $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-        
+      
 
         // Initialize JavaScript field attributes.
         $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
         $class = $classes ? ' class="' . trim($classes) . '"' : '';
-        
+      
         $document->addScriptDeclaration(
             "
 				window.addEvent('domready', function() {
 					$$('.pickerbutton').addEvent('click', function(){
 						var field = this.id.substr(12);
 						showColorGrid3(field,'sample_'+field);
-						return overlib(document.id('colorpicker301').innerHTML, 
-						               CAPTION,'Farbe:', BELOW, RIGHT,FOLLOWMOUSE=false, 
-						               CLOSEBTN=true, CLOSEBTNCOLORS=['white', 'white', 'white', 'white'], 
+						return overlib(document.id('colorpicker301').innerHTML,
+						               CAPTION,'Farbe:', BELOW, RIGHT,FOLLOWMOUSE=false,
+						               CLOSEBTN=true, CLOSEBTNCOLORS=['white', 'white', 'white', 'white'],
 				                   STICKY=false);
 					});
 					document.id('sample_".$this->id."').style.backgroundColor = document.id('".$this->id."').value;
 				});
 		"
         );
-        
-        $html = array();        
-        $html[] = '<input class="inputbox" type="text" id="sample_'.$this->id.'" size="1" value="">&nbsp;';        
+      
+        $html = array();      
+        $html[] = '<input class="inputbox" type="text" id="sample_'.$this->id.'" size="1" value="">&nbsp;';      
         $html[] = '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
          . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . '/>';
         $html[] = '<input	type="button" id="buttonpicker'.$this->id.'" class="inputbox pickerbutton" value="..."/>';

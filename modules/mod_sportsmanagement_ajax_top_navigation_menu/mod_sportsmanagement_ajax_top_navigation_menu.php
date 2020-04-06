@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -10,11 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
- * 
+ *
  * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -60,8 +60,8 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
 /**
-* 
- * Include the functions only once 
+*
+ * Include the functions only once
 */
 JLoader::register('modSportsmanagementAjaxTopNavigationMenuHelper', __DIR__ . '/helper.php');
 
@@ -76,8 +76,8 @@ $navpoint = array();
 $navpoint_label = array();
 for ($i = 1; $i < 23; $i++)
 {
-    $navpoint[] = $params->get('navpoint'.$i);     
-    $navpoint_label[] = $params->get('navpoint_label'.$i);    
+    $navpoint[] = $params->get('navpoint'.$i);   
+    $navpoint_label[] = $params->get('navpoint_label'.$i);  
 }
 $document->addScriptOptions('navpoint', $navpoint);
 $document->addScriptOptions('navpoint_label', $navpoint_label);
@@ -95,12 +95,12 @@ $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
 $sub_sub_assoc_parent_id = 0;
 $assoc_id = 0;
-$subassoc_id = 0;    
+$subassoc_id = 0;  
 $subsubassoc_id = 0;
 $subsubsubassoc_id = 0;
-$project_id = $jinput->get('p', 0, 'INT'); 
-$team_id = $jinput->get('tid', 0, 'INT'); 
-$division_id = $jinput->get('division', 0, 'INT'); 
+$project_id = $jinput->get('p', 0, 'INT');
+$team_id = $jinput->get('tid', 0, 'INT');
+$division_id = $jinput->get('division', 0, 'INT');
 $countrysubassocselect = array();
 $countrysubsubassocselect = array();
 $countrysubsubsubassocselect = array();
@@ -122,7 +122,7 @@ if (!empty($sub_assoc_parent_id) && !$ende_if ) {
     $assoc_id = $sub_assoc_parent_id;
     $subassoc_id = $league_assoc_id;
     $ende_if = true;
-}    
+}  
 
 if (!empty($league_assoc_id)  && !$ende_if ) {
     $assoc_id = $league_assoc_id;
@@ -163,12 +163,12 @@ console.log('subsubassoc_id = ' + '<?php echo $subsubassoc_id ;?>' );
 
 console.log("jquery version : "+jQuery().jquery);
 console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
-    
+  
 </script>
 <?php
 // Build the script.
 $script = array();
-$script[] = "\n";       
+$script[] = "\n";     
 $script[] = "jQuery(document).ready(function ($){";
 foreach( $points as $row )
 {
@@ -391,15 +391,15 @@ foreach( $points as $row )
     $script[] = "$('#jlamtopprojects".$row->name.$module->id."').change(function(){";
     $script[] = "$('ul.jsmpage').empty();";
     $script[] = "$('ul.pagination').empty();";
-    $script[] = "  
+    $script[] = "
 loadHtml = \"<p id='loadingDiv-\"
 			+ \"' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>\";
-	loadHtml += \"<img src='\" + ajaxmenu_baseurl + 
+	loadHtml += \"<img src='\" + ajaxmenu_baseurl +
 				\"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>\";
 	loadHtml += \"</p>\";
-	document.getElementById('pagination').innerHTML += loadHtml;  
-  ";    
-    
+	document.getElementById('pagination').innerHTML += loadHtml;
+  ";  
+  
     $script[] = "var value10 = $('#jlamtopprojects".$row->name.$module->id."').val();";
     $script[] = "var url10 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectTeams&project_id=' + value10;";
     $script[] = "console.log('project_id value10 = ' + value10 );";
@@ -427,12 +427,12 @@ loadHtml = \"<p id='loadingDiv-\"
 var linktext = '';
 //loop from 0 index to max index
 for(var i = 0; i < navpoint.length; i++) {
-    
-if (navpoint[i] != null)    
-{    
+  
+if (navpoint[i] != null)  
+{  
 console.log('navpoint -> ' + navpoint[i]);
 linktext = navpoint_label[i];
-console.log('linktext -> ' + linktext); 
+console.log('linktext -> ' + linktext);
 var j = i;
 console.log('var j -> ' + j);
 var url11 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getLink&view=' + navpoint[i] + '&project_id=' + value10 + '&linktext=' + linktext;
@@ -443,20 +443,20 @@ dataType: 'json',
 async: false,
 type : 'POST'
 }).done(function(data11) {
-console.log('data11 link -> ' + data11.link);    
-console.log('data11 linktext -> ' + data11.linktext );    
+console.log('data11 link -> ' + data11.link);  
+console.log('data11 linktext -> ' + data11.linktext );  
 
 if (data11.link != '')
 {
 //console.log('navpoint_label -> ' + navpoint_label[j]);
 //var linktext = navpoint_label[j];
-//console.log('var j -> ' + j);    
-//console.log('linktext -> ' + linktext);    
+//console.log('var j -> ' + j);  
+//console.log('linktext -> ' + linktext);  
 //linktext.replace(/\"/g, '');
 
 //const linktext = Joomla.getOptions('linktext');
 //console.log('linktext ajax-> ' + linktext);
-$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">' + data11.linktext + '</a></li>');    
+$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">' + data11.linktext + '</a></li>');  
 }
 
 });
@@ -482,8 +482,8 @@ $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=\"' + data11.link + '\">
 
 
 }
-$script[] = "});";     
-    
+$script[] = "});";   
+  
 // Add the script to the document head.
 Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
@@ -519,18 +519,18 @@ if ($project_id ) {
 }
 
 
-      
+    
 if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
     /*
-    if(version_compare(JVERSION,'3.0.0','ge')) 
-    {    
+    if(version_compare(JVERSION,'3.0.0','ge'))
+    {  
     $document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
-    }    
+    }  
     else
     {
     $document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'_2.js' );
     }
-    */    
+    */  
     //	$document->addScriptDeclaration(';
     //    var ajaxmenu_baseurl=\''. Uri::base() . '\';
     //      ');
@@ -539,15 +539,15 @@ if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
     define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 
-if(version_compare(JVERSION, '3.0.0', 'ge')) {    
+if(version_compare(JVERSION, '3.0.0', 'ge')) {  
     $layout = 'default';
-}    
+}  
 else
 {
     $layout = 'default_2';
-}    
+}  
 
-?>           
+?>         
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require ModuleHelper::getLayoutPath($module->module, $layout);

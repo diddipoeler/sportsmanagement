@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,9 +16,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <form name="projectteamForm" id="projectteamForm" method="post">
-  
+
 <?php
-//echo $this->lists['projectteams'];  
-echo "".HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel)."";  
-?>  
-</form>  
+//echo $this->lists['projectteams'];
+echo "".HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam', 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel)."";
+?>
+</form>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelPositions
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -29,15 +29,15 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModelPositions extends JSMModelList
 {
     var $_identifier = "positions";
-    
+  
     /**
      * sportsmanagementModelPositions::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'po.name',
                         'po.picture',
@@ -54,7 +54,7 @@ class sportsmanagementModelPositions extends JSMModelList
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
     }
-        
+      
     /**
      * Method to auto-populate the model state.
      *
@@ -93,10 +93,10 @@ class sportsmanagementModelPositions extends JSMModelList
         }
         $this->setState('list.direction', $listOrder);
     }
-    
+  
     /**
      * sportsmanagementModelPositions::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -111,24 +111,24 @@ class sportsmanagementModelPositions extends JSMModelList
         $this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = po.sports_type_id');
         $this->jsmquery->join('LEFT', '#__sportsmanagement_position AS pop ON pop.id = po.parent_id');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id=po.checked_out');
-        
+      
         if ($this->getState('filter.search')) {
             $this->jsmquery->where('LOWER(po.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
-        
+      
         if (is_numeric($this->getState('filter.state'))) {
             $this->jsmquery->where('po.published = '.$this->getState('filter.state'));
         }
-        
+      
         if ($this->getState('filter.sports_type')) {
             $this->jsmquery->where('po.sports_type_id = '.$this->getState('filter.sports_type'));
         }
-    
+  
         $this->jsmquery->order(
             $this->jsmdb->escape($this->getState('list.ordering', 'po.name')).' '.
             $this->jsmdb->escape($this->getState('list.direction', 'ASC'))
         );
-    
+  
         return $this->jsmquery;
     }
 
@@ -137,7 +137,7 @@ class sportsmanagementModelPositions extends JSMModelList
 
 
     /**
-     * Method to return the positions array (id,name) 
+     * Method to return the positions array (id,name)
      *
      * @access public
      * @return array
@@ -150,23 +150,23 @@ class sportsmanagementModelPositions extends JSMModelList
         $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
         // From the table
         $this->jsmquery->from('#__sportsmanagement_position AS pos');
-        $this->jsmquery->where('pos.parent_id = 0');  
-        $this->jsmquery->order('pos.ordering ASC ');  
+        $this->jsmquery->where('pos.parent_id = 0');
+        $this->jsmquery->order('pos.ordering ASC ');
 
         $this->jsmdb->setQuery($this->jsmquery);
         if (!$result = $this->jsmdb->loadObjectList()) {
             return false;
         }
-       
+     
         return $result;
     }
-    
-    
-    
-    
+  
+  
+  
+  
     /**
      * sportsmanagementModelPositions::getProjectPositions()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  integer $persontype
      * @return
@@ -176,16 +176,16 @@ class sportsmanagementModelPositions extends JSMModelList
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $query = Factory::getDbo()->getQuery(true);
-        
+      
         // Select some fields
         $query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
         // From the table
         $query->from('#__sportsmanagement_position AS pos');
         $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id');
-        $query->where('ppos.project_id = '.(int)$project_id);  
-        $query->where('pos.persontype = '.(int)$persontype);  
-        $query->order('pos.ordering');  
-        try{        
+        $query->where('ppos.project_id = '.(int)$project_id);
+        $query->where('pos.persontype = '.(int)$persontype);
+        $query->order('pos.ordering');
+        try{      
             Factory::getDbo()->setQuery($query);
             $result = Factory::getDbo()->loadObjectList();
             foreach ($result as $position)
@@ -198,11 +198,11 @@ class sportsmanagementModelPositions extends JSMModelList
                  $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
             $result = false;
         }
-        
-        
+      
+      
         return $result;
     }
-    
+  
 
 
 
@@ -219,15 +219,15 @@ class sportsmanagementModelPositions extends JSMModelList
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $query = Factory::getDbo()->getQuery(true);
-       
+     
         // Select some fields
         $query->select('pp.id AS value,name AS text');
         // From the table
         $query->from('#__sportsmanagement_position AS p');
         $query->join('LEFT', '#__sportsmanagement_project_position AS pp ON pp.position_id = p.id');
-        $query->where('pp.project_id = '.$project_id);  
-        $query->order('p.ordering');  
-        
+        $query->where('pp.project_id = '.$project_id);
+        $query->order('p.ordering');
+      
         Factory::getDbo()->setQuery($query);
         if (!$result=Factory::getDbo()->loadObjectList()) {
             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
@@ -241,7 +241,7 @@ class sportsmanagementModelPositions extends JSMModelList
             return $result;
         }
     }
-    
+  
     /**
      * Method to return a positions array (id,position + (sports_type_name))
      *
@@ -251,17 +251,17 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     function getAllPositions()
     {
-       
+     
         $this->jsmquery->clear();
-        
+      
         // Select some fields
         $this->jsmquery->select('pos.id AS value, pos.name AS posName,s.name AS sName');
         // From the table
         $this->jsmquery->from('#__sportsmanagement_position AS pos');
         $this->jsmquery->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
-        $this->jsmquery->where('pos.published = 1');  
-        $this->jsmquery->order('pos.ordering,pos.name');  
-    
+        $this->jsmquery->where('pos.published = 1');
+        $this->jsmquery->order('pos.ordering,pos.name');
+  
         $this->jsmdb->setQuery($this->jsmquery);
         if (!$result = $this->jsmdb->loadObjectList() ) {
             return array();
@@ -276,10 +276,10 @@ class sportsmanagementModelPositions extends JSMModelList
         }
     }
 
-    
+  
     /**
      * sportsmanagementModelPositions::getPositionListSelect()
-     * 
+     *
      * @return
      */
     public function getPositionListSelect()
@@ -292,7 +292,7 @@ class sportsmanagementModelPositions extends JSMModelList
         // From the table
         $query->from('#__sportsmanagement_position');
         $query->order('name');
-       
+     
         Factory::getDbo()->setQuery($query);
         $result = Factory::getDbo()->loadObjectList();
         foreach ($result as $position)

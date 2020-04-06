@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <input type="hidden" name="p" value="<?php echo sportsmanagementModelRanking::$projectid; ?>" />
                 <input type="hidden" name="r" value="<?php echo sportsmanagementModelRanking::$round; ?>" />
                 <input type="hidden" name="s" value="<?php echo sportsmanagementModelRanking::$season; ?>" />
-                <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelProject::$cfg_which_database; ?>" />    
+                <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelProject::$cfg_which_database; ?>" />  
             </td>
         </tr>
     </table>

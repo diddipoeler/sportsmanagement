@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableStatistic
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -53,11 +53,11 @@ class sportsmanagementTableStatistic extends JSMTable
             $this->setError(Text::_('NAME REQUIRED'));
             return false;
         }
-        
+      
         if (empty($this->short)) {
             $this->short = strtoupper(substr($this->name, 0, 4));
         }
-    
+  
         // setting alias
         if (empty($this->alias) ) {
             $this->alias = OutputFilter::stringURLSafe($this->name);
@@ -65,9 +65,9 @@ class sportsmanagementTableStatistic extends JSMTable
         else {
             $this->alias = OutputFilter::stringURLSafe($this->alias); // make sure the user didn't modify it to something illegal...
         }
-        
+      
         return true;
     }
-    
-    
+  
+  
 }

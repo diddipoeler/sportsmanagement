@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -64,7 +64,7 @@ for($j=1;$j<$r;$j++)
                     }
                 }
                 echo ' >';
-            
+          
                 for($w=0;$w<=$i;$w++)
                 {
                     if(( $k == (1+($w*2)) ) && ( $j % (2*(pow(2, $w))) == (pow(2, $w)))) {
@@ -81,8 +81,8 @@ for($j=1;$j<$r;$j++)
    </script>
    <input type="hidden" id="team_id<?php echo $this->node[$j-1]->id;?>" name="team_id<?php echo $this->node[$j-1]->id;?>" value="<?php echo $this->node[$j-1]->team_id;?>" >
    <input type="hidden" id="roundcode<?php echo $this->node[$j-1]->id;?>" name="roundcode<?php echo $this->node[$j-1]->id;?>" value="<?php echo $this->node[$j-1]->roundcode;?>" >
-    <?php	    
-        
+    <?php	  
+      
       $link = Route::_('index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));
       $ednode ='<a href='. $link . '>';
       $ednode .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png', 'edit');
@@ -102,7 +102,7 @@ for($j=1;$j<$r;$j++)
                             }
                             else
                             {
-                
+              
                                  echo $checked;
                                        $marker = $j - 1;
                                  $append = 'onchange="document.getElementById(\'cb'.$marker.'\').checked=true" ';
@@ -161,5 +161,5 @@ for($j=1;$j<$r;$j++)
 </table>
 
 </div>
-    
+  
 

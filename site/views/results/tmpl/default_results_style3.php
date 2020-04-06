@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -27,7 +27,7 @@ if($this->config['show_referee']) {$nbcols++;
 }
 
 ?>
- 
+
 <table class="<?PHP echo $this->config['table_class']; ?> ">
     <tr>
         <td>

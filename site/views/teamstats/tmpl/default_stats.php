@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -106,7 +106,7 @@ use Joomla\CMS\Factory;
         <?php if ($this->config['home_away_stats'] ) : ?>
         <?php if (!empty($this->highest_home)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -136,7 +136,7 @@ use Joomla\CMS\Factory;
                     <!-- highest win away -->
         <?php if (!empty($this->highest_away)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -165,8 +165,8 @@ use Joomla\CMS\Factory;
         <?php endif; ?>
         <?php endif; ?>
                 </tr>
-                
-                
+              
+              
                 <tr class="sectiontableentry2">
                     <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_HIGHEST_LOSS'); ?>:</td>
                     <td class="statvalue">
@@ -178,7 +178,7 @@ use Joomla\CMS\Factory;
         <?php if ($this->config['home_away_stats'] ) : ?>
         <?php if (!empty($this->highestdef_home)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -186,7 +186,7 @@ use Joomla\CMS\Factory;
         $routeparameter['mid'] = $this->highestdef_home->match_slug;
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
         $highestdef_home_result = $this->highestdef_home->homegoals . $this->overallconfig['seperator'] . $this->highestdef_home->guestgoals;
-                            
+                          
                             $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -209,7 +209,7 @@ use Joomla\CMS\Factory;
                     <!-- highest defeat away -->
         <?php if (!empty($this->highestdef_away)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -238,7 +238,7 @@ use Joomla\CMS\Factory;
         <?php endif; ?>
         <?php endif; ?>
                 </tr>
-                
+              
                 <tr class="sectiontableentry2">
                     <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_HIGHEST_DRAW'); ?>:</td>
                     <td class="statvalue">
@@ -250,7 +250,7 @@ use Joomla\CMS\Factory;
         <?php if ($this->config['home_away_stats'] ) : ?>
         <?php if (!empty($this->highestdraw_home)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -280,7 +280,7 @@ use Joomla\CMS\Factory;
                     <!-- highest defeat away -->
         <?php if (!empty($this->highestdraw_away)) : ?>
                     <td class="statvalue">
-        <?php 
+        <?php
                         $routeparameter = array();
         $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
@@ -309,9 +309,9 @@ use Joomla\CMS\Factory;
         <?php endif; ?>
         <?php endif; ?>
                 </tr>
-                
-                
-                
+              
+              
+              
     <?php endif; ?>
     <?php
     }

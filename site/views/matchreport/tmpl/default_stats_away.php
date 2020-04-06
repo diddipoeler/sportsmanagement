@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage matchreport
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -36,15 +36,15 @@ use Joomla\CMS\Factory;
           <thead>
                                 <tr>
                                     <th class="playername"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
-            <?php 
+            <?php
             if(isset($this->stats[$pos->position_id])) :
                 foreach ($this->stats[$pos->position_id] as $stat): ?>
                     <?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport()) :?>
                                             <th><?php echo $stat->getImage(); ?></th>
                     <?php endif; ?>
-                    <?php 
+                    <?php
                 endforeach;
-            endif;  
+            endif;
                 ?>
                 </tr>
                </thead>
@@ -55,36 +55,36 @@ use Joomla\CMS\Factory;
                                     <tr class="starter">
                                         <td class="playername">
             <?php
-            $routeparameter = array();  
-            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);  
-            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);  
-            $routeparameter['p'] = $this->project->slug;  
-            $routeparameter['tid'] = $player->team_slug;  
-            $routeparameter['pid'] = $player->person_slug;  
-            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                                          
+            $routeparameter = array();
+            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+            $routeparameter['p'] = $this->project->slug;
+            $routeparameter['tid'] = $player->team_slug;
+            $routeparameter['pid'] = $player->person_slug;
+            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                                        
                                             $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
                                             $match_player = sportsmanagementHelper::formatName($prefix, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-                                            $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team)); 
-                                            
+                                            $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team));
+                                          
             if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) ) {
                 echo HTMLHelper::link($player_link, $match_player);
             } else {
                 echo $match_player;
-            } 
+            }
             ?>
                                         </td>
-            <?php 
+            <?php
             if(isset($this->stats[$pos->position_id])) :
                 foreach ($this->stats[$pos->position_id] as $stat): ?>
                     <?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport()) :?>
                                                 <td><?php echo $stat->getMatchPlayerStat($this->model, $player->teamplayer_id); ?></td>
                     <?php endif; ?>
-                    <?php 
-                endforeach; 
-            endif; 
+                    <?php
+                endforeach;
+            endif;
             ?>
                                     </tr>
-            <?php $person_id_list[] = $player->person_id; 
+            <?php $person_id_list[] = $player->person_id;
                                 endif; ?>
                 <?php endforeach; ?>
                 <?php foreach ( $this->substitutes as $sub ): ?>
@@ -92,21 +92,21 @@ use Joomla\CMS\Factory;
                                     <tr class="sub">
                                         <td class="playername">
             <?php
-            $routeparameter = array();  
-            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);  
-            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);  
-            $routeparameter['p'] = $this->project->slug;  
-            $routeparameter['tid'] = $sub->team_slug;  
-            $routeparameter['pid'] = $sub->person_slug;  
-            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                                         
+            $routeparameter = array();
+            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+            $routeparameter['p'] = $this->project->slug;
+            $routeparameter['tid'] = $sub->team_slug;
+            $routeparameter['pid'] = $sub->person_slug;
+            $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);                                       
             $match_player = sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
-                                            $isFavTeam = in_array($sub->team_id, explode(",", $this->project->fav_team)); 
-                                            
+                                            $isFavTeam = in_array($sub->team_id, explode(",", $this->project->fav_team));
+                                          
             if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) ) {
                 echo HTMLHelper::link($player_link, $match_player);
             } else {
                 echo $match_player;
-            } 
+            }
             ?>
                                         </td>
             <?php foreach ($this->stats[$pos->position_id] as $stat): ?>
@@ -115,7 +115,7 @@ use Joomla\CMS\Factory;
             <?php endif; ?>
             <?php endforeach; ?>
                                     </tr>
-            <?php $person_id_list[] = $sub->person_id; 
+            <?php $person_id_list[] = $sub->person_id;
             endif; ?>
                 <?php endforeach; ?>
             </tbody>
@@ -135,7 +135,7 @@ use Joomla\CMS\Factory;
             <?php echo Text::_($pos->name); ?>
         </td>
        </tr>
-       <tr>        
+       <tr>      
         <!-- list of guest-team -->
         <td>
          <table class="playerstats">
@@ -164,13 +164,13 @@ use Joomla\CMS\Factory;
             $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
 
                                             $match_player = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->config["name_format"]);
-                                            $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team)); 
-                                            
+                                            $isFavTeam = in_array($player->team_id, explode(",", $this->project->fav_team));
+                                          
             if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) ) {
                 echo HTMLHelper::link($player_link, $match_player);
             } else {
                 echo $match_player;
-            } 
+            }
             ?>
                                         </td>
             <?php foreach ($this->stats[$pos->position_id] as $stat): ?>
@@ -183,11 +183,11 @@ use Joomla\CMS\Factory;
                                 <?php endforeach; ?>
             </tbody>
              </table>
-            </td>        
+            </td>      
             </tr>
             <?php
         endif;
     }
     ?>
-    </table>                    
+    </table>                  
 </div>

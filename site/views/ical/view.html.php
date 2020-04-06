@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ require_once JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARAT
 
 /**
  * sportsmanagementViewical
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -32,19 +32,19 @@ class sportsmanagementViewical extends sportsmanagementView
 
     /**
      * sportsmanagementViewTeamPlan::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
-        
-        $this->matches = $this->model->getResultsPlan($this->jinput->getInt('p', 0), $this->jinput->getInt('tid', 0), 0, 0, 'ASC', $this->jinput->getInt('cfg_which_database', 0));     
+      
+        $this->matches = $this->model->getResultsPlan($this->jinput->getInt('p', 0), $this->jinput->getInt('tid', 0), 0, 0, 'ASC', $this->jinput->getInt('cfg_which_database', 0));   
           $mdlJSMNextMatch = BaseDatabaseModel::getInstance("nextmatch", "sportsmanagementModel");
           $this->teams = $mdlJSMNextMatch->getTeamsFromMatches($this->matches);;
-    
+  
           // create a new calendar instance
         $v = new vcalendar();
-    
+  
         foreach($this->matches as $match)
         {
             $hometeam = $this->teams[$match->projectteam1_id];
@@ -86,15 +86,15 @@ class sportsmanagementViewical extends sportsmanagementView
                 $vevent->setProperty('description', $description);
                 $v->setComponent($vevent);
             }
-    
+  
         }
         $v->setProperty("X-WR-TIMEZONE", $timezone);
         $xprops = array( "X-LIC-LOCATION" => $timezone );
         iCalUtilityFunctions::createTimezone($v, $timezone, $xprops);
         $v->returnCalendar();
-  
-           
-    }   
+
+         
+    } 
 
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ jimport('joomla.version');
 
 /**
  * FormFieldJSMMessage
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -30,7 +30,7 @@ jimport('joomla.version');
  */
 class JFormFieldJSMMessage extends FormField
 {
-        
+      
     public $type = 'JSMMessage';
 
     /**
@@ -39,17 +39,17 @@ class JFormFieldJSMMessage extends FormField
      * @return array    The field option objects.
      * @since  1.6
      */
-    protected function getLabel() 
+    protected function getLabel()
     {
-                
+              
         $html = '';
-        
+      
         $version = new JVersion();
         $jversion = explode('.', $version->getShortVersion());
-        
+      
         $message_type = trim($this->element['style']);
-        
-        if ($message_type == 'example') {    
+      
+        if ($message_type == 'example') {  
             if (intval($jversion[0]) < 3) {
                 $html .= '<div style="overflow: hidden; margin: 0 0 5px 0; clear: both">';
             }
@@ -57,7 +57,7 @@ class JFormFieldJSMMessage extends FormField
         } else {
             $html .= '<div style="clear: both;"></div>';
         }
-        
+      
         return $html;
     }
 
@@ -67,23 +67,23 @@ class JFormFieldJSMMessage extends FormField
      * @return string    The field input markup.
      * @since  1.6
      */
-    protected function getInput() 
+    protected function getInput()
     {
-        
+      
         $html = '';
-        
+      
         $version = new JVersion();
         $jversion = explode('.', $version->getShortVersion());
-        
+      
         $message = trim($this->element['text']);
         $message_type = trim($this->element['style']);
         $message_label = '';
         if ($this->element['label']) {
-            $message_label = Text::_(trim($this->element['label']));    
+            $message_label = Text::_(trim($this->element['label']));  
         }
-            
+          
         if ($message_type == 'example') {
-            
+          
             if (intval($jversion[0]) > 2) {
                 if ($message_label) {
                     $html .= '<span class="label">'.$message_label.'</span>&nbsp;';
@@ -143,7 +143,7 @@ class JFormFieldJSMMessage extends FormField
                 }
                 break;
             }
-            
+          
             if (intval($jversion[0]) > 2) {
                 $html .= '<div class="alert '.$style.'">';
                 if ($message_label) {
@@ -162,7 +162,7 @@ class JFormFieldJSMMessage extends FormField
             $html .= '</span>';
             $html .= '</div>';
         }
-        
+      
         return $html;
     }
 

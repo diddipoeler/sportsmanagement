@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -31,7 +31,7 @@ jQuery(document).ready(function () {
 
     delayRedirect();
 
-const stepsuccess = Joomla.getOptions('success');    
+const stepsuccess = Joomla.getOptions('success');  
 console.log('stepsuccess ' + stepsuccess);
 
 });
@@ -44,14 +44,14 @@ function delayRedirect(){
         document.getElementById('countDown').innerHTML = count;
         if (count == 0) {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>'; 
+            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>';
         }
     },1000);
 }
 
 </script>
 
-<?PHP    
+<?PHP  
 }
 
 if ($this->jl_table_import_step === 'ENDE' ) {
@@ -80,19 +80,19 @@ function delayRedirect(){
         document.getElementById('countDown').innerHTML = count;
         if (count == 0) {
             document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleagueagegroup'; ?>'; 
+            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleagueagegroup'; ?>';
         }
     },1000);
 }
 
 </script>
 
-<?PHP    
+<?PHP  
 }
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP 
+<?PHP
 
 ?>
 
@@ -115,7 +115,7 @@ function delayRedirect(){
 </td>
 </tr>
 </table>
-  
+
 <div id='editcell'>
 <?PHP
 if ($this->success ) {
@@ -128,7 +128,7 @@ if ($this->success ) {
            </fieldset>
             <?php
     }
-}        
+}      
 ?>
 </div>
 
@@ -138,7 +138,7 @@ if ($this->success ) {
 <table class='adminlist'><tr><td>
 </td></tr></table>
 </fieldset>
-        
+      
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="" />
@@ -151,4 +151,4 @@ if ($this->success ) {
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>  
+?>

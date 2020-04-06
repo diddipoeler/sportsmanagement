@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -33,10 +33,10 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 
     /**
      * sportsmanagementViewprojectreferees::init()
-     * 
+     *
      * @return void
      */
-    public function init() 
+    public function init()
     {
         $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
@@ -84,7 +84,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         $this->app->setUserState("$this->option.persontype", $this->_persontype);
 

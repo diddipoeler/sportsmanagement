@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,15 +14,15 @@
 
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 use Joomla\CMS\MVC\Controller\FormController;
- 
+
 
 /**
  * sportsmanagementControllercpanel
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -30,14 +30,14 @@ use Joomla\CMS\MVC\Controller\FormController;
 class sportsmanagementControllercpanel extends FormController
 {
 
-    /**
- * sportsmanagementControllercpanel::jqueryinstall()
- * 
- * @return void
- */
-    function jqueryinstall()
-    {
-    
-    }
+	/**
+	 * sportsmanagementControllercpanel::jqueryinstall()
+	 *
+	 * @return void
+	 */
+	function jqueryinstall()
+	{
+
+	}
 
 }

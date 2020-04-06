@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -12,7 +12,7 @@
  * @subpackage results
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -20,7 +20,7 @@ use Joomla\CMS\Table\Table;
 
 ?>
 
-<?php 
+<?php
         $match = $this->game;
         $i = $this->i;
         $thismatch = Table::getInstance('Match', 'sportsmanagementTable');
@@ -34,7 +34,7 @@ if (isset($this->teams[$thismatch->projectteam1_id]) ) {
 if (isset($this->teams[$thismatch->projectteam2_id]) ) {
         $team2 = $this->teams[$thismatch->projectteam2_id];
 }
-        
+      
         $user = Factory::getUser();
 
 if (isset($team1) && isset($team2)) {
@@ -50,12 +50,12 @@ foreach ($teams AS $team)
     {
         $teamsoptions[] = HTMLHelper::_('select.option', $team->projectteamid, $team->name, 'value', 'text');
 }
-        
+      
         $user = Factory::getUser();
         $canEdit = $user->authorise('core.edit', 'com_sportsmanagement');
         $canCheckin = $user->authorise('core.manage', 'com_checkin') || $thismatch->checked_out == $user->get('id') || $thismatch->checked_out == 0;
         $checked = HTMLHelper::_('jgrid.checkedout', $i, $user->get('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
-        
+      
         $published    = HTMLHelper::_('grid.published', $match, $i);
 
         list($date,$time) = explode(" ", $match->match_date);
@@ -63,7 +63,7 @@ foreach ($teams AS $team)
     ?>
 <tr id="result-<?php echo $match->id; ?>" class="">
     <td valign="top"><?php
-    
+  
     if ($thismatch->checked_out && $thismatch->checked_out != $my->id) {
         $db= Factory::getDBO();
         $query="	SELECT username
@@ -83,7 +83,7 @@ foreach ($teams AS $team)
        <!-- Edit match details -->
        <td valign="top">
         <?php
-        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'edit', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');                
+        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'edit', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');              
         ?>
       <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -92,23 +92,23 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
-        ?>        
+        );      
+        ?>      
 
        </td>
-        <?php 
+        <?php
         if($this->project->project_type=='DIVISIONS_LEAGUE') {
         ?>
       <td style="text-align:center; " >
         <?php echo $match->divhome; ?>
       </td>
-    <?php 
-        } 
+    <?php
+        }
         ?>
-    
-    
-    
-    
+  
+  
+  
+  
        <!-- Edit home team -->
        <td align="center" class="nowrap" valign="top">
         <!-- Edit home line-up -->
@@ -119,7 +119,7 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
+        );      
         ?>
         </td>
        <td>
@@ -152,7 +152,7 @@ foreach ($teams AS $team)
        <td>
         <!-- Edit away line-up -->
         <?php
-        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editlineup', $team2->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+        $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editlineup', $team2->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
         echo sportsmanagementHelperHtml::getBootstrapModalImage(
             'away_lineup'.$team2->projectteamid, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'), '20', $url,
             $this->modalwidth,
@@ -257,12 +257,12 @@ foreach ($teams AS $team)
      </td>
         <?php
         }
-        if ($this->config['show_edit_match_events'] ) {                
+        if ($this->config['show_edit_match_events'] ) {              
             ?>
            <!-- Edit match events -->
            <td valign="top">
             <?php
-            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
             ?>
           <!-- Button HTML (to Trigger Modal) -->
             <?php
@@ -271,9 +271,9 @@ foreach ($teams AS $team)
                 $this->modalwidth,
                 $this->modalheight,
                 $this->overallconfig['use_jquery_modal']
-            );        
+            );      
             ?>
-    
+  
           </td>
             <?php
         }
@@ -282,7 +282,7 @@ foreach ($teams AS $team)
          <!-- Edit match statistics -->
          <td valign="top">
             <?php
-            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');        
+            $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');      
             ?>
         <!-- Button HTML (to Trigger Modal) -->
         <?php
@@ -291,7 +291,7 @@ foreach ($teams AS $team)
             $this->modalwidth,
             $this->modalheight,
             $this->overallconfig['use_jquery_modal']
-        );        
+        );      
         ?>
 
          </td>
@@ -302,11 +302,11 @@ foreach ($teams AS $team)
       <td valign='top' style='text-align: center;'>
        <input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
     value='<?php echo ((isset($thismatch->published)&&(!$thismatch->published)) ? 0 : 1); ?>'
-    <?php if ($thismatch->published) {echo ' checked="checked" '; 
+    <?php if ($thismatch->published) {echo ' checked="checked" ';
     } ?>
     onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; if(document.adminForm.cbp<?php echo $thismatch->id; ?>.value==0){document.adminForm.cbp<?php echo $thismatch->id; ?>.value=1;}else{document.adminForm.cbp<?php echo $thismatch->id; ?>.value=0;}" />
       </td>
-    
+  
         <?php
         }
         ?>

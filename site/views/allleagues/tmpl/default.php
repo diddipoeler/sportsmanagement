@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage allleagues
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -49,12 +49,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <fieldset class="filters">
 <legend class="hidelabeltxt">
 <?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>
-</legend>            
+</legend>          
 <div class="filter-search">
 <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 <button type="submit" class="btn" title="" ><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
 <button type="button" class="btn" title="" onclick="document.id('filter_search').value = '';this.form.submit();" ><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
-                
+              
 <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
 <?php
 $startRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');

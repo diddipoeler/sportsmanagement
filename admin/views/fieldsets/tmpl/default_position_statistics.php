@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -44,7 +44,7 @@ use Joomla\CMS\Language\Text;
             <fieldset class="adminform">
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_STATS_HINT'); ?>
             </fieldset>
-            </td>            
+            </td>          
         </tr>
     </table>
 </fieldset>

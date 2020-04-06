@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewAbout
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,10 +29,10 @@ class sportsmanagementViewAbout extends sportsmanagementView
 
     /**
      * sportsmanagementViewAbout::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
 
         $about = $this->model->getAbout();

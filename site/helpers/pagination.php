@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -22,9 +22,9 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementPagination
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,19 +34,19 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
     public static $nextlink = '';
     public static $prevlink = '';
 
-    
+  
     /**
      * sportsmanagementModelPagination::getnextlink()
-     * 
+     *
      * @return
      */
     function getnextlink()
     {
         $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');        
+        $option = $app->input->getCmd('option');      
         return $this->nextlink;
     }
-    
+  
     /**
      * create and return the round page navigation
      *
@@ -56,10 +56,10 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
     public static function pagenav($project,$cfg_which_database = 0,$s=0)
     {
           $app = Factory::getApplication();
-        $option = $app->input->getCmd('option');        
+        $option = $app->input->getCmd('option');      
           // JInput object
         $jinput = $app->input;
-        
+      
         $pageNav = '';
         $spacer2 = '&nbsp;&nbsp;';
         $spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -72,11 +72,11 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
         $division = $jinput->request->get('division', '0', 'STR');
         $firstlink = '';
         $lastlink = '';
-        
+      
         if (empty($roundid) ) {
             $roundid = $project->current_round;
         }
-       
+     
         $firstRound    = sportsmanagementModelRounds::getFirstRound($project->id, $cfg_which_database);
         $lastRound = sportsmanagementModelRounds::getLastRound($project->id, $cfg_which_database);
         $previousRound = sportsmanagementModelRounds::getPreviousRound($roundid, $project->id, $cfg_which_database);
@@ -89,12 +89,12 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
         $params['option'] = $option;
         if ($view) {$params['view'] = $view;
         }
-        
+      
         $params['cfg_which_database']= $cfg_which_database;
         $params['s']= $s;
-        
+      
         $params['p'] = $project->slug;
-        
+      
         if ($controller) {$params['controller'] = $controller;
         }
         if ($layout) {$params['layout'] = $layout;
@@ -109,8 +109,8 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
         if($prediction_id >0) {
             $params['prediction_id']= $prediction_id;
         }
-    
-       
+  
+     
         $query = Uri::buildQuery($params);
         $link = Route::_('index.php?' . $query);
         $backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id, $cfg_which_database);
@@ -121,12 +121,12 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
             $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            
+          
             $query = Uri::buildQuery($params);
             $link = Route::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
             $prevlink = HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
-            
+          
 
 
             $params['r'] = $firstRound['id'];
@@ -143,7 +143,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
             $prevlink = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV');
             $firstlink = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START') . $spacer4;
         }
-        
+      
         if (($lastRound['id'] != $roundid) && $forward ) {
             $params['r'] = $forward;
             $params['division'] = $division;
@@ -153,7 +153,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
             $query = Uri::buildQuery($params);
             $link = Route::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
-            
+          
             $nextlink = $spacer4;
             $nextlink .= HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
@@ -171,7 +171,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
             $nextlink = $spacer4 . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT');
             $lastlink = $spacer4 . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END');
         }
-        
+      
         $limit = count($arrRounds);
         $low = $currentRoundcode - 3;
         $high = $currentRoundcode + 3;
@@ -203,7 +203,7 @@ class sportsmanagementModelPagination extends BaseDatabaseModel
                 $pageNav .= $spacer4 . $pagenumber;
             }
         }
-        
+      
         return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';
     }
 

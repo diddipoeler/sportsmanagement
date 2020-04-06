@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      default_3.php
@@ -26,27 +26,27 @@ if ( $this->items )
 {
 foreach ($this->items as $item)
 {
-    
+  
 if ( !$count )
 {
 // Define slides options
         $slidesOptions = array(
             "active" => "slide".$item->id."_id" // It is the ID of the active tab.
-        );    
+        );  
 // Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
             "active" => "tab".$item->id."_id" // It is the ID of the active tab.
-        );      
-}    
+        );    
+}  
 ?>
 
 <?PHP
-$count++;	   
-}   
-}        
+$count++;	 
+} 
+}      
 ?>
 
-       
+     
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -71,7 +71,7 @@ $count++;
 if ( $this->items )
 {
 foreach ($this->items as $item)
-{            
+{          
 // Open the first slide
 echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($item->country).' '.$item->name, 'slide'.$item->id.'_id');
 ?>
@@ -97,7 +97,7 @@ if ((isset($item->project_type)) &&
 </a>								
 <?php
 }
-                            
+                          
 if ((isset($item->project_type)) &&
 								(($item->project_type == 'TOURNAMENT_MODE') ||
 								($item->project_type == 'DIVISIONS_LEAGUE')))
@@ -149,11 +149,11 @@ if ( $item->project_art_id != 3 )
 echo HTMLHelper::_('bootstrap.endSlide');
 
 
-}            
+}          
 }
-            
-            
-?>            
+          
+          
+?>          
 <?php // This renders the end part of the slides code. ?>	
 <?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -21,9 +21,9 @@ use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelUpdates
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,7 +33,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelUpdates::loadUpdateFile()
-     * 
+     *
      * @param  mixed $myfilename
      * @param  mixed $file
      * @return
@@ -51,7 +51,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
         $data['count'] = 0;
 
         $query='SELECT id,count FROM #__sportsmanagement_version where file LIKE '.$this->_db->Quote($file);
-        $this->_db->setQuery($query);    
+        $this->_db->setQuery($query);  
 
         if (!$result=$this->_db->loadObject()) {
             $this->setError($this->_db->getErrorMsg());
@@ -71,13 +71,13 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
 
         }
-        else 
+        else
         {
             $data['version']=!empty($version) ? $version : $result->version;
             $data['major']=!empty($major) ? $major : $result->major;
             $data['minor']=!empty($minor) ? $minor : $result->minor;
             $data['build']=!empty($build) ? $build : $result->build ;
-            $data['revision']=!empty($revision) ? $revision : $result->revision;            
+            $data['revision']=!empty($revision) ? $revision : $result->revision;          
         }
 
         $object= new stdClass();
@@ -85,7 +85,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
         $object->count = $data['count'];
         $object->file = $data['file'];
 
- 
+
         if ($data['id'] ) {
              // Update their details in the table using id as the primary key.
              $result = Factory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
@@ -94,8 +94,8 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
         {
              $object->count = 1;
              // Insert the object into the table.
-             $result = $this->_db->insertObject('#__sportsmanagement_version', $object);    
-        }        
+             $result = $this->_db->insertObject('#__sportsmanagement_version', $object);  
+        }      
 
 
         return '';
@@ -103,7 +103,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelUpdates::getVersions()
-     * 
+     *
      * @return
      */
     function getVersions()
@@ -119,7 +119,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelUpdates::_cmpDate()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -135,7 +135,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelUpdates::_cmpName()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -147,7 +147,7 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelUpdates::_cmpVersion()
-     * 
+     *
      * @param  mixed $a
      * @param  mixed $b
      * @return
@@ -160,20 +160,20 @@ class sportsmanagementModelUpdates extends BaseDatabaseModel
 
     /**
    * sportsmanagementModelUpdates::getVersionHistory()
-   * 
+   *
    * @return
    */
     function getVersionHistory()
     {
         $query='SELECT * FROM #__sportsmanagement_version_history order by date DESC';
-        $this->_db->setQuery($query);        
+        $this->_db->setQuery($query);      
         $result = $this->_db->loadObjectList();
         return $result;
     }
-  
+
     /**
      * sportsmanagementModelUpdates::loadUpdateFiles()
-     * 
+     *
      * @return
      */
     function loadUpdateFiles()

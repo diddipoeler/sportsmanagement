@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelAbout
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -28,13 +28,13 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 {
     /**
      * sportsmanagementModelAbout::getAbout()
-     * 
+     *
      * @return
      */
     function getAbout()
     {
         $about = new stdClass();
-        
+      
         //Translations Hosted by
         $about->translations = '<a href="https://www.transifex.com/jsm/sportsmanagement/">https://www.transifex.com/jsm/sportsmanagement/</a>';
         //Repository Hosted by
@@ -43,7 +43,7 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
         $version = sportsmanagementHelper::getVersion();
         $revision = explode('.', $version);
         $about->version = '';
-        
+      
         //author
         $about->author = '';
 
@@ -55,13 +55,13 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 
         //forum
         $about->forum = 'http://www.fussballineuropa.de/index.php/forum';
-        
+      
         //bugtracker
         $about->bugs = 'https://github.com/diddipoeler/sportsmanagement/issues';
-        
+      
         //wiki
         $about->wiki = 'http://smwiki.diddipoeler.de/';
-        
+      
         //date
         $about->date = '2014-01-01';
 
@@ -71,8 +71,8 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
         //designer
         $about->designer = 'DonClumsy';
         $about->designer .= ' (Tim Keller), ';
-        
-        
+      
+      
         //icons
         $about->icons = '<a href="http://www.hollandsevelden.nl/iconset/" target="_blank">Jersey Icons</a> (Hollandsevelden.nl)';
         $about->icons .= ', <a href="http://www.famfamfam.com/lab/icons/silk/" target="_blank">Silk / Flags Icons</a> (Mark James)';
@@ -83,7 +83,7 @@ class sportsmanagementModelAbout extends BaseDatabaseModel
 
         //graphoc library
         $about->graphic_library = '';
-        
+      
         //phpthumb class
         $about->phpthumb = '';
 

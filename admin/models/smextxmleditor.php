@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -23,8 +23,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelsmextxmleditor
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -32,7 +32,7 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 {
-    
+  
     /**
      * Method to store the source file contents.
      *
@@ -48,7 +48,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
         //jimport('joomla.filesystem.file');
-       
+     
         $filePath = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->jsmoption.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.$data['filename'];
         if (!File::write($filePath, $data['source']) ) {
             Log::add('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
@@ -57,8 +57,8 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
         {
             Log::add('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE_SUCCESS');
         }
-    }    
-  
+    }  
+
     /**
      * Method to get the record form.
      *
@@ -67,7 +67,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Reference global application object
         //$app = Factory::getApplication();
@@ -80,14 +80,14 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
         if (empty($form)) {
             return false;
         }
-        /*        
+        /*      
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_icon',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         */
         return $form;
     }
-  
+
     /**
      * Method to get the data that should be injected in the form.
      *
@@ -106,7 +106,7 @@ class sportsmanagementModelsmextxmleditor extends JSMModelAdmin
 
         return $data;
     }
-  
+
     /**
      * Method to get a single record.
      *

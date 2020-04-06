@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,9 +18,9 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableDivision
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -33,7 +33,7 @@ class sportsmanagementTableDivision extends JSMTable
      * @param object Database connector object
      * @since 1.0
      */
-    function __construct(& $db) 
+    function __construct(& $db)
     {
           $db = sportsmanagementHelper::getDBConnection();
         parent::__construct('#__sportsmanagement_division', 'id', $db);
@@ -50,7 +50,7 @@ class sportsmanagementTableDivision extends JSMTable
     {
         // setting alias
         $this->alias = OutputFilter::stringURLSafe($this->name);
-        
+      
         //should check name unicity
         return true;
     }

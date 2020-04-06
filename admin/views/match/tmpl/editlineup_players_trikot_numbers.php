@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,14 +19,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <fieldset class="adminform">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_TRIKOT_NUMBER'); ?></legend>
-<?php    
+<?php  
 if ($this->positions ) {
     foreach ($this->positions AS $position_id => $pos)
     {
             ?>
         <fieldset class="adminform">
         <legend><?php echo Text::_($pos->text); ?></legend>
-        <table>    
+        <table>  
         <?PHP
         // get players assigned to this position
         foreach ($this->starters[$position_id] AS $player)
@@ -34,20 +34,20 @@ if ($this->positions ) {
             //echo ''.$player->firstname.'-'.$player->lastname.'-'.$player->jerseynumber.'-'.$player->trikot_number.'<br>';
         ?>
       <tr>
-        
+      
         <td><?php echo $player->firstname; ?>
     </td>
-    
+  
     <td><?php echo $player->lastname; ?>
     </td>
-    
+  
     <td><?php echo $player->jerseynumber; ?>
     </td>
-    
+  
     <td><input type='' name='trikot_number[<?php echo $player->value;?>]' value="<?php echo $player->trikot_number; ?>" />
     </td>
     <td>
-    <?PHP    
+    <?PHP  
     $append=' style="background-color:#bbffff"';
                                     echo HTMLHelper::_(
                                         'select.genericlist',
@@ -56,18 +56,18 @@ if ($this->positions ) {
                                         'class="inputbox" size="1" '.$append,
                                         'value', 'text', $player->captain
                                     );
-    ?> 
-    </td>                                                       
+    ?>
+    </td>                                                     
       </tr>
         <?PHP
         }
-        
+      
         ?>
         </table>
-        </fieldset>   
+        </fieldset> 
         <?PHP	
     }
 }
 
-?>      
-</fieldset>      
+?>    
+</fieldset>    

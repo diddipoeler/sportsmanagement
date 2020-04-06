@@ -13,12 +13,12 @@ use Joomla\CMS\Access\Rules;
 class  sportsmanagementTablejsmGCalendarAP extends JSMTable
 {
 
-    public function __construct(&$db) 
+    public function __construct(&$db)
     {
         parent::__construct('#__sportsmanagement_gcalendarap', 'id', $db);
     }
 
-    public function bind($array, $ignore = '') 
+    public function bind($array, $ignore = '')
     {
         if (isset($array['rules']) && is_array($array['rules'])) {
             $rules = new Rules($array['rules']);
@@ -28,13 +28,13 @@ class  sportsmanagementTablejsmGCalendarAP extends JSMTable
         return parent::bind($array, $ignore);
     }
 
-    protected function _getAssetName() 
+    protected function _getAssetName()
     {
         $k = $this->_tbl_key;
         return 'com_gcalendarap.event.'.(int) $this->$k;
     }
 
-    protected function _getAssetParentId($table = null, $id = null) 
+    protected function _getAssetParentId($table = null, $id = null)
     {
         $asset = Table::getInstance('Asset');
         $asset->loadByName('com_gcalendarap');

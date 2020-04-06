@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementTableclubname
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -37,6 +37,6 @@ class sportsmanagementTableclubname extends JSMTable
           $db = sportsmanagementHelper::getDBConnection();
         parent :: __construct('#__sportsmanagement_club_names', 'id', $db);
     }
-           
+         
 }
 ?>

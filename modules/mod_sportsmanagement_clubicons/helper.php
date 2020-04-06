@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,9 +20,9 @@ use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * modJSMClubiconsHelper
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -43,7 +43,7 @@ class modJSMClubiconsHelper
     );
     /**
      * modJSMClubiconsHelper::__construct()
-     * 
+     *
      * @param  mixed $params
      * @return
      */
@@ -53,23 +53,23 @@ class modJSMClubiconsHelper
         $this->module = $module;
         self::_getData();
     }
-    
+  
     /**
      * modJSMClubiconsHelper::_getData()
-     * 
+     *
      * @return
      */
     private function _getData()
     {
         $app = Factory::getApplication();
 
-        $project_id = ($app->input->getVar('option', '') == 'com_sportsmanagement' AND 
-                                    $app->input->getInt('p', 0) > 0 AND 
-                                    $this->params->get('usepfromcomponent', 0) == 1 ) ? 
+        $project_id = ($app->input->getVar('option', '') == 'com_sportsmanagement' AND
+                                    $app->input->getInt('p', 0) > 0 AND
+                                    $this->params->get('usepfromcomponent', 0) == 1 ) ?
                                     $app->input->getInt('p') : $this->params->get('project_ids');
         if (is_array($project_id)) { $project_id = $project_id[0];
         }
-        
+      
         if ($project_id ) {
             //sportsmanagementModelProject::setProjectId($project_id);
             sportsmanagementModelProject::$projectid = $project_id;
@@ -89,25 +89,25 @@ class modJSMClubiconsHelper
             {
                        $teams = sportsmanagementModelProject::getTeams($divisionid, 'name', $this->params->get('cfg_which_database'));
             }
-        
-        
+      
+      
             self::buildData($teams);
             unset($teams);
             //unset($model);
         }
 
     }
-    
+  
     /**
      * modJSMClubiconsHelper::buildData()
-     * 
+     *
      * @param  mixed $result
      * @return
      */
     function buildData( &$result )
     {
           $app = Factory::getApplication();
-        
+      
         if (count($result)) {
             foreach($result as $r)
             {
@@ -118,10 +118,10 @@ class modJSMClubiconsHelper
             }
         }
     }
-    
+  
     /**
      * modJSMClubiconsHelper::getLogo()
-     * 
+     *
      * @param  mixed $item
      * @param  mixed $class
      * @return
@@ -129,36 +129,36 @@ class modJSMClubiconsHelper
     function getLogo( & $item, $class )
     {
           $app = Factory::getApplication();
-        
+      
         $imgtype = $this->params->get('logotype', 'logo_middle');
         $logourl = $item->$imgtype;
-        
+      
         if (!$logourl ) {
-             $logourl = $this->placeholders[$imgtype];    
+             $logourl = $this->placeholders[$imgtype];  
         }
-        
+      
         $cfg_which_database = $this->params->get('cfg_which_database');
-        
+      
         if ($cfg_which_database ) {
-             $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');    
+             $paramscomponent = ComponentHelper::getParams('com_sportsmanagement');  
              $logourl = $paramscomponent->get('cfg_which_database_server').$logourl;
         }
 
-       
+     
         $imgtitle = Text::_('View ') . $item->name;
         return HTMLHelper::image($logourl, $item->name, 'border="0" width="'.$this->params->get('jcclubiconsglobalmaxwidth').'" class="'.$class.'" title="'.$imgtitle.'"');
     }
-    
+  
     /**
      * modJSMClubiconsHelper::getLink()
-     * 
+     *
      * @param  mixed $item
      * @return
      */
     function getLink( &$item )
     {
           $app = Factory::getApplication();
-        
+      
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = $this->params->get('cfg_which_database');
         $routeparameter['s'] = $this->params->get('s');

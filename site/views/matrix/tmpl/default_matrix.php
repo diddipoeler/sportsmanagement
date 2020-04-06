@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -34,14 +34,14 @@ use Joomla\CMS\Factory;
          padding-bottom: 3px;
          padding-left: 5px;
          padding-right: 5px;
-         white-space:nowrap; 
+         white-space:nowrap;
          vertical-align:bottom;
       }
    </style>
 <![endif]-->
 
 <!--[if !IE]><!-->
-<style> 
+<style>
 .table-header-rotated th.rotate-45{
   height: 80px;
   width: 40px;
@@ -85,7 +85,7 @@ use Joomla\CMS\Factory;
   text-align: left;
   /* white-space: nowrap; /*whether to display in one line or not*/
 }
- 
+
 .rotate_text
       {
          text-align: center;
@@ -97,11 +97,11 @@ use Joomla\CMS\Factory;
                 padding-right: 3px;
                 padding-top: 10px;
                 white-space: nowrap;
-                position: absolute; 
-                -webkit-transform: rotate(-90deg); 
-                -moz-transform: rotate(-90deg); 
+                position: absolute;
+                -webkit-transform: rotate(-90deg);
+                -moz-transform: rotate(-90deg);
                 -o-transform: rotate(-90deg);
-      }      
+      }    
 
       .rotated_cell
       {
@@ -111,13 +111,13 @@ use Joomla\CMS\Factory;
          padding-bottom: 3px;
          padding-left: 5px;
          padding-right: 5px;
-         white-space:nowrap; 
+         white-space:nowrap;
          vertical-align:bottom;
          position: relative;
          /*position: absolute; */
       }
    </style>
-<!--<![endif]--> 
+<!--<![endif]-->
 
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultmatrix">
     <?php
@@ -125,14 +125,14 @@ use Joomla\CMS\Factory;
     // $this->config['highlight_fav_team'] = 1;
     // $this->project->fav_team_text_color = "#FFFFFF";
     $division_id = $this->divisionid;
-    
+  
     $matrix = '<table class="'.$this->config['table_class'].' table-header-rotated">';
     $k = 1;
     $crosstable_icons_horizontal = (isset($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
     $crosstable_icons_vertical = (isset($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
 
     $k_r = 0; // count rows
-    foreach ($this->teams as $team_row_id => $team_row) 
+    foreach ($this->teams as $team_row_id => $team_row)
     {
         if ($k_r == 0) // Header rows
          {
@@ -144,17 +144,17 @@ use Joomla\CMS\Factory;
             } else {
                 $matrix .= '<th class="headerspacer">&nbsp;</th>';
             }
-            
+          
             $teamnumber = 1;
-            foreach ($this->teams as $team_row_header) 
+            foreach ($this->teams as $team_row_header)
             {
-                
+              
                 $title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
                 $link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
                 //$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $teamnumber .', ' . $team_row_header->$name;
-                
+              
                 if ($crosstable_icons_horizontal) // icons at the top of matrix
                  {
                     $picture = $team_row_header->logo_small;
@@ -171,20 +171,20 @@ use Joomla\CMS\Factory;
                     $header .= '</span></div></th>';
                     $matrix .= $header;
                 }
-                
+              
                 $teamnumber++;
             }
             $matrix .= '</tr>';
         }
 
-      
+    
         $trow = $team_row;
         $matrix .= '<tr class="">';
         $k_c = 0; //count columns
 
-        foreach ($this->teams as $team_col_id => $team_col) 
+        foreach ($this->teams as $team_col_id => $team_col)
         {
-                        
+                      
             if ($k_c == 0) // Header columns
              {
                 $title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
@@ -194,9 +194,9 @@ use Joomla\CMS\Factory;
                 $routeparameter['p'] = $this->project->slug;
                 $routeparameter['tid'] = $trow->team_slug;
                 $routeparameter['ptid'] = 0;
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);  
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 
-                
+              
                 //$desc = $trow->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $trow->$name;
@@ -206,12 +206,12 @@ use Joomla\CMS\Factory;
                     $picture = $trow->logo_small;
                     $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 0, 0, 3);
                 }
-                
+              
                 $tValue = '<th class="">';
                  $tValue .= $k_r + 1;
                  $tValue .= '</th>';
                  $matrix .= $tValue;
-                    
+                  
                 if ($this->config['link_teams'] == 1) {
                     $tValue = '<th class="teamsleft">';
                     $tValue .= HTMLHelper::link($link, $desc);
@@ -238,7 +238,7 @@ use Joomla\CMS\Factory;
                     if ($result->decision == 0) {
                         $e1 = $result->e1;
                         $e2 = $result->e2;
-                        
+                      
                         if($e1 > $e2) {
                             $e1 = '<span style="color:'.$this->config['color_win'].'">'.$e1.'</span>';
                             $e2 = '<span style="color:'.$this->config['color_win'].'">'.$e2.'</span>';
@@ -249,7 +249,7 @@ use Joomla\CMS\Factory;
                             $e1 = '<span style="color:'.$this->config['color_loss'].'">'.$e1.'</span>';
                             $e2 = '<span style="color:'.$this->config['color_loss'].'">'.$e2.'</span>';
                         }
-                        
+                      
                         switch ($result->rtype) {
                         case 1 : // Overtime
                             $ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
@@ -264,9 +264,9 @@ use Joomla\CMS\Factory;
                         case 0 :
                             break;
 
-                        } 
-                    } 
-                    else 
+                        }
+                    }
+                    else
                     {
                         $e1 = $result->v1;
                         $e2 = $result->v2;
@@ -296,7 +296,7 @@ use Joomla\CMS\Factory;
                         $routeparameter['p'] = $this->project->slug;
                         $routeparameter['mid'] = $result->match_slug;
                         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-                        
+                      
                         if (($e1 != "") && ($e2 != "")) {
                             $colorStr = "color:" . $this->project->fav_team_text_color . ";";
                             $bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
@@ -353,7 +353,7 @@ use Joomla\CMS\Factory;
                                     $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
                                     $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
                                     $new_match = HTMLHelper::link($link, $desc);
-                                } 
+                                }
                                 $match_result .= $new_match;
                             } else {
                                 $picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
@@ -420,7 +420,7 @@ use Joomla\CMS\Factory;
                 $title = '' ;
                 $picture = $this->config['image_placeholder'];
                 $desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
-                $value .= $desc; 
+                $value .= $desc;
             } else {
                 if (($this->config['highlight_fav_team'] > 0) && (in_array($trow->team_id, $this->favteams) || in_array($tcol->team_id, $this->favteams))) {
                     if ($this->config['highlight_fav_team'] == 1) {
@@ -444,7 +444,7 @@ use Joomla\CMS\Factory;
         $matrix .= "</tr>";
     }
     $matrix .= '</table>';
-    
+  
 
     echo $matrix;
 ?>

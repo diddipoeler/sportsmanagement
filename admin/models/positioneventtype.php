@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,15 +13,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory; 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelpositioneventtype
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -43,7 +43,7 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -53,12 +53,12 @@ class sportsmanagementModelpositioneventtype extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'positioneventtype', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'positioneventtype', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -67,7 +67,7 @@ class sportsmanagementModelpositioneventtype extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.positioneventtype', 'positioneventtype', array('control' => 'jform', 'load_data' => $loadData));
@@ -76,24 +76,24 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         }
         return $form;
     }
-    
+  
     /**
      * Method to get the script that have to be included on the form
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.positioneventtype.data', array());
@@ -102,7 +102,7 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         }
         return $data;
     }
-    
+  
     /**
      * Method to save item order
      *
@@ -113,7 +113,7 @@ class sportsmanagementModelpositioneventtype extends AdminModel
     function saveorder($pks = null, $order = null)
     {
         $row =& $this->getTable();
-        
+      
         // update ordering values
         for ($i=0; $i < count($pks); $i++)
         {
@@ -128,7 +128,7 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         }
         return true;
     }
-    
+  
     /**
      * Method to update position events
      *
@@ -140,9 +140,9 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         $app = Factory::getApplication();
         $result    = true;
         $peid    = (isset($data['position_eventslist']) ? $data['position_eventslist'] : array());
-        
+      
         ArrayHelper::toInteger($peid);
-        
+      
         $peids = implode(',', $peid);
         $query = ' DELETE	FROM #__sportsmanagement_position_eventtype '
                . ' WHERE position_id = ' . $position_id
@@ -177,6 +177,6 @@ class sportsmanagementModelpositioneventtype extends AdminModel
         }
         return $result;
     }
-    
-    
+  
+  
 }

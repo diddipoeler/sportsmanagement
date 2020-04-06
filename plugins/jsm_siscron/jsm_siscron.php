@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
 * @version   1.0.05
@@ -62,9 +62,9 @@ jimport('joomla.html.parameter');
 
 /**
  * PlgSystemjsm_siscron
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -79,18 +79,18 @@ class PlgSystemjsm_siscron extends JPlugin
         // load language file for frontend
         JPlugin::loadLanguage('plg_jsm_siscron', JPATH_ADMINISTRATOR);
     }
-    
-    
+  
+  
     public function onBeforeRender()
     {
         $db = Factory::getDBO();
         $app = Factory::getApplication();
         $projectid = Factory::getApplication()->input->getInt('p', 0);
-        
-        
-        
+      
+      
+      
         $params = JComponentHelper::getParams('com_sportsmanagement');
-        $show_debug_info = $params->get('show_debug_info'); 
+        $show_debug_info = $params->get('show_debug_info');
         $sis_xmllink = $params->get('sis_xmllink');
         $sis_nummer    = $params->get('sis_meinevereinsnummer');
         $sis_passwort = $params->get('sis_meinvereinspasswort');
@@ -103,77 +103,77 @@ class PlgSystemjsm_siscron extends JPlugin
             $country = 'AUT';
             break;
         }
-        
+      
         if ($show_debug_info ) {
 
         }
-        
+      
         $query = $db->getQuery(true);
-        $query->select('p.staffel_id,p.sports_type_id,st.name');    
-        $query->from('#__sportsmanagement_project as p'); 
+        $query->select('p.staffel_id,p.sports_type_id,st.name');  
+        $query->from('#__sportsmanagement_project as p');
         $query->join('INNER', '#__sportsmanagement_sports_type as st on st.id = p.sports_type_id');
-        $query->where('p.id = '.$projectid); 
+        $query->where('p.id = '.$projectid);
         $db->setQuery($query);
         $result = $db->loadObject();
-        
+      
         if ($result ) {
             $teamart = substr($result->staffel_id, 17, 4);
-        
+      
             if ($show_debug_info ) {
 
             }
-        
+      
             if ($result->name == 'COM_SPORTSMANAGEMENT_ST_HANDBALL'  ) {
                 $linkresults = self::getLink($sis_nummer, $sis_passwort, $result->staffel_id, $this->_sis_art, $sis_xmllink);
                 $linkspielplan = self::getSpielplan($linkresults, $result->staffel_id, $this->_sis_art);
             }
-        
+      
         }
-        
+      
     }
-    
+  
     public function onAfterRender()
     {
 
     }
-    
+  
     public function onAfterRoute()
     {
 
     }
-    
+  
     public function onAfterDispatch()
     {
 
     }
-    
+  
     public function onAfterInitialise()
     {
 
     }
-    
+  
     //get sis link
-    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
+    function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink)
     {
         $sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
-        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);    
+        $link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer);  
         return $link;
     }
-    
+  
     //get sis spielplan
-    function getSpielplan($linkresults,$liganummer,$sis_art) 
+    function getSpielplan($linkresults,$liganummer,$sis_art)
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         // XML File
         $filepath='components/'.$option.'/sisdata/';
-       
+     
         //File laden
         $datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
         if (file_exists($datei)) {
             $LetzteAenderung = filemtime($datei);
             if ((time() - $LetzteAenderung) > 1800) {
-                //if(file_get_contents($linkresults)) 
+                //if(file_get_contents($linkresults))
                 //{
                   //Laden
                  //$content = file_get_contents($linkresults);
@@ -208,8 +208,8 @@ class PlgSystemjsm_siscron extends JPlugin
                 $doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
                 //}
             }
-        } 
-        else 
+        }
+        else
         {
             //Laden
             //$content = file_get_contents($linkresults);
@@ -234,7 +234,7 @@ class PlgSystemjsm_siscron extends JPlugin
             {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
             }
-            
+          
             //Parsen
             $doc = DOMDocument::loadXML($content);
             //Speichern
@@ -242,7 +242,7 @@ class PlgSystemjsm_siscron extends JPlugin
         }
         $result = simplexml_load_file($datei);
         // XML File end
-        foreach ($result->Spiel as $temp) 
+        foreach ($result->Spiel as $temp)
         {
             $nummer = substr($temp->Liga, -3);
             $datum = substr($temp->SpielVon, 0, 10);
@@ -255,8 +255,8 @@ class PlgSystemjsm_siscron extends JPlugin
         }
         return $result;
     }
-    
+  
 
-}    
+}  
 
 ?>

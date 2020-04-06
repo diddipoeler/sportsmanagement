@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @subpackage playground
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
@@ -42,8 +42,8 @@ use Joomla\CMS\HTML\HTMLHelper;
     <?php } ?>
 
     <?php
-    if (( $this->playground->address ) 
-        || ( $this->playground->zipcode ) 
+    if (( $this->playground->address )
+        || ( $this->playground->zipcode )
     ) {
         ?>
         <tr>
@@ -57,7 +57,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $this->playground->zipcode,
             $this->playground->city,
             $this->playground->country,
-            'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS_FORM' 
+            'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS_FORM'
         );
         ?>
          </td>

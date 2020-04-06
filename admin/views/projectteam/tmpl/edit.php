@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -40,26 +40,26 @@ $fieldsets = $this->form->getFieldsets();
             <ul class="adminformlist">
     <?php foreach($this->form->getFieldset('details') as $field) :?>
                 <li><?php echo $field->label; ?>
-                <?php echo $field->input; 
-                
+                <?php echo $field->input;
+              
                 if ($field->name == 'jform[country]' || $field->name == 'jform[address_country]' ) {
-                    echo JSMCountries::getCountryFlag($field->value);    
+                    echo JSMCountries::getCountryFlag($field->value);  
                 }
-                
+              
                 if ($field->name == 'jform[website]' ) {
-                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';
                 }
                 if ($field->name == 'jform[twitter]' ) {
-                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';
                 }
                 if ($field->name == 'jform[facebook]' ) {
-                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';
                 }
-                
+              
                 $suchmuster = array ("jform[","]");
                 $ersetzen = array ('', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
+              
                 switch ($var_onlinehelp)
                 {
                 case 'id':
@@ -79,11 +79,11 @@ echo HTMLHelper::_(
 );
             ?>
             </a>
-                
+              
             <?PHP
                     break;
                 }
-                
+              
                 ?></li>
     <?php endforeach; ?>
             </ul>
@@ -94,13 +94,13 @@ echo HTMLHelper::_(
     <?php
 
     if ($this->change_training_date ) {
-        $startoffset = 2;     
+        $startoffset = 2;   
     }
     else
     {
-        $startoffset = 0; 
-    }    
-        
+        $startoffset = 0;
+    }  
+      
         echo HTMLHelper::_('sliders.start', 'adminteam', array('startOffset'=>$startoffset));
     foreach ($fieldsets as $fieldset) :
         if ($fieldset->name == 'details') :
@@ -116,12 +116,12 @@ echo HTMLHelper::_(
     endforeach; ?>
     <?php echo HTMLHelper::_('sliders.end'); ?>
 
-    
+  
     </div>
-        
+      
         <div class="clr"></div>
-        
-<div>        
+      
+<div>      
 <input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
 <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
 <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
@@ -133,4 +133,4 @@ echo HTMLHelper::_(
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

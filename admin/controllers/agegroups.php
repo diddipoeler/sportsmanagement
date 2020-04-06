@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,12 +13,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
- 
+
 /**
  * sportsmanagementControlleragegroups
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -26,40 +26,41 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControlleragegroups extends JSMControllerAdmin
 {
 
-    /**
- * sportsmanagementControlleragegroups::saveshort()
- * 
- * @return void
- */
-    function saveshort()
-    {
-        $model = $this->getModel();
-           $msg = $model->saveshort();
-           $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
-    } 
-    
+	/**
+	 * sportsmanagementControlleragegroups::saveshort()
+	 *
+	 * @return void
+	 */
+	function saveshort()
+	{
+		$model = $this->getModel();
+		   $msg = $model->saveshort();
+		   $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
+	}
 
-    /**
- * sportsmanagementControlleragegroups::import()
- * 
- * @return void
- */
-    function import()
-    {
-           $model = $this->getModel();
-           $msg = $model->importAgeGroupFile();
-           $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
-    
-    }  
-    
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'agegroup', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+
+	/**
+	 * sportsmanagementControlleragegroups::import()
+	 *
+	 * @return void
+	 */
+	function import()
+	{
+		   $model = $this->getModel();
+		   $msg = $model->importAgeGroupFile();
+		   $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $msg);
+
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'agegroup', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 }

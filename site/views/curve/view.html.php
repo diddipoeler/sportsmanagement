@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -10,11 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage curve
- * 
+ *
  * https://www.chartjs.org/
  * https://github.com/chartjs/Chart.js
  * https://cdnjs.com/libraries/Chart.js
- * 
+ *
  * https://www.chartjs.org/samples/latest/charts/line/basic.html
  */
 
@@ -25,34 +25,34 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewCurve
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewCurve extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewCurve::init()
-     * 
+     *
      * @return void
      */
     function init()
     {
 
         $this->teamranking = array();
-        
+      
         if ($this->config['which_curve'] ) {
              $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-             $this->document->addScript($js);    
+             $this->document->addScript($js);  
         }
 
         $this->season_id = sportsmanagementModelCurve::$season_id;
         $this->cfg_which_database = sportsmanagementModelCurve::$cfg_which_database;
-        
+      
         if (isset($this->project) ) {
             $teamid1 = sportsmanagementModelCurve::$teamid1;
             $teamid2 = sportsmanagementModelCurve::$teamid2;
@@ -76,7 +76,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
                     }
                     if ($this->config['which_curve'] ) {
                         $team1select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$d->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
-                        $team2select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);    
+                        $team2select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);  
                     }
                     else
                     {
@@ -98,7 +98,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
                 }
                 $divisions[0] = $div;
                 $teams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
-                
+              
                 $i=0;
                 foreach ((array) $teams as $t) {
                     $options[] = HTMLHelper::_('select.option', $t->id, $t->name);
@@ -114,13 +114,13 @@ class sportsmanagementViewCurve extends sportsmanagementView
                 }
                 if ($this->config['which_curve'] ) {
                     $team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
-                    $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);    
+                    $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);  
                 }
                 else
                 {
                     $team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid1);
                     $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"', 'value', 'text', $teamid2);
-                }        
+                }      
             }
 
             if (!isset($this->overallconfig['seperator']) ) {
@@ -136,11 +136,11 @@ class sportsmanagementViewCurve extends sportsmanagementView
             $this->allteams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division, 'name', sportsmanagementModelCurve::$cfg_which_database);
             $this->team1select = $team1select;
             $this->team2select = $team2select;
-            
+          
             if ($this->config['which_curve'] ) {
                   $rounds    = sportsmanagementModelProject::getRounds('ASC', sportsmanagementModelCurve::$cfg_which_database);
                   $this->round_labels = array();
-                foreach ($rounds as $r) 
+                foreach ($rounds as $r)
                   {
                     $this->round_labels[] = '"'.$r->name.'"';
                 }
@@ -150,7 +150,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
             {
                   $this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash", sportsmanagementModelCurve::$cfg_which_database), $this->config));
             }
-            
+          
             // Set page title
             $pageTitle = Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE');
             if (( isset($this->team1) ) AND (isset($this->team1))) {
@@ -174,11 +174,11 @@ class sportsmanagementViewCurve extends sportsmanagementView
         // JInput object
         $jinput = $app->input;
           $option = $jinput->getCmd('option');
-        
+      
         $model = $this->getModel();
         $rounds    = sportsmanagementModelProject::getRounds('ASC', $model::$cfg_which_database);
         $round_labels = array();
-        foreach ($rounds as $r) 
+        foreach ($rounds as $r)
         {
             $round_labels[] = $r->name;
         }

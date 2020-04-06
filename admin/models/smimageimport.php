@@ -1,7 +1,7 @@
 <?php
 
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -24,9 +24,9 @@ use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelsmimageimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,9 +34,9 @@ use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelsmimageimport
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -53,7 +53,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
      * @return boolean
      * @since  1.6
      */
-    protected function allowEdit($data = array(), $key = 'id') 
+    protected function allowEdit($data = array(), $key = 'id')
     {
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
@@ -68,7 +68,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array())
     {
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
@@ -82,7 +82,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.smimageimport', 'smimageimport', array('control' => 'jform', 'load_data' => $loadData));
@@ -98,7 +98,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
@@ -110,10 +110,10 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel
 
     /**
      * sportsmanagementModelsmimageimport::import()
-     * 
+     *
      * @return
      */
-    function import() 
+    function import()
     {
         $app = Factory::getApplication();
         //$option = Factory::getApplication()->input->getCmd('option');

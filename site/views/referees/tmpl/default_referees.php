@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -46,7 +46,7 @@ if (!empty($this->rows) ) {
             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_REFEREES_GAMES');
             echo HTMLHelper::image(
                 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/refereed.png',
-                $imageTitle, array( 'title' => $imageTitle, 'height' => 20 ) 
+                $imageTitle, array( 'title' => $imageTitle, 'height' => 20 )
             );
             ?>
                                 </td>
@@ -112,8 +112,8 @@ if (!empty($this->rows) ) {
             {
             case 1:     // show Birthday and Age
                 $birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date(
-                    $row->birthday .' UTC', 
-                    Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'), 
+                    $row->birthday .' UTC',
+                    Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'),
                     sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)
                 ) : "-";
                 $birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($row->birthday, $row->deathday) . ")";
@@ -121,7 +121,7 @@ if (!empty($this->rows) ) {
             case 2:     // show Only Birthday
                 $birthdateStr = $row->birthday != "0000-00-00" ? HTMLHelper::date(
                     $row->birthday .' UTC',
-                    Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'), 
+                    Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'),
                     sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)
                 ) : "-";
                 break;
@@ -131,8 +131,8 @@ if (!empty($this->rows) ) {
             case 4:     // show Only Year of birth
                 $birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date(
                     $row->birthday .' UTC',
-                    Text::_('%Y'), 
-                    sportsmanagementHelper::getTimezone($this->project, $this->overallconfig) 
+                    Text::_('%Y'),
+                    sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)
                 ) : "-";
                 break;
 

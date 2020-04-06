@@ -7,7 +7,7 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage results
  */
- 
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
@@ -62,7 +62,7 @@ if ($this->config['show_comments_count'] > 0){
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
 		{
 			?>
-			<th colspan="<?php echo $nbcols-$nbcols_header; ?>"><?php 
+			<th colspan="<?php echo $nbcols-$nbcols_header; ?>"><?php
             echo HTMLHelper::date( $date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
                 if ($this->config['show_matchday_dateheader']) {
                     echo ' - ' . Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); } ?>
@@ -203,8 +203,8 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 		?></td>
 		<?php
 		}
-    
-    // diddipoeler    
+  
+    // diddipoeler  
     if ($this->config['show_match_summary'])
 		{
 		  ?>
@@ -216,8 +216,8 @@ $link = "javascript:void(0);";
 							"onclick" => 'example_alertBox(\''.$game->id.'\');');
 			echo HTMLHelper::link($link,$img,$params);
             ?></td>
-		<?php 	  
-		}  
+		<?php 	
+		}
 		?>
 		<!-- show divisions -->
 		<?php
@@ -264,9 +264,9 @@ $link = "javascript:void(0);";
     case 4:
     $width = '40';
     break;
-    
-    }  
-          
+  
+    }
+        
 		?>
 			<!-- show team-icons and/or -names -->
 			<td width='<?PHP echo $width;?>'>
@@ -289,8 +289,8 @@ $link = "javascript:void(0);";
 			</td>
 			<!-- show match score -->
 			<td width='10' class='score'>
-				<?php 
-        echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
+				<?php
+        echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
         ?>
 			</td>
 				<?php

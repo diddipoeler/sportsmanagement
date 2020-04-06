@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -67,21 +67,21 @@ $attribs['align'] = 'left';
         <?php
         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_SELECT_USE_PROJECT');
         ?>
-       </legend>      
-        <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_USE_PROJECT'); ?>      
+       </legend>    
+        <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_USE_PROJECT'); ?>    
         </fieldset>
         </td>
         </tr>
         <?php
         }
         ?>
-      
+    
 
         <?php
-      
+    
         ?>
-      
-      
+    
+    
       <tr>
       <td>
       <fieldset>
@@ -91,7 +91,7 @@ $attribs['align'] = 'left';
                 ?>
             </legend>
 
-            
+          
                 <input type="text" name='liganummer' value='' size="100" />
                 <input class="button" type="submit" onclick="return Joomla.submitform('jlextsisimport.save')" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_UPLOAD_BUTTON'); ?>" />
             </fieldset>
@@ -101,7 +101,7 @@ $attribs['align'] = 'left';
         </table>
         <input type="hidden" name='sent' value='1' />
         <input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
-        <input type="hidden" name="option" value="com_sportsmanagement" /> 
+        <input type="hidden" name="option" value="com_sportsmanagement" />
         <input type="hidden" name='task' value='jlextsisimport.save' />
     <?php echo HTMLHelper::_('form.token')."\n"; ?>
     </form>
@@ -110,4 +110,4 @@ $attribs['align'] = 'left';
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

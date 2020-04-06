@@ -1,6 +1,6 @@
 <?php	
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,29 +20,29 @@ use Joomla\CMS\Factory;
 foreach ( $this->rows as $position_id => $players ): ?>
 <div style="margin:auto; width:100%;">
     <!-- position header -->
-    <?php 
+    <?php
     $row = current($players);
     $position    = $row->position;
     $k            = 0;
     $colspan    = ( ( $this->config['show_birthday'] > 0 ) ? '6' : '5' );    ?>
 <h2><?php	echo '&nbsp;' . Text::_($row->position);    ?></h2>
-<?php 
+<?php
 
 foreach ($players as $row): ?>
 <tr	class="">
 <div class="mini-player_links">
             <table class="table">
               <tbody><tr>
-                <td>           
-                     <div class="player-trikot">        
+                <td>         
+                     <div class="player-trikot">      
         <?php
-        if (! empty($row->position_number) ) {  
+        if (! empty($row->position_number) ) {
             echo $row->position_number;
-        } 
-        ?>     
-                    </div>               
+        }
+        ?>   
+                    </div>             
                  </td>
-                <td style="width: 55px;padding:0px;">              
+                <td style="width: 55px;padding:0px;">            
                 <?php
                 $playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
                 $imgTitle = Text::sprintf($playerName);
@@ -53,7 +53,7 @@ foreach ($players as $row): ?>
                 if (!curl_init($picture) ) {
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
-                
+              
                 echo sportsmanagementHelperHtml::getBootstrapModalImage(
                     'rosterplayer'.$row->person_id,
                     $picture,
@@ -63,14 +63,14 @@ foreach ($players as $row): ?>
                     $this->modalwidth,
                     $this->modalheight,
                     $this->overallconfig['use_jquery_modal']
-                );                
+                );              
 
-                ?>              
+                ?>            
                 </td>
                 <td style="padding-left: 9px;">
                   <div class="player-position"><?php	echo Text::_($row->position);    ?></div>
                   <div class="player-name">
-        <?php 
+        <?php
         if ($this->config['link_player']==1) {
             $routeparameter = array();
             $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -85,15 +85,15 @@ foreach ($players as $row): ?>
         else
         {
             echo '<i>'.$playerName.'</i>';
-        }          
+        }        
         ?></b></a></div>
-                  
+                
                 </td>
               </tr>
             </tbody></table>
             </div>
             </tr>
-            
+          
     <?php	$k = 1 - $k; ?>
 <?php endforeach; ?>
     <div class="clear">

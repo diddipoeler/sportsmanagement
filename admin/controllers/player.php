@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -17,8 +17,8 @@ use Joomla\CMS\Router\Route;
 
 /**
  * sportsmanagementControllerplayer
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -27,16 +27,16 @@ use Joomla\CMS\Router\Route;
 class sportsmanagementControllerplayer extends JSMControllerForm
 {
 
-   
-    /**
-     * sportsmanagementControllerplayer::__construct()
-     * 
-     * @param  mixed $config
-     * @return void
-     */
-    function __construct($config = array())
-    {
-        parent::__construct($config);
-    }    
+
+	/**
+	 * sportsmanagementControllerplayer::__construct()
+	 *
+	 * @param   mixed $config
+	 * @return void
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+	}
 
 }

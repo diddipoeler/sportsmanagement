@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -33,8 +33,8 @@ echo $this->lists['matches'];
 ?>
 </td>
 <td style="">
-<input id="moveright" type="button" value="<?php echo Text::_('&gt;&gt;'); ?>" onclick="move_list_items('matcheslist','node_matcheslist');" />                        
-<input id="moveleft" type="button" value="<?php echo Text::_('&lt;&lt;'); ?>" onclick="move_list_items('node_matcheslist','matcheslist');" />                        
+<input id="moveright" type="button" value="<?php echo Text::_('&gt;&gt;'); ?>" onclick="move_list_items('matcheslist','node_matcheslist');" />                      
+<input id="moveleft" type="button" value="<?php echo Text::_('&lt;&lt;'); ?>" onclick="move_list_items('node_matcheslist','matcheslist');" />                      
 </td>
 <td>
 <b>
@@ -49,4 +49,4 @@ echo $this->lists['node_matches'];
 </tr>
 </table>
 
-        
+      

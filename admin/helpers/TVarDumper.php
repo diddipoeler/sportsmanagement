@@ -37,7 +37,7 @@ class TVarDumper
 
     /**
      * Converts a variable into a string representation.
-     * This method achieves the similar functionality as 
+     * This method achieves the similar functionality as
      * but is more robust when handling complex objects such as PRADO controls.
      *
      * @param  mixed $var       variable to be dumped

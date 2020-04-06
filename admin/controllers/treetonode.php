@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage controllers
  */
- 
+
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
@@ -21,8 +21,8 @@ use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerTreetonode
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -33,7 +33,7 @@ class sportsmanagementControllerTreetonode extends FormController
 
     /**
      * sportsmanagementControllerTreetonode::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -46,30 +46,30 @@ class sportsmanagementControllerTreetonode extends FormController
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = Factory::getDocument();
-       
+     
         $this->jsmapp->setUserState($this->jsmoption.'.pid', $this->jsmjinput->get('pid'));
         $this->jsmapp->setUserState($this->jsmoption.'.tid', $this->jsmjinput->get('tid'));
-        
+      
     }
 
     /**
  * sportsmanagementControllerTreetonode::cancel()
- * 
+ *
  * @param  mixed $key
  * @return void
  */
     function cancel($key = null)
     {
         $pid = $this->jsmapp->getUserState($this->jsmoption . '.pid');
-        $tid = $this->jsmapp->getUserState($this->jsmoption . '.tid');    
+        $tid = $this->jsmapp->getUserState($this->jsmoption . '.tid');  
         $msg = '';
-        $link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$tid.'&pid='.$pid;    
-        $this->setRedirect($link, $msg);    
+        $link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$tid.'&pid='.$pid;  
+        $this->setRedirect($link, $msg);  
     }
 
     /**
  * sportsmanagementControllerTreetonode::save()
- * 
+ *
  * @param  mixed $key
  * @param  mixed $urlVar
  * @return void
@@ -80,11 +80,11 @@ class sportsmanagementControllerTreetonode extends FormController
        $data = $this->jsmjinput->post->getArray();
    			$pid = $this->jsmapp->getUserState( $this->jsmoption . '.pid' );
             $tid = $this->jsmapp->getUserState( $this->jsmoption . '.tid' );
-       
+     
        $model = $this->getModel('treetonode');
        $data['id'] = $this->jsmjinput->get('id');
        $result = $model->save($data);
-       
+     
        switch ($this->getTask())
        {
        case 'apply':
@@ -108,25 +108,25 @@ class sportsmanagementControllerTreetonode extends FormController
     $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_SAVED') . $model->getError();
     }
         $link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$tid.'&pid='.$pid;
-       break;  
-        
+       break;
+      
        }
     $this->setRedirect($link,$msg);
-    
+  
     }
     */
 
 
     /**
  * sportsmanagementControllerTreetonode::saveallleaf()
- * 
+ *
  * @return void
  */
     public function saveallleaf()
     {
         /**
-* 
- * Check for token 
+*
+ * Check for token
 */
         Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
         $cid = $this->jsmjinput->get('cid', array(), 'array');
@@ -141,8 +141,8 @@ class sportsmanagementControllerTreetonode extends FormController
         else
         {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_SAVED') . $model->getError();
-        }    
-    
+        }  
+  
         if($model->storefinishleaf($post)) {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_SAVED');
         }
@@ -151,15 +151,15 @@ class sportsmanagementControllerTreetonode extends FormController
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_LEAFS_ERROR_SAVED');
         }
         $link = 'index.php?option=com_sportsmanagement&view=treetonodes&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
-        $this->setRedirect($link, $msg);    
-    
-    
-    
+        $this->setRedirect($link, $msg);  
+  
+  
+  
     }
-    
+  
     /**
      * sportsmanagementControllerTreetonode::removenode()
-     * 
+     *
      * @return void
      */
     public function removenode()
@@ -173,14 +173,14 @@ class sportsmanagementControllerTreetonode extends FormController
         {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_REMOVENODE');
         }
-        
+      
         $link = 'index.php?option=com_sportsmanagement&view=treetos';
         $this->setRedirect($link, $msg);
     }
 
     //	/**
     //	 * sportsmanagementControllerTreetonode::saveshortleaf()
-    //	 * 
+    //	 *
     //	 * @return void
     //	 */
     //	public function saveshortleaf()
@@ -208,7 +208,7 @@ class sportsmanagementControllerTreetonode extends FormController
 
     //	/**
     //	 * sportsmanagementControllerTreetonode::savefinishleaf()
-    //	 * 
+    //	 *
     //	 * @return void
     //	 */
     //	public function savefinishleaf()
@@ -233,10 +233,10 @@ class sportsmanagementControllerTreetonode extends FormController
     //		$this->setRedirect($link,$msg);
     //	}
 
-    
+  
     /**
      * sportsmanagementControllerTreetonode::saveshort()
-     * 
+     *
      * @return void
      */
     public function saveshort()
@@ -259,5 +259,5 @@ class sportsmanagementControllerTreetonode extends FormController
         $link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
         $this->setRedirect($link, $msg);
     }
-    
+  
 }

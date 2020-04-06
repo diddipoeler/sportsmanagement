@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,8 +21,8 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewTreetomatchs
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -33,7 +33,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetomatchs::init()
-     * 
+     *
      * @return
      */
     public function init()
@@ -51,7 +51,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetomatchs::_displayEditlist()
-     * 
+     *
      * @return void
      */
     function _displayEditlist()
@@ -64,8 +64,8 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         $mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($node_id);
         /**
-* 
- * build the html select list for node assigned matches 
+*
+ * build the html select list for node assigned matches
 */
         $ress = array();
         $res1 = array();
@@ -156,7 +156,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         $this->treetomatchs = $treetomatchs;
         $this->projectws = $projectws;
         $this->nodews = $nodews;
-        
+      
         $this->addToolBarEditlist();
         $this->setLayout('editlist');
 
@@ -164,7 +164,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
     /**
      * sportsmanagementViewTreetomatchs::_displayDefault()
-     * 
+     *
      * @return void
      */
     function _displayDefault()
@@ -174,7 +174,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         $projectws = $mdlProject->getProject($this->project_id);
         $mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($this->jinput->get('nid'));
-        
+      
         $this->match = $this->items;
         $this->projectws = $projectws;
         $this->nodews = $nodews;
@@ -187,7 +187,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
     /**
  * sportsmanagementViewTreetomatchs::addToolBarEditlist()
- * 
+ *
  * @return void
  */
     protected function addToolBarEditlist()
@@ -198,17 +198,17 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         ToolbarHelper::save('treetomatch.save_matcheslist');
 
         /**
-* 
- * for existing items the button is renamed `close` and the apply button is showed 
+*
+ * for existing items the button is renamed `close` and the apply button is showed
 */
-        ToolbarHelper::back('Back', 'index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
+        ToolbarHelper::back('Back', 'index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid')); 
+   
      
-       
     }
-       
+     
     /**
  * sportsmanagementViewTreetomatchs::addToolBarDefault()
- * 
+ *
  * @return void
  */
     protected function addToolBarDefault()
@@ -216,7 +216,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
         ToolbarHelper::custom('treetomatch.editlist', 'upload.png', 'upload_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'), false);
-        ToolbarHelper::back('Back', 'index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
+        ToolbarHelper::back('Back', 'index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid')); 
     }
 
 

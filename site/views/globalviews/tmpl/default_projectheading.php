@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -24,27 +24,27 @@ $document = Factory::getDocument();
 <script>
 console.log("jquery version : "+jQuery().jquery);
 console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
-    
+  
 if( typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null ){
 console.log("bootstrap version ist nicht vorhanden");
 <?php	
 $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
 $document->addCustomTag($stylelink);
-?>    
+?>  
 }	
-    
+  
 </script>
 <?php
 
 $nbcols = 2;
 if (!empty($this->overallconfig) ) {
-    if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']) ) { $nbcols++; 
+    if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']) ) { $nbcols++;
     }
-    if ($this->overallconfig['show_project_kunena_link'] ) { $nbcols++; 
+    if ($this->overallconfig['show_project_kunena_link'] ) { $nbcols++;
     }
-    if ($this->overallconfig['show_project_picture'] ) { $nbcols++; 
+    if ($this->overallconfig['show_project_picture'] ) { $nbcols++;
     }
-    if ($this->overallconfig['show_project_staffel_id'] ) { $nbcols++; 
+    if ($this->overallconfig['show_project_staffel_id'] ) { $nbcols++;
     }
     if ($this->overallconfig['show_project_heading'] == 1 && $this->project) {
             ?>
@@ -59,7 +59,7 @@ if (!empty($this->overallconfig) ) {
             <?php
             $country = $this->project->country;
             echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
-                
+              
             ?>
          </td>
         </tr>
@@ -85,10 +85,10 @@ if (!empty($this->overallconfig) ) {
                 '',
                 $this->modalwidth,
                 $this->modalheight,
-                $this->overallconfig['use_jquery_modal']                            
+                $this->overallconfig['use_jquery_modal']                          
             );
             ?>
-          
+        
 
             </td>
                 <?php
@@ -142,7 +142,7 @@ if (!empty($this->overallconfig) ) {
               </td>
                 <?php	
                 }
-                    
+                  
                 if ($this->overallconfig['show_project_staffel_id'] ) {
                 ?>
                  <td>
@@ -164,7 +164,7 @@ if (!empty($this->overallconfig) ) {
                 ?>
              &nbsp;
              </td>
-                    
+                  
                     <td class="buttonheading" align="right">
                 <?php
                 if ($this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid ) {
@@ -172,17 +172,17 @@ if (!empty($this->overallconfig) ) {
                     $imgTitle = Text::_($this->project->name.' Forum');
                     $desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
                     echo '&nbsp;';
-                    echo HTMLHelper::link($link, $desc);    
+                    echo HTMLHelper::link($link, $desc);  
                 }
                 ?>
              &nbsp;
              </td>
-                    
+                  
             </tr>
         <!--                </tbody> -->
           </table>
         </div>
-        <?php 
+        <?php
     }
     else
     {
@@ -193,7 +193,7 @@ if (!empty($this->overallconfig) ) {
      <!--                <tbody> -->
          <tr class="contentheading">
           <td class="buttonheading" align="right">
-            <?php 
+            <?php
             if(Factory::getApplication()->input->getVar('print') != 1) {
                 echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
             }

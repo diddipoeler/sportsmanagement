@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -115,14 +115,14 @@ function change_jokerlimit () {
             -->
         </div>
     </fieldset>
-        
+      
  <div class="form-horizontal">
 <?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-<?PHP    
-foreach ($fieldsets as $fieldset) 
+<?PHP  
+foreach ($fieldsets as $fieldset)
 {
-    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));  
 
     switch ($fieldset->name)
     {
@@ -130,32 +130,32 @@ foreach ($fieldsets as $fieldset)
         echo $this->form->renderFieldset('details');
         break;
     case 'predchamp':
-        echo $this->form->renderFieldset('predchamp');        
-        break;        
+        echo $this->form->renderFieldset('predchamp');      
+        break;      
     case 'predjoker':
-        echo $this->form->renderFieldset('predjoker');        
+        echo $this->form->renderFieldset('predjoker');      
         break;
-        
+      
     default:
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
         break;
-    }    
-    echo HTMLHelper::_('bootstrap.endTab');    
-}    
+    }  
+    echo HTMLHelper::_('bootstrap.endTab');  
+}  
 
-?>    
-    
+?>  
+  
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
-</div>    
+</div>  
 
-    <div>    
+    <div>  
         <input type='hidden' name='id' value='<?php echo $this->item->id; ?>' />
         <input type='hidden' name='task' value='predictionproject.edit' />
         <input type='hidden' name='psapply'    value='1' />
     </div>
-    <?php 
-    echo HTMLHelper::_('form.token'); 
+    <?php
+    echo HTMLHelper::_('form.token');
 
     ?>
 </form>
@@ -165,5 +165,5 @@ foreach ($fieldsets as $fieldset)
 <div>
 <?PHP
 echo $this->loadTemplate('footer');
-?>   
+?> 
 </div>

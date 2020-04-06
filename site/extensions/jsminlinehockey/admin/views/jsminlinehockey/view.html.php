@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage jsminlinehockey
  */
- 
+
 /**
   60  header icons
   61  .icon-48-generic         { background-image: url(../images/header/icon-48-generic.png); }
@@ -55,8 +55,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjsminlinehockey
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Pl�ger
  * @copyright 2017
  * @version   $Id$
@@ -67,10 +67,10 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
 
     /**
      * sportsmanagementViewjsminlinehockey::init()
-     * 
+     *
      * @return void
      */
-    function init() 
+    function init()
     {
 
         $this->projectid = $this->jinput->get("pid", '0');
@@ -87,14 +87,14 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
 
         switch ($this->getLayout())
         {
-        case 'default':  
+        case 'default':
         case 'default_3':
         case 'default_4':
             $this->setLayout('default');
-            return;  
+            return;
         break;
         }
-        
+      
     }
 
     /**
@@ -102,7 +102,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
      *
      * @since 1.7
      */
-    protected function addToolbar() 
+    protected function addToolbar()
     {
         // Set toolbar items for the page
         //        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');

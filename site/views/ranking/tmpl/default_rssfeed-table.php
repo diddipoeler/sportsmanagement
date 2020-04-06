@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
  *
  * @version    1.0.05
@@ -54,7 +54,7 @@ foreach ($this->rssfeedoutput as $key => $feed):
 
     <?php if ($this->feedItemDate) : ?>
                         <span class="srfrFeedItemDate"><?php echo $feed->itemDate; ?></span>
-    <?php endif; ?>            
+    <?php endif; ?>          
 
                     <?php if ($this->feedItemDescription || $feed->feedImageSrc) : ?>
                         <p>
@@ -85,7 +85,7 @@ foreach ($this->rssfeedoutput as $key => $feed):
                         echo "</tr>";
                     }
 endforeach;
-                ?>    
+                ?>  
 
         </table>
 

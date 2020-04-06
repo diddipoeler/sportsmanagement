@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage fields
  */
- 
+
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
@@ -25,8 +25,8 @@ HTMLHelper::_('behavior.framework');
 
 /**
  * FormFieldDependSQL
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -44,7 +44,7 @@ class JFormFieldDependSQL extends FormField
 
     /**
      * FormFieldDependSQL::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()
@@ -57,7 +57,7 @@ class JFormFieldDependSQL extends FormField
         $task         = $this->element['task'];
         $depends     = $this->element['depends'];
         $ctrl         = $this->name;
-        
+      
         // Attribs
         $attribs     = ' task="'.$task.'"';
         $attribs    .= $required;
@@ -77,7 +77,7 @@ class JFormFieldDependSQL extends FormField
             $attribs    .= '"';
         }
         $attribs    .= ' current="'.$this->value.'"';
-    
+  
         if ($required=='true') {
             $options = array();
         }
@@ -92,13 +92,13 @@ class JFormFieldDependSQL extends FormField
             $db->setQuery($query);
             $options = array_merge($options, $db->loadObjectList());
         }
-        
+      
         if ($depends) {
             $doc = Factory::getDocument();
             $doc->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/depend.js');
         }
 
         return HTMLHelper::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
-        
+      
     }
 }

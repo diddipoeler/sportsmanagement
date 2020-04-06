@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -24,9 +24,9 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldCurrentround
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -51,8 +51,8 @@ class JFormFieldCurrentround extends \JFormFieldList
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
-        // JInput object 
-         $jinput = $app->input; 
+        // JInput object
+         $jinput = $app->input;
 
         // Initialize variables.
         $options = array();
@@ -69,7 +69,7 @@ class JFormFieldCurrentround extends \JFormFieldList
         if ($project_id) {
             $db = Factory::getDbo();
             $query = $db->getQuery(true);
-            
+          
             $query->select('id AS value');
             $query->select('CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text ');
             $query->from('#__sportsmanagement_round ');
@@ -78,7 +78,7 @@ class JFormFieldCurrentround extends \JFormFieldList
             $db->setQuery($query);
             $options = $db->loadObjectList();
         }
-        
+      
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * plgContentSportsmanagement_Comments
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2019
  * @version   $Id$
@@ -29,10 +29,10 @@ class plgContentSportsmanagement_Comments extends JPlugin
 {
 
     public $params = null;
-    
+  
     /**
      * plgContentSportsmanagement_Comments::__construct()
-     * 
+     *
      * @param  mixed $subject
      * @param  mixed $config
      * @return
@@ -41,13 +41,13 @@ class plgContentSportsmanagement_Comments extends JPlugin
     {
         $app = Factory::getApplication();
         $jcomments_exists = file_exists(JPATH_SITE.'/components/com_jcomments/jcomments.php');
-        
+      
         if (!$jcomments_exists && $app->isSite()) {
             return false;
         }
-        
+      
         parent::__construct($subject);
-        
+      
         if (isset($config['params'])) {
             if ($config['params'] instanceof Registry) {
                 $this->params = $config['params'];
@@ -58,7 +58,7 @@ class plgContentSportsmanagement_Comments extends JPlugin
                 $this->params->loadString($config['params']);
             }
         }
-        
+      
         JPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
     }
 
@@ -116,7 +116,7 @@ class plgContentSportsmanagement_Comments extends JPlugin
     public function onMatchComments(&$match, $title, &$html)
     {
         $separate_comments = $this->params->get('separate_comments', 0);
-        
+      
         if ($separate_comments == 0) {
 
             $comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';

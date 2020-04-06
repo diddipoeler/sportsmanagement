@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,8 +25,8 @@ use Joomla\CMS\Language\Text;
                     <tr>
                         <td class="key"><?php echo $field->label; ?></td>
                         <td><?php echo $field->input; ?></td>
-                    </tr>                    
+                    </tr>                  
         <?php endforeach; ?>
             </table>
         </fieldset>
-        
+      

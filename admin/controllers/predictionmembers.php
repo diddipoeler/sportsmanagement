@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+ *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -13,7 +13,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Session\Session; 
+use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -21,198 +21,214 @@ use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementControllerpredictionmembers
- * 
- * @package   
- * @author 
+ *
+ * @package
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 {
-    
-    /**
-     * Constructor.
-     *
-     * @param array $config An optional associative array of configuration settings.
-     *
-     * @see   BaseController
-     * @since 1.6
-     */
-    public function __construct($config = array())
-    {
-        parent::__construct($config);
-        
-        // Reference global application object
-        $this->jsmapp = Factory::getApplication();
-        // JInput object
-        $this->jsmjinput = $this->jsmapp->input;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param   array $config An optional associative array of configuration settings.
+	 *
+	 * @see   BaseController
+	 * @since 1.6
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
 
-    }    
-    
-    /**
-     * sportsmanagementControllerpredictionmembers::save_memberlist()
-     * 
-     * @return void
-     */
-    function save_memberlist()
-    {
-        
-        // Check for request forgeries
-        Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+			  // Reference global application object
+		$this->jsmapp = Factory::getApplication();
 
-        $model = $this->getModel();
-        $msg = $model->save_memberlist();
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);    
-        
-        
-    }
-    
-    /**
-     * sportsmanagementControllerpredictionmembers::editlist()
-     * 
-     * @return void
-     */
-    function editlist()
-    {
-        $msg        = '';
-        $link = 'index.php?option=com_sportsmanagement&view=predictionmembers&layout=editlist';
-        //echo $msg;
-        $this->setRedirect($link, $msg);
-       
-    }
-       
-    /**
-     * sportsmanagementControllerpredictionmembers::sendReminder()
-     * 
-     * @return void
-     */
-    function reminder()
-    {
-        /**
+		// JInput object
+		$this->jsmjinput = $this->jsmapp->input;
+
+	}
+
+	/**
+	 * sportsmanagementControllerpredictionmembers::save_memberlist()
+	 *
+	 * @return void
+	 */
+	function save_memberlist()
+	{
+
+			  // Check for request forgeries
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+
+		$model = $this->getModel();
+		$msg = $model->save_memberlist();
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+
+	}
+
+	/**
+	 * sportsmanagementControllerpredictionmembers::editlist()
+	 *
+	 * @return void
+	 */
+	function editlist()
+	{
+		$msg        = '';
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers&layout=editlist';
+
+		// Echo $msg;
+		$this->setRedirect($link, $msg);
+
+	}
+
+		 /**
+		  * sportsmanagementControllerpredictionmembers::sendReminder()
+		  *
+		  * @return void
+		  */
+	function reminder()
+	{
+		/**
  * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
  */
-        $post = $this->jsmjinput->post->getArray();
-        $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-        $pgmid = Factory::getApplication()->input->getVar('prediction_id', 0, 'post', 'INT');
+		$post = $this->jsmjinput->post->getArray();
+		$cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		$pgmid = Factory::getApplication()->input->getVar('prediction_id', 0, 'post', 'INT');
 
-        if ($pgmid == 0 ) {
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR'), Log::WARNING, 'jsmerror');
-        }
-        $msg        = '';
-        $d            = ' - ';
+		if ($pgmid == 0)
+		{
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR'), Log::WARNING, 'jsmerror');
+		}
 
-        $model = $this->getModel('predictionmember');
-          $model->sendEmailtoMembers($cid, $pgmid);
+		$msg        = '';
+		$d            = ' - ';
 
-        $link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
-        //echo $msg;
-        $this->setRedirect($link, $msg);
-    }
-    
-    
-    
-    /**
-     * sportsmanagementControllerpredictionmembers::publish()
-     * 
-     * @return void
-     */
-    function publish()
-    {
-        $cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        ArrayHelper::toInteger($cids);
-        $predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
+		$model = $this->getModel('predictionmember');
+		  $model->sendEmailtoMembers($cid, $pgmid);
 
-        if (count($cids) < 1 ) {
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR'), Log::ERROR, 'jsmerror');
-        }
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
 
-        $model = $this->getModel('predictionmember');
-        if(!$model->publishpredmembers($cids, 1, $predictionGameID) ) {
-               echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
-        }
+		// Echo $msg;
+		$this->setRedirect($link, $msg);
+	}
 
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
-    }
-    
-    
-    /**
-     * sportsmanagementControllerpredictionmembers::unpublish()
-     * 
-     * @return void
-     */
-    function unpublish()
-    {
-        $cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        ArrayHelper::toInteger($cids);
-        $predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 
-        if (count($cids) < 1 ) {
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT'), Log::ERROR, 'jsmerror');
-        }
 
-        $model = $this->getModel('predictionmember');
-        if (!$model->publishpredmembers($cids, 0, $predictionGameID) ) {
-               echo "<script> alert( '" . $model->getError(true)  ."' ); window.history.go(-1); </script>\n";
-        }
+	/**
+	 * sportsmanagementControllerpredictionmembers::publish()
+	 *
+	 * @return void
+	 */
+	function publish()
+	{
+		$cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		ArrayHelper::toInteger($cids);
+		$predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
-    }
-    
-    
-    /**
-     * sportsmanagementControllerpredictionmembers::remove()
-     * 
-     * @return void
-     */
-    function remove()
-    {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-    
-        $d        = ' - ';
-        $msg    = '';
-        $cid    = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        ArrayHelper::toInteger($cid);
-        $prediction_id    = Factory::getApplication()->input->getInt('prediction_id', (-1), 'post');
+		if (count($cids) < 1)
+		{
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR'), Log::ERROR, 'jsmerror');
+		}
 
-        if (count($cid) < 1) {
-            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'), Log::ERROR, 'jsmerror');
-        }
+		$model = $this->getModel('predictionmember');
 
-        $model = $this->getModel('predictionmember');
+		if (!$model->publishpredmembers($cids, 1, $predictionGameID))
+		{
+			   echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+		}
 
-        if (!$model->deletePredictionResults($cid, $prediction_id)) {
-               $msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
-        }
-        $msg .= $d . Text::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
+	}
 
-        if (!$model->deletePredictionMembers($cid)) {
-               $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
-        }
 
-        $msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+	/**
+	 * sportsmanagementControllerpredictionmembers::unpublish()
+	 *
+	 * @return void
+	 */
+	function unpublish()
+	{
+		$cids = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		ArrayHelper::toInteger($cids);
+		$predictionGameID    = Factory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
 
-        $link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
-        //echo $msg;
-        $this->setRedirect($link, $msg);
-    }
-    
-  
+		if (count($cids) < 1)
+		{
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT'), Log::ERROR, 'jsmerror');
+		}
 
-    
-    /**
-     * Proxy for getModel.
-     *
-     * @since 1.6
-     */
-    public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel', $config = Array() ) 
-    {
-        $model = parent::getModel($name, $prefix, array('ignore_request' => true));
-        return $model;
-    }
+		$model = $this->getModel('predictionmember');
+
+		if (!$model->publishpredmembers($cids, 0, $predictionGameID))
+		{
+			   echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
+		}
+
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=predictionmembers');
+	}
+
+
+	/**
+	 * sportsmanagementControllerpredictionmembers::remove()
+	 *
+	 * @return void
+	 */
+	function remove()
+	{
+		// Reference global application object
+		$app = Factory::getApplication();
+
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+
+		$d        = ' - ';
+		$msg    = '';
+		$cid    = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+		ArrayHelper::toInteger($cid);
+		$prediction_id    = Factory::getApplication()->input->getInt('prediction_id', (-1), 'post');
+
+		if (count($cid) < 1)
+		{
+			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'), Log::ERROR, 'jsmerror');
+		}
+
+		$model = $this->getModel('predictionmember');
+
+		if (!$model->deletePredictionResults($cid, $prediction_id))
+		{
+			   $msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+		}
+
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+
+		if (!$model->deletePredictionMembers($cid))
+		{
+			   $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+		}
+
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+
+		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
+
+		// Echo $msg;
+		$this->setRedirect($link, $msg);
+	}
+
+
+
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @since 1.6
+	 */
+	public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel', $config = Array() )
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+
+		return $model;
+	}
 }

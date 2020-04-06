@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -18,8 +18,8 @@ use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelProjectpositions
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -29,16 +29,16 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 {
     var $_identifier = "pposition";
     var $_project_id = 0;
-    
-    
+  
+  
     /**
      * sportsmanagementModelProjectpositions::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
                 $config['filter_fields'] = array(
                         'po.name',
                         'po.parent_id',
@@ -49,7 +49,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
     }
-    
+  
      /**
      * Method to auto-populate the model state.
      *
@@ -72,12 +72,12 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         $this->setState('filter.pid', $pid);
         // List state information.
         parent::populateState('po.name', 'asc');
-    }    
-    
-    
+    }  
+  
+  
     /**
      * sportsmanagementModelProjectpositions::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
@@ -89,7 +89,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         $query = $db->getQuery(true);
         $subQuery1= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);
-        
+      
         // Select some fields
         $query->select('pt.*,pt.id AS positiontoolid');
         // From the table
@@ -102,19 +102,19 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         $query->select('pid.name AS parent_name');
         // From the table
         $query->join('LEFT', '#__sportsmanagement_position pid ON po.parent_id = pid.id');
-        // count 
+        // count
         $subQuery1->select('count(*)');
         $subQuery1->from('#__sportsmanagement_position_eventtype AS pe ');
         $subQuery1->where('pe.position_id=po.id');
         $query->select('('.$subQuery1.') AS countEvents');
-        // count 
+        // count
         $subQuery2->select('count(*)');
         $subQuery2->from('#__sportsmanagement_position_statistic AS ps ');
         $subQuery2->where('ps.position_id=po.id');
         $query->select('('.$subQuery2.') AS countStats');
-        
+      
         $query->where('pt.project_id = '.$this->getState('filter.pid'));
-        
+      
         $query->order(
             $db->escape($this->getState('list.ordering', 'po.name')).' '.
             $db->escape($this->getState('list.direction', 'ASC'))
@@ -125,7 +125,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 
     /**
     * sportsmanagementModelProjectpositions::updateprojectpositions()
-    * 
+    *
     * @param  mixed   $items
     * @param  integer $project_id
     * @return
@@ -151,7 +151,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 
         if ($position  ) {
               $result = array_unique($position);
-              $match_ids = implode(",", $result);    
+              $match_ids = implode(",", $result);  
             foreach( $items as $item )
               {
                 $this->jsmquery->clear();
@@ -162,7 +162,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 
                 // Conditions for which records should be updated.
                 $conditions = array(
-                    $this->jsmdb->quoteName('project_position_id') . ' = '. $item->positiontoolid, 
+                    $this->jsmdb->quoteName('project_position_id') . ' = '. $item->positiontoolid,
                     $this->jsmdb->quoteName('match_id') . ' IN (' . $match_ids . ')'
                 );
                 try{
@@ -175,21 +175,21 @@ class sportsmanagementModelProjectpositions extends JSMModelList
                         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
                         return false;
                 }
-    
+  
             }
-        }       
+        }     
     }
-    
+  
     /**
      * sportsmanagementModelProjectpositions::insertStandardProjectPositions()
-     * 
+     *
      * @param  integer $project_id
      * @param  integer $sports_type_id
      * @return void
      */
     function insertStandardProjectPositions($project_id = 0,$sports_type_id = 0)
     {
-        $app = Factory::getApplication();    
+        $app = Factory::getApplication();  
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $query->select('id');
@@ -197,10 +197,10 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         $query->where('parent_id != 0');
         $query->where('sports_type_id = '.$sports_type_id);
         $query->where('persontype IN (1,2)');
-    
+  
         $db->setQuery($query);
         $result = $db->loadObjectList();
-    
+  
         if ($result ) {
             foreach ($result as $row)
             {
@@ -211,25 +211,25 @@ class sportsmanagementModelProjectpositions extends JSMModelList
                 $query->where('position_id = '.$row->id);
                 $db->setQuery($query);
                 $position = $db->loadObjectList();
-            
+          
                 if (!$position ) {
                     $temp = new stdClass();
                     $temp->project_id = $project_id;
                     $temp->position_id = $row->id;
-                    $resultquery = $db->insertObject('#__sportsmanagement_project_position', $temp);    
-                }    
-            
+                    $resultquery = $db->insertObject('#__sportsmanagement_project_position', $temp);  
+                }  
+          
             }
         }
-    
-    
-        
+  
+  
+      
     }
 
-    
+  
     /**
      * sportsmanagementModelProjectpositions::getSubPositions()
-     * 
+     *
      * @param  integer $sports_type_id
      * @return
      */
@@ -250,14 +250,14 @@ class sportsmanagementModelProjectpositions extends JSMModelList
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
             return false;
         }
-        
+      
         return $result;
     }
 
-    
+  
 
 
-    
+  
     /**
      * return count of projectpositions
      *
@@ -267,13 +267,13 @@ class sportsmanagementModelProjectpositions extends JSMModelList
     function getProjectPositionsCount($project_id)
     {
         $this->jsmquery->clear();
-        $this->jsmquery->select('count(*) AS count');   
-        $this->jsmquery->from('#__sportsmanagement_project_position AS pp');   
+        $this->jsmquery->select('count(*) AS count'); 
+        $this->jsmquery->from('#__sportsmanagement_project_position AS pp'); 
         $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.id = pp.project_id');
-        $this->jsmquery->where('p.id = '.$project_id); 
+        $this->jsmquery->where('p.id = '.$project_id);
         $this->jsmdb->setQuery($this->jsmquery);
         return $this->jsmdb->loadResult();
     }
-    
+  
 }
 ?>

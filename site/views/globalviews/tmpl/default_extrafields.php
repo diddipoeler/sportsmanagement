@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -38,21 +38,21 @@ if (isset($this->extrafields) ) {
     <strong><?php echo Text::_($field->name); ?></strong>
     </div>
     <div class="col-xs-<?php echo $this->config['extended_value_cols'];?> col-sm-<?php echo $this->config['extended_value_cols'];?> col-md-<?php echo $this->config['extended_value_cols'];?> col-lg-<?php echo $this->config['extended_value_cols'];?>">
-    <?php 
+    <?php
     switch (Factory::getApplication()->input->getVar('view'))
     {
     case 'clubinfo':
         $title = $this->club->name;
         break;
-    
-    }    
+  
+    }  
     switch ($field_type)
     {
     case 'link':
         echo HTMLHelper::_('link', $field->fvalue, $title,  array( "target" => "_blank" ));
         break;
     default:
-        echo Text::_($field->fvalue); 
+        echo Text::_($field->fvalue);
         break;
     }
 

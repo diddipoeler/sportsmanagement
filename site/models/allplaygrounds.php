@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelallplaygrounds
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -32,15 +32,15 @@ class sportsmanagementModelallplaygrounds extends ListModel
     var $_identifier = "allplaygrounds";
     var $limitstart = 0;
     var $limit = 0;
-    
+  
     /**
      * sportsmanagementModelallplaygrounds::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
     public function __construct($config = array())
-    {   
+    { 
             // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -74,7 +74,7 @@ class sportsmanagementModelallplaygrounds extends ListModel
         $jinput = $app->input;
         //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
         $this->setState('list.start', $this->limitstart);
-    
+  
         $store = $this->getStoreId('getstart');
 
         // Try to load the data from internal storage.
@@ -111,7 +111,7 @@ class sportsmanagementModelallplaygrounds extends ListModel
         $option = $jinput->getCmd('option');
         // Initialise variables.
         $app = Factory::getApplication('site');
-        
+      
         // List state information
         //$value = Factory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
@@ -119,7 +119,7 @@ class sportsmanagementModelallplaygrounds extends ListModel
 
         $value = $jinput->getUInt('limitstart', 0);
         $this->setState('list.start', $value);
-        
+      
         // Load the filter state.
         $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
@@ -134,7 +134,7 @@ class sportsmanagementModelallplaygrounds extends ListModel
         if (!in_array($filter_order, $this->filter_fields)) {
             $filter_order = 'v.name';
         }
-        
+      
         //$filter_order_Dir = Factory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) {
@@ -145,11 +145,11 @@ class sportsmanagementModelallplaygrounds extends ListModel
         $this->setState('filter_order_Dir', $filter_order_Dir);
 
     }
-    
-    
+  
+  
     /**
      * sportsmanagementModelallplaygrounds::getListQuery()
-     * 
+     *
      * @return
      */
     function getListQuery()
@@ -161,13 +161,13 @@ class sportsmanagementModelallplaygrounds extends ListModel
         $option = $jinput->getCmd('option');
         //$search	= $this->getState('filter.search');
         //$search_nation	= $this->getState('filter.search_nation');
-        
+      
         // Create a new query object.
         $db        = $this->getDbo();
         $query    = $db->getQuery(true);
-        $user    = Factory::getUser(); 
-        
-        
+        $user    = Factory::getUser();
+      
+      
         $query->select('v.id,v.name,v.picture,v.website,v.address,v.zipcode,v.city,v.country');
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
@@ -180,12 +180,12 @@ class sportsmanagementModelallplaygrounds extends ListModel
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
-        
+      
         //        // Join over the users for the checked out user.
         //		$query->select('uc.name AS editor');
         //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
-        
-        
+      
+      
         if ($this->getState('filter.search')) {
             $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
@@ -193,17 +193,17 @@ class sportsmanagementModelallplaygrounds extends ListModel
             //$query->where("v.country = '".$search_nation."'");
             $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
-        
+      
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC')));
 
-        
+      
         return $query;
 
     }
-    
-    
+  
+  
 }
 
-?>    
+?>  

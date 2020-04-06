@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,9 +25,9 @@ use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionEntry
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -37,10 +37,10 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::__construct()
-     * 
+     *
      * @return void
      */
-    function __construct() 
+    function __construct()
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -53,12 +53,12 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::display()
-     * 
+     *
      * @param  bool $cachable
      * @param  bool $urlparams
      * @return void
      */
-    function display($cachable = false, $urlparams = false) 
+    function display($cachable = false, $urlparams = false)
     {
 
         parent::display($cachable, $urlparams = false);
@@ -66,10 +66,10 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::register()
-     * 
+     *
      * @return void
      */
-    function register() 
+    function register()
     {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
@@ -136,10 +136,10 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::select()
-     * 
+     *
      * @return void
      */
-    function select() 
+    function select()
     {
         $app = Factory::getApplication();
         // JInput object
@@ -158,10 +158,10 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::selectprojectround()
-     * 
+     *
      * @return void
      */
-    function selectprojectround() 
+    function selectprojectround()
     {
         $app = Factory::getApplication();
         // JInput object
@@ -186,7 +186,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController
      * @return object    The model.
      * @since  1.6
      */
-    function getModel($name = 'predictionentry', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true)) 
+    function getModel($name = 'predictionentry', $prefix = 'sportsmanagementModel', $config = array('ignore_request' => true))
     {
         $model = parent::getModel($name, $prefix, $config);
         return $model;
@@ -194,10 +194,10 @@ class sportsmanagementControllerPredictionEntry extends BaseController
 
     /**
      * sportsmanagementControllerPredictionEntry::addtipp()
-     * 
+     *
      * @return void
      */
-    function addtipp() 
+    function addtipp()
     {
         JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 

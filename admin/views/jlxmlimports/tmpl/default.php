@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div id="editcell" class="row">
-    
-    
+  
+  
 <?php if (!empty($this->sidebar)) : ?>
         <div id="j-sidebar-container" class="col-md-2">
             <?php echo $this->sidebar; ?>
@@ -29,7 +29,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div class="col-md-8">
         <?php else : ?>
             <div class="col-md-10">
-        <?php endif; ?>      
+        <?php endif; ?>    
             <div id="dashboard-iconss" class="dashboard-icons">
     <form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' id='adminForm' name='adminForm'>
         <table class='adminlist'>
@@ -43,7 +43,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 echo '</p>';
                 ?></td></tr></tfoot>
             <tbody>
-      <!--      
+      <!--    
       <tr>
       <td>
       <fieldset style='text-align: center; '>
@@ -51,13 +51,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PROJECT_FUSSBALLINEUROPA');
                 ?>
-            </legend>      
-      <input class='input_box' type='text' id='projektfussballineuropa' name='projektfussballineuropa'  value="<?php echo $this->projektfussballineuropa; ?>"/><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_PROJECT_ID'); ?>      
+            </legend>    
+      <input class='input_box' type='text' id='projektfussballineuropa' name='projektfussballineuropa'  value="<?php echo $this->projektfussballineuropa; ?>"/><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_PROJECT_ID'); ?>    
       </fieldset>
       </td>
       </tr>
       -->
-      
+    
       <!--
       <tr>
       <td>
@@ -66,8 +66,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <?php
                 echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_USE_PROJECT');
                 ?>
-            </legend>      
-      <input class='input_box' type='checkbox' id='importupdate' name='importupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_PROJECT'); ?>      
+            </legend>    
+      <input class='input_box' type='checkbox' id='importupdate' name='importupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_USE_PROJECT'); ?>    
       </fieldset>
       </td>
       </tr>
@@ -87,8 +87,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <?php
                 echo Text::_('1. Èlanska liga MNZ Maribor');
                 ?>
-            </legend>      
-      <input class='input_box' type='checkbox' id='importelanska' name='importelanska'  /><?php echo Text::_('1. Èlanska liga MNZ Maribor'); ?>      
+            </legend>    
+      <input class='input_box' type='checkbox' id='importelanska' name='importelanska'  /><?php echo Text::_('1. Èlanska liga MNZ Maribor'); ?>    
       </fieldset>
       </td>
       </tr>
@@ -127,4 +127,4 @@ foreach ($this->templates AS $row)
 echo "<div>";
 echo $this->loadTemplate('footer');
 echo "</div>";
-?>   
+?> 

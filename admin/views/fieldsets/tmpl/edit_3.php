@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -25,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-try{ 
+try{
     $params = $this->form->getFieldsets('params');
 }
 catch (Exception $e)
@@ -36,7 +36,7 @@ catch (Exception $e)
 /**
  * Get the form fieldsets.
  */
-try{  
+try{
     $fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
@@ -54,7 +54,7 @@ if (!$this->item->id && $this->view == 'club' ) {
 <input type="checkbox" name="createTeam" />
 </fieldset>
 <?PHP
-}   
+} 
 if ($this->tmpl && $this->view == 'club' ) {
 ?>
 <fieldset>
@@ -67,9 +67,9 @@ if ($this->tmpl && $this->view == 'club' ) {
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 </fieldset>
-<?PHP        
-    
-}    
-    
-echo $this->loadTemplate('editdata');  
-?>  
+<?PHP      
+  
+}  
+  
+echo $this->loadTemplate('editdata');
+?>

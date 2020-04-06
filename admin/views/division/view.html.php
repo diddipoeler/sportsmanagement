@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,24 +19,24 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewDivision
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewDivision extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewDivision::init()
-     * 
+     *
      * @return
      */
     public function init()
     {
-        
+      
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
@@ -47,22 +47,22 @@ class sportsmanagementViewDivision extends sportsmanagementView
 
     }
 
-    
+  
     /**
     * Add the page title and toolbar.
     *
     * @since 1.7
     */
     protected function addToolbar()
-    {    
+    {  
         $this->jinput->set('hidemainmenu', true);
         $this->jinput->set('pid', $this->project_id);
           $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_NEW');
           $this->icon = 'division';
           parent::addToolbar();
-    }    
-    
-    
+    }  
+  
+  
 
 }
 ?>

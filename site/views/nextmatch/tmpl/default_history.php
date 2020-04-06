@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
- 
+
 ?>
 <!-- Start of show matches through all projects -->
 <?php
@@ -31,8 +31,8 @@ if ($this->games) {
                 <table class="<?php echo $this->config['hystory_table_class']; ?>">
                     <?php
                     /**
-* 
- * sort games by dates 
+*
+ * sort games by dates
 */
                     $gamesByDate = Array();
 
@@ -84,7 +84,7 @@ if ($this->games) {
                                     ?></td>
                                 <td class="nowrap" id="matchdate"><?php
                                 if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date) ) {
-                                       echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY'); 
+                                       echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
                                 }
                                 else
                                 {
@@ -93,7 +93,7 @@ if ($this->games) {
                                     ?></td>
                                 <td id="matchtime"><?php
                                 if ($game->match_date == '0000-00-00 00:00:00'  || empty($game->match_date) || !isset($game->match_date) ) {
-                                       echo ''; 
+                                       echo '';
                                 }
                                 else
                                 {

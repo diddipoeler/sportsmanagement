@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,16 +16,16 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE); 
+JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 
 /**
  * FormFieldCountry
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2013
  * @access    public
@@ -54,7 +54,7 @@ class JFormFieldCountry extends \JFormFieldList
          * Initialize variables.
          */
         $options = JSMCountries::getCountryOptions();
-       
+     
         /**
          * Merge any additional options in the XML definition.
          */
@@ -62,5 +62,5 @@ class JFormFieldCountry extends \JFormFieldList
 
         return $options;
     }
-    
+  
 }

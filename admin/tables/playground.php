@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,9 +19,9 @@ use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablePlayground
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
@@ -34,7 +34,7 @@ class sportsmanagementTablePlayground extends JSMTable
      * @param object Database connector object
      * @since 1.0
      */
-    function __construct(& $db) 
+    function __construct(& $db)
     {
           $db = sportsmanagementHelper::getDBConnection();
         parent::__construct('#__sportsmanagement_playground', 'id', $db);
@@ -63,6 +63,6 @@ class sportsmanagementTablePlayground extends JSMTable
 
         return true;
     }
-        
+      
 }
 ?>

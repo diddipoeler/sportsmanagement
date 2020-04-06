@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -19,7 +19,7 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
 require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'ajax.php';
-require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';  
+require_once JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_sportsmanagement'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'sportsmanagement.php';
 
 jimport('joomla.form.helper');
 
@@ -43,10 +43,10 @@ class JFormFieldDependSQL extends FormField
      * @var    string
      */
     protected $type = 'dependsql';
-    
+  
     /**
      * FormFieldDependSQL::getInput()
-     * 
+     *
      * @return
      */
     protected function getInput()
@@ -57,10 +57,10 @@ class JFormFieldDependSQL extends FormField
         $jinput = $app->input;
         $view = $jinput->getCmd('view');
         $option = $jinput->getCmd('option');
-       
+     
         $lang = Factory::getLanguage();
         $lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
-        
+      
         $attribs = '';
         $norequest = 0;
         $required = $this->element['required'] == "true" ? 'true' : 'false';
@@ -72,16 +72,16 @@ class JFormFieldDependSQL extends FormField
         $query = (string)$this->element['query'];
         $norequest = $this->element['norequest'];
 
-        
+      
         $project_id = $this->form->getValue('id');
-        
+      
         if ($v = $this->element['size']) {
             $attribs .= ' size="'.$v.'"';
         }
         if ($v = $this->element['multiple']) {
             $attribs .= ' multiple="'.$v.'"';
         }
-        
+      
         //        if ( !$value )
         //        {
         //        $value = $this->form->getValue($val,'params');
@@ -89,7 +89,7 @@ class JFormFieldDependSQL extends FormField
         //        }
         //        else
         //        {
-        
+      
         switch ($option)
         {
         case 'com_modules':
@@ -108,25 +108,25 @@ class JFormFieldDependSQL extends FormField
             $div = 'request';
             break;
         }
-        
+      
         $value = $this->form->getValue($val, $div);
         $key_value = $this->form->getValue($key, $div);
-        
+      
         //$div = 'request';
         //        }
-        
+      
         $cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 
         $ctrl = $this->name;
         $id = $this->id;
-        
+      
         $options = array();
         $result = '';
-        
+      
         // Build the script.
         $script = array();
 
-        $script[] = "\n";       
+        $script[] = "\n";     
         $script[] = "jQuery(document).ready(function ($){";
         /*
         $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
@@ -243,12 +243,12 @@ class JFormFieldDependSQL extends FormField
 
         $script[] = "				});";
 
-        $script[] = "});";       
-       
+        $script[] = "});";     
+     
         // Add the script to the document head.
         Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
-        
-        $ajaxtask = 'get'.$ajaxtask;    
+      
+        $ajaxtask = 'get'.$ajaxtask;  
         $result = sportsmanagementModelAjax::$ajaxtask($value, $required, $slug);
 
         if ($result ) {
@@ -256,7 +256,7 @@ class JFormFieldDependSQL extends FormField
         }
 
         return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
-    }    
+    }  
 
 
 }

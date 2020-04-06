@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * sportsmanagementViewlistheader
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -25,15 +25,15 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewlistheader extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewlistheader::init()
-     * 
+     *
      * @return void
      */
     public function init()
     {
-        
+      
     }
 
 }

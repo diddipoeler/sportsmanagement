@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -14,9 +14,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table; 
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
- 
+
 /**
  * SportsManagement Model
  */
@@ -36,7 +36,7 @@ class sportsmanagementModelmatchplayer extends AdminModel
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
     /**
      * Returns a reference to the a Table object, always creating it.
      *
@@ -46,12 +46,12 @@ class sportsmanagementModelmatchplayer extends AdminModel
      * @return JTable    A database object
      * @since  1.6
      */
-    public function getTable($type = 'matchplayer', $prefix = 'sportsmanagementTable', $config = array()) 
+    public function getTable($type = 'matchplayer', $prefix = 'sportsmanagementTable', $config = array())
     {
-        $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+        $config['dbo'] = sportsmanagementHelper::getDBConnection();
         return Table::getInstance($type, $prefix, $config);
     }
-    
+  
     /**
      * Method to get the record form.
      *
@@ -60,7 +60,7 @@ class sportsmanagementModelmatchplayer extends AdminModel
      * @return mixed    A JForm object on success, false on failure
      * @since  1.6
      */
-    public function getForm($data = array(), $loadData = true) 
+    public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.matchplayer', 'matchplayer', array('control' => 'jform', 'load_data' => $loadData));
@@ -69,24 +69,24 @@ class sportsmanagementModelmatchplayer extends AdminModel
         }
         return $form;
     }
-    
+  
     /**
      * Method to get the script that have to be included on the form
      *
      * @return string    Script files
      */
-    public function getScript() 
+    public function getScript()
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
-    
+  
     /**
      * Method to get the data that should be injected in the form.
      *
      * @return mixed    The data for the form.
      * @since  1.6
      */
-    protected function loadFormData() 
+    protected function loadFormData()
     {
         // Check the session for previously entered form data.
         $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.matchplayer.data', array());
@@ -95,7 +95,7 @@ class sportsmanagementModelmatchplayer extends AdminModel
         }
         return $data;
     }
-    
+  
     /**
      * Method to save item order
      *
@@ -106,7 +106,7 @@ class sportsmanagementModelmatchplayer extends AdminModel
     function saveorder($pks = null, $order = null)
     {
         $row =& $this->getTable();
-        
+      
         // update ordering values
         for ($i=0; $i < count($pks); $i++)
         {
@@ -121,5 +121,5 @@ class sportsmanagementModelmatchplayer extends AdminModel
         }
         return true;
     }
-    
+  
 }

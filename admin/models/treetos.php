@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -22,8 +22,8 @@ use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelTreetos
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2018
  * @version   $Id$
@@ -33,10 +33,10 @@ class sportsmanagementModelTreetos extends ListModel
 {
     var $_identifier = "treetos";
     static $_project_id = 0;
-    
+  
     /**
      * sportsmanagementModelTreetos::__construct()
-     * 
+     *
      * @param  mixed $config
      * @return void
      */
@@ -55,10 +55,10 @@ class sportsmanagementModelTreetos extends ListModel
         //                        );
                 parent::__construct($config);
     }
-        
+      
     /**
      * sportsmanagementModelTreetos::getListQuery()
-     * 
+     *
      * @return
      */
     protected function getListQuery()
@@ -66,7 +66,7 @@ class sportsmanagementModelTreetos extends ListModel
           $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $search    = $this->getState('filter.search');
-    
+  
         $query = Factory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('tt.*');
@@ -74,7 +74,7 @@ class sportsmanagementModelTreetos extends ListModel
         $query->from('#__sportsmanagement_treeto AS tt');
         $query->join('LEFT', '#__sportsmanagement_division d on d.id = tt.division_id');
         $query->where('tt.project_id = ' . self::$_project_id);
-        
+      
         return $query;
     }
 
@@ -82,7 +82,7 @@ class sportsmanagementModelTreetos extends ListModel
 
     /**
      * sportsmanagementModelTreetos::storeshort()
-     * 
+     *
      * @param  mixed $cid
      * @param  mixed $data
      * @return
@@ -92,11 +92,11 @@ class sportsmanagementModelTreetos extends ListModel
         $result = true;
         for ( $x = 0; $x < count($cid); $x++ )
         {
-            
+          
             $tblTreeto = Table::getInstance('Treeto', 'sportsmanagementTable');
             $tblTreeto->id = $cid[$x];
             $tblTreeto->division_id =    $data['division_id' . $cid[$x]];
-            
+          
             if (!$tblTreeto->check()) {
                 $this->setError($tblTreeto->getError());
                 $result = false;

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -20,8 +20,8 @@ JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINIS
 
 /**
  * SMStatisticSumstats
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -31,29 +31,29 @@ class SMStatisticSumstats extends SMStatistic
 {
     //also the name of the associated xml file	
     var $_name = 'sumstats';
-    
+  
     var $_calculated = 1;
-    
+  
     var $_showinsinglematchreports = 1;
     var $_ids = 'stat_ids';
-    
+  
     /**
      * SMStatisticSumstats::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
     {
         parent::__construct();
     }
-    
+  
 
-    
+  
 
-    
+  
     /**
      * SMStatisticSumstats::getMatchPlayerStat()
-     * 
+     *
      * @param  mixed $gamemodel
      * @param  mixed $teamplayer_id
      * @return
@@ -62,9 +62,9 @@ class SMStatisticSumstats extends SMStatistic
     {
         $gamestats = $gamemodel->getPlayersStats();
         $stat_ids = SMStatistic::getSids($this->_ids);
-        
+      
         $res = 0;
-        foreach ($stat_ids as $id) 
+        foreach ($stat_ids as $id)
         {
             if (isset($gamestats[$teamplayer_id][$id])) {
                 $res += $gamestats[$teamplayer_id][$id];
@@ -75,7 +75,7 @@ class SMStatisticSumstats extends SMStatistic
 
     /**
      * SMStatisticSumstats::getPlayerStatsByGame()
-     * 
+     *
      * @param  mixed $teamplayer_ids
      * @param  mixed $project_id
      * @return
@@ -96,7 +96,7 @@ class SMStatisticSumstats extends SMStatistic
 
     /**
      * SMStatisticSumstats::getPlayerStatsByProject()
-     * 
+     *
      * @param  mixed   $person_id
      * @param  integer $projectteam_id
      * @param  integer $project_id
@@ -133,7 +133,7 @@ class SMStatisticSumstats extends SMStatistic
 
     /**
      * SMStatisticSumstats::getPlayersRanking()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  mixed   $division_id
      * @param  mixed   $team_id
@@ -143,7 +143,7 @@ class SMStatisticSumstats extends SMStatistic
      * @return
      */
     function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order=null)
-    {        
+    {      
         $sids = SMStatistic::getQuotedSids($this->_ids);
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
@@ -156,30 +156,30 @@ class SMStatisticSumstats extends SMStatistic
                                 . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
                                 . ' st.team_id, pt.picture AS projectteam_picture, t.picture AS team_picture,'
                                 . ' t.name AS team_name, t.short_name AS team_short_name';
-       
+     
         $query_core    = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count, 'statistic');
 
         $res = new stdclass;
         $db->setQuery($query_core);
-        
-        
+      
+      
         $res->pagination_total = $db->loadResult();
-        
+      
         $query_core->clear('select');
         $query_core->select($query_select_details);
         $query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id');
 
         $db->setQuery($query_core, $limitstart, $limit);
-        
-        
+      
+      
         $res->ranking = $db->loadObjectList();
-    
+  
         if ($res->ranking) {
             $precision = SMStatistic::getPrecision();
             // get ranks
             $previousval = 0;
             $currentrank = 1 + $limitstart;
-            foreach ($res->ranking as $k => $row) 
+            foreach ($res->ranking as $k => $row)
             {
                 if ($row->total == $previousval) {
                     $res->ranking[$k]->rank = $currentrank;
@@ -199,7 +199,7 @@ class SMStatisticSumstats extends SMStatistic
 
     /**
      * SMStatisticSumstats::getTeamsRanking()
-     * 
+     *
      * @param  mixed   $project_id
      * @param  integer $limit
      * @param  integer $limitstart
@@ -209,16 +209,16 @@ class SMStatisticSumstats extends SMStatistic
      * @return
      */
     function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null, $select = '', $statistic_id = 0)
-    {        
+    {      
         $sids = SMStatistic::getQuotedSids($this->_ids);
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $select = 'SUM(ms.value) AS total, st.team_id ';
         $statistic_id = $this->id;
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
         $query->group('st.team_id');
-        try{        
+        try{      
              $db->setQuery($query, $limitstart, $limit);
              $res = $db->loadObjectList();
         } catch (Exception $e) {
@@ -226,14 +226,14 @@ class SMStatisticSumstats extends SMStatistic
             $code = $e->getCode(); // Returns '500';
             Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
         }
-        
-        
+      
+      
         if ($res) {
             $precision = $this->getPrecision();
             // get ranks
             $previousval = 0;
             $currentrank = 1 + $limitstart;
-            foreach ($res as $k => $row) 
+            foreach ($res as $k => $row)
             {
                 if ($row->total == $previousval) {
                     $res[$k]->rank = $currentrank;
@@ -254,9 +254,9 @@ class SMStatisticSumstats extends SMStatistic
     {
         $gamestats = $gamemodel->getMatchStaffStats();
         $stat_ids = SMStatistic::getSids($this->_ids);
-        
+      
         $res = 0;
-        foreach ($stat_ids as $id) 
+        foreach ($stat_ids as $id)
         {
             if (isset($gamestats[$team_staff_id][$id])) {
                 $res += $gamestats[$team_staff_id][$id];
@@ -265,10 +265,10 @@ class SMStatisticSumstats extends SMStatistic
 
         return $this->formatValue($res, $this->getPrecision());
     }
-    
+  
     /**
      * SMStatisticSumstats::getStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @param  mixed $team_id
      * @param  mixed $project_id
@@ -282,15 +282,15 @@ class SMStatisticSumstats extends SMStatistic
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
 
         $db->setQuery($query);
-        
-        
+      
+      
         $stats = $db->loadObjectList();
-        
+      
         $res = 0;
         foreach ($stats as $stat)
         {
@@ -299,13 +299,13 @@ class SMStatisticSumstats extends SMStatistic
                 $res += $factors[$key]*$stat->value;
             }
         }
-        
+      
         return self::formatValue($res, SMStatistic::getPrecision());
     }
-    
+  
     /**
      * SMStatisticSumstats::getHistoryStaffStats()
-     * 
+     *
      * @param  mixed $person_id
      * @return
      */
@@ -317,14 +317,14 @@ class SMStatisticSumstats extends SMStatistic
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        
+      
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
 
         $db->setQuery($query);
-        
-        
+      
+      
         $stats = $db->loadObjectList();
-        
+      
         $res = 0;
         foreach ($stats as $stat)
         {
@@ -333,13 +333,13 @@ class SMStatisticSumstats extends SMStatistic
                 $res += $factors[$key]*$stat->value;
             }
         }
-        
+      
         return self::formatValue($res, SMStatistic::getPrecision());
     }
 
     /**
      * SMStatisticSumstats::formatValue()
-     * 
+     *
      * @param  mixed $value
      * @param  mixed $precision
      * @return

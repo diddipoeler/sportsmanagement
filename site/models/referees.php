@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -19,8 +19,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelReferees
- * 
- * @package 
+ *
+ * @package
  * @author    diddi
  * @copyright 2014
  * @version   $Id$
@@ -28,27 +28,27 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelReferees extends BaseDatabaseModel
 {
-    
+  
     static $cfg_which_database = 0;
     static $projectid = 0;
-    
+  
     /**
      * sportsmanagementModelReferees::__construct()
-     * 
+     *
      * @return void
      */
     function __construct()
     {
-        
+      
         self::$projectid = Factory::getApplication()->input->getInt('p', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         parent::__construct();
     }
-    
+  
     /**
      * sportsmanagementModelReferees::getReferees()
-     * 
+     *
      * @return
      */
     function getReferees()
@@ -58,12 +58,12 @@ class sportsmanagementModelReferees extends BaseDatabaseModel
           $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
           $query = $db->getQuery(true);
           $subquery = $db->getQuery(true);
-        
+      
           $query->select('p.*,p.id AS pid,CONCAT_WS( \':\', p.id, p.alias ) AS slug');
           $query->select('pr.id AS prid, pr.notes AS description');
           $query->select('ppos.position_id');
           $query->select('pos.name AS position,pos.parent_id');
-        
+      
           $subquery->select('count(*)');
           $subquery->from('#__sportsmanagement_match AS m');
           $subquery->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id');
@@ -83,7 +83,7 @@ class sportsmanagementModelReferees extends BaseDatabaseModel
           $query->where('p.published = 1');
           $query->order('pos.ordering');
           $query->order('pos.id');
-        
+      
         $db->setQuery($query);
         return $db->loadObjectList();
     }

@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05
@@ -25,8 +25,8 @@ FormHelper::loadFieldClass('list');
 
 /**
  * FormFieldLeague_Level
- * 
- * @package 
+ *
+ * @package
  * @author    Dieter Plöger
  * @copyright 2017
  * @version   $Id$
@@ -57,10 +57,10 @@ class JFormFieldLeagueLevel extends \JFormFieldList
          */
         for($a=1; $a < 21; $a++ )
         {
-            $options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
+            $options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a); 
         }
-    
-        
+  
+      
         /**
          * Merge any additional options in the XML definition.
          */
@@ -68,5 +68,5 @@ class JFormFieldLeagueLevel extends \JFormFieldList
 
         return $options;
     }
-    
+  
 }

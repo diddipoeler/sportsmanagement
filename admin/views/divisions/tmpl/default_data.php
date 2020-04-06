@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -30,12 +30,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <?php
     echo Text::sprintf(
         'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE2',
-        '<i>' . $this->projectws->name . '</i>' 
+        '<i>' . $this->projectws->name . '</i>'
     );
     ?>
         </legend>
 
-        <div id="editcell"> 
+        <div id="editcell">
             <table class="<?php echo $this->table_data_class; ?>">
                 <thead>
                     <tr>
@@ -65,13 +65,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_PARENT_NAME', 'parent_name', $this->sortDirection, $this->sortColumn);
         ?>
                         </th>
-                        
+                      
                         <th class="title" style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE', 'dv.picture', $this->sortDirection, $this->sortColumn);
         ?>
                         </th>
-                        
+                      
                         <th>
         <?php
         echo HTMLHelper::_('grid.sort', 'JSTATUS', 'dv.published', $this->sortDirection, $this->sortColumn);
@@ -84,7 +84,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'divisions.saveorder');
         ?>
                         </th>
-                        
+                      
                         <th style="vertical-align: top; ">
         <?php
         echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'dv.id', $this->sortDirection, $this->sortColumn);
@@ -126,7 +126,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                             </td>
         <?php
-                            
+                          
                                 $inputappend = '';
                                 ?>
                                 <td style="text-align:center; ">
@@ -140,17 +140,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             echo HTMLHelper::_(
                 'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
                 $imageTitle,
-                'title= "' . $imageTitle . '"' 
+                'title= "' . $imageTitle . '"'
             );
             ?>
                                     </a>
                                 <?php endif; ?>
                                 </td>
                                 <?php
-                            
+                          
                     ?>
                             <td>
-            <input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                            
+            <input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                          
                                 <?php
                                 //echo $row->name;
                                 ?>
@@ -187,7 +187,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                         {
                                                  //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
                                                  //echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-                                                    ?>                                    
+                                                    ?>                                  
                                                     <a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
                                 <img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
                                 </a>
@@ -195,11 +195,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                         }
                                             ?>
                                       </td>
-                            
+                          
                                       <td class="center">
             <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'divisions.', $canChange, 'cb'); ?>
-                        <?php 
+                        <?php
                         // Create dropdown items and render the dropdown list.
                         if ($canChange) {
                              HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'divisions');
@@ -208,7 +208,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         }
                                 ?>
                       </div>
-                            
+                          
                                       </td>
                                         <td class="order">
                                 <span>
@@ -237,5 +237,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         ?>
                 </tbody>
             </table>
-        </div> 
+        </div>
 

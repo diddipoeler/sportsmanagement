@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,11 +11,11 @@
  * @package    sportsmanagement
  * @subpackage models
  */
- 
+
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
+
 /**
  * SportsManagement Model
  */
@@ -35,5 +35,5 @@ class sportsmanagementModelseasonteamperson extends JSMModelAdmin
         // Check specific edit permission then general edit permission.
         return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
-    
+  
 }

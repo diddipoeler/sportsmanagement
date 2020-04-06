@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -21,19 +21,19 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjoomleagueimports
- * 
- * @package   
- * @author 
+ *
+ * @package 
+ * @author
  * @copyright diddi
  * @version   2014
  * @access    public
  */
 class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 {
-    
+  
     /**
      * sportsmanagementViewjoomleagueimports::init()
-     * 
+     *
      * @return void
      */
     public function init()
@@ -44,37 +44,37 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         if (!$this->jl_table_import_step ) {
             $this->model->check_database();
         }
-        
+      
         if ($this->cfg_jl_import ) {
-            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), 'Notice');    
+            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'), 'Notice');  
         }
         else
         {
-            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), 'Error');    
+            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'), 'Error');  
         }
 
         $this->model->check_database();
-        
+      
         //build the html select list for sportstypes
         $sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
         $mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
         $allSportstypes = $mdlSportsTypes->getSportsTypes();
         $sportstypes = array_merge($sportstypes, $allSportstypes);
-        
+      
         $variable = $this->jinput->get('filter_sports_type', 0);
 
-        $lists['sportstype'] = $sportstypes; 
+        $lists['sportstype'] = $sportstypes;
         $lists['sportstypes'] = HTMLHelper::_(
-            'select.genericList', 
-            $sportstypes, 
-            'filter_sports_type', 
+            'select.genericList',
+            $sportstypes,
+            'filter_sports_type',
             'class="inputbox" onChange="" style="width:120px"',
-            'id', 
-            'name', 
+            'id',
+            'name',
             $variable
         );
         unset($sportstypes);
-        
+      
         $this->lists = $lists;
         $this->success = $this->app->getUserStateFromRequest($this->option.".jl_table_import_success", 0);
         //$this->success = sportsmanagementModeljoomleagueimports::$_success;
@@ -89,17 +89,17 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
                 $myoptions = array_merge($myoptions, $res);
                 $this->assignRef('search_agegroup', $res);
             }
-            $lists['agegroup'] = $myoptions;  
-        
+            $lists['agegroup'] = $myoptions;
+      
             $this->get_info_fields = $this->model->get_info_fields();
-        
-            $this->lists = $lists;  
+      
+            $this->lists = $lists;
             $this->setLayout('infofield');
             break;
         }
-        
+      
     }
-    
+  
     /**
     * Add the page title and toolbar.
     *
@@ -110,22 +110,22 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
         $this->icon = 'joomleague-import';
-       
+     
         switch ( $this->getLayout() )
         {
         case 'default';
         case 'default_3';
         case 'default_4';
-            ToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);    
-            break;    
+            ToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);  
+            break;  
         case 'infofield';
         case 'infofield_3';
         case 'infofield_4';
-            ToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);    
+            ToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);  
             break;
         }
 
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');    
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');  
 
         ToolbarHelper::divider();
         parent::addToolbar();

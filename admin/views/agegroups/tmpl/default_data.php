@@ -1,6 +1,6 @@
 <?php
 /**
-* 
+*
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,7 +11,7 @@
  * @package    sportsmanagement
  * @subpackage agegroups
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -126,7 +126,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php else : ?>
                                 <?php echo $this->escape($row->name); ?>
                         <?php endif; ?>
-                        <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />                        
+                        <input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />                      
 
 
     <?php //echo $checked;  ?>
@@ -155,7 +155,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     } else {
         //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
         //echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-        ?>                                    
+        ?>                                  
                             <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
                                 <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>
