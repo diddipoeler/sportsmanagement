@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  *
  * @version    1.0.05
  * @file       jlextindividualsport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage models
@@ -150,7 +150,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         $result = true;
         for ($x=0; $x < count($pks); $x++)
         {
-               // änderungen im datum oder der uhrzeit
+               // Ã¤nderungen im datum oder der uhrzeit
             $tbl = $this->getTable();;
             $tbl->load((int) $pks[$x]);
           
@@ -420,7 +420,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        // alte ereignisse löschen
+        // alte ereignisse lÃ¶schen
                 $query = $db->getQuery(true);
                 $query->clear();
                 $query->delete()->from('#__sportsmanagement_match_event')->where('match_id = '.$match_id.' AND teamplayer_id = '.$teamplayer1_id.' AND event_type_id = '.$event_id);
@@ -502,7 +502,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
           $defaultvalues = array();
           $game_parts = $app->getUserState($this->jsmoption . 'game_parts');
   
-        // in abhängigkeit von der sportart wird das ergebnis gespeichert  
+        // in abhÃ¤ngigkeit von der sportart wird das ergebnis gespeichert  
         switch(strtolower($sporttype))
         {
         case 'kegeln':
@@ -608,7 +608,7 @@ class sportsmanagementModeljlextindividualsport extends AdminModel
                 $defaultconfig['JL_EXT_TENNIS_DATA_HOME_MATCHES'] = $defaultconfig['JL_EXT_TENNIS_DATA_HOME_MATCHES'] + $post['team1_result_split'.$cid][$a];
                 $defaultconfig['JL_EXT_TENNIS_DATA_AWAY_MATCHES'] = $defaultconfig['JL_EXT_TENNIS_DATA_AWAY_MATCHES'] + $post['team2_result_split'.$cid][$a];
 
-                // erst die sätze
+                // erst die sÃ¤tze
                 if ($post['team1_result_split'.$cid][$a] > $post['team2_result_split'.$cid][$a] ) {
                     $defaultconfig['JL_EXT_TENNIS_DATA_HOME_SETS']++;
                 }

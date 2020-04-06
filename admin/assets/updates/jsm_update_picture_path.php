@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung f¸r Sportarten
+ * SportsManagement ein Programm zur Verwaltung f√ºr Sportarten
  *
  * @version    1.0.05
  * @file       jsm_update_picture_path.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: ¬© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage updates
@@ -70,7 +70,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in person.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in person.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -88,7 +88,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in person.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in person.'), 'Notice');
 
 		/**
  * ##########################################################################################
@@ -110,7 +110,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club big.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club big.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -128,7 +128,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club middle.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club middle.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -146,7 +146,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club small.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club small.'), 'Notice');
 
 		/**
  * ##########################################################################################
@@ -168,7 +168,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club big.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club big.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -186,7 +186,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club middle.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club middle.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -204,7 +204,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club small.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club small.'), 'Notice');
 
 
 		/**
@@ -228,7 +228,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club big.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club big.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -246,7 +246,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club middle.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club middle.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -264,7 +264,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club small.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club small.'), 'Notice');
 
 
 		$this->jsmquery->clear();
@@ -283,7 +283,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club trikot home.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club trikot home.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -301,7 +301,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club trikot away.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club trikot away.'), 'Notice');
 
 		$this->jsmquery->clear();
 		/**
@@ -319,7 +319,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club trikot home.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club trikot home.'), 'Notice');
 
 
 		$this->jsmquery->clear();
@@ -338,7 +338,7 @@ $this->jsmquery->clear();
 		$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$this->jsmdb->execute();
-		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens‰tze aktualisiert in club trikot away.'), 'Notice');
+		$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datens√§tze aktualisiert in club trikot away.'), 'Notice');
 
 
 

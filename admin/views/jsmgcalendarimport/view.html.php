@@ -31,7 +31,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * sportsmanagementViewjsmgcalendarImport
  *
  * @package
- * @author    Dieter Plöger
+ * @author    Dieter PlÃ¶ger
  * @copyright 2015
  * @version   $Id$
  * @access    public

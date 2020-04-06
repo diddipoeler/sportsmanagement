@@ -1,7 +1,7 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  *
 * @version   1.0.58
 * @file
@@ -23,7 +23,7 @@ use Joomla\CMS\Factory;
  * FormFieldExtensionVersion
  *
  * @package
- * @author    Dieter Plöger
+ * @author    Dieter PlÃ¶ger
  * @copyright 2017
  * @version   $Id$
  * @access    public

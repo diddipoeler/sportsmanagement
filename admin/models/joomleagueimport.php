@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  *
  * @version    1.0.05
  * @file       joomleagueimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage models
@@ -53,7 +53,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
  
         /**
 * hier muss auch wieder zwischen den joomla versionen unterschieden werden
-* felder für den import auslesen
+* felder fÃ¼r den import auslesen
 */              
         if(version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
@@ -296,7 +296,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
                     $my_text .= '<br />';
                   
                 }
-                // kein update, sondern den datensatz aus der importierten tabelle löschen
+                // kein update, sondern den datensatz aus der importierten tabelle lÃ¶schen
                 $query->clear();
                 $conditions = array(
                 $db->quoteName('id') . ' = '.$row->id

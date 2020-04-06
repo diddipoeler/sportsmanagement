@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  *
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -109,7 +109,7 @@ class sportsmanagementViewProject extends sportsmanagementView
             /**
  *     sind im projekt keine positionen vorhanden, dann
  *     bitte einmal die standard positionen, torwart, abwehr,
- *     mittelfeld und stürmer einfügen
+ *     mittelfeld und stÃ¼rmer einfÃ¼gen
  */
               $iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
             if (!$iProjectPositionsCount ) {

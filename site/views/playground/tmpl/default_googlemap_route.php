@@ -53,13 +53,13 @@ function ermittlePosition() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler);
     } else {
-        ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
+        ausgabe.innerHTML = 'Ihr Browser unterstÃ¼tzt keine Geolocation.';
     }
 }
 
 function zeigePosition(position) {
     ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude +
-    "<br>Länge: " + position.coords.longitude;  
+    "<br>LÃ¤nge: " + position.coords.longitude;  
 }
 
 
@@ -71,8 +71,8 @@ console.log("error code : "+ error.code);
             console.log("error text : "+ "Benutzer lehnte Standortabfrage ab.");
             break;
         case error.POSITION_UNAVAILABLE:
-            document.getElementById('divausgabe').innerHTML = "Standortdaten sind nicht verfügbar."
-            console.log("error text : "+ "Standortdaten sind nicht verfügbar.");
+            document.getElementById('divausgabe').innerHTML = "Standortdaten sind nicht verfÃ¼gbar."
+            console.log("error text : "+ "Standortdaten sind nicht verfÃ¼gbar.");
             break;
         case error.TIMEOUT:
             document.getElementById('divausgabe').innerHTML = "Die Standortabfrage dauerte zu lange (Time-out)."

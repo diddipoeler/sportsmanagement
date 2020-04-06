@@ -1,12 +1,12 @@
 <?PHP      
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  *
  * @version    1.0.05
  * @file       table.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage libraries
@@ -20,7 +20,7 @@ use Joomla\Registry\Registry;
  * JSMTable
  *
  * @package
- * @author    Dieter Plöger
+ * @author    Dieter PlÃ¶ger
  * @copyright 2018
  * @version   $Id$
  * @access    public

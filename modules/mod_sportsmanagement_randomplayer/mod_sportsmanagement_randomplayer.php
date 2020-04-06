@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  *
  * @version    1.0.05
  * @file       mod_sportsmanagement_randomplayer.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_randomplayer
@@ -29,7 +29,7 @@ if (!defined('JSM_PATH') ) {
 }
 
 /**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ * prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
  */
 if (!class_exists('JSMModelLegacy')) {
     JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -74,7 +74,7 @@ $list = modJSMRandomplayerHelper::getData($params);
 
 $document = Factory::getDocument();
 /**
- * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr
+ * da wir komplett mit bootstrap arbeiten benÃ¶tigen wir das nicht mehr
  * //add css file
  * $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
  */

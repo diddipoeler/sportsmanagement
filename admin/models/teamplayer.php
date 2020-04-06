@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  *
  * @version    1.0.05
  * @file       teamplayer.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage models
@@ -188,7 +188,7 @@ class sportsmanagementModelteamplayer extends AdminModel
         $result = false;
         if (count($pks)) {
             $cids = implode(',', $pks);
-            // wir löschen mit join
+            // wir lÃ¶schen mit join
             $query = 'DELETE mp,ms,me
             FROM #__sportsmanagement_team_player as m  
             LEFT JOIN #__sportsmanagement_match_player as mp

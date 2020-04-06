@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  *
  * @version    1.0.05
  * @file       treeto.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage controllers
@@ -23,7 +23,7 @@ use Joomla\CMS\Log\Log;
  * sportsmanagementControllerTreeto
  *
  * @package
- * @author    Dieter Plöger
+ * @author    Dieter PlÃ¶ger
  * @copyright 2016
  * @version   $Id$
  * @access    public

@@ -1,12 +1,12 @@
 <?php
 /**
 *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  *
  * @version    1.0.05
  * @file       jlextsisimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package    sportsmanagement
  * @subpackage models
@@ -601,7 +601,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 
         /**
 *
- * das ganze für den standardimport aufbereiten
+ * das ganze fÃ¼r den standardimport aufbereiten
 */
         $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         // open the project
@@ -778,7 +778,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
                 $doc = DOMDocument::loadXML($content);
                 /**
 *
- * Altes File löschen
+ * Altes File lÃ¶schen
 */
                 unlink($datei);
                 /**
