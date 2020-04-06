@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      imagehandler.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       imagehandler.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage 
  */
 
@@ -19,25 +22,27 @@ use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Log\Log;
 
-require_once (JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php');
+require_once JPATH_COMPONENT_SITE .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'imageselect.php';
 
 /**
  * sportsmanagementControllerImagehandler
  * 
  * @package 
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2019
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementControllerImagehandler extends BaseController {
+class sportsmanagementControllerImagehandler extends BaseController
+{
 
     /**
      * Constructor
      *
      * @since 0.9
      */
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
 
         // Register Extra task
@@ -48,9 +53,10 @@ class sportsmanagementControllerImagehandler extends BaseController {
      *
      * @access public
      * @return void
-     * @since 0.9
+     * @since  0.9
      */
-    function upload() {
+    function upload() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
 
@@ -116,12 +122,12 @@ class sportsmanagementControllerImagehandler extends BaseController {
         //upload the image
         if (!File::upload($file['tmp_name'], $filepath)) {
             echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
-//          $app->close();
+            //          $app->close();
         } else {
-//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+            //          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+            //          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
             echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-//          $app->close();
+            //          $app->close();
         }
     }
 
@@ -130,9 +136,10 @@ class sportsmanagementControllerImagehandler extends BaseController {
      *
      * @access public
      * @return void
-     * @since 0.9
+     * @since  0.9
      */
-    function delete() {
+    function delete() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         
@@ -149,7 +156,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         if (count($images)) {
             foreach ($images as $image) {
                 if ($image !== FilterInput::clean($image, 'path')) {
-					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
+                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
                     continue;
                 }
 

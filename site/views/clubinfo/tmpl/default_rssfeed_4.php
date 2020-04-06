@@ -1,5 +1,8 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
  * @version   1.0.05
  * @file      default_rssfeed.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -55,7 +58,7 @@ $this->rssDoc = $this->rssfeeditems;
                             <h3 class="feed-link"><?php echo $title; ?></h3>
                         <?php endif; ?>
 
-                        <?php if ( !empty($text)) : ?>
+                        <?php if (!empty($text)) : ?>
                             <div class="feed-item-description">
                                 
                                     <?php $text = JFilterOutput::stripImages($text); ?>

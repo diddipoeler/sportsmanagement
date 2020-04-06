@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      currentseason.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       currentseason.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage controllers
  */
 
@@ -20,12 +23,12 @@ jimport('joomla.filesystem.file');
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class sportsmanagementControllercurrentseason extends JController
 {
-	protected $view_list = 'currentseasons';
+    protected $view_list = 'currentseasons';
     
     /**
      * sportsmanagementControllercurrentseason::__construct()
@@ -33,11 +36,11 @@ class sportsmanagementControllercurrentseason extends JController
      * @return void
      */
     function __construct()
-	{
-		parent::__construct();
+    {
+        parent::__construct();
 
 
-	}
+    }
     
     /**
      * sportsmanagementControllercurrentseason::display()
@@ -45,10 +48,10 @@ class sportsmanagementControllercurrentseason extends JController
      * @return void
      */
     function display()
-	{
-	
-		parent::display();
-	}
+    {
+    
+        parent::display();
+    }
 
 }
 

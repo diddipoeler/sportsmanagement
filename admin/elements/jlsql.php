@@ -1,10 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+* @version   1.0.05
+* @file      agegroup.php
+* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -37,18 +40,17 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 // welche version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-HTMLHelper::_( 'behavior.mootools' );    
+    HTMLHelper::_('behavior.mootools');    
 }
 
 
@@ -58,35 +60,37 @@ HTMLHelper::_( 'behavior.mootools' );
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldJLSQL extends JFormField
 {
-	/**
-	 * Element name
-	 *
-	 * @accessprotected
-	 * @varstring
-	 */
-	protected $type = 'JLSQL';
+    /**
+     * Element name
+     *
+     * @accessprotected
+     * @varstring
+     */
+    protected $type = 'JLSQL';
 
-	/**
-	 * JFormFieldJLSQL::getInput()
-	 * 
-	 * @return
-	 */
-	function getInput() {
-		$db = sportsmanagementHelper::getDBConnection();
-		$db->setQuery($this->elements['query']);
-		$key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
-		$val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
-		$doc = Factory::getDocument();
-		$updates = $this->elements['updates'];
-		$depends = $this->elements['depends'];
-		if($updates){
-			$view = $this->elements['rawview'];
-			$doc->addScriptDeclaration("function update_".$updates."()
+    /**
+     * JFormFieldJLSQL::getInput()
+     * 
+     * @return
+     */
+    function getInput() 
+    {
+        $db = sportsmanagementHelper::getDBConnection();
+        $db->setQuery($this->elements['query']);
+        $key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
+        $val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
+        $doc = Factory::getDocument();
+        $updates = $this->elements['updates'];
+        $depends = $this->elements['depends'];
+        if($updates) {
+            $view = $this->elements['rawview'];
+            $doc->addScriptDeclaration(
+                "function update_".$updates."()
 			{
 				$('".$control_name.$updates."').onclick = function () { return false;};
 				var combo = $('".$control_name.$this->name."');
@@ -118,9 +122,10 @@ class JFormFieldJLSQL extends JFormField
 	  				}
 				});
 				theAjax.request();
-			}");
-		}
-		$html = HTMLHelper::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
-		return $html;
-	}
+			}"
+            );
+        }
+        $html = HTMLHelper::_('select.genericlist',  $db->loadObjectList(), $this->name, 'class="inputbox"'.($updates ? ' onchange="javascript:update_'.$updates.'()"' : '').($depends ? ' onclick="javascript:update_'.$this->name.'()"' : ''), $key, $val, $this->value, $this->name);
+        return $html;
+    }
 }

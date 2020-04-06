@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_3_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_3_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage clubs
  */
 
@@ -156,29 +159,27 @@ $joomlaicon = $params->get('show_joomla_icons');
                     </td>
                     <td class="center">
                     <?php 
-                if ( $row->email )
-                {
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
-            }
+                    if ($row->email ) {
+                        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
+                    }
                 
-if ( $row->facebook )
-                {
-    ?>
+                    if ($row->facebook ) {
+                        ?>
                         <br>
                         <?php
-echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/facebook.png', '', '');
-            }
+                                        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/facebook.png', '', '');
+                    }
                 
                         ?>    
                     </td>
                     <td>
-                        <input<?php echo $inputappend; ?>	
+                        <input<?php echo $inputappend; ?>    
                             type="text" size="10" class="form-control form-control-inline"
                             name="unique_id<?php echo $row->id; ?>"
                             value="<?php echo $row->unique_id; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>	
+                        <input<?php echo $inputappend; ?>    
                             type="text" size="10" class="form-control form-control-inline"
                             name="new_club_id<?php echo $row->id; ?>"
                             value="<?php echo $row->new_club_id; ?>"
@@ -188,29 +189,35 @@ echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/asset
                     </td>
                     <td class="center">
                         <?php
-$picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
-$imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,Uri::root().$row->logo_big,$imageTitle,'20',Uri::root().$row->logo_big);                        
+                        $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
+                        $imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+                        echo HTMLHelper::_(
+                            'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
+                            $imageTitle, 'title= "'.$imageTitle.'"'
+                        );
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id, Uri::root().$row->logo_big, $imageTitle, '20', Uri::root().$row->logo_big);                        
                         ?>
                     </td>
                     <td class="center">
                         <?php
-$picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
-$imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,Uri::root().$row->logo_middle,$imageTitle,'20',Uri::root().$row->logo_middle);                        
+                        $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
+                        $imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+                        echo HTMLHelper::_(
+                            'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
+                            $imageTitle, 'title= "'.$imageTitle.'"'
+                        );
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id, Uri::root().$row->logo_middle, $imageTitle, '20', Uri::root().$row->logo_middle);                        
                         ?>
                     </td>
                     <td class="center">
                         <?php
-$picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
-$imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,Uri::root().$row->logo_small,$imageTitle,'20',Uri::root().$row->logo_small);                       
+                        $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
+                        $imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+                        echo HTMLHelper::_(
+                            'image', 'administrator/components/com_sportsmanagement/assets/images/'.$picture,
+                            $imageTitle, 'title= "'.$imageTitle.'"'
+                        );
+                        echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id, Uri::root().$row->logo_small, $imageTitle, '20', Uri::root().$row->logo_small);                       
                         ?>
                     </td>
                     <td class="">
@@ -220,13 +227,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$r
                             value="<?php echo $row->zipcode; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>	
+                        <input<?php echo $inputappend; ?>    
                             type="text" size="30" class="form-control form-control-inline"
                             name="location<?php echo $row->id; ?>"
                             value="<?php echo $row->location; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
                         <br />
-                        <input<?php echo $inputappend; ?>	
+                        <input<?php echo $inputappend; ?>    
                             type="text" size="30" class="form-control form-control-inline"
                             name="address<?php echo $row->id; ?>"
                             value="<?php echo $row->address; ?>"

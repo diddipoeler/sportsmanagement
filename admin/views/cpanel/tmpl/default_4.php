@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_4.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_4.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage cpanel
  */
  
@@ -233,13 +236,13 @@ use Joomla\CMS\HTML\HTMLHelper;
             <div class="center">
                 <?PHP
                 $start = 1;
-/**
+                /**
  * Define slides options
  */
                 $slidesOptions = array(
                     "active" => "slide1_id" // It is the ID of the active tab.
                 );
-/**
+                /**
  * Define tabs options for version of Joomla! 3.0
  */
                 $tabsOptions = array(

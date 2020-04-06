@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      clubplan.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       clubplan.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage clubplan
  */
  
@@ -21,20 +24,20 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class sportsmanagementModelClubPlan extends BaseDatabaseModel
 {
-	static $clubid = 0;
-	static $project_id = 0;
-	var $club = null;
-	static $startdate = null;
-	static $enddate = null;
-	var $awaymatches = null;
-	var $homematches = null;
-    var $allmatches = NULL;
-	
+    static $clubid = 0;
+    static $project_id = 0;
+    var $club = null;
+    static $startdate = null;
+    static $enddate = null;
+    var $awaymatches = null;
+    var $homematches = null;
+    var $allmatches = null;
+    
     static $teamartsel = 0;
     static $type = 0;
     static $teamprojectssel = 0;
@@ -45,19 +48,19 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
     
     static $cfg_which_database = 0;
     
-	/**
-	 * sportsmanagementModelClubPlan::__construct()
-	 * 
-	 * @return void
-	 */
-	function __construct()
-	{
-	   // Reference global application object
+    /**
+     * sportsmanagementModelClubPlan::__construct()
+     * 
+     * @return void
+     */
+    function __construct()
+    {
+          // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-		parent::__construct();
-		self::$clubid = $jinput->request->get('cid', 0, 'INT');
+        parent::__construct();
+        self::$clubid = $jinput->request->get('cid', 0, 'INT');
         self::$project_id = $jinput->request->get('p', 0, 'INT');
         
         self::$teamartsel = $jinput->request->get('teamartsel', 0, 'INT');
@@ -65,15 +68,15 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
         self::$teamprojectssel = $jinput->request->get('teamprojectssel', 0, 'INT');
         self::$teamseasonssel = $jinput->request->get('teamseasonssel', 0, 'INT');
         
-//		$this->project_id = $jinput->request->get('p', 0, 'INT');
+        //		$this->project_id = $jinput->request->get('p', 0, 'INT');
 
-		self::setStartDate($jinput->request->get('startdate', self::$startdate, 'STR'));
+        self::setStartDate($jinput->request->get('startdate', self::$startdate, 'STR'));
         self::setEndDate($jinput->request->get('enddate', self::$enddate, 'STR'));
         //$params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
         //$this->setStartDate($jinput->getVar("startdate", $this->startdate,'request','string'));
-		//$this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
-        self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
-	}
+        //$this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
+        self::$cfg_which_database = $jinput->request->get('cfg_which_database', 0, 'INT');
+    }
     
     
     /**
@@ -89,32 +92,31 @@ class sportsmanagementModelClubPlan extends BaseDatabaseModel
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         
-        if (self::$clubid > 0)
-		{
-		
-        $query->select('ag.id as value,ag.name as text');
-        // From 
-		$query->from('#__sportsmanagement_team as t');
-        $query->join('INNER', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
-        // Where
-        $query->where('t.club_id = '.(int) self::$clubid);
-        // Group
-        $query->group('ag.id');
-        // Order
-        $query->order('ag.name ASC');
-try{
-		$db->setQuery($query);
-		$teamsart = $db->loadObjectList();
-		}
-catch (Exception $e)
-{
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-}
-		}
+        if (self::$clubid > 0) {
+        
+            $query->select('ag.id as value,ag.name as text');
+            // From 
+            $query->from('#__sportsmanagement_team as t');
+            $query->join('INNER', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
+            // Where
+            $query->where('t.club_id = '.(int) self::$clubid);
+            // Group
+            $query->group('ag.id');
+            // Order
+            $query->order('ag.name ASC');
+            try{
+                          $db->setQuery($query);
+                          $teamsart = $db->loadObjectList();
+            }
+            catch (Exception $e)
+            {
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+            }
+        }
        
         return $teamsart;
     }
@@ -127,33 +129,32 @@ catch (Exception $e)
     function getTeamsProjects()
     {
         $option = Factory::getApplication()->input->getCmd('option');
-	   $app = Factory::getApplication();
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $app = Factory::getApplication();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        if (self::$clubid > 0)
-		{
-		
-        $query->select('p.id as value,p.name as text');
-        // From 
-		$query->from('#__sportsmanagement_team as t');
-        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
-        $query->join('INNER',' #__sportsmanagement_season as s ON s.id = st.season_id ');
-        $query->join('INNER',' #__sportsmanagement_project_team as pt ON pt.team_id = st.id ');
-        $query->join('INNER',' #__sportsmanagement_project as p ON p.id = pt.project_id ');
-        // Where
-        $query->where('t.club_id = '.(int) self::$clubid);
-        // Group
-        $query->group('p.id,p.name');
-        // Order
-        $query->order('p.name DESC');
+        if (self::$clubid > 0) {
+        
+            $query->select('p.id as value,p.name as text');
+            // From 
+            $query->from('#__sportsmanagement_team as t');
+            $query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
+            $query->join('INNER', ' #__sportsmanagement_season as s ON s.id = st.season_id ');
+            $query->join('INNER', ' #__sportsmanagement_project_team as pt ON pt.team_id = st.id ');
+            $query->join('INNER', ' #__sportsmanagement_project as p ON p.id = pt.project_id ');
+            // Where
+            $query->where('t.club_id = '.(int) self::$clubid);
+            // Group
+            $query->group('p.id,p.name');
+            // Order
+            $query->order('p.name DESC');
 
-		$db->setQuery($query);
+            $db->setQuery($query);
        
-		$teamsprojects = $db->loadObjectList();
-		}
+            $teamsprojects = $db->loadObjectList();
+        }
        
         return $teamsprojects;
 
@@ -167,30 +168,29 @@ catch (Exception $e)
     function getTeamsSeasons()
     {
         $option = Factory::getApplication()->input->getCmd('option');
-	   $app = Factory::getApplication();
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $app = Factory::getApplication();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         
-        if (self::$clubid > 0)
-		{
-		
-        $query->select('s.id as value,s.name as text');
-        // From 
-		$query->from('#__sportsmanagement_team as t');
-        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
-        $query->join('INNER',' #__sportsmanagement_season as s ON s.id = st.season_id ');
+        if (self::$clubid > 0) {
         
-        // Where
-        $query->where('t.club_id = '.(int) self::$clubid);
-        // Group
-        $query->group('s.id,s.name');
-        // Order
-        $query->order('s.name DESC');
+            $query->select('s.id as value,s.name as text');
+            // From 
+            $query->from('#__sportsmanagement_team as t');
+            $query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
+            $query->join('INNER', ' #__sportsmanagement_season as s ON s.id = st.season_id ');
+        
+            // Where
+            $query->where('t.club_id = '.(int) self::$clubid);
+            // Group
+            $query->group('s.id,s.name');
+            // Order
+            $query->order('s.name DESC');
 
-		$db->setQuery($query);
-		$teamsseasons = $db->loadObjectList();
-		}
+            $db->setQuery($query);
+            $teamsseasons = $db->loadObjectList();
+        }
         
         return $teamsseasons;
         
@@ -199,156 +199,150 @@ catch (Exception $e)
 
 
 
-	/**
-	 * sportsmanagementModelClubPlan::getTeams()
-	 * 
-	 * @return
-	 */
-	function getTeams()
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-	   $app = Factory::getApplication();
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+    /**
+     * sportsmanagementModelClubPlan::getTeams()
+     * 
+     * @return
+     */
+    function getTeams()
+    {
+        $option = Factory::getApplication()->input->getCmd('option');
+          $app = Factory::getApplication();
+          // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         
         $teams = array(0);
-		if (self::$clubid > 0)
-		{
-		
-        $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
-        // From 
-		$query->from('#__sportsmanagement_team');
-        // Where
-        $query->where('club_id = '.(int) self::$clubid);
+        if (self::$clubid > 0) {
+        
+              $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
+              // From 
+            $query->from('#__sportsmanagement_team');
+              // Where
+              $query->where('club_id = '.(int) self::$clubid);
 
-			$db->setQuery($query);
-			$teams = $db->loadObjectList();
-		}
+            $db->setQuery($query);
+            $teams = $db->loadObjectList();
+        }
         
        
-       if ( !$teams )
-       {
+        if (!$teams ) {
 
         }
         
        
-		return $teams;
-	}
+        return $teams;
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::getStartDate()
-	 * 
-	 * @return
-	 */
-	function getStartDate()
-	{
-	   $app = Factory::getApplication();
+    /**
+     * sportsmanagementModelClubPlan::getStartDate()
+     * 
+     * @return
+     */
+    function getStartDate()
+    {
+          $app = Factory::getApplication();
        
-    	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
-		if (empty(self::$startdate))
-		{
-			$dayz = $config['days_before'];
-			//$dayz=6;
-			$prevweek = mktime(0,0,0,date("m"),date("d")- $dayz,date("y"));
-			self::$startdate = date("Y-m-d",$prevweek);
-		}
-		if( $config['use_project_start_date'] && empty(self::$startdate) ) 
-        {
-			$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
-			self::$startdate = $project->start_date;
-		}
+        $config = sportsmanagementModelProject::getTemplateConfig("clubplan");
+        if (empty(self::$startdate)) {
+            $dayz = $config['days_before'];
+            //$dayz=6;
+            $prevweek = mktime(0, 0, 0, date("m"), date("d")- $dayz, date("y"));
+            self::$startdate = date("Y-m-d", $prevweek);
+        }
+        if($config['use_project_start_date'] && empty(self::$startdate) ) {
+            $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
+            self::$startdate = $project->start_date;
+        }
         
-		return self::$startdate;
-	}
+        return self::$startdate;
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::getEndDate()
-	 * 
-	 * @return
-	 */
-	function getEndDate()
-	{
-	   $app = Factory::getApplication();
+    /**
+     * sportsmanagementModelClubPlan::getEndDate()
+     * 
+     * @return
+     */
+    function getEndDate()
+    {
+          $app = Factory::getApplication();
        
-		if ( empty(self::$enddate) )
-		{
-			$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
-			$dayz = $config['days_after'];
-			//$dayz=6;
-			$nextweek = mktime(0,0,0,date("m"),date("d")+ $dayz,date("y"));
-			self::$enddate = date("Y-m-d",$nextweek);
-		}
+        if (empty(self::$enddate) ) {
+            $config = sportsmanagementModelProject::getTemplateConfig("clubplan");
+            $dayz = $config['days_after'];
+            //$dayz=6;
+            $nextweek = mktime(0, 0, 0, date("m"), date("d")+ $dayz, date("y"));
+            self::$enddate = date("Y-m-d", $nextweek);
+        }
         
-		return self::$enddate;
-	}
+        return self::$enddate;
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::setStartDate()
-	 * 
-	 * @param mixed $date
-	 * @return void
-	 */
-	public static function setStartDate($date)
-	{
-	   $app = Factory::getApplication();
-		// should be in proper sql format
-		if (strtotime($date)) {
-			self::$startdate = strftime("%Y-%m-%d",strtotime($date));
-		}
-		else {
-			self::$startdate = null;
-		}
-	}
+    /**
+     * sportsmanagementModelClubPlan::setStartDate()
+     * 
+     * @param  mixed $date
+     * @return void
+     */
+    public static function setStartDate($date)
+    {
+          $app = Factory::getApplication();
+        // should be in proper sql format
+        if (strtotime($date)) {
+            self::$startdate = strftime("%Y-%m-%d", strtotime($date));
+        }
+        else {
+            self::$startdate = null;
+        }
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::setEndDate()
-	 * 
-	 * @param mixed $date
-	 * @return void
-	 */
-	public static function setEndDate($date)
-	{
-	   $app = Factory::getApplication();
-		// should be in proper sql format
-		if (strtotime($date)) {
-			self::$enddate = strftime("%Y-%m-%d",strtotime($date));
-		}
-		else {
-			self::$enddate = null;
-		}
-	}
+    /**
+     * sportsmanagementModelClubPlan::setEndDate()
+     * 
+     * @param  mixed $date
+     * @return void
+     */
+    public static function setEndDate($date)
+    {
+          $app = Factory::getApplication();
+        // should be in proper sql format
+        if (strtotime($date)) {
+            self::$enddate = strftime("%Y-%m-%d", strtotime($date));
+        }
+        else {
+            self::$enddate = null;
+        }
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::getAllMatches()
-	 * 
-	 * @param string $orderBy
-	 * @param integer $type
-	 * @return
-	 */
-	function getAllMatches($orderBy = 'ASC',$type = 0)
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-	   $app = Factory::getApplication();
+    /**
+     * sportsmanagementModelClubPlan::getAllMatches()
+     * 
+     * @param  string  $orderBy
+     * @param  integer $type
+     * @return
+     */
+    function getAllMatches($orderBy = 'ASC',$type = 0)
+    {
+        $option = Factory::getApplication()->input->getCmd('option');
+          $app = Factory::getApplication();
        
-       $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
-       $this->teamseasons = $project->season_id;
+          $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
+          $this->teamseasons = $project->season_id;
  
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+          // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         
         
         $result = array();
-        $round_ids = NULL;
-		$teams = self::getTeams();
-		$startdate = self::getStartDate();
-		$enddate = self::getEndDate();
+        $round_ids = null;
+        $teams = self::getTeams();
+        $startdate = self::getStartDate();
+        $enddate = self::getEndDate();
         
-		if (is_null($teams)) 
-        {
-			return null;
-		}
+        if (is_null($teams)) {
+            return null;
+        }
         /*
         if ( $startdate && $enddate )
         {
@@ -358,7 +352,7 @@ catch (Exception $e)
         $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
         $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');  
         $query->group('r.id');
-	$db->setquery($query);
+        $db->setquery($query);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -376,15 +370,15 @@ catch (Exception $e)
         $round_ids = implode(',',$rounds);
         }  
         }
-*/
-$start_timestamp = sportsmanagementHelper::getTimestamp($startdate.' 00:00:00');      
-$end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59'); 
-		
+        */
+        $start_timestamp = sportsmanagementHelper::getTimestamp($startdate.' 00:00:00');      
+        $end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59'); 
+        
         //if ( $round_ids )
         //{
         $query->clear();
         
-		//$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        //$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('m.playground_id,m.alt_decision ,m.team1_result ,m.team2_result ,m.cancel ');
         $query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
@@ -411,166 +405,156 @@ $end_timestamp = sportsmanagementHelper::getTimestamp($enddate.' 23:59:59');
         $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
         
         // From 
-		$query->from('#__sportsmanagement_match AS m');
+        $query->from('#__sportsmanagement_match AS m');
         // Join 
-        $query->join('INNER','#__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id ');
-		$query->join('INNER','#__sportsmanagement_project_team as tj2 ON tj2.id = m.projectteam2_id ');
-        $query->join('INNER','#__sportsmanagement_season_team_id as st1 ON st1.id = tj1.team_id ');
-        $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
-		$query->join('INNER','#__sportsmanagement_team as t1 ON t1.id = st1.team_id ');
-		$query->join('INNER','#__sportsmanagement_team as t2 ON t2.id = st2.team_id ');
-		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = tj1.project_id ');
-		$query->join('INNER','#__sportsmanagement_league as l ON p.league_id = l.id ');
-		$query->join('INNER','#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
-		$query->join('INNER','#__sportsmanagement_round as r ON m.round_id = r.id ');
-		$query->join('INNER','#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
-		$query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
-		$query->join('LEFT','#__sportsmanagement_division as d ON d.id = tj1.division_id');
+        $query->join('INNER', '#__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id ');
+        $query->join('INNER', '#__sportsmanagement_project_team as tj2 ON tj2.id = m.projectteam2_id ');
+        $query->join('INNER', '#__sportsmanagement_season_team_id as st1 ON st1.id = tj1.team_id ');
+        $query->join('INNER', '#__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
+        $query->join('INNER', '#__sportsmanagement_team as t1 ON t1.id = st1.team_id ');
+        $query->join('INNER', '#__sportsmanagement_team as t2 ON t2.id = st2.team_id ');
+        $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = tj1.project_id ');
+        $query->join('INNER', '#__sportsmanagement_league as l ON p.league_id = l.id ');
+        $query->join('INNER', '#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
+        $query->join('INNER', '#__sportsmanagement_round as r ON m.round_id = r.id ');
+        $query->join('INNER', '#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
+        $query->join('LEFT', '#__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
+        $query->join('LEFT', '#__sportsmanagement_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
         
-        if ( self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0)
-        {
-        //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
-	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  
+        if (self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0) {
+            //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+            $query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  
         }
         
-        if ( $startdate && $enddate )
-        {
-        //$query->where('m.round_id IN ('.$round_ids.')');    
-	$query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');  	
+        if ($startdate && $enddate ) {
+            //$query->where('m.round_id IN ('.$round_ids.')');    
+            $query->where('(m.match_timestamp >= '.$start_timestamp.' AND m.match_timestamp <= '.$end_timestamp.')');      
         }
         
-        if( self::$teamartsel > 0 ) 
-        {
-			// Where
+        if(self::$teamartsel > 0 ) {
+            // Where
             $query->where("( t1.agegroup_id = ".self::$teamartsel." OR t2.agegroup_id = ".self::$teamartsel." )");
-		}
+        }
         
-        if( self::$teamseasonssel > 0 ) 
-        {
-			// Where
-            $query->where('p.season_id = '. self::$teamseasonssel );
-		}
-		
-        if( self::$clubid > 0 ) 
-        {
+        if(self::$teamseasonssel > 0 ) {
+            // Where
+            $query->where('p.season_id = '. self::$teamseasonssel);
+        }
+        
+        if(self::$clubid > 0 ) {
             switch ($type) 
-        {
-			case 0:
+            {
+            case 0:
             case 3:  
             case 4: 
-            // Where
-            $query->where('(t1.club_id = '.self::$clubid.' OR t2.club_id = '.self::$clubid . ')' );
-            break;
+                // Where
+                $query->where('(t1.club_id = '.self::$clubid.' OR t2.club_id = '.self::$clubid . ')');
+                break;
             case 1:
-            // Where
-            $query->where('t1.club_id = '.self::$clubid );
-            break;
+                // Where
+                $query->where('t1.club_id = '.self::$clubid);
+                break;
             case 2:
-            // Where
-            $query->where('t2.club_id = '.self::$clubid );
-            break;
-        }
+                // Where
+                $query->where('t2.club_id = '.self::$clubid);
+                break;
+            }
             
-		}
+        }
         
         // Where
         $query->where('m.published = 1');
         // Order
         $query->order('m.match_date '.$orderBy);
 
-		try{
-        $db->setQuery($query);
-		$this->allmatches = $db->loadObjectList();
-	
-}
-catch (Exception $e)
-{
-    $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-}		
+        try{
+              $db->setQuery($query);
+            $this->allmatches = $db->loadObjectList();
+    
+        }
+        catch (Exception $e)
+        {
+            $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        }        
         //}
         
         
-        if ( !$this->allmatches )
-       {
-        $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
+        if (!$this->allmatches ) {
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), 'Error');
         }
         
-		return $this->allmatches;
-	}
+        return $this->allmatches;
+    }
 
 
 
-	/**
-	 * sportsmanagementModelClubPlan::getMatchReferees()
-	 * 
-	 * @param mixed $matchID
-	 * @return
-	 */
-	function getMatchReferees($matchID)
-	{
-	   $option = Factory::getApplication()->input->getCmd('option');
-	   $app = Factory::getApplication();
-       // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+    /**
+     * sportsmanagementModelClubPlan::getMatchReferees()
+     * 
+     * @param  mixed $matchID
+     * @return
+     */
+    function getMatchReferees($matchID)
+    {
+          $option = Factory::getApplication()->input->getCmd('option');
+          $app = Factory::getApplication();
+          // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         
         
-		$query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+        $query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
         $query->select('mp.project_position_id');
         // From 
-		$query->from('#__sportsmanagement_match_referee AS mp');
+        $query->from('#__sportsmanagement_match_referee AS mp');
         // Join 
-        $query->join('LEFT',' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
-        $query->join('INNER',' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
-        $query->join('INNER',' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
+        $query->join('LEFT', ' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
+        $query->join('INNER', ' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
+        $query->join('INNER', ' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
 
-		// Where
+        // Where
         $query->where('mp.match_id = '.(int)$matchID);
         $query->where('p.published = 1');
         
         $db->setQuery($query);
         
         $result = $db->loadObjectList();
-		return $result;
+        return $result;
        
-	}
+    }
 
-	/**
-	 * sportsmanagementModelClubPlan::getClubIconHtmlSimple()
-	 * 
-	 * @param mixed $logo_small
-	 * @param mixed $country
-	 * @param integer $type
-	 * @param integer $with_space
-	 * @return
-	 */
-	static function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
-	{
-		if ($type==1)
-		{
-			$params = array();
-			$params["align"] = "top";
-			$params["border"] = 0;
+    /**
+     * sportsmanagementModelClubPlan::getClubIconHtmlSimple()
+     * 
+     * @param  mixed   $logo_small
+     * @param  mixed   $country
+     * @param  integer $type
+     * @param  integer $with_space
+     * @return
+     */
+    static function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
+    {
+        if ($type==1) {
+            $params = array();
+            $params["align"] = "top";
+            $params["border"] = 0;
             $params['width'] = 21;
             $params['hight'] = 'auto';
-			if ($with_space == 1)
-			{
-				$params["style"] = "padding:1px;";
-			}
-			if ($logo_small == "")
-			{
-				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
-			}
+            if ($with_space == 1) {
+                $params["style"] = "padding:1px;";
+            }
+            if ($logo_small == "") {
+                $logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
+            }
 
-			return HTMLHelper::image($logo_small,"",$params);
-		}
-		elseif ($type==2 && isset($country))
-		{
-			return JSMCountries::getCountryFlag($team->country);
-		}
-	}
+            return HTMLHelper::image($logo_small, "", $params);
+        }
+        elseif ($type==2 && isset($country)) {
+            return JSMCountries::getCountryFlag($team->country);
+        }
+    }
 
 }
 ?>

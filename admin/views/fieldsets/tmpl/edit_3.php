@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      edit_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       edit_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage fieldsets
  */
 
@@ -23,7 +26,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 try{ 
-$params = $this->form->getFieldsets('params');
+    $params = $this->form->getFieldsets('params');
 }
 catch (Exception $e)
 {
@@ -34,7 +37,7 @@ catch (Exception $e)
  * Get the form fieldsets.
  */
 try{  
-$fieldsets = $this->form->getFieldsets();
+    $fieldsets = $this->form->getFieldsets();
 }
 catch (Exception $e)
 {
@@ -44,8 +47,7 @@ catch (Exception $e)
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP
-if ( !$this->item->id && $this->view == 'club' )
-{
+if (!$this->item->id && $this->view == 'club' ) {
 ?>
 <fieldset class="adminform">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
@@ -53,8 +55,7 @@ if ( !$this->item->id && $this->view == 'club' )
 </fieldset>
 <?PHP
 }   
-if ( $this->tmpl && $this->view == 'club' )
-{
+if ($this->tmpl && $this->view == 'club' ) {
 ?>
 <fieldset>
 <div class="fltrt">
@@ -66,9 +67,9 @@ if ( $this->tmpl && $this->view == 'club' )
 <?php echo Text::_('JCANCEL');?></button>
 </div>
 </fieldset>
-<?PHP    	
-	
-}	
-	
+<?PHP        
+    
+}    
+    
 echo $this->loadTemplate('editdata');  
 ?>  

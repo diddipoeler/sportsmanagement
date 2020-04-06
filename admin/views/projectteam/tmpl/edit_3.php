@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      edit_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       edit_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage projectteam
  */
 
@@ -33,13 +36,12 @@ $fieldsets = $this->form->getFieldsets();
 <div class="form-horizontal">
 <?php 
 
-if ( $this->change_training_date )
-{
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
+if ($this->change_training_date ) {
+    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
 }
 else
 {
-echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
+    echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
 } 
 
 ?>
@@ -47,48 +49,48 @@ echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
-switch ($fieldset->name)
-{
+    switch ($fieldset->name)
+    {
     case 'details':
     ?>
     <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+            <div class="span9">
+                <div class="row-fluid form-horizontal-desktop">
+                    <div class="span6">
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
     {
         ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php
+                    <div class="control-group">
+                        <div class="control-label">
+        <?php echo $field->label; ?>
+                        </div>
+                        <div class="controls">
+        <?php echo $field->input; ?>
+                        </div>
+                    </div>
+                <?php
 
     }
     ?>
     </div>
-				</div>
-			</div>
+                </div>
+            </div>
             </div>
     <?PHP
-    break;
+        break;
     default:
-    $this->fieldset = $fieldset->name;
-    echo $this->loadTemplate('fieldsets');
-    break;
-}    
-echo HTMLHelper::_('bootstrap.endTab');    
+        $this->fieldset = $fieldset->name;
+        echo $this->loadTemplate('fieldsets');
+        break;
+    }    
+    echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 ?>    
-	
+    
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div> 
 <div class="clr"></div>

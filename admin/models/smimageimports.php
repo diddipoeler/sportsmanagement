@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      smimageimports.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       smimageimports.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage models
  */
  
@@ -22,20 +25,22 @@ use Joomla\CMS\MVC\Model\ListModel;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementModelsmimageimports extends ListModel {
+class sportsmanagementModelsmimageimports extends ListModel
+{
 
     var $_identifier = "pictures";
 
     /**
      * sportsmanagementModelsmimageimports::__construct()
      * 
-     * @param mixed $config
+     * @param  mixed $config
      * @return void
      */
-    public function __construct($config = array()) {
+    public function __construct($config = array()) 
+    {
         $config['filter_fields'] = array(
             'name',
             'file',
@@ -50,9 +55,10 @@ class sportsmanagementModelsmimageimports extends ListModel {
      *
      * Note. Calling getState in this method will result in recursion.
      *
-     * @since	1.6
+     * @since 1.6
      */
-    protected function populateState($ordering = null, $direction = null) {
+    protected function populateState($ordering = null, $direction = null) 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
@@ -77,7 +83,8 @@ class sportsmanagementModelsmimageimports extends ListModel {
      * 
      * @return
      */
-    protected function getListQuery() {
+    protected function getListQuery() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
 
@@ -102,8 +109,10 @@ class sportsmanagementModelsmimageimports extends ListModel {
             $query->where('obj.folder LIKE ' . $this->_db->Quote('' . $this->getState('filter.image_folder') . ''));
         }
 
-        $query->order($db->escape($this->getState('list.ordering', 'name')) . ' ' .
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $query->order(
+            $db->escape($this->getState('list.ordering', 'name')) . ' ' .
+            $db->escape($this->getState('list.direction', 'ASC'))
+        );
 
         return $query;
     }
@@ -113,17 +122,18 @@ class sportsmanagementModelsmimageimports extends ListModel {
      * 
      * @return
      */
-    function getXMLFolder() {
+    function getXMLFolder() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-// Get a db connection.
+        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('folder as id', 'folder as name'))
-                ->from('#__sportsmanagement_pictures')
-                ->order('folder ASC')
-                ->group('folder ASC');
+            ->from('#__sportsmanagement_pictures')
+            ->order('folder ASC')
+            ->group('folder ASC');
 
         $db->setQuery($query);
         if (!$result = $db->loadObjectList()) {
@@ -135,12 +145,12 @@ class sportsmanagementModelsmimageimports extends ListModel {
     }
 
     /**
-     * 
      * sportsmanagementModelsmimageimports::getimagesxml()
      * 
      * @return
      */
-    function getimagesxml() {
+    function getimagesxml() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         // sind neue bilder pakete vorhanden ?
@@ -198,16 +208,17 @@ class sportsmanagementModelsmimageimports extends ListModel {
      * 
      * @return
      */
-    function getXMLFiles() {
+    function getXMLFiles() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $query = Factory::getDbo()->getQuery(true);
         $files = array();
         $path = JPATH_COMPONENT_ADMINISTRATOR .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'xml_files' .DIRECTORY_SEPARATOR. 'pictures.xml';
-//        $xml = Factory::getXMLParser( 'Simple' );
-//       $xml->loadFile($path); 
+        //        $xml = Factory::getXMLParser( 'Simple' );
+        //       $xml->loadFile($path); 
 
-        if(version_compare(JVERSION,'4','ge'))  {
+        if(version_compare(JVERSION, '4', 'ge')) {
             $xml = simplexml_load_file($path);
         } else {
             $xml = Factory::getXML($path);

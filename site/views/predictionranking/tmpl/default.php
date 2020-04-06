@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage predictionranking
  */
 
@@ -34,13 +37,11 @@ echo $this->loadTemplate('sectionheader');
 
 echo $this->loadTemplate('ranking');
 
-if ($this->config['show_all_user_google_map'])
-{
-echo $this->loadTemplate('googlemap');
+if ($this->config['show_all_user_google_map']) {
+    echo $this->loadTemplate('googlemap');
 }
 
-if ($this->config['show_help'])
-{
+if ($this->config['show_help']) {
     echo $this->loadTemplate('show_help');
 }
 

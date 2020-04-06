@@ -1,16 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      editlist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       editlist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage treetomatchs
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_('behavior.tooltip');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -40,28 +43,27 @@ return true;
 </script>
 
 <style type="text/css">
-	table.paramlist td.paramlist_key {
-		width: 92px;
-		text-align: left;
-		height: 30px;
-	}
+    table.paramlist td.paramlist_key {
+        width: 92px;
+        text-align: left;
+        height: 30px;
+    }
 </style>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="col50">
 
 <?php
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    echo $this->loadTemplate('joomla3');
 }
 else
 {
-echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');    
 }
 echo $this->loadTemplate('data');
 ?>
-	
+    
 <div class="clr"></div>
 <input type="hidden" name="matcheschanges_check" value="0" id="matcheschanges_check" />
 <input type="hidden" name="option" value="com_sportsmanagement" />

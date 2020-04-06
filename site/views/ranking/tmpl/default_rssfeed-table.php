@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- * @version   1.0.05
- * @file      deafult_rssfeed-table.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_rssfeed-table.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
@@ -24,9 +27,9 @@ $app = & Factory::getApplication();
 
     <div class="srfrContainer <?php echo $moduleclass_sfx; ?>">
 
-<?php if ($this->feedsBlockPreText): ?>
+<?php if ($this->feedsBlockPreText) : ?>
             <p class="srfrPreText"><?php echo $this->feedsBlockPreText; ?></p>
-        <?php endif; ?>
+<?php endif; ?>
 
         <table width="100%" class="srfrList">
 
@@ -39,39 +42,39 @@ foreach ($this->rssfeedoutput as $key => $feed):
     ?>
 
                 <td class="srfrRow<?php echo $key % 2; ?>">
-                <?php if ($this->feedItemTitle): ?>
+                <?php if ($this->feedItemTitle) : ?>
                         <h3><a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo $feed->itemTitle; ?></a></h3>
                 <?php endif; ?>
 
-                    <?php if ($this->feedTitle): ?>
+                    <?php if ($this->feedTitle) : ?>
                         <span class="srfrFeedSource">
                             <a target="_blank" href="<?php echo $feed->siteURL; ?>"><?php echo $feed->feedTitle; ?></a>
                         </span>
                     <?php endif; ?>
 
-    <?php if ($this->feedItemDate): ?>
+    <?php if ($this->feedItemDate) : ?>
                         <span class="srfrFeedItemDate"><?php echo $feed->itemDate; ?></span>
-                    <?php endif; ?>			
+    <?php endif; ?>            
 
-                    <?php if ($this->feedItemDescription || $feed->feedImageSrc): ?>
+                    <?php if ($this->feedItemDescription || $feed->feedImageSrc) : ?>
                         <p>
-                        <?php if ($feed->feedImageSrc): ?>
+                        <?php if ($feed->feedImageSrc) : ?>
                                 <a target="_blank" href="<?php echo $feed->itemLink; ?>">
                                     <img class="srfrImage" src="<?php echo $feed->feedImageSrc; ?>" alt="<?php echo $feed->itemTitle; ?>" />
                                 </a>
-                            <?php endif; ?>
-
-        <?php if ($this->feedItemDescription): ?>
-            <?php echo $feed->itemDescription; ?>
-                            <?php endif; ?>
-                        </p>
                         <?php endif; ?>
 
-                        <?php if ($this->feedItemReadMore): ?>
+        <?php if ($this->feedItemDescription) : ?>
+            <?php echo $feed->itemDescription; ?>
+        <?php endif; ?>
+                        </p>
+                    <?php endif; ?>
+
+                        <?php if ($this->feedItemReadMore) : ?>
                         <span class="srfrReadMore">
                             <a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo Text::_('MOD_JW_SRFR_READ_MORE'); ?></a>
                         </span>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
                     <span class="clr"></span>
                 </td>
@@ -81,18 +84,18 @@ foreach ($this->rssfeedoutput as $key => $feed):
                     if ($rssfeedrow % 2) {
                         echo "</tr>";
                     }
-                endforeach;
-                ?>	
+endforeach;
+                ?>    
 
         </table>
 
-            <?php if ($this->feedsBlockPostText): ?>
+            <?php if ($this->feedsBlockPostText) : ?>
             <p class="srfrPostText"><?php echo $this->feedsBlockPostText; ?></p>
-<?php endif; ?>
+            <?php endif; ?>
 
-<?php if ($this->feedsBlockPostLink): ?>
+<?php if ($this->feedsBlockPostLink) : ?>
             <p class="srfrPostTextLink"><a href="<?php echo $this->feedsBlockPostLinkURL; ?>"><?php echo $this->feedsBlockPostLinkTitle; ?></a></p>
-        <?php endif; ?>
+<?php endif; ?>
     </div>
 
     <div class="clr"></div>

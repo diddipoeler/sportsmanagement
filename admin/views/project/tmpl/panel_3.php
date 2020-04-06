@@ -1,5 +1,8 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
  * @version   1.0.05
  * @file      panel_3.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -19,7 +22,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <div id="j-main-container" class="span10">
     <?php else : ?>
         <div id="j-main-container">
-        <?php endif; ?>
+    <?php endif; ?>
         <div id="jsm" class="admin override">
             <section class="content-block" role="main">
                 <div class="row-fluid">
@@ -37,20 +40,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 </a>
 
                                 <?php
-                                if ((isset($this->project->project_type)) &&
-                                        (($this->project->project_type == 'PROJECT_DIVISIONS') ||
-                                        ($this->project->project_type == 'DIVISIONS_LEAGUE'))) {
+                                if ((isset($this->project->project_type)) 
+                                    && (($this->project->project_type == 'PROJECT_DIVISIONS') 
+                                    || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
+                                ) {
                                     ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $this->project->id; ?>">
                                         <img src="components/com_sportsmanagement/assets/icons/divisionen.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?>" /><br />
                                         <span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions) ?></span>
-                                    </a>								
+                                    </a>                                
                                     <?php
                                 }
 
-                                if ((isset($this->project->project_type)) &&
-                                        (($this->project->project_type == 'TOURNAMENT_MODE') ||
-                                        ($this->project->project_type == 'DIVISIONS_LEAGUE'))) {
+                                if ((isset($this->project->project_type)) 
+                                    && (($this->project->project_type == 'TOURNAMENT_MODE') 
+                                    || ($this->project->project_type == 'DIVISIONS_LEAGUE'))
+                                ) {
                                     ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=treetos&pid=<?PHP echo $this->project->id; ?>">
                                         <img src="components/com_sportsmanagement/assets/icons/turnierbaum.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?>" /><br />

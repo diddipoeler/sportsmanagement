@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_debug.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_debug.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage globalviews
  */
 
@@ -18,25 +21,24 @@ use Joomla\CMS\HTML\HTMLHelper;
 <div id='editcell'>
 <?PHP
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-// Define slides options
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    // Define slides options
         $slidesOptions = array(
             "active" => "slide2_id" // It is the ID of the active tab.
         );    
-echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
-foreach (sportsmanagementHelper::$_success_text as $key => $value)
-		{
-			?>
-			<fieldset>
-				<legend><?php echo Text::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo TVarDumper::dump($value,10,TRUE);?></td></tr></table>
-			</fieldset>
-			<?php
-		}
-echo HTMLHelper::_('bootstrap.endSlide');
-echo HTMLHelper::_('bootstrap.endAccordion');
+    echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+    echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
+    foreach (sportsmanagementHelper::$_success_text as $key => $value)
+    {
+            ?>
+           <fieldset>
+        <legend><?php echo Text::_($key); ?></legend>
+        <table class='adminlist'><tr><td><?php echo TVarDumper::dump($value, 10, true);?></td></tr></table>
+           </fieldset>
+            <?php
+    }
+    echo HTMLHelper::_('bootstrap.endSlide');
+    echo HTMLHelper::_('bootstrap.endAccordion');
 }
 else
 {   
@@ -71,7 +73,7 @@ foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 ?>
 </div>
 
-<?PHP		  
+<?PHP	      
 }
 ?>
 </div>

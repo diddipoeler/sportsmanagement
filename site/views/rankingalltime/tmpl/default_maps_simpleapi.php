@@ -1,15 +1,18 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_maps_simpleapi.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_maps_simpleapi.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage rankingalltime
  */
  
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 ?>
 
@@ -33,14 +36,14 @@ function initialize()
 </script>
 <div class="contentpaneopen">
 <div class="contentheading">
-			<?php echo Text::_('JL_GMAP_DIRECTIONS'); ?>
-		</div>
+    <?php echo Text::_('JL_GMAP_DIRECTIONS'); ?>
+        </div>
 
                 
                 <?php
-// create div for the map canvas
-echo "\n<!-- DIV container for the map -->";
-echo "\n<div id=\"gmap_canvas\" style=\"width: ".$this->mapconfig['width']."px; height: ".$this->mapconfig['height']."px;\">\n</div>\n";                
+                // create div for the map canvas
+                echo "\n<!-- DIV container for the map -->";
+                echo "\n<div id=\"gmap_canvas\" style=\"width: ".$this->mapconfig['width']."px; height: ".$this->mapconfig['height']."px;\">\n</div>\n";                
                 //$map->printGMapsJS();
                 ?>
                 

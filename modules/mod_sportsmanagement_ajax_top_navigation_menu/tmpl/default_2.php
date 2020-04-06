@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.00
- * @file      default_2.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.00
+ * @file       default_2.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  */ 
 
@@ -22,39 +25,38 @@ var ajaxmenu_baseurl = '<?php echo Uri::base() ?>';
 
 <?PHP
 
-if ( $project_id )
-{
-$options_slider = array(
+if ($project_id ) {
+    $options_slider = array(
     'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
     'display'=> 1,
     'show'=> 1,
     'useCookie' => true, // this must not be a string. Don't use quotes.
-);
+    );
 }
 else
 {
-$options_slider = array(
+    $options_slider = array(
     'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
     'display'=> 0,
     'show'=> 0,
     'useCookie' => true, // this must not be a string. Don't use quotes.
-);
+    );
 
 }
 
 
-echo HTMLHelper::_('sliders.start','menueslidername', $options_slider );
+echo HTMLHelper::_('sliders.start', 'menueslidername', $options_slider);
 echo HTMLHelper::_('sliders.panel', Text::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU'), 'menue-params');
 
 // tabs anzeigen
 $idxTab = 100;
-echo HTMLHelper::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>1, 'startOffset' => $startoffset ));
+echo HTMLHelper::_('tabs.start', 'tabs_ajaxtopmenu', array('useCookie'=>1, 'startOffset' => $startoffset ));
 
 foreach ( $tab_points as $key => $value  )
 {
-$fed_array = strtoupper($value);
+    $fed_array = strtoupper($value);
 
-echo HTMLHelper::_('tabs.panel', Text::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
+    echo HTMLHelper::_('tabs.panel', Text::_(strtoupper($value)), 'panelmenue'.($idxTab++));
 ?>
 
 <div id="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>">
@@ -72,8 +74,7 @@ echo HTMLHelper::_('tabs.panel', Text::_( strtoupper($value) ), 'panelmenue'.($i
 
 
 
-if ( $country_id )
-{
+if ($country_id ) {
 ?>
 <img style="float: right;" src="images/com_sportsmanagement/database/laender_karten/<?php echo strtolower($country_id) ?>.gif" alt="<?php echo $country_id?>" width="144" height="" />
 <?PHP
@@ -95,8 +96,7 @@ echo HTMLHelper::_('select.genericlist', $federationselect[$value], 'jlamtopfede
 
 
 <?PHP
-if ( isset($countryassocselect[$fed_array]['assocs']) )
-{
+if (isset($countryassocselect[$fed_array]['assocs']) ) {
 ?>
 <tr>
 <td>
@@ -112,8 +112,7 @@ echo HTMLHelper::_('select.genericlist', $countryassocselect[$fed_array]['assocs
 
 
 <?PHP
-if ( isset($countrysubassocselect[$fed_array]['assocs']) )
-{
+if (isset($countrysubassocselect[$fed_array]['assocs']) ) {
 ?>
 <tr>
 <td>
@@ -129,8 +128,7 @@ echo HTMLHelper::_('select.genericlist', $countrysubassocselect[$fed_array]['ass
 
 
 <?PHP
-if ( isset($countrysubsubassocselect[$fed_array]['subassocs']) )
-{
+if (isset($countrysubsubassocselect[$fed_array]['subassocs']) ) {
 ?>
 <tr>
 <td>
@@ -146,8 +144,7 @@ echo HTMLHelper::_('select.genericlist', $countrysubsubassocselect[$fed_array]['
 
 
 <?PHP
-if ( isset($countrysubsubsubassocselect[$fed_array]['subsubassocs']) )
-{
+if (isset($countrysubsubsubassocselect[$fed_array]['subsubassocs']) ) {
 ?>
 <tr>
 <td>
@@ -163,8 +160,7 @@ echo HTMLHelper::_('select.genericlist', $countrysubsubsubassocselect[$fed_array
 
 
 <?PHP
-if ( isset($leagueselect[$fed_array]['leagues']) )
-{
+if (isset($leagueselect[$fed_array]['leagues']) ) {
 ?>
 <tr>
 <td>
@@ -180,8 +176,7 @@ echo HTMLHelper::_('select.genericlist', $leagueselect[$fed_array]['leagues'], '
 
 
 <?PHP
-if ( isset($projectselect[$fed_array]['projects']) )
-{
+if (isset($projectselect[$fed_array]['projects']) ) {
 ?>
 <tr>
 <td>
@@ -196,8 +191,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['projects'],
 
 
 <?PHP
-if ( isset($projectselect[$fed_array]['teams']) )
-{
+if (isset($projectselect[$fed_array]['teams']) ) {
 ?>
 <tr>
 <td>
@@ -219,70 +213,66 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 <table>
 <tr>
 <td>
-<?php if ( $project_id ) { ?>
+<?php if ($project_id ) { ?>
 <div style="margin: 0 auto;">
 <fieldset class="">
 
 <ul class="nav-list">
-<?php if ($params->get('show_nav_links')): ?>
-	
-		<?php for ($i = 1; $i < 18; $i++): ?>
-			<?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))): ?>
-				<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpoint_label'.$i)); ?></li>
-			<?php elseif ($params->get('navpoint'.$i) == "separator"): ?>
-				<li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
-			<?php endif; ?>
-		<?php endfor; ?>
+<?php if ($params->get('show_nav_links')) : ?>
+    
+    <?php for ($i = 1; $i < 18; $i++): ?>
+    <?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))) : ?>
+                <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpoint_label'.$i)); ?></li>
+    <?php elseif ($params->get('navpoint'.$i) == "separator") : ?>
+                <li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
+    <?php endif; ?>
+    <?php endfor; ?>
     
     
     
         <?php 
-        if ($params->get('show_tournament_nav_links'))
-        {
-        $link = $helper->getLink('jltournamenttree')
-        ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text') ); ?></li>		
+        if ($params->get('show_tournament_nav_links')) {
+            $link = $helper->getLink('jltournamenttree')
+        ?>        
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text')); ?></li>        
     <?php 
-    }
+        }
     
-     if ($params->get('show_alltimetable_nav_links'))
-        {
-        $link = $helper->getLink('rankingalltime')
-        ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_alltimetable_text') ); ?></li>		
-    <?php 
-    }
+        if ($params->get('show_alltimetable_nav_links')) {
+              $link = $helper->getLink('rankingalltime')
+                ?>        
+      <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_alltimetable_text')); ?></li>        
+            <?php 
+        }
     
-    if ( $user_name == 'diddipoeler' )
-        {
-        $params_new = array(	"option" => "com_sportsmanagement",
-				"view" => "jlusernewseason",
-				"p" => $project_id);
-	
-		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
-		$link = Route::_( 'index.php?' . $query, false );
-		    ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'neue Saison' ); ?></li>		
-    <?php 
+        if ($user_name == 'diddipoeler' ) {
+            $params_new = array(    "option" => "com_sportsmanagement",
+            "view" => "jlusernewseason",
+            "p" => $project_id);
+    
+            $query = sportsmanagementHelperRoute::buildQuery($params_new);
+            $link = Route::_('index.php?' . $query, false);
+                ?>        
+        <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'neue Saison'); ?></li>        
+            <?php 
         }
     
     
     
-    endif; 
+endif; 
     
     //if ( $user_name != '' )
-    if ( $user_name == 'diddipoeler' )
-    {
-        $params_new = array(	"option" => "com_sportsmanagement",
-				"view" => "jlxmlexports",
-				"p" => $project_id);
-	
-		$query = sportsmanagementHelperRoute::buildQuery( $params_new );
-		$link = Route::_( 'index.php?' . $query, false );
-		    ?>		
-<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'XML Export' ); ?></li>		
+if ($user_name == 'diddipoeler' ) {
+    $params_new = array(    "option" => "com_sportsmanagement",
+                "view" => "jlxmlexports",
+                "p" => $project_id);
+    
+    $query = sportsmanagementHelperRoute::buildQuery($params_new);
+    $link = Route::_('index.php?' . $query, false);
+?>        
+<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), 'XML Export'); ?></li>        
     <?php 
-        }
+}
         
         
     ?>
@@ -293,28 +283,28 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 </td>
 
 <td>
-<?php if ( $team_id ) { ?>
+<?php if ($team_id ) { ?>
 <div style="margin: 0 auto;">
 <fieldset class="">
 
 <ul class="nav-list">
-<?php if ($params->get('show_nav_links')): ?>
-	
-		<?php for ($i = 17; $i < 23; $i++): ?>
-			<?php if ($params->get('navpointct'.$i) && $link = $helper->getLink($params->get('navpointct'.$i))): ?>
-				<li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label'.$i)); ?></li>
-			<?php elseif ($params->get('navpointct'.$i) == "separator"): ?>
-				<li class="nav-item separator"><?php echo $params->get('navpointct_label'.$i); ?></li>
-			<?php endif; ?>
-		<?php endfor; ?>
+<?php if ($params->get('show_nav_links')) : ?>
+    
+    <?php for ($i = 17; $i < 23; $i++): ?>
+    <?php if ($params->get('navpointct'.$i) && $link = $helper->getLink($params->get('navpointct'.$i))) : ?>
+                <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('navpointct_label'.$i)); ?></li>
+    <?php elseif ($params->get('navpointct'.$i) == "separator") : ?>
+                <li class="nav-item separator"><?php echo $params->get('navpointct_label'.$i); ?></li>
+    <?php endif; ?>
+    <?php endfor; ?>
     
     
     
         
-     <?php
+        <?php
      
     
-    endif; 
+endif; 
     ?>
 </ul> 
 </fieldset>	   
@@ -346,4 +336,5 @@ echo HTMLHelper::_('sliders.end');
 ?>
 
 <?php
-if($ajax && $ajaxmod==$module->id){ exit(); } ?>
+if($ajax && $ajaxmod==$module->id) { exit(); 
+} ?>

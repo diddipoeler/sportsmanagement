@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_4_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_4_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage seasons
  */
  
@@ -89,26 +92,26 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         if ($this->table->isCheckedOut($this->user->get('id'), $row->checked_out)) {
                             $inputappend = ' disabled="disabled"';
                             ?><td class="center">&nbsp;</td><?php
-                    } else {
-                        $inputappend = '';
-                        ?>
-                        <td class="center" nowrap="nowrap">
-                        <?php
-                        $image = 'teams.png';
-                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', Uri::root() . $assignteams, $this->modalwidth, $this->modalheight);
-                        $image = 'players.png';
-                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', Uri::root() . $assignpersons, $this->modalwidth, $this->modalheight);
-                        ?>							
-                        </td>
+                        } else {
+                            $inputappend = '';
+                            ?>
+                            <td class="center" nowrap="nowrap">
+                            <?php
+                            $image = 'teams.png';
+                            $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
+                            echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', Uri::root() . $assignteams, $this->modalwidth, $this->modalheight);
+                            $image = 'players.png';
+                            $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
+                            echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', Uri::root() . $assignpersons, $this->modalwidth, $this->modalheight);
+                            ?>                            
+                            </td>
                             <?php
                         }
                         ?>
                     <td>
                         <?php if ($row->checked_out) : ?>
                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
-                    <?php endif; ?>
+                        <?php endif; ?>
                     <?php if ($canEdit) : ?>
                             <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
                             <?php echo $this->escape($row->name); ?></a>
@@ -144,14 +147,14 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
     <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'seasons.orderdown', 'JLIB_HTML_MOVE_DOWN', 's.ordering'); ?>
     <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>
                 </tr>
                             <?php
                             $k = 1 - $k;
-                        }
+}
                         ?>
         </tbody>
     </table>

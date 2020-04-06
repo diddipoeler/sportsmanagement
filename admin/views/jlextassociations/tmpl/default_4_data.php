@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_4_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_4_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage jlextassociastions
  */
 
@@ -39,7 +42,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME', 'objassoc.short_name', $this->sortDirection, $this->sortColumn);
                     ?>
-                </th>					
+                </th>                    
                 <th width="5%" class="title" style="vertical-align: top; ">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_COUNTRY', 'objassoc.country', $this->sortDirection, $this->sortColumn);
@@ -122,10 +125,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                     <td style="text-align:center; ">
                         <?php
-                    //$path = Uri::root().$row->assocflag;
-                    //$attributes='';
-                    //$html .= 'title="'.$row->name.'" '.$attributes.' />';
-                    //echo $html;
+                        //$path = Uri::root().$row->assocflag;
+                        //$attributes='';
+                        //$html .= 'title="'.$row->name.'" '.$attributes.' />';
+                        //echo $html;
                         if (empty($row->assocflag) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->assocflag)) {
                             echo '<i class="fa fa-flag text-danger"></i>';
                         } else {
@@ -139,10 +142,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     <td style="text-align:center; ">
                         <?php
-                    //$path = Uri::root().$row->assocflag;
-                    //$attributes='';
-                    //$html .= 'title="'.$row->name.'" '.$attributes.' />';
-                    //echo $html;
+                        //$path = Uri::root().$row->assocflag;
+                        //$attributes='';
+                        //$html .= 'title="'.$row->name.'" '.$attributes.' />';
+                        //echo $html;
                         if (empty($row->picture) || !File::exists(JPATH_SITE .DIRECTORY_SEPARATOR. $row->picture)) {
                             echo '<i class="fa fa-picture-o text-danger"></i>';
                         } else {
@@ -176,7 +179,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextassociations.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td style="text-align:center; "><?php echo $row->id; ?></td>

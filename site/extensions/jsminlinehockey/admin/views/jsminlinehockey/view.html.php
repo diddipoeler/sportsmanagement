@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage jsminlinehockey
  */
  
@@ -42,7 +45,6 @@
   89  .icon-48-dbquery         { background-image: url(../images/header/icon-48-query.png); }
   90  .icon-48-systeminfo     { background-image: url(../images/header/icon-48-info.png); }
   91  .icon-48-massemail     { background-image: url(../images/header/icon-48-massmail.png); }
-
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -55,19 +57,21 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * sportsmanagementViewjsminlinehockey
  * 
  * @package 
- * @author Dieter Pl�ger
+ * @author    Dieter Pl�ger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
+class sportsmanagementViewjsminlinehockey extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewjsminlinehockey::init()
      * 
      * @return void
      */
-    function init() {
+    function init() 
+    {
 
         $this->projectid = $this->jinput->get("pid", '0');
         if (!$this->projectid) {
@@ -81,13 +85,13 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
 
         ToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
 
-switch ($this->getLayout())
+        switch ($this->getLayout())
         {
         case 'default':  
         case 'default_3':
         case 'default_4':
-        $this->setLayout('default');
-        return;  
+            $this->setLayout('default');
+            return;  
         break;
         }
         
@@ -96,12 +100,13 @@ switch ($this->getLayout())
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
         // Set toolbar items for the page
-//        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-//        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+        //        ToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
+        //        ToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
 
         if ($this->projectid) {
             ToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');

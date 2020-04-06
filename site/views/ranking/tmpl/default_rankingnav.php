@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- * @version   1.0.05
- * @file      deafult_rankingnav.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_rankingnav.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
@@ -28,7 +31,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <input type="hidden" name="p" value="<?php echo sportsmanagementModelRanking::$projectid; ?>" />
                 <input type="hidden" name="r" value="<?php echo sportsmanagementModelRanking::$round; ?>" />
                 <input type="hidden" name="s" value="<?php echo sportsmanagementModelRanking::$season; ?>" />
-                <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelProject::$cfg_which_database; ?>" />	
+                <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelProject::$cfg_which_database; ?>" />    
             </td>
         </tr>
     </table>

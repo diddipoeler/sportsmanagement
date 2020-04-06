@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version   1.0.00
- * @file      flagsfolder.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
+ * @version    1.0.00
+ * @file       flagsfolder.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matches
  */
 
@@ -23,10 +26,10 @@ jimport('joomla.form.formfield');
  * JFormFieldFlagsFolder
  *
  * @package
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2019
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldFlagsFolder extends JFormField
 {
@@ -57,8 +60,10 @@ class JFormFieldFlagsFolder extends JFormField
             $items[] = HTMLHelper::_('select.option', $folder, '&nbsp;' . $folder);
         }
 
-        $output = HTMLHelper::_('select.genericlist', $items, $this->name,
-            'class="inputbox"', 'value', 'text', $this->value, $this->id);
+        $output = HTMLHelper::_(
+            'select.genericlist', $items, $this->name,
+            'class="inputbox"', 'value', 'text', $this->value, $this->id
+        );
         return $output;
     }
 }

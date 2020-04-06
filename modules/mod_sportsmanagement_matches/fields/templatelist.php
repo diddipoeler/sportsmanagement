@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version   1.0.00
- * @file      templatelist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
+ * @version    1.0.00
+ * @file       templatelist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matches
  */
 
@@ -24,10 +27,10 @@ defined('JPATH_BASE') or die();
  * JFormFieldTemplatelist
  *
  * @package
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2019
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldTemplatelist extends JFormField
 {
@@ -67,7 +70,8 @@ class JFormFieldTemplatelist extends JFormField
         }
 
         $doc = Factory::getDocument();
-        $doc->addScriptDeclaration('
+        $doc->addScriptDeclaration(
+            '
 			function getPosition(element)
 			{
 				var pos = { y: 0, x: 0 };
@@ -94,26 +98,31 @@ class JFormFieldTemplatelist extends JFormField
 				window.scroll(a.x,dynPos);
 		
 			}
-			');
+			'
+        );
 
         $mainframe = Factory::getApplication();
 
         $select = '<table>'
             . '<tr>'
             . '<td>'
-            . HTMLHelper::_('select.genericlist', $options, $this->name,
+            . HTMLHelper::_(
+                'select.genericlist', $options, $this->name,
                 'class="inputbox" onchange="$(\'TemplateImage\').src=\''
                 . $mainframe->getCfg('live_site')
                 . '/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"',
-                'value', 'text', $this->value, $this->id)
+                'value', 'text', $this->value, $this->id
+            )
             . '<br /><br />'
             . Text::_($this->element['details'])
             . '</td>'
             . '</tr>'
             . '<tr>'
             . '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
-            . HTMLHelper::_('image', 'modules/mod_sportsmanagement_matches/tmpl/' . $this->value . '/template.png',
-                'TemplateImage', 'id="TemplateImage" width="200"')
+            . HTMLHelper::_(
+                'image', 'modules/mod_sportsmanagement_matches/tmpl/' . $this->value . '/template.png',
+                'TemplateImage', 'id="TemplateImage" width="200"'
+            )
             . '</td>'
             . '</tr>'
             . '</table>';

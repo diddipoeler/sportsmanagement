@@ -1,11 +1,14 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      readpressebericht.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       readpressebericht.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage match
  */
 
@@ -15,10 +18,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-if ($this->matchnumber)
-{
+if ($this->matchnumber) {
 
-$lfdnummer = 0;
+    $lfdnummer = 0;
 ?>
 <div class="container">
     <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -149,7 +151,8 @@ $lfdnummer = 0;
                         ?>
                     </td>
                 </tr>
-                <?php $lfdnummer++; endforeach; ?>
+                <?php $lfdnummer++; 
+            endforeach; ?>
             </tbody>
         </table>
 
@@ -210,7 +213,8 @@ $lfdnummer = 0;
                         ?>
                     </td>
                 </tr>
-                <?php $lfdnummer++; endforeach; ?>
+                <?php $lfdnummer++; 
+            endforeach; ?>
             </tbody>
         </table>
 
@@ -274,12 +278,12 @@ $lfdnummer = 0;
                     echo HTMLHelper::_('select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id . ']', 'class="inputbox" size="1" ', 'value', 'text', $selectedvalue);
                     ?>
                 </td>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
 
         <?PHP
-        }
+}
 
         ?>
         <input type='submit' class="btn btn-block btn-large" value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVE_PRESSEBERICHT'); ?>' onclick=''/>

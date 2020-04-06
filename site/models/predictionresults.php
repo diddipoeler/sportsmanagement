@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      predictionresults.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       predictionresults.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage predictionresults
  */
  
@@ -21,36 +24,40 @@ use Joomla\CMS\Language\Text;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementModelPredictionResults extends JSMModelList {
+class sportsmanagementModelPredictionResults extends JSMModelList
+{
 
     var $predictionGameID = 0;
 
     /**
      * Items total
+     *
      * @var integer
      */
     var $_total = null;
 
     /**
      * Pagination object
+     *
      * @var object
      */
     var $_pagination = null;
     var $config = array();
     var $configavatar = array();
     static $roundID = 0;
-static $limitstart = 0;
-static $limit = 0;
+    static $limitstart = 0;
+    static $limit = 0;
 
     /**
      * sportsmanagementModelPredictionResults::__construct()
      * 
      * @return
      */
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
         $prediction = new sportsmanagementModelPrediction();
 
@@ -81,84 +88,82 @@ static $limit = 0;
         parent::setDbo($getDBConnection);
     }
 
-/**
+    /**
  * sportsmanagementModelPredictionResults::getStart()
  * 
  * @return
  */
-public function getStart()
-{
-    // Reference global application object
+    public function getStart()
+    {
+        // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
-    $this->setState('list.start', self::$limitstart );
+        //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+        $this->setState('list.start', self::$limitstart);
     
-    $store = $this->getStoreId('getstart');
-    // Try to load the data from internal storage.
-    if (isset($this->cache[$store]))
-    {
-        return $this->cache[$store];
-    }
-    $start = $this->getState('list.start');
-    $limit = $this->getState('list.limit');
-    $total = $this->getTotal();
-    if ($start > $total - $limit)
-    {
-        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
-    }
+        $store = $this->getStoreId('getstart');
+        // Try to load the data from internal storage.
+        if (isset($this->cache[$store])) {
+            return $this->cache[$store];
+        }
+        $start = $this->getState('list.start');
+        $limit = $this->getState('list.limit');
+        $total = $this->getTotal();
+        if ($start > $total - $limit) {
+            $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+        }
 
-    // Add the total to the internal cache.
-    $this->cache[$store] = $start;
-    return $this->cache[$store];
-}	
-	
-/**
+        // Add the total to the internal cache.
+        $this->cache[$store] = $start;
+        return $this->cache[$store];
+    }    
+    
+    /**
  * sportsmanagementModelPredictionResults::populateState()
  * 
- * @param mixed $ordering
- * @param mixed $direction
+ * @param  mixed $ordering
+ * @param  mixed $direction
  * @return void
  */
-protected function populateState($ordering = null, $direction = null)
-	{
-$app = Factory::getApplication();
-$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
-self::$limit = $value;
-$this->setState('list.limit', self::$limit);
-$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
-self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
-$this->setState('list.start', self::$limitstart);
-	
-}
-	
-/**
+    protected function populateState($ordering = null, $direction = null)
+    {
+        $app = Factory::getApplication();
+        $value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+        self::$limit = $value;
+        $this->setState('list.limit', self::$limit);
+        $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+        self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+        $this->setState('list.start', self::$limitstart);
+    
+    }
+    
+    /**
  * sportsmanagementModelPredictionResults::getLimit()
  * 
  * @return
  */
-function getLimit()
-	{
-		return $this->getState('list.limit');
-	}
-	
-	/**
-	 * sportsmanagementModelPredictionResults::getLimitStart()
-	 * 
-	 * @return
-	 */
-	function getLimitStart()
-	{
-		return $this->getState('list.start');
-	}
+    function getLimit()
+    {
+          return $this->getState('list.limit');
+    }
+    
+    /**
+     * sportsmanagementModelPredictionResults::getLimitStart()
+     * 
+     * @return
+     */
+    function getLimitStart()
+    {
+        return $this->getState('list.start');
+    }
  
     /**
      * sportsmanagementModelPredictionResults::getPagination()
      * 
      * @return
      */
-	/*
+    /*
     function getPagination() {
         // Load the content if it doesn't already exist
         if (empty($this->_pagination)) {
@@ -167,13 +172,14 @@ function getLimit()
         }
         return $this->_pagination;
     }
-*/
+    */
     /**
      * sportsmanagementModelPredictionResults::getTotal()
      * 
      * @return
      */
-    function getTotal() {
+    function getTotal() 
+    {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
             //$query = $this->_buildQuery();
@@ -188,7 +194,8 @@ function getLimit()
      * 
      * @return
      */
-    function getData() {
+    function getData() 
+    {
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
             //$query = $this->_buildQuery();
@@ -201,14 +208,15 @@ function getLimit()
     /**
      * sportsmanagementModelPredictionResults::getMatches()
      * 
-     * @param mixed $roundID
-     * @param mixed $project_id
-     * @param mixed $match_ids
-     * @param mixed $round_ids
-     * @param mixed $proteams_ids
+     * @param  mixed $roundID
+     * @param  mixed $project_id
+     * @param  mixed $match_ids
+     * @param  mixed $round_ids
+     * @param  mixed $proteams_ids
      * @return
      */
-    static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '') {
+    static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '') 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -229,22 +237,22 @@ function getLimit()
         $query->select('t2.name AS awayName,t2.short_name AS awayShortName,t2.id as awayid');
 
         switch ($show_logo_small_overview) {
-            case 'logo_small':
-            case 'logo_middle':
-            case 'logo_big':
-                $query->select('c1.' . $show_logo_small_overview . ' AS homeLogo,c1.country AS homeCountry');
-                $query->select('c2.' . $show_logo_small_overview . ' AS awayLogo,c2.country AS awayCountry');
-                break;
-            case 'country_flag':
-                $query->select('c1.country AS homeCountry');
-                $query->select('c2.country AS awayCountry');
-                break;
+        case 'logo_small':
+        case 'logo_middle':
+        case 'logo_big':
+            $query->select('c1.' . $show_logo_small_overview . ' AS homeLogo,c1.country AS homeCountry');
+            $query->select('c2.' . $show_logo_small_overview . ' AS awayLogo,c2.country AS awayCountry');
+            break;
+        case 'country_flag':
+            $query->select('c1.country AS homeCountry');
+            $query->select('c2.country AS awayCountry');
+            break;
         }
         //$query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
         //$query->select('c2.logo_small AS awayLogo,c2.country AS awayCountry');
-//        // das grosse logo muss auch noch selektiert werden
-//        $query->select('c1.logo_big AS homeLogobig');
-//        $query->select('c2.logo_big AS awayLogobig');
+        //        // das grosse logo muss auch noch selektiert werden
+        //        $query->select('c1.logo_big AS homeLogobig');
+        //        $query->select('c2.logo_big AS awayLogobig');
 
         $query->from('#__sportsmanagement_match AS m');
         $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
@@ -295,11 +303,12 @@ function getLimit()
     /**
      * sportsmanagementModelPredictionResults::showClubLogo()
      * 
-     * @param mixed $clubLogo
-     * @param mixed $teamName
+     * @param  mixed $clubLogo
+     * @param  mixed $teamName
      * @return
      */
-    function showClubLogo($clubLogo, $teamName) {
+    function showClubLogo($clubLogo, $teamName) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object

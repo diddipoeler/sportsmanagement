@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      get-events.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       get-events.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_google_calendar
  */
 
@@ -25,8 +28,8 @@ use Joomla\CMS\Factory;
 require dirname(__FILE__) . '/utils.php';
 
 // Short-circuit if the client did not give us a date range.
-if ( !Factory::getApplication()->input->getVar('start') || !Factory::getApplication()->input->getVar('end') ) {
-	die("Please provide a date range.");
+if (!Factory::getApplication()->input->getVar('start') || !Factory::getApplication()->input->getVar('end') ) {
+    die("Please provide a date range.");
 }
 
 // Parse the start/end parameters.
@@ -37,8 +40,8 @@ $range_end = parseDateTime(Factory::getApplication()->input->getVar('end'));
 
 // Parse the timezone parameter if it is present.
 $timezone = null;
-if ( Factory::getApplication()->input->getVar('timezone') ) {
-	$timezone = new DateTimeZone(Factory::getApplication()->input->getVar('timezone'));
+if (Factory::getApplication()->input->getVar('timezone') ) {
+    $timezone = new DateTimeZone(Factory::getApplication()->input->getVar('timezone'));
 }
 
 // Read and parse our events JSON file into an array of event data arrays.
@@ -49,13 +52,13 @@ $input_arrays = json_decode($json, true);
 $output_arrays = array();
 foreach ($input_arrays as $array) {
 
-	// Convert the input array into a useful Event object
-	$event = new Event($array, $timezone);
+    // Convert the input array into a useful Event object
+    $event = new Event($array, $timezone);
 
-	// If the event is in-bounds, add it to the output
-	if ($event->isWithinDayRange($range_start, $range_end)) {
-		$output_arrays[] = $event->toArray();
-	}
+    // If the event is in-bounds, add it to the output
+    if ($event->isWithinDayRange($range_start, $range_end)) {
+        $output_arrays[] = $event->toArray();
+    }
 }
 
 // Send JSON to the client.

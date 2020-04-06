@@ -1,19 +1,22 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_savematchdays.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_savematchdays.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage jlextdfbkeyimport
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_('behavior.tooltip');
 
 
 
@@ -22,32 +25,32 @@ HTMLHelper::_( 'behavior.tooltip' );
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-	<div id="editcell">
-		<fieldset class="adminform">
-			<legend>
-				<?php
-				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid  );
-				?>
-			</legend>
+    <div id="editcell">
+        <fieldset class="adminform">
+            <legend>
+                <?php
+                echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid);
+                ?>
+            </legend>
 
 <table class="<?php echo $this->table_data_class; ?>">
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_3' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_3'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_4' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_4'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_5' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_5'); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_6' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_6'); ?>
 </th>
 
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_7' ); ?>
+<?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_7'); ?>
 </th>
 
 
@@ -76,15 +79,17 @@ foreach($this->import as $rowdays)
 
 <td> 
 <?php
-$date1 =  Factory::getDate( $rowdays->match_date)->format( '%d-%m-%Y' );
+$date1 =  Factory::getDate($rowdays->match_date)->format('%d-%m-%Y');
 $append = ' style="background-color:#bbffff;" ';
 
-echo HTMLHelper::calendar(	$date1,
-			'match_date['.$i.']',
-			'match_date['.$i.']',
-			'%d-%m-%Y',
-			'size="10" ' . $append .
-			'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
+echo HTMLHelper::calendar(
+    $date1,
+    'match_date['.$i.']',
+    'match_date['.$i.']',
+    '%d-%m-%Y',
+    'size="10" ' . $append .
+            'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' 
+);
 
 ?>
 </td>
@@ -109,11 +114,11 @@ $i++;
 </div>
 
 <fieldset class="actions">
-						
-							
+                        
+                            
 </fieldset>
 <input type="hidden" name="sent"			value="3" />
 <input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
 <input type="hidden" name="task"			value="" />
 </form>
-		   
+           

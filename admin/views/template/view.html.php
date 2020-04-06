@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage template
  */
 
@@ -23,42 +26,42 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class sportsmanagementViewTemplate extends sportsmanagementView
 {
 
-	/**
-	 * sportsmanagementViewTemplate::init()
-	 * 
-	 * @return
-	 */
-	public function init ()
-	{
-		$lists = array();
-		$starttime = microtime();
-	
-		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+    /**
+     * sportsmanagementViewTemplate::init()
+     * 
+     * @return
+     */
+    public function init()
+    {
+        $lists = array();
+        $starttime = microtime();
+    
+        $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+        $project = $mdlProject->getProject($this->project_id);
         
-		$templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
-		$xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$this->item->template.'.xml';
+        $templatepath = JPATH_COMPONENT_SITE.DIRECTORY_SEPARATOR.'settings';
+        $xmlfile = $templatepath.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.$this->item->template.'.xml';
        
-		$form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
-		$form->bind($this->item->params);
+        $form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
+        $form->bind($this->item->params);
       
-		$this->form = $form;
+        $this->form = $form;
         
         switch ( $this->form->getName() )
         {
-            case 'ranking':
+        case 'ranking':
             $mdlProjecteams = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
-			$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
-			$this->teamscount = $iProjectTeamsCount;
-			$this->form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
-            $this->form->setFieldAttribute('colors','type' , 'hidden');
+            $iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
+            $this->teamscount = $iProjectTeamsCount;
+            $this->form->setFieldAttribute('colors_ranking', 'rankingteams', $iProjectTeamsCount);
+            $this->form->setFieldAttribute('colors', 'type', 'hidden');
             
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
@@ -66,90 +69,87 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $count = 1;    
             $teile = explode(";", $colors);    
 
-if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
-{
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors -> '.TVarDumper::dump($colors,10,TRUE).''),'');
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile -> '.TVarDumper::dump($teile,10,TRUE).''),'');
-}
+            if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend') ) {
+                        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors -> '.TVarDumper::dump($colors, 10, true).''), '');
+                        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking, 10, true).''), '');
+                        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile -> '.TVarDumper::dump($teile, 10, true).''), '');
+            }
 
-            foreach($teile as $key => $value ) if ( $colors )
-            {
-            $teile2 = explode(",",$value);   
-            if ( sizeof($teile2) > 1 )
-            { 
-            if ( !isset($colors_ranking[$count]) )
-            {
-            $colors_ranking[$count]['von'] = '';
-            $colors_ranking[$count]['bis'] = '';
-            $colors_ranking[$count]['color'] = '';
-            $colors_ranking[$count]['text'] = '';
-            }
+            foreach($teile as $key => $value ) { if ($colors ) {
+                    $teile2 = explode(",", $value);   
+                    if (sizeof($teile2) > 1 ) { 
+                        if (!isset($colors_ranking[$count]) ) {
+                            $colors_ranking[$count]['von'] = '';
+                            $colors_ranking[$count]['bis'] = '';
+                            $colors_ranking[$count]['color'] = '';
+                            $colors_ranking[$count]['text'] = '';
+                        }
             
-if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
-{
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile2 -> '.TVarDumper::dump($teile2,10,TRUE).''),'');    
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' count -> '.TVarDumper::dump($count,10,TRUE).''),'');    
-}            
+                        if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend') ) {
+                            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teile2 -> '.TVarDumper::dump($teile2, 10, true).''), '');    
+                            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' count -> '.TVarDumper::dump($count, 10, true).''), '');    
+                        }            
               
-            list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
-            $count++;
-              }
+                        list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;
+                        $count++;
+                    }
+            }
             }
             
-if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
-{
-$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking,10,TRUE).''),'');
-}                        
+            if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend') ) {
+                        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' colors_ranking -> '.TVarDumper::dump($colors_ranking, 10, true).''), '');
+            }                        
             
             $this->form->setValue('colors_ranking', null, $colors_ranking);
             
             break;
         }
 
-		$master_id = ($project->master_template) ? $project->master_template : '-1';
+        $master_id = ($project->master_template) ? $project->master_template : '-1';
         $templates = array();
         $res = $this->model->getAllTemplatesList($project->id, $master_id);
         $templates = array_merge($templates, $res);
-        $lists['templates'] = HTMLHelper::_('select.genericlist',$templates, 
-		'new_id', 
-		'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
-		'value', 
-		'text', 
-		$this->item->id);
+        $lists['templates'] = HTMLHelper::_(
+            'select.genericlist', $templates, 
+            'new_id', 
+            'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
+            'value', 
+            'text', 
+            $this->item->id
+        );
         
-		$this->template = $this->item;
+        $this->template = $this->item;
         
         $this->templatename = $this->form->getName();
-		$this->project = $project;
-		$this->lists = $lists;
+        $this->project = $project;
+        $this->lists = $lists;
         
-/**
+        /**
  * Load the language files for the contact integration
  */
-		$jlang = Factory::getLanguage();
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
+        $jlang = Factory::getLanguage();
+        $jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
+        $jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+        $jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
 
-	}
-	/**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
-	protected function addToolbar()
-	{
+    }
+    /**
+    * Add the page title and toolbar.
+    *
+    * @since 1.7
+    */
+    protected function addToolbar()
+    {
         $this->jinput->set('hidemainmenu', true);
         $this->jinput->set('pid', $this->project_id);
         $this->item->name = $this->item->template;
-        $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(Text::_($this->item->title)));
+        $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT', (Text::_($this->item->title)));
         $this->icon = 'template';
         parent::addToolbar();
-	}
+    }
     
 
-    		
+            
 
 }
 ?>

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage projectpositions
  */
 
@@ -25,17 +28,19 @@ use Joomla\CMS\Log\Log;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewprojectpositions extends sportsmanagementView {
+class sportsmanagementViewprojectpositions extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewprojectpositions::init()
      * 
      * @return
      */
-    public function init() {
+    public function init() 
+    {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -67,7 +72,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $this->project_id = $this->jinput->get('pid');
         $this->jinput->set('pid', $this->project_id);
 
-        $this->model->updateprojectpositions($items,$this->project_id);
+        $this->model->updateprojectpositions($items, $this->project_id);
         
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
@@ -83,10 +88,11 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
     /**
      * sportsmanagementViewprojectpositions::_displayEditlist()
      * 
-     * @param mixed $tpl
+     * @param  mixed $tpl
      * @return void
      */
-    function _displayEditlist($tpl) {
+    function _displayEditlist($tpl) 
+    {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -135,7 +141,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
                 }
             }
         } else {
-            Log::add( '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />', Log::WARNING, 'jsmerror' );
+            Log::add('<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />', Log::WARNING, 'jsmerror');
         }
 
         //build the html select list for positions
@@ -166,9 +172,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
 
@@ -180,9 +187,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar_Editlist() {
+    protected function addToolbar_Editlist() 
+    {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
         ToolbarHelper::save('projectposition.save_positionslist');
         ToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));

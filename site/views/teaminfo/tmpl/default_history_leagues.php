@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      deafult_history_leagues.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_history_leagues.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage teaminfo
  */
 defined('_JEXEC') or die('Restricted access');
@@ -57,7 +60,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
                 <td><?php echo $summary->match; ?></td>
 
                 <td><?php echo $summary->won;
-        echo ' / ';
+                echo ' / ';
             ?>
                     <?php echo $summary->draw;
                     echo ' / ';
@@ -71,7 +74,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
 
             </tr>
         <?php
-    }
+        }
     ?>
 
     </table>
@@ -108,19 +111,19 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
                 <div class="<?php echo $this->divclass; ?>"><?php echo $league; ?></div>
                 <div class="<?php echo $this->divclass; ?>"><?php echo $summary->match; ?></div>
                 <div class="<?php echo $this->divclass; ?>"><?php echo $summary->won;
-        echo ' / ';
+                echo ' / ';
             ?>
                     <?php echo $summary->draw;
                     echo ' / ';
                     ?>
                     <?php echo $summary->loss; ?></div>
                 <div class="<?php echo $this->divclass; ?>"><?php echo $summary->goalsfor;
-            echo ' : ';
+                echo ' : ';
             ?>
             <?php echo $summary->goalsagain; ?></div>
-            </div>	
+            </div>    
         <?php
-    }
+        }
     ?>
 
     <!--</div>-->

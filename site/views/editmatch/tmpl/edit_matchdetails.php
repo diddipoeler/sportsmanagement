@@ -1,17 +1,20 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      edit_matchdetails.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       edit_matchdetails.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editmatch
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-?>	
+?>    
 <fieldset class="adminform">
 <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
 </legend>
@@ -19,16 +22,15 @@ use Joomla\CMS\Language\Text;
 <?php 
 foreach ($this->form->getFieldset('matchdetails') as $field):
                     
-if ( $field->type == 'Radio' )
-{
-}
+    if ($field->type == 'Radio' ) {
+    }
                     
 ?>
 <tr>
 <td class="key"><?php echo $field->label; ?></td>
 <td><?php echo $field->input; ?></td>
 </tr>					
-<?php endforeach; ?>	
+<?php endforeach; ?>    
 </table>
 </fieldset>	
 

@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version   1.0.05
+ * @file      agegroup.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  *
  * SportsManagement is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,11 +41,11 @@
  */
 
 /**
- * @package		Twitter Bootstrap Integration
- * @subpackage	com_cbootstrap
- * @copyright	Copyright (C) 2012 Conflate. All rights reserved.
- * @license		GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
- * @link		http://www.conflate.nl
+ * @package        Twitter Bootstrap Integration
+ * @subpackage    com_cbootstrap
+ * @copyright    Copyright (C) 2012 Conflate. All rights reserved.
+ * @license        GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
+ * @link        http://www.conflate.nl
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -52,10 +55,10 @@ use Joomla\CMS\Factory;
  * CBootstrap
  * 
  * @package 
- * @author abcde
+ * @author    abcde
  * @copyright 2015
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class CBootstrap
 {

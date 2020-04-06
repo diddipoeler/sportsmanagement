@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_items.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_items.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allclubs
  */
 defined('_JEXEC') or die('Restricted access');
@@ -25,7 +28,7 @@ use Joomla\CMS\Filesystem\File;
                     ?>
                     <th class="" id="">
                         <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID', 'v.unique_id', $this->sortDirection, $this->sortColumn); ?>
-                    </th>	
+                    </th>    
                     <?PHP
                 }
 
@@ -91,16 +94,18 @@ use Joomla\CMS\Filesystem\File;
                         <?php
                         echo $item->unique_id;
                         ?>
-                    </td>	
+                    </td>    
                     <?PHP
                 }
                 ?>
                 <?PHP
                 if ($this->params->get('picture')) {
                     echo '<td>';
-                    echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub' . $item->id, $item->logo_big, $item->name, '20','',$this->modalwidth,
-$this->modalheight,
-$this->use_jquery_modal);
+                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                        'allclub' . $item->id, $item->logo_big, $item->name, '20', '', $this->modalwidth,
+                        $this->modalheight,
+                        $this->use_jquery_modal
+                    );
                     echo '</td>';
                 }
 
@@ -137,7 +142,7 @@ $this->use_jquery_modal);
                 }
                 ?>
             </tr>
-<?php endforeach; ?>
+        <?php endforeach; ?>
 </table>
 </div>
 

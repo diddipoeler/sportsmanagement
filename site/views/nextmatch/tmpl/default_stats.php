@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_stats.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_stats.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage nextmatch
  */
 
@@ -48,7 +51,7 @@ use Joomla\CMS\Factory;
     </tr>
     </thead>
     <?php
-    if ( $this->config['show_chances'] ) {
+    if ($this->config['show_chances'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -70,7 +73,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ( $this->config['show_current_rank'] ) {
+    if ($this->config['show_current_rank'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -92,7 +95,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ( $this->config['show_match_count'] ) {
+    if ($this->config['show_match_count'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -114,7 +117,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ( $this->config['show_match_total'] ) {
+    if ($this->config['show_match_total'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -136,7 +139,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ( $this->config['show_match_total_home'] ) {
+    if ($this->config['show_match_total_home'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -144,7 +147,8 @@ use Joomla\CMS\Factory;
                     "%s/%s/%s",
                     $this->homeranked->cnt_won_home,
                     $this->homeranked->cnt_draw_home,
-                    $this->homeranked->cnt_lost_home); ?>
+                    $this->homeranked->cnt_lost_home
+                ); ?>
             </td>
             <td class="statlabel">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HOME'); ?>
@@ -154,14 +158,15 @@ use Joomla\CMS\Factory;
                     "%s/%s/%s",
                     $this->awayranked->cnt_won_home,
                     $this->awayranked->cnt_draw_home,
-                    $this->awayranked->cnt_lost_home); ?>
+                    $this->awayranked->cnt_lost_home
+                ); ?>
             </td>
         </tr>
         <?php
     }
     ?>
     <?php
-    if ( $this->config['show_match_total_away'] ) {
+    if ($this->config['show_match_total_away'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -169,7 +174,8 @@ use Joomla\CMS\Factory;
                     "%s/%s/%s",
                     $this->homeranked->cnt_won - $this->homeranked->cnt_won_home,
                     $this->homeranked->cnt_draw - $this->homeranked->cnt_draw_home,
-                    $this->homeranked->cnt_lost - $this->homeranked->cnt_lost_home); ?>
+                    $this->homeranked->cnt_lost - $this->homeranked->cnt_lost_home
+                ); ?>
             </td>
             <td class="statlabel">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY'); ?>
@@ -179,14 +185,15 @@ use Joomla\CMS\Factory;
                     "%s/%s/%s",
                     $this->awayranked->cnt_won - $this->awayranked->cnt_won_home,
                     $this->awayranked->cnt_draw - $this->awayranked->cnt_draw_home,
-                    $this->awayranked->cnt_lost - $this->awayranked->cnt_lost_home); ?>
+                    $this->awayranked->cnt_lost - $this->awayranked->cnt_lost_home
+                ); ?>
             </td>
         </tr>
         <?php
     }
     ?>
     <?php
-    if ( $this->config['show_match_points'] ) {
+    if ($this->config['show_match_points'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -202,28 +209,30 @@ use Joomla\CMS\Factory;
     }
     ?>
     <?php
-    if ( $this->config['show_match_goals'] ) {
+    if ($this->config['show_match_goals'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
                 <?php printf(
                     "%s : %s",
                     $this->homeranked->sum_team1_result,
-                    $this->homeranked->sum_team2_result); ?>
+                    $this->homeranked->sum_team2_result
+                ); ?>
             </td>
             <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GOALS'); ?></td>
             <td class="valueright">
                 <?php printf(
                     "%s : %s",
                     $this->awayranked->sum_team1_result,
-                    $this->awayranked->sum_team2_result); ?>
+                    $this->awayranked->sum_team2_result
+                ); ?>
             </td>
         </tr>
         <?php
     }
     ?>
     <?php
-    if ( $this->config['show_match_diff'] ) {
+    if ($this->config['show_match_diff'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -241,12 +250,12 @@ use Joomla\CMS\Factory;
     $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
     $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
 
-    if ( $this->config['show_match_highest_stats'] ): ?>
+    if ($this->config['show_match_highest_stats'] ) : ?>
 
-        <?php if ( $this->config['show_match_highest_won'] ): ?>
+        <?php if ($this->config['show_match_highest_won'] ) : ?>
             <tr class="sectiontableentry2">
                 <td class="valueleft">
-                    <?php if ($stat = $this->home_highest_home_win): ?>
+                    <?php if ($stat = $this->home_highest_home_win) : ?>
                         <?php
                         $routeparameter['p'] = $this->home_highest_home_win->project_slug;
                         $routeparameter['mid'] = $this->home_highest_home_win->match_slug;
@@ -257,7 +266,7 @@ use Joomla\CMS\Factory;
                 </td>
                 <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME'); ?></td>
                 <td class="valueright">
-                    <?php if ($stat = $this->away_highest_away_win): ?>
+                    <?php if ($stat = $this->away_highest_away_win) : ?>
                         <?php
                         $routeparameter['p'] = $this->away_highest_away_win->project_slug;
                         $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
@@ -270,10 +279,10 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ( $this->config['show_match_highest_loss'] ): ?>
+        <?php if ($this->config['show_match_highest_loss'] ) : ?>
             <tr class="sectiontableentry1">
                 <td class="valueleft">
-                    <?php if ($stat = $this->home_highest_home_def): ?>
+                    <?php if ($stat = $this->home_highest_home_def) : ?>
                         <?php
                         $routeparameter['p'] = $this->home_highest_home_def->project_slug;
                         $routeparameter['mid'] = $this->home_highest_home_def->match_slug;
@@ -284,7 +293,7 @@ use Joomla\CMS\Factory;
                 </td>
                 <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME'); ?></td>
                 <td class="valueright">
-                    <?php if ($stat = $this->away_highest_away_def): ?>
+                    <?php if ($stat = $this->away_highest_away_def) : ?>
                         <?php
                         $routeparameter['p'] = $this->away_highest_away_def->project_slug;
                         $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
@@ -297,10 +306,10 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ( $this->config['show_match_highest_won_away'] ): ?>
+        <?php if ($this->config['show_match_highest_won_away'] ) : ?>
             <tr class="sectiontableentry2">
                 <td class="valueleft">
-                    <?php if ($stat = $this->home_highest_away_win): ?>
+                    <?php if ($stat = $this->home_highest_away_win) : ?>
                         <?php
                         $routeparameter['p'] = $this->home_highest_away_win->project_slug;
                         $routeparameter['mid'] = $this->home_highest_away_win->match_slug;
@@ -311,7 +320,7 @@ use Joomla\CMS\Factory;
                 </td>
                 <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY'); ?></td>
                 <td class="valueright">
-                    <?php if ($stat = $this->away_highest_home_win): ?>
+                    <?php if ($stat = $this->away_highest_home_win) : ?>
                         <?php
                         $routeparameter['p'] = $this->away_highest_home_win->project_slug;
                         $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
@@ -323,10 +332,10 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ( $this->config['show_match_highest_loss_away'] ): ?>
+        <?php if ($this->config['show_match_highest_loss_away'] ) : ?>
             <tr class="sectiontableentry1">
                 <td class="valueleft">
-                    <?php if ($stat = $this->home_highest_away_def): ?>
+                    <?php if ($stat = $this->home_highest_away_def) : ?>
                         <?php
                         $routeparameter['p'] = $this->home_highest_away_def->project_slug;
                         $routeparameter['mid'] = $this->home_highest_away_def->match_slug;
@@ -337,7 +346,7 @@ use Joomla\CMS\Factory;
                 </td>
                 <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY'); ?></td>
                 <td class="valueright">
-                    <?php if ($stat = $this->away_highest_home_def): ?>
+                    <?php if ($stat = $this->away_highest_home_def) : ?>
                         <?php
                         $routeparameter['p'] = $this->away_highest_home_def->project_slug;
                         $routeparameter['mid'] = $this->away_highest_home_def->match_slug;

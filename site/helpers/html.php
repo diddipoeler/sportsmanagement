@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage helpers
  */
 
@@ -24,10 +27,11 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementHelperHtml {
+class sportsmanagementHelperHtml
+{
 
     static $roundid = 0;
     static $project = array();
@@ -36,91 +40,94 @@ class sportsmanagementHelperHtml {
     /**
      * sportsmanagementHelperHtml::getBootstrapModalImage()
      * 
-     * @param string $target
-     * @param string $picture
-     * @param string $text
-     * @param string $picturewidth
-     * @param string $url
-     * @param string $width
-     * @param string $height
+     * @param  string $target
+     * @param  string $picture
+     * @param  string $text
+     * @param  string $picturewidth
+     * @param  string $url
+     * @param  string $width
+     * @param  string $height
      * @return
      */
-    public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0) {
+    public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
-	    switch ($use_jquery_modal)
-	    {	 
-	  case 2:		    
-if ($url) {
-$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
-}	
-if (!$url) {
-$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';		
-}	
-$modaltext .= '</a>';			    
-break;			    
+        switch ($use_jquery_modal)
+        {     
+        case 2:            
+            if ($url) {
+                   $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
+            }    
+            if (!$url) {
+                $modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';        
+            }    
+            $modaltext .= '</a>';                
+            break;                
         case 1:
-if ($url) {
-$modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
-$modaltext .= ' target="SingleSecondaryWindowName"';
-$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
-$modaltext .= ' title="'.$text.'"';
-$modaltext .= '>';
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
-$modaltext .= '</a>';
-}	
-if (!$url) {
-$modaltext = '<a id="'.$target.'" href="'.$picture.'" class=""';
-$modaltext .= ' target="SingleSecondaryWindowName"';
-$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
-$modaltext .= ' title="'.$text.'"';
-$modaltext .= '>';
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
-$modaltext .= '</a>';
-}		
-	break;	
+            if ($url) {
+                        $modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
+                        $modaltext .= ' target="SingleSecondaryWindowName"';
+                        $modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+                        $modaltext .= ' title="'.$text.'"';
+                        $modaltext .= '>';
+                        $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
+                        $modaltext .= '</a>';
+            }    
+            if (!$url) {
+                     $modaltext = '<a id="'.$target.'" href="'.$picture.'" class=""';
+                     $modaltext .= ' target="SingleSecondaryWindowName"';
+                     $modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+                     $modaltext .= ' title="'.$text.'"';
+                     $modaltext .= '>';
+                     $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';    
+                     $modaltext .= '</a>';
+            }        
+            break;    
         case 0:
-//            if ($url) {
-//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
-//            } else {
-//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
-//            }
-//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
+            //            if ($url) {
+            //                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
+            //            } else {
+            //                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
+            //            }
+            //            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
             
-            $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-        $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
-        $modaltext .= '</a>';
+               $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+            $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+            $modaltext .= '</a>';
 
-        if (!$url) {
-            $url = $picture;
-        }
-            $modaltext .= HTMLHelper::_('bootstrap.renderModal', $target, array(
+            if (!$url) {
+                   $url = $picture;
+            }
+            $modaltext .= HTMLHelper::_(
+                'bootstrap.renderModal', $target, array(
                     'title' => $text,
                     'url' => $url,
                     'height' => $height,
                     'width' => $width,
                     'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">'.Text::_('JCANCEL').'</button>'
                         )
-        );
+            );
 
-        break;
-	    
-    }    
+            break;
+        
+        }    
         return $modaltext;
     }
 
     /**
      * Return formated match time
      *
-     * @param object $game
-     * @param array $config
-     * @param array $overallconfig
-     * @param object $project
+     * @param  object $game
+     * @param  array  $config
+     * @param  array  $overallconfig
+     * @param  object $project
      * @return string html
      */
-    public static function showMatchTime(&$game, &$config, &$overallconfig, &$project) {
+    public static function showMatchTime(&$game, &$config, &$overallconfig, &$project) 
+    {
         // overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php
         $output = '';
 
@@ -180,13 +187,14 @@ $modaltext .= '</a>';
     /**
      * sportsmanagementHelperHtml::showDivisonRemark()
      * 
-     * @param mixed $hometeam
-     * @param mixed $guestteam
-     * @param mixed $config
-     * @param integer $division_id
+     * @param  mixed   $hometeam
+     * @param  mixed   $guestteam
+     * @param  mixed   $config
+     * @param  integer $division_id
      * @return
      */
-    public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') {
+    public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') 
+    {
         $app = Factory::getApplication();
     
         $output = '';
@@ -199,14 +207,14 @@ $modaltext .= '</a>';
         /**
          * die gruppen aus der spielpaarung setzen
          */
-$hometeam->division_id = $division_id;
-$division = Table::getInstance('division', 'sportsmanagementTable');
+        $hometeam->division_id = $division_id;
+        $division = Table::getInstance('division', 'sportsmanagementTable');
             $division->load((int) $division_id);
             $hometeam->division_slug = $division->id . ':' . $division->alias;
             $hometeam->division_name = $division->name;
             $hometeam->division_shortname = $division->shortname;      
-$guestteam->division_id = $division_id;     
-      $guestteam->division_slug = $division->id . ':' . $division->alias;
+        $guestteam->division_id = $division_id;     
+        $guestteam->division_slug = $division->id . ':' . $division->alias;
             $guestteam->division_name = $division->name;
             $guestteam->division_shortname = $division->shortname;
      
@@ -266,17 +274,18 @@ $guestteam->division_id = $division_id;
     /**
      * Shows matchday title
      *
-     * @param string $title
-     * @param int $current_round
-     * @param array $config
-     * @param int $mode
+     * @param  string $title
+     * @param  int    $current_round
+     * @param  array  $config
+     * @param  int    $mode
      * @return string html
      */
-    public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0) {
+    public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0) 
+    {
         $app = Factory::getApplication();
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
         $query = $db->getQuery(true);
 
         $projectid = Factory::getApplication()->input->getInt('p', 0);
@@ -337,8 +346,9 @@ $guestteam->division_id = $division_id;
                 if (!strstr($thisround->round_date_first, "0000-00-00")) {
                     echo HTMLHelper::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
-                if (($thisround->round_date_last != $thisround->round_date_first) &&
-                        (!strstr($thisround->round_date_last, "0000-00-00"))) {
+                if (($thisround->round_date_last != $thisround->round_date_first) 
+                    && (!strstr($thisround->round_date_last, "0000-00-00"))
+                ) {
                     echo " - " . HTMLHelper::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
                 echo ")";
@@ -353,10 +363,11 @@ $guestteam->division_id = $division_id;
     /**
      * sportsmanagementHelperHtml::getRoundSelectNavigation()
      * 
-     * @param mixed $form
+     * @param  mixed $form
      * @return
      */
-    public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0) {
+    public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
@@ -374,14 +385,14 @@ $guestteam->division_id = $division_id;
         $routeparameter['order'] = sportsmanagementModelResults::$order;
         $routeparameter['layout'] = sportsmanagementModelProject::$layout;
 
-//                $routeparameter['cfg_which_database'] = $cfg_which_database;
-//                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
-//        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
-//        $routeparameter['r'] = 0;
-//        $routeparameter['division'] = $division;
-//        $routeparameter['mode'] = '';
-//        $routeparameter['order'] = '';
-//        $routeparameter['layout'] = '';
+        //                $routeparameter['cfg_which_database'] = $cfg_which_database;
+        //                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
+        //        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
+        //        $routeparameter['r'] = 0;
+        //        $routeparameter['division'] = $division;
+        //        $routeparameter['mode'] = '';
+        //        $routeparameter['order'] = '';
+        //        $routeparameter['layout'] = '';
 
         if ($form) {
             $routeparameter['r'] = $roundid;
@@ -409,11 +420,12 @@ $guestteam->division_id = $division_id;
     /**
      * sportsmanagementHelperHtml::showMatchPlayground()
      * 
-     * @param mixed $game
-     * @param mixed $config
+     * @param  mixed $game
+     * @param  mixed $config
      * @return
      */
-    public static function showMatchPlayground(&$game, $config = array()) {
+    public static function showMatchPlayground(&$game, $config = array()) 
+    {
         $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
@@ -467,16 +479,16 @@ $guestteam->division_id = $division_id;
             if (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id) {
                 // check alert config
                 switch ($config['show_playground_alert']) {
-                    case 1: // show_playground_alert should be shown as Tooltip
-                        $boldStart = '<b style="color:red; ">';
-                        $boldEnd = '</b>';
-                        $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
-                        break;
-                    case 2: // show_playground_alert should be shown as text in front of location
-                        $show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW') . ':</b> ';
-                        break;
-                    default:
-                        break;
+                case 1: // show_playground_alert should be shown as Tooltip
+                    $boldStart = '<b style="color:red; ">';
+                    $boldEnd = '</b>';
+                    $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+                    break;
+                case 2: // show_playground_alert should be shown as text in front of location
+                    $show_playground_alert = '<b style="color:red; ">' . Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW') . ':</b> ';
+                    break;
+                default:
+                    break;
                 }
                 $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
             }
@@ -530,13 +542,14 @@ $guestteam->division_id = $division_id;
     /**
      * mark currently playing game
      *
-     * @param int $thistime
-     * @param int $match_stamp
-     * @param array $config
-     * @param object $project
+     * @param  int    $thistime
+     * @param  int    $match_stamp
+     * @param  array  $config
+     * @param  object $project
      * @return string
      */
-    function mark_now_playing($thistime, $match_stamp, &$config, &$project) {
+    function mark_now_playing($thistime, $match_stamp, &$config, &$project) 
+    {
         $whichpart = 1;
         $gone_since_begin = intval(($thistime - $match_stamp) / 60);
         $parts_time = intval($project->game_regular_time / $project->game_parts);
@@ -565,12 +578,13 @@ $guestteam->division_id = $division_id;
     /**
      * return thumb up/down image url if team won/loss
      *
-     * @param object $game
-     * @param int $projectteam_id
-     * @param array attributes
+     * @param  object           $game
+     * @param  int              $projectteam_id
+     * @param  array attributes
      * @return string image html code
      */
-    public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) {
+    public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) 
+    {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
@@ -618,17 +632,17 @@ $guestteam->division_id = $division_id;
         
             // default title attribute, if not specified in passed attributes
             $def_attribs = array('title' => $title);
-            if ($attributes) {
-                $attributes = array_merge($def_attribs, $attributes);
-            } else {
-                $attributes = $def_attribs;
-            }
-            if ($usefontawesome) {
+        if ($attributes) {
+            $attributes = array_merge($def_attribs, $attributes);
+        } else {
+            $attributes = $def_attribs;
+        }
+        if ($usefontawesome) {
             return '<span class="fa-stack fa-xs '.$icon_color.'">
                     <i class="fa fa-square fa-stack-2x"></i>
-                    <i class="fa '. $icon . ' fa-stack-1x fa-inverse" title="'.implode("|",$attributes).'"></i>
+                    <i class="fa '. $icon . ' fa-stack-1x fa-inverse" title="'.implode("|", $attributes).'"></i>
                     </span>';
-            }else{
+        }else{
             return HTMLHelper::image($img, $alt, $attributes);
         }
     }
@@ -636,12 +650,13 @@ $guestteam->division_id = $division_id;
     /**
      * return thumb up/down image as link with score as title
      *
-     * @param object $game
-     * @param int $projectteam_id
-     * @param array attributes
+     * @param  object           $game
+     * @param  int              $projectteam_id
+     * @param  array attributes
      * @return string linked image html code
      */
-    public function getThumbScore($game, $projectteam_id, $attributes = null) {
+    public function getThumbScore($game, $projectteam_id, $attributes = null) 
+    {
         if (!$img = self::getThumbUpDownImg($game, $projectteam_id, $attributes = null)) {
             return false;
         }
@@ -658,12 +673,13 @@ $guestteam->division_id = $division_id;
     /**
      * return up/down image for ranking
      *
-     * @param object $team (rank)
-     * @param object $previous (rank)
-     * @param int $ptid
+     * @param  object $team     (rank)
+     * @param  object $previous (rank)
+     * @param  int    $ptid
      * @return string image html code
      */
-    public static function getLastRankImg($team, $previous, $ptid, $attributes = null) {
+    public static function getLastRankImg($team, $previous, $ptid, $attributes = null) 
+    {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         if (isset($previous[$ptid]->rank)) {
@@ -709,13 +725,14 @@ $guestteam->division_id = $division_id;
     /**
      * sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking()
      * 
-     * @param mixed $columnTitle
-     * @param mixed $paramName
-     * @param mixed $config
-     * @param string $default
+     * @param  mixed  $columnTitle
+     * @param  mixed  $paramName
+     * @param  mixed  $config
+     * @param  string $default
      * @return void
      */
-    public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC") {
+    public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC") 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -746,7 +763,8 @@ $guestteam->division_id = $division_id;
 
             $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
-                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")
+            ) . $img;
         } else {
             echo Text::_($columnTitle);
         }
@@ -755,13 +773,14 @@ $guestteam->division_id = $division_id;
     /**
      * sportsmanagementHelperHtml::printColumnHeadingSort()
      * 
-     * @param mixed $columnTitle
-     * @param mixed $paramName
-     * @param mixed $config
-     * @param string $default
+     * @param  mixed  $columnTitle
+     * @param  mixed  $paramName
+     * @param  mixed  $config
+     * @param  string $default
      * @return void
      */
-    public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null) {
+    public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         $jinput = $app->input;
@@ -815,7 +834,8 @@ $guestteam->division_id = $division_id;
 
             $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
-                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")
+            ) . $img;
         } else {
             echo Text::_($columnTitle);
         }
@@ -824,14 +844,15 @@ $guestteam->division_id = $division_id;
     /**
      * sportsmanagementHelperHtml::nextLastPages()
      * 
-     * @param mixed $url
-     * @param mixed $text
-     * @param mixed $maxentries
-     * @param integer $limitstart
-     * @param integer $limit
+     * @param  mixed   $url
+     * @param  mixed   $text
+     * @param  mixed   $maxentries
+     * @param  integer $limitstart
+     * @param  integer $limit
      * @return void
      */
-    public static function nextLastPages($url, $text, $maxentries, $limitstart = 0, $limit = 10) {
+    public static function nextLastPages($url, $text, $maxentries, $limitstart = 0, $limit = 10) 
+    {
         $latestlimitstart = 0;
         if (intval($limitstart - $limit) > 0) {
             $latestlimitstart = intval($limitstart - $limit);
@@ -851,15 +872,17 @@ $guestteam->division_id = $division_id;
         echo '<td style="width: 10%; text-align: left;" nowrap="nowrap">';
         if ($limitstart > 0) {
             $query = Uri::buildQuery(
-                            array(
+                array(
                                 "limit" => $limit,
-                                "limitstart" => 0));
+                "limitstart" => 0)
+            );
             echo HTMLHelper::link($url . $query, '&lt;&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp';
             $query = Uri::buildQuery(
-                            array(
+                array(
                                 "limit" => $limit,
-                                "limitstart" => $latestlimitstart));
+                "limitstart" => $latestlimitstart)
+            );
             echo HTMLHelper::link($url . $query, '&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp;';
         }
@@ -875,15 +898,17 @@ $guestteam->division_id = $division_id;
         if ($nextlimitstart > 0) {
             echo '&nbsp;&nbsp;&nbsp;';
             $query = Uri::buildQuery(
-                            array(
+                array(
                                 "limit" => $limit,
-                                "limitstart" => $nextlimitstart));
+                "limitstart" => $nextlimitstart)
+            );
             echo HTMLHelper::link($url . $query, '&gt;&gt;');
             echo '&nbsp;&nbsp;&nbsp';
             $query = Uri::buildQuery(
-                            array(
+                array(
                                 "limit" => $limit,
-                                "limitstart" => $lastlimitstart));
+                "limitstart" => $lastlimitstart)
+            );
             echo HTMLHelper::link($url . $query, '&gt;&gt;&gt;');
         }
         echo '</td>';

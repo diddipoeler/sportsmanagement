@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      matches.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       matches.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editmatch
  */
  
@@ -14,25 +17,27 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'match.php'); 
+require_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'models' .DIRECTORY_SEPARATOR. 'match.php'; 
 
 /**
  * sportsmanagementControllermatches
  * 
  * @package 
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2018
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementControllermatches extends BaseController {
+class sportsmanagementControllermatches extends BaseController
+{
 
     /**
      * sportsmanagementControllermatches::__construct()
      * 
      * @return void
      */
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
     }
 
@@ -42,7 +47,8 @@ class sportsmanagementControllermatches extends BaseController {
      *
      * @return JoomlaTuneAjaxResponse
      */
-    public static function getAjaxResponse() {
+    public static function getAjaxResponse() 
+    {
         static $instance = null;
 
         if (!is_object($instance)) {
@@ -57,7 +63,8 @@ class sportsmanagementControllermatches extends BaseController {
      * 
      * @return void
      */
-    function saveevent() {
+    function saveevent() 
+    {
         $option = Factory::getApplication()->input->getCmd('option');
         $data = array();
         $data['teamplayer_id'] = Factory::getApplication()->input->getInt('teamplayer_id');
@@ -90,7 +97,8 @@ class sportsmanagementControllermatches extends BaseController {
      * 
      * @return void
      */
-    function savesubst() {
+    function savesubst() 
+    {
         $data = array();
         $data['in'] = Factory::getApplication()->input->getInt('in');
         $data['out'] = Factory::getApplication()->input->getInt('out');
@@ -115,7 +123,8 @@ class sportsmanagementControllermatches extends BaseController {
      * 
      * @return void
      */
-    function removeSubst() {
+    function removeSubst() 
+    {
         $substid = Factory::getApplication()->input->getInt('substid', 0);
 
         if (!$result = sportsmanagementModelMatch::removeSubstitution($substid)) {
@@ -133,7 +142,8 @@ class sportsmanagementControllermatches extends BaseController {
      * 
      * @return void
      */
-    function savecomment() {
+    function savecomment() 
+    {
         $data = array();
         $data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
         $data['match_id'] = Factory::getApplication()->input->getInt('matchid');
@@ -154,25 +164,24 @@ class sportsmanagementControllermatches extends BaseController {
         Factory::getApplication()->close();
     }
  
- /**
+    /**
      * sportsmanagementControllermatches::removeEvent()
      * 
      * @return void
      */
     function removeEvent()
     {
-		$event_id = Factory::getApplication()->input->getInt('event_id');
-		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
-		{
-			//$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+        $event_id = Factory::getApplication()->input->getInt('event_id');
+        if (!$result = sportsmanagementModelMatch::deleteevent($event_id)) {
+               //$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
             $result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': ';
-		}
-		else
-		{
-			$result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
-		}
-		echo json_encode($result);
-		Factory::getApplication()->close();
+        }
+        else
+        {
+               $result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
+        }
+        echo json_encode($result);
+        Factory::getApplication()->close();
     }
 
     /**
@@ -180,7 +189,8 @@ class sportsmanagementControllermatches extends BaseController {
      * 
      * @return void
      */
-    public function removeCommentary() {
+    public function removeCommentary() 
+    {
         $event_id = Factory::getApplication()->input->getInt('event_id');
 
         if (!$result = sportsmanagementModelMatch::deletecommentary($event_id)) {

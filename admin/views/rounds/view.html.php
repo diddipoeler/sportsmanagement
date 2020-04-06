@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage rounds
  */
 
@@ -25,21 +28,23 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewRounds extends sportsmanagementView {
+class sportsmanagementViewRounds extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewRounds::init()
      * 
      * @return
      */
-    public function init() {
+    public function init() 
+    {
         $app = Factory::getApplication();
         $this->massadd = 0;
         $this->populate = 0;
-        $tpl = NULL;
+        $tpl = null;
         /**
          * dadurch werden die spaltenbreiten optimiert
          */
@@ -60,10 +65,11 @@ class sportsmanagementViewRounds extends sportsmanagementView {
     /**
      * sportsmanagementViewRounds::_displayMassadd()
      * 
-     * @param mixed $tpl
+     * @param  mixed $tpl
      * @return void
      */
-    function _displayMassadd($tpl) {
+    function _displayMassadd($tpl) 
+    {
 
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
 
@@ -76,10 +82,11 @@ class sportsmanagementViewRounds extends sportsmanagementView {
     /**
      * sportsmanagementViewRounds::_displayDefault()
      * 
-     * @param mixed $tpl
+     * @param  mixed $tpl
      * @return void
      */
-    function _displayDefault($tpl) {
+    function _displayDefault($tpl) 
+    {
 
 
         $matchday = $this->get('Items');
@@ -103,10 +110,11 @@ class sportsmanagementViewRounds extends sportsmanagementView {
     /**
      * sportsmanagementViewRounds::_displayPopulate()
      * 
-     * @param mixed $tpl
+     * @param  mixed $tpl
      * @return void
      */
-    function _displayPopulate($tpl) {
+    function _displayPopulate($tpl) 
+    {
 
         $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
         $lists = array();
@@ -131,45 +139,46 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
         $this->projectws = $projectws;
         $this->lists = $lists;
-$this->populate = 1;
+        $this->populate = 1;
         $this->setLayout('populate');
     }
 
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.6
+     * @since 1.6
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
 
         if (!$this->massadd) {
 
-if ( $this->populate ) {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
-ToolbarHelper::apply('round.startpopulate');
-        ToolbarHelper::back();
-        parent::addToolbar();
-}
-else
-{
-            //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
-            ToolbarHelper::publishList('rounds.publish');
-            ToolbarHelper::unpublishList('rounds.unpublish');
-            ToolbarHelper::divider();
-            ToolbarHelper::custom('rounds.populate', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
-            ToolbarHelper::divider();
-            ToolbarHelper::apply('rounds.saveshort');
-            ToolbarHelper::divider();
+            if ($this->populate ) {
+                    $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
+                        ToolbarHelper::apply('round.startpopulate');
+                    ToolbarHelper::back();
+                    parent::addToolbar();
+            }
+            else
+            {
+                        //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
+                        ToolbarHelper::publishList('rounds.publish');
+                        ToolbarHelper::unpublishList('rounds.unpublish');
+                        ToolbarHelper::divider();
+                        ToolbarHelper::custom('rounds.populate', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
+                        ToolbarHelper::divider();
+                        ToolbarHelper::apply('rounds.saveshort');
+                        ToolbarHelper::divider();
 
-            sportsmanagementHelper::ToolbarButton('massadd', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'));
+                        sportsmanagementHelper::ToolbarButton('massadd', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'));
 
-            ToolbarHelper::addNew('round.save');
-            ToolbarHelper::divider();
+                        ToolbarHelper::addNew('round.save');
+                        ToolbarHelper::divider();
 
-            ToolbarHelper::deleteList('', 'rounds.deleteroundmatches', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
-            parent::addToolbar();
+                        ToolbarHelper::deleteList('', 'rounds.deleteroundmatches', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+                        parent::addToolbar();
             }
         } else {
             ToolbarHelper::custom('round.cancelmassadd', 'cancel.png', 'cancel_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'), false);

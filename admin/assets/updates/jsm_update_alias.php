@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      jsm_update_alias.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       jsm_update_alias.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage updates
  */
  
@@ -14,10 +17,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 
-$uri	= Factory::getUri();
+$uri    = Factory::getUri();
 
 $table = Factory::getApplication()->input->getVar('table');
-$uri->delVar( 'table' );
+$uri->delVar('table');
 $link = $uri->toString();
 
 ?>
@@ -31,83 +34,82 @@ window.location = oldLocation + '&table=' + sData ;
 </script>
 <?PHP
 
-$version			= '1.0.53';
-$updateFileDate		= '2016-02-01';
-$updateFileTime		= '00:05';
-$updateDescription	='<span style="color:orange">Update Alias Fields.</span>';
-$excludeFile		='false';
+$version            = '1.0.53';
+$updateFileDate        = '2016-02-01';
+$updateFileTime        = '00:05';
+$updateDescription    ='<span style="color:orange">Update Alias Fields.</span>';
+$excludeFile        ='false';
 
-$maxImportTime=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
-if (empty($maxImportTime))
-{
-	$maxImportTime=880;
+$maxImportTime=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);
+if (empty($maxImportTime)) {
+    $maxImportTime=880;
 }
-if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
+if ((int)ini_get('max_execution_time') < $maxImportTime) {@set_time_limit($maxImportTime);
+}
 
-$maxImportMemory=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
-if (empty($maxImportMemory))
-{
-	$maxImportMemory='150M';
+$maxImportMemory=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory', 0);
+if (empty($maxImportMemory)) {
+    $maxImportMemory='150M';
 }
-if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
+if ((int)ini_get('memory_limit') < (int)$maxImportMemory) {ini_set('memory_limit', $maxImportMemory);
+}
 
 
 $db = sportsmanagementHelper::getDBConnection();
 
 
-if ( $table )
-{
+if ($table ) {
 
-switch ($table)
-{
-case 'person':
+    switch ($table)
+    {
+    case 'person':
 
-$query = $db->getQuery(true);
-$query->select('id,firstname,lastname');
-$query->from('#__sportsmanagement_'.$table);
-$db->setQuery($query);
-$result = $db->loadObjectList();
+        $query = $db->getQuery(true);
+        $query->select('id,firstname,lastname');
+        $query->from('#__sportsmanagement_'.$table);
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
 
-foreach ( $result as $row )
-{
-// Create an object for the record we are going to update.
-$object = new stdClass();
-// Must be a valid primary key value.
-$object->id = $row->id;  
-$object->alias = OutputFilter::stringURLSafe( $row->firstname ).'-'.OutputFilter::stringURLSafe( $row->lastname );
-// Update their details in the table using id as the primary key.
-$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
-}		
-		
-break;
-case 'league':
-case 'season':
-case 'club':
-case 'team':
-case 'playground':
-case 'division':
-case 'project':
-case 'round':
+        foreach ( $result as $row )
+        {
+            // Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $row->id;  
+            $object->alias = OutputFilter::stringURLSafe($row->firstname).'-'.OutputFilter::stringURLSafe($row->lastname);
+            // Update their details in the table using id as the primary key.
+            $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);    
+        }        
+        
+        break;
+    case 'league':
+    case 'season':
+    case 'club':
+    case 'team':
+    case 'playground':
+    case 'division':
+    case 'project':
+    case 'round':
 
-$query = $db->getQuery(true);
-$query->select('id,name');
-$query->from('#__sportsmanagement_'.$table);
-$db->setQuery($query);
-$result = $db->loadObjectList();
-	
-foreach ( $result as $row )
-{
-// Create an object for the record we are going to update.
-$object = new stdClass();
-// Must be a valid primary key value.
-$object->id = $row->id;  
-$object->alias = OutputFilter::stringURLSafe( $row->name );
-// Update their details in the table using id as the primary key.
-$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
-}
-break;
+        $query = $db->getQuery(true);
+        $query->select('id,name');
+        $query->from('#__sportsmanagement_'.$table);
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+    
+        foreach ( $result as $row )
+        {
+            // Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $row->id;  
+            $object->alias = OutputFilter::stringURLSafe($row->name);
+            // Update their details in the table using id as the primary key.
+            $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);    
+        }
+        break;
 
-}
+    }
 
 }
 

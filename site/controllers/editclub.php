@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      editclub.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       editclub.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editclubs
  */
  
@@ -20,51 +23,57 @@ use Joomla\CMS\Session\Session;
  * sportsmanagementControllerEditClub
  * 
  * @package 
- * @author diddi
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementControllerEditClub extends FormController {
+class sportsmanagementControllerEditClub extends FormController
+{
 
     /**
      * Class Constructor
      *
-     * @param	array	$config		An optional associative array of configuration settings.
-     * @return	void
-     * @since	1.5
+     * @param  array $config An optional associative array of configuration settings.
+     * @return void
+     * @since  1.5
      */
-    function __construct($config = array()) {
+    function __construct($config = array()) 
+    {
         parent::__construct($config);
 
-        /** Map the apply task to the save method. */
+        /**
+* 
+ * Map the apply task to the save method. 
+*/
         $this->registerTask('apply', 'save');
     }
 
     /**
      * sportsmanagementControllerEditClub::getModel()
      * 
-     * @param string $name
-     * @param string $prefix
-     * @param mixed $config
+     * @param  string $name
+     * @param  string $prefix
+     * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
          /**
           * sportsmanagementControllerEditClub::cancel()
           * 
-          * @param mixed $key
+          * @param  mixed $key
           * @return
           */
-         public function cancel($key = NULL)
-        {
-            $msg = 'cancel';
-            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-                 return true;
-        }
+    public function cancel($key = null)
+    {
+        $msg = 'cancel';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+        return true;
+    }
  
      
     /**
@@ -72,7 +81,8 @@ class sportsmanagementControllerEditClub extends FormController {
      * 
      * @return void
      */
-    function load() {
+    function load() 
+    {
         $cid = Factory::getApplication()->input->getInt('cid', 0);
 
         $club = Table::getInstance('Club', 'sportsmanagementTable');
@@ -86,11 +96,12 @@ class sportsmanagementControllerEditClub extends FormController {
     /**
      * sportsmanagementControllerEditClub::display()
      * 
-     * @param bool $cachable
-     * @param mixed $urlparams
+     * @param  bool  $cachable
+     * @param  mixed $urlparams
      * @return void
      */
-    function display($cachable = false, $urlparams = Array() ) {
+    function display($cachable = false, $urlparams = Array() ) 
+    {
 
     }
 
@@ -98,11 +109,12 @@ class sportsmanagementControllerEditClub extends FormController {
     /**
      * sportsmanagementControllerEditClub::save()
      * 
-     * @param mixed $key
-     * @param mixed $urlVar
+     * @param  mixed $key
+     * @param  mixed $urlVar
      * @return void
      */
-    function save($key = NULL, $urlVar = NULL) {
+    function save($key = null, $urlVar = null) 
+    {
         $app = Factory::getApplication();
         // Check for request forgeries
         Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
@@ -156,24 +168,24 @@ class sportsmanagementControllerEditClub extends FormController {
         
         $updateresult = $model->updItem($post);
 
-//        if ($model->updItem($post)) {
-//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-//            $createTeam = Factory::getApplication()->input->getVar('createTeam');
-//            if ($createTeam) {
-//                $team_name = Factory::getApplication()->input->getVar('name');
-//                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
-//                $teammodel = $this->getModel('team');
-//                $tpost['id'] = "0";
-//                $tpost['name'] = $team_name;
-//                $tpost['short_name'] = $team_short_name;
-//                $tpost['club_id'] = $teammodel->getDbo()->insertid();
-//                $teammodel->save($tpost);
-//            }
-//            $type = 'message';
-//        } else {
-//            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
-//            $type = 'error';
-//        }
+        //        if ($model->updItem($post)) {
+        //            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
+        //            $createTeam = Factory::getApplication()->input->getVar('createTeam');
+        //            if ($createTeam) {
+        //                $team_name = Factory::getApplication()->input->getVar('name');
+        //                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
+        //                $teammodel = $this->getModel('team');
+        //                $tpost['id'] = "0";
+        //                $tpost['name'] = $team_name;
+        //                $tpost['short_name'] = $team_short_name;
+        //                $tpost['club_id'] = $teammodel->getDbo()->insertid();
+        //                $teammodel->save($tpost);
+        //            }
+        //            $type = 'message';
+        //        } else {
+        //            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
+        //            $type = 'error';
+        //        }
 
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');

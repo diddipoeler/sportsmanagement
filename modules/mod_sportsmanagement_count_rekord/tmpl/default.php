@@ -1,12 +1,15 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @package			com_sportsmanagement
-* @subpackage		mod_sportsmanagement_count_rekord
-* @version			1.0
-* @file				/tmpl/default.php
-* @author			diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+* @package    com_sportsmanagement
+* @subpackage mod_sportsmanagement_count_rekord
+* @version    1.0
+* @file       /tmpl/default.php
+* @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license    GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -44,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-$list  = modJSMStatistikRekordHelper::getData($params,$module);
+$list  = modJSMStatistikRekordHelper::getData($params, $module);
 
 ?>
 
@@ -53,17 +56,16 @@ $list  = modJSMStatistikRekordHelper::getData($params,$module);
 
 <?PHP
 
-if ( $list )
-{
-foreach ( $list as $row )
-{
-?>
-<tr>
-<td width ="50%" align ="left" ><?PHP echo $row->text; ?></td>
-</tr>
-<?PHP
+if ($list ) {
+    foreach ( $list as $row )
+    {
+        ?>
+        <tr>
+        <td width ="50%" align ="left" ><?PHP echo $row->text; ?></td>
+    </tr>
+    <?PHP
 
-}
+    }
 
 }
 

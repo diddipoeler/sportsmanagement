@@ -1,19 +1,21 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage clubs
  */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-if(version_compare(JSM_JVERSION,'3','eq')) 
-{
+if(version_compare(JSM_JVERSION, '3', 'eq')) {
 
 }
 
@@ -23,16 +25,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 
-	function searchClub(val,key)
-	{
-		var f = $('adminForm');
-		if(f)
-		{
-		f.elements['filter_search'].value=val;
-		
-		f.submit();
-		}
-	}
+    function searchClub(val,key)
+    {
+        var f = $('adminForm');
+        if(f)
+        {
+        f.elements['filter_search'].value=val;
+        
+        f.submit();
+        }
+    }
 
 </script>
 

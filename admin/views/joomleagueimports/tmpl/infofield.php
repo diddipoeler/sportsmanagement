@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      infofield.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       infofield.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage joomleagueimports
  */
 
@@ -22,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <table class="<?php echo $this->table_data_class; ?>">
 <tr>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
 </td>
 <td class="nowrap" align="center">
 <div id="delayMsg"></div>
@@ -42,12 +45,14 @@ echo $value->info;
 </td>
 <td class="nowrap" align="center">
 <?PHP
-echo HTMLHelper::_(	'select.genericlist',
-$this->lists['agegroup'],
-'agegroup['.$value->info.']',
-$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-$i.'\').checked=true"'.$append,
-'value','text',$value->agegroup_id);
+echo HTMLHelper::_(
+    'select.genericlist',
+    $this->lists['agegroup'],
+    'agegroup['.$value->info.']',
+    $inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+    $i.'\').checked=true"'.$append,
+    'value', 'text', $value->agegroup_id
+);
 echo '<br>';
 ?>
 </td>
@@ -58,7 +63,7 @@ echo '<br>';
 </table>                                                    
 </td>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
 </td>
 </tr>
 </table>

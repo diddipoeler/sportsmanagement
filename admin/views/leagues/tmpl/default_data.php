@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage leagues
  */
 
@@ -138,8 +141,10 @@ use Joomla\CMS\Router\Route;
                     <?php
                     $inputappend = '';
                     $append = ' style="background-color:#bbffff"';
-                    echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-                            $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id);
+                    echo HTMLHelper::_(
+                        'select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+                        $i . '\').checked=true"' . $append, 'value', 'text', $row->agegroup_id
+                    );
                     ?>
                 </td>
                 <td class="center">
@@ -184,20 +189,20 @@ $options = array(
 $html[] = '<fieldset id="published_act_season' . $row->id . '" class="' . $class. '" >';
 foreach ($options as $in => $option)
         {
-$checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
-$btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';	
-$btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;	  	
-	
-  $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
-  $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
+    $checked = ( $option->value == $row->published_act_season) ? ' checked="checked"' : '';
+    $btn = ( $option->value == $row->published_act_season && $row->published_act_season ) ? ' active btn-success' : ' ';    
+    $btn = ( $option->value == $row->published_act_season && !$row->published_act_season ) ? ' active btn-danger' : $btn;          
+    
+    $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
+    $html[] = '<input type="radio" style="display:none;" id="published_act_season' .  $row->id  .$in . '" name="published_act_season' . $row->id . '" value="'
                 . $option->value . '"' . $onchange . ' />';
 
-$html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
-                . Text::_( $option->text) . '</label>';
+    $html[] = '<label for="published_act_season' .  $row->id .$in  . '"' . $checked . ' class="btn'.$btn.'" >'
+                . Text::_($option->text) . '</label>';
   
-}						
-						
-echo implode($html);							
+}                        
+                        
+echo implode($html);                            
 ?>                       
                 </td>    
                 <td class="center">
@@ -221,7 +226,7 @@ echo implode($html);
                         <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'leagues.orderdown', 'JLIB_HTML_MOVE_DOWN', 'obj.ordering'); ?>
                         <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                     </span>
-                    <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                    <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                            class="form-control form-control-inline" style="text-align: center" />
                 </td>
                 <td class="center"><?php echo $row->id; ?></td>

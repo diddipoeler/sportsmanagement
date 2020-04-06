@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      class.roundrobin.php
- * @author    Felix Stiehler 
- * @copyright Copyright (c) <2009> <Felix Stiehler> 
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       class.roundrobin.php
+ * @author     Felix Stiehler 
+ * @copyright  Copyright (c) <2009> <Felix Stiehler> 
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage helpers
  */
 //////////////////////////////////////////////////////////////////////////////////// 
@@ -56,7 +59,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class roundrobin {
+class roundrobin
+{
     
     /**
      * Is true when rounds have been created properly by using 'create_matches()'  
@@ -65,7 +69,7 @@ class roundrobin {
      * Default value is false
      *
      * @access public
-     * @var boolean
+     * @var    boolean
      */     
     public $finished;
      
@@ -76,7 +80,7 @@ class roundrobin {
      * Default value is ''
      *
      * @access public
-     * @var string
+     * @var    string
      */
     public $error;
     
@@ -87,7 +91,7 @@ class roundrobin {
      * Default value is false
      *
      * @access public
-     * @var boolean
+     * @var    boolean
      */
     public $matchdays_created;
     
@@ -98,7 +102,7 @@ class roundrobin {
      * Default value is false
      *
      * @access public
-     * @var boolean
+     * @var    boolean
      */
     public $raw_matches_created;
      
@@ -113,7 +117,7 @@ class roundrobin {
      * Default value is true
      *
      * @access public
-     * @var boolean
+     * @var    boolean
      */
     public $free_ticket;
     
@@ -124,7 +128,7 @@ class roundrobin {
      * Default value is 'free_ticket'
      *
      * @access public
-     * @var string
+     * @var    string
      */
     public $free_ticket_identifer; 
     
@@ -135,7 +139,7 @@ class roundrobin {
      * Default value is 0
      *
      * @access private
-     * @var integer
+     * @var    integer
      */
     private $match_pointer;
     
@@ -146,7 +150,7 @@ class roundrobin {
      * Default value is 0
      *
      * @access private
-     * @var integer
+     * @var    integer
      */
     private $matchday_pointer;
     
@@ -158,7 +162,7 @@ class roundrobin {
      * Default value is null
      *
      * @access private
-     * @var array
+     * @var    array
      */
     private $teams;
     
@@ -169,7 +173,7 @@ class roundrobin {
      * Default value is null
      *
      * @access private
-     * @var array
+     * @var    array
      */
     private $teams_1;
     
@@ -180,7 +184,7 @@ class roundrobin {
      * Default value is null
      *
      * @access private
-     * @var array
+     * @var    array
      */
     private $teams_2;
      
@@ -198,7 +202,7 @@ class roundrobin {
      * Default value is an empty array
      *
      * @access public
-     * @var array 
+     * @var    array 
      */
     public $matches;
           
@@ -212,10 +216,11 @@ class roundrobin {
      * If not the teams have to be passed by using the 'pass_teams()' function.
      *
      * @access public
-     * @param array $passed_teams the teams which play
+     * @param  array $passed_teams the teams which play
      */
      
-    public function roundrobin ($passed_teams = null) {
+    public function roundrobin($passed_teams = null) 
+    {
         $this->teams = $passed_teams;
         
         //default properties
@@ -235,11 +240,12 @@ class roundrobin {
      * Alternative way to pass the teams (unlike with the contructor)
      *
      * @access public
-     * @param array $passed_teams the teams which play
+     * @param  array $passed_teams the teams which play
      * @return true
      */
     
-    public function pass_teams ($passed_teams) {
+    public function pass_teams($passed_teams) 
+    {
         $this->teams = $passed_teams;
         return true;    
     }  
@@ -253,9 +259,11 @@ class roundrobin {
      * @access public
      * @return false when error occured or the $matches array when successful;
      */
-    public function create_matches() {
-        if (!$this->valid_team_array()) 
+    public function create_matches() 
+    {
+        if (!$this->valid_team_array()) { 
             return false;
+        }
              
         //clear $matches
         $this->matches = array();
@@ -296,11 +304,14 @@ class roundrobin {
      * @access private
      * @return true;
      */
-    private function save_matchday() {
+    private function save_matchday() 
+    {
         for ($i = 0; $i < count($this->teams_1); $i++) {
-            if ($this->free_ticket || ($this->teams_1[$i] != $this->free_ticket_identifer && 
-                                       $this->teams_2[$i] != $this->free_ticket_identifer))
-                $matches_tmp[] = array($this->teams_1[$i], $this->teams_2[$i]);   
+            if ($this->free_ticket || ($this->teams_1[$i] != $this->free_ticket_identifer  
+                && $this->teams_2[$i] != $this->free_ticket_identifer)
+            ) {
+                $matches_tmp[] = array($this->teams_1[$i], $this->teams_2[$i]);
+            }   
         }    
         $this->matches[] = $matches_tmp;
         return true;
@@ -314,7 +325,8 @@ class roundrobin {
      * @access private
      * @return true;
      */    
-    private function rotate() {
+    private function rotate() 
+    {
         $temp = $this->teams_1[1];
         for($i = 1; $i < (count($this->teams_1) - 1); $i++) {
             $this->teams_1[$i] = $this->teams_1[$i + 1];
@@ -336,15 +348,19 @@ class roundrobin {
      * @return false when error occured, the match array when true
      */
      
-    public function create_raw_matches() {
-        if (!$this->valid_team_array())
+    public function create_raw_matches() 
+    {
+        if (!$this->valid_team_array()) {
             return false;
+        }
             
         $this->matches = array();
         
-        for ($i = 0; $i < count($this->teams); $i++)
-            for ($i2 = $i + 1; $i2 < count($this->teams); $i2++)
+        for ($i = 0; $i < count($this->teams); $i++) {
+            for ($i2 = $i + 1; $i2 < count($this->teams); $i2++) {
                 $this->matches[] = array($this->teams[$i], $this->teams[$i2]);
+            }
+        }
         
         $this->finished = true;        
         $this->raw_matches_created = true;
@@ -366,8 +382,9 @@ class roundrobin {
      * @return false when not, true when valid
      */
      
-    private function valid_team_array() {
-         if (!is_array($this->teams) || count($this->teams) < 2) {
+    private function valid_team_array() 
+    {
+        if (!is_array($this->teams) || count($this->teams) < 2) {
             $this->error = 'Not enough teams in array shape passed';
                         
             // going back to start shape
@@ -389,7 +406,8 @@ class roundrobin {
      * @access private
      * @return true
      */    
-    private function clear_pointer() {
+    private function clear_pointer() 
+    {
         $this->matchday_pointer = 0;
         $this->match_pointer = 0;
         return true;
@@ -406,22 +424,25 @@ class roundrobin {
      * @access public
      * @return array the match array or false
      */     
-    public function next_match() {
+    public function next_match() 
+    {
         if ($this->raw_matches_created) {
             if (isset($this->matches[$this->match_pointer])) {
                 $this->match_pointer++;
                 return $this->matches[$this->match_pointer - 1];    
             }   
-            else
-                return false; 
+            else {
+                return false;
+            } 
         }   
         elseif($this->matchdays_created) {
             if (isset($this->matches[$this->matchday_pointer - 1][$this->match_pointer])) {
                 $this->match_pointer++;
                 return $this->matches[$this->matchday_pointer - 1][$this->match_pointer - 1];
             }    
-            else
+            else {
                 return false;
+            }
         }   
         else {
             $this->error = 'No matches created yet.';
@@ -439,7 +460,8 @@ class roundrobin {
      * @return array the matchday array or false
      */
 
-    public function next_matchday() {
+    public function next_matchday() 
+    {
         if ($this->raw_matches_created) {
             $this->error = "No matchdays created within last action.";
             return false;
@@ -450,8 +472,9 @@ class roundrobin {
                 $this->match_pointer = 0;
                 return $this->matches[$this->matchday_pointer - 1];
             }
-            else
+            else {
                 return false;
+            }
         }
         else {
             $this->error = 'No matches created yet.';
@@ -459,51 +482,52 @@ class roundrobin {
         }
     }
     
-    function generateRRSchedule(array $players, $rand = false) {
-	$numPlayers = count($players);
+    function generateRRSchedule(array $players, $rand = false) 
+    {
+        $numPlayers = count($players);
  
-	// add a placeholder if the count is odd
-	if($numPlayers%2) {
-		$players[] = null;
-		$numPlayers++;
-	}
+        // add a placeholder if the count is odd
+        if($numPlayers%2) {
+                $players[] = null;
+                $numPlayers++;
+        }
  
-	// calculate the number of sets and matches per set
-	$numSets = $numPlayers-1;
-	$numMatches = $numPlayers/2;
+        // calculate the number of sets and matches per set
+        $numSets = $numPlayers-1;
+        $numMatches = $numPlayers/2;
  
-	$matchups = array();
+        $matchups = array();
  
-	// generate each set
-	for($j = 0; $j < $numSets; $j++) {
-		// break the list in half
-		$halves = array_chunk($players, $numMatches);
-		// reverse the order of one half
-		$halves[1] = array_reverse($halves[1]);
-		// generate each match in the set
-		for($i = 0; $i < $numMatches; $i++) {
-			// match each pair of elements
-			$matchups[$j][$i][0] = $halves[0][$i];
-			$matchups[$j][$i][1] = $halves[1][$i];
-		}
-		// remove the first player and store
-		$first = array_shift($players);
-		// move the second player to the end of the list
-		$players[] = array_shift($players);
-		// place the first item back in the first position
-		array_unshift($players, $first);
-	}
+        // generate each set
+        for($j = 0; $j < $numSets; $j++) {
+                // break the list in half
+                $halves = array_chunk($players, $numMatches);
+                // reverse the order of one half
+                $halves[1] = array_reverse($halves[1]);
+                // generate each match in the set
+            for($i = 0; $i < $numMatches; $i++) {
+                // match each pair of elements
+                $matchups[$j][$i][0] = $halves[0][$i];
+                $matchups[$j][$i][1] = $halves[1][$i];
+            }
+                // remove the first player and store
+                $first = array_shift($players);
+                // move the second player to the end of the list
+                $players[] = array_shift($players);
+                // place the first item back in the first position
+                array_unshift($players, $first);
+        }
  
-	// shuffle the results if desired
-	if($rand) {
-		foreach($matchups as &$match) {
-			shuffle($match);
-		}
-		shuffle($matchups);
-	}
+        // shuffle the results if desired
+        if($rand) {
+            foreach($matchups as &$match) {
+                shuffle($match);
+            }
+                shuffle($matchups);
+        }
  
-	return $matchups;
-}
+        return $matchups;
+    }
           
 }    
 ?>

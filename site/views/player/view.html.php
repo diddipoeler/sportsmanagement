@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage player
  */
 
@@ -19,10 +22,11 @@ use Joomla\CMS\Uri\Uri;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewPlayer extends sportsmanagementView {
+class sportsmanagementViewPlayer extends sportsmanagementView
+{
 
     
     /**
@@ -30,7 +34,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
      * 
      * @return void
      */
-    function init() {
+    function init() 
+    {
   
         $model = $this->model;
         $model::$projectid = $this->jinput->getInt('p', 0);
@@ -54,7 +59,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         }
 
         if (isset($this->overallconfig['person_events'])) {
-/**
+            /**
  *              alles ok
  */    
         } else {
@@ -72,7 +77,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $this->extrafields = sportsmanagementHelper::getUserExtraFields($person->id, 'frontend', $model::$cfg_which_database);
         }
 
-/**
+        /**
  * Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
  */
         $teamPlayer = null;
@@ -97,7 +102,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
         $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
-/**
+        /**
  * Get events and stats for current project
  */
         if ($this->config['show_gameshistory']) {
@@ -107,7 +112,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
             $this->gamesstats = $model->getPlayerStatsByGame();
         }
 
-/**
+        /**
  * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
  */
         if ($this->config['show_career_stats']) {
@@ -117,40 +122,38 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
 
         $this->extended = sportsmanagementHelper::getExtended($person->extended, 'player');
         unset($form_value);
-        if ( $this->extended )
-        {
-        $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
+        if ($this->extended ) {
+            $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
         }
 
-/**
+        /**
  * nebenposition vorhanden ?
  */
         $this->person_parent_positions = $form_value;
 
         unset($form_value);
-        if ( $this->extended )
-        {
-        $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
+        if ($this->extended ) {
+            $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
         }
 
         if ($form_value) {
         } else {
-/**
+            /**
  * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
  */
             switch ($this->teamPlayer->position_name) {
-                case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
-                    $form_value = 'hp2';
-                    break;
-                case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
-                    $form_value = 'hp14';
-                    break;
-                case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
-                    $form_value = 'hp1';
-                    break;
-                case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
-                    $form_value = 'hp7';
-                    break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
+                $form_value = 'hp2';
+                break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
+                $form_value = 'hp14';
+                break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
+                $form_value = 'hp1';
+                break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
+                $form_value = 'hp7';
+                break;
             }
         }
 
@@ -171,9 +174,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $this->hasExtendedData = $hasData;
 
         $hasStatus = false;
-        if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
-                ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) ||
-                ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 )) {
+        if (( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) 
+            || ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) 
+            || ( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 )
+        ) {
             $hasStatus = true;
         }
         $this->hasStatus = $hasStatus;

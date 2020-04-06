@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage templates
  */
  
@@ -23,17 +26,19 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewTemplates extends sportsmanagementView {
+class sportsmanagementViewTemplates extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewTemplates::init()
      * 
      * @return void
      */
-    public function init() {
+    public function init() 
+    {
         $starttime = microtime();
 
         $this->state = $this->get('State');
@@ -86,20 +91,21 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
             ToolbarHelper::editList('template.edit');
 
-            if ($this->projectws->master_template) {
+        if ($this->projectws->master_template) {
 
-                ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
-            } else {
-                ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
-                ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
-            }
+            ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
+        } else {
+            ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+            ToolbarHelper::custom('template.update', 'update', 'update', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_UPDATE'));
+        }
 
         ToolbarHelper::checkin('templates.checkin');
         parent::addToolbar();

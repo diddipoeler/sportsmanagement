@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage matches
  */
  
@@ -26,17 +29,19 @@ use Joomla\CMS\Uri\Uri;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewMatches extends sportsmanagementView {
+class sportsmanagementViewMatches extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewMatches::init()
      * 
      * @return void
      */
-    public function init() {
+    public function init() 
+    {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -46,18 +51,17 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         
-        if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$table_info = $_db->getTableColumns('#__sportsmanagement_match', true);
-		}
-		else
-		{
-			$fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
-			$table_info = array_shift($fieldsArray);
-		}
+        if (version_compare(JVERSION, '3.0', 'ge')) {
+            $table_info = $_db->getTableColumns('#__sportsmanagement_match', true);
+        }
+        else
+        {
+               $fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
+               $table_info = array_shift($fieldsArray);
+        }
         
      
-     $this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
+        $this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
 
         $table = Table::getInstance('match', 'sportsmanagementTable');
         $this->table = $table;
@@ -92,9 +96,11 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             $datum = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
             $project_roundslist[] = HTMLHelper::_('select.option', $res->id, sprintf("%s (%s)", $res->name, $datum));
         }
-        $lists['project_rounds'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
+        $lists['project_rounds'] = HTMLHelper::_(
+            'select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
                         'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
-                        'document.roundForm.submit();" ', 'value', 'text', $roundws->id);
+            'document.roundForm.submit();" ', 'value', 'text', $roundws->id
+        );
 
         $lists['project_rounds2'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $roundws->id);
         // diddipoeler rounds for change in match
@@ -134,7 +140,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             }
 
             $lists['teams_' . $divhomeid] = $teams;
-         $lists['projectteams'] = $teams;
+            $lists['projectteams'] = $teams;
             unset($teams);
 
             // sind die verzeichnisse vorhanden ?
@@ -194,17 +200,17 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->ress = $ress;
         $this->projectws = $projectws;
         $this->roundws = $roundws;
-        $this->prefill = $params->get('use_prefilled_match_roster',0);
+        $this->prefill = $params->get('use_prefilled_match_roster', 0);
 
-switch ( $this->getLayout() )
+        switch ( $this->getLayout() )
          {
-            case 'massadd':
-            case 'massadd_3':
-            case 'massadd_4':
+        case 'massadd':
+        case 'massadd_3':
+        case 'massadd_4':
             //build the html options for massadd create type
             $createTypes = array(0 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
-                1 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
-                2 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
+            1 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
+            2 => Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
             );
             $ctOptions = array();
             foreach ($createTypes AS $key => $value) {
@@ -232,9 +238,10 @@ switch ( $this->getLayout() )
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
 
         $app = Factory::getApplication();
         $jinput = $app->input;

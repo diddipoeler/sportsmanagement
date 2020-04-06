@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -35,8 +35,9 @@ $cssClass = "gcal-module_event_gccal_".$module->id;
 $document->addStyleDeclaration(".".$cssClass.",.".$cssClass." a, .".$cssClass." div{background-color: ".$fadedColor." !important; border-color: #".$color."; color: ".$fadedColor.";} .fc-header-center{vertical-align: middle !important;} #gcalendar_module_".$module->id." .fc-state-default span, #gcalendar_module_".$module->id." .ui-state-default{padding:0px !important;}");
 
 $theme = $params->get('theme', jsmGCalendarUtil::getComponentParameter('theme'));
-if(!empty($theme))
-	jsmGCalendarUtil::loadLibrary(array('jqueryui' => $theme));
+if(!empty($theme)) {
+    jsmGCalendarUtil::loadLibrary(array('jqueryui' => $theme));
+}
 
 $daysLong = "[";
 $daysShort = "[";
@@ -44,22 +45,22 @@ $daysMin = "[";
 $monthsLong = "[";
 $monthsShort = "[";
 for ($i=0; $i<7; $i++) {
-	$daysLong .= "'".jsmGCalendarUtil::dayToString($i, false)."'";
-	$daysShort .= "'".jsmGCalendarUtil::dayToString($i, true)."'";
-	$daysMin .= "'".mb_substr(jsmGCalendarUtil::dayToString($i, true), 0, 2)."'";
-	if($i < 6){
-		$daysLong .= ",";
-		$daysShort .= ",";
-		$daysMin .= ",";
-	}
+    $daysLong .= "'".jsmGCalendarUtil::dayToString($i, false)."'";
+    $daysShort .= "'".jsmGCalendarUtil::dayToString($i, true)."'";
+    $daysMin .= "'".mb_substr(jsmGCalendarUtil::dayToString($i, true), 0, 2)."'";
+    if($i < 6) {
+        $daysLong .= ",";
+        $daysShort .= ",";
+        $daysMin .= ",";
+    }
 }
 for ($i=1; $i<=12; $i++) {
-	$monthsLong .= "'".jsmGCalendarUtil::monthToString($i, false)."'";
-	$monthsShort .= "'".jsmGCalendarUtil::monthToString($i, true)."'";
-	if($i < 12){
-		$monthsLong .= ",";
-		$monthsShort .= ",";
-	}
+    $monthsLong .= "'".jsmGCalendarUtil::monthToString($i, false)."'";
+    $monthsShort .= "'".jsmGCalendarUtil::monthToString($i, true)."'";
+    if($i < 12) {
+        $monthsLong .= ",";
+        $monthsShort .= ",";
+    }
 }
 $daysLong .= "]";
 $daysShort .= "]";
@@ -69,9 +70,9 @@ $monthsShort .= "]";
 
 $ids = '';
 foreach($calendars as $calendar) {
-	$ids .= $calendar->id.',';
+    $ids .= $calendar->id.',';
 }
-$ids = rtrim($ids,',');
+$ids = rtrim($ids, ',');
 
 $calCode = "// <![CDATA[ \n";
 $calCode .= "gcjQuery(document).ready(function(){\n";
@@ -85,8 +86,9 @@ $calCode .= "		},\n";
 $calCode .= "		defaultView: 'month',\n";
 
 $height = $params->get('calendar_height', null);
-if(!empty($height))
-$calCode .= "		contentHeight: ".$height.",\n";
+if(!empty($height)) {
+    $calCode .= "		contentHeight: ".$height.",\n";
+}
 $calCode .= "		editable: false, theme: ".(!empty($theme)?'true':'false').",\n";
 $calCode .= "		titleFormat: { \n";
 $calCode .= "		        month: '".jsmFullcalendar::convertFromPHPDate($params->get('titleformat_month', 'M Y'))."'},\n";

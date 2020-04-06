@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage cpanel
  */
 
@@ -28,16 +31,19 @@ use Joomla\CMS\Log\Log;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2013
- * @access public
+ * @version   2013
+ * @access    public
  */
-class sportsmanagementViewcpanel extends sportsmanagementView {
+class sportsmanagementViewcpanel extends sportsmanagementView
+{
 
     /**
      *  view display method
+     *
      * @return void
      */
-    public function init() {
+    public function init() 
+    {
         $document = Factory::getDocument();
         $project_id = $this->app->getUserState("$this->option.pid", '0');
         $model = $this->getModel();
@@ -89,71 +95,71 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
                 $checksporttype = $model->checksporttype($type);
                 $checksporttype_strukt = $databasetool->checkSportTypeStructur($type);
                 switch ($type)
-{
-case 'soccer':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SOCCER');
-break;
-case 'basketball':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_BASKETBALL');
-break;
-case 'handball':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HANDBALL');
-break;
-case 'futsal':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_FUTSAL');
-break;
-case 'volleyball':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
-break;
-case 'american_football':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL');
-break;
-case 'hockey':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HOCKEY');
-break;
-case 'skater_hockey':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY');
-break;
-case 'icehockey':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ICEHOCKEY');
-break;
-case 'esport_cs':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CS');
-break;
-case 'esport_css':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSS');
-break;
-case 'esport_csgo':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSGO');
-break;
-case 'esport_dodc':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODC');
-break;
-case 'esport_dods':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODS');
-break;
-case 'generic':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_GENERIC');
-break;
-case 'korfball':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_KORFBALL');
-break;
-case 'tennis':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TENNIS');
-break;
-case 'tabletennis':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TABLETENNIS');
-break;
-case 'australien_rules_football':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL');
-break;
-case 'dart':
-$type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_DART');
-break;
+                {
+                case 'soccer':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SOCCER');
+                    break;
+                case 'basketball':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_BASKETBALL');
+                    break;
+                case 'handball':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HANDBALL');
+                    break;
+                case 'futsal':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_FUTSAL');
+                    break;
+                case 'volleyball':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
+                    break;
+                case 'american_football':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL');
+                    break;
+                case 'hockey':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_HOCKEY');
+                    break;
+                case 'skater_hockey':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY');
+                    break;
+                case 'icehockey':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ICEHOCKEY');
+                    break;
+                case 'esport_cs':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CS');
+                    break;
+                case 'esport_css':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSS');
+                    break;
+                case 'esport_csgo':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_CSGO');
+                    break;
+                case 'esport_dodc':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODC');
+                    break;
+                case 'esport_dods':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_ESPORT_DODS');
+                    break;
+                case 'generic':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_GENERIC');
+                    break;
+                case 'korfball':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_KORFBALL');
+                    break;
+                case 'tennis':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TENNIS');
+                    break;
+                case 'tabletennis':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_TABLETENNIS');
+                    break;
+                case 'australien_rules_football':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL');
+                    break;
+                case 'dart':
+                                $type_sport_type = Text::_('COM_SPORTSMANAGEMENT_ST_DART');
+                    break;
 
-default:
-break;
-}
+                default:
+                    break;
+                }
                 
                 if ($checksporttype) {
                     $my_text .= '<span style="color:' . $model->existingInDbColor . '"><strong>';
@@ -163,7 +169,10 @@ break;
 
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
-                    /** es können aber auch neue positionen oder ereignisse dazu kommen */
+                    /**
+* 
+ * es können aber auch neue positionen oder ereignisse dazu kommen 
+*/
                     $insert_sport_type = $databasetool->insertSportType($type);
                     
 
@@ -183,13 +192,19 @@ break;
 
                     $model->_success_text[(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED') . ':')] = $my_text;
 
-                    /** es können aber auch neue positionen oder ereignisse dazu kommen */
+                    /**
+* 
+ * es können aber auch neue positionen oder ereignisse dazu kommen 
+*/
                     $insert_sport_type = $databasetool->insertSportType($type);
                     if (isset($model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')])) {
                         $model->_success_text[((Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPES_INSTALLED')). ' (' . $type_sport_type . ')  :')] .= $databasetool->my_text;
                     }
 
-                    /** nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert */
+                    /**
+* 
+ * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert 
+*/
                     if ($install_agegroup) {
                         if ($country) {
                             foreach ($country as $keyc => $typec) {
@@ -203,11 +218,17 @@ break;
                 }
             }
         }
-        /** Get data from the model */
+        /**
+* 
+ * Get data from the model 
+*/
         $items = $this->get('Items');
         $pagination = $this->get('Pagination');
 
-        /** landesverbände */
+        /**
+* 
+ * landesverbände 
+*/
         if (!$cfg_which_database) {
             $checkassociations = $databasetool->checkAssociations();
         }
@@ -232,7 +253,10 @@ break;
         $this->sporttypes = $sporttypes;
         $this->version = $model->getVersion();
 
-        /** diddipoeler erst mal abgeschaltet */
+        /**
+* 
+ * diddipoeler erst mal abgeschaltet 
+*/
         $this->importData = $model->_success_text;
         $this->importData2 = $databasetool->_success_text;
 
@@ -240,12 +264,18 @@ break;
 
         }
 
-        /** Check for errors. */
+        /**
+* 
+ * Check for errors. 
+*/
         if (count($errors = $this->get('Errors'))) {
-            Log::add( implode('<br />', $errors));
+            Log::add(implode('<br />', $errors));
             return false;
         }
-        /** Assign data to the view */
+        /**
+* 
+ * Assign data to the view 
+*/
         $this->items = $items;
         $this->pagination = $pagination;
         $this->params = $params;
@@ -254,13 +284,14 @@ break;
     /**
      * Setting the toolbar
      */
-    protected function addToolBar() {
+    protected function addToolBar() 
+    {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         $task = $this->jinput->getCmd('task');
 
         $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-$js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
+        $js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('sitename') . "','1');" . "\n";
         $document->addScriptDeclaration($js);
         
         if ($this->app->isClient('administrator')) {
@@ -285,7 +316,7 @@ $js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('site
                 $this->app->setUserState("$this->option.install", 'plugin_googlemap3');
                 sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'), 'githubinstall', 1);
             }
-*/
+            */
             $bar = Toolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
             
@@ -299,16 +330,17 @@ $js = "register('" . Uri::base() . "','" . "" . "','" . $this->app->getCfg('site
     /**
      * sportsmanagementViewcpanel::addIcon()
      * 
-     * @param mixed $image
-     * @param mixed $url
-     * @param mixed $text
-     * @param bool $newWindow
-     * @param integer $width
-     * @param integer $height
-     * @param string $maxwidth
+     * @param  mixed   $image
+     * @param  mixed   $url
+     * @param  mixed   $text
+     * @param  bool    $newWindow
+     * @param  integer $width
+     * @param  integer $height
+     * @param  string  $maxwidth
      * @return void
      */
-    public function addIcon($image, $url, $text, $newWindow = false, $width = 0, $height = 0, $maxwidth = '100%') {
+    public function addIcon($image, $url, $text, $newWindow = false, $width = 0, $height = 0, $maxwidth = '100%') 
+    {
         $lang = Factory::getLanguage();
         $newWindow = ( $newWindow ) ? ' target="_blank"' : '';
         $attribs = array();

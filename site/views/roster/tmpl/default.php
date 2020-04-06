@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage roster
  */
  
@@ -20,9 +23,10 @@ use Joomla\CMS\Factory;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ($this->config['show_staff_layout'] == 'staff_johncage' ||
-        $this->config['show_players_layout'] == 'player_johncage') {
-// johncage css:
+if ($this->config['show_staff_layout'] == 'staff_johncage' 
+    || $this->config['show_players_layout'] == 'player_johncage'
+) {
+    // johncage css:
     $css = "";
     if (count($this->rows) > 0) {
         if ($this->config['show_player_icon']) {
@@ -98,7 +102,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
         $doc = Factory::getDocument();
         $doc->addStyleDeclaration($css);
     }
-// johncage css ends    
+    // johncage css ends    
 }
 ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="roster">
@@ -138,7 +142,7 @@ if ($this->projectteam) {
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
             echo $this->loadTemplate('players_johncage');
-//            echo $this->loadTemplate('person_player');
+            //            echo $this->loadTemplate('person_player');
         }
     }
 
@@ -157,7 +161,7 @@ if ($this->projectteam) {
             $version = urlencode(sportsmanagementHelper::getVersion());
             $document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
             echo $this->loadTemplate('staff_johncage');
-//            echo $this->loadTemplate('person_staff');
+            //            echo $this->loadTemplate('person_staff');
         }
     }
 } else {

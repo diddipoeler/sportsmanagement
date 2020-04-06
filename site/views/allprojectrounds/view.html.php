@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allprojectrounds
  */
  
@@ -20,18 +23,20 @@ use Joomla\CMS\Factory;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewallprojectrounds extends sportsmanagementView {
+class sportsmanagementViewallprojectrounds extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewallprojectrounds::display()
      * 
-     * @param mixed $tpl
+     * @param  mixed $tpl
      * @return
      */
-    function init() {
+    function init() 
+    {
 
         // Reference global application object
         $app = Factory::getApplication();

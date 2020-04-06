@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
- * @version   1.0.05
- * @file      deafault_googlemap_route.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafault_googlemap_route.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage playground
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true');
 $latitude = $this->playground->latitude;
@@ -56,7 +59,7 @@ function ermittlePosition() {
 
 function zeigePosition(position) {
     ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude + 
-    "<br>Länge: " + position.coords.longitude;	
+    "<br>Länge: " + position.coords.longitude;    
 }
 
 
@@ -91,7 +94,7 @@ function get_location() {
     navigator.geolocation.getCurrentPosition(show_map, handle_error);
   } else {
     // no native support;
-	console.log("getLocation : "+ "Geolocation is not supported by this browser.");
+    console.log("getLocation : "+ "Geolocation is not supported by this browser.");
   }
 }
 
@@ -108,13 +111,13 @@ function supports_geolocation() {
 }
 
 function show_map(position) {
-	var latitude = position.coords.latitude;
-	var longitude = position.coords.longitude;
-	
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    
 console.log("getLocation : "+ latitude);
-	
-	// let's show a map or do something interesting!
-	
+    
+    // let's show a map or do something interesting!
+    
 }	
 
 </script>

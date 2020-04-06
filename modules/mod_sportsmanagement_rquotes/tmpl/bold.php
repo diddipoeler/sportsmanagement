@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+* @version   1.0.05
+* @file      agegroup.php
+* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -41,15 +44,14 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 //$quotemarks= $params->get('quotemarks');
-if ( $list )
-{
-foreach ($list as $rquote)
-{
+if ($list ) {
+    foreach ($list as $rquote)
+    {
 
-	echo '<strong>';
-	modRquotesHelper::renderRquote($rquote, $params);
-	echo '</strong>';
-}
+         echo '<strong>';
+         modRquotesHelper::renderRquote($rquote, $params);
+         echo '</strong>';
+    }
 }
 else
 {

@@ -1,11 +1,14 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage github
  */
 
@@ -15,7 +18,7 @@ use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_('behavior.tooltip');
 
 
 $attribs['width'] = '20px';
@@ -44,13 +47,13 @@ foreach( $this->commitlist as $key => $value   )
 <tr>
 <td>
 <?PHP
-$new_date = substr($value->commit->author->date,0,10).' '.substr($value->commit->author->date,11,8);
+$new_date = substr($value->commit->author->date, 0, 10).' '.substr($value->commit->author->date, 11, 8);
 //echo $value->commit->author->date;
 $timestamp = sportsmanagementHelper::getTimestamp($new_date);
 
 //echo $date;
 //echo $new_date;
-echo date("d.m.Y H:i:s",$timestamp);  
+echo date("d.m.Y H:i:s", $timestamp);  
 ?>
 </td>
 <td>

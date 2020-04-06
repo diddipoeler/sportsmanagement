@@ -1,5 +1,8 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
  * @version    1.0.05
  * @file       helper.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -17,10 +20,10 @@ use Joomla\CMS\Factory;
  * modJSMPlaygroundTicker
  * 
  * @package 
- * @author abcde
+ * @author    abcde
  * @copyright 2015
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class modJSMPlaygroundTicker
 {
@@ -28,7 +31,7 @@ class modJSMPlaygroundTicker
     /**
      * modJSMPlaygroundTicker::getData()
      * 
-     * @param mixed $params
+     * @param  mixed $params
      * @return void
      */
     public static function getData($params)
@@ -65,15 +68,17 @@ class modJSMPlaygroundTicker
         $x = $params->get('limit', 1);
         while (count($rands) < $x && $anz_cnt > count($rands)) {
             $rand = mt_rand(0, $anz_cnt - 1);
-            if (!isset($rands[$rand]))
+            if (!isset($rands[$rand])) {
                 $rands[$rand] = $rand;
+            }
         }
 
 
         $queryparts = array();
-        foreach ($rands as $rand)
+        foreach ($rands as $rand) {
             $queryparts[] = "SELECT * FROM #__sportsmanagement_playground LIMIT " . $rand .
                 ",1";
+        }
 
 
         $query = "(" . implode(") UNION ALL (", $queryparts) . ")";

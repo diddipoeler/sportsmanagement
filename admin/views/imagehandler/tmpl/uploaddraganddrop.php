@@ -1,16 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      upload.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       upload.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage imagehandler
  * http://plugins.krajee.com/file-input
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -60,7 +63,7 @@ $languageCode = $languages[ $lang->getTag() ]->sef;
   <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="task" value="imagehandler.upload" />
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
-<?php echo HTMLHelper::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
   

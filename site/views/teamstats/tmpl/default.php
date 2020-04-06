@@ -1,15 +1,18 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage teamstats
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined('_JEXEC') or die('Restricted access'); 
 
 /**
  * Make sure that in case extensions are written for mentioned (common) views,
@@ -22,24 +25,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?php 
 echo $this->loadTemplate('projectheading'); 
 
-if ($this->config['show_sectionheader'])
-{
-echo $this->loadTemplate('sectionheader'); 
+if ($this->config['show_sectionheader']) {
+    echo $this->loadTemplate('sectionheader'); 
 }
 
-if ($this->config['show_general_stats'])
-{
-echo $this->loadTemplate('stats'); 
+if ($this->config['show_general_stats']) {
+    echo $this->loadTemplate('stats'); 
 }
 
-if ($this->config['show_attendance_stats'])
-{
-echo $this->loadTemplate('attendance_stats'); 
-}	
+if ($this->config['show_attendance_stats']) {
+    echo $this->loadTemplate('attendance_stats'); 
+}    
 
-if ( $this->config['show_goals_stats_flash'] )
-{
-echo $this->loadTemplate('flashchart'); 
+if ($this->config['show_goals_stats_flash'] ) {
+    echo $this->loadTemplate('flashchart'); 
 }
 
 echo $this->loadTemplate('jsminfo');

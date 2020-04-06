@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage joomleagueimport
  */
 
@@ -30,9 +33,8 @@ use Joomla\CMS\Language\Text;
 <?PHP
 //echo 'step -> '.$this->work_table.'<br>';
 
-if ( $this->bar_value < 100)
-{
-echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
+if ($this->bar_value < 100) {
+    echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';
 }
 ?>
 

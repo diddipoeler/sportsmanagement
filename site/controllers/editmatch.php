@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      editmatch.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       editmatch.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editmatch
  */
 
@@ -19,63 +22,66 @@ use Joomla\Registry\Registry;
  * sportsmanagementControllerEditMatch
  * 
  * @package 
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2016
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementControllerEditMatch extends FormController {
+class sportsmanagementControllerEditMatch extends FormController
+{
 
     /**
      * sportsmanagementControllerEditMatch::__construct()
      * 
-     * @param mixed $config
+     * @param  mixed $config
      * @return void
      */
-    function __construct($config = array()) {
+    function __construct($config = array()) 
+    {
         parent::__construct($config);
     }
 
-/**
+    /**
  * sportsmanagementControllerEditMatch::savestats()
  * 
  * @return void
  */
-function savestats()
-{
-$app = Factory::getApplication();
-$post = $app->input->post->getArray(array());	
-$model = $this->getModel('editmatch');
-$return = $model->savestats($post);  
+    function savestats()
+    {
+        $app = Factory::getApplication();
+        $post = $app->input->post->getArray(array());    
+        $model = $this->getModel('editmatch');
+        $return = $model->savestats($post);  
 
-    $link = $_SERVER['HTTP_REFERER'];
+        $link = $_SERVER['HTTP_REFERER'];
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
 
         $this->setRedirect($link, $msg);    
-}
+    }
     
      /**
       * sportsmanagementControllerEditMatch::cancel()
       * 
       * @return
       */
-     public function cancel()
-        {
-            $msg = 'cancel';
-            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+    public function cancel()
+    {
+          $msg = 'cancel';
+          $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
  
-                return true;
-        }
+              return true;
+    }
     
     /**
      * sportsmanagementControllerEditMatch::getModel()
      * 
-     * @param string $name
-     * @param string $prefix
-     * @param mixed $config
+     * @param  string $name
+     * @param  string $prefix
+     * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
@@ -84,7 +90,8 @@ $return = $model->savestats($post);
      * 
      * @return void
      */
-    function saveReferees() {
+    function saveReferees() 
+    {
         $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
@@ -103,7 +110,8 @@ $return = $model->savestats($post);
      * 
      * @return void
      */
-    function saveroster() {
+    function saveroster() 
+    {
         $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
@@ -122,21 +130,28 @@ $return = $model->savestats($post);
      * 
      * @return void
      */
-    function saveshort() {
+    function saveshort() 
+    {
         $app = Factory::getApplication();
         $date = Factory::getDate();
         $user = Factory::getUser();
         $post = Factory::getApplication()->input->post->getArray(array());
         $option = Factory::getApplication()->input->getCmd('option');
         
-        /** Ein Datenbankobjekt beziehen */
+        /**
+* 
+ * Ein Datenbankobjekt beziehen 
+*/
         $db = Factory::getDbo();
         
-        /** Set the values */
-        $data['team1_bonus'] = NULL;
-        $data['team2_bonus'] = NULL;
-        $data['team1_legs'] = NULL;
-        $data['team2_legs'] = NULL;
+        /**
+* 
+ * Set the values 
+*/
+        $data['team1_bonus'] = null;
+        $data['team2_bonus'] = null;
+        $data['team1_legs'] = null;
+        $data['team2_legs'] = null;
         
         $data['modified'] = $date->toSql();
         $data['modified_by'] = $user->get('id');
@@ -150,18 +165,18 @@ $return = $model->savestats($post);
         $data['alt_decision'] = $post['alt_decision'];
         $data['team_won'] = $post['team_won'];
         $data['preview'] = $post['preview'];
-        if ( $post['team1_bonus'] != '' ) {
-        $data['team1_bonus'] = $post['team1_bonus'];
+        if ($post['team1_bonus'] != '' ) {
+            $data['team1_bonus'] = $post['team1_bonus'];
         }
-            if ( $post['team2_bonus'] != '' ) {
-        $data['team2_bonus'] = $post['team2_bonus'];
-            }
-                if ( $post['team1_legs'] != '' ) {
-        $data['team1_legs'] = $post['team1_legs'];
-                }
-                    if ( $post['team2_legs'] != '' ) {
-        $data['team2_legs'] = $post['team2_legs'];
-                    }
+        if ($post['team2_bonus'] != '' ) {
+            $data['team2_bonus'] = $post['team2_bonus'];
+        }
+        if ($post['team1_legs'] != '' ) {
+            $data['team1_legs'] = $post['team1_legs'];
+        }
+        if ($post['team2_legs'] != '' ) {
+            $data['team2_legs'] = $post['team2_legs'];
+        }
         $data['match_result_detail'] = $post['match_result_detail'];
 
         $data['show_report'] = $post['show_report'];
@@ -171,7 +186,10 @@ $return = $model->savestats($post);
         $data['new_match_id'] = $post['new_match_id'];
 
         if (isset($post['extended']) && is_array($post['extended'])) {
-            /** Convert the extended field to a string. */
+            /**
+* 
+ * Convert the extended field to a string. 
+*/
             $parameter = new Registry;
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string) $parameter;
@@ -181,7 +199,7 @@ $return = $model->savestats($post);
         $data['team2_result_decision'] = $post['team2_result_decision'];
         $data['decision_info'] = $post['decision_info'];
 
-/**
+        /**
  * Create an object for the record we are going to update.
  */
         $object = new stdClass();
@@ -189,7 +207,7 @@ $return = $model->savestats($post);
             $object->$key = $value;
         }
 
-/**
+        /**
  * Update their details in the table using id as the primary key.
  */
         $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);

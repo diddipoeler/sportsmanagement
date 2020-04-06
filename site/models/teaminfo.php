@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      teaminfo.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       teaminfo.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage teaminfo
  */
  
@@ -20,10 +23,11 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
+class sportsmanagementModelTeamInfo extends BaseDatabaseModel
+{
 
     var $project = null;
     static $projectid = 0;
@@ -38,7 +42,8 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
      * 
      * @return void
      */
-    function __construct() {
+    function __construct() 
+    {
         // Reference global application object
         $app = Factory::getApplication();
 
@@ -53,11 +58,12 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
     /**
      * sportsmanagementModelTeamInfo::updateHits()
      * 
-     * @param integer $teamid
-     * @param integer $inserthits
+     * @param  integer $teamid
+     * @param  integer $inserthits
      * @return void
      */
-    public static function updateHits($teamid = 0, $inserthits = 0) {
+    public static function updateHits($teamid = 0, $inserthits = 0) 
+    {
         $option = Factory::getApplication()->input->getCmd('option');
         $app = Factory::getApplication();
         $db = Factory::getDbo();
@@ -76,17 +82,19 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
 
     /**
      * Method to return a team trainingdata array
-     * @param int projectid
-     * @return	array
+     *
+     * @param  int projectid
+     * @return array
      */
-    public static function getTrainigData($projectid) {
+    public static function getTrainigData($projectid) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
 
@@ -114,17 +122,18 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
     /**
      * sportsmanagementModelTeamInfo::getTeamByProject()
      * 
-     * @param integer $inserthits
+     * @param  integer $inserthits
      * @return
      */
-    public static function getTeamByProject($inserthits = 0) {
+    public static function getTeamByProject($inserthits = 0) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $starttime = microtime();
 
@@ -147,16 +156,16 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel {
             } else {
                 $query->where('t.id = ' . self::$teamid);
             }
-try{
-            $db->setQuery($query);
-            self::$team = $db->loadObject();
- self::$projectteamid = self::$team->projectteamid;
-}
-catch (Exception $e)
-{
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
-}
+            try{
+                        $db->setQuery($query);
+                        self::$team = $db->loadObject();
+                         self::$projectteamid = self::$team->projectteamid;
+            }
+            catch (Exception $e)
+            {
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+            }
             
 
         }
@@ -166,16 +175,18 @@ catch (Exception $e)
 
     /**
      * get club info
+     *
      * @return object
      */
-    public static function getClub() {
+    public static function getClub() 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $starttime = microtime();
 
@@ -198,18 +209,19 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getSeasons()
      * 
-     * @param mixed $config
-     * @param integer $history
+     * @param  mixed   $config
+     * @param  integer $history
      * @return
      */
-    public static function getSeasons($config, $history = 0) {
+    public static function getSeasons($config, $history = 0) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $starttime = microtime();
 
@@ -252,35 +264,33 @@ catch (Exception $e)
         $seasons = $db->loadObjectList();
 
         foreach ($seasons as $k => $season) {
-            $seasons[$k]->division_slug = NULL;
-            $seasons[$k]->division_name = NULL;
-            $seasons[$k]->division_short_name = NULL;
-            $seasons[$k]->round_slug = NULL;
+            $seasons[$k]->division_slug = null;
+            $seasons[$k]->division_name = null;
+            $seasons[$k]->division_short_name = null;
+            $seasons[$k]->round_slug = null;
             $query->clear();
-            if ( $season->division_id )
-            {
-            $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
-            $query->select('d.name AS division_name');
-            $query->select('d.shortname AS division_short_name');
-            $query->from('#__sportsmanagement_division AS d');
-            $query->where('d.id = ' . $season->division_id);
-            $query->where('d.project_id = ' . $season->projectid);
-            $db->setQuery($query);
-            $result = $db->loadObject();
-            $seasons[$k]->division_slug = $result->division_slug;
-            $seasons[$k]->division_name = $result->division_name;
-            $seasons[$k]->division_short_name = $result->division_short_name;
+            if ($season->division_id ) {
+                $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
+                $query->select('d.name AS division_name');
+                $query->select('d.shortname AS division_short_name');
+                $query->from('#__sportsmanagement_division AS d');
+                $query->where('d.id = ' . $season->division_id);
+                $query->where('d.project_id = ' . $season->projectid);
+                $db->setQuery($query);
+                $result = $db->loadObject();
+                $seasons[$k]->division_slug = $result->division_slug;
+                $seasons[$k]->division_name = $result->division_name;
+                $seasons[$k]->division_short_name = $result->division_short_name;
             }
             $query->clear();
-            if ( $season->current_round )
-            {
-            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-            $query->from('#__sportsmanagement_round AS r');
-            $query->where('r.id = ' . $season->current_round);
-            $query->where('r.project_id = ' . $season->projectid);
-            $db->setQuery($query);
-            $result = $db->loadObject();
-            $seasons[$k]->round_slug = $result->round_slug;
+            if ($season->current_round ) {
+                $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+                $query->from('#__sportsmanagement_round AS r');
+                $query->where('r.id = ' . $season->current_round);
+                $query->where('r.project_id = ' . $season->projectid);
+                $db->setQuery($query);
+                $result = $db->loadObject();
+                $seasons[$k]->round_slug = $result->round_slug;
             }
             $ranking = self::getTeamRanking($season->projectid, $season->division_id);
             if (!empty($ranking)) {
@@ -316,19 +326,20 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getPlayerMarketValue()
      * 
-     * @param mixed $projectid
-     * @param mixed $projectteamid
-     * @param mixed $season_id
+     * @param  mixed $projectid
+     * @param  mixed $projectteamid
+     * @param  mixed $season_id
      * @return
      */
-    public static function getPlayerMarketValue($projectid, $projectteamid, $season_id) {
+    public static function getPlayerMarketValue($projectid, $projectteamid, $season_id) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $starttime = microtime();
 
@@ -353,18 +364,20 @@ catch (Exception $e)
 
     /**
      * get ranking of current team in a project
-     * @param int projectid
-     * @param int division_id
+     *
+     * @param  int projectid
+     * @param  int division_id
      * @return array
      */
-    public static function getTeamRanking($projectid, $division_id) {
+    public static function getTeamRanking($projectid, $division_id) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         
@@ -377,15 +390,15 @@ catch (Exception $e)
         $ranking->setProjectId($project->id, self::$cfg_which_database);
         $temp_ranking = $ranking->getRanking(0, sportsmanagementModelProject::getCurrentRound(null, self::$cfg_which_database), $division_id, self::$cfg_which_database);
         foreach ($temp_ranking as $ptid => $value) {
-//			if ($value->getPtid() == self::$projectteamid)
-//			{
-//				$rank['rank']   = $value->rank;
-//				$rank['games']  = $value->cnt_matches;
-//				$rank['points'] = $value->getPoints();
-//				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
-//				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
-//				break;
-//			} 
+            //			if ($value->getPtid() == self::$projectteamid)
+            //			{
+            //				$rank['rank']   = $value->rank;
+            //				$rank['games']  = $value->cnt_matches;
+            //				$rank['points'] = $value->getPoints();
+            //				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
+            //				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
+            //				break;
+            //			} 
             if ($value->getTeamId() == self::$teamid) {
                 $rank['rank'] = $value->rank;
                 $rank['games'] = $value->cnt_matches;
@@ -406,17 +419,18 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getMergeClubs()
      * 
-     * @param mixed $merge_clubs
+     * @param  mixed $merge_clubs
      * @return
      */
-    function getMergeClubs($merge_clubs) {
+    function getMergeClubs($merge_clubs) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
         $query->from('#__sportsmanagement_club');
@@ -431,24 +445,26 @@ catch (Exception $e)
 
     /**
      * gets name of league associated to project
-     * @param int $projectid
+     *
+     * @param  int $projectid
      * @return string
      */
-    public static function getLeague($projectid) {
+    public static function getLeague($projectid) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
         $query->select('l.name AS league');
         $query->from('#__sportsmanagement_project AS p');
         $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
         $query->where('p.id =' . $projectid);
 
-//		$query = 'SELECT l.name AS league FROM #__sportsmanagement_project AS p, #__sportsmanagement_league AS l WHERE p.id=' . $projectid . ' AND l.id=p.league_id ';
+        //		$query = 'SELECT l.name AS league FROM #__sportsmanagement_project AS p, #__sportsmanagement_league AS l WHERE p.id=' . $projectid . ' AND l.id=p.league_id ';
 
         $db->setQuery($query, 0, 1);
         $league = $db->loadResult();
@@ -463,10 +479,11 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail()
      * 
-     * @param mixed $seasonsranking
+     * @param  mixed $seasonsranking
      * @return
      */
-    public static function getLeagueRankOverviewDetail($seasonsranking) {
+    public static function getLeagueRankOverviewDetail($seasonsranking) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -513,10 +530,11 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getLeagueRankOverview()
      * 
-     * @param mixed $seasonsranking
+     * @param  mixed $seasonsranking
      * @return
      */
-    public static function getLeagueRankOverview($seasonsranking) {
+    public static function getLeagueRankOverview($seasonsranking) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
@@ -547,19 +565,20 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::getPlayerMeanAge()
      * 
-     * @param mixed $projectid
-     * @param mixed $projectteamid
-     * @param mixed $season_id
+     * @param  mixed $projectid
+     * @param  mixed $projectteamid
+     * @param  mixed $season_id
      * @return
      */
-    public static function getPlayerMeanAge($projectid, $projectteamid, $season_id) {
+    public static function getPlayerMeanAge($projectid, $projectteamid, $season_id) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         //$player = array();
@@ -601,18 +620,20 @@ catch (Exception $e)
 
     /**
      * Get total number of players assigned to a team
-     * @param int projectid
-     * @param int projectteamid
+     *
+     * @param  int projectid
+     * @param  int projectteamid
      * @return int
      */
-    public static function getPlayerCount($projectid, $projectteamid, $season_id) {
+    public static function getPlayerCount($projectid, $projectteamid, $season_id) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
         $player = array();
@@ -639,10 +660,11 @@ catch (Exception $e)
     /**
      * sportsmanagementModelTeamInfo::hasEditPermission()
      * 
-     * @param mixed $task
+     * @param  mixed $task
      * @return
      */
-    function hasEditPermission($task = null) {
+    function hasEditPermission($task = null) 
+    {
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object

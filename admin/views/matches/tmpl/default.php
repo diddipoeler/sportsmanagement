@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage matches
  */
 
@@ -15,13 +18,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 
-$massadd=Factory::getApplication()->input->getInt('massadd',0);
+$massadd=Factory::getApplication()->input->getInt('massadd', 0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo $this->loadTemplate('debug');
+if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO ) {
+    echo $this->loadTemplate('debug');
 }
 ?>
 
@@ -32,11 +34,10 @@ echo $this->loadTemplate('massadd');
 </div>
 <?php 
 echo $this->loadTemplate('matches'); 
-?>	
+?>    
 <?php 
-if ( ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
-{
-echo $this->loadTemplate('matrix'); 
+if (ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') ) {
+    echo $this->loadTemplate('matrix'); 
 }
 ?>
 <div>

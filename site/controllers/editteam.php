@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      editteam.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       editteam.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editteam
  */
 
@@ -18,24 +21,29 @@ use Joomla\CMS\Language\Text;
  * sportsmanagementControllereditteam
  * 
  * @package 
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2019
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class sportsmanagementControllereditteam extends FormController {
+class sportsmanagementControllereditteam extends FormController
+{
 
     /**
      * Class Constructor
      *
-     * @param	array	$config		An optional associative array of configuration settings.
-     * @return	void
-     * @since	1.5
+     * @param  array $config An optional associative array of configuration settings.
+     * @return void
+     * @since  1.5
      */
-    function __construct($config = array()) {
+    function __construct($config = array()) 
+    {
         parent::__construct($config);
 
-        /** Map the apply task to the save method. */
+        /**
+* 
+ * Map the apply task to the save method. 
+*/
         $this->registerTask('apply', 'save');
     }
 
@@ -43,12 +51,13 @@ class sportsmanagementControllereditteam extends FormController {
     /**
      * sportsmanagementControllereditteam::getModel()
      * 
-     * @param string $name
-     * @param string $prefix
-     * @param mixed $config
+     * @param  string $name
+     * @param  string $prefix
+     * @param  mixed  $config
      * @return
      */
-    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
+    public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) 
+    {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
@@ -58,7 +67,8 @@ class sportsmanagementControllereditteam extends FormController {
      * 
      * @return
      */
-    public function submit() {
+    public function submit() 
+    {
 
         return true;
     }
@@ -68,31 +78,41 @@ class sportsmanagementControllereditteam extends FormController {
     /**
      * sportsmanagementControllereditteam::save()
      * 
-     * @param mixed $key
-     * @param mixed $urlVar
+     * @param  mixed $key
+     * @param  mixed $urlVar
      * @return
      */
-    public function save($key = NULL, $urlVar = NULL) {
-        /** Initialise variables. */
+    public function save($key = null, $urlVar = null) 
+    {
+        /**
+* 
+ * Initialise variables. 
+*/
         $app = Factory::getApplication();
         $model = $this->getModel('editteam');
         $data = Factory::getApplication()->input->post->getArray(array());
         $id = Factory::getApplication()->input->getInt('id');
 
-        /** Now update the loaded data to the database via a function in the model */
+        /**
+* 
+ * Now update the loaded data to the database via a function in the model 
+*/
         $upditem = $model->updItem($data);
 
-        /** Set the redirect based on the task. */
+        /**
+* 
+ * Set the redirect based on the task. 
+*/
         switch ($this->getTask()) {
-            case 'apply':
-                $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id='.$id.'&ptid='.$data['ptid'].'&p='.$data['p'].'&tid='.$data['tid'], $message);
-                break;
+        case 'apply':
+            $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id='.$id.'&ptid='.$data['ptid'].'&p='.$data['p'].'&tid='.$data['tid'], $message);
+            break;
 
-            case 'save':
-            default:
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-                break;
+        case 'save':
+        default:
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
+            break;
         }
 
 
@@ -103,14 +123,14 @@ class sportsmanagementControllereditteam extends FormController {
         /**
          * sportsmanagementControllereditteam::cancel()
          * 
-         * @param mixed $key
+         * @param  mixed $key
          * @return
          */
-        public function cancel($key = NULL)
-        {
-            $msg = 'cancel';
-            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-            return true;
-        }
+    public function cancel($key = null)
+    {
+        $msg = 'cancel';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+        return true;
+    }
 }
 

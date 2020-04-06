@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      cpanel.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       cpanel.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage cpanel
  */
  
@@ -21,10 +24,11 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2013
- * @access public
+ * @version   2013
+ * @access    public
  */
-class sportsmanagementModelcpanel extends JSMModelLegacy {
+class sportsmanagementModelcpanel extends JSMModelLegacy
+{
 
     var $_success_text;
     var $storeFailedColor = 'red';
@@ -36,7 +40,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * 
      * @return
      */
-    public function getVersion() {
+    public function getVersion() 
+    {
         $this->jsmdb->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
         $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
         return $manifest_cache['version'];
@@ -47,11 +52,12 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * 
      * @return
      */
-    public function getGithubRequests() {
+    public function getGithubRequests() 
+    {
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $paramsdata = ComponentHelper::getParams($option);
-// Load the parameters
+        // Load the parameters
         $uname = ComponentHelper::getParams($option)->get('cfg_github_username', 'diddipoeler');
         $repo = ComponentHelper::getParams($option)->get('cfg_github_repository', 'sportsmanagement');
         // Convert the list name to a useable string for the JSON
@@ -81,14 +87,15 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
     /**
      * sportsmanagementModelcpanel::getInstalledPlugin()
      * 
-     * @param mixed $plugin
+     * @param  mixed $plugin
      * @return
      */
-    function getInstalledPlugin($plugin) {
+    function getInstalledPlugin($plugin) 
+    {
         //$app = Factory::getApplication();
-//  $option = Factory::getApplication()->input->getCmd('option'); 
-//  $db = sportsmanagementHelper::getDBConnection();    
-//        $query = $db->getQuery(true);
+        //  $option = Factory::getApplication()->input->getCmd('option'); 
+        //  $db = sportsmanagementHelper::getDBConnection();    
+        //        $query = $db->getQuery(true);
         $this->jsmquery->clear();
         $this->jsmquery->select('a.extension_id');
         $this->jsmquery->from('#__extensions AS a');
@@ -105,7 +112,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * 
      * @return
      */
-    function checkcountry() {
+    function checkcountry() 
+    {
         $starttime = microtime();
 
         $this->jsmquery->clear();
@@ -121,10 +129,11 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
     /**
      * sportsmanagementModelcpanel::checksporttype()
      * 
-     * @param mixed $type
+     * @param  mixed $type
      * @return
      */
-    function checksporttype($type) {
+    function checksporttype($type) 
+    {
         $starttime = microtime();
         $type = strtoupper($type);
 
@@ -142,13 +151,14 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
     /**
      * Function to fetch a JSON feed
      *
-     * @param   string  $req  The URL of the feed to load
+     * @param string $req The URL of the feed to load
      *
-     * @return  array  The decoded JSON query
+     * @return array  The decoded JSON query
      *
-     * @since	1.0
+     * @since 1.0
      */
-    static function getJSON($req) {
+    static function getJSON($req) 
+    {
         // Create a new CURL resource
         $ch = curl_init($req);
 
@@ -174,14 +184,15 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
     /**
      * Function to process the GitHub data into a formatted object
      *
-     * @param   array   $obj     The JSON data
-     * @param   object  $params  The module parameters
+     * @param array  $obj    The JSON data
+     * @param object $params The module parameters
      *
-     * @return  array  An array of data for output
+     * @return array  An array of data for output
      *
-     * @since   1.0
+     * @since 1.0
      */
-    static function processData($obj, $params) {
+    static function processData($obj, $params) 
+    {
         $app = Factory::getApplication();
         // Initialize
         $github = array();
@@ -250,13 +261,14 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
     /**
      * Function to convert a formatted repo name into it's URL equivalent
      *
-     * @param   string  $repo  The user inputted repo name
+     * @param string $repo The user inputted repo name
      *
-     * @return  string  The repo name converted
+     * @return string  The repo name converted
      *
-     * @since   1.0
+     * @since 1.0
      */
-    static function toAscii($repo) {
+    static function toAscii($repo) 
+    {
         $clean = preg_replace("/[^a-z'A-Z0-9\/_|+ -]/", '', $repo);
         $clean = strtolower(trim($clean, '-'));
         $repo = preg_replace("/[\/_|+ -']+/", '-', $clean);

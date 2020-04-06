@@ -1,15 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      projectpositionlist.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       projectpositionlist.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage fields
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
@@ -22,68 +25,69 @@ FormHelper::loadFieldClass('list');
  * FormFieldprojectpositionlist
  * 
  * @package 
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JFormFieldprojectpositionlist extends \JFormFieldList
 {
     
-	/**
-	 * field type
-	 * @var string
-	 */
-	public $type = 'projectpositionlist';
+    /**
+     * field type
+     *
+     * @var string
+     */
+    public $type = 'projectpositionlist';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @since   11.1
-	 */
-	protected function getOptions()
-	{
-		// Reference global application object
+    /**
+     * Method to get the field options.
+     *
+     * @return array  The field option objects.
+     *
+     * @since 11.1
+     */
+    protected function getOptions()
+    {
+        // Reference global application object
         $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         
-        $team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );
-        $persontype = $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' );
-        $project_team_id = $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' );
-        $pid = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        $team_id = $this->jsmapp->getUserState("$this->jsmoption.team_id", '0');
+        $persontype = $this->jsmapp->getUserState("$this->jsmoption.persontype", '0');
+        $project_team_id = $this->jsmapp->getUserState("$this->jsmoption.project_team_id", '0');
+        $pid = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
         
         // Initialize variables.
-		$options = array();
-		$select_id = Factory::getApplication()->input->getVar('id');
+        $options = array();
+        $select_id = Factory::getApplication()->input->getVar('id');
         $db = Factory::getDbo();
-			$query = $db->getQuery(true);
-			$query->select('pp.id AS value, pos.name AS text');
+         $query = $db->getQuery(true);
+         $query->select('pp.id AS value, pos.name AS text');
             $query->from('#__sportsmanagement_position as pos');
             $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
-			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+         $query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
             $query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.project_id = ppp.project_id');
             $query->where('pp.project_id = '.$pid);
-			$query->order('pos.ordering,pos.name');
+         $query->order('pos.ordering,pos.name');
             $query->group('pos.id');
-			$db->setQuery($query);
+         $db->setQuery($query);
            
-            try { 
-			$options = $db->loadObjectList();
-            }
-catch (Exception $e) {
-Factory::getApplication()->enqueueMessage($db->getErrorMsg());
-}
-            foreach ( $options as $row )
+        try { 
+            $options = $db->loadObjectList();
+        }
+        catch (Exception $e) {
+             Factory::getApplication()->enqueueMessage($db->getErrorMsg());
+        }
+        foreach ( $options as $row )
             {
-                $row->text = Text::_($row->text);
-            }
+            $row->text = Text::_($row->text);
+        }
     
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-		return $options;
-	}
+        // Merge any additional options in the XML definition.
+        $options = array_merge(parent::getOptions(), $options);
+        return $options;
+    }
 }

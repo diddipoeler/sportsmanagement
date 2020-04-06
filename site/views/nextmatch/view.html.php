@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage nextmatch
  */
 
@@ -17,10 +20,10 @@ use Joomla\CMS\HTML\HTMLHelper;
  * sportsmanagementViewNextMatch
  *
  * @package
- * @author diddi
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class sportsmanagementViewNextMatch extends sportsmanagementView
 {
@@ -33,7 +36,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
      */
     function init()
     {
-$this->statgames = array();
+        $this->statgames = array();
         $model = $this->getModel();
         $match = $model->getMatch();
 
@@ -47,9 +50,9 @@ $this->statgames = array();
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ":";
         }
-		// We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
-		$this->config['extended_cols'] = $this->overallconfig['extended_cols'];
-		$this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
+        // We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views?
+        $this->config['extended_cols'] = $this->overallconfig['extended_cols'];
+        $this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
 
         $this->match = $match;
 
@@ -98,91 +101,74 @@ $this->statgames = array();
 
         }
 
-        if ( $this->games ) {
+        if ($this->games ) {
             $this->gesamtspiele = array();  
-foreach( $this->games as $game )
-{
+            foreach( $this->games as $game )
+            {
 
-  if ( !isset($this->gesamtspiele[$game->leaguename]) )
-  {
-  $this->gesamtspiele[$game->leaguename] = new stdClass();  
-  }
-  $this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
+                if (!isset($this->gesamtspiele[$game->leaguename]) ) {
+                    $this->gesamtspiele[$game->leaguename] = new stdClass();  
+                }
+                          $this->gesamtspiele[$game->leaguename]->gesamtspiele += 1;
   
-if ( $game->team1_id == $this->teams[0]->id )
-{
-    if ( $game->team1_result != NULL && $game->team2_result != NULL )
-  {
-    if ( $game->team1_result > $game->team2_result )
-    {
-    $this->gesamtspiele[$game->leaguename]->gewonnen += 1;    
-    }
-    if ( $game->team1_result < $game->team2_result )
-    {
-    $this->gesamtspiele[$game->leaguename]->verloren += 1;    
-    }
-      if ( $game->team1_result == $game->team2_result )
-  {
-  $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
-  }
-  $this->gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
-  $this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
-  }
-}
-elseif ( $game->team2_id == $this->teams[0]->id )
-{
-    if ( $game->team1_result != NULL && $game->team2_result != NULL )
-  {
-    if ( $game->team1_result < $game->team2_result )
-    {
-    $this->gesamtspiele[$game->leaguename]->gewonnen += 1;    
-    }
-    if ( $game->team1_result > $game->team2_result )
-    {
-    $this->gesamtspiele[$game->leaguename]->verloren += 1;    
-    }  
-      if ( $game->team1_result == $game->team2_result )
-  {
-  $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
-  }
-  $this->gesamtspiele[$game->leaguename]->plustore += $game->team2_result;    
-  $this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
-  }
-}  
+                if ($game->team1_id == $this->teams[0]->id ) {
+                    if ($game->team1_result != null && $game->team2_result != null ) {
+                        if ($game->team1_result > $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->gewonnen += 1;    
+                        }
+                        if ($game->team1_result < $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->verloren += 1;    
+                        }
+                        if ($game->team1_result == $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
+                        }
+                        $this->gesamtspiele[$game->leaguename]->plustore += $game->team1_result;    
+                        $this->gesamtspiele[$game->leaguename]->minustore += $game->team2_result;
+                    }
+                }
+                elseif ($game->team2_id == $this->teams[0]->id ) {
+                    if ($game->team1_result != null && $game->team2_result != null ) {
+                        if ($game->team1_result < $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->gewonnen += 1;    
+                        }
+                        if ($game->team1_result > $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->verloren += 1;    
+                        }  
+                        if ($game->team1_result == $game->team2_result ) {
+                            $this->gesamtspiele[$game->leaguename]->unentschieden += 1;  
+                        }
+                        $this->gesamtspiele[$game->leaguename]->plustore += $game->team2_result;    
+                        $this->gesamtspiele[$game->leaguename]->minustore += $game->team1_result;
+                    }
+                }  
       
   
   
   
-if ( !isset($this->statgames['home'][$game->team1_result.'-'.$game->team2_result]) )  
-{
-  $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] = 0;
-}
-if ( !isset($this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result]) )  
-{
-  $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] = 0;
-}    
-if ( !isset($this->statgames['away'][$game->team1_result.'-'.$game->team2_result] ) )  
-{
-  $this->statgames['away'][$game->team1_result.'-'.$game->team2_result]  = 0;
-}
-if ( !isset($this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] ) )  
-{
-  $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] = 0;
-}    
+                if (!isset($this->statgames['home'][$game->team1_result.'-'.$game->team2_result]) ) {
+                      $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] = 0;
+                }
+                if (!isset($this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result]) ) {
+                      $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] = 0;
+                }    
+                if (!isset($this->statgames['away'][$game->team1_result.'-'.$game->team2_result]) ) {
+                      $this->statgames['away'][$game->team1_result.'-'.$game->team2_result]  = 0;
+                }
+                if (!isset($this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result]) ) {
+                      $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] = 0;
+                }    
     
-if ( $game->team1_id == $this->teams[0]->id )
-{
-    $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
-    $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] += 1;
-}
-elseif ( $game->team2_id == $this->teams[0]->id )
-{
-$this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
-$this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
-}
-}
+                if ($game->team1_id == $this->teams[0]->id ) {
+                        $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
+                        $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] += 1;
+                }
+                elseif ($game->team2_id == $this->teams[0]->id ) {
+                    $this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
+                    $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
+                }
+            }
           
-    }        
+        }        
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
         if (isset($this->teams)) {

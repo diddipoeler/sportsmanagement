@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage joomleagueimports
  */
 
@@ -17,8 +20,7 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if ( $this->jl_table_import_step != 'ENDE' )
-{
+if ($this->jl_table_import_step != 'ENDE' ) {
 
 ?>
 
@@ -52,8 +54,7 @@ function delayRedirect(){
 <?PHP    
 }
 
-if ( $this->jl_table_import_step === 'ENDE' )
-{
+if ($this->jl_table_import_step === 'ENDE' ) {
 
 ?>
 
@@ -104,30 +105,29 @@ function delayRedirect(){
 <table class="<?php echo $this->table_data_class; ?>">
 <tr>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
 </td>
 <td class="nowrap" align="center">
 <div id="delayMsg"></div>
 </td>
 <td class="nowrap" align="center">
-<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
 </td>
 </tr>
 </table>
   
 <div id='editcell'>
 <?PHP
-if ( $this->success )
-{
-foreach ($this->success as $key => $value)
-		{
-			?>
-			<fieldset>
-				<legend><?php echo Text::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
-			</fieldset>
-			<?php
-		}
+if ($this->success ) {
+    foreach ($this->success as $key => $value)
+    {
+            ?>
+           <fieldset>
+        <legend><?php echo Text::_($key); ?></legend>
+        <table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+           </fieldset>
+            <?php
+    }
 }        
 ?>
 </div>

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_history.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_history.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage nextmatch
  */
 
@@ -27,7 +30,10 @@ if ($this->games) {
             <td>
                 <table class="<?php echo $this->config['hystory_table_class']; ?>">
                     <?php
-                    /** sort games by dates */
+                    /**
+* 
+ * sort games by dates 
+*/
                     $gamesByDate = Array();
 
                     $pr_id = 0;
@@ -77,24 +83,22 @@ if ($this->games) {
                                     echo HTMLHelper::link($result_link, $game->roundcode);
                                     ?></td>
                                 <td class="nowrap" id="matchdate"><?php
-                         if ( $game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date) )
-                         {
-                         echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY'); 
-                         }
-                         else
-                         {
-                         echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
-                         }
+                                if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date) ) {
+                                       echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY'); 
+                                }
+                                else
+                                {
+                                       echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
+                                }
                                     ?></td>
                                 <td id="matchtime"><?php
-                         if ( $game->match_date == '0000-00-00 00:00:00'  || empty($game->match_date) || !isset($game->match_date) )
-                         {
-                         echo ''; 
-                         }
-                         else
-                         {
+                                if ($game->match_date == '0000-00-00 00:00:00'  || empty($game->match_date) || !isset($game->match_date) ) {
+                                       echo ''; 
+                                }
+                                else
+                                {
                                     echo substr($game->match_date, 11, 5);
-                         }
+                                }
                                     ?></td>
                                 <td class="nowrap" id="homename"><?php
                                     echo $home->name;
@@ -106,14 +110,16 @@ if ($this->games) {
                                         $home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
                                     }
 
-                                    echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game->id . '-' . $game->projectteam1_id,
+                                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                                        'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id,
                                         $home->picture,
                                         $home->name,
                                         '20',
                                         '',
                                         $this->modalwidth,
                                         $this->modalheight,
-                                        $this->overallconfig['use_jquery_modal']);
+                                        $this->overallconfig['use_jquery_modal']
+                                    );
 
                                     ?>
                                 </td>
@@ -125,14 +131,16 @@ if ($this->games) {
                                     if (!sportsmanagementHelper::existPicture($away->picture)) {
                                         $away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
                                     }
-                                    echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game->id . '-' . $game->projectteam2_id,
+                                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                                        'nextmatchprevh' . $game->id . '-' . $game->projectteam2_id,
                                         $away->picture,
                                         $away->name,
                                         '20',
                                         '',
                                         $this->modalwidth,
                                         $this->modalheight,
-                                        $this->overallconfig['use_jquery_modal']);
+                                        $this->overallconfig['use_jquery_modal']
+                                    );
                                     ?>
                                 </td>
 
@@ -147,12 +155,14 @@ if ($this->games) {
                                     echo $game->team2_result;
                                     ?></td>
                                 <td class="nowrap"><?php
-                                    if ($game->show_report == 1) {
-                                        $desc = HTMLHelper::image(Uri::base() . "media/com_sportsmanagement/jl_images/zoom.png",
-                                            Text::_('Match Report'),
-                                            array("title" => Text::_('Match Report')));
-                                        echo HTMLHelper::link($report_link, $desc);
-                                    }
+                                if ($game->show_report == 1) {
+                                    $desc = HTMLHelper::image(
+                                        Uri::base() . "media/com_sportsmanagement/jl_images/zoom.png",
+                                        Text::_('Match Report'),
+                                        array("title" => Text::_('Match Report'))
+                                    );
+                                    echo HTMLHelper::link($report_link, $desc);
+                                }
                                     $k = 1 - $k;
                                     ?></td>
                             </tr>

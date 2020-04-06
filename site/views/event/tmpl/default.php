@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   GCalendar
+ * @author    Digital Peak http://www.digital-peak.com
+ * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -29,7 +29,7 @@ $document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/even
 $document->addScript(Uri::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
 
 if (Factory::getApplication()->input->getCmd('tmpl', '') == 'component') {
-	$document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
+    $document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
 }
 
 $dispatcher = JDispatcher::getInstance();

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_trainingsdata
  */
 
@@ -29,13 +32,13 @@ $stats = $data['stats'];
         <div class="overlay p-y-3">
             <div class="container">
                 <div class="row">
-                    <?php if ($params->get('show_project_name')): ?>
+                    <?php if ($params->get('show_project_name')) : ?>
                         <div class="col-12 text-center">
                             <h4><?php echo $project->name; ?></h4>
                         </div>
                     <?php endif; ?>
 
-                    <?php if ($params->get('show_team_name')): ?>
+                    <?php if ($params->get('show_team_name')) : ?>
                         <div class="col-12 text-center">
                             <h4><?php echo $team->name; ?></h4>
                         </div>
@@ -45,7 +48,7 @@ $stats = $data['stats'];
                 <div class="row">
                     <div class="main_counter_content text-center white-text wow fadeInUp">
 
-                        <?php if ($params->get('show_round_numbers')): ?>
+                        <?php if ($params->get('show_round_numbers')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/startroster.png' class="m-b-1" style="height: 20px;"/>
@@ -55,7 +58,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_played_matches')): ?>
+                        <?php if ($params->get('show_played_matches')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/shirt.png' class="m-b-1" style="height: 20px;"/>
@@ -65,7 +68,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_wins')): ?>
+                        <?php if ($params->get('show_wins')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/win.png' class="m-b-1" style="height: 20px;"/>
@@ -75,7 +78,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_draws')): ?>
+                        <?php if ($params->get('show_draws')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/draw.png' class="m-b-1" style="height: 20px;"/>
@@ -85,7 +88,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_loses')): ?>
+                        <?php if ($params->get('show_loses')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/lose.png' class="m-b-1" style="height: 20px;"/>
@@ -95,7 +98,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_goals')): ?>
+                        <?php if ($params->get('show_goals')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
@@ -107,7 +110,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_goals_per_match')): ?>
+                        <?php if ($params->get('show_goals_per_match')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
@@ -123,7 +126,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_scoring_goals')): ?>
+                        <?php if ($params->get('show_scoring_goals')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
@@ -135,7 +138,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_scoring_goals_per_match')): ?>
+                        <?php if ($params->get('show_scoring_goals_per_match')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
@@ -151,7 +154,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_against_goals')): ?>
+                        <?php if ($params->get('show_against_goals')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1" style="height: 20px;"/>
@@ -163,7 +166,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_against_goals_per_match')): ?>
+                        <?php if ($params->get('show_against_goals_per_match')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1" style="height: 20px;"/>
@@ -179,7 +182,7 @@ $stats = $data['stats'];
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_clean_sheets')): ?>
+                        <?php if ($params->get('show_clean_sheets')) : ?>
                             <div class="col-md-3">
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/clean-sheets.png' class="m-b-1" style="height: 20px;"/>

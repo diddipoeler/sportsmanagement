@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      edit_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       edit_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage predictiontemplate
  */
 
@@ -30,17 +33,17 @@ $i    = 1;
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=predictiontemplate&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-	
-	<?php
-	
-	?>
-	<fieldset class="adminform">
-		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
-		<fieldset class="adminform">
-			<?php
-			echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
-			?>
-		</fieldset>
+    
+    <?php
+    
+    ?>
+    <fieldset class="adminform">
+        <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+        <fieldset class="adminform">
+    <?php
+    echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+    ?>
+        </fieldset>
 
 <div class="form-horizontal">
 <?php 
@@ -53,41 +56,41 @@ echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPOR
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 
     ?>
     <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
+            <div class="span9">
+                <div class="row-fluid form-horizontal-desktop">
+                    <div class="span6">
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
     {
         ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php
+                    <div class="control-group">
+                        <div class="control-label">
+        <?php echo $field->label; ?>
+                        </div>
+                        <div class="controls">
+        <?php echo $field->input; ?>
+                        </div>
+                    </div>
+                <?php
 
     }
     ?>
     </div>
-				</div>
-			</div>
+                </div>
+            </div>
             </div>
     <?PHP
 
-echo HTMLHelper::_('bootstrap.endTab');    
+    echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 ?>    
-	
+    
 <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div> 			
     

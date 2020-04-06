@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      mod_sportsmanagement_sports_type_statistics.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       mod_sportsmanagement_sports_type_statistics.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_sports_type_statistics
  */
 
@@ -35,7 +38,7 @@ class modJSMSportsHelper
     public static function getData(&$params)
     {
         if (!class_exists('sportsmanagementModelSportsTypes')) {
-			JLoader::import('components.com_sportsmanagement.models.sportstypes', JPATH_ADMINISTRATOR);
+            JLoader::import('components.com_sportsmanagement.models.sportstypes', JPATH_ADMINISTRATOR);
         }
         $model = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 

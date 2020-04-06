@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage projectteams
  */
 
@@ -24,13 +27,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
 // welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    echo $this->loadTemplate('joomla3');
 }
 else
 {
-echo $this->loadTemplate('joomla2');    
+    echo $this->loadTemplate('joomla2');    
 }
 ?>
 <div>
@@ -42,7 +44,7 @@ var leaguepicture = new Array;
 <?php
 foreach ( $this->projectsbyleagueseason as $key => $value )
 {
-echo 'leaguepicture['.($value->value).']=\''.$value->picture."';\n";
+    echo 'leaguepicture['.($value->value).']=\''.$value->picture."';\n";
 }
 ?>
     
@@ -50,24 +52,25 @@ var teampicture = new Array;
 <?php
 foreach ( $this->lists['country_teams_picture'] as $key => $value )
 {
-if ( !$value )
-{
-$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
-}    
-echo 'teampicture['.($key).']=\''.$value."';\n";
+    if (!$value ) {
+        $value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+    }    
+    echo 'teampicture['.($key).']=\''.$value."';\n";
 }
 ?>
 </script>
 <?PHP
 // some CSS
-$this->document->addStyleDeclaration('
+$this->document->addStyleDeclaration(
+    '
 img.item {
     padding-right: 10px;
     vertical-align: middle;
 }
 img.car {
     height: 25px;
-}');
+}'
+);
 // string $opt - second parameter of formbehavior2::select2
 // for details http://ivaynberg.github.io/select2/
 $opt = ' allowClear: true,
@@ -103,58 +106,57 @@ $optproject = ' allowClear: true,
 
 $append = '';
 HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
-    if ( isset($this->lists['country_teams']) )
-    {
-echo HTMLHelper::_('select.genericlist',$this->lists['country_teams'],'team_id',
-'style="width:225px;" class="test1" size="6"'.$append,'value','text',0);
+if (isset($this->lists['country_teams']) ) {
+    echo HTMLHelper::_(
+        'select.genericlist', $this->lists['country_teams'], 'team_id',
+        'style="width:225px;" class="test1" size="6"'.$append, 'value', 'text', 0
+    );
     
 ?>
 <input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
 <?php
-    }
-if ( ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change','')  )
-{    
-HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);			
-echo HTMLHelper::_('select.genericlist',$this->projectsbyleagueseason,'all_project_id',
-'style="width:225px;" class="optproject" size="1" '.'','value','text',$this->project_id);			    
+}
+if (ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change', '')  ) {    
+    HTMLHelper::_('formbehavior2.select2', '.optproject', $optproject);            
+    echo HTMLHelper::_(
+        'select.genericlist', $this->projectsbyleagueseason, 'all_project_id',
+        'style="width:225px;" class="optproject" size="1" '.'', 'value', 'text', $this->project_id
+    );                
 }   
     
     
 ?>
 </div>
 <?PHP
-if ( $this->project_art_id != 3 )
-{
+if ($this->project_art_id != 3 ) {
 
-if ( $this->projectteam )
-{
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.name');
-echo $this->loadTemplate('teams');    
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+    if ($this->projectteam ) {
+        //Ordering allowed ?
+        $ordering=($this->sortColumn == 't.name');
+        echo $this->loadTemplate('teams');    
+    }
+    else
+    {
+        echo '<div class="alert alert-no-items">';
+        echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
+        echo '</div>';    
+    }
 
 }
 else
 {
     
-if ( $this->projectteam )
-{    
-//Ordering allowed ?
-$ordering=($this->sortColumn == 't.lastname');    
-echo $this->loadTemplate('persons');  
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+    if ($this->projectteam ) {    
+        //Ordering allowed ?
+        $ordering=($this->sortColumn == 't.lastname');    
+        echo $this->loadTemplate('persons');  
+    }
+    else
+    {
+        echo '<div class="alert alert-no-items">';
+        echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
+        echo '</div>';    
+    }
   
 }
 

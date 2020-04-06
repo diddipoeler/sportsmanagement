@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      add_issue.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       add_issue.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage github
  */
 
@@ -16,15 +19,15 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
 // welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-HTMLHelper::_('jquery.framework');
+if(version_compare(JVERSION, '3.0.0', 'ge')) {
+    HTMLHelper::_('jquery.framework');
 }
 
 
 HTMLHelper::_('behavior.keepalive');
 
-Factory::getDocument()->addScriptDeclaration('
+Factory::getDocument()->addScriptDeclaration(
+    '
 	Joomla.submitbutton = function(task)
 	{
 		if (task == "github.cancel" )
@@ -40,7 +43,8 @@ Factory::getDocument()->addScriptDeclaration('
 			Joomla.submitform(task, document.getElementById("addissue-form"));
 		}
 	};
-');
+'
+);
 
 ?>
 
@@ -52,39 +56,39 @@ Factory::getDocument()->addScriptDeclaration('
 
 <div class="clearfix"></div>
 
-	<fieldset class='adminform'>
-		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE','<i>'.'</i>'); ?></legend>
-		<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
+    <fieldset class='adminform'>
+        <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE', '<i>'.'</i>'); ?></legend>
+        <form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
-		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('github.addissue', this.form)">
-				<?php echo Text::_('JSAVE');?></button>
+        <div class="fltrt">
+            <button type="button" onclick="Joomla.submitform('github.addissue', this.form)">
+                <?php echo Text::_('JSAVE');?></button>
 
-		</div>
-		
+        </div>
+        
 
         
-	</fieldset>
+    </fieldset>
     
 
-			
-			<?php echo HTMLHelper::_('form.token')."\n"; ?>
-			<table class='table'>
+            
+    <?php echo HTMLHelper::_('form.token')."\n"; ?>
+            <table class='table'>
             <tbody>
             <tr>
-			
-				<td >
+            
+                <td >
                 <?PHP
                 echo $this->lists['labels'];
                 ?>
                 </td>
-				<td>
+                <td>
                 <?PHP
                 echo $this->lists['milestones'];
                 ?>
                 </td>
-			</tr>
+            </tr>
             <tr>
             <td colspan="2">
             <?PHP
@@ -112,8 +116,8 @@ Factory::getDocument()->addScriptDeclaration('
             <input type="hidden" name="api.username" value="<?PHP echo $this->api_username; ?>" />
             <input type="hidden" name="api.password" value="<?PHP echo $this->api_password; ?>" />
             
-		</form>
-	</fieldset>
+        </form>
+    </fieldset>
 </div>
 
 <?PHP

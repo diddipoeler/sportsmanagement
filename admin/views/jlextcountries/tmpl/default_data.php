@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_data.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_data.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage jlextcountries
  */
 defined('_JEXEC') or die('Restricted access');
@@ -182,7 +185,7 @@ use Joomla\CMS\Router\Route;
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'jlextcountries.orderdown', 'JLIB_HTML_MOVE_DOWN', 'objcountry.ordering'); ?>
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
-                        <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
+                        <input    type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>

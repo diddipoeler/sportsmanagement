@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       view.html.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage projectreferees
  */
 
@@ -22,17 +25,19 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  * HTML View class for the Sportsmanagement Component
  *
  * @static
- * @package	Sportsmanagement
- * @since	0.1
+ * @package Sportsmanagement
+ * @since   0.1
  */
-class sportsmanagementViewprojectreferees extends sportsmanagementView {
+class sportsmanagementViewprojectreferees extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewprojectreferees::init()
      * 
      * @return void
      */
-    public function init() {
+    public function init() 
+    {
         $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
@@ -52,7 +57,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
-/**
+        /**
  * build the html options for position
  */
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
@@ -77,9 +82,10 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
         $this->app->setUserState("$this->option.persontype", $this->_persontype);
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');

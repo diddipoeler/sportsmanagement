@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage editteam
  */
 
@@ -51,29 +54,29 @@ echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT').' '.$this->item->name;
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
 foreach ($fieldsets as $fieldset) :
 
-switch ( $fieldset->name )
-{
-case 'details':
-//case 'picture':
-//case 'extended':
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
-echo $this->loadTemplate($fieldset->name);
-echo HTMLHelper::_('bootstrap.endTab');
-break;    
-}
+    switch ( $fieldset->name )
+    {
+    case 'details':
+        //case 'picture':
+        //case 'extended':
+        echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+        echo $this->loadTemplate($fieldset->name);
+        echo HTMLHelper::_('bootstrap.endTab');
+        break;    
+    }
 
 endforeach; 
 
 echo HTMLHelper::_('bootstrap.endTabSet');
-?>	
+?>    
 
-	
+    
 <div class="clr"></div>
 <input type="hidden" name="option" value="com_sportsmanagement" /> 
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
-<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p',0); ?>" /> 
-<input type="hidden" name="tid" value="<?php echo Factory::getApplication()->input->getInt('tid',0); ?>" /> 
-<input type="hidden" name="ptid" value="<?php echo Factory::getApplication()->input->getInt('ptid',0); ?>" /> 	
+<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p', 0); ?>" /> 
+<input type="hidden" name="tid" value="<?php echo Factory::getApplication()->input->getInt('tid', 0); ?>" /> 
+<input type="hidden" name="ptid" value="<?php echo Factory::getApplication()->input->getInt('ptid', 0); ?>" />     
 <input type="hidden" name="task" value="" />
 <?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_4.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_4.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage extensions
 */
 
@@ -24,17 +27,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div class="col-md-8">
         <?php else : ?>
             <div class="col-md-10">
-            <?php endif; ?>      
+        <?php endif; ?>      
             <div id="dashboard-iconss" class="dashboard-icons">
                 <?php
-foreach ( $this->sporttypes as $key => $value )
-{
-switch ($value)
-{
-case 'soccer':
-?>
-<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdfbnetplayerimport">
-<img src="components/com_sportsmanagement/assets/icons/dfbnetimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT') ?>" /><br />
+                foreach ( $this->sporttypes as $key => $value )
+                {
+                                switch ($value)
+                                {
+                    case 'soccer':
+                    ?>
+                    <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdfbnetplayerimport">
+                    <img src="components/com_sportsmanagement/assets/icons/dfbnetimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdfbkeyimport">
@@ -50,27 +53,27 @@ case 'soccer':
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT') ?></span>
 </a>                        
 <?PHP
-break;
-case 'basketball':
-?>
-<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdbbimport">
-<img src="components/com_sportsmanagement/assets/icons/dbbimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?>" /><br />
+                        break;
+                    case 'basketball':
+                    ?>
+                    <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextdbbimport">
+                    <img src="components/com_sportsmanagement/assets/icons/dbbimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT') ?></span>
 </a>                        
 <?PHP
-break;
-case 'handball':
-?>
-<a class="btn" href="index.php?option=com_sportsmanagement&view=jlextsisimport">
-<img src="components/com_sportsmanagement/assets/icons/sisimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?>" /><br />
+                        break;
+                    case 'handball':
+                    ?>
+                    <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextsisimport">
+                    <img src="components/com_sportsmanagement/assets/icons/sisimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?>" /><br />
 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT') ?></span>
 </a>                        
 <?PHP
-break;
-default:
-break;
-}
-}                
+                        break;
+                    default:
+                        break;
+                                }
+                }                
                 ?>
             </div>
         </div>

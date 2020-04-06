@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version   1.0.05
- * @file      default_info.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_info.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage player
  */
  
@@ -30,14 +33,16 @@ use Joomla\CMS\Factory;
                 $picture = $this->person->picture;
             }
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo' . $this->person->id,
-            $picture,
-            $imgTitle,
-            $this->config['picture_width'],
-            '',
-            $this->modalwidth,
-            $this->modalheight,
-            $this->overallconfig['use_jquery_modal']);
+            echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                'playerinfo' . $this->person->id,
+                $picture,
+                $imgTitle,
+                $this->config['picture_width'],
+                '',
+                $this->modalwidth,
+                $this->modalheight,
+                $this->overallconfig['use_jquery_modal']
+            );
         }
 
         if ($this->config['show_player_logo_copyright']) {
@@ -67,17 +72,18 @@ use Joomla\CMS\Factory;
         $outputName = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
         if ($this->person->user_id) {
             switch ($this->config['show_user_profile']) {
-                case 1:  // Link to Joomla Contact Page
-                    $link = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
-                    $outputName = HTMLHelper::link($link, $outputName);
-                    break;
+            case 1:  // Link to Joomla Contact Page
+                $link = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
+                $outputName = HTMLHelper::link($link, $outputName);
+                break;
 
-                case 2:  // Link to CBE User Page with support for SportsManagement Tab
-                    $link = sportsmanagementHelperRoute::getUserProfileRouteCBE($this->person->user_id, $this->project->id, $this->person->id);
-                    $outputName = HTMLHelper::link($link, $outputName);
-                    break;
+            case 2:  // Link to CBE User Page with support for SportsManagement Tab
+                $link = sportsmanagementHelperRoute::getUserProfileRouteCBE($this->person->user_id, $this->project->id, $this->person->id);
+                $outputName = HTMLHelper::link($link, $outputName);
+                break;
 
-                default: break;
+            default: 
+                break;
             }
         }
         ?>
@@ -99,54 +105,55 @@ use Joomla\CMS\Factory;
         $timestamp_birth = strtotime($this->person->birthday);
         $timestamp_death = strtotime($this->person->deathday);
 
-        if (( $this->config['show_birthday'] > 0 ) &&
-                ( $this->config['show_birthday'] < 5 ) &&
-                ( $timestamp_birth )) {
-            #$this->config['show_birthday'] = 4;
+        if (( $this->config['show_birthday'] > 0 ) 
+            && ( $this->config['show_birthday'] < 5 ) 
+            && ( $timestamp_birth )
+        ) {
+            // $this->config['show_birthday'] = 4;
 
             switch ($this->config['show_birthday']) {
-                case 1:   // show Birthday and Age
-                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
-                    break;
+            case 1:   // show Birthday and Age
+                $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
+                break;
 
-                case 2:   // show Only Birthday
-                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
-                    break;
+            case 2:   // show Only Birthday
+                $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
+                break;
 
-                case 3:   // show Only Age
-                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
-                    break;
+            case 3:   // show Only Age
+                $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
+                break;
 
-                case 4:   // show Only Year of birth
-                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
-                    break;
+            case 4:   // show Only Year of birth
+                $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
+                break;
             }
 
             switch ($this->config['show_birthday']) {
-                case 1:  // show Birthday and Age
-                    $birthdateStr = $timestamp_birth ?
-                            HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
-                    $birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
-                    break;
+            case 1:  // show Birthday and Age
+                $birthdateStr = $timestamp_birth ?
+                    HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+                $birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
+                break;
 
-                case 2:  // show Only Birthday
-                    $birthdateStr = $timestamp_birth ?
-                            HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
-                    break;
+            case 2:  // show Only Birthday
+                $birthdateStr = $timestamp_birth ?
+                    HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+                break;
 
-                case 3:  // show Only Age
-                    if ($timestamp_birth && $timestamp_death) {
-                        $birthdateStr = sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday);
-                    }
-                    break;
+            case 3:  // show Only Age
+                if ($timestamp_birth && $timestamp_death) {
+                    $birthdateStr = sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday);
+                }
+                break;
 
-                case 4:  // show Only Year of birth
-                    $birthdateStr = $timestamp_birth ?
-                            HTMLHelper::date($this->person->birthday, Text::_('%Y')) : "-";
-                    break;
+            case 4:  // show Only Year of birth
+                $birthdateStr = $timestamp_birth ?
+                    HTMLHelper::date($this->person->birthday, Text::_('%Y')) : "-";
+                break;
 
-                default: $birthdateStr = "";
-                    break;
+            default: $birthdateStr = "";
+                break;
             }
             if ($this->person->birthday != "0000-00-00") {
                 echo '<address>';
@@ -163,7 +170,7 @@ use Joomla\CMS\Factory;
                 $deathdateStr = HTMLHelper::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE'));
                 echo '&dagger; ' . $deathdateStr;
                 ?>
-            </address>	
+            </address>    
             <?php
         }
         if (( $this->person->address != "" ) && $this->config['show_person_address'] && ($this->isContactDataVisible)) {
@@ -238,9 +245,10 @@ use Joomla\CMS\Factory;
             </address>
             <?php
         }
-        if (( $this->config['show_player_number'] ) &&
-                isset($this->teamPlayer->jerseynumber) &&
-                ( $this->teamPlayer->jerseynumber > 0 )) {
+        if (( $this->config['show_player_number'] ) 
+            && isset($this->teamPlayer->jerseynumber) 
+            && ( $this->teamPlayer->jerseynumber > 0 )
+        ) {
             ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NUMBER'); ?></strong>

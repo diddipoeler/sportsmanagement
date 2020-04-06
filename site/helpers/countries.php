@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      countries.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       countries.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage helpers
  */
 
@@ -23,7 +26,7 @@ if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-require_once(JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php');
+require_once JPATH_ADMINISTRATOR .DIRECTORY_SEPARATOR. JSM_PATH .DIRECTORY_SEPARATOR. 'helpers' .DIRECTORY_SEPARATOR. 'sportsmanagement.php';
 
 $maxImportTime = 480;
 if ((int) ini_get('max_execution_time') < $maxImportTime) {
@@ -34,19 +37,21 @@ if ((int) ini_get('max_execution_time') < $maxImportTime) {
  * JSMCountries
  * 
  * @package 
- * @author diddi
+ * @author    diddi
  * @copyright 2014
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
-class JSMCountries {
+class JSMCountries
+{
 
     /**
      * JSMCountries::Countries()
      * 
      * @return void
      */
-    function Countries() {
+    function Countries() 
+    {
 
     }
 
@@ -59,30 +64,32 @@ class JSMCountries {
     // http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
     // http://en.wikipedia.org/wiki/ISO_3166-1_numeric
     //
-	/**
+    /**
      * JSMCountries::getCountries()
      * 
      * @return void
      */
-    public static function getCountries() {
+    public static function getCountries() 
+    {
         
     }
 
     /**
      * JSMCountries::getCountryOptions()
      * 
-     * @param string $value_tag
-     * @param string $text_tag
+     * @param  string $value_tag
+     * @param  string $text_tag
      * @return
      */
-    public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0) {
+    public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 
-// Create a new query object.
+        // Create a new query object.
         $query = $db->getQuery(true);
         
         $query->select('alpha3,name');
@@ -104,17 +111,18 @@ class JSMCountries {
     /**
      * JSMCountries::convertIso2to3()
      * 
-     * @param mixed $iso_code_2
+     * @param  mixed $iso_code_2
      * @return
      */
-    public static function convertIso2to3($iso_code_2) {
+    public static function convertIso2to3($iso_code_2) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 
-// Create a new query object.
+        // Create a new query object.
         $query = $db->getQuery(true);
         
         $query->select('alpha3');
@@ -134,17 +142,18 @@ class JSMCountries {
     /**
      * JSMCountries::convertIso3to2()
      * 
-     * @param mixed $iso_code_3
+     * @param  mixed $iso_code_3
      * @return
      */
-    public static function convertIso3to2($iso_code_3) {
+    public static function convertIso3to2($iso_code_3) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 
-// Create a new query object.
+        // Create a new query object.
         $query = $db->getQuery(true);
 
         $query->select('alpha2');
@@ -166,10 +175,11 @@ class JSMCountries {
     /**
      * JSMCountries::getIso3Flag()
      * 
-     * @param mixed $iso_code_3
+     * @param  mixed $iso_code_3
      * @return
      */
-    public static function getIso3Flag($iso_code_3) {
+    public static function getIso3Flag($iso_code_3) 
+    {
         $iso2 = self::convertIso3to2($iso_code_3);
         if ($iso2) {
             $path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso2) . '.png';
@@ -181,11 +191,12 @@ class JSMCountries {
     /**
      * example: echo JSMCountries::getCountryFlag($country);
      *
-     * @param string: an iso3 country code, e.g AUT
-     * @param string: additional html attributes for the img tag
+     * @param  string: an iso3 country code, e.g AUT
+     * @param  string: additional html attributes for the img tag
      * @return string: html code for the flag image
      */
-    public static function getCountryFlag($countrycode, $attributes = '') {
+    public static function getCountryFlag($countrycode, $attributes = '') 
+    {
 
         
 
@@ -218,9 +229,9 @@ class JSMCountries {
             $src = $src;
         }
         
-        if ($cssflags == 0){
-        $html = '<img src="' . Uri::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
-        $html .= 'title="' . self::getCountryName($countrycode) . '" ' . $attributes . ' />';
+        if ($cssflags == 0) {
+            $html = '<img src="' . Uri::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
+            $html .= 'title="' . self::getCountryName($countrycode) . '" ' . $attributes . ' />';
         }
         else
         {
@@ -235,14 +246,15 @@ class JSMCountries {
      * @param string: an iso3 country code, e.g AUT
      * @return string: a country name
      */
-    public static function getCountryName($iso3) {
+    public static function getCountryName($iso3) 
+    {
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 
-// Create a new query object.
+        // Create a new query object.
         $query = $db->getQuery(true);
 
         $query->select('name');
@@ -255,15 +267,17 @@ class JSMCountries {
         $db->setQuery($query);
         $res = $db->loadResult();
 
-        if ($res)
+        if ($res) {
             return Text::_($res);
+        }
     }
 
     /**
      * @param string: an iso3 country code, e.g AUT
      * @return string: a country name, short form
      */
-    public static function getShortCountryName($iso3) {
+    public static function getShortCountryName($iso3) 
+    {
 
         $full = self::getCountryName($iso3);
         if (empty($full)) {
@@ -277,17 +291,20 @@ class JSMCountries {
      * @param array:
      * @return array:
      */
-    static function sortCountryArray($array, $index) {
+    static function sortCountryArray($array, $index) 
+    {
         $sort = array();
         $result = array();
 
-        for ($i = 0; isset($array[$i]); $i++)
+        for ($i = 0; isset($array[$i]); $i++) {
             $sort[$i] = $array[$i]->{$index};
+        }
 
         natcasesort($sort);
 
-        foreach ($sort as $k => $v)
+        foreach ($sort as $k => $v) {
             $result[] = $array[$k];
+        }
 
         return $result;
     }
@@ -295,22 +312,23 @@ class JSMCountries {
     /**
      * JSMCountries::convertAddressString()
      * 
-     * @param string $name
-     * @param string $address
-     * @param string $state
-     * @param string $zipcode
-     * @param string $location
-     * @param string $country
-     * @param string $addressString
+     * @param  string $name
+     * @param  string $address
+     * @param  string $state
+     * @param  string $zipcode
+     * @param  string $location
+     * @param  string $country
+     * @param  string $addressString
      * @return
      */
-    public static function convertAddressString($name = '', $address = '', $state = '', $zipcode = '', $location = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') {
+    public static function convertAddressString($name = '', $address = '', $state = '', $zipcode = '', $location = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') 
+    {
         $resultString = '';
 
-        if ((!empty($address)) ||
-                (!empty($state)) ||
-                (!empty($zipcode)) ||
-                (!empty($location))
+        if ((!empty($address)) 
+            || (!empty($state)) 
+            || (!empty($zipcode)) 
+            || (!empty($location))
         ) {
             $countryFlag = self::getCountryFlag($country);
             $countryName = self::getCountryName($country);
@@ -332,32 +350,40 @@ class JSMCountries {
     /**
      * JSMCountries::removeEmptyFields()
      * 
-     * @param string $name
-     * @param string $address
-     * @param string $state
-     * @param string $zipcode
-     * @param string $location
-     * @param string $flag
-     * @param string $country
-     * @param mixed $address
+     * @param  string $name
+     * @param  string $address
+     * @param  string $state
+     * @param  string $zipcode
+     * @param  string $location
+     * @param  string $flag
+     * @param  string $country
+     * @param  mixed  $address
      * @return
      */
-    public static function removeEmptyFields($name = '', $address = '', $state = '', $zipcode = '', $location = '', $flag = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') {
+    public static function removeEmptyFields($name = '', $address = '', $state = '', $zipcode = '', $location = '', $flag = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') 
+    {
 
-        if (empty($name))
+        if (empty($name)) {
             $address = self::checkAddressString('%NAME%', '', $address);
-        if (empty($address))
+        }
+        if (empty($address)) {
             $address = self::checkAddressString('%ADDRESS%', '', $address);
-        if (empty($state))
+        }
+        if (empty($state)) {
             $address = self::checkAddressString('%STATE%', '', $address);
-        if (empty($zipcode))
+        }
+        if (empty($zipcode)) {
             $address = self::checkAddressString('%ZIPCODE%', '', $address);
-        if (empty($location))
+        }
+        if (empty($location)) {
             $address = self::checkAddressString('%LOCATION%', '', $address);
-        if (empty($flag))
+        }
+        if (empty($flag)) {
             $address = self::checkAddressString('%FLAG%', '', $address);
-        if (empty($country))
+        }
+        if (empty($country)) {
             $address = self::checkAddressString('%COUNTRY%', '', $address);
+        }
 
         return $address;
     }
@@ -365,12 +391,13 @@ class JSMCountries {
     /**
      * JSMCountries::checkAddressString()
      * 
-     * @param mixed $find
-     * @param mixed $replace
-     * @param mixed $string
+     * @param  mixed $find
+     * @param  mixed $replace
+     * @param  mixed $string
      * @return
      */
-    public static function checkAddressString($find, $replace, $string) {
+    public static function checkAddressString($find, $replace, $string) 
+    {
 
         $pos = strpos($string, $find);
         if ($pos === false) {

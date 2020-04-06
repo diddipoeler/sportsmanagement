@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+* @version   1.0.05
+* @file      agegroup.php
+* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -63,20 +66,18 @@ $a = 0;
 foreach ($playgrounds AS $playground) 
 {
                                                        
-$active = ($a==0) ? 'active' : '';    
+    $active = ($a==0) ? 'active' : '';    
 
-$playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
-//if ($params->get('show_picture')==1) 
-//{
-if (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->picture) && $playground->picture != '' ) 
-{
-$thispic = $playground->picture;
-}
-elseif (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->default_picture) && $playground->default_picture != '' ) 
-{
-$thispic = $playground->default_picture;
-}
-//}
+    $playground->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
+    //if ($params->get('show_picture')==1) 
+    //{
+    if (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->picture) && $playground->picture != '' ) {
+        $thispic = $playground->picture;
+    }
+    elseif (curl_init($module->picture_server.DIRECTORY_SEPARATOR.$playground->default_picture) && $playground->default_picture != '' ) {
+        $thispic = $playground->default_picture;
+    }
+    //}
        
 
 ?>              
@@ -85,7 +86,7 @@ $thispic = $playground->default_picture;
                         <div class="col-md-12">
                             <div class="col-item">
                                 <div class="photo">
-                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" width="<?php echo $params->get('picture_width',50); ?>" />
+                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" width="<?php echo $params->get('picture_width', 50); ?>" />
                                 </div>
                             </div>
                         </div>        

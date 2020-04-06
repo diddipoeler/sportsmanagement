@@ -1,15 +1,18 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   mod_sportsmanagement_calendar
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    mod_sportsmanagement_calendar
  * @subpackage jltournamenttree
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
  
 ?>
 
@@ -89,8 +92,8 @@ jQuery(document).ready(function() {
   
   var customRounds = {
       roundsheader : [ 
-      <?PHP echo $this->bracket_rounds;
-      ?> 
+        <?PHP echo $this->bracket_rounds;
+        ?> 
       ]
     }
   </script>
@@ -102,7 +105,7 @@ jQuery(document).ready(function() {
         <?PHP echo $this->bracket_teams;?>
       ],
       results : [ 
-      <?PHP echo $this->bracket_results;?> 
+        <?PHP echo $this->bracket_results;?> 
       ]
     }
    

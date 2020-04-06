@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      controller.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       controller.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage libraries
  */
 
@@ -18,10 +21,10 @@ use Joomla\CMS\Factory;
  * JSMControllerAdmin
  *
  * @package
- * @author Dieter Plöger
+ * @author    Dieter Plöger
  * @copyright 2017
- * @version $Id$
- * @access public
+ * @version   $Id$
+ * @access    public
  */
 class JSMControllerAdmin extends AdminController
 {
@@ -29,9 +32,9 @@ class JSMControllerAdmin extends AdminController
     /**
      * Constructor.
      *
-     * @param    array An optional associative array of configuration settings.
-     * @see        JController
-     * @since    1.6
+     * @param  array An optional associative array of configuration settings.
+     * @see    JController
+     * @since  1.6
      * @throws Exception
      */
     public function __construct($config = array())
@@ -48,11 +51,11 @@ class JSMControllerAdmin extends AdminController
       * 
       * @return void
       */
-     function cancel()
-	{
-	$msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-	}
+    function cancel()
+    {
+        $msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+    }
 
 }
 

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version   1.0.05
- * @file      deafult_training.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_training.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage teaminfo
  */
 defined('_JEXEC') or die('Restricted access');
@@ -49,7 +52,7 @@ use Joomla\CMS\Language\Text;
                 <td><?php echo $training->place; ?></td>
 
                 <?php
-                if ($training->notes != ""):
+                if ($training->notes != "") :
                     $count_note++;
                     ?>
                     <td>*<sup><?php echo $count_note; ?></sup></td>
@@ -67,7 +70,7 @@ use Joomla\CMS\Language\Text;
             ?>
 
             <?php
-            if ($training->notes != ""):
+            if ($training->notes != "") :
                 $count_note++;
                 ?>
                 <tr class="" >

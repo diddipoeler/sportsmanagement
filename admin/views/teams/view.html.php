@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
-* @version   1.0.05
-* @file      view.html.php
-* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license   GNU General Public License version 2 or later; see LICENSE.txt
-* @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+* @version    1.0.05
+* @file       view.html.php
+* @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license    GNU General Public License version 2 or later; see LICENSE.txt
+* @package    sportsmanagement
 * @subpackage teams
 */
 
@@ -24,25 +27,26 @@ jimport('joomla.filesystem.file');
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementViewTeams extends sportsmanagementView {
+class sportsmanagementViewTeams extends sportsmanagementView
+{
 
     /**
      * sportsmanagementViewTeams::init()
      * 
      * @return void
      */
-    public function init() {
+    public function init() 
+    {
 
         $starttime = microtime();
-$this->assign = false;
-        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
-		{
-			$this->season_id = $this->jinput->get('season_id');
-			$this->assign = true;
-		}
+        $this->assign = false;
+        if ($this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' ) {
+            $this->season_id = $this->jinput->get('season_id');
+            $this->assign = true;
+        }
 
         $this->table = Table::getInstance('team', 'sportsmanagementTable');
 
@@ -86,9 +90,10 @@ $this->assign = false;
     /**
      * Add the page title and toolbar.
      *
-     * @since	1.7
+     * @since 1.7
      */
-    protected function addToolbar() {
+    protected function addToolbar() 
+    {
 
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');

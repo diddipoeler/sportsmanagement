@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      jevents.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   mod_sportsmanagement_calendar
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       jevents.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    mod_sportsmanagement_calendar
  * @subpackage rules
  */
 
@@ -13,107 +16,112 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-class JEventsConnector extends JSMCalendar{
-  static $xparams;
-  static $params;
-  static $prefix;
-  static $jevent;
+class JEventsConnector extends JSMCalendar
+{
+    static $xparams;
+    static $params;
+    static $prefix;
+    static $jevent;
   
-  function getEntries ($caldates, $params, &$matches) {
-    
-    if (!JEventsConnector::_checkJEvents()){
-      return;
-    }
-    $year = substr($caldates['start'], 0, 4);
-    $month = (substr($caldates['start'], 5, 1)=='0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
-    
-    JEventsConnector::$xparams = $params;
-    /**
-	 * Gets calendar data for use in main calendar and module
-	 *
-	 * @param int $year
-	 * @param int $month
-	 * @param int $day
-	 * @param boolean $short - use true for module which only requires knowledge of if dat has an event
-	 * @param boolean $veryshort - use true for module which only requires dates and nothing about events
-	 * @return array - calendar data array
-	 */
-    $data = JEventsConnector::$jevent->getCalendarData( $year, $month, 1 );
-
-    $formatted = JEventsConnector::formatEntries($data['dates'], $matches);
-    return $formatted;
-  }
-  function formatEntries( $rows, &$matches ) {
-    $newrows = array();
-    
-    foreach ($rows AS $key => $row) {
-      if (!empty($row['events'])){
-      
-        foreach($row['events'] AS $event) {
-          $newrow = array();
-          $user = Factory::getUser();
-          if ($user->id == 62) {
-
-          }
-          $newrow['link'] = JEventsConnector::buildLink ($event, $row['year'], $row['month']);
-          $newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']). ' '.strftime('%H:%M', $event->_dtstart);
-          $newrow['type'] = 'jevents';
-          $newrow['time'] = '';
-          if ($event->_alldayevent != 1) {
-            $newrow['time'] = strftime('%H:%M', $event->_dtstart);
-            $newrow['time'] .= ($event->_dtstart != $event->_dtend AND $event->_noendtime == 0) ? '-'.strftime('%H:%M', $event->_dtend) : '';
-          }
-          $newrow['headingtitle'] = JEventsConnector::$xparams->get('jevents_text', 'JEvents');
-          $newrow['name'] = '';
-          $newrow['title'] = $event->_title;
-          $newrow['location'] = $event->_location;
-          $newrow['color'] = $event->_color_bar;
-		      $newrow['matchcode'] = 0;
-		      $newrow['project_id'] = 0;
-		      $matches[] = $newrow;
-		    }
-		  }
-		}
-
-  } 
-  private function _raiseError($message) {
-    echo $message;
-  }
-  private function _checkJEvents() {
-
-    if (file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php')
-        AND 
-        file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php')
-        )
+    function getEntries($caldates, $params, &$matches) 
     {
-      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php';
-      require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php';
-    }
-    else { 
-      JEventsConnector::_raiseError('Required files not found! This connector needs JEvents 1.5.2 to be installed');
-      return false; 
-    }
-    if (class_exists('JEventsDataModel')) {
-      JEventsConnector::$jevent = new JEventsDataModel();
-    }
-    else {
-      JEventsConnector::_raiseError('Required class not found! This connector needs JEvents 1.5.2 installed');
-      return false;
-    }
-    if (!is_callable(array(JEventsConnector::$jevent, 'getCalendarData'))) {
-      JEventsConnector::_raiseError('Required function "getRangeData" is not callable! This connector needs JEvents 1.5.2 installed');
-      return false; 
-    }
+    
+        if (!JEventsConnector::_checkJEvents()) {
+            return;
+        }
+        $year = substr($caldates['start'], 0, 4);
+        $month = (substr($caldates['start'], 5, 1)=='0') ? substr($caldates['start'], 6, 1) : substr($caldates['start'], 5, 2);
+    
+        JEventsConnector::$xparams = $params;
+        /**
+     * Gets calendar data for use in main calendar and module
+     *
+     * @param  int $year
+     * @param  int $month
+     * @param  int $day
+     * @param  boolean $short - use true for module which only requires knowledge of if dat has an event
+     * @param  boolean $veryshort - use true for module which only requires dates and nothing about events
+     * @return array - calendar data array
+     */
+        $data = JEventsConnector::$jevent->getCalendarData($year, $month, 1);
 
-    return true;
-  }
-  function buildLink (&$event, $year, $month) {
-    require_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'router.php';
-    $link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
-    .$event->_eventdetail_id.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='
-    .$event->_dup.'&amp;uid='.$event->_uid;
-    return Route::_($link);
-  }
+        $formatted = JEventsConnector::formatEntries($data['dates'], $matches);
+        return $formatted;
+    }
+    function formatEntries( $rows, &$matches ) 
+    {
+        $newrows = array();
+    
+        foreach ($rows AS $key => $row) {
+            if (!empty($row['events'])) {
+      
+                foreach($row['events'] AS $event) {
+                    $newrow = array();
+                    $user = Factory::getUser();
+                    if ($user->id == 62) {
+
+                    }
+                    $newrow['link'] = JEventsConnector::buildLink($event, $row['year'], $row['month']);
+                    $newrow['date'] = strftime('%Y-%m-%d', $row['cellDate']). ' '.strftime('%H:%M', $event->_dtstart);
+                    $newrow['type'] = 'jevents';
+                    $newrow['time'] = '';
+                    if ($event->_alldayevent != 1) {
+                        $newrow['time'] = strftime('%H:%M', $event->_dtstart);
+                        $newrow['time'] .= ($event->_dtstart != $event->_dtend AND $event->_noendtime == 0) ? '-'.strftime('%H:%M', $event->_dtend) : '';
+                    }
+                    $newrow['headingtitle'] = JEventsConnector::$xparams->get('jevents_text', 'JEvents');
+                    $newrow['name'] = '';
+                    $newrow['title'] = $event->_title;
+                    $newrow['location'] = $event->_location;
+                    $newrow['color'] = $event->_color_bar;
+                    $newrow['matchcode'] = 0;
+                    $newrow['project_id'] = 0;
+                    $matches[] = $newrow;
+                }
+            }
+        }
+
+    } 
+    private function _raiseError($message) 
+    {
+        echo $message;
+    }
+    private function _checkJEvents() 
+    {
+
+        if (file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php')
+           
+            AND file_exists(JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php')
+        ) {
+            include_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'mod.defines.php';
+            include_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'datamodel.php';
+        }
+        else { 
+            JEventsConnector::_raiseError('Required files not found! This connector needs JEvents 1.5.2 to be installed');
+            return false; 
+        }
+        if (class_exists('JEventsDataModel')) {
+            JEventsConnector::$jevent = new JEventsDataModel();
+        }
+        else {
+            JEventsConnector::_raiseError('Required class not found! This connector needs JEvents 1.5.2 installed');
+            return false;
+        }
+        if (!is_callable(array(JEventsConnector::$jevent, 'getCalendarData'))) {
+            JEventsConnector::_raiseError('Required function "getRangeData" is not callable! This connector needs JEvents 1.5.2 installed');
+            return false; 
+        }
+
+        return true;
+    }
+    function buildLink(&$event, $year, $month) 
+    {
+        include_once JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_jevents'.DIRECTORY_SEPARATOR.'router.php';
+        $link = 'index.php?option=com_jevents&amp;task=icalrepeat.detail&amp;evid='
+        .$event->_eventdetail_id.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='
+        .$event->_dup.'&amp;uid='.$event->_uid;
+        return Route::_($link);
+    }
 } 
 
 // jevents returns a list like that:

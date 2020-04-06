@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_items.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_items.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allteams
  */
  
@@ -89,16 +92,18 @@ use Joomla\CMS\Filesystem\File;
                 <?PHP
                 if ($this->params->get('picture')) {
                     echo '<td>';
-                    echo sportsmanagementHelperHtml::getBootstrapModalImage('allteams' . $item->id, $item->picture, $item->name, '20','',$this->modalwidth,
-$this->modalheight,
-$this->use_jquery_modal);
+                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                        'allteams' . $item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
+                        $this->modalheight,
+                        $this->use_jquery_modal
+                    );
                     echo '</td>';
                 }
 
                 if ($this->params->get('website')) {
                     echo '<td>';
-                    if($item->website){
-                    echo HTMLHelper::link($item->website, $item->website, array('target' => '_blank'));
+                    if($item->website) {
+                        echo HTMLHelper::link($item->website, $item->website, array('target' => '_blank'));
                     }
                     echo '</td>';
                 }

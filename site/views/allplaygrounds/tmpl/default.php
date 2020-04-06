@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allplaygrounds
  */
 
@@ -36,11 +39,11 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 function searchPerson(val)
-	{
+    {
         var s= document.getElementById("filter_search");
         s.value = val;
         Joomla.submitform('', this.form)
-	}
+    }
 </script>
 <div class="<?php echo $this->divclasscontainer;?>" id="allplaygrounds">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
@@ -51,7 +54,7 @@ function searchPerson(val)
 <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 <button type="submit" class="btn" title=""><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
 <button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
-		
+        
 <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
 <td align="center" colspan="4">
 <?php
@@ -59,12 +62,12 @@ $startRange = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 $endRange = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
 for ($i=$startRange; $i <= $endRange; $i++)
 {
-printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
+    printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#'.$i.';', '&#'.$i.';');
 }
 ?>
 </td>
 </div>
-	
+    
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- * @version   1.0.05
- * @file      deafult_ranking_first.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_ranking_first.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage ranking
  */
 
@@ -51,10 +54,10 @@ foreach ($this->firstRank as $division => $cu_rk) {
             </table>
         </div>
                 <?php
-            } else {
-                ?>
+    } else {
+        ?>
         <div class="table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
+    <table class="<?PHP echo $this->config['table_class']; ?>">
         <?php
         echo $this->loadTemplate('rankingheading');
         $this->division = $division;
@@ -62,12 +65,12 @@ foreach ($this->firstRank as $division => $cu_rk) {
         $this->teamrow = 'fr';
         echo $this->loadTemplate('rankingrows');
         ?>
-            </table>
+    </table>
         </div>
         <br />
-                <?php
-            }
-        }
+        <?php
+    }
+}
         ?>
 <!-- ranking END -->
 

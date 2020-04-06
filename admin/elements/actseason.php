@@ -1,10 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+* @version   1.0.05
+* @file      agegroup.php
+* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license   GNU General Public License version 2 or later; see LICENSE.txt
 *
 * SportsManagement is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -48,46 +51,46 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class JFormFieldactseason extends JFormField
 {
 
-	protected $type = 'actseason';
+    protected $type = 'actseason';
 
-	/**
-	 * JFormFieldactseason::getInput()
-	 * 
-	 * @return
-	 */
-	protected function getInput() 
+    /**
+     * JFormFieldactseason::getInput()
+     * 
+     * @return
+     */
+    protected function getInput() 
     {
-		$db = sportsmanagementHelper::getDBConnection();
-		$lang = Factory::getLanguage();
+        $db = sportsmanagementHelper::getDBConnection();
+        $lang = Factory::getLanguage();
         $option = Factory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
-        $params = ComponentHelper::getParams( 'COM_SPORTSMANAGEMENT' );
-        $database_table	= $params->get( 'cfg_which_database_table' );
+        $params = ComponentHelper::getParams('COM_SPORTSMANAGEMENT');
+        $database_table    = $params->get('cfg_which_database_table');
          
-		$extension = "com_sportsmanagement";
-		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		||	$lang->load($extension, $source, null, false, false)
-		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
-		
-		$query = 'SELECT s.id, s.name as name 
+        $extension = "com_sportsmanagement";
+        $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+        $lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+        ||    $lang->load($extension, $source, null, false, false)
+        ||    $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+        ||    $lang->load($extension, $source, $lang->getDefault(), false, false);
+        
+        $query = 'SELECT s.id, s.name as name 
 					FROM #__'.$database_table.'_season AS s 
 					ORDER BY s.name DESC';
-		$db->setQuery( $query );
-		$projects = $db->loadObjectList();
+        $db->setQuery($query);
+        $projects = $db->loadObjectList();
 
-		foreach ( $projects as $project ) {
-			$mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
-		}
-		
-		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" ', 'value', 'text', $this->value, $this->id );
-		return $output;
-	}
+        foreach ( $projects as $project ) {
+            $mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name);
+        }
+        
+        $output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" ', 'value', 'text', $this->value, $this->id);
+        return $output;
+    }
 }

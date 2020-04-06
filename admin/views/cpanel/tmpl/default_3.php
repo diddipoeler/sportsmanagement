@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      default_3.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_3.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage cpanel
  */
  
@@ -22,7 +25,7 @@ jimport('joomla.html.html.bootstrap');
         <div id="j-main-container" class="span10">
         <?php else : ?>
             <div id="j-main-container">
-            <?php endif; ?>
+        <?php endif; ?>
             <section class="content-block" role="main">
                 <div class="row-fluid">
                     <div class="span9">
@@ -184,7 +187,7 @@ jimport('joomla.html.html.bootstrap');
                                     <img src="components/com_sportsmanagement/assets/icons/xmlimport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?>" /><br />
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT') ?></span>
                                 </a>
-								<!--
+                                <!--
                                 <a class="btn" href="index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default">
                                     <img src="components/com_sportsmanagement/assets/icons/xmleditor.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?>" /><br />
                                     <span><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_EDITOR') ?></span>

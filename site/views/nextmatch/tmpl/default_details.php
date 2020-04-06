@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_details.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_details.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage nextmatch
  */
 
@@ -57,7 +60,7 @@ use Joomla\CMS\Factory;
     <!-- Date -->
     <?php
     if ($this->config['show_match_date']) {
-        if ($this->match->match_date > 0): ?>
+        if ($this->match->match_date > 0) : ?>
             <tr>
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE'); ?></span>
                     <span><?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE')); ?></span>
@@ -69,7 +72,7 @@ use Joomla\CMS\Factory;
     <!-- Time -->
     <?php
     if ($this->config['show_match_time']) {
-        if ($this->match->match_date > 0): ?>
+        if ($this->match->match_date > 0) : ?>
             <tr>
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_TIME'); ?></span>
                     <span><?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?></span>
@@ -81,7 +84,7 @@ use Joomla\CMS\Factory;
     <!-- present -->
     <?php
     if ($this->config['show_time_present']) {
-        if ($this->match->time_present > 0): ?>
+        if ($this->match->time_present > 0) : ?>
             <tr>
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PRESENT'); ?></span>
                     <span><?php echo $this->match->time_present; ?></span></td>
@@ -92,7 +95,7 @@ use Joomla\CMS\Factory;
     <!-- match number -->
     <?php
     if ($this->config['show_match_number']) {
-        if ($this->match->match_number > 0): ?>
+        if ($this->match->match_number > 0) : ?>
             <tr>
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_NUMBER'); ?></span>
                     <span><?php echo $this->match->match_number; ?></span></td>
@@ -101,7 +104,7 @@ use Joomla\CMS\Factory;
     } ?>
 
     <!-- match canceled -->
-    <?php if ($this->match->cancel > 0): ?>
+    <?php if ($this->match->cancel > 0) : ?>
         <tr>
             <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_CANCEL_REASON'); ?></span>
                 <span><?php echo $this->match->cancel_reason; ?></span></td>
@@ -116,7 +119,7 @@ use Joomla\CMS\Factory;
     <!-- playground -->
     <?php
     if ($this->config['show_match_playground']) {
-        if ($this->match->playground_id > 0): ?>
+        if ($this->match->playground_id > 0) : ?>
             <?php
             $routeparameter = array();
             $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -147,7 +150,7 @@ use Joomla\CMS\Factory;
     if ($this->config['show_match_referees']) {
 
 
-        if (!empty($this->referees)): ?>
+        if (!empty($this->referees)) : ?>
             <?php $html = array(); ?>
             <tr>
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE'); ?></span>

@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
-* @version   1.0.05
-* @file      teams.php
-* @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license   GNU General Public License version 2 or later; see LICENSE.txt
-* @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+* @version    1.0.05
+* @file       teams.php
+* @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license    GNU General Public License version 2 or later; see LICENSE.txt
+* @package    sportsmanagement
 * @subpackage controllers
 */
 
@@ -21,18 +24,20 @@ use Joomla\CMS\Session\Session;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
-class sportsmanagementControllerteams extends JSMControllerAdmin {
+class sportsmanagementControllerteams extends JSMControllerAdmin
+{
 
     /**
      * Save the manual order inputs from the categories list page.
      *
-     * @return	void
-     * @since	1.6
+     * @return void
+     * @since  1.6
      */
-    public function saveorder() {
+    public function saveorder() 
+    {
         Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Get the arrays from the Request
@@ -54,7 +59,8 @@ class sportsmanagementControllerteams extends JSMControllerAdmin {
      * 
      * @return void
      */
-    function saveshort() {
+    function saveshort() 
+    {
         $model = $this->getModel();
         $msg = $model->saveshort();
         $club_id = $this->jsmjinput->getInt('club_id');
@@ -63,9 +69,11 @@ class sportsmanagementControllerteams extends JSMControllerAdmin {
 
     /**
      * Proxy for getModel.
-     * @since	1.6
+     *
+     * @since 1.6
      */
-    public function getModel($name = 'Team', $prefix = 'sportsmanagementModel', $config = Array()) {
+    public function getModel($name = 'Team', $prefix = 'sportsmanagementModel', $config = Array()) 
+    {
         $model = parent::getModel($name, $prefix, array('ignore_request' => true));
         return $model;
     }

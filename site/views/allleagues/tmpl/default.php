@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allleagues
  */
  
@@ -57,7 +60,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $startRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
 $endRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
 for ($i = $startRange; $i <= $endRange; $i++) {
-printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
+    printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
 }
 ?>
 </div>

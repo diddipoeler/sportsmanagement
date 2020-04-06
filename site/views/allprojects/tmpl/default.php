@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allprojects
  */
 
@@ -35,9 +38,9 @@ function tableOrdering( order, dir, task )
 }
 </script>
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
-	<h1 class="componentheading">
-		<?php echo $this->escape($this->params->get('page_title')); ?>
-	</h1>
+    <h1 class="componentheading">
+    <?php echo $this->escape($this->params->get('page_title')); ?>
+    </h1>
 <?php endif; ?>
 <div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
@@ -55,7 +58,7 @@ function tableOrdering( order, dir, task )
 <?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?>
         
 </div>
-	
+    
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />

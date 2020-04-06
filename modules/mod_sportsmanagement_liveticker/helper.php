@@ -1,11 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version   1.0.05
- * @file      helper.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    1.0.05
+ * @file       helper.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage mod_sportsmanagement_liveticker
  */
 
@@ -18,85 +21,84 @@ use Joomla\CMS\Factory;
  * @package   
  * @author 
  * @copyright diddi
- * @version 2014
- * @access public
+ * @version   2014
+ * @access    public
  */
 class modTurtushoutHelper
 {
-	
+    
     /**
      * modTurtushoutHelper::getListCommentary()
      * 
-     * @param mixed $list
+     * @param  mixed $list
      * @return
      */
     public static function getListCommentary($list)
     {
-    $db	= sportsmanagementHelper::getDBConnection(); 
-    $query = $db->getQuery(true);
-    $mainframe = Factory::getApplication();  
-    $matches = array();
+        $db    = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        $mainframe = Factory::getApplication();  
+        $matches = array();
     
-    foreach ( $list as $row )    
-    {
-    //$matches[] = $row->match_id;    
+        foreach ( $list as $row )    
+        {
+            //$matches[] = $row->match_id;    
         
-    //$selmatchcomm = implode(',',$matches);
-    $query->clear();
-    $query->select('*');
-    $query->from('#__sportsmanagement_match_commentary');
-    $query->where('match_id = '.$row->match_id);
-    $query->order('event_time DESC');
+            //$selmatchcomm = implode(',',$matches);
+            $query->clear();
+            $query->select('*');
+            $query->from('#__sportsmanagement_match_commentary');
+            $query->where('match_id = '.$row->match_id);
+            $query->order('event_time DESC');
 
     
     
-    $db->setQuery($query);
-	$rows = $db->loadObjectList();
+            $db->setQuery($query);
+            $rows = $db->loadObjectList();
     
-    if ( $rows )
-    {
-    $matches[$row->match_id] = $rows;    
-    }
+            if ($rows ) {
+                $matches[$row->match_id] = $rows;    
+            }
     
-    }
+        }
     
-    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-    return $matches;    
+        return $matches;    
     }
         
     /**
      * modTurtushoutHelper::getList()
      * 
-     * @param mixed $params
-     * @param mixed $limit
+     * @param  mixed $params
+     * @param  mixed $limit
      * @return
      */
     public static function getList(&$params, $limit)
     {
 
-$date = new DateTime();
-$config = Factory::getConfig();
-$date->setTimezone(new DateTimeZone($config->get('offset')));
-//$timestamp = strtotime($this->match->match_date);
+        $date = new DateTime();
+        $config = Factory::getConfig();
+        $date->setTimezone(new DateTimeZone($config->get('offset')));
+        //$timestamp = strtotime($this->match->match_date);
         
         // aktuelles datum
-        $akt_datum = date("Y-m-d",time());
+        $akt_datum = date("Y-m-d", time());
         //$timestamp = strtotime($akt_datum);
         //echo 'timestamp '.$timestamp.'<br>';
         
         //$date->format('Y-m-d H:i:s');
         $timestamp = strtotime($date->format('Y-m-d H:i:s'));
-        $timestampvon = $timestamp - ( $params->get( 'playtime' ) * 60 );
-        $timestampbis = $timestamp + ( $params->get( 'playtime' ) * 60 );
-//        echo 'timestamp '.$timestamp.'<br>';
-//        echo 'timestampvon '.$timestampvon.'<br>';
-//        echo 'timestampbis '.$timestampbis.'<br>';
+        $timestampvon = $timestamp - ( $params->get('playtime') * 60 );
+        $timestampbis = $timestamp + ( $params->get('playtime') * 60 );
+        //        echo 'timestamp '.$timestamp.'<br>';
+        //        echo 'timestampvon '.$timestampvon.'<br>';
+        //        echo 'timestampbis '.$timestampbis.'<br>';
         //$von = $akt_datum.' 00:00:00';
         //$bis = $akt_datum.' 23:59:59';
         $rows = array();
         
-		$db		= sportsmanagementHelper::getDBConnection();
+        $db        = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $mainframe = Factory::getApplication();
         
@@ -129,50 +131,49 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         $query->where('( jm.match_timestamp >= '.$timestampvon.' AND jm.match_timestamp <= '.$timestampbis.' )');   
    
         
-		$db->setQuery($query, 0, $limit);
-		$rows = $db->loadObjectList();
-		
-		if ($db->getErrorMsg())
-        {
-//			 modTurtushoutHelper::install();
-		}
+        $db->setQuery($query, 0, $limit);
+        $rows = $db->loadObjectList();
+        
+        if ($db->getErrorMsg()) {
+            //			 modTurtushoutHelper::install();
+        }
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
-		return $rows;
-	}
+        return $rows;
+    }
 
-	/**
-	 * modTurtushoutHelper::shout()
-	 * 
-	 * @param mixed $display_username
-	 * @param mixed $display_title
-	 * @param mixed $add_timeout
-	 * @return
-	 */
-	function shout($display_username, $display_title, $add_timeout)
+    /**
+     * modTurtushoutHelper::shout()
+     * 
+     * @param  mixed $display_username
+     * @param  mixed $display_title
+     * @param  mixed $add_timeout
+     * @return
+     */
+    function shout($display_username, $display_title, $add_timeout)
     {
         
-	}
+    }
 
 
-	/**
-	 * modTurtushoutHelper::delete()
-	 * 
-	 * @return
-	 */
-	function delete()
+    /**
+     * modTurtushoutHelper::delete()
+     * 
+     * @return
+     */
+    function delete()
     {
 
-	}
+    }
 
-	/**
-	 * modTurtushoutHelper::install()
-	 * 
-	 * @return
-	 */
-	function install()
+    /**
+     * modTurtushoutHelper::install()
+     * 
+     * @return
+     */
+    function install()
     {
         
-	}
+    }
 }

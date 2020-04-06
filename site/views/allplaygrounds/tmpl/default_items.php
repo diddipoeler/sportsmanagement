@@ -1,11 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default_items.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       default_items.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage allplaygrounds
  */
 
@@ -21,7 +24,7 @@ use Joomla\CMS\Filesystem\File;
 <thead>
 <tr>
 <th class="" id="">
-<?php  echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PLAYGROUNDS', 'v.name', $this->sortDirection, $this->sortColumn) ; ?>
+<?php  echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PLAYGROUNDS', 'v.name', $this->sortDirection, $this->sortColumn); ?>
 </th>
 <th class="" id="">
 <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn); ?>
@@ -49,39 +52,39 @@ use Joomla\CMS\Filesystem\File;
 <tr class="row<?php echo $i % 2; ?>">
 <td>
 <?php 
-if ( $item->projectslug )
-{
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
-$routeparameter['p'] = $item->projectslug;
-$routeparameter['pgid'] = $item->slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    
-echo HTMLHelper::link( $link, $item->name );
+if ($item->projectslug ) {
+    $routeparameter = array();
+    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+    $routeparameter['p'] = $item->projectslug;
+    $routeparameter['pgid'] = $item->slug;
+    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);    
+    echo HTMLHelper::link($link, $item->name);
 }
 else
 {
-echo $item->name;    
+    echo $item->name;    
 }
 
-if ( !File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) )
-{
-$item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+if (!File::exists(JPATH_SITE.DIRECTORY_SEPARATOR.$item->picture) ) {
+    $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 
 ?>
 </td>
 <td>
 <?PHP 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayground'.$item->id,$item->picture,$item->name,'20','',$this->modalwidth,
-$this->modalheight,
-$this->use_jquery_modal)
+echo sportsmanagementHelperHtml::getBootstrapModalImage(
+    'allplayground'.$item->id, $item->picture, $item->name, '20', '', $this->modalwidth,
+    $this->modalheight,
+    $this->use_jquery_modal
+)
 ?>
 
 
 </td>
 <td>
-<?php echo HTMLHelper::link( $item->website, $item->website, array( 'target' => '_blank' ) ); ?>
+<?php echo HTMLHelper::link($item->website, $item->website, array( 'target' => '_blank' )); ?>
 </td>
 <td>
 <?php echo $item->address; ?>

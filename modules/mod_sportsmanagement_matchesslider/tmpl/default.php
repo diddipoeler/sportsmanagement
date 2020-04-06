@@ -1,10 +1,13 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.00
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ *
+ * @version    1.0.00
+ * @file       default.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @subpackage mod_sportsmanagement_matchesslider
  */ 
 
@@ -15,15 +18,15 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 <script type="text/javascript">
 (function($) {
-	$(function() { //on DOM ready
-		$("#scroller").simplyScroll({
-			customClass: 'custom',
-			direction: '<?php echo $params->get('slide_direction'); ?>',
-			pauseOnHover: false,
-			frameRate: 20,
-			speed: 2
-		});
-	});
+    $(function() { //on DOM ready
+        $("#scroller").simplyScroll({
+            customClass: 'custom',
+            direction: '<?php echo $params->get('slide_direction'); ?>',
+            pauseOnHover: false,
+            frameRate: 20,
+            speed: 2
+        });
+    });
 })(jQuery);
 </script>
 
@@ -41,10 +44,10 @@ foreach( $slidermatches as $match )
     <h1>
     <a href="<?PHP echo $link;  ?>" title="">
     <?PHP
-//echo $match->match_date;
-echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
-echo ' ';
-echo HTMLHelper::_('date', $match->match_date, $params->get('timeformat'), null);
+    //echo $match->match_date;
+    echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
+    echo ' ';
+    echo HTMLHelper::_('date', $match->match_date, $params->get('timeformat'), null);
 ?>
 </a>
 </h1>

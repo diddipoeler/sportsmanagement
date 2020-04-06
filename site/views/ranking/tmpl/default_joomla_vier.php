@@ -1,11 +1,14 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- * @version   1.0.05
- * @file      deafult_joomla_vier.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- * @package   sportsmanagement
+/**
+* 
+ * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
+ *
+ * @version    1.0.05
+ * @file       deafult_joomla_vier.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    sportsmanagement
  * @subpackage ranking
  */
 
@@ -34,7 +37,7 @@ echo $this->loadTemplate('projectheading');
 
 echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
 if ($this->config['show_table_1']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
@@ -48,7 +51,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($t
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_2']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
@@ -62,7 +65,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($t
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_3']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
@@ -76,7 +79,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($t
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_4']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
@@ -90,7 +93,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($t
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_5']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
+    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
 
 ?>
 <div class="<?php echo $this->divclasscontainer;?>">
